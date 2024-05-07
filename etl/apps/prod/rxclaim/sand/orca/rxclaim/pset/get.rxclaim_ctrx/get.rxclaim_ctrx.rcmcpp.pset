@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcmcpp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmcpp                  klaacd,klj5s2,klvnc2,klvoc2,klvqc2,klvrc2,klvsc2,klvpc2,klc2dt,kladvn,klbmdt,klabtm,klaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil", "rcmcpp")]
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE RCMCPP.KLBMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND RCMCPP.KLBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE RCMCPP.KLBMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND RCMCPP.KLBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+DO_CLEAN||||1
+DO_SOURCE||||0

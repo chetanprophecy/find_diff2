@@ -1,0 +1,16 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.rxclaim_fbo/clean.rxclaim_fbo.dim_drugpricing.${RUN_ID}.dat.gz
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rxclaim_fbo.dim_drugpricing_fst_rfmt.xfr
+USE_SORT||||True
+SCAN_XFR||||$AI_XFR/produce/produce.rxclaim_fbo.dim_drugpricing_fst_scan.xfr
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$AI_MFS/clean.rxclaim_fbo/clean.rxclaim_fbo.dim_drugpricing_fst.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_fbo/clean.rxclaim_fbo.dim_drugpricing.dml
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_fbo/clean.rxclaim_fbo.dim_drugpricing.dml
+USE_SCAN||||True
+SORT_KEY||||{costtypecode; productid}
+USE_DEDUP||||True
+EXTRA_SORT_KEY||||{eff_dt; costtypecodesub; eff_dt_thru}
+DEDUP_KEY||||{costtypecode; productid; eff_dt; costtypecodesub; eff_dt_thru}

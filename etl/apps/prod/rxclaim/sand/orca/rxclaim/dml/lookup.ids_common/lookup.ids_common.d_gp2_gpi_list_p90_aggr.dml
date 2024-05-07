@@ -1,0 +1,21 @@
+record
+ // unsigned integer(8) dxf_hk_part1 = 0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+ // unsigned integer(8) dxf_hk_part2 = 0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+ // integer(8) dxf_sk = 0 ;/*Added by Integration Framework. Surrogate key.*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_id = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=14) gp2_gpi_nbr = NULL("") /*VARCHAR(14)*/;
+  date("YYYYMMDD")("\x01") gp2_gpi_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") gp2_gpi_thru_dt = NULL("") /*DATE*/;
+  record
+        string("\x01",charset="iso-8859-15", maximum_length=14) gp2_gpi_nbr = NULL("") /*VARCHAR(14)*/;
+        date("YYYYMMDD")("\x01") gp2_gpi_from_dt = NULL("") /*DATE*/;
+        date("YYYYMMDD")("\x01") gp2_gpi_thru_dt = NULL("") /*DATE*/;
+  end[int]vec_gp2_gpi_list_p90 = allocate_with_nulls();
+  
+ // string("\x01",charset="iso-8859-15", maximum_length=14)[int] vec_gp2_gpi_nbr = allocate_with_nulls() /*VARCHAR(14)*/;
+  //date("YYYYMMDD")("\x01")[int] vec_gp2_gpi_from_dt = allocate_with_nulls() /*DATE*/;
+  //date("YYYYMMDD")("\x01")[int] vec_gp2_gpi_thru_dt = allocate_with_nulls() /*DATE*/;
+  
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+  string(1) newline = "\n";
+end

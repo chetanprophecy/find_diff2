@@ -1,0 +1,110 @@
+/* Oracle's and Netezza's bulk loaders does not support empty strings, so replace them with 1 blank. */
+out :: no_empty_string(in) =
+begin
+  out :: if ( in == "" )
+      " "
+    else
+      in;
+end;
+
+
+/* Make sure that all decimals are in the same format. */
+out :: standardize_decimal(in) =
+begin
+  out :: if ( is_valid(in) )
+      in + 0
+    else
+      0;
+end;
+
+
+/* Copy one record to another while ensuring that types are consistently represented with the same set of bytes. */
+out :: standardize(in) =
+begin
+  out.(*,form=="string") :1: no_empty_string(in.*);
+  out.(*,form=="decimal") :2: standardize_decimal(in.*);
+  out.* :: in.*;
+end;
+
+
+/* Copy one record to another while ensuring that types are consistently represented with the same set of bytes. */
+out :: standardize_for_clean(in) =
+begin
+  out.(*,form=="string") :1: string_and_hex_replace(in.*);
+  out.* :: in.*;
+end;
+
+out :: standardize_for_clean_iseries_to_netezza(in) =
+begin
+  out.(*,form=="string") :1: string_and_hex_replace_iseries_to_netezza(in.*);
+  out.* :: in.*;
+end;
+
+/* Trim a string, but use 1 blank for blank strings.  This lets DML's string compare work like ANSI SQL string compare. */
+out :: string_trim_no_empty(in) =
+begin
+  out :: if ( is_blank(in) )
+      " "
+    else
+      string_lrtrim(in); // Changed funtion def to have string_lrtrim to be used in the GET graphs - dated 08/16/2016. get.csv, get.database, get.datalake, get.excel, get.ids, get.iseries are all using string_trim_no_empty() func.
+                         // get.db is an outdated version of GET graphs in PUB_DXF. Foundation Team doesn't recommend to use it. Also there are changes in get.file which would be incorporated later
+end;
+
+/* Returns 1 if the input string has one or more hex values including 8 that don't translate directly from iso_8859_1 to iso_8859_15, else 0. */
+/* Modified by: Santhosh; Date:10/30/2014; Modification: Added NO-BREAK SPACE (U+00A0)- hex value 'a0' to the string_filter list */
+out :: has_hex_values_iso_8859_1_to_15(in) =
+begin
+  out :1: string_length(string_filter(in,
+    "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\xc7\xff\xa0\xa4\xa6\xa8\xb4\xb8\xbc\xbd\xbe")) > 0;
+  out :2: 0;
+end;
+
+/* Returns 1 if the input string has one or more hex values (control characters plus the \xc7 delimiter), else 0. */
+out :: has_hex_values(in) =
+begin
+  out :1: string_length(string_filter(in,
+    "\x00\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\xc7\xff")) > 0;
+  out :2: 0;
+end;
+
+/* Replaces any hex values with a space. */
+out :: fix_hex_values(in) =
+begin
+  out :: re_replace(in, "[\\0\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\xc7\xff]", " ");
+end;
+
+/* Replaces any hex values with a space including 8 iso_8859_1 hex values not supported in iso_8859_15. */
+/* Modified by: Santhosh; Date:10/30/2014; Modification: Added NO-BREAK SPACE (U+00A0)- hex value 'a0' to the string_filter list */
+out :: fix_hex_values_iso_8859_1_to_15(in) =
+begin
+  out :: re_replace(in, "[\\0\x01\x02\x03\x04\x05\x06\x07\x08\x09\x0a\x0b\x0c\x0d\x0e\x0f\x10\x11\x12\x13\x14\x15\x16\x17\x18\x19\x1a\x1b\x1c\x1d\x1e\x1f\xc7\xff\xa0\xa4\xa6\xa8\xb4\xb8\xbc\xbd\xbe]", " ");
+end;
+
+/* Encapsulates a check and fix for hex values and a string replace */
+out :: string_and_hex_replace(in) = 
+begin
+  out :: if ( has_hex_values(in) )
+      string_trim_no_empty(fix_hex_values(in))
+    else
+      string_trim_no_empty(in);
+end;
+
+/* Encapsulates a check and fix for hex values and a string replace */
+out :: string_and_hex_replace_iseries_to_netezza(in) = 
+begin
+  out :: if ( has_hex_values_iso_8859_1_to_15(in) )
+      string_trim_no_empty(fix_hex_values_iso_8859_1_to_15(in))
+    else
+      string_trim_no_empty(in);
+end;
+
+/* Replaces NUL and HEX(01) with blank and LF with CR.  Then string trims and replaces the empty string ("") with one blank.
+This preserves the length of the string (except for trailing blanks) while removing characters that will not work with the Netezza bulk loader.
+This works when the Netezza field delimiter is HEX(01) and the Native Options includes: -ctrlChars true -crInString true -nullValue '' */
+out :: trim_for_netezza(in) = 
+begin
+  out :: if ( string_length(string_filter(in, "\x00\x01\n")) > 0 )
+      string_trim_no_empty(string_replace(re_replace(in, "[\\0\x01]", " "), "\n", "\r"))
+    else
+      string_trim_no_empty(in);
+end;

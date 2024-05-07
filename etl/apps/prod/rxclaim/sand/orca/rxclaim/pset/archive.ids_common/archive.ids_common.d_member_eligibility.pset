@@ -1,0 +1,6 @@
+!prototype|P|||$AI_MP/history/create_reduced_and_archive.mp
+FILTER_EXPR||||( first_defined((date("YYYYMMDD")) mel_eff_dt,(date("YYYYMMDD")) '20010101') >= (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -90 ) ||\r\n     first_defined((date("YYYYMMDD")) mel_thru_dt,(date("YYYYMMDD"))'20010101') >= (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -90 ) ) &&\r\n\t first_defined(mel_stat_cd,"X") =="A"
+IDS_DATASET||||ids_common.d_member_eligibility
+RECREATE_HASH_KEYS||||False
+ARCHIVE_PURGE_FILTER||||( first_defined(mel_stat_cd,"X") =="A" and ((first_defined((date("YYYYMMDD")) mel_eff_dt,(date("YYYYMMDD")) '20010101') >= (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -1200 ) )||\r\n     first_defined((date("YYYYMMDD")) mel_thru_dt,(date("YYYYMMDD"))'20010101') >= (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -1200 )) )
+LOAD_FRQUENCY||||Adhoc

@@ -1,0 +1,31 @@
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+type topIndicators_elem_t = record
+  cli_string_t name=NULL;
+  cli_string_t value=NULL;
+end;
+type topIndicators_t =  topIndicators_elem_t[int];
+
+type diab_risk_score_output = record
+  hash_key_t        cagm_hash;
+  cli_integer_id_t  ptnt_id=NULL;
+  cli_string_t sourceID=NULL;
+  cli_clt_id_t clientID=NULL;
+  cli_carrier_id_t carrierID=NULL;
+  cli_carrier_acct_id_t accountID=NULL;
+  cli_employer_group_id_t groupID=NULL;
+  cli_string_t memberID=NULL;
+  cli_string_t memberSK=NULL;
+  cli_string_t firstName=NULL;
+  cli_program_id_t program_id=NULL;
+  cli_string_t lastName=NULL;
+  cli_date_t dob=NULL;
+  cli_string_t predictionType=NULL;
+  cli_date_t dateOfPrediction=NULL;
+  cli_string_t drugClass=NULL;
+  cli_string_t therapy=NULL;
+  cli_decimal_t riskScore=NULL;
+  topIndicators_t topIndicators;
+end;
+metadata type = diab_risk_score_output;

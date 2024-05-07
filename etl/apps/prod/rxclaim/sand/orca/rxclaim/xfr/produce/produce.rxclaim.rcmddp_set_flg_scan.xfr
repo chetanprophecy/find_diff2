@@ -1,0 +1,23 @@
+type temporary_type =
+record
+decimal("") counter;
+end;
+
+
+temp :: initialize(in) =
+begin
+  temp.counter :: 0;
+end;
+
+out :: scan(temp, in) =
+begin
+out.counter::temp.counter+1;
+end;
+
+out :: finalize(temp, in) =
+begin
+out.asbmdt::(date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.asbmdt);
+out.asc2dt::(date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.asc2dt);
+out.flg::if(temp.counter==1) "R" else "H";
+out.*::in.*;
+end;

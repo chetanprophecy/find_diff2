@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.cli_prd.client_prod_cd,[passthrough],in0.clt_prod_cd]
+  [out0.cli_prd.client_prod_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cli_prd.dxf_hk_part1,'cli_prd.dxf_hk_part1',1,0]
+     [out0.cli_prd.client_prod_cd,'cli_prd.client_prod_cd',1,0]
+     [out0.cli_prd.src_env_sk,'cli_prd.src_env_sk',1,0]
+     [out0.cli_prd.client_prod_sk,'cli_prd.client_prod_sk',1,0]
+     [out0.cli_prd.dxf_hk_part2,'cli_prd.dxf_hk_part2',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cli_prd.dxf_sk,'cli_prd.dxf_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.clt_prod_cd,'clt_prod_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) cli_prd_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) cli_prd_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) cli_prd_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) cli_prd_client_prod_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) cli_prd_client_prod_cd = fail_if_error(in0.clt_prod_cd);
+let decimal("\x01",0) cli_prd_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.cli_prd.dxf_hk_part1::cli_prd_dxf_hk_part1;
+  out0.cli_prd.dxf_hk_part2::cli_prd_dxf_hk_part2;
+  out0.cli_prd.dxf_sk::cli_prd_dxf_sk;
+  out0.cli_prd.client_prod_sk::cli_prd_client_prod_sk;
+  out0.cli_prd.client_prod_cd::cli_prd_client_prod_cd;
+  out0.cli_prd.src_env_sk::cli_prd_src_env_sk;
+  out0.*::in0.*;
+
+end;

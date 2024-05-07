@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rccbrp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rccbrp                  akp2nb,akoinb,akven2,akvin2,akitcj\nclmprdext     rcex1p                  claimsts
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccbrp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex1p')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||WHERE rcex1p.RXCLAIMNBR = rccbrp.AKP2NB AND   rcex1p.CLMSEQNBR  = rccbrp.AKOINB
+DO_PUBLISH_CLEAN_FILE||||1
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

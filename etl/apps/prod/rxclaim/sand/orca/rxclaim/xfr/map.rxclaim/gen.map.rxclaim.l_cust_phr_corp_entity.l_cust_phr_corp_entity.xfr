@@ -1,0 +1,63 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_cust_phr.phr_rel_typ,[passthrough],in0.phr_relationship_type]
+  [out0.l_cust_phr.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_cust_phr.cust_phr_corp_sk,[transform],]
+  [out0.l_cust_phr.phr_corp_entity,[passthrough],in0.phr_corporate_entity]
+  [out0.l_cust_phr.phr_afflt_nm,[passthrough],in0.phr_affiliation_name]
+  [out0.l_cust_phr.phr_afflt_cd,[passthrough],in0.phr_affiliation_code]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_cust_phr.phr_rel_typ,'l_cust_phr.phr_rel_typ',1,0]
+     [out0.l_cust_phr.src_env_sk,'l_cust_phr.src_env_sk',1,0]
+     [out0.l_cust_phr.cust_phr_corp_sk,'l_cust_phr.cust_phr_corp_sk',1,0]
+     [out0.l_cust_phr.phr_corp_entity,'l_cust_phr.phr_corp_entity',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_cust_phr.phr_afflt_nm,'l_cust_phr.phr_afflt_nm',1,0]
+     [out0.l_cust_phr.phr_afflt_cd,'l_cust_phr.phr_afflt_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.phr_affiliation_name,'phr_affiliation_name',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.phr_corporate_entity,'phr_corporate_entity',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.phr_affiliation_code,'phr_affiliation_code',1,1]
+     [in0.phr_relationship_type,'phr_relationship_type',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_cust_phr_cust_phr_corp_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) l_cust_phr_phr_afflt_cd = fail_if_error(in0.phr_affiliation_code);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_cust_phr_phr_rel_typ = fail_if_error(in0.phr_relationship_type);
+let string("\x01",charset="iso-8859-15", maximum_length=300) l_cust_phr_phr_corp_entity = fail_if_error(in0.phr_corporate_entity);
+let string("\x01",charset="iso-8859-15", maximum_length=300) l_cust_phr_phr_afflt_nm = fail_if_error(in0.phr_affiliation_name);
+let decimal("\x01",0) l_cust_phr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_cust_phr.cust_phr_corp_sk::l_cust_phr_cust_phr_corp_sk;
+  out0.l_cust_phr.phr_afflt_cd::l_cust_phr_phr_afflt_cd;
+  out0.l_cust_phr.phr_rel_typ::l_cust_phr_phr_rel_typ;
+  out0.l_cust_phr.phr_corp_entity::l_cust_phr_phr_corp_entity;
+  out0.l_cust_phr.phr_afflt_nm::l_cust_phr_phr_afflt_nm;
+  out0.l_cust_phr.src_env_sk::l_cust_phr_src_env_sk;
+  out0.*::in0.*;
+
+end;

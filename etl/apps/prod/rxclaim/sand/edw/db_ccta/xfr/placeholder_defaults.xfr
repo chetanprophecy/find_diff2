@@ -1,0 +1,67 @@
+type natural_key_t =
+$NATURAL_KEY_DML;
+
+type non_null_fields_t =
+$[ begin
+  let non_null_info_vec = for ( let info in TARGET_INFO_VEC ) :
+    if ( not info.nullable )
+      info;
+  result :: add_fields("record\nend", non_null_info_vec);
+end ];
+
+
+constant datetime("YYYY-MM-DD HH24:MI:SS") current_time = now1();
+
+constant int  min_date = (date(    "YYYY-MM-DD"))"1800-01-01";
+constant long min_dttm = (datetime("YYYY-MM-DD"))"1800-01-01";
+constant long max_dttm = (datetime("YYYY-MM-DD HH24:MI:SS"))"9999-12-31 23:59:59";
+
+
+let non_null_fields_t defaults = set_defaults();
+
+
+/* Set defaults for non-NULLable fields. */
+out :: set_defaults() =
+begin
+  out.(*, form == "string") :1: " ";
+  out.(*, form member [vector "decimal", "integer", "float"]) :2: 0;
+  out.(*, form == "date") :3: min_date;
+  out.(*, form == "datetime") :4: min_dttm;
+  // Make sure we did not miss something.
+  out.* :: force_error("Unexpected DML Form");
+end;
+
+
+/* Adds bookkeeping fields to the NK and fills in the missing fields with default values. */
+out :: reformat(in) =
+begin
+  let long eff_dttm = $[ if ( EFFECTIVE_DATE_FIELD_NAME == "" ) "" else
+    "if ( is_valid(in." + EFFECTIVE_DATE_FIELD_NAME + ') and (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + EFFECTIVE_DATE_FIELD_NAME + " >= min_dttm )\n" +
+    '    (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + EFFECTIVE_DATE_FIELD_NAME + "\n" +
+    "  else\n    " 
+    ]min_dttm;
+  let long end_dttm = $[ if ( END_DATE_FIELD_NAME == "" ) "" else
+    "if ( is_valid(in." + END_DATE_FIELD_NAME + ') and (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + END_DATE_FIELD_NAME + " <= max_dttm )\n" +
+    '    (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + END_DATE_FIELD_NAME + "\n" +
+    "  else\n    " 
+    ]max_dttm;
+  let natural_key_t nk = reinterpret(in.natural_key, 4);
+  let uid = "DMF-Ph-" + lookup("Shred Name by Shred ID", in.shred_id).shred_name;
+
+  $[ if ( EFFECTIVE_DATE_FIELD_NAME == "" ) "// There is no Effective Date." else "out." + EFFECTIVE_DATE_FIELD_NAME + " :: eff_dttm;" ]
+
+  $[ if ( END_DATE_FIELD_NAME == "" ) "// There is no End Date." else "out." + END_DATE_FIELD_NAME + " :: end_dttm;" ]
+
+  out.$SURROGATE_KEY_FIELD_NAME :: in.surrogate_key;
+  out.* :1: nk.*;
+  out.(*, starts_with(form, "date") and
+          name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :2: current_time;
+  out.(*, name == "proc_run_id") :3: (decimal(""))string_suffix($"RUN_ID", 12);  // Keep this <= 12 digits.
+  out.(*, name == "curr_rec_ind") :4: "P";  // Placeholder, Not Active
+  //out.(*, name == "db_ccta_record_placeholder_ind") :5: "Y";  // Placeholder
+  //out.(*, name == "db_ccta_src_sys_id") :6: in.dmf_src_sys_id;
+  out.(*, name == "db_ccta_create_user") :7: string_prefix(uid, 20);
+  out.(*, name == "db_ccta_update_user") :8: string_suffix(uid, 20);
+  out.* :: defaults.*;
+  out.newline :: "\n";
+end;

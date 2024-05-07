@@ -1,0 +1,916 @@
+package bre_unload_ace;
+include "/~$AB_HOME/connectors/BRE/bre_loader.dml";
+include "/~$PUB_DXF_XFR/bre_xml.xfr";
+
+BZruleset_t out :: xml2dml(dml_metadata_string s) =
+begin
+  let xml_element e = (xml_element)bre_xml.xml_parse(s);
+  let BZruleset_t ruleset = xml2BZruleset_t(e);
+  out::ruleset;
+end;
+
+BZint_t out :: str2BZint_t(dml_metadata_string value) = 
+begin
+  let BZint_t v = allocate();
+  v.contents = value;
+  out::v;
+end;
+
+BZstring_t out :: str2BZstring_t(dml_metadata_string value) = 
+begin
+  let BZstring_t v = allocate();
+  v.contents = value;
+  out::v;
+end;
+
+xml_attribute out :: getXmlAttribute(xml_id id) = 
+begin
+  out::bre_xml.xml_get_attribute(id);
+end;
+
+xml_element out :: getXmlElement(xml_id id) = 
+begin
+  out::bre_xml.xml_get_element(id);
+end;
+
+//Generated Code for LWR XML2DML
+BZvalidationcell_t out :: xml2BZvalidationcell_t(xml_element e) =
+begin
+  let BZvalidationcell_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "guid" : x.guid = value;
+      case "disposition" : x.disposition = value;
+      case "value" : x.value = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZvalidationcolumn_t out :: xml2BZvalidationcolumn_t(xml_element e) =
+begin
+  let BZvalidationcolumn_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "column_type" : x.column_type = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "function_name" : x.function_name = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZconst_t out :: xml2BZconst_t(xml_element e) =
+begin
+  let BZconst_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "genus" : x.genus = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "xxvalue" : x.xxvalue = vector_append(x.xxvalue,str2BZstring_t(value));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZvar_t[decimal(8)] out :: xml2BZvar_t(xml_element e, BZvar_t[decimal(8)] varblsIn) =
+begin
+  let BZvar_t[decimal(8)] varbls = varblsIn;
+  let int isAdded = 0;
+  let int parentVarIndex = 0;
+  let BZvar_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "vartype" : x.vartype = value;
+      case "is_exported" : x.is_exported = value;
+      case "varclass" : x.varclass = value;
+      case "max_accumulator_count" : x.max_accumulator_count = value;
+      case "validation_master_enable" : x.validation_master_enable = value;
+      case "hidden" : x.hidden = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "default_value" : x.default_value = value;
+      case "xxname" : x.xxname = vector_append(x.xxname,str2BZstring_t(value));
+      case "mapping_comment" : x.mapping_comment = value;
+      case "mapping_description" : x.mapping_description = value;
+      case "consts" : x.consts = vector_append(x.consts,xml2BZconst_t(eChild));
+      case "validations" : x.validations = vector_append(x.validations,xml2BZvalidationcell_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      case "recvarbls" : 
+        begin
+          if(not isAdded)
+          begin
+            varbls = vector_append(varbls,x);
+            parentVarIndex = length_of(varbls)-1;
+            isAdded = 1;
+          end;
+          varbls[parentVarIndex].num_subfields = varbls[parentVarIndex].num_subfields+1;
+          varbls = xml2BZvar_t(eChild,varbls); 
+        end;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  //handle recvarbls
+  if(not isAdded)
+  begin
+    varbls = vector_append(varbls,x);
+    isAdded = 1;
+  end;
+  out::varbls;
+end;
+
+BZdataset_t out :: xml2BZdataset_t(xml_element e) =
+begin
+  let BZdataset_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "extdataset_rpath_type" : x.extdataset_rpath_type = value;
+      case "from_database" : x.from_database = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "ab_catalog_name" : x.ab_catalog_name = value;
+      case "extdataset" : x.extdataset_rpath = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZvarset_t out :: xml2BZvarset_t(xml_element e) =
+begin
+  let BZvarset_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "datasets" : x.datasets = vector_append(x.datasets,xml2BZdataset_t(eChild));
+      case "varbls" : x.varbls = xml2BZvar_t(eChild,x.varbls);
+      case "validations" : x.validations = vector_append(x.validations,xml2BZvalidationcolumn_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZlookupkey_t out :: xml2BZlookupkey_t(xml_element e) =
+begin
+  let BZlookupkey_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "pretty_name" : x.pretty_name = value;
+      case "default_value" : x.default_value = value;
+      case "modifier" : x.modifier = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZlookup_t out :: xml2BZlookup_t(xml_element e) =
+begin
+  let BZlookup_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "fields" : x.fields = xml2BZvarset_t(eChild);
+      case "keys" : x.keys = vector_append(x.keys,xml2BZlookupkey_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZparam_t out :: xml2BZparam_t(xml_element e) =
+begin
+  let BZparam_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "paramtype" : x.paramtype = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "xxname" : x.xxname = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZconstmap_t out :: xml2BZconstmap_t(xml_element e) =
+begin
+  let BZconstmap_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "genus" : x.genus = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "mapped_value" : x.mapped_value = value;
+      case "foreign_bzname" : x.foreign_bzname = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZvarmap_t out :: xml2BZvarmap_t(xml_element e) =
+begin
+  let BZvarmap_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "vartype" : x.vartype = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "mapped_value" : x.mapped_value = value;
+      case "foreign_bzname" : x.foreign_bzname = value;
+      case "consts" : x.consts = vector_append(x.consts,xml2BZconstmap_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZfiletestinclookup_t out :: xml2BZfiletestinclookup_t(xml_element e) =
+begin
+  let BZfiletestinclookup_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "ab_catalog_name" : x.ab_catalog_name = value;
+      case "dataset_bzname" : x.dataset_bzname = value;
+      case "physical_location" : x.physical_location = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZfiletestincparam_t out :: xml2BZfiletestincparam_t(xml_element e) =
+begin
+  let BZfiletestincparam_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "param_type" : x.param_type = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "param_bzname" : x.param_bzname = value;
+      case "param_xxname" : x.param_xxname = value;
+      case "param_value" : x.param_value = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZfiletestconfig_t out :: xml2BZfiletestconfig_t(xml_element e) =
+begin
+  let BZfiletestconfig_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "start_script_type" : x.start_script_type = value;
+      case "output_validation_ruleset_rpath_type" : x.output_validation_ruleset_rpath_type = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "inputs_physical_location_type" : x.inputs_physical_location_type = vector_append(x.inputs_physical_location_type,str2BZint_t(value));
+      case "inputs_physical_location" : x.inputs_physical_location = vector_append(x.inputs_physical_location,str2BZstring_t(value));
+      case "inputs_where_clause" : x.inputs_where_clause = vector_append(x.inputs_where_clause,str2BZstring_t(value));
+      case "outputs_physical_location_type" : x.outputs_physical_location_type = vector_append(x.outputs_physical_location_type,str2BZint_t(value));
+      case "outputs_physical_location" : x.outputs_physical_location = vector_append(x.outputs_physical_location,str2BZstring_t(value));
+      case "lookups_physical_location_type" : x.lookups_physical_location_type = vector_append(x.lookups_physical_location_type,str2BZint_t(value));
+      case "lookups_physical_location" : x.lookups_physical_location = vector_append(x.lookups_physical_location,str2BZstring_t(value));
+      case "param_value" : x.param_value = vector_append(x.param_value,str2BZstring_t(value));
+      case "sandbox_location" : x.sandbox_location = value;
+      case "regression_physical_location_type" : x.regression_physical_location_type = vector_append(x.regression_physical_location_type,str2BZint_t(value));
+      case "regression_physical_location" : x.regression_physical_location = vector_append(x.regression_physical_location,str2BZstring_t(value));
+      case "value_for_now" : x.value_for_now = value;
+      case "start_script" : x.start_script = value;
+      case "output_validation_ruleset_rpath" : x.output_validation_ruleset_rpath = value;
+      case "inclookups" : x.inclookups = vector_append(x.inclookups,xml2BZfiletestinclookup_t(eChild));
+      case "incparams" : x.incparams = vector_append(x.incparams,xml2BZfiletestincparam_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZconfig_t out :: xml2BZconfig_t(xml_element e) =
+begin
+  let BZconfig_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "target_xfr_rpath_type" : x.target_xfr_rpath_type = value;
+      case "target_component_rpath_type" : x.target_component_rpath_type = value;
+      case "log_inputs" : x.log_inputs = value;
+      case "log_outputs" : x.log_outputs = value;
+      case "log_lookups" : x.log_lookups = value;
+      case "log_outputs_from_included_rulesets" : x.log_outputs_from_included_rulesets = value;
+      case "log_parameters" : x.log_parameters = value;
+      case "log_rule_case_firings" : x.log_rule_case_firings = value;
+      case "log_cell_evaluations" : x.log_cell_evaluations = value;
+      case "log_when" : x.log_when = value;
+      case "generate_star_rule" : x.generate_star_rule = value;
+      case "xfrgen_optimization_level" : x.xfrgen_optimization_level = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "inputs_dataset_bzname" : x.inputs_dataset_bzname = vector_append(x.inputs_dataset_bzname,str2BZstring_t(value));
+      case "outputs_dataset_bzname" : x.outputs_dataset_bzname = vector_append(x.outputs_dataset_bzname,str2BZstring_t(value));
+      case "lookups_dataset_bzname" : x.lookups_dataset_bzname = vector_append(x.lookups_dataset_bzname,str2BZstring_t(value));
+      case "incruleset_config_name" : x.incruleset_config_name = vector_append(x.incruleset_config_name,str2BZstring_t(value));
+      case "target_xfr_rpath" : x.target_xfr_rpath = value;
+      case "target_component_rpath" : x.target_component_rpath = value;
+      case "coopsys_version" : x.coopsys_version = value;
+      case "log_when_expression" : x.log_when_expression = value;
+      case "function_name" : x.function_name = value;
+      case "package_name" : x.package_name = value;
+      case "filetestconfigs" : x.filetestconfigs = vector_append(x.filetestconfigs,xml2BZfiletestconfig_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZkey_t out :: xml2BZkey_t(xml_element e) =
+begin
+  let BZkey_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "order" : x.order = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZincruleset_t out :: xml2BZincruleset_t(xml_element e) =
+begin
+  let BZincruleset_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "inmaps" : x.inmaps = vector_append(x.inmaps,xml2BZvarmap_t(eChild));
+      case "outmaps" : x.outmaps = vector_append(x.outmaps,xml2BZvarmap_t(eChild));
+      case "ruleset" : x.ruleset_rpath = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZcell_t out :: xml2BZcell_t(xml_element e) =
+begin
+  let BZcell_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "celltype" : x.celltype = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "contents" : x.contents = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZrow_t out :: xml2BZrow_t(xml_element e) =
+begin
+  let BZrow_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "guid" : x.guid = value;
+      case "cells" : x.cells = vector_append(x.cells,xml2BZcell_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZcolumn_t out :: xml2BZcolumn_t(xml_element e) =
+begin
+  let BZcolumn_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "coltype" : x.coltype = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "heading" : x.heading = value;
+      case "expression" : x.expression = value;
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZtable_t out :: xml2BZtable_t(xml_element e) =
+begin
+  let BZtable_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "columns" : x.columns = vector_append(x.columns,xml2BZcolumn_t(eChild));
+      case "rows" : x.rows = vector_append(x.rows,xml2BZrow_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZrule_t out :: xml2BZrule_t(xml_element e) =
+begin
+  let BZrule_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "schema_version" : x.schema_version = value;
+      case "rule_type" : x.rule_type = value;
+      case "input_error_handling" : x.input_error_handling = value;
+      case "output_error_handling" : x.output_error_handling = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "guid" : x.guid = value;
+      case "pretty_name" : x.pretty_name = value;
+      case "outvars" : x.outvars = vector_append(x.outvars,str2BZstring_t(value));
+      case "exprs" : x.exprs = xml2BZtable_t(eChild);
+      case "tests" : x.tests = xml2BZtable_t(eChild);
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZcomponentinfo_t out :: xml2BZcomponentinfo_t(xml_element e) =
+begin
+  let BZcomponentinfo_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "component_type" : x.component_type = value;
+      case "in_memory_sort" : x.in_memory_sort = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "join_input_required" : x.join_input_required = vector_append(x.join_input_required,str2BZint_t(value));
+      case "dedup" : x.dedup = vector_append(x.dedup,str2BZint_t(value));
+      case "select_expression" : x.select_expression = vector_append(x.select_expression,str2BZstring_t(value));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZunittestvalues_t out :: xml2BZunittestvalues_t(xml_element e) =
+begin
+  let BZunittestvalues_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "value" : x.value = vector_append(x.value,str2BZstring_t(value));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZunittestcase_t out :: xml2BZunittestcase_t(xml_element e) =
+begin
+  let BZunittestcase_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "locked" : x.locked = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "value_for_now" : x.value_for_now = value;
+      case "params" : x.params = vector_append(x.params,str2BZstring_t(value));
+      case "inputs" : x.inputs = vector_append(x.inputs,xml2BZunittestvalues_t(eChild));
+      case "lookups" : x.lookups = vector_append(x.lookups,xml2BZunittestvalues_t(eChild));
+      case "includes" : x.includes = vector_append(x.includes,xml2BZunittestvalues_t(eChild));
+      case "expectedvalues" : x.expectedvalues = vector_append(x.expectedvalues,xml2BZunittestvalues_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZunittest_t out :: xml2BZunittest_t(xml_element e) =
+begin
+  let BZunittest_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "schema_version" : x.schema_version = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "bzname" : x.bzname = value;
+      case "cases" : x.cases = vector_append(x.cases,xml2BZunittestcase_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+BZruleset_t out :: xml2BZruleset_t(xml_element e) =
+begin
+  let BZruleset_t x = allocate();
+  for(let xml_id id in e.attributes)
+  begin
+    let xml_attribute aChild = getXmlAttribute(id);
+    let dml_metadata_string name = aChild.name;
+    let dml_metadata_string value = aChild.value;
+    switch(name)
+      case "schema_version" : x.schema_version = value;
+      case "compatibility_level" : x.compatibility_level = value;
+      case "match_business_name" : x.match_business_name = value;
+      case "target_schema_version" : x.target_schema_version = value;
+      case "rpath_type" : x.rpath_type = value;
+      default: force_error("ERROR: unrecognized XML attribute! name="+name+" value="+value);
+    end;
+  end;
+  for(let xml_id id in e.children)
+  begin
+    let xml_element eChild = getXmlElement(id);
+    let dml_metadata_string name = eChild.element_type;
+    let dml_metadata_string value = eChild.cdata;
+    switch(name)
+      case "guid" : x.guid = value;
+      case "pretty_name" : x.pretty_name = value;
+      case "usexfr_rpath_type" : x.usexfr_rpath_type = vector_append(x.usexfr_rpath_type,str2BZint_t(value));
+      case "project" : x.project = value;
+      case "rpath" : x.rpath = value;
+      case "componentinfo" : x.componentinfo = xml2BZcomponentinfo_t(eChild);
+      case "inputs" : x.inputs = vector_append(x.inputs,xml2BZvarset_t(eChild));
+      case "outputs" : x.outputs = vector_append(x.outputs,xml2BZvarset_t(eChild));
+      case "includes" : x.includes = vector_append(x.includes,xml2BZincruleset_t(eChild));
+      case "lookups" : x.lookups = vector_append(x.lookups,xml2BZlookup_t(eChild));
+      case "params" : x.params = vector_append(x.params,xml2BZparam_t(eChild));
+      case "usexfrs" : x.usexfr_rpaths = vector_append(x.usexfr_rpaths,str2BZstring_t(value));
+      case "configs" : x.configs = vector_append(x.configs,xml2BZconfig_t(eChild));
+      case "keys" : x.keys = vector_append(x.keys,xml2BZkey_t(eChild));
+      case "unittests" : x.unittests = vector_append(x.unittests,xml2BZunittest_t(eChild));
+      case "rules" : x.rules = vector_append(x.rules,xml2BZrule_t(eChild));
+      case "description" : x.description = value;
+      case "comment" : x.comment = value;
+      default: force_error("ERROR: unrecognized XML element! name="+name+" value="+value);
+    end;
+  end;
+  out::x;
+end;
+
+//end of generated code for LWR XML2DML

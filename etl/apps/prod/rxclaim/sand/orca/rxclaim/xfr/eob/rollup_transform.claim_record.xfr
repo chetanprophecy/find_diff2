@@ -1,0 +1,280 @@
+/*Do computation*/
+out::rollup(in)=
+begin
+/*let v_total_drug_cost     = first_defined(in.mbr_rec.fmpd_phr_ingred_cost_paid,0) +
+                        first_defined(in.mbr_rec.fmpd_phr_sales_tax_paid,0)   +
+                        first_defined(in.mbr_rec.fmpd_phr_dispensing_fee,0)   +
+                        first_defined(in.mbr_rec.fmpd_phr_vacc_adm_fee_amt,0);*/
+let v_total_drug_cost     =                        in.mbr_rec.fmpd_drg_spnd_amt;
+
+let lkp_d_plan_drug_sts_rec         = lookup("d_plan_drug_status_lkp",in.mbr_rec.fclm_pln_drg_stat_sk);                               
+let string("") drug_status          = first_defined( lkp_d_plan_drug_sts_rec.pln_drg_stat_cd ,"");
+
+let lkp_d_contract_pbp = lookup("d_contract_pbp_lkp",in.mbr_rec.fmpd_contract_pbp_sk);
+
+let lkp_bonus_drug_list_rec = if(string_lrtrim(in.mbr_rec.dmem_carrier_id) member [vector "MPDOVA","PDPIND"] )//Group Retiree Logic
+                                
+                               first_defined( lookup("LKP : Bonus Drug List",in.mbr_rec.dmem_carrier_id,in.mbr_rec.dmem_account_id, in.mbr_rec.dmem_employer_group_id, drug_status ),
+                                                lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status))
+                                else
+                                            lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status) ;
+
+let v_bonus_drug_flag              = if( is_defined(lkp_bonus_drug_list_rec)) "Y" else "N"; //used for CD01 
+
+let v_reporting_month               = if(is_defined(in.mbr_rec.fmpd_sbm_dt) and (date("YYYYMM"))in.mbr_rec.fmpd_sbm_dt == (date("YYYYMM")) $'RUN_MONTH' )  1 else 0;
+
+/*let retail_price_ucw = (decimal(""))if(first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0) 
+                                                                             < (first_defined(in.mbr_rec.fmpd_clt_due_amt,0) +  
+                                                                             first_defined(in.mbr_rec.fca_sav_acct_amt,0))) 
+                                                                                "0" 
+                                                                             else 
+                                                                                first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0);*/
+
+let claim_amount_paid_by_you = if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W" ])
+                                
+                                (
+                                if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,2,6] and string_lrtrim(in.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"] 
+                                )
+                                (first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0) - first_defined (in.rctrpp_rec.trp_other_payer_balance,0))
+                                else 
+                                first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0));
+
+
+/*let retail_price_ucw = (decimal(""))if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W",  "Y"]) first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0);                                                                               
+
+let retail_price_ucw_bonus = (decimal(""))if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W", "X", "Y","Z"]) first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0); */      
+
+let retail_price_ucw = (decimal(""))if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and 
+                                       in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W",  "Y"] and decimal_round_down(first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0),0) 
+                                                                             < (decimal_round_down(first_defined(in.mbr_rec.fmpd_clt_due_amt,0),0)/* +  
+                                                                             /*decimal_round_down(first_defined(in.mbr_rec.fca_sav_acct_amt,0),0)*/)) 
+                                                                             first_defined(in.mbr_rec.fca_sav_acct_amt,0)
+                                                                             else
+                                                                             first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0);                                                                               
+
+let retail_price_ucw_bonus = (decimal(""))if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W", "X", "Y","Z"] and decimal_round_down(first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0),0) 
+                                                                             < (decimal_round_down(first_defined(in.mbr_rec.fmpd_clt_due_amt,0),0)/* +  
+                                                                             decimal_round_down(first_defined(in.mbr_rec.fca_sav_acct_amt,0),0)*/) ) 
+                                                                             first_defined(in.mbr_rec.fca_sav_acct_amt,0)
+                                                                             else first_defined(in.mbr_rec.fclm_sbm_usual_customary_amt,0);
+
+let string(1) group_retiree = if(is_defined(lkp_d_contract_pbp) and starts_with(string_lrtrim(lkp_d_contract_pbp.pbp_id),"8")) "G"
+                                else "-";
+let decimal("") rctrpp_trp_other_payer_balance_claim_only = if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,6])
+                                                first_defined (in.rctrpp_rec.trp_other_payer_balance,0)                                         
+                                     else 
+                                        0;
+  let decimal("") rctrpp_trp_other_payer_amount_claim_only = if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,6 ] )
+                                                first_defined (in.rctrpp_rec.trp_other_payer_paid_amt,0)                                         
+                                               else 
+                                               0; 
+
+let decimal("") v_sum_clt_due_amt = if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "X", "Y", "Z"]) 0 else in.mbr_rec.fmpd_clt_due_amt;
+/*let decimal("") v_sum_clt_due_amt = if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C"] and group_retiree == "G") in.mbr_rec.fmpd_clt_due_amt 
+                                        else if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"]) 0 else in.mbr_rec.fmpd_clt_due_amt;*/
+/*let decimal("") v_drg_spnd_pln_amt_egwp = if( group_retiree=='G')
+                                         first_defined(in.mbr_rec.fmpd_egwp_ded_drg_spnd_amt,0) +
+                                         first_defined(in.mbr_rec.fmpd_egwp_cg_drg_spnd_amt,0) +
+                                         first_defined(in.mbr_rec.fmpd_egwp_icl_drg_spnd_amt,0) +
+                                         first_defined(in.mbr_rec.fmpd_egwp_cat_drg_spnd_amt,0)
+                                         else 0;*/
+
+
+
+
+let decimal("") v_plan_paid_amt = first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0) -( 
+                                  first_defined(in.mbr_rec.fmpd_lics_amt,0) +
+                                  first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0) +
+                                  math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                  first_defined(in.mbr_rec.fmpd_phr_oth_pyr_recog_amt,0));
+
+/*let decimal("") v_plan_paid_amt_egwp = first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0) - (
+                                  first_defined(in.mbr_rec.fmpd_lics_amt,0) +
+                                  first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0) +
+                                  math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                  first_defined(in.mbr_rec.fmpd_phr_oth_pyr_recog_amt,0));*/
+
+/*let decimal("") v_plan_paid = v_plan_paid_amt;
+let decimal("") v_plan_paid_egwp = v_plan_paid_amt_egwp;*/
+
+/*
+let decimal("") v_plan_paid = first_defined(in.mbr_rec.fmpd_amt_twd_plan_ded_amt,0) +
+                                   first_defined(in.mbr_rec.fmpd_amt_twd_plan_gap_amt,0) +
+                                   first_defined(in.mbr_rec.fmpd_amt_twd_plan_cat_amt,0) +
+                                   first_defined(in.mbr_rec.fmpd_plan_pay_init_cov_lvl_amt,0) + 
+                                   v_sum_clt_due_amt;
+                                   
+
+let decimal("") v_plan_paid_egwp    =   //first_defined(in.mbr_rec.fmpd_egwp_amt_twd_plan_ded_amt,0)+
+
+                                           first_defined(in.mbr_rec.fmpd_egwp_amt_twd_plan_gap_amt,0) +
+
+                                           first_defined(in.mbr_rec.fmpd_egwp_amt_twd_plan_cat_amt,0) +
+
+                                           first_defined(in.mbr_rec.fmpd_egwp_plan_pay_icl_amt,0) + v_sum_clt_due_amt ;      */    
+                                           
+
+                                        
+   
+  //Variables mbr_monthtodate_amount_paid_by_you  
+out.claim_monthtodate_amount_paid_by_you  ::   (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "Y"])
+                                                claim_amount_paid_by_you else 0)
+                                                 ;//used for CD40
+                                                     
+  // Variable SUM_MON_OTHERS_PAID_AMT
+out.claim_monthtodate_amount_paid_by_others ::    (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N")
+                                        first_defined(in.mbr_rec.fmpd_lics_amt,0) + 
+                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0) + 
+                                        rctrpp_trp_other_payer_balance_claim_only
+                                        else 0
+                                        );                                                     //used for CD41
+                                                      
+ out.claim_monthtodate_plan_paid ::    (decimal(""))sum( 
+                                        if(v_reporting_month and v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W",  "Y"] )
+                                               //(if(group_retiree == "G")v_plan_paid_egwp else v_plan_paid)//math_max(v_plan_paid,v_plan_paid_egwp)
+                                        
+                                        v_plan_paid_amt 
+                                        else
+                                        0
+                                   ) ;                                                     //used for CD42
+                                                      
+                                                      
+  //Variable sum_mon_tot_drug_cost    
+  out.claim_monthtodate_total_drug_cost  :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W",  "Y"])
+                                                                        in.mbr_rec.fmpd_drg_spnd_amt
+                                                                         else 0
+                                                                         );//used for CD43
+                                                       
+  //Variable sum_mon_ret_price       
+  out.claim_monthtodate_retail_price :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W",  "Y"])retail_price_ucw else 0);//used for CD44
+                                                        
+ 
+  
+ out.claim_yeartodate_amount_paid_by_you :: (decimal(""))sum(if(v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W",  "Y"])
+                                                        claim_amount_paid_by_you else 0);//used for CD45
+                                                        
+  
+  out.claim_yeartodate_amount_paid_by_others :: (decimal(""))sum(if(v_bonus_drug_flag == "N" )
+                                        first_defined(in.mbr_rec.fmpd_lics_amt,0) + 
+                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0) + 
+                                        rctrpp_trp_other_payer_balance_claim_only
+                                              else 0);                                                       //used for CD46
+
+  out.claim_yeartodate_plan_paid ::     (decimal(""))sum( 
+                                        if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W",  "Y"] and v_bonus_drug_flag == "N")
+                                        //(if(group_retiree == "G")v_plan_paid_egwp else v_plan_paid)//math_max(v_plan_paid,v_plan_paid_egwp)
+                                        
+                                        v_plan_paid_amt
+                                        else 0
+                                   ) ;//used for CD47
+
+
+// Variable sum_yr_tot_drug_cost                
+ out.claim_yeartodate_total_drug_cost :: (decimal(""))sum(if(v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W",  "Y"])in.mbr_rec.fmpd_drg_spnd_amt else 0);                                                      //used for CD48
+
+ // Variable sum_yr_ret_price                    
+ out.claim_yeartodate_retail_price ::        (decimal(""))sum(if(v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W",  "Y"])retail_price_ucw else 0);                                                       //used for CD49
+
+ //Variable sum_mon_cob_payer_amt        
+ out.claim_monthtodate_cob_payer_amount :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N")first_defined(in.rctrpp_rec.trp_update_amount,0) else 0); //used for CD50
+                                                   
+
+
+//Variable sum_yr_cob_payer_amt                
+out.claim_yeartodate_cob_payer_amount ::(decimal(""))sum(if(v_bonus_drug_flag == "N")first_defined(in.rctrpp_rec.trp_update_amount,0) else 0);//used for CD51
+  
+
+
+out.claim_monthtodate_others_paid_that_counted_towards_troop ::  (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "Y"])(first_defined(in.mbr_rec.fmpd_lics_amt,0))                     + 
+                                                 first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0)   +  first_defined(rctrpp_trp_other_payer_balance_claim_only,0) else 0) ; //Used for CD52 */                                                                                            
+
+
+
+
+out.claim_yeartodate_others_paid_that_counted_towards_troop :: (decimal(""))sum(if(v_bonus_drug_flag == "N" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "Y"]) (first_defined(in.mbr_rec.fmpd_lics_amt,0)) + 
+                                                          first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0) + first_defined(rctrpp_trp_other_payer_balance_claim_only,0) else 0) ;     //Used for CD53
+
+  //Variables mbr_monthtodate_amount_paid_by_you  
+out.bonus_monthtodate_amount_paid_by_you  ::   (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0) else 0)
+                                                  ;//used for BD40
+                                                     
+  // Variable SUM_MON_OTHERS_PAID_AMT
+out.bonus_monthtodate_amount_paid_by_others ::    (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")
+                                        first_defined(in.mbr_rec.fmpd_lics_amt,0) + 
+                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0) + 
+                                        first_defined (in.rctrpp_rec.trp_other_payer_balance,0)
+                                        else 0
+                                        );                                                      //used for BD41
+                                                      
+ out.bonus_monthtodate_plan_paid ::    (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")
+                                        v_plan_paid_amt//math_max(v_plan_paid,v_plan_paid_egwp)
+                                   else 0
+                                   ) ;                                                     //used for BD42
+                                                      
+                                                      
+  //Variable sum_mon_tot_drug_cost    
+  out.bonus_monthtodate_total_drug_cost  :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")
+                                                                        v_total_drug_cost
+                                                                         else 0
+                                                                         );//used for BD43
+                                                       
+  //Variable sum_mon_ret_price       
+  out.bonus_monthtodate_retail_price :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")retail_price_ucw_bonus else 0);//used for BD44
+                                                        
+ 
+  
+ out.bonus_yeartodate_amount_paid_by_you :: (decimal(""))sum(if(v_bonus_drug_flag == "Y")first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0) else 0);//used for BD45
+//out.bonus_yeartodate_amount_paid_by_you :: (decimal(""))sum(if(v_bonus_drug_flag == "Y")first_defined(claim_amount_paid_by_you , 0) else 0);//used for BD45
+                                                        
+  
+  out.bonus_yeartodate_amount_paid_by_others :: (decimal(""))sum(if(v_bonus_drug_flag == "Y")
+                                        first_defined(in.mbr_rec.fmpd_lics_amt,0) + 
+                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0) + 
+                                        first_defined (in.rctrpp_rec.trp_other_payer_balance,0)
+                                               else 0 );                                                       //used for BD46
+
+  out.bonus_yeartodate_plan_paid ::  (decimal(""))sum(if(v_bonus_drug_flag == "Y")
+                                                       // (if(group_retiree == "G")v_plan_paid_egwp else v_plan_paid)//math_max(v_plan_paid,v_plan_paid_egwp)
+                                                       v_plan_paid_amt
+                                                                else 0) ;//used for BD47
+
+
+// Variable sum_yr_tot_drug_cost                
+ out.bonus_yeartodate_total_drug_cost :: (decimal(""))sum(if(v_bonus_drug_flag == "Y")v_total_drug_cost else 0);                                                      //used for BD48
+
+ // Variable sum_yr_ret_price                    
+ out.bonus_yeartodate_retail_price ::        (decimal(""))sum(if(v_bonus_drug_flag == "Y")retail_price_ucw_bonus else 0);                                                       //used for BD49
+
+ //Variable sum_mon_cob_payer_amt        
+ out.bonus_monthtodate_cob_payer_amount :: (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "Y")first_defined(in.rctrpp_rec.trp_update_amount,0) else 0); //used for BD50
+                                                   
+
+
+//Variable sum_yr_cob_payer_amt                
+out.bonus_yeartodate_cob_payer_amount ::(decimal(""))sum(if(v_bonus_drug_flag == "Y")first_defined(in.rctrpp_rec.trp_update_amount,0) else 0);//used for BD51
+  
+
+
+out.bonus_monthtodate_others_paid_that_counted_towards_troop ::  (decimal(""))sum(if(v_reporting_month and v_bonus_drug_flag == "N"and is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W", "X", "Y","Z"])
+                                                                                        (first_defined(in.mbr_rec.fmpd_lics_amt,0))                     + 
+                                                                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0)  + 
+                                                                                        first_defined (in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                                                 else 0); //Used for BD52 */                                                                                            
+
+
+
+
+out.bonus_yeartodate_others_paid_that_counted_towards_troop :: (decimal("")) sum(if(v_bonus_drug_flag == "N" and is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G",  "O", "P", "W", "X", "Y","Z"])
+                                                                                        (first_defined(in.mbr_rec.fmpd_lics_amt,0))                     + 
+                                                                                        first_defined((math_abs(in.mbr_rec.fmpd_gap_brnd_disc_amt)),0)  + 
+                                                                                        first_defined (in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                                                 else 0);     //Used for BD53
+
+
+out.mbr_sk :: in.mbr_rec.dmem_mbr_sk;
+out.carrier_id :: in.mbr_rec.dmem_carrier_id;
+out.mbr_id :: in.mbr_rec.dmem_mbr_id;
+out.claim_nbr :: in.mbr_rec.fmpd_claim_nbr;
+out.claim_seq_nbr :: in.mbr_rec.fmpd_claim_seq_nbr;
+
+end;

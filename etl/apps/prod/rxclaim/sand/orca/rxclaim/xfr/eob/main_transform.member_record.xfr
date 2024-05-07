@@ -1,0 +1,784 @@
+let string(4) v_plan_year           = string_prefix($'RUN_MONTH',4);     //Used to calculate lkp_letr_rec
+let default_threshold = lookup("threshold_default", "ALL", "ALL", "ALL", v_plan_year ) ;
+out:: fix_decimal(in) inline = 
+begin
+out     :1: (decimal(""))re_replace(re_replace( in ,"^\\.","0." ),"^-\\.","-0.");
+out     :: "0";
+end 
+
+out :: rollup(in) =
+begin
+
+
+let v_reporting_month               = if( is_defined(in.mbr_rec.fmpd_sbm_dt) && (date("YYYYMM"))in.mbr_rec.fmpd_sbm_dt == (date("YYYYMM"))$'RUN_MONTH' )  1 else 0;
+let lkp_d_plan_drug_sts_rec         = lookup("d_plan_drug_status_lkp",in.mbr_rec.fclm_pln_drg_stat_sk);
+let string("") drug_status          = first_defined( lkp_d_plan_drug_sts_rec.pln_drg_stat_cd ,"");
+
+let lkp_d_contract_pbp_rec          = lookup("d_contract_pbp_lkp", in.v_contract_pbp_sk);
+let lkp_d_contract_pbp_madp_rec     = lookup("d_contract_pbp_extn_madp_lkp", in.mbr_rec.dmem_carrier_id , in.account_id ,in.group_id);
+                                            
+let lkp_bonus_drug_list_rec = if(string_lrtrim(in.mbr_rec.dmem_carrier_id) member [vector "MPDOVA","PDPIND"] )//Group Retiree Logic
+                               first_defined( lookup("LKP : Bonus Drug List",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id, drug_status ),
+                                              lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"      ,"*ALL" ,drug_status))
+                                else
+                                              lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"      ,"*ALL" ,drug_status);
+
+let v_bonus_drug_flag              = if(! is_null(lkp_bonus_drug_list_rec)) "Y" else "N"; //used for CD01
+
+let lkp_l_eob_profile_rec          = lookup("l_eob_profile_lkp",in.mbr_rec.dmem_carrier_id , in.account_id ,in.group_id);
+
+let lkp_l_benefit_phase_begin_rec  = lookup("l_benefit_phase",in.mbr_rec.fmpd_begin_benefit_phase_sk);
+
+let lkp_l_benefit_phase_end_rec    = lookup("l_benefit_phase",in.mbr_rec.fmpd_end_benefit_phase_sk);
+
+let lkp_l_edss_acess_list_rec      = first_defined(lookup("LKP : EDSS Acess List",in.mbr_rec.dmem_carrier_id,in.account_id),
+                                                   lookup("LKP : EDSS Acess List",in.mbr_rec.dmem_carrier_id,""));
+
+let string("") v_md_mmd_copay_category               = if(string_lrtrim(in.v_md_mmd_copay_category)=='-') "0" else in.v_md_mmd_copay_category ;            //Used to calculate vmd17
+let string("") v_md_member_subsidy_level_indicator   = 
+if( in.is_only_madp_rec=='1' and  is_defined(lkp_d_contract_pbp_madp_rec.pbp_id) && starts_with(lkp_d_contract_pbp_madp_rec.pbp_id,"8"))
+string_concat("G",v_md_mmd_copay_category)
+else if( is_defined(lkp_d_contract_pbp_rec.pbp_id) && string_substring(lkp_d_contract_pbp_rec.pbp_id,1,1)=="8")
+                                                string_concat("G",v_md_mmd_copay_category)
+                                            else       v_md_mmd_copay_category;                                //USED for #MD,17,71
+                                           
+                                       
+let lkp_letr_rec      = first_defined( 
+                                      lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,v_md_member_subsidy_level_indicator,v_plan_year,"Y","S"),
+                                      lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,v_md_member_subsidy_level_indicator,v_plan_year,"N","S"),
+                                      lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,"0",v_plan_year,"Y","S"),
+                                      lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,"0",v_plan_year,"N","S"),
+                                      lookup("l_eob_threshold_rule_lkp",NULL,NULL,NULL,v_md_member_subsidy_level_indicator,v_plan_year,"N","S")
+                                      );
+
+
+let lkp_letr_rec_trp             = first_defined(
+                                    lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,v_md_member_subsidy_level_indicator,v_plan_year,"Y","T"),
+                                    lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,v_md_member_subsidy_level_indicator,v_plan_year,"N","T"),
+                                    lookup("l_eob_threshold_rule_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,'-',v_plan_year,"D","T"),
+                                    lookup("l_eob_threshold_rule_lkp",NULL,NULL,NULL,v_md_member_subsidy_level_indicator,v_plan_year,"N","T"));
+
+let lkp_letr_rec_cag             = lookup("l_eob_threshold_rule_cag_lkp",in.mbr_rec.dmem_carrier_id,in.account_id ,in.group_id,v_plan_year,"N");
+
+let string(1) v_cag_flag         = if( is_defined(lkp_letr_rec_cag.carrier_id)        and
+                                        is_defined(lkp_letr_rec_cag.account_id)       and
+                                        is_defined(lkp_letr_rec_cag.group_id))
+                                         "Y"
+                                    else
+                                         "N";                                                    //USED for #MD17
+
+let decimal(1) default_flg       = if (all_null(lkp_letr_rec.carrier_id,lkp_letr_rec.account_id,lkp_letr_rec.group_id)) 1 else 0;
+let decimal("")         lics4_ded_thresh                = if(is_defined(lkp_letr_rec) && (v_md_mmd_copay_category == "4" or v_md_member_subsidy_level_indicator == "G4"))lkp_letr_rec.plan_deductible_amt else default_threshold.lics4_ded_thresh ;
+let decimal("")         standard_ded_thresh             = if( is_defined(lkp_letr_rec) && (v_md_mmd_copay_category member [vector "0","5"] ))lkp_letr_rec.plan_deductible_amt 
+                                                          else if(default_flg == 0 && v_md_mmd_copay_category member [vector "1","2","3"] ) lkp_letr_rec.plan_deductible_amt else default_threshold.standard_ded_thresh;
+let decimal("")         drug_spend_init_cvg_thresh      = if(is_defined(lkp_letr_rec) ) lkp_letr_rec.initial_covrg_amt else default_threshold.drug_spend_init_cvg_thresh;
+let decimal("")         troop_init_cvg_thresh           = if( is_defined(lkp_letr_rec_trp) ) lkp_letr_rec_trp.initial_covrg_amt else default_threshold.troop_init_cvg_thresh;
+let decimal("")         cvg_gap_thresh                  = if(is_defined(lkp_letr_rec)) lkp_letr_rec.covrg_gap_amt else default_threshold.cvg_gap_thresh;                                                
+                                        
+let decimal("") v_rctrpp_trp_other_payer_balance        = if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1])
+                                                             first_defined (in.rctrpp_rec.trp_other_payer_balance,0)						
+                                                          else 
+                                                             0;
+                                       
+let string("") plan_has_ded_flag      = in.plan_has_ded_flag; 
+
+let decimal("") v_total_drug_cost     =  (first_defined(in.mbr_rec.fmpd_phr_ingred_cost_paid,0) +
+                                                 first_defined(in.mbr_rec.fmpd_phr_sales_tax_paid,0)   +
+                                                 first_defined(in.mbr_rec.fmpd_phr_dispensing_fee,0)   +
+                                                 first_defined(in.mbr_rec.fmpd_phr_vacc_adm_fee_amt,0)) ; 
+
+
+let decimal("|") v_drg_spnd_amt_ytd   =  in.v_drg_spnd_amt_ytd;
+
+let decimal("|") v_drg_spnd_amt_mtd   = (sum(if(v_reporting_month == 1 and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"])
+                                                                        first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0)
+                                                                        else 0 ) )
+                                           +      first_defined(in.madp_rec.madp_mtd_mad_adjtmnt_amt_s ,0) ; //MD27
+
+let decimal("|") v_troop_ytd        =  sum (if( first_defined(in.mbr_rec.fmpd_drg_cov_stat_cd,"") member [vector "C","G","W"] and  v_bonus_drug_flag=="N" )
+                                                 first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0)          + 
+                                                 first_defined(in.mbr_rec.fmpd_lics_amt,0)                     + 
+                                                 math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0)) 
+                                            else 0) 
+                                        +  first_defined(in.madp_rec.madp_mad_adjtmnt_amt_t,0) 
+                                        +  first_defined(in.madp_rec.yr_mad_adjtmnt_amt_t,0)  ;
+                                        
+let decimal("|") v_troop_mtd        = sum ( if(first_defined(in.mbr_rec.fmpd_drg_cov_stat_cd,"") member [vector "C","G","W"] and v_reporting_month)
+                                               first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0)          + 
+                                               first_defined(in.mbr_rec.fmpd_lics_amt,0)                     + 
+                                               math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))  +
+                                               v_rctrpp_trp_other_payer_balance
+                                               else 0)                                                       + 
+                                             first_defined(in.madp_rec.madp_mtd_mad_adjtmnt_amt_t,0);                                   //MD29
+
+
+let decimal("") vmd20                      = first_defined(lkp_letr_rec_trp.initial_covrg_amt,lkp_letr_rec.initial_covrg_amt);          //MD20
+
+let decimal("") vmd21                      = math_min(sum (if( v_bonus_drug_flag=="N" &&  first_defined(in.mbr_rec.fmpd_drg_cov_stat_cd,"") member [vector "C", "E", "G", "N", "O", "P", "W", "Y"] ) 
+                                                               first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0)
+                                                           else 0) 
+                                                           +  first_defined(in.madp_rec.madp_mad_adjtmnt_amt_s,0) 
+                                                           +  first_defined(in.madp_rec.yr_mad_adjtmnt_amt_s,0)
+                                                        ,drug_spend_init_cvg_thresh ); 
+
+let decimal("") vmd17                     = if (lkp_l_eob_profile_rec.split_tier_ind > 0 and  (v_md_mmd_copay_category member [vector "4", "G4"]))
+                                             lics4_ded_thresh
+                                            else if (lkp_l_eob_profile_rec.split_tier_ind > 0)
+                                             lkp_l_eob_profile_rec.split_tier_annual_amt
+                                             else if (v_md_mmd_copay_category == "4" and v_cag_flag =="Y")
+                                             lkp_letr_rec.plan_deductible_amt
+                                            else if (v_md_member_subsidy_level_indicator == "G4")
+                                             lics4_ded_thresh
+                                            else if (v_md_mmd_copay_category member [vector "0","5","F"] and v_cag_flag == "Y")
+                                             standard_ded_thresh
+                                            else
+                                                "0"; 
+
+let decimal("") vmd18                   = if(plan_has_ded_flag == "Y")
+                                             (if(v_md_mmd_copay_category == "4" or v_md_member_subsidy_level_indicator =="G4")
+                                                math_min(v_drg_spnd_amt_ytd,lics4_ded_thresh)
+                                              else if((v_drg_spnd_amt_ytd > (decimal("")) lkp_l_eob_profile_rec.split_tier_annual_amt) 
+                                                       and (lkp_l_eob_profile_rec.split_tier_annual_amt > 0 && (decimal("")) lkp_l_eob_profile_rec.split_tier_ind > 0))
+                                                (decimal(""))lkp_l_eob_profile_rec.split_tier_annual_amt
+                                              else 
+                                                       math_min(v_drg_spnd_amt_ytd,standard_ded_thresh)
+                                              )
+                                           else if (v_md_member_subsidy_level_indicator=="G4" and v_drg_spnd_amt_ytd > lics4_ded_thresh)
+                                               lics4_ded_thresh
+                                           else 
+                                                0;     
+ 
+let decimal("") vmd24                   = cvg_gap_thresh ;
+                       
+
+let FIELD_33 = v_troop_ytd;
+let FIELD_31 = v_drg_spnd_amt_ytd;
+let V_FIELD_22 = vmd17;
+let FIELD_23 = vmd18;
+let vbegin_benefit_stage = 
+                if((v_md_member_subsidy_level_indicator=='G0' or 
+                v_md_mmd_copay_category=='0' or 
+                v_md_mmd_copay_category=='5' or 
+                v_md_member_subsidy_level_indicator=='G5' or 
+                v_md_member_subsidy_level_indicator=='GF') and 
+FIELD_31<drug_spend_init_cvg_thresh
+and drug_spend_init_cvg_thresh != ((decimal("")) default_threshold.drug_spend_init_cvg_thresh) and
+drug_spend_init_cvg_thresh != 0)
+'I'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF') 
+and FIELD_31<standard_ded_thresh and v_cag_flag == 'Y') 'D'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF') 
+and FIELD_31>=standard_ded_thresh and FIELD_31<drug_spend_init_cvg_thresh and v_cag_flag == 'Y') 'I'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF') 
+and  FIELD_31>=drug_spend_init_cvg_thresh and FIELD_33<troop_init_cvg_thresh and v_cag_flag == 'Y') 'G'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF')  
+and FIELD_33>=troop_init_cvg_thresh and v_cag_flag == 'Y') 'C'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF') 
+and FIELD_31<drug_spend_init_cvg_thresh and v_cag_flag == 'N') 'I'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5'or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF') 
+and  FIELD_31>=drug_spend_init_cvg_thresh and FIELD_33<troop_init_cvg_thresh and v_cag_flag == 'N') 'G'
+
+
+else if((v_md_member_subsidy_level_indicator=='G0' or v_md_mmd_copay_category=='0' or v_md_mmd_copay_category=='5' or v_md_member_subsidy_level_indicator=='G5' or v_md_member_subsidy_level_indicator=='GF')  
+and FIELD_33>=troop_init_cvg_thresh and v_cag_flag == 'N') 'C'
+
+else if((v_md_member_subsidy_level_indicator=='G1' or v_md_member_subsidy_level_indicator=='G2'or v_md_member_subsidy_level_indicator=='G3'or v_md_mmd_copay_category=='1' or v_md_mmd_copay_category=='2'
+or v_md_mmd_copay_category=='3')  and FIELD_33<troop_init_cvg_thresh) 'I'
+
+
+else if((v_md_member_subsidy_level_indicator=='G1' or v_md_member_subsidy_level_indicator=='G2'or v_md_member_subsidy_level_indicator=='G3' or v_md_mmd_copay_category=='1' or v_md_mmd_copay_category=='2'
+or v_md_mmd_copay_category=='3')  and FIELD_33>=troop_init_cvg_thresh) 'C'
+
+
+else if((v_md_mmd_copay_category=='4' or v_md_member_subsidy_level_indicator=='G4') and FIELD_31<lics4_ded_thresh and v_cag_flag == 'Y') 'D'
+
+
+else if((v_md_mmd_copay_category=='4' or v_md_member_subsidy_level_indicator=='G4') and FIELD_31>=lics4_ded_thresh and FIELD_31<drug_spend_init_cvg_thresh and v_cag_flag == 'Y') 'I'
+
+else  if((v_md_mmd_copay_category=='4' or v_md_member_subsidy_level_indicator=='G4')  and  FIELD_31>=drug_spend_init_cvg_thresh and FIELD_33<troop_init_cvg_thresh and v_cag_flag == 'Y') 'G'
+
+
+else if((v_md_mmd_copay_category=='4' or v_md_member_subsidy_level_indicator=='G4') and FIELD_33>=troop_init_cvg_thresh and v_cag_flag == 'Y') 'C'
+
+else if((v_md_member_subsidy_level_indicator=='G4') and FIELD_31<lics4_ded_thresh and v_cag_flag == 'N') 'D'
+
+else if((v_md_member_subsidy_level_indicator=='G4') and FIELD_31>=lics4_ded_thresh and FIELD_31<drug_spend_init_cvg_thresh and v_cag_flag == 'N') 'I'
+
+else if((v_md_member_subsidy_level_indicator=='G4') and FIELD_31>=drug_spend_init_cvg_thresh and FIELD_33<troop_init_cvg_thresh and v_cag_flag == 'N') 'G' 
+
+else if((v_md_member_subsidy_level_indicator=='G4') and FIELD_33>=troop_init_cvg_thresh and v_cag_flag == 'N') 'C'
+
+else if((v_md_member_subsidy_level_indicator=='4' ) and FIELD_31<drug_spend_init_cvg_thresh and v_cag_flag == 'N') 'I'
+
+else if((v_md_member_subsidy_level_indicator=='4') and  FIELD_31>=drug_spend_init_cvg_thresh and FIELD_33<troop_init_cvg_thresh and v_cag_flag == 'N') 'G' 
+
+else if((v_md_member_subsidy_level_indicator=='4')  and FIELD_33>=troop_init_cvg_thresh and v_cag_flag == 'N') 'C';
+
+let decimal("") v_plan_paid_amt                 = first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0)-( 
+                                                  first_defined(in.mbr_rec.fmpd_lics_amt,0) +
+                                                  first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0) +
+                                                  math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                                  first_defined(in.mbr_rec.fmpd_phr_oth_pyr_recog_amt,0));
+
+
+
+let decimal("") v_plan_n_others_paid_amt         = first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0) -
+                                                    ( 
+                                                    first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0) +
+                                                    math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))
+                                                    );
+                                  
+
+                                
+let decimal("") v_patient_pay_mbr_paid_amt       = switch(in.v_pdtcri)
+                                                    case "1","2","3"     : first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0);
+                                                    case "4","5","6","7" : first_defined(in.rctrpp_rec.trp_submit_patient_pay,0); 
+                                                    end;
+                                            
+
+                                                
+let string(1) vend_benefit_stage_ind        = if( v_md_mmd_copay_category member [vector "1","2","3","4"] and lkp_l_benefit_phase_end_rec.benefit_phase_cd == "G") 
+                                                  "I"
+                                              else if( lkp_l_benefit_phase_end_rec.benefit_phase_cd member  [vector "N","I"]) 
+                                                  "I"
+                                              else 
+                                                  lkp_l_benefit_phase_end_rec.benefit_phase_cd;
+
+
+
+let decimal("") sum_yr_plan_paid_amt       = sum( if ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag=="N"))
+                                                  v_plan_paid_amt
+                                                else 
+                                                  0);
+
+let decimal("") sum_yr_d_plan_paid_amt     = sum( if( vend_benefit_stage_ind == "D"  
+                                                      and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag=="N") 
+                                                      or(in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y" and vend_benefit_stage_ind == "D")))
+                                                          if(in.mbr_rec.fmpd_copay_catgry_cd member [vector "1","2","3"]) 
+                                                                0
+                                                          else 
+                                                                v_plan_paid_amt
+                                                   else 0);
+
+
+
+let decimal("") sum_yr_i_plan_paid_amt          = sum(if( vend_benefit_stage_ind == "I" 
+                                                  and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") or(in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y" and vend_benefit_stage_ind == "I"  )) )
+                                                        v_plan_paid_amt 
+                                                         else 0);
+
+let decimal("|") v_mon_nq_cob_payer_amt         =  sum (if(v_reporting_month && is_defined(in.rctrpp_rec.trp_update_reason_code) && in.rctrpp_rec.trp_update_reason_code member [vector 1,6]) 
+                                                        first_defined(math_abs(in.rctrpp_rec.trp_update_amount),0) else 0);
+
+
+let decimal("|") v_mon_bd_member_paid_amt       = sum(if(v_reporting_month && v_bonus_drug_flag == "Y" && in.mbr_rec.fmpd_drg_cov_stat_cd not member [vector "C","G","W"]) 
+                                                                v_patient_pay_mbr_paid_amt
+                                                        else 0 ) ;
+
+let decimal ("|") v_md_39_mtd                   = v_mon_nq_cob_payer_amt + v_mon_bd_member_paid_amt;
+
+
+let decimal("|") v_yr_nq_cob_payer_amt          = sum(if( is_defined(in.rctrpp_rec.trp_update_reason_code) && in.rctrpp_rec.trp_update_reason_code member [vector 1,6]) 
+                                                           first_defined(math_abs(in.rctrpp_rec.trp_update_amount),0) 
+                                                        else 0);
+
+
+let decimal("|") v_yr_bd_member_paid_amt        = sum(if( v_bonus_drug_flag == "Y" && in.mbr_rec.fmpd_drg_cov_stat_cd not member [vector "C","G","W"]) 
+                                                                v_patient_pay_mbr_paid_amt
+                                                        else 0);
+
+let decimal ("|") v_md_40_ytd                   = v_yr_nq_cob_payer_amt + v_yr_bd_member_paid_amt;
+
+let v_amount_paid_by_you                        = if(is_defined(in.mbr_rec.fmpd_drg_cov_stat_cd) and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C",  "G", "W","Z"])
+                                                (
+                                                if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,2,6] and string_lrtrim(in.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"]
+                                                )
+                                                (first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0) - first_defined (in.rctrpp_rec.trp_other_payer_balance,0))
+                                                else
+                                                first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0));
+                                
+let decimal("") v_you_other_paid                = first_defined(v_amount_paid_by_you,0)                            +
+                                                  first_defined(in.mbr_rec.fmpd_lics_amt,0)                        +
+                                                  math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                                  (if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,6])
+                                                  first_defined(in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                  else 0);
+                                                 
+                           
+let decimal("") v_you_others_paid_cntd_troop    = first_defined(v_amount_paid_by_you,0)                            +
+                                                  first_defined(in.mbr_rec.fmpd_lics_amt,0)                        +
+                                                  math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                                  (if(is_defined(in.rctrpp_rec.trp_update_reason_code) and in.rctrpp_rec.trp_update_reason_code member [vector 1,6])
+                                                  first_defined(in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                  else 0);
+                                                    
+let decimal("") v_you_others_paid_not_cntd_troop        = first_defined(in.rctrpp_rec.trp_update_amount,0) + first_defined(in.mbr_rec.fmpd_phr_oth_pyr_recog_amt,0);
+
+let decimal("") sum_yr_you_others_paid                  = sum(if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                                v_you_other_paid
+                                                             else 0);
+
+let decimal("") sum_yr_you_others_paid_cntd_troop       = sum(if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                                v_you_others_paid_cntd_troop 
+                                                              else 0);
+                                                                
+let decimal("") sum_yr_you_others_paid_not_cntd_troop   = sum(if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                                v_you_others_paid_not_cntd_troop
+                                                              else 0);
+                                                            
+let decimal("") sum_yr_d_you_others_paid                = sum(if(vend_benefit_stage_ind == "D" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                            v_you_other_paid
+                                                            else 0);                                                           //MD44
+     
+let decimal("") sum_yr_d_you_others_paid_cntd_troop     = sum(if(vend_benefit_stage_ind == "D" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                                v_you_others_paid_cntd_troop
+                                                              else 0) ; 
+
+let decimal("") sum_yr_d_you_others_paid_not_cntd_troop = sum(if(vend_benefit_stage_ind == "D" and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N" )
+                                                                v_you_others_paid_not_cntd_troop
+                                                              else 0) ;
+
+                                                           
+let decimal("") sum_yr_i_you_others_paid                = sum(if( vend_benefit_stage_ind == "I" 
+                                                                 and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                                 or(in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y"  )) )
+                                                                    v_you_other_paid
+                                                              else 0);                                                          //MD49
+                                                            
+                                                            
+let decimal("") sum_yr_i_you_others_paid_cntd_troop   = sum(if(vend_benefit_stage_ind == "I" 
+                                                                and ( (in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                                or  (in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y") ))
+                                                                  v_you_others_paid_cntd_troop
+                                                                else 0) ;                                                      //MD50                                                             
+                                                            
+let decimal("") sum_yr_i_you_others_paid_not_cntd_troop = sum(if(vend_benefit_stage_ind == "I" and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                                or(in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y")))
+                                                                   v_you_others_paid_not_cntd_troop
+                                                              else 0) ;
+//=========================
+// G - MD53,MD54,MD55,MD56 
+//=========================
+                                                             
+let decimal("") sum_yr_g_plan_paid_amt                 = sum( if( vend_benefit_stage_ind =="G"
+                                                                and ( (in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                                or(in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y") ))
+                                                             if(in.mbr_rec.fmpd_copay_catgry_cd member [vector "1","2","3"]) 0
+                                                             else
+                                                             v_plan_paid_amt 
+                                                            else 0);                                                            //MD53
+
+let decimal("") sum_yr_g_you_others_paid               = sum( if( vend_benefit_stage_ind =="G"
+                                                               and ( (in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                               or (in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y")
+                                                               ))
+                                                               if(in.mbr_rec.fmpd_copay_catgry_cd member [vector "1","2","3"])  0 
+                                                               else 
+                                                                       v_you_other_paid
+                                                               else 0);                                                         //MD54
+
+let decimal("") sum_yr_g_you_others_paid_cntd_troop   = sum( if( vend_benefit_stage_ind =="G"
+                                                               and ( (in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") 
+                                                               or (in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y")
+                                                               ))
+                                                                v_you_others_paid_cntd_troop
+                                                            else 0) ;                                                           //MD55
+
+let decimal("") sum_yr_g_you_others_paid_not_cntd_troop =  sum_yr_g_you_others_paid - sum_yr_g_you_others_paid_cntd_troop;
+
+//=========================
+// G - MD53,MD54,MD55,MD56 
+//=========================
+                                                
+let decimal("") sum_yr_c_plan_paid_amt                 = sum( if(vend_benefit_stage_ind == "C"
+                                                                and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") or  
+                                                                (in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y" and vend_benefit_stage_ind == "C" ) ))
+                                                                v_plan_paid_amt
+                                                             else 0);                                                           //MD58
+                                                 
+let decimal("") sum_yr_c_you_others_paid               = sum(if(vend_benefit_stage_ind == "C"
+                                                                and ((in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] and v_bonus_drug_flag =="N") or  
+                                                                (in.mbr_rec.fmpd_drg_cov_stat_cd == "Z" and v_bonus_drug_flag =="Y" and vend_benefit_stage_ind == "C" ) ))
+                                                                v_you_other_paid                                                     
+                                                            else 0 );                                                           //MD59
+  
+    
+let decimal("") vmd44                                  = if (plan_has_ded_flag=="N")
+                                                                       0
+                                                         else if (plan_has_ded_flag == "Y" and vbegin_benefit_stage !="D" and v_md_mmd_copay_category == "4")
+                                                                 lics4_ded_thresh
+                                                         else if (plan_has_ded_flag == "Y" and v_md_mmd_copay_category member [vector "1","2","3"])
+                                                                 0
+                                                         else if (plan_has_ded_flag == "Y" and vbegin_benefit_stage !="D" and (v_md_mmd_copay_category member [vector "0","5"]))
+                                                                 standard_ded_thresh
+                                                         else 
+                                                                 sum_yr_d_you_others_paid;
+
+let decimal("") vmd49                                  = if ( v_md_mmd_copay_category member [vector "1","2","3"] and vbegin_benefit_stage == "I")
+                                                                 sum_yr_you_others_paid 
+                                                         else if(plan_has_ded_flag == "Y" and v_md_mmd_copay_category =="4" and vbegin_benefit_stage== "I"  )
+                                                                 sum_yr_you_others_paid - lics4_ded_thresh
+                                                         else if (plan_has_ded_flag == "Y" and v_md_mmd_copay_category member [vector "0","5"] and vbegin_benefit_stage== "I")
+                                                                 sum_yr_you_others_paid - standard_ded_thresh
+                                                         else
+                                                                 sum_yr_i_you_others_paid ;
+
+let decimal("") vmd45                                  = if (plan_has_ded_flag=="N") //which means NULL
+                                                                 0
+                                                         else if (plan_has_ded_flag == "Y" and vbegin_benefit_stage !="D" and v_md_mmd_copay_category == "4")
+                                                                 lics4_ded_thresh
+                                                         else if (plan_has_ded_flag == "Y" and v_md_mmd_copay_category member [vector "1","2","3"])
+                                                                 0
+                                                         else if (plan_has_ded_flag == "Y" and vbegin_benefit_stage !="D" and (v_md_mmd_copay_category member [vector "0","5"]))
+                                                                 standard_ded_thresh
+                                                         else 
+                                                                 sum_yr_d_you_others_paid_cntd_troop;
+                                
+                               
+let decimal("") vmd50                                  = if ( v_md_mmd_copay_category member [vector "1","2","3"] and vbegin_benefit_stage =="I")
+                                                                 sum_yr_you_others_paid_cntd_troop 
+                                                         else if(plan_has_ded_flag == "Y" and v_md_mmd_copay_category =="4" and vbegin_benefit_stage =="I")
+                                                                 sum_yr_you_others_paid_cntd_troop - lics4_ded_thresh
+                                                         else if (plan_has_ded_flag == "Y" and v_md_mmd_copay_category member [vector "0","5"] and vbegin_benefit_stage =="I")
+                                                                 sum_yr_you_others_paid_cntd_troop - standard_ded_thresh
+                                                         else
+                                                                 sum_yr_i_you_others_paid_cntd_troop ;
+                            
+let decimal("") vmd46                                 = if (plan_has_ded_flag == "N" and vbegin_benefit_stage =="I")
+                                                           0
+                                                        else if (plan_has_ded_flag == "Y" and vbegin_benefit_stage =="I")
+                                                           0
+                                                        else 
+                                                           sum_yr_d_you_others_paid_not_cntd_troop; 
+
+let decimal("") vmd51                                 =  if (plan_has_ded_flag == "N"  and vbegin_benefit_stage =="I")
+                                                                 sum_yr_you_others_paid_not_cntd_troop 
+                                                         else if(plan_has_ded_flag == "Y" and vbegin_benefit_stage =="I")
+                                                                 sum_yr_you_others_paid_not_cntd_troop
+                                                         else
+                                                                 sum_yr_i_you_others_paid_not_cntd_troop ;
+                                
+let decimal("") vmd53                                 = if((v_md_mmd_copay_category member [vector "0","5"] ))
+                                                                sum_yr_g_plan_paid_amt 
+                                                        else   0;
+
+let decimal("") vmd56                                 =    sum_yr_g_you_others_paid_not_cntd_troop;                        
+                                                                      
+let decimal("") vmd58                                 =  sum_yr_c_plan_paid_amt;
+                                      
+let decimal("") vmd59                                 =  sum_yr_c_you_others_paid ;
+
+let V_Field41 = 
+                if(lkp_l_eob_profile_rec.split_tier_ind >0
+                and
+                (v_md_mmd_copay_category=='4' )
+                and
+                FIELD_31<drug_spend_init_cvg_thresh
+                and
+                (FIELD_23>0
+                and
+                FIELD_23<=lics4_ded_thresh)
+                and
+                ( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))>0) "I"
+
+else         if(lkp_l_eob_profile_rec.split_tier_ind >0 
+        and
+        (v_md_mmd_copay_category=='4' )
+        and
+        FIELD_31<drug_spend_init_cvg_thresh
+        and
+        FIELD_23==0)'I'
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0 
+and
+(v_md_mmd_copay_category=='4' )
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+(FIELD_23>0
+and
+FIELD_23<=lics4_ded_thresh)
+and
+( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))==0) "D"
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0
+and
+(v_md_member_subsidy_level_indicator=='G4')
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+(FIELD_23>0
+and
+FIELD_23<=lics4_ded_thresh)
+and
+( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))>0) "I"
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0 
+and
+(v_md_member_subsidy_level_indicator=='G4')
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+(FIELD_23>0
+and
+FIELD_23<=lics4_ded_thresh)
+and
+( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))==0) "D"
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0
+and
+(v_md_mmd_copay_category=='0'  or  v_md_mmd_copay_category=='5' or
+v_md_mmd_copay_category=='F' or
+v_md_member_subsidy_level_indicator=='G0' or
+v_md_member_subsidy_level_indicator=='G5' or
+v_md_member_subsidy_level_indicator=='GF')
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+(FIELD_23>0
+and
+FIELD_23<=V_FIELD_22)
+and
+( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))>0) "I"
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0 
+and
+(v_md_mmd_copay_category=='0'  or  v_md_mmd_copay_category=='5' or
+v_md_mmd_copay_category=='F' or
+v_md_member_subsidy_level_indicator=='G0' or
+v_md_member_subsidy_level_indicator=='G5' or
+v_md_member_subsidy_level_indicator=='GF')
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+FIELD_23==0)'I'
+
+else if(lkp_l_eob_profile_rec.split_tier_ind >0 
+and
+(v_md_mmd_copay_category=='0'  or  v_md_mmd_copay_category=='5' or
+v_md_mmd_copay_category=='F' or
+v_md_member_subsidy_level_indicator=='G0' or
+v_md_member_subsidy_level_indicator=='G5' or
+v_md_member_subsidy_level_indicator=='GF')
+and
+FIELD_31<drug_spend_init_cvg_thresh
+and
+(FIELD_23>0
+and
+FIELD_23<=V_FIELD_22)
+and
+
+( sum_yr_i_plan_paid_amt + sum_yr_i_you_others_paid +  vmd50 +  decimal_round((vmd49 - vmd50),2))==0) "D"
+else vbegin_benefit_stage;
+
+let decimal("") vmd48                                   = if(( v_md_mmd_copay_category member [vector "1","2","3"] and  V_Field41 == "G" ) or V_Field41=="I" )
+                                                                sum_yr_plan_paid_amt
+                                                          else
+                                                                sum_yr_i_plan_paid_amt;
+                                                                
+let decimal("") vmd43                                   = if(( v_md_mmd_copay_category member [vector "1","2","3"] and  V_Field41 == "G" ) or V_Field41=="I"  )
+                                                                0
+                                                          else
+                                                               sum_yr_d_plan_paid_amt;
+
+let decimal("") sum_v_total_drug_cost                   = sum( if((first_defined(in.mbr_rec.fmpd_drg_cov_stat_cd,"") member [vector "C","G","W"] and v_bonus_drug_flag =="N") ) 
+                                                                v_total_drug_cost 
+                                                               else 0);
+
+let decimal("") vtotal_drug_costs_before_g              = if(( v_md_mmd_copay_category member [vector "1","2","3","4"] and  V_Field41 == "G" ) or V_Field41=="I" )
+                                                                drug_spend_init_cvg_thresh - sum_v_total_drug_cost
+                                                          else
+                                                                0;                                                      //MD52
+
+let decimal("") vdrugspendbeforeg                       = vtotal_drug_costs_before_g ;
+ 
+ 
+let decimal("") md47                                    = if( v_md_mmd_copay_category member [ vector "1","2","3" ] && V_Field41 =="D" ) 
+                                                                0 
+                                                          else if( v_md_mmd_copay_category=="4" && V_Field41 =="D") 
+                                                                lics4_ded_thresh - sum_v_total_drug_cost
+                                                          else if( V_Field41 =="D") 
+                                                                standard_ded_thresh - sum_v_total_drug_cost 
+                                                          else 
+                                                                0; 
+                                                                
+let decimal("") vmd54                                   = if((v_md_mmd_copay_category member [vector "0","5"]  ))   
+                                                                sum_yr_g_you_others_paid  
+                                                          else 
+                                                                0;
+                               
+                               
+let decimal("") vmd55                                   = if((v_md_mmd_copay_category member [vector "0","5"]  ))
+                                                              sum_yr_g_you_others_paid_cntd_troop 
+                                                          else 
+                                                              0;
+                                
+
+let decimal("") vmd69                                   = sum_yr_plan_paid_amt;
+                                         
+let decimal("") vmd67                                   = sum(if((v_bonus_drug_flag =='N' and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "G","W","Z"]))
+                                                                 (
+                                                                   if(first_defined(in.rctrpp_rec.trp_update_reason_code,-1) member [vector 1,6] and 
+                                                                      string_lrtrim(in.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"])
+                                                                         (first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0) - 
+                                                                          first_defined (in.rctrpp_rec.trp_other_payer_balance,0))
+                                                                   else 
+                                                                      first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt , 0))
+                                                                   else 
+                                                                       0 
+                                                               );
+
+
+let decimal("") vmd68                               = sum(if( v_bonus_drug_flag =='N' and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "Y"] )
+                                                                 first_defined(in.mbr_rec.fmpd_lics_amt,0)                    +
+                                                                 math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0)) + 
+                                                                 if( first_defined(in.rctrpp_rec.trp_update_reason_code,-1) member [vector 1,6] and 
+                                                                 string_lrtrim(in.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"])
+                                                                 first_defined (in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                                 else 0
+                                                             else 0);
+
+let decimal("") vmd70                               = sum( if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"])
+                                                               first_defined(in.mbr_rec.fmpd_lics_amt,0)                    +
+                                                               math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0)) + 
+                                                           if( first_defined(in.rctrpp_rec.trp_update_reason_code,-1) member [vector 1,6] and 
+                                                           string_lrtrim(in.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"])
+                                                                first_defined (in.rctrpp_rec.trp_other_payer_balance,0) 
+                                                           else 
+                                                                0
+                                                           else 0 );
+
+let v_max_claim_nbr_rec                             = max(in ,1 ,{mbr_rec.fmpd_claim_nbr});  
+let v_last_claim_nbr_rec                            = max(in ,v_reporting_month ,{mbr_rec.fmpd_sbm_srv_dt});  
+                                            
+                                           
+  out.fmpd_formulary_cd                         :: in.mbr_rec.fmpd_formulary_cd;
+  out.fmpd_contract_pbp_sk                      :: in.mbr_rec.fmpd_contract_pbp_sk;
+  out.fmpd_prod_sk                              :: in.mbr_rec.fmpd_prod_sk;
+  out.record_identifier                         :: "MD";                                                 //MD01
+  out.mbr.carrier_id                            :: v_max_claim_nbr_rec.mbr_rec.dmem_carrier_id;                                   //MD02
+  out.mbr.account_id                            :: v_max_claim_nbr_rec.mbr_rec.dmem_account_id;                                   //MD03
+  out.mbr.group_id                              :: v_max_claim_nbr_rec.mbr_rec.dmem_employer_group_id;                            //MD04
+  out.mbr.rxpcn                                 :: v_last_claim_nbr_rec.mbr_rec.fclm_processor_cntrl_nbr;                          //MD05
+  out.mbr.rxbin                                 :: v_last_claim_nbr_rec.mbr_rec.fclm_bin_nbr;                                      //MD06
+  out.mbr.submited_group                        :: v_last_claim_nbr_rec.mbr_rec.fclm_grp_nbr_submd;                                //MD07
+  out.mbr.member_id                             :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_id;                                       //MD08
+  out.mbr.member_first_name                     :: v_max_claim_nbr_rec.mbr_rec.dmem_mb_first_nm;                                  //MD09
+  out.mbr.member_last_name                      :: v_max_claim_nbr_rec.mbr_rec.dmem_mb_last_nm ;                                  //MD10
+  out.mbr.member_middle_initial                 :: v_max_claim_nbr_rec.mbr_rec.dmem_mb_mid_init_nm=="-"?"":v_max_claim_nbr_rec.mbr_rec.dmem_mb_mid_init_nm;            //MD11
+  out.mbr.member_street_address_line_1          :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_addr1;                                    //MD12
+  out.mbr.member_city                           :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_city_nm;                                  //MD13
+  out.mbr.member_state                          :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_st_cd;                                    //MD14
+  out.mbr.member_zip_code                       :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_zip;                                      //MD15
+  out.mbr.member_zip_code_4                     :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_zip2;                                     //MD16
+  out.mbr.plan_annual_deductible                :: vmd17;                                                                         //MD17
+  out.mbr.member_and_qualified_others_drug_spend_in_annual_deductible_benefit_phase :: fix_decimal(vmd18);                        //MD18 
+  out.mbr.deductible_phase_amount_remaining_before_next_benefit_phase               :: fix_decimal((decimal(""))((vmd17 - vmd18)));    //MD19
+  out.mbr.initial_coverage_amount_limit                                             :: fix_decimal(vmd20);                             //MD20
+  out.mbr.member_and_qualified_others_drug_spend_in_initial_coverage_benefit_phase  :: fix_decimal(vmd21);                             //MD21
+  out.mbr.initial_coverage_phase_amount_remaining_before_entering_coverage_gap_benefit_phase :: fix_decimal ((decimal(""))((vmd20 - vmd21))); //MD22
+  out.mbr.member_and_qualified_others_troop_in_coverage_gap_benefit_phase           :: fix_decimal ( math_min(v_troop_ytd,lkp_letr_rec.catastrophic_covrg_amt) );      //MD23
+  out.mbr.coverage_gap_amount_limit             :: fix_decimal(vmd24);                                                                  //MD24
+  out.mbr.coverage_gap_benefit_phase_amount_remaining_before_entering_catastrophic_benefit_phase :: (decimal(""))(vmd24 - math_min(v_troop_ytd,lkp_letr_rec.catastrophic_covrg_amt)); //MD25, 28-29 not found in excel
+  out.mbr.yeartodate_total_drug_cost            :: fix_decimal(v_drg_spnd_amt_ytd);                                                     //MD26
+  out.mbr.monthtodate_total_drug_cost           :: fix_decimal(v_drg_spnd_amt_mtd);                                                     //MD27
+  out.mbr.yeartodate_troop_amount               :: fix_decimal(v_troop_ytd);                                                            //MD28
+  out.mbr.monthtodate_troop_amount              :: fix_decimal(v_troop_mtd);                                                            //MD29
+  out.mbr.monthtodate_plan_and_others_paid      ::  fix_decimal ((decimal("")) sum( if( v_reporting_month and in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"] && v_bonus_drug_flag == "N" )
+                                                                                      v_plan_paid_amt
+                                                                                  else 0 ));                                            //MD30
+                                                    
+ out.mbr.yeartodate_plan_and_others_paid      :: fix_decimal( (decimal("")) (sum( if(in.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C","G","W"]  && v_bonus_drug_flag == "N" )
+                                                                                     v_plan_paid_amt + v_rctrpp_trp_other_payer_balance
+                                                                                  else 0 )));                                          //MD31
+
+  out.mbr.financial_information_reporting_fir_adjustment_date_from_previous_plan    ::   first_defined(in.madp_rec.madp_mad_adjtmnt_dt,"");                     //MD32
+  out.mbr.financial_information_reporting_adjustments_to_troop_from_previous_plan   ::   first_defined( (decimal("")) in.madp_rec.madp_mad_adjtmnt_amt_t,'0');  //MD33 
+  out.mbr.financial_information_reporting_adjustments_to_drug_spend_from_previous_plan:: first_defined( (decimal("")) in.madp_rec.madp_mad_adjtmnt_amt_s,'0');  //MD34 
+  out.mbr.member_subsidy_level_indicator        ::if(lkp_l_eob_profile_rec.covrg_in_gap =="F" and (v_md_member_subsidy_level_indicator member[vector "G0","G5"]))
+                                                      "GF" 
+                                                  else 
+                                                       v_md_member_subsidy_level_indicator;                                                                    //MD35
+  out.mbr.benefit_phase_indicator               :: V_Field41;                                                                   //MD36
+  out.mbr.mtd_preferred_mail_savings            :: "";                                                                          //MD37
+  out.mbr.ytd_preferred_mail_savings            :: "";                                                                          //MD38
+  out.mbr.amount_paid_that_does_not_count_toward_troop_ytd :: fix_decimal(first_defined( v_md_40_ytd, "0"));                    //MD40
+  out.mbr.amount_paid_that_does_not_count_toward_troop_mtd :: fix_decimal(first_defined( v_md_39_mtd, "0"));                    //MD39
+  out.mbr.address_line_2                        :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_addr2;                                  //MD41
+  out.mbr.address_line_3                        :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_addr3;                                  //MD42
+  out.mbr.total_plan_paid_in_deductible_stage   :: fix_decimal(vmd43);                                                          //MD43
+  out.mbr.total_you_others_on_your_behalf_paid_in_deductible :: fix_decimal(vmd44);                                             //MD44
+  out.mbr.total_you_others_on_your_behalf_paid_in_deductible_period_that_counted_toward_your_outofpocket_costs_troop      :: fix_decimal(vmd45); //MD45
+  out.mbr.total_you_others_on_your_behalf_paid_in_deductible_period_that_didnt_count_toward_your_outofpocket_costs_troop_ :: fix_decimal(vmd46); //MD46
+  out.mbr.total_drug_costs_left_to_move_to_the_initial_coverage_period :: fix_decimal(md47);                                              //MD47
+  out.mbr.total_plan_paid_in_initial_coverage_period                   :: fix_decimal(vmd48);                                  //MD48 
+  out.mbr.total_you_others_on_your_behalf_paid_in_initial_coverage_period                :: fix_decimal(vmd49) ;               //MD49
+  out.mbr.total_you_others_on_your_behalf_paid_in_initial_coverage_period_that_counted_toward_your_outofpocket_costs_troop :: fix_decimal(vmd50);          //MD50
+  out.mbr.total_you_others_on_your_behalf_paid_in_initial_coverage_period_that_did_not_count_toward_your_outofpocket_costs_troop :: fix_decimal(vmd51);    //MD51
+  out.mbr.total_drug_costs_left_before_the_coverage_gap                                  :: fix_decimal(vdrugspendbeforeg);                                //MD52
+  out.mbr.total_plan_paid_in_coverage_gap                                                :: fix_decimal(vmd53);                                            //MD53
+  out.mbr.total_you_others_on_your_behalf_paid_in_coverage_gap                           :: fix_decimal(vmd54);                                            //MD54
+  out.mbr.total_you_others_on_your_behalf_paid_in_coverage_gap_that_counted_toward_your_outofpocket_costs_troop         :: fix_decimal(vmd55);             //MD55
+  out.mbr.total_you_others_on_your_behalf_paid_in_coverage_gap_that_did_not_count_toward_your_outofpocket_costs_troop   :: fix_decimal(vmd56);             //MD56
+  out.mbr.outofpocket_costs_troop_left_before_catastrophic_coverage                      :: (decimal(""))if(v_troop_ytd < lkp_letr_rec.catastrophic_covrg_amt)
+                                                                                                first_defined(lkp_letr_rec.catastrophic_covrg_amt - v_troop_ytd,0)
+                                                                                            else
+                                                                                                "0";                                                       //MD57
+  out.mbr.total_plan_paid_in_catastrophic_coverage                                       :: fix_decimal(vmd58);                                            //MD58
+  out.mbr.total_you_others_on_your_behalf_paid_in_catastrophic_coverage                  :: fix_decimal(vmd59);                                            //MD59
+  out.mbr.language_indicator                    :: v_max_claim_nbr_rec.mbr_rec.dmem_mbr_lang_cd;                                                           //MD60
+  out.mbr.duncan_logo_id                        :: first_defined(lkp_l_eob_profile_rec.logo_cd,"");                                                        //MD61
+  out.mbr.eob_mail_vs_online_indicator          :: if(is_null(v_max_claim_nbr_rec.mbr_rec.dma_fld_value))                        
+                                                        "MA"
+                                                   else if(first_defined(string_lrtrim(v_max_claim_nbr_rec.mbr_rec.dme_clt_prod_cd),"")  == "2")   
+                                                        "ON"
+                                                   else  
+                                                        "MA";                                                                                               //MD62
+  out.mbr.run_date                              :: $'RUN_DATE';                                                                                             //MD63
+  out.mbr.period_beginning_date                 :: string_concat($'RUN_MONTH',"01");                                                                        //MD64
+  out.mbr.period_ending_date                    :: string_concat($'RUN_MONTH',
+                                                        (decimal(2))date_month_end((decimal(2))string_substring($'RUN_MONTH',5,2)));                        //MD65
+  out.mbr.edss_access_code                      :: first_defined(lkp_l_edss_acess_list_rec.access_id_curr,"");                                              //MD66
+  out.mbr.yeartodate_amount_paid_by_you         :: fix_decimal(vmd67);                                                                                      //MD67
+  out.mbr.yeartodate_amount_paid_by_others      :: fix_decimal(vmd68);                                                                                      //MD68
+  out.mbr.yeartodate_plan_paid                  :: fix_decimal(vmd69);                                                                                      //MD69
+  out.mbr.yeartodate_others_paid_that_counted_towards_troop :: fix_decimal(vmd70);                                                                          //MD70
+  out.mbr.fir_deductible_flag                   :: if( v_md_member_subsidy_level_indicator == "G4") 
+                                                        "Y"
+                                                   else if( v_cag_flag =="N") 
+                                                        "" 
+                                                   else   "Y"  ;                                                                                             //MD71
+  out.mbr.split_tier_dual_coverage_indicator    :: first_defined(lkp_l_eob_profile_rec.split_tier_ind,"");                                                   //MD72
+  out.mbr.moop_member_pay                       :: fix_decimal ( sum (  first_defined(in.mbr_rec.fmpd_egwp_ded_mbr_pay_amt,0) 
+                                                                +       first_defined(in.mbr_rec.fmpd_egwp_icl_mbr_pay_amt,0)
+                                                                +       first_defined(in.mbr_rec.fmpd_egwp_cg_mbr_pay_amt,0)
+                                                                +       first_defined(in.mbr_rec.fmpd_egwp_cat_mbr_pay_amt,0) ));                            //MD73
+
+  out.mbr.member_hicn_id                        :: string_prefix(string_lrtrim(v_max_claim_nbr_rec.mbr_rec.fmpd_mbr_hicn_id) ,11);                           //MD74
+  out.mbr.*                                     :: ""; 
+  out.fclm_troop_amt                            :: lookup("rctsdp_lkp",v_max_claim_nbr_rec.mbr_rec.fmpd_egwp_troop_sched_id).m2w7hx;
+  out.v_md_mmd_copay_category                   :: v_md_mmd_copay_category;
+  out.*                                         :: in.mbr_rec.*;
+  out.sbm_dt_month                              :: (date("YYYYMM")) max(in.mbr_rec.fmpd_sbm_dt); //added this field to select only current month mbr_ids
+                                                                
+end;
+
+out::output_select(out)=
+begin
+
+out:: ( is_null(out.sbm_dt_month)  or (string("")) out.sbm_dt_month==$'RUN_MONTH'  ) &&  is_defined(out.mbr.plan_annual_deductible) ;
+
+
+end;

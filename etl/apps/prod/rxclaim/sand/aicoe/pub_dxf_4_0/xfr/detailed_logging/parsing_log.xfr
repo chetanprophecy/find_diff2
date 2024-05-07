@@ -1,0 +1,78 @@
+let datetime("YYYY-MM-DD HH24:MI:SS") curr_time=now1();
+
+/*Reformat operation*/
+out::reformat(in)=
+begin
+
+let string("")[int] event_txt = string_split_no_empty(in.event_text, "\n");
+let decimal("")[4] rec_count_vec = allocate_with_defaults(); // To capture Read, Write, Reject and Dedup record counts.
+
+let string("") component_nm = string_substring(string_upcase(in.component), (string_rindex(string_upcase(in.component), "." ,4)) + 1 , 
+                        ( string_rindex(string_upcase(in.component), ".00") - string_rindex(string_upcase(in.component), "." ,4)) );
+                        
+//let string("") component_nm = string_upcase(string_split(in.component, ".")[length_of(string_split(in.component, ".")) - 2]);
+                      
+let string("") in_file_name;
+let string("") component_typ_path = in.component ;
+
+//Following code validates component type and assign names as per the pattern labelled.
+if ( starts_with(component_nm, "REFORMAT") > 0 || starts_with(component_nm, "RFMT") > 0)
+        component_nm = "Reformat";
+else if ( starts_with(component_nm, "DEDUP") > 0 )
+        component_nm = "DedupSorted";       
+else if ( starts_with(component_nm, "FILTER") > 0 || starts_with(component_nm, "FBE") > 0)
+        component_nm = "FbE";
+else if ( starts_with(component_nm, "NORM") > 0)
+        component_nm = "Normalize";
+else if ( starts_with(component_nm, "RUN") > 0)
+        component_nm = "RunSql";
+else if ( starts_with(component_nm, "READ_MULTIPLE_FILES") > 0 || starts_with(component_nm, "RMF") > 0)
+        component_nm = "RMF";
+else if ( starts_with(component_nm, "WRITE_MULTIPLE_FILES") > 0 || starts_with(component_nm, "WMF") > 0)
+        component_nm = "WMF";
+else if ( starts_with(component_nm, "JOIN") > 0 || starts_with(component_nm, "JN") > 0)
+         component_nm = "Join";
+else if ( starts_with(component_nm, "ROLLUP") > 0 || starts_with(string_filter("RLP", component_nm), "RLP") > 0)
+         component_nm = "Rollup";
+else
+        force_error("Error in Component labelling.Please follow the standard Component Labels");
+       
+
+// Following code assigns record count detail of records read, written, rejected and dropped while component is in execution.
+for (let int i=0, i < length_of(event_txt))
+begin
+        if( string_index(string_lrtrim(event_txt[i]), "read") > 0 ) 
+                 rec_count_vec[0] = string_split(string_lrtrim(event_txt[i]), " ")[0];
+        if( string_index(string_lrtrim(event_txt[i]), "written") > 0 ) 
+                 rec_count_vec[1] = string_split(string_lrtrim(event_txt[i]), " ")[0];
+        if( string_index(string_lrtrim(event_txt[i]), "rejected") > 0 ) 
+                 rec_count_vec[2] = string_split(string_lrtrim(event_txt[i]), " ")[0];
+end;
+
+
+if ( component_nm == "FbE" || component_nm == "DedupSorted")
+        rec_count_vec[3] = rec_count_vec[0] - rec_count_vec[1] - rec_count_vec[2];
+else
+        rec_count_vec[3] = 0;
+
+// Picking up the Input file name 
+if (component_nm == "RMF" && string_lrtrim(in.event_type) == "input file summary" )
+        for (let int j=0, j < length_of(event_txt))
+        begin
+                 if( string_index(string_lrtrim(event_txt[j]), "file") > 0 ) 
+                       in_file_name = string_substring(string_lrtrim(event_txt[j]),(string_rindex(string_lrtrim(event_txt[j]), "/")) + 1, 999);
+        end;
+      
+out.process_name :: if(not is_blank("${AB_PSET_NAME}")) "${AB_PSET_NAME}" else "${AB_GRAPH_NAME}";
+out.records_processed :: string_replace(in.event_text,"\n","|");
+out.run_dttm :: curr_time;
+out.component_name :: component_nm;
+//out.component_nm_path :: string_substring(in.component, 1, string_rindex(in.component, ".") - 1);
+out.component_nm_path :: if(component_nm == "RMF" and string_lrtrim(in.event_type) == "input file summary") in_file_name else string_substring(in.component, 1, string_rindex(in.component, ".") - 1);
+out.input_file_name :: in_file_name ;
+out.in_rec_count :: rec_count_vec[0];
+out.out_rec_count :: rec_count_vec[1];
+out.rej_rec_count :: rec_count_vec[2];
+out.drop_rec_count :: rec_count_vec[3];
+
+end;

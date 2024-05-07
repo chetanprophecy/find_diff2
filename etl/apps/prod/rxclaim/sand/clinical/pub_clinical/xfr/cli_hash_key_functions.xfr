@@ -1,0 +1,68 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/cli_hash_key_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/10  Paul Thompson           Initial version
+ *  2016/12/23  Mohd Shadab             Added function to generate cag hash
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+// CAGM Hash
+
+hash_key_t out :: get_cagm_hash(
+    cli_carrier_id_t         carrier_id        = NULL
+  , cli_carrier_acct_id_t    carrier_acct_id   = NULL
+  , cli_employer_group_id_t  employer_group_id = NULL
+  , cli_mbr_id_t             mbr_id            = NULL
+  , cagm_nk_t                cagm              = NULL ) inline =
+begin
+  let cagm_nk_t l_cagm = first_defined( cagm, [ record carrier_id         carrier_id
+                                                       carrier_acct_id    carrier_acct_id
+                                                       employer_group_id  employer_group_id
+                                                       mbr_id             mbr_id ] );
+  
+  out :: hash_MD5(l_cagm);
+end;
+
+hash_key_t out :: get_hash(in) inline =
+begin
+  out :: hash_MD5(in);
+end;
+
+hash_key_t out :: get_cagm_nk_hash(
+    cli_carrier_id_t         carrier_id
+  , cli_carrier_acct_id_t    carrier_acct_id
+  , cli_employer_group_id_t  employer_group_id
+  , cli_mbr_id_t             mbr_id ) inline =
+begin
+  out :: get_cagm_hash(carrier_id, carrier_acct_id, employer_group_id, mbr_id);
+end;
+
+hash_key_t out :: get_st_lic_nbr_hash(
+    cli_st_lic_nbr_t  st_lic_nbr
+  , cli_st_cd_t       st_cd ) inline =
+begin
+  let rec = [ record st_lic_nbr  st_lic_nbr
+                     st_cd       st_cd ];
+  
+  out :: hash_MD5(rec);
+end;
+
+
+hash_key_t out :: get_cag_hash(
+    cli_carrier_id_t         carrier_id        = NULL
+  , cli_carrier_acct_id_t    carrier_acct_id   = NULL
+  , cli_employer_group_id_t  employer_group_id = NULL
+) inline =
+begin
+  let rec =  [ record carrier_id         carrier_id
+                      carrier_acct_id    carrier_acct_id
+                      employer_group_id  employer_group_id ] ;
+  
+  out :: hash_MD5(rec);
+end;

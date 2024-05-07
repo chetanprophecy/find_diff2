@@ -1,0 +1,134 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59197deb_1428_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_gpi_sk.gpi_id,[passthrough],in0.kmvnc2]
+  [out0.d_mac_list.mac_ndc_prod_cd,[passthrough],in0.kmvrc2]
+  [out0.d_mac_list.mac_stat,[passthrough],in0.kmins2]
+  [out0.d_mac_list.gpi_id,[passthrough],in0.kmvnc2]
+  [out0.d_mac_list.mac_ndc_pkg_cd,[passthrough],in0.kmvsc2]
+  [out0.d_mac_list.gpi_sk,[transform],]
+  [out0.d_mac_list.src_chg_dt,[transform],in0.kmbmdt]
+  [out0.d_mac_list.mac_gppc,[passthrough],in0.kmvoc2]
+  [out0.d_mac_list.carrier_sk,[transform],]
+  [out0.d_mac_list.mac_lst_sk,[transform],]
+  [out0.d_mac_list.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_mac_list.mac_thru_dt,[transform],in0.kmjmdt]
+  [out0.d_mac_list.mac_seq_nbr,[passthrough],in0.kmhzn1]
+  [out0.d_mac_list.mac_lst,[passthrough],in0.kmj5s2]
+  [out0.d_mac_list.carrier_id,[passthrough],in0.kmaacd]
+  [out0.d_car_sk.carrier_id,[passthrough],in0.kmaacd]
+  [out0.d_mac_list.mac_frm_dt,[transform],in0.kmjldt]
+  [out0.d_mac_list.mac_cost,[passthrough],in0.kmpwpr]
+  [out0.d_mac_list.mac_ndc_lablr_id,[passthrough],in0.kmvqc2]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_gpi_sk.gpi_id,'d_gpi_sk.gpi_id',1,0]
+     [out0.d_mac_list.mac_ndc_prod_cd,'d_mac_list.mac_ndc_prod_cd',1,0]
+     [out0.d_mac_list.mac_stat,'d_mac_list.mac_stat',1,0]
+     [out0.d_mac_list.gpi_id,'d_mac_list.gpi_id',1,0]
+     [out0.d_mac_list.mac_ndc_pkg_cd,'d_mac_list.mac_ndc_pkg_cd',1,0]
+     [out0.d_mac_list.gpi_sk,'d_mac_list.gpi_sk',1,0]
+     [out0.d_mac_list.src_chg_dt,'d_mac_list.src_chg_dt',1,0]
+     [out0.d_mac_list.mac_gppc,'d_mac_list.mac_gppc',1,0]
+     [out0.d_mac_list.carrier_sk,'d_mac_list.carrier_sk',1,0]
+     [out0.d_mac_list.mac_lst_sk,'d_mac_list.mac_lst_sk',1,0]
+     [out0.d_mac_list.src_env_sk,'d_mac_list.src_env_sk',1,0]
+     [out0.d_mac_list.mac_thru_dt,'d_mac_list.mac_thru_dt',1,0]
+     [out0.d_mac_list.mac_seq_nbr,'d_mac_list.mac_seq_nbr',1,0]
+     [out0.d_mac_list.mac_lst,'d_mac_list.mac_lst',1,0]
+     [out0.d_mac_list.carrier_id,'d_mac_list.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_car_sk.carrier_id,'d_car_sk.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mac_list.mac_frm_dt,'d_mac_list.mac_frm_dt',1,0]
+     [out0.d_mac_list.mac_cost,'d_mac_list.mac_cost',1,0]
+     [out0.d_mac_list.mac_ndc_lablr_id,'d_mac_list.mac_ndc_lablr_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.kmvqc2,'kmvqc2',1,1]
+     [in0.kmvnc2,'kmvnc2',2,2]
+     [in0.kmins2,'kmins2',1,1]
+     [in0.kmaacd,'kmaacd',2,2]
+     [in0.kmbmdt,'kmbmdt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.kmvoc2,'kmvoc2',1,1]
+     [in0.kmpwpr,'kmpwpr',1,1]
+     [in0.kmvsc2,'kmvsc2',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.kmjmdt,'kmjmdt',2,1]
+     [in0.kmjldt,'kmjldt',1,1]
+     [in0.kmhzn1,'kmhzn1',1,1]
+     [in0.kmvrc2,'kmvrc2',1,1]
+     [in0.kmj5s2,'kmj5s2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_mac_list_mac_lst_sk = -1;
+let decimal("\x01",0) d_mac_list_carrier_sk = -1;
+let decimal("\x01",0) d_mac_list_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mac_list_carrier_id = fail_if_error(in0.kmaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_mac_list_mac_lst = fail_if_error(in0.kmj5s2);
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_mac_list_gpi_id = fail_if_error(in0.kmvnc2);
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_mac_list_mac_gppc = fail_if_error(in0.kmvoc2);
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_mac_list_mac_ndc_lablr_id = fail_if_error(in0.kmvqc2);
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_mac_list_mac_ndc_prod_cd = fail_if_error(in0.kmvrc2);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_mac_list_mac_ndc_pkg_cd = fail_if_error(in0.kmvsc2);
+let decimal("\x01",0) d_mac_list_mac_seq_nbr = fail_if_error(in0.kmhzn1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mac_list_mac_stat = fail_if_error(in0.kmins2);
+let date("YYYYMMDD")("\x01") d_mac_list_mac_frm_dt;
+let date("YYYYMMDD")("\x01") d_mac_list_mac_thru_dt;
+let decimal("\x01".5, maximum_length=15, sign_reserved) d_mac_list_mac_cost = fail_if_error(in0.kmpwpr);
+let date("YYYYMMDD")("\x01") d_mac_list_src_chg_dt;
+let decimal("\x01",0) d_mac_list_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_car_sk_carrier_id = fail_if_error(in0.kmaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_gpi_sk_gpi_id = fail_if_error(in0.kmvnc2);
+
+
+
+/*   Default value   */
+d_mac_list_src_chg_dt=fail_if_error(date_check(in0.kmbmdt));
+
+/*   Default value   */
+d_mac_list_mac_thru_dt=fail_if_error(if(date_check(in0.kmjmdt) ==   ("19000101")) ("99991231") else date_check(in0.kmjmdt));
+
+/*   Default value   */
+d_mac_list_mac_frm_dt=fail_if_error(date_check(in0.kmjldt));
+
+  out0.d_mac_list.mac_lst_sk::d_mac_list_mac_lst_sk;
+  out0.d_mac_list.carrier_sk::d_mac_list_carrier_sk;
+  out0.d_mac_list.gpi_sk::d_mac_list_gpi_sk;
+  out0.d_mac_list.carrier_id::d_mac_list_carrier_id;
+  out0.d_mac_list.mac_lst::d_mac_list_mac_lst;
+  out0.d_mac_list.gpi_id::d_mac_list_gpi_id;
+  out0.d_mac_list.mac_gppc::d_mac_list_mac_gppc;
+  out0.d_mac_list.mac_ndc_lablr_id::d_mac_list_mac_ndc_lablr_id;
+  out0.d_mac_list.mac_ndc_prod_cd::d_mac_list_mac_ndc_prod_cd;
+  out0.d_mac_list.mac_ndc_pkg_cd::d_mac_list_mac_ndc_pkg_cd;
+  out0.d_mac_list.mac_seq_nbr::d_mac_list_mac_seq_nbr;
+  out0.d_mac_list.mac_stat::d_mac_list_mac_stat;
+  out0.d_mac_list.mac_frm_dt::d_mac_list_mac_frm_dt;
+  out0.d_mac_list.mac_thru_dt::d_mac_list_mac_thru_dt;
+  out0.d_mac_list.mac_cost::d_mac_list_mac_cost;
+  out0.d_mac_list.src_chg_dt::d_mac_list_src_chg_dt;
+  out0.d_mac_list.src_env_sk::d_mac_list_src_env_sk;
+  out0.d_car_sk.carrier_id::d_car_sk_carrier_id;
+  out0.d_gpi_sk.gpi_id::d_gpi_sk_gpi_id;
+  out0.*::in0.*;
+
+end;

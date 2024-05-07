@@ -1,0 +1,12 @@
+out :: length(in) =
+begin
+  out :: length_of(in.dml_vec);
+end;
+
+out :: normalize(in, index) =
+begin
+  let dml_info = in.dml_vec[index];
+  dml_info.comment = string_replace(dml_info.comment, "TIMESTAMP(6)", "TIMESTAMP");
+  dml_info.comment = string_replace(dml_info.comment, "TIME(6)", "TIME");
+  out.dml_info :: dml_info;
+end;

@@ -1,0 +1,1 @@
+air sandbox run /etl/apps/prod/rxclaim/sand/orca/rxclaim/pset/get.rxclaim_orx/get.rxclaim_orx.rctcdp.pset -START_CHANGES_TIME '2020-10-21 00:00:00' -END_CHANGES_TIME '2020-10-26 23:59:59' -RUN_ID 20201026000000 >rctcdp.log

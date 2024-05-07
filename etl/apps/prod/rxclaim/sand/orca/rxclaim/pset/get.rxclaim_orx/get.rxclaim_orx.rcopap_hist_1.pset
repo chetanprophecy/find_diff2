@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcopap
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmprdfil_bk1 rcopap                  \r\nclmprdfil_bk1 rctcdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcopap') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext2_bk1', 'clmprdfil_bk1.rctcdp')]
+DO_SOURCE||||0
+DO_LOOKUP||||0
+LOOKUP_KEY||||{k6p2nb; k6oinb; dxf_src_sys_id}
+SQL||||select\r\n  a.k6p2nb,\r\n  a.k6oinb,\r\n  a.k6hwcj,\r\n  a.k6rlc4,\r\n  a.k6qat1,\r\n  a.k6qbt1,\r\n  a.k6kvs2,\r\n  a.k6qct1,\r\n  a.k6i6n1,\r\n  a.k6i7n1,\r\n  a.k6rmc4,\r\n  a.k6hxcj,\r\n  a.k6hycj,\r\n  a.k6r3ip,\r\n  a.k6wfhk,\r\n  b.dqp2nb as rxclaimnbr,\r\n  b.dqoinb as clmseqnbr,\r\n  b.dqs6st as claimsts,\r\n  b.dqs6cd as carrierid,\r\n  b.dqs7cd as accountid,\r\n  b.dqs8cd as groupid,\r\n  b.dqs5cd as memberid,\r\n  b.dqc4dt as datesbm,\r\n  b.dqbbda as dtefilled\r\nfrom clmprdfil_bk1.rcopap a\r\ninner join \r\nclmprdfil_bk1.rctcdp b\r\non a.k6p2nb=b.dqp2nb\r\nand a.k6oinb=b.dqoinb\r\nand b.dqc4dt>=20190701 and b.dqc4dt<20200101
+DO_CLEAN||||1

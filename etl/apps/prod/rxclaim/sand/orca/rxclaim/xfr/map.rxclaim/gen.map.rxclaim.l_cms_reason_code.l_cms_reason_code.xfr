@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a576f5b_67c6_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_cms_rc.cms_reason_cd,[transform],in0.code]
+  [out0.l_cms_rc.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_cms_rc.cms_reason_cd_sk,[transform],]
+  [out0.l_cms_rc.cms_reason_desc,[passthrough],in0.description]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_cms_rc.cms_reason_cd,'l_cms_rc.cms_reason_cd',2,1]
+     [out0.l_cms_rc.src_env_sk,'l_cms_rc.src_env_sk',1,0]
+     [out0.l_cms_rc.cms_reason_cd_sk,'l_cms_rc.cms_reason_cd_sk',1,0]
+     [out0.l_cms_rc.cms_reason_desc,'l_cms_rc.cms_reason_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.code,'code',3,2]
+     [in0.description,'description',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_cms_rc_cms_reason_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) l_cms_rc_cms_reason_cd = fail_if_error(in0.code);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_cms_rc_cms_reason_desc = fail_if_error(in0.description);
+let decimal("\x01",0) l_cms_rc_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute l_cms_rc.cms_reason_cd  (#1)   */
+if(first_defined(fail_if_error(((string_length(in0.code)==1) ==1)),0))begin
+  l_cms_rc_cms_reason_cd=string_lpad(in0.code, 2 ,"0" );
+end
+
+  out0.l_cms_rc.cms_reason_cd_sk::l_cms_rc_cms_reason_cd_sk;
+  out0.l_cms_rc.cms_reason_cd::l_cms_rc_cms_reason_cd;
+  out0.l_cms_rc.cms_reason_desc::l_cms_rc_cms_reason_desc;
+  out0.l_cms_rc.src_env_sk::l_cms_rc_src_env_sk;
+  out0.*::in0.*;
+
+end;

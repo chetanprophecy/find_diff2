@@ -1,0 +1,130 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_rcmmdp.carrier_id,[passthrough],in0.a0aacd]
+  [out0.orx_rcmmdp.mmd_copay_category,[passthrough],in0.a0rmh9]
+  [out0.orx_rcmmdp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.orx_rcmmdp.mmd_subsidy_lvl,[passthrough],in0.a0ychc]
+  [out0.orx_rcmmdp.mmd_segment_id,[passthrough],in0.a0ybhc]
+  [out0.orx_rcmmdp.mmd_pbp_id,[passthrough],in0.a0yahc]
+  [out0.orx_rcmmdp.mmd_thru_dt,[transform],in0.a0odhg]
+  [out0.orx_rcmmdp.mmd_seq_nbr,[passthrough],in0.a0ebhs]
+  [out0.orx_rcmmdp.account_id,[passthrough],in0.a0accd]
+  [out0.orx_rcmmdp.mmd_enrlmnt_src,[passthrough],in0.a0rkh9]
+  [out0.orx_rcmmdp.mmd_copay_catg_eff_td,[transform],in0.a0c7hk]
+  [out0.orx_rcmmdp.mmd_from_dt,[transform],in0.a0ochg]
+  [out0.orx_rcmmdp.mmd_record_status,[passthrough],in0.a0rjh9]
+  [out0.orx_rcmmdp.mmd_contract_id,[passthrough],in0.a0x9hc]
+  [out0.orx_rcmmdp.employer_group_id,[passthrough],in0.a0adcd]
+  [out0.orx_rcmmdp.mbr_id,[passthrough],in0.a0abcd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_rcmmdp.carrier_id,'orx_rcmmdp.carrier_id',1,0]
+     [out0.orx_rcmmdp.mmd_copay_category,'orx_rcmmdp.mmd_copay_category',1,0]
+     [out0.orx_rcmmdp.src_env_sk,'orx_rcmmdp.src_env_sk',1,0]
+     [out0.orx_rcmmdp.mmd_subsidy_lvl,'orx_rcmmdp.mmd_subsidy_lvl',1,0]
+     [out0.orx_rcmmdp.mmd_segment_id,'orx_rcmmdp.mmd_segment_id',1,0]
+     [out0.orx_rcmmdp.mmd_pbp_id,'orx_rcmmdp.mmd_pbp_id',1,0]
+     [out0.orx_rcmmdp.mmd_thru_dt,'orx_rcmmdp.mmd_thru_dt',3,2]
+     [out0.orx_rcmmdp.mmd_seq_nbr,'orx_rcmmdp.mmd_seq_nbr',1,0]
+     [out0.orx_rcmmdp.account_id,'orx_rcmmdp.account_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.orx_rcmmdp.mmd_enrlmnt_src,'orx_rcmmdp.mmd_enrlmnt_src',1,0]
+     [out0.orx_rcmmdp.mmd_copay_catg_eff_td,'orx_rcmmdp.mmd_copay_catg_eff_td',1,0]
+     [out0.orx_rcmmdp.mmd_from_dt,'orx_rcmmdp.mmd_from_dt',3,2]
+     [out0.orx_rcmmdp.mmd_record_status,'orx_rcmmdp.mmd_record_status',1,0]
+     [out0.orx_rcmmdp.mmd_contract_id,'orx_rcmmdp.mmd_contract_id',1,0]
+     [out0.orx_rcmmdp.employer_group_id,'orx_rcmmdp.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.orx_rcmmdp.mbr_id,'orx_rcmmdp.mbr_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.a0x9hc,'a0x9hc',1,1]
+     [in0.a0accd,'a0accd',1,1]
+     [in0.a0adcd,'a0adcd',1,1]
+     [in0.a0c7hk,'a0c7hk',1,1]
+     [in0.a0ebhs,'a0ebhs',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.a0abcd,'a0abcd',1,1]
+     [in0.a0aacd,'a0aacd',1,1]
+     [in0.a0ychc,'a0ychc',1,1]
+     [in0.a0ochg,'a0ochg',6,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.a0rjh9,'a0rjh9',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.a0odhg,'a0odhg',6,3]
+     [in0.a0yahc,'a0yahc',1,1]
+     [in0.a0rkh9,'a0rkh9',1,1]
+     [in0.a0rmh9,'a0rmh9',1,1]
+     [in0.a0ybhc,'a0ybhc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=20) orx_rcmmdp_mbr_id = fail_if_error(in0.a0abcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) orx_rcmmdp_carrier_id = fail_if_error(in0.a0aacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) orx_rcmmdp_account_id = fail_if_error(in0.a0accd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) orx_rcmmdp_employer_group_id = fail_if_error(in0.a0adcd);
+let decimal("\x01",maximum_length=5) orx_rcmmdp_mmd_seq_nbr = fail_if_error(in0.a0ebhs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcmmdp_mmd_record_status = fail_if_error(in0.a0rjh9);
+let datetime("YYYYMMDDHH24MISS")("\x01") orx_rcmmdp_mmd_from_dt = 00010101;
+let datetime("YYYYMMDDHH24MISS")("\x01") orx_rcmmdp_mmd_thru_dt = 00010101;
+let string("\x01",charset="iso-8859-15", maximum_length=5) orx_rcmmdp_mmd_contract_id = fail_if_error(in0.a0x9hc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) orx_rcmmdp_mmd_pbp_id = fail_if_error(in0.a0yahc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) orx_rcmmdp_mmd_segment_id = fail_if_error(in0.a0ybhc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) orx_rcmmdp_mmd_subsidy_lvl = fail_if_error(in0.a0ychc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcmmdp_mmd_copay_category = fail_if_error(in0.a0rmh9);
+let datetime("YYYYMMDDHH24MISS")("\x01") orx_rcmmdp_mmd_copay_catg_eff_td = fail_if_error((date("YYYYMMDD"))in0.a0c7hk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcmmdp_mmd_enrlmnt_src = fail_if_error(in0.a0rkh9);
+let decimal("\x01",0) orx_rcmmdp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute orx_rcmmdp.mmd_from_dt  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.a0ochg) member [vector 6,7])) && (is_valid(YYYYMMDD(19000000+in0.a0ochg)))),0))begin
+  orx_rcmmdp_mmd_from_dt=is_valid(YYYYMMDD(19000000+in0.a0ochg));
+end
+else if(first_defined(fail_if_error(((length_of(in0.a0ochg)) ==8) && (is_valid(in0.a0ochg) ==1)),0))begin
+  orx_rcmmdp_mmd_from_dt=(date("YYYYMMDD"))in0.a0ochg;
+end
+
+/*   Rule:Compute orx_rcmmdp.mmd_thru_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of(in0.a0odhg) member [vector 6,7])) && (is_valid(YYYYMMDD(19000000+in0.a0odhg)))),0))begin
+  orx_rcmmdp_mmd_thru_dt=is_valid(YYYYMMDD(19000000+in0.a0odhg));
+end
+else if(first_defined(fail_if_error(((length_of(in0.a0odhg)) ==8) && (is_valid(in0.a0odhg) ==1)),0))begin
+  orx_rcmmdp_mmd_thru_dt=(date("YYYYMMDD"))in0.a0odhg;
+end
+
+  out0.orx_rcmmdp.mbr_id::orx_rcmmdp_mbr_id;
+  out0.orx_rcmmdp.carrier_id::orx_rcmmdp_carrier_id;
+  out0.orx_rcmmdp.account_id::orx_rcmmdp_account_id;
+  out0.orx_rcmmdp.employer_group_id::orx_rcmmdp_employer_group_id;
+  out0.orx_rcmmdp.mmd_seq_nbr::orx_rcmmdp_mmd_seq_nbr;
+  out0.orx_rcmmdp.mmd_record_status::orx_rcmmdp_mmd_record_status;
+  out0.orx_rcmmdp.mmd_from_dt::orx_rcmmdp_mmd_from_dt;
+  out0.orx_rcmmdp.mmd_thru_dt::orx_rcmmdp_mmd_thru_dt;
+  out0.orx_rcmmdp.mmd_contract_id::orx_rcmmdp_mmd_contract_id;
+  out0.orx_rcmmdp.mmd_pbp_id::orx_rcmmdp_mmd_pbp_id;
+  out0.orx_rcmmdp.mmd_segment_id::orx_rcmmdp_mmd_segment_id;
+  out0.orx_rcmmdp.mmd_subsidy_lvl::orx_rcmmdp_mmd_subsidy_lvl;
+  out0.orx_rcmmdp.mmd_copay_category::orx_rcmmdp_mmd_copay_category;
+  out0.orx_rcmmdp.mmd_copay_catg_eff_td::orx_rcmmdp_mmd_copay_catg_eff_td;
+  out0.orx_rcmmdp.mmd_enrlmnt_src::orx_rcmmdp_mmd_enrlmnt_src;
+  out0.orx_rcmmdp.src_env_sk::orx_rcmmdp_src_env_sk;
+  out0.*::in0.*;
+
+end;

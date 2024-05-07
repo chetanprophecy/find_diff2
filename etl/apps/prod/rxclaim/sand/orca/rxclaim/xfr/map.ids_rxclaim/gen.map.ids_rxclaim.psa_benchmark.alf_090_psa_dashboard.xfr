@@ -1,0 +1,116 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5abb76dd_ed3c_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.psa_dboard.percent_specialty_ingredient_cost,[passthrough],in0.percent_specialty_ingredient_cost]
+  [out0.psa_dboard.total_ingredient_cost,[passthrough],in0.total_ingredient_cost]
+  [out0.psa_dboard.month_count,[passthrough],in0.month_count]
+  [out0.psa_dboard.membership_count,[passthrough],in0.membership_count]
+  [out0.psa_dboard.src_env_sk,[transform],]
+  [out0.psa_dboard.end_date,[passthrough],in0.end_date]
+  [out0.psa_dboard.generic_dispensing_rate,[passthrough],in0.generic_dispensing_rate]
+  [out0.psa_dboard.ingredient_cost_per_day,[passthrough],in0.ingredient_cost_per_day]
+  [out0.psa_dboard.ingredient_cost_pmpm,[passthrough],in0.ingredient_cost_pmpm]
+  [out0.psa_dboard.retail_90_percent,[passthrough],in0.retail_90_percent]
+  [out0.psa_dboard.average_pmpm,[passthrough],in0.average_pmpm]
+  [out0.psa_dboard.start_date,[passthrough],in0.start_date]
+  [out0.psa_dboard.days_supply_pmpm,[passthrough],in0.days_supply_pmpm]
+  [out0.psa_dboard.client_id,[passthrough],in0.client_id]
+  [out0.psa_dboard.mail_percent,[passthrough],in0.mail_percent]
+  [out0.psa_dboard.total_rxs,[passthrough],in0.total_rxs]
+  [out0.psa_dboard.request_type,[transform],]
+  [out0.psa_dboard.request_id,[passthrough],in0.request_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.psa_dboard.percent_specialty_ingredient_cost,'psa_dboard.percent_specialty_ingredient_cost',1,0]
+     [out0.psa_dboard.total_ingredient_cost,'psa_dboard.total_ingredient_cost',1,0]
+     [out0.psa_dboard.month_count,'psa_dboard.month_count',1,0]
+     [out0.psa_dboard.membership_count,'psa_dboard.membership_count',1,0]
+     [out0.psa_dboard.src_env_sk,'psa_dboard.src_env_sk',1,0]
+     [out0.psa_dboard.end_date,'psa_dboard.end_date',1,0]
+     [out0.psa_dboard.generic_dispensing_rate,'psa_dboard.generic_dispensing_rate',1,0]
+     [out0.psa_dboard.ingredient_cost_per_day,'psa_dboard.ingredient_cost_per_day',1,0]
+     [out0.psa_dboard.ingredient_cost_pmpm,'psa_dboard.ingredient_cost_pmpm',1,0]
+     [out0.psa_dboard.retail_90_percent,'psa_dboard.retail_90_percent',1,0]
+     [out0.psa_dboard.average_pmpm,'psa_dboard.average_pmpm',1,0]
+     [out0.psa_dboard.start_date,'psa_dboard.start_date',1,0]
+     [out0.psa_dboard.days_supply_pmpm,'psa_dboard.days_supply_pmpm',1,0]
+     [out0.psa_dboard.client_id,'psa_dboard.client_id',1,0]
+     [out0.psa_dboard.mail_percent,'psa_dboard.mail_percent',1,0]
+     [out0.psa_dboard.total_rxs,'psa_dboard.total_rxs',1,0]
+     [out0.psa_dboard.request_type,'psa_dboard.request_type',1,0]
+     [out0.psa_dboard.request_id,'psa_dboard.request_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.end_date,'end_date',1,1]
+     [in0.percent_specialty_ingredient_cost,'percent_specialty_ingredient_cost',1,1]
+     [in0.total_rxs,'total_rxs',1,1]
+     [in0.membership_count,'membership_count',1,1]
+     [in0.month_count,'month_count',1,1]
+     [in0.client_id,'client_id',1,1]
+     [in0.generic_dispensing_rate,'generic_dispensing_rate',1,1]
+     [in0.days_supply_pmpm,'days_supply_pmpm',1,1]
+     [in0.request_id,'request_id',1,1]
+     [in0.retail_90_percent,'retail_90_percent',1,1]
+     [in0.average_pmpm,'average_pmpm',1,1]
+     [in0.ingredient_cost_per_day,'ingredient_cost_per_day',1,1]
+     [in0.total_ingredient_cost,'total_ingredient_cost',1,1]
+     [in0.mail_percent,'mail_percent',1,1]
+     [in0.start_date,'start_date',1,1]
+     [in0.ingredient_cost_pmpm,'ingredient_cost_pmpm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0, maximum_length=16, sign_reserved) psa_dboard_request_id = fail_if_error(in0.request_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) psa_dboard_request_type = 'C';
+let string("\x01",charset="iso-8859-15", maximum_length=50) psa_dboard_client_id = fail_if_error(in0.client_id);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_total_ingredient_cost = fail_if_error(in0.total_ingredient_cost);
+let decimal("\x01",0, maximum_length=16, sign_reserved) psa_dboard_total_rxs = fail_if_error(in0.total_rxs);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_ingredient_cost_pmpm = fail_if_error(in0.ingredient_cost_pmpm);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_days_supply_pmpm = fail_if_error(in0.days_supply_pmpm);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_ingredient_cost_per_day = fail_if_error(in0.ingredient_cost_per_day);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_generic_dispensing_rate = fail_if_error(in0.generic_dispensing_rate);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_mail_percent = fail_if_error(in0.mail_percent);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_retail_90_percent = fail_if_error(in0.retail_90_percent);
+let decimal("\x01".2, maximum_length=17, sign_reserved) psa_dboard_percent_specialty_ingredient_cost = fail_if_error(in0.percent_specialty_ingredient_cost);
+let decimal("\x01",0, maximum_length=16, sign_reserved) psa_dboard_membership_count = fail_if_error(in0.membership_count);
+let decimal("\x01",0, maximum_length=16, sign_reserved) psa_dboard_month_count = fail_if_error(in0.month_count);
+let decimal("\x01",0, maximum_length=16, sign_reserved) psa_dboard_average_pmpm = fail_if_error(in0.average_pmpm);
+let date("YYYYMMDD")("\x01") psa_dboard_start_date = fail_if_error(in0.start_date);
+let date("YYYYMMDD")("\x01") psa_dboard_end_date = fail_if_error(in0.end_date);
+let decimal("\x01",0) psa_dboard_src_env_sk = 800;
+
+
+
+  out0.psa_dboard.request_id::psa_dboard_request_id;
+  out0.psa_dboard.request_type::psa_dboard_request_type;
+  out0.psa_dboard.client_id::psa_dboard_client_id;
+  out0.psa_dboard.total_ingredient_cost::psa_dboard_total_ingredient_cost;
+  out0.psa_dboard.total_rxs::psa_dboard_total_rxs;
+  out0.psa_dboard.ingredient_cost_pmpm::psa_dboard_ingredient_cost_pmpm;
+  out0.psa_dboard.days_supply_pmpm::psa_dboard_days_supply_pmpm;
+  out0.psa_dboard.ingredient_cost_per_day::psa_dboard_ingredient_cost_per_day;
+  out0.psa_dboard.generic_dispensing_rate::psa_dboard_generic_dispensing_rate;
+  out0.psa_dboard.mail_percent::psa_dboard_mail_percent;
+  out0.psa_dboard.retail_90_percent::psa_dboard_retail_90_percent;
+  out0.psa_dboard.percent_specialty_ingredient_cost::psa_dboard_percent_specialty_ingredient_cost;
+  out0.psa_dboard.membership_count::psa_dboard_membership_count;
+  out0.psa_dboard.month_count::psa_dboard_month_count;
+  out0.psa_dboard.average_pmpm::psa_dboard_average_pmpm;
+  out0.psa_dboard.start_date::psa_dboard_start_date;
+  out0.psa_dboard.end_date::psa_dboard_end_date;
+  out0.psa_dboard.src_env_sk::psa_dboard_src_env_sk;
+  out0.*::in0.*;
+
+end;

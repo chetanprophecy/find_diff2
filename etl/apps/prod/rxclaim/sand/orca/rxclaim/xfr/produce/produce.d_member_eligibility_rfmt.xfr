@@ -1,0 +1,21 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+type rec_t = record
+  string("\x01") carrier_id = NULL("");
+  string("\x01") account_id = NULL("");
+  string("\x01") employer_group_id = NULL("");
+  string("\x01") mbr_id = NULL("");
+end;
+
+out::reformat(in)=
+begin
+  let rec_t rec = [ record carrier_id string_lrtrim(in.carrier_id) account_id string_lrtrim(in.account_id) employer_group_id string_lrtrim(in.employer_group_id) mbr_id string_lrtrim(in.mbr_id) ];
+ 
+  let hash_key_combine_type dxf_hk = reinterpret(hash_value(rec, {carrier_id;account_id;employer_group_id;mbr_id}, "murmur"));
+  out.dxf_hk_part1 :: dxf_hk.dxf_hk_part1;
+  out.dxf_hk_part2 :: dxf_hk.dxf_hk_part2;
+  out.*            :1: string_lrtrim(in.(*, form == "string"));
+  out.*            :: in.*;
+
+
+end;

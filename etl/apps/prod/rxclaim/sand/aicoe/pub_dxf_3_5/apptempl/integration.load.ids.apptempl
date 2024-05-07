@@ -1,0 +1,545 @@
+<AppConfTempl name="Load IDS (Integration)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage><![CDATA[include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "/~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "/~$PUB_DXF_DML/generic_data_types.dml";
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+let string("")[]  word_vec = string_split_no_empty(appconf_name,".") ;
+     
+  out :1: if ( re_index(appconf_name, "[A-Z]") )
+    "This Load Configuration name must be all lowercase.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "load.ids_<datamart>." + " dataset    , where    dataset    \n" +
+    "must not contain a period (.).\n" +
+    "Please close and rename it.";
+  out :3: if ( not starts_with(appconf_name,word_vec[0]) )
+    "This application configuration must be named: " + "load" + " dataset  .\n" +
+    "Please close and rename it.";
+  out :4: if ( not starts_with(word_vec[1], "ids_") )
+    "DataMart name must be prefixed with ids: e.g ids_" + word_vec[1] + ".\n" +
+    "Please close and rename it.";
+  out :: "";
+end
+
+
+/* This function had to be added because some of the boolean graph parameters are being treated as
+   string by express it - probably a bug. This happens in some components and not in others.
+   */
+out :: is_false(str)=
+begin
+  out :: string_prefix(str, 1) member [vector "0", "F", "f"];
+end
+
+out :: is_true(str)=
+begin
+  out :: not is_false(str);
+end]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="load_icff" prototype_path="${AI_PSET}/load.icff.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="PUB_DATAHUB_DML" expression="$PUB_DATAHUB_DML"/>
+        <PdlExpression name="PUB_DXF_META" expression="$PUB_DXF_META"/>
+      </Pset>
+      <Pset name="maintenance" prototype_path="${PUB_DXF_MP}/icff.maintenance.mp" save_pset="false">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <Variable name="Notes" type="string"/>
+      <Variable name="big_datset" type="boolean"/>
+      <Variable name="override_ilm_name" type="boolean"/>
+      <Variable name="override_target_name" type="boolean"/>
+      <Variable name="reduced_dml_flds" type="string"/>
+      <Variable name="reduced_dml_error" type="string"/>
+      <Variable name="configuration_valid" type="string"/>
+      <ListVariable name="src_rank_override_files" type="string"/>
+    </Variables>
+    <SharedFile name="reduced_dml_file" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <InitialAssignments/>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/load.ids_" + proj.load_icff.APP_NM + "/" +  built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.load_icff" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in,"^load[.]","")</SourceValue>
+      <TargetValue reference="proj.load_icff.TARGET_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^load[.][^.]+[.]","")</SourceValue>
+      <TargetValue reference="proj.load_icff.ILM_NAME" property="constant_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(string_split(built_in, ".")[1], "_")[1]</SourceValue>
+      <TargetValue reference="proj.load_icff.APP_NM"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.load_icff.IS_WRITE_MFS_XREF_ICFF=="Y" or proj.load_icff.TRUNCATE_AND_LOAD member [vector "1", "True", "true"]) "True" else "False"</SourceValue>
+      <TargetValue reference="vars.big_datset"/>
+    </Assignment>
+    <Assignment name="Do NOT save maintenance pset. We will enable this once we decide to write maintenance pset from load ids template.">
+      <SourceValue is_expression="true">0</SourceValue>
+      <TargetValue reference="proj.maintenance" property="save_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.load_icff.TARGET_NAME"/>
+      <TargetValue reference="proj.maintenance.IDS_DATASET"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/icff.maintenance/icff.maintenance." + proj.maintenance.IDS_DATASET + ".pset"</SourceValue>
+      <TargetValue reference="proj.maintenance" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let string("") dml_file_reduced= proj.load_icff.PUB_DATAHUB_DML + "/" + proj.load_icff.SUBJECT_AREA +  "/" + proj.load_icff.SUBJECT_AREA  + "." + proj.load_icff.TARGET_ENTITY + ".reduced.dml" ;
+result:: if(proj.load_icff.IS_WRITE_REDUCED_DATASET == "True") dml_file_reduced else "";
+end</SourceValue>
+      <TargetValue reference="reduced_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let fld_vec = string_split_no_empty(vars.reduced_dml_flds, ",");
+result :: add_fields("record\nend", for(let f in record_info(proj.load_icff.TARGET_NK_DML)) : if(f.name member fld_vec) f);
+end</SourceValue>
+      <TargetValue reference="reduced_dml_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let string("")[int] fld_vec = record_info_item(expand_type(read_type(proj.load_icff.REDUCED_DATASET_DML)), "name");
+result :: if(vars.reduced_dml_flds != "" &amp;&amp; length_of(vector_difference([vector "dxf_hk_part1", "dxf_hk_part2", "src_env_sk", "ids_updt_dttm"], fld_vec)) &gt; 0 )
+              		"&lt;b&gt;&lt;font color='#ff0000'&gt; **Note: Please choose dxf_hk_part1, dxf_hk_part2, src_env_sk \nand ids_updt_dttm fields for reduced dml creation. ** &lt;/font&gt;&lt;/b&gt;"
+          	else "";
+end</SourceValue>
+      <TargetValue reference="vars.reduced_dml_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.load_icff.IS_WRITE_REDUCED_DATASET == "True" &amp;&amp; vars.reduced_dml_error != "") "Issue with reduced dml. Please check." else ""</SourceValue>
+      <TargetValue reference="vars.configuration_valid"/>
+    </Assignment>
+    <Assignment name="List source rank override files">
+      <SourceValue is_expression="true">begin
+  let dir = proj.load_icff.PUB_DXF_META + "/rank_overrides/";
+  let files = directory_listing(dir, "lookup.src_rank_overrides.*.dat", "file");
+
+  result :: vector_concat([vector (string("\x01"))""], for(let file in files): dir + file);
+end</SourceValue>
+      <TargetValue reference="vars.src_rank_override_files"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.load_icff"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Load ICFF</Label>
+      <Column>
+        <Box>
+          <Label>Application Configuration Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.errors"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors!=""</Visible>
+          <Width>400</Width>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <TextInput>
+                  <Label>ILM Name (Event File Identifier)</Label>
+                  <SourceTargetValue reference="proj.load_icff.ILM_NAME"/>
+                  <Enabled is_expression="true">vars.override_ilm_name</Enabled>
+                  <Width>400</Width>
+                </TextInput>
+                <Spacer>
+                  <Width>10%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <CheckBox>
+                  <Label>Override ILM Name</Label>
+                  <SourceTargetValue reference="vars.override_ilm_name"/>
+                  <Description>ILM Name is used in the name of event files. Override ILM Name if the same IDS target is being loaded from multiple sources.</Description>
+                </CheckBox>
+              </UIElements>
+              <HorizontalAlignment>left</HorizontalAlignment>
+            </HorizontalLayoutContainer>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <TextInput>
+                  <Label>IDS Dataset Name</Label>
+                  <SourceTargetValue reference="proj.load_icff.TARGET_NAME"/>
+                  <Enabled is_expression="true">vars.override_target_name</Enabled>
+                  <Width>400</Width>
+                </TextInput>
+                <Spacer>
+                  <Width>10%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <CheckBox>
+                  <Label>Override Target Name</Label>
+                  <SourceTargetValue reference="vars.override_target_name"/>
+                  <Description>Target Name is used to identify the IDS dataset and is also used in the name of the event files. Override Target name if you are loading an existing IDS target in multiple steps.</Description>
+                </CheckBox>
+              </UIElements>
+              <HorizontalAlignment>left</HorizontalAlignment>
+            </HorizontalLayoutContainer>
+            <Box>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">string_concat(proj.load_icff.APP_NM,".",proj.load_icff.ILM_NAME,".",proj.load_icff.TARGET_ENTITY,".insert.{RUN_ID}.dat.gz")</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">string_concat(proj.load_icff.APP_NM,".",proj.load_icff.ILM_NAME,".",proj.load_icff.TARGET_ENTITY,".update.{RUN_ID}.dat.gz")</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>IDS Event Files Names</Label>
+            </Box>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.errors==""</Visible>
+          <Width>700</Width>
+        </Box>
+        <Box>
+          <Label>Source System Ranking (Golden Source Rules)</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Source Ranking Overrides...</Label>
+              <Title/>
+              <UIElements>
+                <ComboBox>
+                  <Choices reference="vars.src_rank_override_files"/>
+                  <Label>Select from Available Files</Label>
+                  <SourceTargetValue reference="proj.load_icff.SRC_RANK_OVERRIDE_FILE" target_property="parameterized_path_expression"/>
+                  <ChoiceDisplayNames is_expression="true">for(let path in vars.src_rank_override_files): if(path == "") "(None)" else string_substring(path, string_rindex(path, "/")+1, 9999)</ChoiceDisplayNames>
+                </ComboBox>
+                <Popup>
+                  <Label>Compare Source Ranking Order</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">if(proj.load_icff.SRC_RANK_OVERRIDE_FILE == "")
+                      "Currently Using Original Source Rankings"
+                    else
+                      "Using Source Rank Overrides from:\n" + proj.load_icff.SRC_RANK_OVERRIDE_FILE.expression</Label>
+                    </TextLabel>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">begin
+  let string("\x01")[] file_lines = string_split_no_empty(read_file(proj.load_icff.PUB_DXF_META + "/lookup.src_envrt_id.txt"), "\n");
+  let ids_src_envrt_lookup_type[] recs = for(let line in file_lines): reinterpret(line);
+  recs = vector_sort(recs, {src_env_rnk});
+
+  result :: "&lt;b&gt;&lt;i&gt;By Original Ranks:&lt;/i&gt;&lt;/b&gt;\n" + string_join(for(let rec in recs): rec.src_env_nm, "\n");
+end</Label>
+                        </TextLabel>
+                        <TextLabel>
+                          <Label is_expression="true">"&lt;b&gt;&lt;i&gt;By Overridden Ranks:&lt;/i&gt;&lt;/b&gt;\n" + proj.load_icff.ACE_SRC_RANKINGS_OVERRIDDEN</Label>
+                        </TextLabel>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                  <Visible is_expression="true">proj.load_icff.SRC_RANK_OVERRIDE_FILE != ""</Visible>
+                </Popup>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <Popup>
+                  <Label>Source Details Captured in the System (Read-Only)</Label>
+                  <UIElements>
+                    <ViewData>
+                      <RecordFormat is_expression="true">add_fields('record end', record_info('include "$PUB_DXF_DML/generic_data_types.dml"; metadata type = ids_src_envrt_lookup_type;'))</RecordFormat>
+                      <SourceValue is_expression="true">proj.load_icff.PUB_DXF_META + "/lookup.src_envrt_id.txt"</SourceValue>
+                      <InitialHiddenFields>
+                        <ConstantValue>newline</ConstantValue>
+                        <ConstantValue>legacy_src_env_id</ConstantValue>
+                        <ConstantValue>legacy_bus_nm</ConstantValue>
+                      </InitialHiddenFields>
+                      <ReadOnly>true</ReadOnly>
+                    </ViewData>
+                    <TextLabel>
+                      <Label>Note: Data grid shows limited rows by default. Press geen arrow to pull more entries.</Label>
+                    </TextLabel>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">if(proj.load_icff.SRC_RANK_OVERRIDE_FILE == "")
+  "Currently Using Original Source Rankings"
+else
+  "&lt;b&gt;Using Source Rank Overrides from:&lt;/b&gt;\n" + proj.load_icff.SRC_RANK_OVERRIDE_FILE.expression</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Description>By default, the load process will use source system ranks from the master source system information file. Click below to pick one of the limited number of overrides defined centrally, to view and override these rankings.
+
+To get overrides added to the system, contact Ab Initio COE.</Description>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Loading Options</Label>
+          <UIElements>
+            <Box>
+              <UIElements>
+                <Popup>
+                  <Label>Optional: Pick Fact Data Paritioning Key</Label>
+                  <Title>Pick Fact Data Paritioning Key</Title>
+                  <UIElements>
+                    <FieldPicker>
+                      <IsKey>false</IsKey>
+                      <Label>Pick Fact Data Partitioning Key</Label>
+                      <RecordFormat reference="proj.load_icff.TARGET_DML"/>
+                      <SourceTargetValue reference="proj.load_icff.FACT_DATA_PARTITION_KEY"/>
+                    </FieldPicker>
+                  </UIElements>
+                  <Style>key</Style>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>Fact Data Partitioning Key</Label>
+              <Description>This key must be a date field on the basis of which FACT data files will be partitioned and created</Description>
+              <Visible is_expression="true">proj.load_icff.DATASET_IDENTIFIER == "many"</Visible>
+            </Box>
+            <Box>
+              <UIElements>
+                <CheckBox>
+                  <Label>IDS File contains Natural Key</Label>
+                  <SourceTargetValue reference="proj.load_icff.IS_IDS_DML_WITH_NK"/>
+                  <TrueValue>True</TrueValue>
+                  <FalseValue>False</FalseValue>
+                  <Description>Tick this checkbox if the IDS file has been created with NK in the ILM pset.</Description>
+                </CheckBox>
+                <TextLabel>
+                  <Label>&lt;b&gt;&lt;font color='#ff0000'&gt;Note: This option must always 
+be ticked for all new/future appconfs.&lt;/font&gt;&lt;/b&gt;</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>IDS with/without NK</Label>
+            </Box>
+            <Box>
+              <UIElements>
+                <CheckBox>
+                  <Label>Truncate and Load</Label>
+                  <SourceTargetValue reference="proj.load_icff.TRUNCATE_AND_LOAD"/>
+                  <TrueValue>True</TrueValue>
+                  <FalseValue>False</FalseValue>
+                  <Description>Tick this checkbox if the load mechanism of target table is "Truncate &amp; Load".
+Note: IDS files will not be deleted and re-created in this case, and CDC will carried out using XREF file.</Description>
+                </CheckBox>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>Truncate &amp; Load</Label>
+            </Box>
+            <Box>
+              <UIElements>
+                <CheckBox>
+                  <Label>Create Reduced Dataset</Label>
+                  <SourceTargetValue reference="proj.load_icff.IS_WRITE_REDUCED_DATASET"/>
+                  <FalseValue>False</FalseValue>
+                  <TrueValue>True</TrueValue>
+                  <Description>Tick this checkbox if you want to create a reduced ICFF lookup with fewer fields.
+Note: The DML of the reduced ICFF must already be present and the key field for this ICFF must be fixed length.</Description>
+                </CheckBox>
+                <TextLabel>
+                  <Label is_expression="true">vars.reduced_dml_error</Label>
+                  <Visible is_expression="true">(length_of(string_split_no_empty(vars.reduced_dml_flds, ",")) &gt; 0) &amp;&amp; vars.reduced_dml_error != ""</Visible>
+                </TextLabel>
+                <Popup>
+                  <Label>Select reduced dataset fields</Label>
+                  <Title/>
+                  <UIElements>
+                    <FieldPicker>
+                      <IsKey>false</IsKey>
+                      <Label>Select reduced dataset fields</Label>
+                      <RecordFormat is_expression="true">proj.load_icff.TARGET_NK_DML</RecordFormat>
+                      <SourceTargetValue reference="vars.reduced_dml_flds"/>
+                    </FieldPicker>
+                  </UIElements>
+                  <Visible is_expression="true">proj.load_icff.IS_WRITE_REDUCED_DATASET</Visible>
+                </Popup>
+                <Popup>
+                  <Label>Pick reduced dataset key</Label>
+                  <Title>Pick reduced dataset key</Title>
+                  <UIElements>
+                    <KeyPicker>
+                      <Label>Pick reduced dataset key</Label>
+                      <RecordFormat reference="reduced_dml_file"/>
+                      <SourceTargetValue reference="proj.load_icff.REDUCED_DATASET_ICFF_KEY"/>
+                    </KeyPicker>
+                  </UIElements>
+                  <Visible is_expression="true">(length_of(string_split_no_empty(vars.reduced_dml_flds, ",")) &gt; 0) &amp;&amp; vars.reduced_dml_error == ""</Visible>
+                  <Style>key</Style>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>Reduced Dataset</Label>
+            </Box>
+            <Box>
+              <Label>Suppress Event File Creation</Label>
+              <UIElements>
+                <CheckBox>
+                  <Label>Suppress Event Files Creation</Label>
+                  <SourceTargetValue reference="proj.load_icff.IS_SUPRESS_EVENT_FILES"/>
+                  <TrueValue>True</TrueValue>
+                  <FalseValue>False</FalseValue>
+                  <Description>This option will suppress event file creation and it should be used when you do not want to distribute the event files.</Description>
+                </CheckBox>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>Where IDS Dataset is Fact, or Like Fact.</Label>
+              <UIElements>
+                <CheckBox>
+                  <Label>Do CDC with Xref</Label>
+                  <SourceTargetValue reference="proj.load_icff.USE_XREF_FOR_CDC"/>
+                  <TrueValue>True</TrueValue>
+                  <FalseValue>False</FalseValue>
+                  <Description>This option is used to enable CDC operation to be carried out using XREF file.</Description>
+                </CheckBox>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">get_ids_table_properties(proj.load_icff.IDS_META_STRING).storage_type=="icff"</Visible>
+            </Box>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">vars.errors==""</Visible>
+          <Width>500</Width>
+          <Height>500</Height>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Move data from Main IDS to Archive IDS</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;IDS Retention Expression:&lt;/b&gt;\n" + proj.load_icff.IDS_DS_ARCHIVE_FILTER_EXPR</Label>
+              <Visible is_expression="true">proj.load_icff.IDS_DS_ARCHIVE_FILTER_EXPR != ""</Visible>
+            </TextLabel>
+            <Popup>
+              <Label>Edit/Apply IDS Retention Filter</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Expression Editor</Label>
+                  <RecordFormat reference="proj.load_icff.TARGET_NK_DML"/>
+                  <SourceTargetValue reference="proj.load_icff.IDS_DS_ARCHIVE_FILTER_EXPR"/>
+                  <Style>inner</Style>
+                </ExpressionEditor>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label>Record satisfying this expression will be retained during ICFF maintenance for Main IDS.</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible is_expression="true">vars.big_datset &amp;&amp;  vars.configuration_valid == ""</Visible>
+        </Box>
+        <Visible is_expression="true">vars.errors=="" &amp;&amp; vars.big_datset</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test</Label>
+          <UIElements>
+            <Popup>
+              <Label>Set Notes ..</Label>
+              <Title>Set Notes</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Notes</Label>
+                  <SourceTargetValue reference="vars.Notes"/>
+                </TextArea>
+              </UIElements>
+              <ButtonType/>
+              <Style>options</Style>
+            </Popup>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>5</Height>
+            </Spacer>
+            <TextLabel>
+              <Label><![CDATA[<b>Note:</b> You can only Run if someone has previously prepared the data (a.k.a split file) to be loaded.]]></Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Remember, save before you run.</Label>
+              <SourceValue reference="proj.load_icff"/>
+              <ButtonLabel>Run Load</ButtonLabel>
+            </ExecuteButton>
+            <Box>
+              <Label>Notes</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">vars.Notes</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>mainSource</Style>
+            </Box>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.errors == "" &amp;&amp; vars.configuration_valid == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Load Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.load_icff.PROJECT_DIR +"/" + proj.load_icff.relative_path )</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(read_file(proj.load_icff.PROJECT_DIR + "/" + proj.load_icff.relative_path))</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Reduced DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">proj.load_icff.REDUCED_DATASET_DML</Label>
+          <Width>1000</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">expand_type(read_type(proj.load_icff.REDUCED_DATASET_DML))</Label>
+          <Width>1000</Width>
+        </TextLabel>
+      </UIElements>
+      <Visible reference="proj.load_icff.IS_WRITE_REDUCED_DATASET"/>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

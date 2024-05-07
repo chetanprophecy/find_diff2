@@ -1,0 +1,690 @@
+/* Tests:
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'to_text(1)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'to_text((decimal("X"))1)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'to_text((date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'high_date()' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval '(datetime("YYYY-MM-DD HH24:MI:SS"))high_date()' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name(today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name((date("YYYY-MM-DD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name(now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((string(""))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((decimal(""))(string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((integer(4))(decimal(""))(string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD(2000)' -print-type # Expect NULL
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((datetime("HH24MISS"))now())' -print-type # Expect Type Failure.
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((string(""))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((decimal(""))(string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((integer(4))(decimal(""))(string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS(2000)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD_HHMMSS((date("YYYYMMDD"))today(), (decimal(""))(string(""))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null((string(""))NULL)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null("")' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null("  ")' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null(U"x")' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null((decimal(""))1)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_datetime(36000)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_datetime(36000.5)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_date(36000.5)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_date(0)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_date("")' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'excel_date(NULL)' -print-type
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 1)' -print-type # Returns NULL
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 2)' -print-type # Returns NULL
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 3)' -print-type # Returns 8A
+AB_INCLUDE_FILES="$PUB_DMF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 4)' -print-type # Returns NULL
+*/
+
+include "/~$AB_COMPONENTS/Interchange/Excel/excel_to_dml_date.xfr";
+include "/~$PUB_DXF_XFR/idw_custom_aes_encr.xfr"; 
+include "/~$PUB_DXF_XFR/idw_custom_ff3_encr.xfr"; 
+include "/~$PUB_DXF_XFR/bre_helper.map.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+integer(8) dxf_src_dataset_id :: create_src_dataset_id(decimal("|") bmdt = NULL, decimal("|") abtm = NULL) =
+begin
+  dxf_src_dataset_id :: (decimal("|"))string_concat(first_defined(string_lrtrim(bmdt + 19000000),"19000101"),first_defined((datetime("HH24MISS"))decimal_lpad((decimal(""))abtm,6),"000000"));
+end;
+
+
+
+/*@
+Name:excel_datetime
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:excel_dttm_nbr  BizComment:"The number produced by Excel for a date/time value."}
+]
+BizComment:"Returns the Date and Time that corresponds to the given Excel Date/Time Number.  Returns NULL for invalid or values <= 0."
+@*/
+out :: excel_datetime(decimal("") excel_dttm_nbr) =
+begin
+  out :: if ( is_valid(excel_dttm_nbr) and excel_dttm_nbr > 0 )
+    (datetime("YYYY-MM-DD HH24:MI:SS"))excel_to_dml_datetime2(excel_dttm_nbr, 0);
+end;
+
+/*@
+Name:excel_date
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:excel_dttm_nbr  BizComment:"The number produced by Excel for a date value."}
+]
+BizComment:"Returns the Date (only) that corresponds to the given Excel Date/Time Number.  Returns NULL for invalid or values <= 0."
+@*/
+out :: excel_date(decimal("") excel_dttm_nbr) =
+begin
+  out :: if ( is_valid(excel_dttm_nbr) and excel_dttm_nbr > 0 )
+    (date("YYYY-MM-DD"))excel_to_dml_date(excel_dttm_nbr);
+end;
+
+
+
+/*@
+Name:high_date
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[]
+BizComment:"Returns the highest allowed time, for example 9999-12-31 23:59:59."
+@*/
+out :: high_date() =
+begin
+  out :: (datetime("YYYY-MM-DD HH24:MI:SS"))$AI_MAX_DATETIME;
+end;
+
+
+/*@
+Name:low_date
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[]
+BizComment:"Returns the lowest allowed time, for example 1800-01-01 00:00:00."
+@*/
+out :: low_date() =
+begin
+  out :: (datetime("YYYY-MM-DD HH24:MI:SS"))$AI_MIN_DATETIME;
+end;
+
+
+//This function snippet was  modified by Mukesh Singh on 26-Nov-2016 to remove type info function.
+/*@
+Name:YYYYMMDD
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String, Number, Date or Time"}
+]
+BizComment:"Converts any value that is in the form YYYYMMDD to a date.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD_decimal(in) =
+begin
+  let string("") num = string_lrtrim((decimal(""))in);
+  out :: if ( string_length(num) == 8 )
+    (date("YYYYMMDD"))(string(""))num;
+end;
+
+out :: YYYYMMDD(in) =
+begin
+  let string("") num = string_lrtrim((decimal(""))in);
+  out :: if ( string_length(num) == 8 )
+    (date("YYYYMMDD"))(string(""))num;
+end;
+
+/*@
+Name:CYYMMDD
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String, Number"}
+]
+BizComment:"Converts any value that is in the form CYYMMDD to a date."
+@*/
+out :: CYYMMDD(in) =
+begin
+  let dteyyy=string_substring((string(""))in,1,3);
+  let dtemmdd=string_substring((string(""))in,4,4);
+
+  let dteyyyy=1900+((decimal(""))dteyyy);
+  
+  out :: (date("YYYYMMDD"))string_concat(string_lrtrim(dteyyyy),dtemmdd);
+end;
+
+
+/*@
+Name:HHMMSS
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String or Number"}
+]
+BizComment:"Converts any value that is in the form HHMMSS to a time.  If not in that form, returns NULL."
+@*/
+out :: HHMMSS(in) =
+begin
+  let decimal("") num = (long)(decimal(""))in;
+//write_to_log_file("/~stdout", num);
+  out :: if ( string_length(num) <= 6 )
+    (datetime("HH24MISS"))decimal_lpad(num, 6);
+end;
+
+/*@
+Name:YYYYMMDD_HHMMSS
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{Name:dt  BizComment:"String, Number, Date or Time"}
+{Name:tm  BizComment:"String or Number"}
+]
+BizComment:"Converts a date in YYYYMMDD form and a time that is in HHMMSS form to a date/time.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD_HHMMSS(dt, tm) =
+begin
+  out :: (datetime("YYYYMMDDHH24MISS"))string_concat(YYYYMMDD(dt), HHMMSS(tm));
+end;
+
+
+/*@
+Name:date_quarter_name
+BizReturnValueType:String
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Date  Name:in  BizComment:" Date or Time"}
+]
+BizComment:'Converts a date or datetime to "1st Quarter", etc.'
+@*/
+string("")
+out :: date_quarter_name(in) =
+begin
+  out :: switch ( date_month(in) )
+    case 1, 2, 3: "1st Quarter";
+    case 4, 5, 6: "2nd Quarter";
+    case 7, 8, 9: "3rd Quarter";
+    default: "4th Quarter";
+  end;
+end;
+
+
+/*@
+Name:to_text
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:Number  Name:number  BizComment:"The number to be converted to text."}
+]
+BizComment:"Returns text string that represents the given number."
+@*/
+out :: to_text(in) =
+begin
+  let decimal("") num = switch ( type_info(type_of(in)).form )
+    case "integer": in;
+    case "decimal", "string": string_lrtrim((decimal(""))in);
+    case "date": (string(""))(date("YYYYMMDD"))in;
+    default: force_error("Unexpected Type: " + type_of(in));
+  end;
+  out :: (string(""))num;
+end;
+
+
+/*@
+Name:trim_no_null
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:str  BizComment:"The string to be trimmed."}
+]
+BizComment:"Returns a left/right trimmed string, except that NULL or blanks return a single space."
+@*/
+out :: trim_no_null(str) =
+begin
+  out :1: if ( not is_blank(str) )
+    string_lrtrim(str);
+  out :: " ";
+end;
+
+
+/*@
+Name:seconds_to_time
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:in_sec  BizComment:"The time in seconds."}
+]
+BizComment:'Returns datetime("HH24MISS") for elapsed seconds.'
+@*/
+out :: seconds_to_time(in_sec) =
+begin
+  let decimal(6) ss    = in_sec ;
+  let decimal(2) tm_hh = decimal_truncate(in_sec/3600,0) - 0;
+  let decimal(2) tm_mi = decimal_truncate(in_sec/60,0) - (tm_hh * 60) ;
+  let decimal(4) tm_ss = in_sec   - (tm_mi * 60) ;
+  let string(2) str_hh = decimal_lpad(tm_hh,2) ;
+  let string(2) str_mi = decimal_lpad(tm_mi,2) ;
+  let string(2) str_ss = string_substring(tm_ss,3,2);
+  let string(6) tm_str = string_concat(string_substring(str_hh,1,2),string_substring(str_mi,1,2),str_ss);
+  let datetime("HH24MISS") tm = tm_str;
+  let null_or_invalid_time = tm;
+  null_or_invalid_time = "";
+
+  out :: if ( is_null(in_sec) or in_sec > 86400 or in_sec < 0 )
+             null_or_invalid_time
+         else
+             tm;
+end;
+
+
+/*@
+Name:get_error_code
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:error_code_list  BizComment:"The Error Code List to be parsed."}
+{BizType:Number  Name:pos              BizComment:"The offset within the list to fetch the Error Code from.  Starts from 1."}
+]
+BizComment:'Given an Error Code List and a Position (counting from 1), returns the nth Error Code from the list.  Note that "!" is handled specially and returns NULL.
+For example, given an Error Code List of "{1073,!,?},{1073,!,?},{25824,8A,?}", 1 returns NULL, 2 returns NULL, 3 returns "8A", and 4 or greater returns NULL.'
+@*/
+out :: get_error_code(error_code_list, pos) =
+begin
+  let error_code_group_vec = string_split(error_code_list, "},{");
+  let error_code_group = null_if_error(error_code_group_vec[pos - 1]);
+  let error_code_vec = string_split(error_code_group, ",");
+  let error_code = null_if_error(error_code_vec[1]);
+  
+  out :: if ( error_code != "!" )
+    error_code;
+end;
+
+/*@
+Name:trim_no_null_default
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:str  BizComment:"The string to be trimmed and hyphen assigned if null"}
+]
+BizComment:"Returns a left/right trimmed string, except that NULL or blanks return a single hyphen."
+@*/
+out :: trim_no_null_default(str) =
+begin
+  out :1: if ( not is_blank(str) )
+    string_lrtrim(str);
+  out :: "-";
+end;
+
+/*@
+Name:no_null_default_zero
+BizReturnValueType:Integer
+BizCategory:"Integer Functions"
+Arguments:[
+{BizType:Integer  Name:str  BizComment:"The value will be assigned zero incase of null"}
+]
+BizComment:"Returns a value, except that NULL or blanks return a zero."
+@*/
+out :: no_null_default_zero(intgr) =
+begin
+  out :1: if ( is_defined(intgr) )
+        intgr;
+  out :: 0;
+end;
+
+/*@
+Name:no_null_default_date
+BizReturnValueType:Date
+BizCategory:"Date Functions"
+Arguments:[
+{BizType:Date  Name:str  BizComment:"The function will be return default date incase of null"}
+]
+BizComment:"Returns a date, except that NULL or blanks return a default date 19000101."
+@*/
+out :: no_null_default_date( dt ) =
+begin
+  out :1: if ( is_valid(dt) and is_defined(dt) )
+         dt;
+  out :: (date("YYYYMMDD"))'19000101';
+end;
+
+
+out :: lookup_all(lookup_file, key) = 
+begin
+let count = lookup_count(lookup_file, key);
+out :: for(let i = 0, i<count) : lookup_next(lookup_file);
+end;
+
+
+//This function converts Julian date to date value and invalid date defaults to 19000101.
+/*@
+Name:YYYYMMDD
+BizReturnValueType:Date
+BizCategory:"Date Functions"
+Arguments:[
+{Name:dt  BizComment:"String, Number, Date"}
+]
+BizComment:"Returns a date, except that NULL or blanks return a default date 19000101."
+@*/
+
+out :: date_check( dt ) =
+begin
+ let string("") num = string_lrtrim((decimal(""))(string(""))dt);
+ out :1: if( string_length(num) member [vector 3, 4, 5, 6, 7] && is_valid( (date("YYYYMMDD")) string_lrtrim((string(""))(19000000 + (decimal(""))num)) ) )  (date("YYYYMMDD")) string_lrtrim((string(""))(19000000 + (decimal(""))num));
+ out :2: if( string_length(num) member [vector 8] && is_valid( (date("YYYYMMDD")) num ) ) (date("YYYYMMDD")) num;
+ out :: (date("YYYYMMDD"))'19000101';
+end;
+
+out :: time_check( tm ) =
+begin
+  let decimal("") num = (long)(decimal(""))tm;
+  out :: if( is_valid((datetime("HH24MISS"))decimal_lpad(num,6)) ) (datetime("HH24MISS"))decimal_lpad(num, 6) else (datetime("HH24MISS"))decimal_lpad("0", 6) ;
+end;
+
+/*@
+Name:asciival_32to126_range
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{Name:dt  BizComment:"String"}
+]
+BizComment:"Retain the characters in ascii range of 32-126"
+@*/
+out :: asciival_32to126_range( str ) =
+begin    
+        out :: string_filter(str,'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 !"#$%&()*+,-.//:;<=>?@{}[]\\_|~^\'`');
+end;
+
+
+/*@
+Name:dirname
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{Name:dt  BizComment:"String"}
+]
+BizComment:"Get the directory name from absolute path"
+@*/
+out :: dirname(filename) =
+begin
+  out :1: string_substring(filename, 1, string_rindex(filename, "/")-1);
+  out :2: filename;
+end;
+
+
+/*@
+Name:basename
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{Name:dt  BizComment:"String"}
+]
+BizComment:"Get the file basename from absolute path"
+@*/
+out :: basename(filename) =
+begin
+  out :1: string_substring(filename, string_rindex(filename, "/")+1, length_of(filename));
+  out :2: filename;
+end;
+
+  type contract_pbp = 
+       record
+          decimal("\x01",0) contract_pbp_sk = NULL("") /*BIGINT*/;
+          date("YYYYMMDD")("\x01") pdp_from_dt = NULL("") /*DATE*/;
+          date("YYYYMMDD")("\x01") pdp_thru_dt = NULL("") /*DATE*/;
+     end;
+/*@
+Name:sk_by_3_step_lookup
+BizReturnValueType:Decimal
+BizCategory:"Decimal Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The numeric value will passthrough"}
+]
+BizComment:"Returns decimal SK  fields After doing 3 step lookup"
+@*/
+out :: sk_by_3_step_lookup(key1,key2,key3,key4,key5,datefilled) =
+  begin
+     
+        let int v_pbp_sk=-1;
+        let   date("YYYYMMDD")  dtefilled=(date("YYYYMMDD"))(string("\x01"))datefilled; /*DECIMAL(8) NOT NULL*/
+        let int count;
+        let int count1;
+        let contract_pbp[int] v_cag= allocate_with_defaults();
+        let contract_pbp[int] v_cag_3= allocate_with_defaults();
+         let contract_pbp[int] v_cag_2 = allocate_with_defaults();
+          let contract_pbp[int] v_cag_1 = allocate_with_defaults();
+          let contract_pbp[int] v_cag_11 = allocate_with_defaults();
+        //let contract_pbp[int] v_cag_temp = allocate_with_defaults();
+        
+        if(length_of(v_cag)==0)
+        begin
+          if(lookup_match("d_contract_pb_cag", key1,key2,key3))
+                begin block threekeys_match_found
+                        count=lookup_count("d_contract_pb_cag", key1,key2,key3);
+                        v_cag_3=for (let int i=0, i<count): lookup_next("d_contract_pb_cag");                                                       
+                        
+                                for (let int j=0, j<length_of(v_cag_3))
+                                        begin
+                                        if( dtefilled >= v_cag_3[j].pdp_from_dt   and dtefilled <= v_cag_3[j].pdp_thru_dt )
+                                                begin               
+                                                        v_cag=vector_append(v_cag,v_cag_3[j]);
+                                                        
+                                                end
+                                      
+                                        end
+                  end block threekeys_match_found;
+               
+               
+               
+               
+            end  
+         
+        if(length_of(v_cag)==0)
+              begin
+                        if(lookup_match("d_contract_pb_cag", key1,key2,key4))
+                                begin block twokeys_match_found
+                                        count=lookup_count("d_contract_pb_cag", key1,key2,key4);
+                                        v_cag_2=for (let int i=0, i<count): lookup_next("d_contract_pb_cag");
+                                                for (let int j=0, j<length_of(v_cag_2))
+                                                        begin
+                                                                if( dtefilled >= v_cag_2[j].pdp_from_dt   and dtefilled <= v_cag_2[j].pdp_thru_dt )
+                                                                        begin               
+                                                                                v_cag=vector_append(v_cag,v_cag_2[j]);
+                                                                                
+                                                                                end
+                                                                               
+                                                                               
+                                                                        
+                                                                        
+                                
+                                                        end 
+                                                                            
+                                end block twokeys_match_found;
+                                
+                      if ((length_of(v_cag)==0) and lookup_match("d_contract_pb_c", key1,key5))
+                                begin block first_match_found
+                                        count=lookup_count("d_contract_pb_c", key1,key5);
+                                        v_cag_11=for (let int i=0, i<count): lookup_next("d_contract_pb_c");
+                                        for (let int j=0, j<length_of(v_cag_11))
+                                                        begin
+                                                                if( dtefilled >= v_cag_11[j].pdp_from_dt   and dtefilled <= v_cag_11[j].pdp_thru_dt )
+                                                                        begin               
+                                                                                v_cag=vector_append(v_cag,v_cag_11[j]);
+                                                                         
+                                                                        end
+                                                        end
+                end block first_match_found;
+                                                                      
+                end  
+                
+      if(length_of(v_cag)==0)
+                begin
+                        if (lookup_match("d_contract_pb_c", key1,key5))
+                                begin block match_found
+                                        count=lookup_count("d_contract_pb_c", key1,key5);
+                                        v_cag_1=for (let int i=0, i<count): lookup_next("d_contract_pb_c");
+                                        for (let int j=0, j<length_of(v_cag_1))
+                                                        begin
+                                                                if( dtefilled >= v_cag_1[j].pdp_from_dt   and dtefilled <= v_cag_1[j].pdp_thru_dt )
+                                                                        begin               
+                                                                                v_cag=vector_append(v_cag,v_cag_1[j]);
+                                                                        end
+                                                        end
+                end block match_found; 
+                
+ end 
+          
+                out :: if(length_of(v_cag)==0) -1 else  v_cag[length_of(v_cag)-1].contract_pbp_sk;// v_pbp_sk ;
+end; 
+
+type d_member_prior_auth =
+record
+integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+date("YYYYMMDD")("\x01") mpa_eff_dt = NULL("") /*DATE*/;
+date("YYYYMMDD")("\x01") mpa_thru_dt = NULL("") /*DATE*/;
+end;
+
+
+
+
+/*@
+Name:sk_by_3_step_lookup_auth
+BizReturnValueType:Decimal
+BizCategory:"Decimal Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The numeric value will passthrough"}
+]
+BizComment:"Returns decimal SK  fields After doing 3 step lookup"
+@*/
+out :: sk_by_3_step_lookup_auth(key1,key2,key3,key4,key5,key6,datefilled) =
+
+  begin
+
+        let int v_mpa_sk=-1;
+        let   date("YYYYMMDD")  dtefilled=(date("YYYYMMDD"))(string("\x01"))datefilled; /*DECIMAL(8) NOT NULL*/
+        let int count;
+        
+        let d_member_prior_auth[int] v_d_member_prior_auth = allocate_with_defaults();  
+         if(lookup_match("d_member_prior_auth_6key", key1,key2,key3,key4,key5,key6))
+                begin
+                        count=lookup_count("d_member_prior_auth_6key", key1,key2,key3,key4,key5,key6);
+                        v_d_member_prior_auth=for (let int i=0, i<count): lookup_next("d_member_prior_auth_6key");
+                end
+                     else if(lookup_match("d_member_prior_auth_5key", key1,key2,key4,key5,key6))
+                      begin
+                            count=lookup_count("d_member_prior_auth_5key", key1,key2,key4,key5,key6);
+                            v_d_member_prior_auth=for (let int i=0, i<count): lookup_next("d_member_prior_auth_5key");
+                      end
+                             else if (lookup_match("d_member_prior_auth_4key", key1,key4,key5,key6))
+                             begin
+                                   count=lookup_count("d_member_prior_auth_4key", key1,key4,key5,key6);
+                                   v_d_member_prior_auth=for (let int i=0, i<count): lookup_next("d_member_prior_auth_4key");
+                             end
+      
+
+           for (let int i=0, i<length_of(v_d_member_prior_auth))
+                begin
+                      if( dtefilled >= v_d_member_prior_auth[i].mpa_eff_dt and  dtefilled <= v_d_member_prior_auth[i].mpa_thru_dt )
+                          begin
+                                v_mpa_sk=v_d_member_prior_auth[i].dxf_sk;
+                          end
+                 end
+             out::v_mpa_sk;
+  end;
+
+
+/* interval lookup */
+
+type pbp_type = record
+  little endian integer(8) contract_pbp_sk   /*BIGINT NOT NULL*/;
+  date("YYYYMMDD") pdp_from_dt /*DATE NOT NULL*/;
+  date("YYYYMMDD") pdp_thru_dt   /*DATE NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) segment_id; 
+end ;
+
+let string(",") output_field = " " ;
+out :: interval_lookup(carrier_id,account_id,employer_group_id,fill_dt,output_field_required) =
+
+begin 
+let integer(2) match_count=0;
+
+let pbp_type pbp  = allocate_with_nulls();
+let pbp_type pbp_intermediate  = allocate_with_nulls();
+let decimal (",") out_contract_pbp_sk  = NULL ;
+let string (",") out_segment_id  = NULL ;
+output_field = output_field_required;
+
+match_count = lookup_count( "LKP:D_CONTRACT_PBP",carrier_id,account_id,employer_group_id );
+
+begin block exact_record_match
+for (let int k, k < match_count)
+                        begin 
+                                pbp_intermediate =  if (k==0) lookup_first("LKP:D_CONTRACT_PBP",carrier_id,account_id,employer_group_id) else 
+                                                                lookup_next("LKP:D_CONTRACT_PBP");
+                                 if (pbp_intermediate.pdp_from_dt <= fill_dt && pbp_intermediate.pdp_thru_dt>=fill_dt) 
+                                 begin
+                                        pbp = pbp_intermediate ;
+                                        exit  exact_record_match;
+                                 
+                                 end 
+                                 else pbp = allocate_with_nulls();
+                                 
+end 
+end block exact_record_match
+out_contract_pbp_sk = if ( pbp.contract_pbp_sk != 0  ) pbp.contract_pbp_sk else NULL ;
+out_segment_id = if ( !is_blank(pbp.segment_id))  pbp.segment_id else NULL   ;
+
+  out :: if (output_field == "contract_pbp_sk" ) out_contract_pbp_sk
+                else out_segment_id;
+end ;
+
+/* AWP interval lookup */
+
+type awp_pricing_type = record
+  date("YYYYMMDD")("\x01") cost_eff_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") cost_thru_dt = NULL("") /*DATE*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) unit_cost_amt = NULL("") /*DECIMAL(13,5)*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") src_add_ts = NULL("") /*TIMESTAMP(6)*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") src_chg_ts = NULL("") /*TIMESTAMP(6)*/;
+end ;
+
+let string(",") two_date_range = " " ;
+out :: awp_interval_lookup(productkey,cost_src_cd,cost_type_cd,src_env_sk,dtefilled,sbmt_dt, two_date_range) =
+
+begin 
+let decimal(20) match_count=0;
+
+let awp_pricing_type awp_pricing  = allocate_with_nulls();
+let awp_pricing_type awp_pricing_intermediate  = allocate_with_nulls();
+let decimal (",") out_unit_cost_amt  = NULL ;
+
+
+match_count = lookup_count( "d_product_unit_cost_pricing_reduced_lkp",productkey,cost_src_cd,cost_type_cd,src_env_sk);
+
+begin block exact_record_match
+for (let int k, k < match_count)
+                        begin 
+                                awp_pricing_intermediate =  if (k==0) lookup_first("d_product_unit_cost_pricing_reduced_lkp",productkey,cost_src_cd,cost_type_cd,src_env_sk) 
+                                                            else 
+                                                            lookup_next("d_product_unit_cost_pricing_reduced_lkp");
+								if ( two_date_range == 'true')
+									if (awp_pricing_intermediate.cost_eff_dt <= dtefilled && awp_pricing_intermediate.cost_thru_dt>=dtefilled && awp_pricing_intermediate.src_add_ts<=sbmt_dt && awp_pricing_intermediate.src_chg_ts>=sbmt_dt) 
+									begin
+										awp_pricing = awp_pricing_intermediate ;
+										exit  exact_record_match;
+                                 
+									end 
+									else awp_pricing = allocate_with_nulls();
+								 
+								 
+								else 
+																
+									if (awp_pricing_intermediate.cost_eff_dt <= dtefilled && awp_pricing_intermediate.cost_thru_dt>=dtefilled && (awp_pricing_intermediate.src_add_ts==awp_pricing_intermediate.src_chg_ts) && (sbmt_dt > awp_pricing_intermediate.src_add_ts))
+									begin
+										awp_pricing = awp_pricing_intermediate ;
+										exit  exact_record_match;
+																								
+									end 
+									else awp_pricing = allocate_with_nulls();
+																								
+end 
+end block exact_record_match
+out_unit_cost_amt = if ( awp_pricing.unit_cost_amt != 0  ) awp_pricing.unit_cost_amt else NULL ;
+
+  out :: out_unit_cost_amt;
+end ;

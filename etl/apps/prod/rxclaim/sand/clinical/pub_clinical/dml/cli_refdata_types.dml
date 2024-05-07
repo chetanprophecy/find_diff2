@@ -1,0 +1,911 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_refdata_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/11  Paul Thompson           Initial version (with a few types moved over from cli_msg_types.dml)
+ *  2016/08/24  Gaurav Mirje            added hash key fields in src_env_t, carrier_t, carrier_acct_t, cag_t 
+ *  2016/08/26  Sundari Kala            Un-commented cli_src_env of prescriber_alias_t  
+ *  2016/08/30  Sundari Kala            Added cli_prescriber_spclty_id in prescriber_spclty_t
+ *  2016/09/01  Sundari Kala            Added client_id,client_name in cag_t.
+ *                                      Added account_nm in carrier_acct_t.
+    2016/09/01  Gaurav Mirje            Removed hash key fields in src_env_t, carrier_t, carrier_acct_t, cag_t 
+ *  2016/09/01  Gaurav Mirje            Added phr_nm,phr_addr1_txt,phr_addr2_txt,phr_zip_cd,phr_city_nm,phr_st_cd in pharmacy_t.
+ *                                      Added npi_id,dea_id,pbr_addr1,pbr_addr2 in prescriber_t.
+ *  2016/10/01  Paul Thompson           General cleanup (mostly regarding src_env_id/cli_src_env_id).
+ *                                      Updated prescriber, pharmacy and product types regarding qlfr changes.
+ *  2016/10/07  Mohd Shadab             Added cli types(initial version) for ids phase2 files (rcprlp,rcmsip,rcicdp,rci10p,rcgelp)
+ *  2016/10/24  Chinmay Sahoo           Removed cli_cag_id from contract_pbp_t record type.
+ *  2017/02/22  Sundari Kala            Added phone_num field in cli pharmacy_t record type.
+ *  2017/07/14  Faizan Ahmad            Added additional fields to load data into c_drug_product table as part of rDUR relaese
+ *  2017/08/30  Suresh Potu 	        Added new fields for C_PHRMCY changes as part of NPP Phase 1
+ *  2017/09/05  Suresh Potu             Added pharmacy_relationship_t type for C_PHRMCY_RELTNSHP table as part of NPP Phase 1
+ *  2017/09/07  Priyanka Swain          Added pharmacy_suppl_identity_t type for C_PHRMCY_SUPPL_INFO table as part of NPP Phase 1
+ *  2017/09/14  Suresh Potu             Added payee_t type for C_PAYEE table as part of NPP Phase 1
+ *  2017/10/30  Manas Chhotray          Added rules_t type for Level 3 Opiod 
+ *  2017/11/01  Manas Chhotray          Renamed rules_t type to rule_t type for Level 3 Opiod 
+ *  2017/11/01  Manas Chhotray          Renamed rule_criteria_desc to rule_criteria_descr in rule_t type for Level 3 Opiod 
+ *  2017/11/01  Manas Chhotray          Updated rule_t type for Level 3 Opiod 
+ *  2017/12/14  Sarani Bhattacharya     Added contract_pbp_t, added plan_eff_dt
+ 
+ ******************************************************************************************************************************************/
+                                                                                   
+include "~$PUB_CLINICAL_DML/cli_types.dml";                                        
+                                                                                   
+/*******************/                                                              
+/* Hierarchy Types */                                                              
+/*******************/                                                                
+                                                                                     
+type src_env_t =
+utf8 record
+  // Natural Key
+  cli_src_env_id_t                 src_env_id                 /* VARCHAR(4)  NOT NULL */;
+  
+  // Surrogate Key
+  cli_integer_id_t                 cli_src_env_id;
+  
+  // Data
+  string(int, maximum_length=50)   src_env_nm                 /* VARCHAR(50) NOT NULL */;
+  string(int, maximum_length=60)   legacy_bus_nm              /* VARCHAR(60) NOT NULL */;
+  
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type carrier_t =
+utf8 record
+  // Natural Key
+  cli_carrier_id_t                 carrier_id                 /* VARCHAR(30) NOT NULL */;
+  
+  // Surrogate Key
+  cli_integer_id_t                 cli_carrier_id;
+  
+  // Data
+  string(int, maximum_length=50)   carrier_nm         = NULL  /* VARCHAR(50) NOT NULL */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type carrier_acct_t =
+utf8 record
+  // Natural Key
+  cli_carrier_id_t                 carrier_id                 /* VARCHAR(30) NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id            /* VARCHAR(40) NOT NULL */;
+  
+  // Surrogate Key
+  cli_integer_id_t                 cli_carrier_id;
+  cli_integer_id_t                 cli_carrier_acct_id;
+  
+  // Data
+  string(int, maximum_length=50)   account_nm         = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type cag_t =
+utf8 record
+  // Natural Key
+  cli_carrier_id_t                 carrier_id                 /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id            /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id          /* VARCHAR(40)  NOT NULL */;
+  
+  // Surrogate Key
+  cli_integer_id_t                 cli_cag_id;
+  
+  // Hierarchical Surrogate Keys
+  cli_integer_id_t                 cli_carrier_id;
+  cli_integer_id_t                 cli_carrier_acct_id;
+  cli_integer_id_t                 cli_employer_group_id;
+  
+  // Data
+  cli_clt_id_t                     client_id          = NULL  /* VARCHAR(50)           */;
+  string(int, maximum_length=50)   client_nm          = NULL  /* VARCHAR(50)           */;
+  string(int, maximum_length=50)   employer_group_nm          /* VARCHAR(50)  NOT NULL */;
+  cli_contract_nbr_t               contract_nbr               /* VARCHAR(5)   NOT NULL */;
+  cli_pbp_id_t                     pbp_id                     /* VARCHAR(3)   NOT NULL */;
+
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)            */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)          */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)          */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type clt_t =
+utf8 record
+  string(int, maximum_length=50)   client_id          = NULL  /* VARCHAR(50)           */;
+  string(int, maximum_length=50)   client_nm          = NULL  /* VARCHAR(50)           */;
+  string(int, maximum_length=50)   legacy_bus_nm      = NULL  /* VARCHAR(50)           */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)            */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)          */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)          */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+//
+// TODO - Review this after we figure out Contract / PBP data coming in from IDS (PT/2016-10-01)
+//
+type contract_pbp_t =
+record
+  cli_carrier_id_t                 carrier_id         = NULL /* VARCHAR(30)           */;
+  cli_carrier_acct_id_t            carrier_acct_id    = NULL /* VARCHAR(40)           */;
+  cli_employer_group_id_t          employer_group_id  = NULL /* VARCHAR(40)           */;
+  
+  cli_contract_nbr_t               contract_nbr       = NULL /* VARCHAR(5)            */;
+  cli_pbp_id_t                     pbp_id             = NULL /* VARCHAR(3)            */;
+  cli_plan_cd_t                    plan_cd            = NULL /* VARCHAR(10)           */;
+  cli_date_t                       plan_eff_dt        = NULL /* DATE                  */;
+  
+  cli_date_t                       pdp_from_dt        = NULL /* DATE                  */;
+  cli_date_t                       pdp_thru_dt        = NULL /* DATE                  */;
+  cli_integer_t                    seq_nbr            = NULL /* INTEGER               */;
+  string(int, maximum_length=1)    pdp_stat_cd        = NULL /* CHAR(1)               */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+//
+// TODO - Review this after we figure out Plan data coming in from IDS (PT/2016-10-01)
+//
+
+type plan_t =
+record
+  cli_plan_cd_t                    plan_cd            = NULL  /* VARCHAR(10)          */;
+  cli_plan_type_id                 pln_type_id        = NULL  /* CHAR(1)              */;
+  cli_plan_qlfr_cd_t               pln_qlfr_cd        = NULL  /* VARCHAR(10)          */;
+  cli_date_t                       pln_eff_dt         = NULL  /* DATE                 */;
+  string(int, maximum_length=25)   pln_nm             = NULL  /* VARCHAR(25)          */;
+  cli_date_t                       pln_term_dt        = NULL  /* DATE                 */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+/*******************************/
+/* Drugs and GPIs and Products */
+/*******************************/
+
+type drug_t =
+record
+//
+// PT: We need to identify the natural key for this lookup  
+//
+  
+  string(int, maximum_length=30)   major_drug_grp     = NULL  /* VARCHAR(30)          */;
+  
+  string(int, maximum_length=2)    drug_grp_id        = NULL  /* VARCHAR(2)           */;
+  string(int, maximum_length=4)    drug_class_id      = NULL  /* VARCHAR(4)           */;
+  string(int, maximum_length=6)    drug_subclass_id   = NULL  /* VARCHAR(6)           */;
+  string(int, maximum_length=8)    drug_nm_id         = NULL  /* VARCHAR(8)           */;
+  string(int, maximum_length=10)   drug_nm_extn_id    = NULL  /* VARCHAR(10)          */;
+  
+  string(int, maximum_length=50)   drug_grp_desc      = NULL  /* VARCHAR(50)          */;
+  string(int, maximum_length=50)   drug_class_desc    = NULL  /* VARCHAR(50)          */;
+  string(int, maximum_length=100)  drug_subclass_desc = NULL  /* VARCHAR(100)         */;
+  string(int, maximum_length=100)  drug_nm_extn_desc  = NULL  /* VARCHAR(100)         */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type gpi_t =
+record
+  // Primary Key
+  cli_gpi_id_t                     gpi_id                     /* VARCHAR(14) NOT NULL */;
+  
+  string(int, maximum_length=2)    drug_grp_gpi_02_cd         /* VARCHAR(2)  NOT NULL */;
+  string(int, maximum_length=4)    drug_class_gpi_04_cd       /* VARCHAR(4)  NOT NULL */;
+  string(int, maximum_length=6)    drug_sub_class_gpi_06_cd   /* VARCHAR(6)  NOT NULL */;
+  string(int, maximum_length=8)    drug_bsic_nm_gpi_08_cd     /* VARCHAR(8)  NOT NULL */;
+  string(int, maximum_length=10)   drug_extd_nm_gpi_10_cd     /* VARCHAR(10) NOT NULL */;
+  string(int, maximum_length=12)   drug_dosag_frm_gpi_12_cd   /* VARCHAR(12) NOT NULL */;
+  
+  string(int, maximum_length=100)  gpi_nm             = NULL  /* VARCHAR(100)         */;
+  string(int, maximum_length=40)   drug_grp_nm        = NULL  /* VARCHAR(40)          */;
+  string(int, maximum_length=50)   drug_class_nm      = NULL  /* VARCHAR(50)          */;
+  string(int, maximum_length=60)   drug_sub_class_nm  = NULL  /* VARCHAR(60)          */;
+  string(int, maximum_length=70)   drug_bsic_nm       = NULL  /* VARCHAR(70)          */;
+  string(int, maximum_length=70)   drug_extd_nm       = NULL  /* VARCHAR(70)          */;
+  
+  cli_flag_t                       injctbl_ind_flg    = NULL  /* CHAR(1)              */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type product_t =
+record
+
+//
+// PT: We need to identify the natural key for this lookup?
+//
+  
+  cli_integer_id_t                 drug_product_id;
+  string(int, maximum_length=20)   product_id         = NULL  /* VARCHAR(20)          */;
+  cli_product_qlfr_cd_t            product_id_qlfr_cd = NULL  /* VARCHAR(2)           */;
+  
+   
+  string(int, maximum_length=70)   prod_nm            = NULL  /* VARCHAR(70)          */; // Added as part of rDUR requirement
+  string(int, maximum_length=8)    ahfs_cd            = NULL  /* VARCHAR(8)           */;
+  
+  //
+  // PT: I think we do not require most of the fields here.
+  // We need to decide how many we want to retain for our CLI lookup
+  //
+  
+//string(int, maximum_length=1)    drg_3rd_prty_excpn_ind  = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=4)    drg_clsfctn_cd          = NULL  /* VARCHAR(4)      */;
+//string(int, maximum_length=1)    drg_dea_cd              = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=80)   drg_drg_intrctn_desc    = NULL  /* VARCHAR(80)     */;
+  string(int, maximum_length=2)    drg_fda_thrpc_eqvlc_cd  = NULL  /* VARCHAR(2)      */; // Added as part of rDUR requirement
+//string(int, maximum_length=2)    drg_grp_cd              = NULL  /* VARCHAR(2)      */;
+  string(int, maximum_length=30)   drg_lbl_nm              = NULL  /* VARCHAR(30)     */;
+  cli_ind_t                        drg_maint_ind           = NULL  /* CHAR(1)         */;
+  string(int, maximum_length=1)    drg_multi_src_cd        = NULL  /* CHAR(1)         */;
+  string(int, maximum_length=10)   drg_mfrr_nm             = NULL  /* VARCHAR(10)     */; // Added as part of rDUR requirement
+  string(int, maximum_length=5)    drg_ndc_lblr_cd         = NULL  /* VARCHAR(5)      */;
+  string(int, maximum_length=2)    drg_ndc_pkg_cd          = NULL  /* VARCHAR(2)      */;
+  string(int, maximum_length=4)    drg_ndc_prod_cd         = NULL  /* VARCHAR(4)      */;
+//string(int, maximum_length=11)   drg_ndc_desc            = NULL  /* VARCHAR(11)     */;
+  string(int, maximum_length=1)    drg_rx_otc_ind          = NULL  /* CHAR(1)         */;
+  string(int, maximum_length=13)   drg_stat_cd             = NULL  /* VARCHAR(13)     */; // Added as part of rDUR requirement
+  decimal(12.3)                    drg_strngth_qty         = NULL  /* DECIMAL(11,3)   */;
+  string(int, maximum_length=10)   drg_strngth_uom_cd      = NULL  /* VARCHAR(10)     */;  // Added as part of rDUR requirement
+//string(int, maximum_length=6)    drg_sub_class_cd        = NULL  /* VARCHAR(6)      */;
+//string(int, maximum_length=1)    drg_unit_dose_use_ind   = NULL  /* CHAR(1)         */;
+//cli_integer_t                    gcn_nbr                 = NULL  /* INTEGER         */; // This seems like the wrong data type
+//cli_integer_t                    gcn_seq_nbr             = NULL  /* INTEGER         */;
+  string(int, maximum_length=1)    gnrc_mdspn_ind          = NULL  /* CHAR(1)         */; // Added as part of rDUR requirement
+//string(int, maximum_length=50)   gnrc_mdspn_ind_nm       = NULL  /* VARCHAR(50)     */;
+  string(int, maximum_length=60)   gnrc_nm                 = NULL  /* VARCHAR(60)     */; // Added as part of rDUR requirement
+  
+  cli_gpi_id_t                     gpi_id                  = NULL  /* VARCHAR(14)     */;
+  
+// I think the following fields can be dis-included in favour of the data in the gpi_t lookup
+  string(int, maximum_length=2)    drg_grp_gpi_02_cd       = NULL  /* VARCHAR(2)      */; // Added as part of rDUR requirement
+  string(int, maximum_length=4)    drg_class_gpi_04_cd     = NULL  /* VARCHAR(4)      */; // Added as part of rDUR requirement
+  string(int, maximum_length=6)    drg_sub_class_gpi_06_cd = NULL  /* VARCHAR(6)      */; // Added as part of rDUR requirement
+  string(int, maximum_length=8)    drg_bsic_nm_gpi_08_cd   = NULL  /* VARCHAR(8)      */; // Added as part of rDUR requirement
+  string(int, maximum_length=10)   drg_extd_nm_gpi_10_cd   = NULL  /* VARCHAR(10)     */; // Added as part of rDUR requirement
+  string(int, maximum_length=12)   drg_dosag_frm_gpi_12_cd = NULL  /* VARCHAR(12)     */; // Added as part of rDUR requirement
+ string(int, maximum_length=40)   drg_grp_nm              = NULL  /* VARCHAR(40)     */;
+  string(int, maximum_length=50)   drg_class_nm            = NULL  /* VARCHAR(50)     */; // Added as part of rDUR requirement
+  string(int, maximum_length=60)   drg_sub_class_nm        = NULL  /* VARCHAR(60)     */; // Added as part of rDUR requirement
+  string(int, maximum_length=70)   drg_bsic_nm             = NULL  /* VARCHAR(70)     */; // Added as part of rDUR requirement
+  string(int, maximum_length=70)   drg_extd_nm             = NULL  /* VARCHAR(70)     */; // Added as part of rDUR requirement
+ string(int, maximum_length=4)    drg_dosag_frm_id        = NULL  /* VARCHAR(4)      */;
+  
+//ids_sk_t                         dise_cat_sk             = NULL  /* BIGINT          */;
+  string(int, maximum_length=80)   dise_cat_nm             = NULL  /* VARCHAR(80)     */; // Added as part of rDUR requirement
+//ids_sk_t                         thrpc_class_sk          = NULL  /* BIGINT          */;
+  string(int, maximum_length=80)   thrpc_class_nm          = NULL  /* VARCHAR(80)     */;  // Added as part of rDUR requirement
+  string(int, maximum_length=2)    admin_route_cd          = NULL  /* VARCHAR(2)      */;  // Added as part of rDUR requirement
+  string(int, maximum_length=25)   ahfs_desc               = NULL  /* VARCHAR(25)     */;  // Added as part of rDUR requirement
+//string(int, maximum_length=5)    fdb_gcn_cd              = NULL  /* VARCHAR(5)      */;
+//cli_integer_t                    fdb_gcn_seq_nbr         = NULL  /* INTEGER         */;
+//string(int, maximum_length=8)    etc_id_fpe_desc         = NULL  /* VARCHAR(8)      */;
+//string(int, maximum_length=8)    dflt_etc_id_fpe_desc    = NULL  /* VARCHAR(8)      */;
+  
+//cli_integer_t                    fdb_hicl_seq_nbr        = NULL  /* INTEGER         */;
+//cli_integer_t                    fdb_hic3_seq_nbr        = NULL  /* INTEGER         */;
+//string(int, maximum_length=3)    fdb_hic3_cd             = NULL  /* VARCHAR(3)      */;
+//cli_ind_t                        fdb_gen_prc_ind         = NULL  /* CHAR(1)         */;
+//cli_ind_t                        fdb_invtr_ind           = NULL  /* CHAR(1)         */;
+//cli_ind_t                        fdb_maint_drg_ind       = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=2)    fdb_expndd_orng_bk_cd   = NULL  /* VARCHAR(2)      */;
+//cli_ind_t                        fdb_gen_prc_spred_ind   = NULL  /* CHAR(1)         */;
+//cli_ind_t                        fdb_gen_thrpc_drg_ind   = NULL  /* CHAR(1)         */;
+//cli_ind_t                        fdb_gen_ind_ndc_lvl_ind = NULL  /* CHAR(1)         */;
+  
+  string(int, maximum_length=1)    brnd_nm_typ_cd          = NULL  /* CHAR(1)         */;  // Added as part of rDUR requirement
+//cli_ind_t                        spclty_prod_corp_ind    = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=35)   spclty_prod_corp_nm     = NULL  /* VARCHAR(35)     */;
+  cli_idntfn_cd_t                package_size_uom_cd     = NULL  /* VARCHAR(2)      */;
+  cli_integer_t                    package_qty             = NULL  /* INTEGER         */;
+  decimal(10.3)                  package_size            = NULL  /* DECIMAL(9,3)    */;
+  decimal(14.3)                    total_package_qty       = NULL  /* DECIMAL(13,3)   */;
+  cli_ind_t                      prd_repackage_ind       = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=1)    drug_efficacy_impl_cd   = NULL  /* CHAR(1)         */;
+//cli_flag_t                       fda_app_type_nda_flg    = NULL  /* CHAR(1)         */;
+//cli_flag_t                       fda_app_type_anda_flg   = NULL  /* CHAR(1)         */;
+//cli_flag_t                       fda_app_type_bla_flg    = NULL  /* CHAR(1)         */;
+//string(int, maximum_length=9)    drg_ndc_short_id        = NULL  /* VARCHAR(9)      */;
+//string(int, maximum_length=25)   drg_ndc_short_nm        = NULL  /* VARCHAR(25)     */;
+  cli_date_t                       drg_ndc_eff_dt          = NULL  /* DATE            */;  // Added as part of rDUR requirement
+  cli_date_t                       drg_ndc_term_dt         = NULL  /* DATE            */;  // Added as part of rDUR requirement
+//cli_flag_t                       current_flg             = NULL  /* CHAR(1)         */;
+//cli_integer_t                    rec_rank_nbr            = NULL  /* INTEGER         */;
+
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+/********************/
+/* Prescriber Types */
+/********************/
+
+type prescriber_t =
+utf8 record
+  cli_integer_id_t                 cli_prescriber_id;  
+  cli_string_t                     phy_pbr_key;
+  
+  //
+  // Note that there are a lot more prescriber data fields available in the CPP Inbound
+  // Extract from IDS that we can add to this as required. Note that some additional data
+  // fields may be required for Case Management or Fulfullment. Please see the following
+  // file to see what is available:
+  //
+  //     $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_prescriber_cli_in_t.dml
+  //
+
+// PT: I feel that these should not be preserved here. Instead, we should use DEA ID
+// and NPI ID from the Prescriber Alias lookup. After all, a prescriber can have multiple
+// DEA ID and NPI ID.
+
+  cli_dea_id_t                     dea_id             = NULL  /* VARCHAR(15)          */;
+  cli_npi_id_t                     npi_id             = NULL  /* VARCHAR(10)          */;
+  
+  cli_first_nm_t                   first_nm           = NULL  /* VARCHAR(25)          */;
+  cli_mid_init_nm_t                mid_init_nm        = NULL  /* CHAR(1)              */;
+  cli_last_nm_t                    last_nm            = NULL  /* VARCHAR(35)          */;
+  
+  cli_addr_t                       pbr_addr1          = NULL  /* VARCHAR(55)          */;
+  cli_addr_t                       pbr_addr2          = NULL  /* VARCHAR(55)          */;
+
+  cli_city_nm_t                    city_nm            = NULL  /* VARCHAR(30)          */;
+  cli_st_cd_t                      st_cd              = NULL  /* VARCHAR(3)           */;
+  string(int, maximum_length=15)   zip_cd             = NULL  /* VARCHAR(15)          */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+// PT - 2016-10-01 - changed qlfr and alias fields
+
+type prescriber_alias_t =
+utf8 record
+  cli_integer_id_t                 cli_prescriber_id;
+  
+  cli_prescriber_qlfr_cd_t         prescriber_qlfr_cd; // For use everywhere else in the code
+  cli_prescriber_qlfr_id_t         prescriber_qlfr_id; // For use ONLY mapping to IDS input data
+  cli_prescriber_alias_id_t        prescriber_alias_id;
+  
+  cli_st_cd_t                      st_cd                   = NULL /* VARCHAR(3)       */; // Sometimes part of the key?
+  
+//string(int, maximum_length=10)   phy_prescriber_key      = NULL /* VARCHAR(10)      */;
+//cli_stat_t                       prescriber_id_stat_cd   = NULL /* CHAR(1)          */;
+//string(int, maximum_length=100)  prescriber_id_qlfr_desc = NULL /* VARCHAR(100)     */;
+//cli_integer_t                    rec_rank_nbr            = NULL /* INTEGER          */;
+  
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+type prescriber_alias_vec_t = prescriber_alias_t[int];
+
+/******************/
+/* Pharmacy Types */
+/******************/
+
+type pharmacy_t =
+utf8 record
+  cli_pharmacy_id_t                pharmacy_id               /* VARCHAR(12)  NOT NULL */;
+  
+  //
+  // Note that there are a lot more pharmacy data fields available in the CPP Inbound
+  // Extract from IDS that we can add to this as required. Note that some additional data
+  // fields may be required for Case Management or Fulfullment. Please see the following
+  // file to see what is available:
+  //
+  //     $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_pharmacy_cli_in_t.dml
+  //
+  
+  cli_ncpdp_id_t                   ncpdp_id           = NULL /* VARCHAR(12)           */;
+  cli_npi_id_t                     npi_no             = NULL /* VARCHAR(10)           */;
+  string(int, maximum_length=60)   nm                 = NULL /* VARCHAR(60)           */;
+  cli_addr_t                       addr1_txt          = NULL /* VARCHAR(55)           */;
+  cli_addr_t                       addr2_txt          = NULL /* VARCHAR(55)           */;
+  cli_zip_t                        zip_cd             = NULL /* VARCHAR(15)           */;
+  cli_city_nm_t                    city_nm            = NULL /* VARCHAR(30)           */;
+  cli_decimal_t                    phone_num          = NULL;
+  cli_st_cd_t                      st_cd              = NULL /* VARCHAR(3)            */;
+  cli_eml_addr_t                   cntct_eml_txt      = NULL /* VARCHAR(80)           */;
+  cli_decimal_t                    fax_phone          = NULL;
+  cli_dispr_typ_cd_t               dispr_typ_cd       = NULL /* VARCHAR(200)          */;
+  cli_phr_store_no_t               phr_store_no       = NULL /* VARCHAR(200)          */;
+  cli_stat_ind_t                   stat_code          = NULL /* VARCHAR(200)          */;
+  cli_stat_ind_t                   stat_desc          = NULL /* VARCHAR(200)          */;
+  cli_phr_alt_nm                   phr_alt_nm         = NULL /* VARCHAR(200)          */;
+  cli_fed_lic_no_t                 fed_lic_no         = NULL /* VARCHAR(200)          */;
+  cli_st_lic_no_t                  st_lic_no          = NULL /* VARCHAR(200)          */;
+  cli_src_env_id_t                 src_env_id         = NULL  /* VARCHAR(4)           */;
+  cli_mcd_id_t                     mcd_id             = NULL  /* VARCHAR(200)         */;
+  cli_datetime_t                   ids_create_dttm    = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+// PT: This might be a useful way of viewing the different ID that can identify a pharmacy
+//type pharmacy_alias_t =
+//utf8 record
+//  cli_integer_id_t                 cli_pharmacy_id;
+//  cli_qlfr_cd_t                    pharmacy_id_qlfr_cd;
+//  cli_qlfr_pharmacy_id_t           pharmacy_id;
+//end;
+
+/*********************/
+/* Code and ID Types */
+/**********************/
+
+type ahfs_t =
+record
+  string(int, maximum_length=8)    ahfs_cd                          /* VARCHAR(8)  NOT NULL */;
+  string(int, maximum_length=100)  ahfs_cd_desc             = NULL  /* VARCHAR(100)         */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type claim_stat_t =
+record
+  string(int, maximum_length=1)    claim_stat_grp_id                /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=1)    claim_stat_id            = NULL  /* CHAR(1)              */;
+  string(int, maximum_length=50)   claim_stat_desc          = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type compound_t =
+record
+  string(int, maximum_length=1)    compound_cd                      /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=50)   compound_cd_desc         = NULL  /* VARCHAR(50)          */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type days_of_supply_t =
+record
+  cli_integer_t                    days_of_supply_min       = NULL  /* INTEGER              */;
+  cli_integer_t                    days_of_supply_max       = NULL  /* INTEGER              */;
+  string(int, maximum_length=50)   orx_days_of_supply_desc  = NULL  /* VARCHAR(50)          */;
+  string(int, maximum_length=50)   ctrx_days_of_supply_desc = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type drug_maintenance_t =
+record
+  string(int, maximum_length=1)    drug_maint_cd                    /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=50)   drug_maint_desc          = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type drug_otc_indicator_t =
+record
+  string(int, maximum_length=1)    drug_rx_otc_ind                  /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=50)   drug_rx_otc_ind_desc     = NULL  /* VARCHAR(50)          */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type gender_t =
+record
+  string(int, maximum_length=1)    gender_cd                        /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=25)   gender_desc              = NULL  /* VARCHAR(25)          */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;  
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type member_type_t =
+record
+  string(int, maximum_length=1)    mbr_type_cd          /* CHAR(1)               */;
+  string(int, maximum_length=50)   mbr_type_desc = NULL /* VARCHAR(50)           */;
+
+  cli_integer_id_t                 cli_src_env_id   = NULL;
+  cli_datetime_t                   ids_create_dttm  = NULL       /* TIMESTAMP(6)  */;
+  cli_datetime_t                   ids_updt_dttm    = NULL        /* TIMESTAMP(6) */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd  = NULL;
+end;
+
+type prescriber_id_qlfr_t =
+record
+  //
+  // PT: The qlfr_id and qlfr_cd fields here do not make sense in regards to our prescriber_t
+  // and stuff. We should examine once we have real pharmacy claims and dimensions from IDS.
+  //
+  
+  cli_prescriber_qlfr_id_t         prescriber_id_qlfr_id            /* VARCHAR(2)  NOT NULL */;
+  cli_prescriber_qlfr_cd_t         prescriber_id_qlfr_cd            /* VARCHAR(3)  NOT NULL */;
+  string(int, maximum_length=50)   prescriber_id_qlfr_desc  = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type plan_qlfr_t =
+record
+  cli_plan_qlfr_cd_t               plan_qlfr_cd                     /* VARCHAR(10) NOT NULL */;
+  string(int, maximum_length=50)   plan_qlfr_desc           = NULL  /* VARCHAR(50)          */;
+  
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type plan_type_t =
+record
+  string(int, maximum_length=1)    plan_type_id                     /* CHAR(1)     NOT NULL */;
+  string(int, maximum_length=50)   plan_type_desc                   /* VARCHAR(50) NOT NULL */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type prescriber_spclty_t =
+record
+  cli_integer_id_t                 cli_prescriber_spclty_id; // Why is this here?
+  string(int, maximum_length=6)    prescriber_spclty_cd             /* VARCHAR(6)  NOT NULL */;
+  string(int, maximum_length=50)   prescriber_spclty_desc   = NULL  /* VARCHAR(50)          */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type product_qlfr_t =
+record
+  cli_product_qlfr_cd_t            product_id_qlfr_cd               /* VARCHAR(2)  NOT NULL */;
+  string(int, maximum_length=3)    product_id_qlfr_short_nm = NULL  /* VARCHAR(3)           */;
+  string(int, maximum_length=50)   product_id_qlfr_nm       = NULL  /* VARCHAR(50)          */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+type thrpc_class_t =
+record
+  string(int, maximum_length=80)   thrpc_class_nm                   /* VARCHAR(80) NOT NULL */;
+
+  cli_src_env_id_t                 src_env_id               = NULL  /* VARCHAR(4)           */;
+  cli_datetime_t                   ids_create_dttm          = NULL  /* TIMESTAMP(6)         */;
+  cli_datetime_t                   ids_updt_dttm            = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd          = NULL;
+end;
+
+/**************************/
+/* Lexus Nexis Prescriber */
+/**************************/
+
+type lexis_nexis_prescriber_t =
+record
+  cli_integer_id_t      cli_prescriber_id;
+  cli_string_t          vendor_id                        = NULL;
+  cli_string_t          presc_id_type                    = NULL;
+  cli_dea_id_t          dea_id                           = NULL;
+  cli_npi_id_t          npi_id                           = NULL;
+  cli_st_lic_nbr_t      st_lic_nbr                       = NULL;
+  cli_last_nm_t         last_nm                          = NULL;
+  cli_first_nm_t        first_nm                         = NULL;
+  cli_mid_init_nm_t     mid_init_nm                      = NULL;
+  cli_string_t          nm_title                         = NULL;
+  cli_string_t          degree1                          = NULL;
+  cli_string_t          degree2                          = NULL;
+  cli_string_t          spec_cd_1                        = NULL;
+  cli_string_t          spec_cd_2                        = NULL;
+  cli_string_t          taxonomy_cd_01                   = NULL;
+  cli_string_t          taxonomy_cd_02                   = NULL;
+  cli_string_t          taxonomy_cd_03                   = NULL;
+  cli_string_t          phone1                           = NULL;
+  cli_string_t          phone1_ext                       = NULL;
+  cli_string_t          phone2                           = NULL;
+  cli_string_t          phone2_ext                       = NULL;
+  cli_string_t          fax1                             = NULL;
+  cli_string_t          fax1_ext                         = NULL;
+  cli_addr_t            addr1                            = NULL;
+  cli_addr_t            addr2                            = NULL;
+  cli_string_t          suite                            = NULL;
+  cli_city_nm_t         city_nm                          = NULL;
+  cli_st_cd_t           st_cd                            = NULL;
+  cli_zip_t             zip                              = NULL;
+  cli_string_t          zip4                             = NULL;
+  cli_string_t          dob_year                         = NULL;
+  cli_date_t            npi_eff_dt                       = NULL;
+  cli_decimal_t         company_ct_addr                  = NULL;
+  cli_decimal_t         tier_type_id_addr                = NULL;
+  cli_string_t          verification_cd_addr             = NULL;
+  cli_date_t            verification_dt_addr             = NULL;
+  cli_decimal_t         company_ct_fax                   = NULL;
+  cli_decimal_t         tier_type_id_fax                 = NULL;
+  cli_string_t          verification_cd_fax              = NULL;
+  cli_date_t            verification_dt_fax              = NULL;
+  cli_boolean_t         dnc_list;
+  cli_boolean_t         rxsol_ok_to_fax;
+  cli_boolean_t         rxsol_ok_to_mail;
+  cli_string_t          phone1_formatted                 = NULL;
+  cli_string_t          phone2_formatted                 = NULL;
+  cli_string_t          fax1_formatted                   = NULL;
+  cli_string_t          address_line1_formatted          = NULL;
+  cli_string_t          address_line2_formatted          = NULL;
+  cli_string_t          full_name_formatted              = NULL;
+  cli_string_t          address_id                       = NULL;
+  cli_string_t          provider_display_nm              = NULL;
+  cli_string_t          address_label                    = NULL;
+  cli_string_t          fax_exclusion_reason_cd          = NULL;
+  cli_string_t          mail_exclusion_reason_cd         = NULL;
+  cli_boolean_t         safety_ok_to_fax;
+  cli_boolean_t         safety_ok_to_mail;
+  cli_string_t          safety_fax_exclusion_reason_cd   = NULL;
+  cli_string_t          safety_mail_exclusion_reason_cd  = NULL;
+  cli_date_t            cli_received_dt                  = NULL;
+  cli_stat_t            status                           = NULL;
+end;
+
+/**************************/
+/* Hospice */
+/**************************/
+type cli_6month_hospice_t     = record
+cli_hospice_month_year_t hospice_month_year = NULL;
+cli_boolean_t    hospice_flag = 0;
+end;
+
+type cli_6month_hospice_vec_t = cli_6month_hospice_t[int];
+
+type hospice_t =
+utf8 record
+  cli_integer_id_t                     cli_hospice_id          /* cli sk */;
+  cli_hicn_t                           cli_hicn                /* nk */;
+  cli_6month_hospice_vec_t             cli_6month_hospice     = allocate_with_defaults();
+  cli_boolean_t                        cli_hospice_flag       =0;
+end;
+
+/*ids to cli phase2 files cli types*/
+
+type grp_elig_t =
+record
+  cli_carrier_id_t          carrier_id                  /*VARCHAR(30) NOT NULL*/;
+  cli_carrier_acct_id_t     account_id                  /*VARCHAR(40) NOT NULL*/;
+  cli_employer_group_id_t   employer_group_id           /*VARCHAR(30) NOT NULL*/;
+  cli_integer_t             gel_seq_nbr                 /*INTEGER*/;
+  cli_flag_t                gel_status                  /*CHAR(1) NOT NULL*/;
+  cli_datetime_t            gel_eff_dt                  /*TIMESTAMP(6) NOT NULL*/;
+  cli_datetime_t            gel_thru_dt                 /*TIMESTAMP(6) NOT NULL*/;
+  cli_plan_cd_t             pln_cd                      /*VARCHAR(10) NOT NULL*/;
+  cli_datetime_t            pln_eff_dt                  /*TIMESTAMP(6) NOT NULL*/;
+  cli_datetime_t            ids_create_dttm = NULL("");
+  //string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  cli_datetime_t            ids_updt_dttm = NULL("");
+  //string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  ids_rec_stat_cd_t        ids_rec_stat_cd = NULL("");
+end;
+type grp_elig_vec_t = grp_elig_t;
+
+// Backwards compatibility (for now)
+type rcgelp_t = grp_elig_t;
+type rcgelp_vec_t = rcgelp_t[int];
+
+type icd9_t =
+record
+  string(int, maximum_length=20)    icd9_cd_int                 /*VARCHAR(20) NOT NULL*/;
+  string(int, maximum_length=20)    icd9_cd_ext                 /*VARCHAR(20) NOT NULL*/;
+  string(int, maximum_length=1)     icd9_cd_prefix              /*CHAR(1) NOT NULL*/;
+  string(int, maximum_length=4)     icd9_cd_core                /*VARCHAR(4) NOT NULL*/;
+  string(int, maximum_length=3)     icd9_cd_suffix              /*VARCHAR(3) NOT NULL*/;
+  string(int, maximum_length=50)    icd9_cd_nm                  /*VARCHAR(50) NOT NULL*/;
+  string(int, maximum_length=1)     icd9_stat_cd                /*CHAR(1) NOT NULL*/;
+  cli_datetime_t                    ids_create_dttm             = NULL("");
+  cli_datetime_t                    ids_updt_dttm               = NULL("");
+  ids_rec_stat_cd_t                 ids_rec_stat_cd             = NULL("");
+end;
+type icd9_vec_t = icd9_t[int];
+
+// Backwards compatibility (for now)
+type rcicdp_t = icd9_t;
+type rcicdp_vec_t = rcicdp_t[int];
+
+type icd10_t =
+record
+  string(int, maximum_length=1)       icd10_cd_type             /*CHAR(1) NOT NULL*/;
+  string(int, maximum_length=20)      icd10_cd_frmt             /*VARCHAR(20) NOT NULL*/;
+  string(int, maximum_length=20)      icd10_cd_unfrmt           /*VARCHAR(20) NOT NULL*/;
+  string(int, maximum_length=100)     icd10_cd_nm               /*VARCHAR(100) NOT NULL*/;
+  cli_flag_t                          icd10_stat_cd             /*CHAR(1) NOT NULL*/;
+  cli_datetime_t                      ids_create_dttm           = NULL("");
+  cli_datetime_t                      ids_updt_dttm             = NULL("");
+  ids_rec_stat_cd_t                   ids_rec_stat_cd           = NULL("");
+end;
+type icd10_vec_t = icd10_t[int];
+
+// Backwards compatibility (for now)
+type rci10p_t = icd10_t;
+type rci10p_vec_t = rci10p_t[int];
+
+type rcmsip_t =
+record
+  cli_mbr_id_t                                  mbr_id                          /*VARCHAR(20)*/;
+  cli_carrier_id_t                              carrier_id                      /*VARCHAR(30)*/;
+  cli_carrier_acct_id_t                         account_id                      /*VARCHAR(40)*/;
+  cli_employer_group_id_t                       employer_group_id               /*VARCHAR(30)*/;
+  cli_decimal_t                                 msi_seq_nbr                     /*INTEGER*/;
+  cli_flag_t                                    msi_stat_cd = NULL("")          /*CHAR(1)*/;
+  cli_date_t                                    msi_frm_dt =NULL("")            /*DATE*/;
+  cli_date_t                                    msi_thru_dt =NULL("")           /*DATE*/;
+  string(int, maximum_length=2)                 msi_suppl_id_type = NULL("")    /*VARCHAR(2)*/;
+  string(int, maximum_length=20)                msi_suppl_id = NULL("")         /*VARCHAR(20)*/;
+  string(int, maximum_length=20)                msi_free_txt = NULL("")         /*VARCHAR(20)*/;
+  // decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+  cli_src_env_id_t                              legacy_src_env_id              /*VARCHAR(4) NOT NULL*/; //need to check if we have to keep this or we need to remove
+  cli_datetime_t                                ids_create_dttm = NULL("");
+  //string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  cli_datetime_t                                ids_updt_dttm = NULL("");
+  //string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  ids_rec_stat_cd_t                             ids_rec_stat_cd = NULL("");
+ 
+end;
+type rcmsip_vec_t = rcmsip_t[int];
+
+type rcprlp_t =
+record
+  string(int, maximum_length=12)                phr_id                             /*VARCHAR(12)*/;
+  cli_decimal_t                                 phr_relshp_seq_no                  /*INTEGER*/;
+  string(int, maximum_length=6)                 phr_affl_cd             = NULL("") /*VARCHAR(6)*/;
+  string(int, maximum_length=12)                phr_pmt_cntr_id         = NULL("") /*VARCHAR(12)*/;
+  string(int, maximum_length=1)                 phr_relshp_stat_cd      = NULL("") /*CHAR(1)*/;
+  cli_date_t                                    phr_relshp_eff_dt       = NULL("") /*DATE*/;
+  cli_date_t                                    phr_relshp_thru_dt      = NULL("") /*DATE*/;
+  //cli_integer_id_t src_env_sk = NULL("")                                         /*BIGINT*/;
+  cli_src_env_id_t                              legacy_src_env_id                  /*VARCHAR(4) NOT NULL*/; //we may have to remove this 
+  cli_datetime_t                                ids_create_dttm         = NULL("");
+  //string(int, maximum_length=20)   ids_create_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  cli_datetime_t                                ids_updt_dttm           = NULL("");
+  //string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  //decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  ids_rec_stat_cd_t                              ids_rec_stat_cd        = NULL("");
+  
+end ;
+
+type rcprlp_vec_t = rcprlp_t[int];
+
+type pharmacy_relationship_t =
+utf8 record
+  cli_phrmcy_reltnshp_id_t         phrmcy_reltnshp_id;
+  cli_phr_id_t                     phrmcy_id;
+  cli_phr_relshp_seq_no_t          phrmcy_reltnshp_sequence_num;
+  cli_phr_affl_cd_t                phrmcy_afflt_cd = NULL("") /*VARCHAR2(6)*/;
+  cli_phr_pmt_cntr_id_t            phrmcy_pymt_ctr_id = NULL("") /*VARCHAR2(12)*/;
+  cli_phr_relshp_stat_cd_t         phrmcy_reltnshp_stts_cd = NULL("") /*CHAR(1)*/;
+  cli_phr_relshp_eff_dt_t          phrmcy_reltnshp_eff_dt = NULL("") /*DATE*/;
+  cli_phr_relshp_thru_dt_t         phrmcy_reltnshp_end_dt = NULL("") /*DATE*/;
+  cli_phr_relshp_cd_t              phrmcy_reltnshp_cd = NULL("") /*VARCHAR2(6)*/;
+  cli_phr_relshp_typ_cd_t          phrmcy_reltnshp_type_cd = NULL("") /*VARCHAR2(2)*/;
+  cli_phr_relshp_nm_t              phrmcy_reltnshp_name = NULL("") /*VARCHAR2(35)*/;
+  cli_phr_relshp_addr1_txt_t       phrmcy_reltnshp_addr_line_1 = NULL("") /*VARCHAR2(55)*/;
+  cli_phr_relshp_addr2_txt_t       phrmcy_reltnshp_addr_line_2 = NULL("") /*VARCHAR2(55)*/;
+  cli_phr_relshp_city_nm_t         city = NULL("") /*VARCHAR2(30)*/;
+  cli_phr_relshp_st_cd_t           st = NULL("") /*CHAR(2)*/;
+  cli_phr_relshp_zip_cd_t          zip_cd = NULL("") /*VARCHAR2(15)*/;
+  cli_phr_relshp_cntry_cd_t        cntry_cd = NULL("") /*VARCHAR2(4)*/;
+  cli_phr_relshp_mail_addr1_txt_t  mailg_addr_line_1 = NULL("") /*VARCHAR2(55)*/;
+  cli_phr_relshp_mail_addr2_txt_t  mailg_addr_line_2 = NULL("") /*VARCHAR2(55)*/;
+  cli_phr_relshp_mail_city_nm_t    mailg_addr_city = NULL("") /*VARCHAR2(30)*/;
+  cli_phr_relshp_mail_st_cd_t      mailg_addr_st = NULL("") /*CHAR(2)*/;
+  cli_phr_relshp_mail_zip1_cd_t    mailg_zip_cd = NULL("") /*VARCHAR2(5)*/;
+  cli_phr_relshp_mail_cntry_cd_t   mailg_cntry_cd = NULL("") /*VARCHAR2(4)*/;
+  cli_phr_relshp_cntct_nm_t        contact_name = NULL("") /*VARCHAR2(40)*/;
+  cli_phr_relshp_cntct_title_nm_t  contact_title_name = NULL("") /*VARCHAR2(30)*/;
+  cli_phr_relshp_phone_no_t        phone_num = NULL("") /*NUMBER(38)*/;
+  cli_phr_relshp_phone_ext_no_t    phone_extn_num = NULL("") /*NUMBER(38)*/;
+  cli_phr_relshp_fax_phone_t       fax_num = NULL("") /*NUMBER(38)*/;
+  cli_phr_relshp_cntct_email_txt_t contact_email = NULL("") /*VARCHAR2(80)*/;
+  cli_phr_affl_stat_cd_t           afflt_stts_cd = NULL("") /*CHAR(1)*/;
+  cli_phr_relshp_obsolete_dt_t     afflt_end_dt = NULL("") /*DATE*/;
+  cli_phr_relshp_parent_org_id_t   parent_org_id = NULL("") /*VARCHAR2(30)*/;
+  cli_datetime_t                   ids_create_dttm           = NULL("");
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type pharmacy_suppl_identity_t =
+utf8 record
+  cli_pharmacy_id_t                phrmcy_id;
+  cli_phrmcy_st_cd_t               phrmcy_st_cd;
+  cli_phrmcy_suppl_typ_t           phrmcy_suppl_type;
+  cli_phrmcy_suppl_id_t            phrmcy_suppl_id;
+  cli_datetime_t                   phrmcy_suppl_exp_dt = NULL("");
+  cli_datetime_t                   ids_create_dttm    = NULL("");
+  cli_datetime_t                   ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                ids_rec_stat_cd    = NULL;
+end;
+
+type payee_t =
+utf8 record
+  cli_payee_id_t                     payee_id /*VARCHAR(12) NOT NULL*/;                          
+  cli_sequence_num_t                 sequence_num /*INTEGER NOT NULL*/;
+  cli_payee_name_t                   payee_name = NULL("") /*VARCHAR(60) NOT NULL*/;      
+  cli_payee_short_name_t             payee_short_name = NULL("") /*VARCHAR(15) NOT NULL*/;
+  cli_payee_type_t                   payee_type = NULL("") /*CHAR(1) NOT NULL*/;
+  cli_member_payee_stts_t            member_payee_stts = NULL("") /*CHAR(1) NOT NULL*/; 
+  cli_pymt_addr_line_1_t             pymt_addr_line_1 = NULL("") /*VARCHAR(55) NOT NULL*/;
+  cli_pymt_addr_line_2_t             pymt_addr_line_2 = NULL("") /*VARCHAR(55) NOT NULL*/;
+  cli_pymt_addr_line_3_t             pymt_addr_line_3 = NULL("") /*VARCHAR(55) NOT NULL*/;
+  cli_pymt_city_t                    pymt_city = NULL("") /*VARCHAR(30) NOT NULL*/;         
+  cli_pymt_st_t                      pymt_st = NULL("") /*VARCHAR(2) NOT NULL*/;          
+  cli_pymt_zip_t                     pymt_zip = NULL("") /*VARCHAR(5) NOT NULL*/;           
+  cli_pymt_cntry_t                   pymt_cntry = NULL("") /*VARCHAR(4) NOT NULL*/;
+  cli_datetime_t                     ids_create_dttm    = NULL("");
+  cli_datetime_t                     ids_updt_dttm      = NULL  /* TIMESTAMP(6)         */;
+  ids_rec_stat_cd_t                  ids_rec_stat_cd    = NULL;
+end;
+
+
+
+type rule_t =
+record
+  cli_decimal_t            rule_id;
+  cli_string_t             template_type_cd;
+  cli_string_t             rule_num=NULL('');
+  cli_string_t             rule_cd=NULL('');
+  cli_string_t             rule_criteria=NULL('');
+  cli_string_t             rule_criteria_descr=NULL('');
+  cli_date_t               update_timestamp=NULL('');
+  cli_string_t             updated_by=NULL('');
+  cli_date_t               create_timestamp;
+  cli_string_t             created_by;
+end;
+type rule_vec_t = rule_t[int];

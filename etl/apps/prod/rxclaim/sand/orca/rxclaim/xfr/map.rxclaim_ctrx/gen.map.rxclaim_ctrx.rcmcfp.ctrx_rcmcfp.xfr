@@ -1,0 +1,138 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_rcmcfp.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_rcmcfp.hac4n1,'ctrx_rcmcfp.hac4n1',1,0]
+     [out0.ctrx_rcmcfp.haaacd,'ctrx_rcmcfp.haaacd',1,0]
+     [out0.ctrx_rcmcfp.hacrda,'ctrx_rcmcfp.hacrda',1,0]
+     [out0.ctrx_rcmcfp.haabcd,'ctrx_rcmcfp.haabcd',1,0]
+     [out0.ctrx_rcmcfp.hac2dt,'ctrx_rcmcfp.hac2dt',1,0]
+     [out0.ctrx_rcmcfp.haabtm,'ctrx_rcmcfp.haabtm',1,0]
+     [out0.ctrx_rcmcfp.haaecd,'ctrx_rcmcfp.haaecd',1,0]
+     [out0.ctrx_rcmcfp.haalvn,'ctrx_rcmcfp.haalvn',1,0]
+     [out0.ctrx_rcmcfp.habmdt,'ctrx_rcmcfp.habmdt',1,0]
+     [out0.ctrx_rcmcfp.hacsda,'ctrx_rcmcfp.hacsda',1,0]
+     [out0.ctrx_rcmcfp.haapcd,'ctrx_rcmcfp.haapcd',1,0]
+     [out0.ctrx_rcmcfp.haxch6,'ctrx_rcmcfp.haxch6',1,0]
+     [out0.ctrx_rcmcfp.haaevn,'ctrx_rcmcfp.haaevn',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_rcmcfp.haadvn,'ctrx_rcmcfp.haadvn',1,0]
+     [out0.ctrx_rcmcfp.src_env_sk,'ctrx_rcmcfp.src_env_sk',1,0]
+     [out0.ctrx_rcmcfp.hapnc2,'ctrx_rcmcfp.hapnc2',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_rcmcfp.haadcd,'ctrx_rcmcfp.haadcd',1,0]
+     [out0.ctrx_rcmcfp.haakdt,'ctrx_rcmcfp.haakdt',1,0]
+     [out0.ctrx_rcmcfp.hapmc2,'ctrx_rcmcfp.hapmc2',1,0]
+     [out0.ctrx_rcmcfp.haaccd,'ctrx_rcmcfp.haaccd',1,0]
+     [out0.ctrx_rcmcfp.habys2,'ctrx_rcmcfp.habys2',1,0]
+     [out0.ctrx_rcmcfp.halghb,'ctrx_rcmcfp.halghb',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_rcmcfp.haadtm,'ctrx_rcmcfp.haadtm',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_rcmcfp.haxeh6,'ctrx_rcmcfp.haxeh6',1,0]
+     [out0.ctrx_rcmcfp.haakvn,'ctrx_rcmcfp.haakvn',1,0]
+  ]
+  impacts:
+  [
+     [in0.haaacd,'haaacd',1,1]
+     [in0.hacsda,'hacsda',1,1]
+     [in0.haapcd,'haapcd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.haakdt,'haakdt',1,1]
+     [in0.hapnc2,'hapnc2',1,1]
+     [in0.haabcd,'haabcd',1,1]
+     [in0.haalvn,'haalvn',1,1]
+     [in0.haabtm,'haabtm',1,1]
+     [in0.hacrda,'hacrda',1,1]
+     [in0.hac2dt,'hac2dt',1,1]
+     [in0.hapmc2,'hapmc2',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.haakvn,'haakvn',1,1]
+     [in0.habmdt,'habmdt',1,1]
+     [in0.haaevn,'haaevn',1,1]
+     [in0.haadvn,'haadvn',1,1]
+     [in0.habys2,'habys2',1,1]
+     [in0.haxch6,'haxch6',1,1]
+     [in0.haxeh6,'haxeh6',1,1]
+     [in0.halghb,'halghb',1,1]
+     [in0.haadtm,'haadtm',1,1]
+     [in0.hac4n1,'hac4n1',1,1]
+     [in0.haaecd,'haaecd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.haadcd,'haadcd',1,1]
+     [in0.haaccd,'haaccd',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let string("\x01", maximum_length=18) ctrx_rcmcfp_haabcd = fail_if_error(in0.haabcd);
+let string("\x01", maximum_length=9) ctrx_rcmcfp_haaacd = fail_if_error(in0.haaacd);
+let string("\x01", maximum_length=15) ctrx_rcmcfp_haaccd = fail_if_error(in0.haaccd);
+let string("\x01", maximum_length=15) ctrx_rcmcfp_haadcd = fail_if_error(in0.haadcd);
+let decimal("\x01", maximum_length=7) ctrx_rcmcfp_hac4n1 = fail_if_error(in0.hac4n1);
+let decimal("\x01", maximum_length=9) ctrx_rcmcfp_hacrda = fail_if_error(in0.hacrda);
+let decimal("\x01", maximum_length=9) ctrx_rcmcfp_hacsda = fail_if_error(in0.hacsda);
+let string("\x01", maximum_length=1) ctrx_rcmcfp_habys2 = fail_if_error(in0.habys2);
+let string("\x01", maximum_length=15) ctrx_rcmcfp_halghb = fail_if_error(in0.halghb);
+let string("\x01", maximum_length=2) ctrx_rcmcfp_haxch6 = fail_if_error(in0.haxch6);
+let string("\x01", maximum_length=3) ctrx_rcmcfp_haxeh6 = fail_if_error(in0.haxeh6);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_hapmc2 = fail_if_error(in0.hapmc2);
+let string("\x01", maximum_length=6) ctrx_rcmcfp_haapcd = fail_if_error(in0.haapcd);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_haaecd = fail_if_error(in0.haaecd);
+let decimal("\x01", maximum_length=9) ctrx_rcmcfp_haakdt = fail_if_error(in0.haakdt);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_hapnc2 = fail_if_error(in0.hapnc2);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_haakvn = fail_if_error(in0.haakvn);
+let decimal("\x01", maximum_length=9) ctrx_rcmcfp_hac2dt = fail_if_error(in0.hac2dt);
+let decimal("\x01", maximum_length=8) ctrx_rcmcfp_haadtm = fail_if_error(in0.haadtm);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_haalvn = fail_if_error(in0.haalvn);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_haadvn = fail_if_error(in0.haadvn);
+let decimal("\x01", maximum_length=9) ctrx_rcmcfp_habmdt = fail_if_error(in0.habmdt);
+let decimal("\x01", maximum_length=8) ctrx_rcmcfp_haabtm = fail_if_error(in0.haabtm);
+let string("\x01", maximum_length=10) ctrx_rcmcfp_haaevn = fail_if_error(in0.haaevn);
+let decimal("\x01",0) ctrx_rcmcfp_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.ctrx_rcmcfp.haabcd::ctrx_rcmcfp_haabcd;
+  out0.ctrx_rcmcfp.haaacd::ctrx_rcmcfp_haaacd;
+  out0.ctrx_rcmcfp.haaccd::ctrx_rcmcfp_haaccd;
+  out0.ctrx_rcmcfp.haadcd::ctrx_rcmcfp_haadcd;
+  out0.ctrx_rcmcfp.hac4n1::ctrx_rcmcfp_hac4n1;
+  out0.ctrx_rcmcfp.hacrda::ctrx_rcmcfp_hacrda;
+  out0.ctrx_rcmcfp.hacsda::ctrx_rcmcfp_hacsda;
+  out0.ctrx_rcmcfp.habys2::ctrx_rcmcfp_habys2;
+  out0.ctrx_rcmcfp.halghb::ctrx_rcmcfp_halghb;
+  out0.ctrx_rcmcfp.haxch6::ctrx_rcmcfp_haxch6;
+  out0.ctrx_rcmcfp.haxeh6::ctrx_rcmcfp_haxeh6;
+  out0.ctrx_rcmcfp.hapmc2::ctrx_rcmcfp_hapmc2;
+  out0.ctrx_rcmcfp.haapcd::ctrx_rcmcfp_haapcd;
+  out0.ctrx_rcmcfp.haaecd::ctrx_rcmcfp_haaecd;
+  out0.ctrx_rcmcfp.haakdt::ctrx_rcmcfp_haakdt;
+  out0.ctrx_rcmcfp.hapnc2::ctrx_rcmcfp_hapnc2;
+  out0.ctrx_rcmcfp.haakvn::ctrx_rcmcfp_haakvn;
+  out0.ctrx_rcmcfp.hac2dt::ctrx_rcmcfp_hac2dt;
+  out0.ctrx_rcmcfp.haadtm::ctrx_rcmcfp_haadtm;
+  out0.ctrx_rcmcfp.haalvn::ctrx_rcmcfp_haalvn;
+  out0.ctrx_rcmcfp.haadvn::ctrx_rcmcfp_haadvn;
+  out0.ctrx_rcmcfp.habmdt::ctrx_rcmcfp_habmdt;
+  out0.ctrx_rcmcfp.haabtm::ctrx_rcmcfp_haabtm;
+  out0.ctrx_rcmcfp.haaevn::ctrx_rcmcfp_haaevn;
+  out0.ctrx_rcmcfp.src_env_sk::ctrx_rcmcfp_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,43 @@
+type cluster_details_t=
+record
+  string(int) name;
+  string(int) serial_node;
+  string(int)[int] mfs_nodes;
+end;
+
+out :: get_cluster_details_vec(cluster_list)=
+begin
+  let string("\x01")[] lines = re_split_no_empty(cluster_list, "[\r\n]+");
+  let cluster_details_t[] details = [vector];
+  lines = for(let line in lines): if(not starts_with(line, "#")) line;
+  for(let line in lines)
+  begin
+    let string("\x01")[] words = re_split_no_empty(line, "[ \t]+");
+    details = vector_append(details,
+                [record
+                  name          words[0]
+                  serial_node   words[1]
+                  mfs_nodes     string_split(string_filter_out(words[2], " "), ",")
+                ]);
+  end
+  out :: details;
+end;
+
+out :: get_serial_node(cluster_list, cluster)=
+begin
+  let details = get_cluster_details_vec(cluster_list);
+  out :: vector_select(details, [record name cluster serial_node "" mfs_nodes [vector]], {name})[0].serial_node;
+end;
+
+out :: get_mfs_nodes(cluster_list, cluster)=
+begin
+  let details = get_cluster_details_vec(cluster_list);
+  out :: vector_select(details, [record name cluster serial_node "" mfs_nodes [vector]], {name})[0].mfs_nodes;
+end;
+
+out :: get_all_cluster_names(cluster_list)=
+begin
+  let details = get_cluster_details_vec(cluster_list);
+  let names = for(let detail in details): detail.name;
+  out :: string_join(names, ",");
+end

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="TEMPLATE_CONFIG" description="This job extracts values from Appconfigs" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="37C86EA6-0475-47FC-8298-3DBC1DA51C6A" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="PST_VALUES_Extract" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_MP}/cpp_appconf_excel_pset_extract.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2018-03-18Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="14:15:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="7658A059-3E03-BBB1-65B1-3DB5BB4E9CE7"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

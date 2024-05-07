@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxstreamdls_l_codeset_value_to_the_l_codeset_value_ILM_documentation(in)=
+begin
+
+out0.cdset_value.codeset_val::depends_on(
+         in.codes00001_abdup1
+         );
+
+
+out0.cdset_value.codeset_val_desc::depends_on(
+         in.value00001
+         );
+
+
+out0.cdset_value.codeset_nm_desc::depends_on(
+         in.codes00002
+         );
+
+
+out0.cdset_value.codeset_disp_desc::depends_on(
+         in.displ00001
+         );
+
+
+out0.cdset_value.codeset_sort_order::depends_on(
+         in.sort_order
+         );
+
+
+out0.cdset_value.codeset_nm::depends_on(
+         in.codes00001
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxstreamdls_l_codeset_value_to_the_l_codeset_value_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.cdset_value.src_env_sk,'cdset_value.src_env_sk',1,0]
+     [out0.cdset_value.codeset_val,'cdset_value.codeset_val',1,0]
+     [out0.cdset_value.codeset_sk,'cdset_value.codeset_sk',1,0]
+     [out0.cdset_value.codeset_val_desc,'cdset_value.codeset_val_desc',1,0]
+     [out0.cdset_value.codeset_nm_desc,'cdset_value.codeset_nm_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.cdset_value.codeset_disp_desc,'cdset_value.codeset_disp_desc',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cdset_value.codeset_sort_order,'cdset_value.codeset_sort_order',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cdset_value.codeset_nm,'cdset_value.codeset_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.value00001,'value00001',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.displ00001,'displ00001',1,1]
+     [in0.sort_order,'sort_order',1,1]
+     [in0.codes00001,'codes00001',1,1]
+     [in0.codes00001_abdup1,'codes00001_abdup1',1,1]
+     [in0.codes00002,'codes00002',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cdset_value_codeset_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cdset_value_codeset_nm = fail_if_error(in0.codes00001);
+let string("\x01",charset="iso-8859-15", maximum_length=200) cdset_value_codeset_nm_desc = fail_if_error(in0.codes00002);
+let string("\x01",charset="iso-8859-15", maximum_length=15) cdset_value_codeset_val = fail_if_error(in0.codes00001_abdup1);
+let decimal("\x01",0) cdset_value_codeset_sort_order = fail_if_error(in0.sort_order);
+let string("\x01",charset="iso-8859-15", maximum_length=100) cdset_value_codeset_val_desc = fail_if_error(in0.value00001);
+let string("\x01",charset="iso-8859-15", maximum_length=100) cdset_value_codeset_disp_desc = fail_if_error(in0.displ00001);
+let decimal("\x01",0) cdset_value_src_env_sk = 685;
+
+
+
+  out0.cdset_value.codeset_sk::cdset_value_codeset_sk;
+  out0.cdset_value.codeset_nm::cdset_value_codeset_nm;
+  out0.cdset_value.codeset_nm_desc::cdset_value_codeset_nm_desc;
+  out0.cdset_value.codeset_val::cdset_value_codeset_val;
+  out0.cdset_value.codeset_sort_order::cdset_value_codeset_sort_order;
+  out0.cdset_value.codeset_val_desc::cdset_value_codeset_val_desc;
+  out0.cdset_value.codeset_disp_desc::cdset_value_codeset_disp_desc;
+  out0.cdset_value.src_env_sk::cdset_value_src_env_sk;
+  out0.*::in0.*;
+end;

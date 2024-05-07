@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcpdip_awp_lkp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name  Unqualified Table Name  Fields\nclmprdfil_bk1  rcpdip                  r0p2nb,r0oinb,r0hhqw\nclmprdext2_bk1 rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcpdip') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext2_bk1', 'clmprdext2_bk1.rcex1p')]
+DO_SOURCE||||0
+DO_LOOKUP||||0
+WHERE_CLAUSE||||WHERE rcpdip.r0p2nb=rcex1p.rxclaimnbr AND rcpdip.r0oinb=rcex1p.clmseqnbr  OPTIMIZE FOR ALL ROWS
+LOOKUP_FIELDS||||r0p2nb,r0oinb,r0hhqw,dxf_src_sys_id
+LOOKUP_KEY||||{r0p2nb; r0oinb;dxf_src_sys_id}
+DO_CLEAN||||1
+ABLOCAL_EXPR||||$[if((decimal("")) AI_MFS_ADHOC_DEPTH==4 ) \r\nstring_concat(' if (this_partition() == 0) ' , ' "MOD ( rcex1p.rxclaimnbr ,4 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rcex1p.rxclaimnbr ,4 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rcex1p.rxclaimnbr , 4 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rcex1p.rxclaimnbr , 4 ) = 3"\r\n   else "1 = 2" ' )\r\nelse if ( (decimal("")) AI_MFS_ADHOC_DEPTH==8  ) \r\n    string_concat(' if (this_partition() == 0) ' , ' "MOD ( rcex1p.rxclaimnbr ,8 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rcex1p.rxclaimnbr ,8 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rcex1p.rxclaimnbr , 8 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rcex1p.rxclaimnbr , 8 ) = 3"\r\n   else if (this_partition() == 4) "MOD( rcex1p.rxclaimnbr ,8 ) = 4"\r\n   else if (this_partition() == 5) "MOD(rcex1p.rxclaimnbr , 8 ) = 5"\r\n   else if (this_partition() == 6) "MOD( rcex1p.rxclaimnbr , 8 ) = 6"\r\n   else if (this_partition() == 7) "MOD( rcex1p.rxclaimnbr , 8 ) = 7"\r\n   else "1 = 2" ' )\r\n\r\nelse "" ]
+RUN_ID||||20210727151115
+SQL||||SELECT y.r0p2nb\n, y.r0oinb\n, y.r0hhqw\n, x.rxclaimnbr\n, x.clmseqnbr\n, x.claimsts\n, case when z.ahnehc is not null then y.r0hhqw else null end as awpunitcst\nfrom clmprdext2_bk1.rce12110 x join clmprdfil_bk1.rcpdip y on y.r0p2nb=x.rxclaimnbr and y.r0oinb = x.clmseqnbr \nleft join (select * from clmprdfil_bk1.rcdc6p where ahh6h9 = 'AWP' and ahh5h9 = 'MEDISPAN-P')z\non ((x.cltdccscid <> '*PHARMACY' and x.cltdccscid = z.ahnehc) or (x.cltdccscid = '*PHARMACY' and x.phrdccscid = z.ahnehc))\nwhere y.r0hhqw > 0\nand x.claimsts != 'R'\nand x.datesbm >= 20211103\n\nunion\n\nSELECT y.r0p2nb\n, y.r0oinb\n, y.r0hhqw\n, x.rxclaimnbr\n, x.clmseqnbr\n, x.claimsts\n, case when z.ahnehc is not null then y.r0hhqw else null end as awpunitcst\nfrom clmprdext2_bk1.rce12111 x join clmprdfil_bk1.rcpdip y on y.r0p2nb=x.rxclaimnbr and y.r0oinb = x.clmseqnbr \nleft join (select * from clmprdfil_bk1.rcdc6p where ahh6h9 = 'AWP' and ahh5h9 = 'MEDISPAN-P')z\non ((x.cltdccscid <> '*PHARMACY' and x.cltdccscid = z.ahnehc) or (x.cltdccscid = '*PHARMACY' and x.phrdccscid = z.ahnehc))\nwhere y.r0hhqw > 0\nand x.claimsts != 'R'\nand x.datesbm >= 20211103

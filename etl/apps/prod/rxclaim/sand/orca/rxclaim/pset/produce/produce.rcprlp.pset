@@ -1,0 +1,12 @@
+!prototype|P|||$PUB_DXF_MP/produce.mp
+INPUT_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/rcprlp.dat.gz
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_common/ids_common.rcprlp.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.ids_common/lookup.ids_common.rcprlp.dat
+OUTPUT_FILE_DML|$|||$AI_DML//lookup.ids_common/lookup.ids_common.rcprlp.dml
+RUN_ID||||$[(string(""))(datetime("YYYYMMDDHH24MISS"))now1()]
+USE_ROLLUP||||False
+USE_DEDUP||||True
+SORT_KEY||||{phr_id; src_env_sk; phr_relshp_thru_dt descending}
+LOOKUP_KEY||||{phr_id; src_env_sk; phr_relshp_thru_dt}
+FILTER_EXPR|$|||phr_relshp_stat_cd=='A'
+DEDUP_KEY||||{phr_id; src_env_sk}

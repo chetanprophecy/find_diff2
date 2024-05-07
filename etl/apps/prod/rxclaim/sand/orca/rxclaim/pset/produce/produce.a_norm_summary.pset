@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.a_norm_summary.ids_rxclaim.a_norm_summary.${RUN_ID}.dat.gz
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.a_norm_summary.dml
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+USE_NORM||||True
+NORM_XFR||||$AI_XFR/map.ids_rxclaim/map.ids_rxclaim.a_norm_summary.xfr
+SORT_KEY||||{claim_stat_id; norm_key; claim_stat_sk; sbm_mn_id; tier_level; compound_sk; drug_rx_otc_ind_sk; gnrc_ind_sk; gnrc_mdspn_ind_sk; daw_cd_sk; prod_sk; phr_disp_class; src_env_sk}
+USE_ROLLUP||||True
+ROLLUP_XFR||||$AI_XFR/aggregation/aggregate.a_norm_summary.xfr
+AB_CATALOG|$|||$AI_CAT/map.ids_rxclaim/map.ids_rxclaim.a_norm_summary.cat

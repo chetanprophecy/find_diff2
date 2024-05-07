@@ -1,0 +1,82 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=7)  m1urhj /*CHAR(7) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Medical Condition Cde"
+ BizComment:"The Medical Condition Code is a 7-digit number assigned to a unique medical condition.  The Medical Condition Code is not hierarchical-the hierarchy of medical conditions is supplied in the Medical Condition Classification Hierarchy File. The following codes in the Medical Condition Master File are reserved for some general cases applicable to this field: 0000000-None Use in associated databases when information relating to a medical medical condition does not exist. (For example, diarrhea due to Ceftin is not restricted to a certain population or medical condition.) 9999997-Unspecified Assigned in associated databases to represent situations for which as concept is not linked to a specific condition.  For example, the Therapeutic Range for digoxin (serum) is a 0.8 to 1.5 ng/ml for Congestive Heart Failure Medical Condition Code "95", and 3.0 or greater ng/ml for Unspecified Medical Condition Code "9999997". 9999998- Not Yet Available Medi-Span has not yet reviewed this drug. 9999999-Not Applicable Primarily used for devices and non-drug items.  It is used in associated databases when information relating to a medical condition is not appropriate or is beyond the scope of the associated databases.  (For example, insulin syringes, considered to be devices, are not expected to have adverse effects or indications.)"
+@*/;
+  string(unsigned integer(1),maximum_length=2)  m1w2ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Condition Type"
+ BizComment:"The Condition Type identifies the type of medical condition. The following are the current values: :P. :LINES.01-DISEASE 02-SIGN OR SYMPTOM 03-MICROORGANISM 04-POPULATION 05-PROCEDURE 06-AGE/GENDER PREDICTABLE 07-INACTIVE :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w3ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Classification Only"
+ BizComment:":LINES.The Classification Only Flag indicates whether the medical condition should be used to identify a patient's disease state.  In some instances, the medical condition can be too broad or too narrow in definition for practical use in describing the disease state.  The following are the current values: :ELINES. :P. :LINES.N-No Y-Yes :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w4ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Gender Code"
+ BizComment:":LINES.The Gender Code specifies whether the medical condition is restricted to gender.  The following are the current values: :ELINES. :P. :LINES.B-Both F-Female M-Male :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w5ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Pregnancy Code"
+ BizComment:":LINES.The Pregnancy Code specifies whether the medical condition is restricted to pregnant women.  These medical conditions only are found during pregnancy.  The following are the current values: :ELINES. :P. :LINES.N-Not Specific to Pregnancy Y-Specific to Pregnancy :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w6ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Lactation Code"
+ BizComment:":LINES.The Lactation Code specifies whether the medical condition is restricted to lactating women.  These medical conditions only are found during lactation.  The following are the current values: :ELINES. :P. :LINES.N-Not Specific to Lactation Y-Specific to Lactation :ELINES."
+@*/;
+  little endian integer(2)  m1ydhu /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 From Age"
+ BizComment:":LINES.The From Age field specifies the starting age in a range in which a medical condition appears in a patient.  The actual units are stored the Age Units Code. :ELINES. :P. :LINES.NOTE:  In medical conditions where no age specificity occurs,        this field is "000". :ELINES."
+@*/;
+  little endian integer(2)  m1yehu /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Thru Age"
+ BizComment:":LINES.The Thru Age field specifies the ending age in the range in which a medical condition appears in a patient. :ELINES. :P. :LINES.NOTE:  In medical conditions where no age specificity occurs,        this field is "000". :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w7ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Age Units Code"
+ BizComment:":LINES.The Age Units Code indicates the units in which ages are expressed. The following are the current values: :ELINES. :P. :LINES.*BLANK-Blank D-Days M-Months P-Post-conception/pre-birth W-Weeks Y-Years :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  m1w8ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Duration Code"
+ BizComment:":LINES.The Duration Code identifies the average duration of the medical condition.  The following are the current values:  :ELINES. :P. :LINES.01-Acute, short-term 02-Chronic, indefinitely 99-Not Applicable :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  m1w9ie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMC1P: MC1 Status"
+ BizComment:":LINES.Status of displayed record: :ELINES. :P. :LINES.A - Active I - Inactive :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  m1akvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMC1P: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  little endian integer(4)  m1c2dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMC1P: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  little endian integer(4)  m1adtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMC1P: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  m1alvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMC1P: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  m1advn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMC1P: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  m1bmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMC1P: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  m1abtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMC1P: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  m1aevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMC1P: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

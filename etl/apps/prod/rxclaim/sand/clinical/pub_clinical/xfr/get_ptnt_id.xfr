@@ -1,0 +1,80 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/cli_dml_defs.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/01/13  Mohd Shadab             generic lkp to fetch ptnt id using cagm hash
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";                               //to access mbr and mbr dtl lookups dmls
+
+
+
+
+type mbr_da_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  mbr_cagm_t            RecordFormat()           = allocate_with_nulls(); 
+ 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 1; 
+  int                    load_once()              = 1; 
+  
+  int                    direct_addressed()       = 1; 
+end;
+
+type mbr_cagm_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  mbr_cagm_lkp_t            RecordFormat()       = allocate_with_nulls(); 
+  string('')             key()                    = {hash_key}; 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 1; 
+  int                    load_once()              = 1; 
+  int                    only_last_key_instance() = 0; 
+  int                    direct_addressed()       = 0; 
+end;
+
+//define global variable to hold lookup template 
+
+let mbr_da_lukp_t G_LKUP_MBR       =allocate();
+let mbr_cagm_lukp_t G_LKUP_cagm  =allocate();
+
+//load function to load mbr data file 
+mbr_da_lukp_t out :: load_cagm_da_lkup() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/mbr_match_icff_mbr_cagm.lkp.gz");
+end;
+
+
+//load function to load secondery file of mbr direct address file having cagm hash code as a key
+mbr_cagm_lukp_t out :: load_cagm_lkup() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/mbr_match_icff_mbr_cagm_addr.lkp.gz",this_partition_path($PUB_CLINICAL_MFS)+"/mbr_match_icff_mbr_cagm_addr.idx");
+end;
+
+
+
+
+
+cli_integer_id_t out :: get_ptnt_id(hash_key_cagm) inline =
+begin
+  //fetch ptnt_id for this cagm
+  
+  let bc_lookup_address_type addr=allocate_with_defaults();
+  let cli_integer_t ptnt_id   =0;  
+  
+  if(lookup_not_loaded()==G_LKUP_MBR.id)   G_LKUP_MBR=load_cagm_da_lkup();
+  if(lookup_not_loaded()==G_LKUP_cagm.id) G_LKUP_cagm=load_cagm_lkup();
+  
+  
+  addr=lookup(G_LKUP_cagm,hash_key_cagm).addr;
+  ptnt_id      = lookup_local(G_LKUP_MBR,addr).ptnt_id;
+
+  out:: ptnt_id;
+
+end;

@@ -1,0 +1,125 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c050612_93e3_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_rsk_scr_ht.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_rsk_scr_ht.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_rsk_scr_ht.cpp_risk_scor_hist_id_sk,[transform],]
+  [out0.c_rsk_scr_ht.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_rsk_scr_ht.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_rsk_scr_ht.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member_reduced").dxf_sk']
+  [out0.c_rsk_scr_ht.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_rsk_scr_ht.prediction_type,'c_rsk_scr_ht.prediction_type',1,0]
+     [out0.c_rsk_scr_ht.member_id,'c_rsk_scr_ht.member_id',1,0]
+     [out0.c_rsk_scr_ht.cpp_create_ts,'c_rsk_scr_ht.cpp_create_ts',1,0]
+     [out0.c_rsk_scr_ht.cpp_update_ts,'c_rsk_scr_ht.cpp_update_ts',1,0]
+     [out0.c_rsk_scr_ht.patient_id,'c_rsk_scr_ht.patient_id',1,0]
+     [out0.c_rsk_scr_ht.acct_id,'c_rsk_scr_ht.acct_id',1,0]
+     [out0.c_rsk_scr_ht.cpp_risk_scor_hist_id_sk,'c_rsk_scr_ht.cpp_risk_scor_hist_id_sk',1,0]
+     [out0.c_rsk_scr_ht.risk_scor,'c_rsk_scr_ht.risk_scor',1,0]
+     [out0.c_rsk_scr_ht.emplyr_group_id,'c_rsk_scr_ht.emplyr_group_id',1,0]
+     [out0.c_rsk_scr_ht.src_env_sk,'c_rsk_scr_ht.src_env_sk',1,0]
+     [out0.c_rsk_scr_ht.drug_thrapy,'c_rsk_scr_ht.drug_thrapy',1,0]
+     [out0.c_rsk_scr_ht.prediction_dt,'c_rsk_scr_ht.prediction_dt',1,0]
+     [out0.c_rsk_scr_ht.risk_scor_hist_id,'c_rsk_scr_ht.risk_scor_hist_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_rsk_scr_ht.drug_class,'c_rsk_scr_ht.drug_class',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_rsk_scr_ht.carrier_id,'c_rsk_scr_ht.carrier_id',1,0]
+     [out0.c_rsk_scr_ht.cpp_updated_by,'c_rsk_scr_ht.cpp_updated_by',1,0]
+     [out0.c_rsk_scr_ht.cpp_member_sk,'c_rsk_scr_ht.cpp_member_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_rsk_scr_ht.cpp_created_by,'c_rsk_scr_ht.cpp_created_by',1,0]
+     [out0.c_rsk_scr_ht.src_name,'c_rsk_scr_ht.src_name',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.risk_scor,'risk_scor',1,1]
+     [in0.patient_id,'patient_id',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.risk_scor_hist_id,'risk_scor_hist_id',1,1]
+     ['lookup("c_member_reduced").dxf_sk','dxf_sk',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.prediction_type,'prediction_type',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.src_name,'src_name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.prediction_dt,'prediction_dt',1,1]
+     [in0.drug_thrapy,'drug_thrapy',1,1]
+     [in0.drug_class,'drug_class',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_rsk_scr_ht_cpp_risk_scor_hist_id_sk = -1;
+let decimal("\x01",0) c_rsk_scr_ht_risk_scor_hist_id = fail_if_error(in0.risk_scor_hist_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_rsk_scr_ht_src_name = fail_if_error(in0.src_name);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_rsk_scr_ht_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_rsk_scr_ht_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_rsk_scr_ht_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_rsk_scr_ht_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_rsk_scr_ht_patient_id = fail_if_error(in0.patient_id);
+let decimal("\x01",0) c_rsk_scr_ht_cpp_member_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_rsk_scr_ht_prediction_type = fail_if_error(in0.prediction_type);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rsk_scr_ht_prediction_dt = fail_if_error(in0.prediction_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_rsk_scr_ht_drug_class = fail_if_error(in0.drug_class);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_rsk_scr_ht_drug_thrapy = fail_if_error(in0.drug_thrapy);
+let decimal("\x01",0) c_rsk_scr_ht_risk_scor = fail_if_error(in0.risk_scor);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rsk_scr_ht_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_rsk_scr_ht_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rsk_scr_ht_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_rsk_scr_ht_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_rsk_scr_ht_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+c_rsk_scr_ht_cpp_member_sk=fail_if_error(first_defined(lookup("c_member_reduced",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_rsk_scr_ht.cpp_risk_scor_hist_id_sk::c_rsk_scr_ht_cpp_risk_scor_hist_id_sk;
+  out0.c_rsk_scr_ht.risk_scor_hist_id::c_rsk_scr_ht_risk_scor_hist_id;
+  out0.c_rsk_scr_ht.src_name::c_rsk_scr_ht_src_name;
+  out0.c_rsk_scr_ht.carrier_id::c_rsk_scr_ht_carrier_id;
+  out0.c_rsk_scr_ht.acct_id::c_rsk_scr_ht_acct_id;
+  out0.c_rsk_scr_ht.emplyr_group_id::c_rsk_scr_ht_emplyr_group_id;
+  out0.c_rsk_scr_ht.member_id::c_rsk_scr_ht_member_id;
+  out0.c_rsk_scr_ht.patient_id::c_rsk_scr_ht_patient_id;
+  out0.c_rsk_scr_ht.cpp_member_sk::c_rsk_scr_ht_cpp_member_sk;
+  out0.c_rsk_scr_ht.prediction_type::c_rsk_scr_ht_prediction_type;
+  out0.c_rsk_scr_ht.prediction_dt::c_rsk_scr_ht_prediction_dt;
+  out0.c_rsk_scr_ht.drug_class::c_rsk_scr_ht_drug_class;
+  out0.c_rsk_scr_ht.drug_thrapy::c_rsk_scr_ht_drug_thrapy;
+  out0.c_rsk_scr_ht.risk_scor::c_rsk_scr_ht_risk_scor;
+  out0.c_rsk_scr_ht.cpp_update_ts::c_rsk_scr_ht_cpp_update_ts;
+  out0.c_rsk_scr_ht.cpp_updated_by::c_rsk_scr_ht_cpp_updated_by;
+  out0.c_rsk_scr_ht.cpp_create_ts::c_rsk_scr_ht_cpp_create_ts;
+  out0.c_rsk_scr_ht.cpp_created_by::c_rsk_scr_ht_cpp_created_by;
+  out0.c_rsk_scr_ht.src_env_sk::c_rsk_scr_ht_src_env_sk;
+  out0.*::in0.*;
+
+end;

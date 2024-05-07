@@ -1,0 +1,724 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_prescriber_alias_lkp   */
+out0::bzt_3_6c54cc0a_57a4a6f8_6080_0(in0,in1,in2)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_prescriber_alias_stcd_lkp   */
+out0::bzt_2_6c54cc0a_57a4a6f8_6080_0(in0,in1,in2,in3)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias_stcd_lkp",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_f_cdur_overides_rcdpsp_rcdrdp_to_the_orx_f_cdur_overides_ILM_documentation(in)=
+begin
+
+out0.cdur_overrde.days_of_supply::depends_on(
+         in.dayssupply
+         );
+
+
+out0.mbr.employer_group_id::depends_on(
+         in.groupnbr,
+         in.claimsts,
+         in.groupid
+         );
+
+
+out0.cdur_overrde.sbm_yr::depends_on(
+         in.datesbm
+         );
+
+
+out0.cdur_overrde.clr_ingred_cost_paid::depends_on(
+         in.cltingrcst
+         );
+
+
+out0.cdur_overrde.claim_seq_nbr::depends_on(
+         in.clmseqnbr
+         );
+
+
+out0.cdur_overrde.app_sales_tax_paid::depends_on(
+         in.phrslstax
+         );
+
+
+out0.c_product.prod_id::depends_on(
+         in.d3p2nb,
+         in.claimsts,
+         in.d3oinb,
+         in.dxf_src_sys_id,
+         in.prod_id
+         );
+
+
+out0.product.prod_id_qlfr_cd::depends_on(
+         in.prodtypcde,
+         in.compoundcd
+         );
+
+
+out0.mbr.carrier_id::depends_on(
+         in.carrierid
+         );
+
+
+out0.d_carrier.carrier_id::depends_on(
+         in.carrierid
+         );
+
+
+out0.cag.account_id::depends_on(
+         in.accountid
+         );
+
+
+out0.cdur_overrde.carrier_id::depends_on(
+         in.carrierid
+         );
+
+
+out0.cdur_overrde.claim_stat_id::depends_on(
+         in.claimsts
+         );
+
+
+out0.pharmacy.phr_id::depends_on(
+         in.srvprovid
+         );
+
+
+out0.cdur_overrde.clr_patient_pay_amt::depends_on(
+         in.cltpatpay
+         );
+
+
+out0.cdur_overrde.clr_due_amt::depends_on(
+         in.cltdueamt
+         );
+
+
+out0.reject_cd1.rej_cd::depends_on(
+         in.rejcde1
+         );
+
+
+out0.sbm_date.cal_day_dt::depends_on(
+         in.datesbm
+         );
+
+
+out0.filled_date.cal_day_dt::depends_on(
+         in.dtefilled
+         );
+
+
+out0.cdur_overrde.filled_dt::depends_on(
+         in.dtefilled
+         );
+
+
+out0.cdur_overrde.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.cdur_overrde.cnflct_claim_seq_nbr::depends_on(
+         in.d3p2nb,
+         in.claimsts,
+         in.d3oinb,
+         in.dxf_src_sys_id,
+         in.d3irhr
+         );
+
+
+out0.c_product.prod_id_qlfr_cd::depends_on(
+         in.d3p2nb,
+         in.claimsts,
+         in.d3oinb,
+         in.prod_id_qlfr_cd,
+         in.dxf_src_sys_id
+         );
+
+
+out0.cdur_overrde.dur_sbm_srvc_cd_rslt::depends_on(
+         in.aolcst
+         );
+
+
+out0.reject_cd3.rej_cd::depends_on(
+         in.rejcde3
+         );
+
+
+out0.cdur_overrde.clr_dispensing_fee::depends_on(
+         in.cltdispfee
+         );
+
+
+out0.cdur_overrde.claim_nbr_encrp::depends_on(
+         in.rxclaimnbr
+         );
+
+
+out0.cdur_overrde.sbm_dt::depends_on(
+         in.datesbm
+         );
+
+
+out0.cdur_overrde.drug_quantity::depends_on(
+         in.decimalqty
+         );
+
+
+out0.cdur_overrde.clr_sales_tax_paid::depends_on(
+         in.cltslstax
+         );
+
+
+out0.cdur_overrde.dxf_sk::depends_on(
+         in.dxf_sk
+         );
+
+
+out0.cdur_overrde.dur_sbm_cd_cntr::depends_on(
+         in.aor5n2
+         );
+
+
+out0.reject_cd2.rej_cd::depends_on(
+         in.rejcde2
+         );
+
+
+out0.cdur_overrde.dur_sbm_coagent_qlfr::depends_on(
+         in.aoi2cj
+         );
+
+
+out0.cdur_overrde.account_id::depends_on(
+         in.accountid
+         );
+
+
+out0.cdur_overrde.sbm_mn::depends_on(
+         in.datesbm
+         );
+
+
+out0.cdur_overrde.pbr_sk::depends_on(
+         in.prescridql,
+         in.dxf_src_sys_id,
+         in.prsstate,
+         in.prescriber,
+         lookup("d_prescriber_alias_lkp",'keystr','keystr','keystr').pbr_sk                ,
+         lookup("d_prescriber_alias_stcd_lkp",'keystr','keystr','keystr','keystr').pbr_sk  
+         );
+
+
+out0.cdur_overrde.claim_nbr::depends_on(
+         in.rxclaimnbr
+         );
+
+
+out0.cdur_overrde.dur_sbm_prof_srvc_cd::depends_on(
+         in.aolbst
+         );
+
+
+out0.gpi.gpi_id::depends_on(
+         in.gpinumber
+         );
+
+
+out0.cdur_overrde.app_ingred_cost_paid::depends_on(
+         in.phringrcst
+         );
+
+
+out0.claim_stat.claim_stat_id::depends_on(
+         in.claimsts
+         );
+
+
+out0.cdur_overrde.dur_sbm_srvc_loe::depends_on(
+         in.aoi1cj
+         );
+
+
+out0.cdur_overrde.dxf_hk_part1::depends_on(
+         in.dxf_hk_part1
+         );
+
+
+out0.cdur_overrde.dxf_hk_part2::depends_on(
+         in.dxf_hk_part2
+         );
+
+
+out0.cdur_overrde.employer_group_id::depends_on(
+         in.groupnbr,
+         in.claimsts,
+         in.groupid
+         );
+
+
+out0.cag.employer_group_id::depends_on(
+         in.groupnbr,
+         in.claimsts,
+         in.groupid
+         );
+
+
+out0.cdur_overrde.app_dispensing_fee::depends_on(
+         in.phrdispfee
+         );
+
+
+out0.cdur_overrde.dur_sbm_srvc_cd_rsn::depends_on(
+         in.aolast
+         );
+
+
+out0.cdur_overrde.cnflct_claim_nbr::depends_on(
+         in.d3p2nb,
+         in.d3iqhr,
+         in.claimsts,
+         in.d3oinb,
+         in.dxf_src_sys_id
+         );
+
+
+out0.cdur_overrde.app_patient_pay_amt::depends_on(
+         in.phrpatpay
+         );
+
+
+out0.cdur_overrde.app_due_amt::depends_on(
+         in.phrdueamt
+         );
+
+
+out0.mbr.account_id::depends_on(
+         in.accountid
+         );
+
+
+out0.cag.carrier_id::depends_on(
+         in.carrierid
+         );
+
+
+out0.product.prod_id::depends_on(
+         in.productid,
+         in.compoundcd
+         );
+
+
+out0.mbr.mbr_id::depends_on(
+         in.memberid
+         );
+
+
+out0.cdur_overrde.dur_sbm_coagent_id::depends_on(
+         in.aor7c4
+         );
+
+
+out0.cdur_overrde.cnflct_claim_stat_id::depends_on(
+         in.claimsts,
+         in.dxf_src_sys_id,
+         in.d3oinb,
+         in.d3p2nb
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_f_cdur_overides_rcdpsp_rcdrdp_to_the_orx_f_cdur_overides_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.cdur_overrde.days_of_supply,'cdur_overrde.days_of_supply',1,0]
+     [out0.cdur_overrde.cnflct_prod_sk,'cdur_overrde.cnflct_prod_sk',1,0]
+     [out0.cdur_overrde.carrier_sk,'cdur_overrde.carrier_sk',1,0]
+     [out0.mbr.employer_group_id,'mbr.employer_group_id',1,0]
+     [out0.cdur_overrde.sbm_yr,'cdur_overrde.sbm_yr',1,0]
+     [out0.cdur_overrde.clr_ingred_cost_paid,'cdur_overrde.clr_ingred_cost_paid',1,0]
+     [out0.cdur_overrde.filled_dt_sk,'cdur_overrde.filled_dt_sk',1,0]
+     [out0.cdur_overrde.claim_seq_nbr,'cdur_overrde.claim_seq_nbr',1,0]
+     [out0.cdur_overrde.rej_cd1_sk,'cdur_overrde.rej_cd1_sk',1,0]
+     [out0.cdur_overrde.cag_sk,'cdur_overrde.cag_sk',1,0]
+     [out0.cdur_overrde.app_sales_tax_paid,'cdur_overrde.app_sales_tax_paid',1,0]
+     [out0.c_product.prod_id,'c_product.prod_id',1,1]
+     [out0.product.prod_id_qlfr_cd,'product.prod_id_qlfr_cd',1,0]
+     [out0.mbr.carrier_id,'mbr.carrier_id',1,0]
+     [out0.d_carrier.carrier_id,'d_carrier.carrier_id',1,0]
+     [out0.cag.account_id,'cag.account_id',1,0]
+     [out0.cdur_overrde.carrier_id,'cdur_overrde.carrier_id',1,0]
+     [out0.cdur_overrde.claim_stat_id,'cdur_overrde.claim_stat_id',1,0]
+     [out0.cdur_overrde.gpi_sk,'cdur_overrde.gpi_sk',1,0]
+     [out0.pharmacy.phr_id,'pharmacy.phr_id',1,0]
+     [out0.cdur_overrde.clr_patient_pay_amt,'cdur_overrde.clr_patient_pay_amt',1,0]
+     [out0.cdur_overrde.clr_due_amt,'cdur_overrde.clr_due_amt',1,0]
+     [out0.reject_cd1.rej_cd,'reject_cd1.rej_cd',1,0]
+     [out0.sbm_date.cal_day_dt,'sbm_date.cal_day_dt',1,0]
+     [out0.filled_date.cal_day_dt,'filled_date.cal_day_dt',1,0]
+     [out0.cdur_overrde.filled_dt,'cdur_overrde.filled_dt',1,0]
+     [out0.cdur_overrde.src_env_sk,'cdur_overrde.src_env_sk',1,0]
+     [out0.cdur_overrde.cnflct_claim_seq_nbr,'cdur_overrde.cnflct_claim_seq_nbr',1,1]
+     [out0.c_product.prod_id_qlfr_cd,'c_product.prod_id_qlfr_cd',1,1]
+     [out0.cdur_overrde.dur_sbm_srvc_cd_rslt,'cdur_overrde.dur_sbm_srvc_cd_rslt',1,0]
+     [out0.reject_cd3.rej_cd,'reject_cd3.rej_cd',1,0]
+     [out0.cdur_overrde.clr_dispensing_fee,'cdur_overrde.clr_dispensing_fee',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cdur_overrde.claim_nbr_encrp,'cdur_overrde.claim_nbr_encrp',1,0]
+     [out0.cdur_overrde.sbm_dt,'cdur_overrde.sbm_dt',1,0]
+     [out0.cdur_overrde.drug_quantity,'cdur_overrde.drug_quantity',1,0]
+     [out0.cdur_overrde.clr_sales_tax_paid,'cdur_overrde.clr_sales_tax_paid',1,0]
+     [out0.cdur_overrde.dxf_sk,'cdur_overrde.dxf_sk',1,0]
+     [out0.cdur_overrde.dur_sbm_cd_cntr,'cdur_overrde.dur_sbm_cd_cntr',1,0]
+     [out0.reject_cd2.rej_cd,'reject_cd2.rej_cd',1,0]
+     [out0.cdur_overrde.dur_sbm_coagent_qlfr,'cdur_overrde.dur_sbm_coagent_qlfr',1,0]
+     [out0.cdur_overrde.account_id,'cdur_overrde.account_id',1,0]
+     [out0.cdur_overrde.sbm_mn,'cdur_overrde.sbm_mn',1,0]
+     [out0.cdur_overrde.pbr_sk,'cdur_overrde.pbr_sk',1,0]
+     [out0.cdur_overrde.claim_nbr,'cdur_overrde.claim_nbr',1,0]
+     [out0.cdur_overrde.dur_sbm_prof_srvc_cd,'cdur_overrde.dur_sbm_prof_srvc_cd',1,0]
+     [out0.cdur_overrde.sec_flg,'cdur_overrde.sec_flg',1,0]
+     [out0.gpi.gpi_id,'gpi.gpi_id',1,0]
+     [out0.cdur_overrde.claim_stat_sk,'cdur_overrde.claim_stat_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cdur_overrde.mbr_sk,'cdur_overrde.mbr_sk',1,0]
+     [out0.cdur_overrde.prod_sk,'cdur_overrde.prod_sk',1,0]
+     [out0.cdur_overrde.app_ingred_cost_paid,'cdur_overrde.app_ingred_cost_paid',1,0]
+     [out0.claim_stat.claim_stat_id,'claim_stat.claim_stat_id',1,0]
+     [out0.cdur_overrde.rej_cd2_sk,'cdur_overrde.rej_cd2_sk',1,0]
+     [out0.cdur_overrde.dur_sbm_srvc_loe,'cdur_overrde.dur_sbm_srvc_loe',1,0]
+     [out0.cdur_overrde.dxf_hk_part1,'cdur_overrde.dxf_hk_part1',1,0]
+     [out0.cdur_overrde.dxf_hk_part2,'cdur_overrde.dxf_hk_part2',1,0]
+     [out0.cdur_overrde.employer_group_id,'cdur_overrde.employer_group_id',1,0]
+     [out0.cag.employer_group_id,'cag.employer_group_id',1,0]
+     [out0.cdur_overrde.recent_clm_flg,'cdur_overrde.recent_clm_flg',1,0]
+     [out0.cdur_overrde.phr_sk,'cdur_overrde.phr_sk',1,0]
+     [out0.cdur_overrde.app_dispensing_fee,'cdur_overrde.app_dispensing_fee',1,0]
+     [out0.cdur_overrde.dur_sbm_srvc_cd_rsn,'cdur_overrde.dur_sbm_srvc_cd_rsn',1,0]
+     [out0.cdur_overrde.cnflct_claim_nbr,'cdur_overrde.cnflct_claim_nbr',1,1]
+     [out0.cdur_overrde.app_patient_pay_amt,'cdur_overrde.app_patient_pay_amt',1,0]
+     [out0.cdur_overrde.app_due_amt,'cdur_overrde.app_due_amt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.mbr.account_id,'mbr.account_id',1,0]
+     [out0.cag.carrier_id,'cag.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.product.prod_id,'product.prod_id',1,0]
+     [out0.mbr.mbr_id,'mbr.mbr_id',1,0]
+     [out0.cdur_overrde.dur_sbm_coagent_id,'cdur_overrde.dur_sbm_coagent_id',1,0]
+     [out0.cdur_overrde.cnflct_claim_stat_id,'cdur_overrde.cnflct_claim_stat_id',1,1]
+     [out0.cdur_overrde.sbm_dt_sk,'cdur_overrde.sbm_dt_sk',1,0]
+     [out0.cdur_overrde.rej_cd3_sk,'cdur_overrde.rej_cd3_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.rxclaimnbr,'rxclaimnbr',6,2]
+     [in0.clmseqnbr,'clmseqnbr',3,1]
+     [in0.rejcde1,'rejcde1',1,1]
+     [in0.prescridql,'prescridql',2,1]
+     [in0.aor7c4,'aor7c4',1,1]
+     [in0.rejcde2,'rejcde2',1,1]
+     [in0.aolbst,'aolbst',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.prod_id_qlfr_cd,'prod_id_qlfr_cd',1,1]
+     [in0.cltdispfee,'cltdispfee',1,1]
+     [in0.decimalqty,'decimalqty',1,1]
+     [in0.groupnbr,'groupnbr',3,3]
+     [in0.accountid,'accountid',3,3]
+     [in0.phringrcst,'phringrcst',1,1]
+     [in0.carrierid,'carrierid',4,4]
+     [in0.aolast,'aolast',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',5,9]
+     [in0.dtefilled,'dtefilled',2,2]
+     [in0.phrslstax,'phrslstax',1,1]
+     [in0.aoi2cj,'aoi2cj',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.prsstate,'prsstate',1,1]
+     [in0.groupid,'groupid',6,3]
+     [in0.cltdueamt,'cltdueamt',1,1]
+     [in0.prod_id,'prod_id',1,1]
+     [in0.phrpatpay,'phrpatpay',1,1]
+     [in0.prescriber,'prescriber',2,1]
+     [in0.cltingrcst,'cltingrcst',1,1]
+     [in0.aolcst,'aolcst',1,1]
+     [in0.srvprovid,'srvprovid',1,1]
+     [in0.d3oinb,'d3oinb',1,6]
+     [in0.dayssupply,'dayssupply',1,1]
+     [in0.cltslstax,'cltslstax',1,1]
+     [in0.prodtypcde,'prodtypcde',1,1]
+     [in0.cltpatpay,'cltpatpay',1,1]
+     [in0.productid,'productid',1,1]
+     [in0.phrdueamt,'phrdueamt',1,1]
+     [in0.d3irhr,'d3irhr',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.d3p2nb,'d3p2nb',1,6]
+     [in0.aoi1cj,'aoi1cj',1,1]
+     [in0.claimsts,'claimsts',10,10]
+     [in0.gpinumber,'gpinumber',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.d3iqhr,'d3iqhr',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.memberid,'memberid',1,1]
+     [in0.rejcde3,'rejcde3',1,1]
+     [in0.aor5n2,'aor5n2',1,1]
+     [in0.phrdispfee,'phrdispfee',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.compoundcd,'compoundcd',2,2]
+     [in0.datesbm,'datesbm',4,4]
+     ['lookup("d_prescriber_alias_stcd_lkp").pbr_sk','pbr_sk',1,1]
+     ['lookup("d_prescriber_alias_lkp").pbr_sk','pbr_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) cdur_overrde_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) cdur_overrde_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) cdur_overrde_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) cdur_overrde_cag_sk = -1;
+let decimal("\x01",0) cdur_overrde_phr_sk = -1;
+let decimal("\x01",0) cdur_overrde_prod_sk = -1;
+let decimal("\x01",0) cdur_overrde_mbr_sk = -1;
+let decimal("\x01",0) cdur_overrde_pbr_sk;
+let decimal("\x01",0) cdur_overrde_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cdur_overrde_carrier_id = fail_if_error(string_lrtrim(in0.carrierid));
+let string("\x01",charset="iso-8859-15", maximum_length=40) cdur_overrde_account_id = fail_if_error(string_lrtrim(in0.accountid));
+let string("\x01",charset="iso-8859-15", maximum_length=30) cdur_overrde_employer_group_id = fail_if_error((if (sql_and(is_blank(string_lrtrim(in0.groupid)),(string_lrtrim(in0.claimsts)!="R")))
+   string_lrtrim(in0.groupnbr)
+ else
+   string_lrtrim(in0.groupid)));
+let decimal("\x01",0) cdur_overrde_claim_nbr = fail_if_error(in0.rxclaimnbr);
+let decimal("\x01",0) cdur_overrde_claim_seq_nbr = fail_if_error(if(in0.clmseqnbr < 0) in0.clmseqnbr else (1000 - in0.clmseqnbr));
+let string("\x01",charset="iso-8859-15", maximum_length=1) cdur_overrde_claim_stat_id = fail_if_error(string_lrtrim(in0.claimsts));
+let decimal("\x01",0) cdur_overrde_claim_stat_sk = -1;
+let decimal("\x01",0) cdur_overrde_sbm_yr;
+let decimal("\x01",0) cdur_overrde_sbm_mn;
+let date("YYYYMMDD")("\x01") cdur_overrde_sbm_dt;
+let date("YYYYMMDD")("\x01") cdur_overrde_filled_dt;
+let decimal("\x01",0) cdur_overrde_sbm_dt_sk = -1;
+let decimal("\x01",0) cdur_overrde_filled_dt_sk = -1;
+let decimal("\x01",0) cdur_overrde_rej_cd1_sk = -1;
+let decimal("\x01",0) cdur_overrde_rej_cd2_sk = -1;
+let decimal("\x01",0) cdur_overrde_rej_cd3_sk = -1;
+let decimal("\x01",0) cdur_overrde_cnflct_claim_nbr;
+let decimal("\x01",0) cdur_overrde_cnflct_claim_seq_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=1) cdur_overrde_cnflct_claim_stat_id;
+let decimal("\x01",0) cdur_overrde_cnflct_prod_sk = -1;
+let decimal("\x01",0) cdur_overrde_dur_sbm_cd_cntr = fail_if_error(in0.aor5n2);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cdur_overrde_dur_sbm_srvc_cd_rsn = fail_if_error(in0.aolast);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cdur_overrde_dur_sbm_prof_srvc_cd = fail_if_error(in0.aolbst);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cdur_overrde_dur_sbm_srvc_cd_rslt = fail_if_error(in0.aolcst);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cdur_overrde_dur_sbm_srvc_loe = fail_if_error(in0.aoi1cj);
+let string("\x01",charset="iso-8859-15", maximum_length=20) cdur_overrde_dur_sbm_coagent_id = fail_if_error(in0.aor7c4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cdur_overrde_dur_sbm_coagent_qlfr = fail_if_error(in0.aoi2cj);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_app_ingred_cost_paid = fail_if_error(in0.phringrcst);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_app_dispensing_fee = fail_if_error(in0.phrdispfee);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_app_sales_tax_paid = fail_if_error(in0.phrslstax);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_app_patient_pay_amt = fail_if_error(in0.phrpatpay);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_app_due_amt = fail_if_error(in0.phrdueamt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_clr_ingred_cost_paid = fail_if_error(in0.cltingrcst);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_clr_dispensing_fee = fail_if_error(in0.cltdispfee);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_clr_sales_tax_paid = fail_if_error(in0.cltslstax);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_clr_patient_pay_amt = fail_if_error(in0.cltpatpay);
+let decimal("\x01".2, maximum_length=11, sign_reserved) cdur_overrde_clr_due_amt = fail_if_error(in0.cltdueamt);
+let decimal("\x01",0) cdur_overrde_days_of_supply = fail_if_error(in0.dayssupply);
+let decimal("\x01".3, maximum_length=13, sign_reserved) cdur_overrde_drug_quantity = fail_if_error(in0.decimalqty);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cdur_overrde_recent_clm_flg = "N";
+let decimal("\x01",0) cdur_overrde_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) cdur_overrde_carrier_sk = -1;
+let decimal("\x01",0) cdur_overrde_claim_nbr_encrp;
+let decimal("\x01",0) cdur_overrde_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_product_prod_id;
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_product_prod_id_qlfr_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_carrier_id = fail_if_error(string_lrtrim(in0.carrierid));
+let string("\x01",charset="iso-8859-15", maximum_length=40) cag_account_id = fail_if_error(string_lrtrim(in0.accountid));
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_employer_group_id = fail_if_error((if (sql_and(is_blank(string_lrtrim(in0.groupid)),(string_lrtrim(in0.claimsts)!="R")))
+   string_lrtrim(in0.groupnbr)
+ else
+   string_lrtrim(in0.groupid)));
+let string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_claim_stat_id = fail_if_error(string_lrtrim(in0.claimsts));
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_carrier_carrier_id = fail_if_error(string_lrtrim(in0.carrierid));
+let date("YYYYMMDD")("\x01") filled_date_cal_day_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_gpi_id = fail_if_error(string_lrtrim(in0.gpinumber));
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_carrier_id = fail_if_error(string_lrtrim(in0.carrierid));
+let string("\x01",charset="iso-8859-15", maximum_length=40) mbr_account_id = fail_if_error(string_lrtrim(in0.accountid));
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_employer_group_id = fail_if_error((if (sql_and(is_blank(string_lrtrim(in0.groupid)),(string_lrtrim(in0.claimsts)!="R")))
+   string_lrtrim(in0.groupnbr)
+ else
+   string_lrtrim(in0.groupid)));
+let string("\x01",charset="iso-8859-15", maximum_length=20) mbr_mbr_id = fail_if_error(string_lrtrim(in0.memberid));
+let string("\x01",charset="iso-8859-15", maximum_length=12) pharmacy_phr_id = fail_if_error(string_lrtrim(in0.srvprovid));
+let string("\x01",charset="iso-8859-15", maximum_length=20) product_prod_id = fail_if_error(if(string_lrtrim(in0.compoundcd)  member  [vector  "2", "9"]) "--" else string_lrtrim(in0.productid));
+let string("\x01",charset="iso-8859-15", maximum_length=2) product_prod_id_qlfr_cd = fail_if_error(if(string_lrtrim(in0.compoundcd) member  [vector  "2", "9"]) "--" else string_lrtrim(in0.prodtypcde));
+let string("\x01",charset="iso-8859-15", maximum_length=3) reject_cd1_rej_cd = fail_if_error(string_lrtrim(in0.rejcde1));
+let string("\x01",charset="iso-8859-15", maximum_length=3) reject_cd2_rej_cd = fail_if_error(string_lrtrim(in0.rejcde2));
+let string("\x01",charset="iso-8859-15", maximum_length=3) reject_cd3_rej_cd = fail_if_error(string_lrtrim(in0.rejcde3));
+let date("YYYYMMDD")("\x01") sbm_date_cal_day_dt;
+let unicode decimal('') valid_non_driving = (if (((is_defined(in0.d3p2nb) && is_defined(in0.d3oinb)) && is_defined(in0.dxf_src_sys_id)))
+   1
+ else
+   0);
+
+
+
+/*   Default value   */
+cdur_overrde_sbm_yr=fail_if_error((decimal(''))(string_substring(date_check(in0.datesbm),1,4)));
+
+/*   Default value   */
+c_product_prod_id_qlfr_cd=fail_if_error((if (sql_and((valid_non_driving==1),(string_lrtrim(in0.claimsts)=="P")))
+   string_lrtrim(in0.prod_id_qlfr_cd)));
+
+/*   Default value   */
+c_product_prod_id=fail_if_error((if (sql_and((valid_non_driving==1),(string_lrtrim(in0.claimsts)=="P")))
+   string_lrtrim(in0.prod_id)));
+
+/*   Default value   */
+cdur_overrde_cnflct_claim_stat_id=fail_if_error((if (sql_and((valid_non_driving==1),(string_lrtrim(in0.claimsts)=="P")))
+   "P"));
+
+/*   Default value   */
+cdur_overrde_cnflct_claim_seq_nbr=fail_if_error((if (sql_and((valid_non_driving==1),(string_lrtrim(in0.claimsts)=="P")))
+   in0.d3irhr));
+
+/*   Default value   */
+cdur_overrde_cnflct_claim_nbr=fail_if_error((if (sql_and((valid_non_driving==1),(string_lrtrim(in0.claimsts)=="P")))
+   in0.d3iqhr));
+
+/*   Default value   */
+sbm_date_cal_day_dt=fail_if_error(date_check(in0.datesbm));
+
+/*   Default value   */
+filled_date_cal_day_dt=fail_if_error(date_check(in0.dtefilled));
+
+/*   Default value   */
+cdur_overrde_filled_dt=fail_if_error(date_check(in0.dtefilled));
+
+/*   Default value   */
+cdur_overrde_claim_nbr_encrp=fail_if_error(if(in0.rxclaimnbr>0) (decimal(''))(string_concat(string_substring(in0.rxclaimnbr,1,2),ff3_encrypt_idwdata(in0.rxclaimnbr))) 
+else 
+ (decimal(''))(string_concat(string_substring(in0.rxclaimnbr,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs(in0.rxclaimnbr))))));
+
+/*   Default value   */
+cdur_overrde_sbm_dt=fail_if_error(date_check(in0.datesbm));
+
+/*   Default value   */
+cdur_overrde_sbm_mn=fail_if_error((decimal(''))(string_substring(date_check(in0.datesbm),5,2)));
+
+/*   Default value   */
+cdur_overrde_pbr_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_57a4a6f8_6080_0(string_lrtrim(in0.prescriber), string_lrtrim(in0.prescridql), string_lrtrim(in0.prsstate), in0.dxf_src_sys_id).pbr_sk, bzt_3_6c54cc0a_57a4a6f8_6080_0(string_lrtrim(in0.prescriber), string_lrtrim(in0.prescridql), in0.dxf_src_sys_id).pbr_sk, -1));
+
+  out0.cdur_overrde.dxf_hk_part1::cdur_overrde_dxf_hk_part1;
+  out0.cdur_overrde.dxf_hk_part2::cdur_overrde_dxf_hk_part2;
+  out0.cdur_overrde.dxf_sk::cdur_overrde_dxf_sk;
+  out0.cdur_overrde.cag_sk::cdur_overrde_cag_sk;
+  out0.cdur_overrde.phr_sk::cdur_overrde_phr_sk;
+  out0.cdur_overrde.prod_sk::cdur_overrde_prod_sk;
+  out0.cdur_overrde.mbr_sk::cdur_overrde_mbr_sk;
+  out0.cdur_overrde.pbr_sk::cdur_overrde_pbr_sk;
+  out0.cdur_overrde.gpi_sk::cdur_overrde_gpi_sk;
+  out0.cdur_overrde.carrier_id::cdur_overrde_carrier_id;
+  out0.cdur_overrde.account_id::cdur_overrde_account_id;
+  out0.cdur_overrde.employer_group_id::cdur_overrde_employer_group_id;
+  out0.cdur_overrde.claim_nbr::cdur_overrde_claim_nbr;
+  out0.cdur_overrde.claim_seq_nbr::cdur_overrde_claim_seq_nbr;
+  out0.cdur_overrde.claim_stat_id::cdur_overrde_claim_stat_id;
+  out0.cdur_overrde.claim_stat_sk::cdur_overrde_claim_stat_sk;
+  out0.cdur_overrde.sbm_yr::cdur_overrde_sbm_yr;
+  out0.cdur_overrde.sbm_mn::cdur_overrde_sbm_mn;
+  out0.cdur_overrde.sbm_dt::cdur_overrde_sbm_dt;
+  out0.cdur_overrde.filled_dt::cdur_overrde_filled_dt;
+  out0.cdur_overrde.sbm_dt_sk::cdur_overrde_sbm_dt_sk;
+  out0.cdur_overrde.filled_dt_sk::cdur_overrde_filled_dt_sk;
+  out0.cdur_overrde.rej_cd1_sk::cdur_overrde_rej_cd1_sk;
+  out0.cdur_overrde.rej_cd2_sk::cdur_overrde_rej_cd2_sk;
+  out0.cdur_overrde.rej_cd3_sk::cdur_overrde_rej_cd3_sk;
+  out0.cdur_overrde.cnflct_claim_nbr::cdur_overrde_cnflct_claim_nbr;
+  out0.cdur_overrde.cnflct_claim_seq_nbr::cdur_overrde_cnflct_claim_seq_nbr;
+  out0.cdur_overrde.cnflct_claim_stat_id::cdur_overrde_cnflct_claim_stat_id;
+  out0.cdur_overrde.cnflct_prod_sk::cdur_overrde_cnflct_prod_sk;
+  out0.cdur_overrde.dur_sbm_cd_cntr::cdur_overrde_dur_sbm_cd_cntr;
+  out0.cdur_overrde.dur_sbm_srvc_cd_rsn::cdur_overrde_dur_sbm_srvc_cd_rsn;
+  out0.cdur_overrde.dur_sbm_prof_srvc_cd::cdur_overrde_dur_sbm_prof_srvc_cd;
+  out0.cdur_overrde.dur_sbm_srvc_cd_rslt::cdur_overrde_dur_sbm_srvc_cd_rslt;
+  out0.cdur_overrde.dur_sbm_srvc_loe::cdur_overrde_dur_sbm_srvc_loe;
+  out0.cdur_overrde.dur_sbm_coagent_id::cdur_overrde_dur_sbm_coagent_id;
+  out0.cdur_overrde.dur_sbm_coagent_qlfr::cdur_overrde_dur_sbm_coagent_qlfr;
+  out0.cdur_overrde.app_ingred_cost_paid::cdur_overrde_app_ingred_cost_paid;
+  out0.cdur_overrde.app_dispensing_fee::cdur_overrde_app_dispensing_fee;
+  out0.cdur_overrde.app_sales_tax_paid::cdur_overrde_app_sales_tax_paid;
+  out0.cdur_overrde.app_patient_pay_amt::cdur_overrde_app_patient_pay_amt;
+  out0.cdur_overrde.app_due_amt::cdur_overrde_app_due_amt;
+  out0.cdur_overrde.clr_ingred_cost_paid::cdur_overrde_clr_ingred_cost_paid;
+  out0.cdur_overrde.clr_dispensing_fee::cdur_overrde_clr_dispensing_fee;
+  out0.cdur_overrde.clr_sales_tax_paid::cdur_overrde_clr_sales_tax_paid;
+  out0.cdur_overrde.clr_patient_pay_amt::cdur_overrde_clr_patient_pay_amt;
+  out0.cdur_overrde.clr_due_amt::cdur_overrde_clr_due_amt;
+  out0.cdur_overrde.days_of_supply::cdur_overrde_days_of_supply;
+  out0.cdur_overrde.drug_quantity::cdur_overrde_drug_quantity;
+  out0.cdur_overrde.recent_clm_flg::cdur_overrde_recent_clm_flg;
+  out0.cdur_overrde.src_env_sk::cdur_overrde_src_env_sk;
+  out0.cdur_overrde.carrier_sk::cdur_overrde_carrier_sk;
+  out0.cdur_overrde.claim_nbr_encrp::cdur_overrde_claim_nbr_encrp;
+  out0.cdur_overrde.sec_flg::cdur_overrde_sec_flg;
+  out0.c_product.prod_id::c_product_prod_id;
+  out0.c_product.prod_id_qlfr_cd::c_product_prod_id_qlfr_cd;
+  out0.cag.carrier_id::cag_carrier_id;
+  out0.cag.account_id::cag_account_id;
+  out0.cag.employer_group_id::cag_employer_group_id;
+  out0.claim_stat.claim_stat_id::claim_stat_claim_stat_id;
+  out0.d_carrier.carrier_id::d_carrier_carrier_id;
+  out0.filled_date.cal_day_dt::filled_date_cal_day_dt;
+  out0.gpi.gpi_id::gpi_gpi_id;
+  out0.mbr.carrier_id::mbr_carrier_id;
+  out0.mbr.account_id::mbr_account_id;
+  out0.mbr.employer_group_id::mbr_employer_group_id;
+  out0.mbr.mbr_id::mbr_mbr_id;
+  out0.pharmacy.phr_id::pharmacy_phr_id;
+  out0.product.prod_id::product_prod_id;
+  out0.product.prod_id_qlfr_cd::product_prod_id_qlfr_cd;
+  out0.reject_cd1.rej_cd::reject_cd1_rej_cd;
+  out0.reject_cd2.rej_cd::reject_cd2_rej_cd;
+  out0.reject_cd3.rej_cd::reject_cd3_rej_cd;
+  out0.sbm_date.cal_day_dt::sbm_date_cal_day_dt;
+  out0.*::in0.*;
+end;

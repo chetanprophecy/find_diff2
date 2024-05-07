@@ -1,0 +1,38 @@
+/* This function is optional. */
+/*Number of records to output.  Either this function or finished() must be defined.*/
+let string("")[int] field_vec = [vector];
+
+
+out::length(in)=
+begin
+out:: (if(is_defined(in.F01) and decimal_strip(in.F01) != 0)1 else 0) + (if(is_defined(in.F02) and decimal_strip(in.F02) != 0)1 else 0) +
+(if(is_defined(in.F03) and decimal_strip(in.F03) != 0)1 else 0) + (if(is_defined(in.F04) and decimal_strip(in.F04) != 0)1 else 0) +
+(if(is_defined(in.F05) and decimal_strip(in.F05) != 0)1 else 0);
+/*  field_vec = string_split_no_empty(string_join([vector in],""),",");
+  
+  out :: length_of(field_vec);
+  */
+  
+  /*(if(is_defined(in.CONTINUE))1 else 0) + (if(is_defined(in.REPEAT_NTC))1 else 0) +
+(if(is_defined(in.VALIDATE_DOB))1 else 0) + (if(is_defined(in.REFILL_YET_ONE))1 else 0) +
+(if(is_defined(in.REFILL_YET_MULTI))1 else 0) + (if(is_defined(in.TRANSFER))1 else 0) +
+(if(is_defined(in.GET_RX_BOTTLE))1 else 0) + (if(is_defined(in.ARE_YOU_READY))1 else 0) +
+(if(is_defined(in.REPEAT_TRANSFER))1 else 0) + (if(is_defined(in.REFILL_INTENT))1 else 0) +
+(if(is_defined(in.STILL_TAKING))1 else 0) + (if(is_defined(in.DOCTOR_STOP))1 else 0) +
+(if(is_defined(in.SECOND_TRANSFER))1 else 0) + (if(is_defined(in.REPEAT_SECOND_TRANSFER))1 else 0) +
+(if(is_defined(in.REP_SEC_TRANSFER_OTH))1 else 0);*/
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+    out.NDC :: if(index == 0) string_filter_out(in.F01,'"') else if(index == 1) string_filter_out(in.F02,'"') 
+                else if(index == 2) string_filter_out(in.F03,'"') else if(index == 3) string_filter_out(in.F04,'"') else if(index == 4) string_filter_out(in.F05,'"');
+    out.CLAIM_NBR :: if(index == 0) (decimal(""))in.F11 else if(index == 1) (decimal(""))in.F12 else if(index == 2) (decimal("")) in.F13 else if(index == 3) (decimal(""))in.F14 else if(index == 4) (decimal(""))in.F15;
+    out.* :: in.*;
+end;
+/*out :: output_select(out) =
+begin
+  out :: !is_blank(out.NDC);
+end
+*/

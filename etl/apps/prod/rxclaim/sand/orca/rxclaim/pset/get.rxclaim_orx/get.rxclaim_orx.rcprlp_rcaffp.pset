@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcprlp_rcaffp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcaffp                  \nclmprdfil_bk1 rcprlp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcaffp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcprlp')]
+SQL||||select * from ( select ab.*,RANK() OVER (  PARTITION BY ab.rlavcd   ORDER BY rnk_afqpia asc ,ab.RLXRHG desc) rank from (\nSELECT b.rlavcd,b.RLAJCD , a.AFAJCD ,b.RLXRHG ,a.AFQPIA,\ncase \nwhen a.AFQPIA = '01' then '1'\nwhen a.AFQPIA = '02' then '2'\nwhen a.AFQPIA = '05' then '3'\nwhen a.AFQPIA = '03' then '4'\nwhen a.AFQPIA = '04' then '5'\nelse a.AFQPIA\nend as rnk_afqpia\nfrom clmprdfil.RCPRLP b ,clmprdfil.RCAFFP a where b.RLAJCD = a.AFAJCD and b.RLPLIA =  'A') ab ) abcd where rank =1 ;\n
+DO_LOOKUP||||1
+DO_CONS_LOOKUP||||0
+DO_SOURCE||||0
+LOOKUP_KEY||||{rlavcd; dxf_src_sys_id}
+LOOKUP_NAME_OVERRIDE||||rcprlp_rcaffp

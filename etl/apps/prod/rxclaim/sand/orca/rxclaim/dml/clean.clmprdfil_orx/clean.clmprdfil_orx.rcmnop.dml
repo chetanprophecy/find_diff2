@@ -1,0 +1,457 @@
+record
+little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=18)  c2abcd /*CHAR(18) NOT NULL */ /*@
+BizName:"RCMNOP: MBR Member ID"
+ BizComment:"Identification assigned to the member."
+@*/;
+  string(unsigned integer(1),maximum_length=9)  c2aacd /*CHAR(9) NOT NULL */ /*@
+BizName:"RCMNOP: CAR Carrier ID"
+ BizComment:"Type the nine character identifier of the owner of the accounts, groups, and members."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  c2accd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMNOP: ACC Account ID"
+ BizComment:"Type the unique identifier that is associated with this account throughout the RxCLAIM system.  15 alpha-numeric characters. :P. When *ALL is used during dynamic eligibility, the account will be identified by referencing the group specified in the group field to find the first corresponding Account."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  c2adcd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMNOP: GRP Group ID"
+ BizComment:"Type the unique identifier that is associated with the group throughout the RxClaim system.  15 alpha-numeric characters."
+@*/;
+  string(unsigned integer(1),maximum_length=11)  c2mmcd /*CHAR(11) NOT NULL */ /*@
+BizName:"RCMNOP: MPA Prior Auth Number"
+ BizComment:"Prior authorization request number."
+@*/;
+  little endian integer(4)  c2fkdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Current Dte Effective"
+ BizComment:""
+@*/;
+  little endian integer(4)  c2fldt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Current Dte Termed"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2cjst /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Current Drug Status"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is the default drug status used if all other edits are passed. :P. Valid Values are: :PC. * = No Override :PC. When (*) is populated, the incoming Drug Status value will not be overridden, and will remain the same. :PC. A = 1 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. B = No Prescrptn Drug Benefit :PC. C = Paid Non-Formulary w/ Msg :PC. D = 15 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. E = 1 Form;Non-Form Reject :PC. F = Formulary :PC. G = Paid Non-Formulary w/oMsg :PC. H = Capture Claim :PC. I = 15 Form;Non-Form Reject :PC. J = 1 F;Non-F(NoDed/BenAccum)(Unavailable for Drug Status User Messages) :PC. K = Formulary(SkipDed/BenMax) :PC. L = Non-Form (SkipDed/BenMax) :PC. M = Message :PC. N = Non-Formulary Reject :PC. O = Override :PC. P = Prior Authorization :PC. Q = F:Don't use GPI Price Dtl :PC. R = Reject :PC. S = Formulary(NoDed/BenAccum) :PC. T = Non-Form (NoDed/BenAccum) :PC. U = 5 Formulary; Prior Auth :PC. V = 05 Paid Non-Form; Reject :PC. W = Negative Pharmacy List; R :PC. X = Preferred Product :PC. Y = Diag Cde Mismatch, Bypass :PC. Z = Formulary Alternative :PC. a = Plan Default :PC. b = Non-Formulary (Skip OOP) :PC. c = Diag Cde Mismatch, next list :PC. e = NFrm(NoDed/Ben;Apply OOP) :PC. f = Form(NoDed/Ben;Apply OOP) :PC. g = Form(NoOOP;apply Ded/Ben) :PC. h = Override-List/PA Dtls  2 :PC. j = Reject, Generic First :PC. p = 1 Pd Non-Frm;Pref Product :PC. x = O Non-Form w/msg; Form :PC. y = Y Form; Non-Form w/Msg :PC. z = Y Form; Non-Form Reject :PC. 3 = Override-Use List/PA Dtls :PC. 5 = Formulary 5 :PC. 6 = Formulary 6 :PC. 7 = Non-Formulary Captured :PC. 8 = Non-Preferred Form Reject :PC. 9 = Y Pd NFw/oMSG; Pd NFw/MSG :LINES. :ELINES."
+@*/;
+  little endian integer(4)  c2fmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Previous Dt Effective"
+ BizComment:""
+@*/;
+  little endian integer(4)  c2fndt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Previous Dt Termed"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2a9s1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Previous Drug Status"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is the default drug status used if all other edits are passed. :P. A = 1 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. B = No Prescrptn Drug Benefit :PC. C = Paid Non-Formulary w/ Msg :PC. D = 15 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. E = 1 Form;Non-Form Reject :PC. F = Formulary :PC. G = Paid Non-Formulary w/oMsg :PC. H = Capture Claim :PC. I = 15 Form;Non-Form Reject :PC. J = 1 F;Non-F(NoDed/BenAccum)(Unavailable for Drug Status User Messages) :PC. K = Formulary(SkipDed/BenMax) :PC. L = Non-Form (SkipDed/BenMax) :PC. M = Message :PC. N = Non-Formulary Reject :PC. O = Override :PC. P = Prior Authorization :PC. Q = F:Don't use GPI Price Dtl :PC. R = Reject :PC. S = Formulary(NoDed/BenAccum) :PC. T = Non-Form (NoDed/BenAccum) :PC. U = 5 Formulary; Prior Auth :PC. V = 05 Paid Non-Form; Reject :PC. W = Negative Pharmacy List; R :PC. X = Preferred Product :PC. Y = Diag Cde Mismatch, Bypass :PC. Z = Formulary Alternative :PC. a = Plan Default :PC. b = Non-Formulary (Skip OOP) :PC. c = Diag Cde Mismatch, next list :PC. e = NFrm(NoDed/Ben;Apply OOP) :PC. f = Form(NoDed/Ben;Apply OOP) :PC. g = Form(NoOOP;apply Ded/Ben) :PC. h = Override-List/PA Dtls  2 :PC. p = 1 Pd Non-Frm;Pref Product :PC. x = O Non-Form w/msg; Form :PC. y = Y Form; Non-Form w/Msg :PC. z = Y Form; Non-Form Reject :PC. 3 = Override-Use List/PA Dtls :PC. 5 = Formulary 5 :PC. 6 = Formulary 6 :PC. 7 = Non-Formulary Captured :PC. 8 = Non-Preferred Form Reject :PC. 9 = Y Pd NFw/oMSG; Pd NFw/MSG :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2afvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Program Name"
+ BizComment:""
+@*/;
+  decimal("".3, sign_reserved)  c2aqqt /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Qty Minimum"
+ BizComment:"The Minimum Quantity field defines the value to which Minimum Quantity field on the Prior Authorization will be set."
+@*/;
+  decimal("".3, sign_reserved)  c2arqt /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Qty Maximum"
+ BizComment:"The Maximum Quantity field defines the value to which Maximum Quantity field on the Prior Authorization will be set."
+@*/;
+  little endian integer(2)  c2conb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Days Supply Minimum"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2cpnb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Days Supply Maximum"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bas1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Qty/DS Comp Maximum"
+ BizComment:"Type the Qty/DS comparison code. :PC. This value will determine which quantity should be used in the event that a maximum quantity and maximum days supply are both specified for a drug. This value compares the two fields and selects the one specified by the code in this field. :P. Valid values are: :PC. H = Higher of :PC. Means that both quantity and day supply must be exceeded before the claim rejects :P. L = Lower of :PC. Means either quantity or day supply must be exceeded before the claim rejects. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bds1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Qty Type"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2dbn1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Qty Days"
+ BizComment:"The Period to Date Quantity Days field defines the value to which the Period to Date Quantity Days field on the Prior Authorization will be set."
+@*/;
+  decimal("".3, sign_reserved)  c2vynb /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Qty Maximum"
+ BizComment:"The Period to Date Quantity Maximum field defines the value to which the Period to Date Quantity Maximum field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bes1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period DS Type"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2dcn1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period DS Days"
+ BizComment:"The Period to Date Days Supply Days field defines the value to which the Period to Date Days Supply Days field on the Prior Authorization will be set."
+@*/;
+  little endian integer(2)  c2v1nb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period DS Maximum"
+ BizComment:"The Period to Date Days Supply Maximum field defines the value to which the Period to Date Days Supply Maximum field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bgs1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Qty/DS CompMax"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bzs2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Fills Type"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2c8n1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Fills Days"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2v4nb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Fills Maximum"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2jnn1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Refill Limits Max Nbr"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2v5nb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO RefillExpireAfterDays"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bls1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Amt Due Type"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2den1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Amt Due Days"
+ BizComment:"The Period to Date Amount Due Days field defines the value to which the Period to Date Amount Due Days field on the the Prior Authorization will be set."
+@*/;
+  decimal("".2, sign_reserved)  c2bopr /*DECIMAL(10,2) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Amt Due Maximum"
+ BizComment:"The Period to Date Amount Due Maximum field defines the value to which the Period to Date Amount Due Maximum field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2els3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Amt Due Basis"
+ BizComment:"The Period to Date Amount Due Basis field defines the value to which the Period to Date Amount Due Basis field on the Prior Authorization will be set."
+@*/;
+  little endian integer(2)  c2cqnb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Patient Age Minimum"
+ BizComment:"The Minimum Patient Age field is input capable and supports a value between 0 and 999."
+@*/;
+  little endian integer(2)  c2crnb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Patient Age Maximum"
+ BizComment:"The Maximum Patient Age field defines the value to which the Maximum Patient Age field on the Prior Authorization will be set."
+@*/;
+  decimal("".6, sign_reserved)  c2c4qt /*DECIMAL(11,6) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Daily Dose Minimum"
+ BizComment:"The Minimum Daily Dose field is input capable and supports a value between 0.000000 and 99999.999999."
+@*/;
+  decimal("".6, sign_reserved)  c2cyqt /*DECIMAL(11,6) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Daily Dose Maximum"
+ BizComment:"The Maximum Daily Dose field defines the value to which the Maximum Daily Dose field on the Prior Authorization will be set."
+@*/;
+  little endian integer(4)  c2cvqt /*DECIMAL(5) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Acute Dosing Days Max"
+ BizComment:"The Acute Dosing Days field defines the value to which the Acute Dosing Days field on the Prior Authorization will be set."
+@*/;
+  little endian integer(4)  c2cuqt /*DECIMAL(5) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Maint Dosing/Day Max"
+ BizComment:"The Maint (Maintenance) Dosing/Day field defines the value to which the Maint Dosing/Day field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2beh7 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Package Size Comp Cde"
+ BizComment:"*BLANK      Blank :PC. N           No :PC. Y           Yes :PC. D           Days Supply O/R :PC. S           Smallest Pkg Size Only"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bqs1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO OTC Override"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2brs1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Unit Dose/Unit of Use"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bss1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO FDA Therapeutic Equiv"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2b8s2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Route of Administratn"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2fes2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Maintenance Drug Sts"
+ BizComment:"Valid Values are: :P. C = No :PC. Ignore the use of the Copay Schedule on the Plan Maintenance edit REGARDLESS if there is a price schedule and/or copay schedule attached to the NDC/GPI detail.  All other edits within the Maintenance Override will apply. :P. N = No (Do Not Override) :P. Y = Yes (Override) :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2u7s2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Brand/Generic Edit"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bjs1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Sex Exclusion"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=6)  c2ohcd /*CHAR(6) NOT NULL */ /*@
+BizName:"RCMNOP: SLT Specialty List Code"
+ BizComment:"The Prescriber Specialty List displays the ID and associated the list of specific prescriber specialties to which the Requirement Profile Item Detail is restricted."
+@*/;
+  string(unsigned integer(1),maximum_length=6)  c2lwcd /*CHAR(6) NOT NULL */ /*@
+BizName:"RCMNOP: DGL Diagnosis List"
+ BizComment:"The Diagnosis List displays the ID and associated Description of the list of specific diagnoses to which the Profile is restricted."
+@*/;
+  string(unsigned integer(1),maximum_length=6)  c2excd /*CHAR(6) NOT NULL */ /*@
+BizName:"RCMNOP: MD Network ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=6)  c2eycd /*CHAR(6) NOT NULL */ /*@
+BizName:"RCMNOP: PHN Pharmacy Network ID"
+ BizComment:"ID for the Pharmacy Network."
+@*/;
+  little endian integer(4)  c2fsnb /*DECIMAL(5) NOT NULL */ /*@
+BizName:"RCMNOP: PHN Seq Nbr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2dkst /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Family Coverage"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2m2hr /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Dependant Age Minimum"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2m3hr /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Dependant Age Maximum"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=5)  c2i4cd /*CHAR(5) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Pref Prod NDC Labeler"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=4)  c2i5cd /*CHAR(4) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Pref Prod NDC Product"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  c2i6cd /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Pref Prod NDC Package"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=5)  c2c4c1 /*CHAR(5) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Form Alt NDC Labeler"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=4)  c2c5c1 /*CHAR(4) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Form Alt NDC Product"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  c2c7c1 /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Form Alt NDC Package"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2c3c1 /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Message Cde"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2bks1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Message Type"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2u6s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: MGO Prior Auth Exp Msg"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2u7s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: MGO NBR Fills Remain Msg"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2a2s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO MD Network Qualifier"
+ BizComment:"User selects what should occur when a Prescriber network is specified. :P. Note that this values list is NOT the same as the Plan NDC/GPI list field of the same description. :P. Valid Values: :PC. Value  Description :PC. A      Override Min/Max & CT    (GPI Only) :PC. F1: Option A - If the prescriber is found within the prescriber network, the claim will override the Contingent Therapy Schedule and Protocol Level and the Minimum/Maximum values populated within the following fields: :P.            Quantity :PC.            Days Supply :PC.            Qty/DS Comparisons :PC.            Patient Age :PC.            Patient Age Qualifier :PC.            Patient Age WkDay :PC.            Daily Dose :PC.            Daily Dose Qualifier :PC.            Acute Dosing Days :PC.            Maint Dosing/Day :PC.            Package Size Comparison :P. All other details on the GPI will be applied. If the Prescriber is not within the network all details are to be applied. :P. C      Skip CT Edit;Status=F :PC. D      Use Plan Default Status :PC. E      Excluded-Go to next list :PC. H      Either MDNet or Spec List :PC. N      Not in Network=Use Status :PC. O      Override Details & CT :PC. R      Reject-Excluded :PC. S      Standard Inclusive edit :PC. Z      Skip CT apply Status"
+@*/;
+  string(unsigned integer(1),maximum_length=15)  c2lghb /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMNOP: PRF Prescriber ID"
+ BizComment:"The Prescriber field defines the Prescriber ID to which the Prescriber field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  c2xch6 /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMNOP: PRQ Prscrbr ID Qualifier"
+ BizComment:"The Prescriber Qualifier field defines the value to which the Prescriber Qualifier field on the Prior Authorization will be set."
+@*/;
+  string(unsigned integer(1),maximum_length=3)  c2xeh6 /*CHAR(3) NOT NULL */ /*@
+BizName:"RCMNOP: PRF Prescriber ID State"
+ BizComment:"The state in which the prescriber is defined."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2v9s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Prescriber Override"
+ BizComment:"I - Prescription is allowed to be written by the prescriber identified in the next field. :P. E - Prescription may not be filled by the prescriber identified in the next field. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2v7s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Pharmacy Network Qual"
+ BizComment:"Pharmacy Network Qualifier. :P. Valid Values: :P. D=Use Plan Default Status :P. P=Use Price Detail :P. S=Standard Inclusive Edit :P. 1=Use next PA if not found :P. I=Inclusive-Go to next list :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=12)  c2avcd /*CHAR(12) NOT NULL */ /*@
+BizName:"RCMNOP: PHA Pharmacy ID"
+ BizComment:"Identification assigned to a pharmacy. (NABP format = SSNNNNC:  SS   = State code;                          NNNN = Number;                          C    = Check digit.)"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2v8s3 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Pharmacy Override"
+ BizComment:"I = Product is allowed to be filled by the pharmacy identified in the next field. :P. E = Product may not be filled by the pharmacy identified in the next field. :LINES. :ELINES."
+@*/;
+  little endian integer(4)  c2pgdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: PNO PTD From"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2fgcj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Daily Dose Qualifier"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2fhcj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Diagnosis List Qual"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2vocj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: MNO Specl List Qualifier"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2crn3 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Limit Days O/R"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  c2ezc6 /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Refill Code O/R"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2csn3 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Days Supply FillLimit"
+ BizComment:""
+@*/;
+  little endian integer(2)  c2ctn3 /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Fills in Hx FillLimit"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2whh9 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO MD Network Drug Sts"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2cbi1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Fill Override Multi S"
+ BizComment:"X=Override :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2cci1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Fill Override Product"
+ BizComment:"X=Override :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2x5i1 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Other Fam Mbr Cov Sts"
+ BizComment:"The Other Family Member Coverage Status indicates the drug status of the product for other family memebers not covered under the Family Coverage selection. :P. Valid Values are: :PC. A = 1 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. B = No Prescrptn Drug Benefit :PC. C = Paid Non-Formulary w/ Msg :PC. D = 15 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. E = 1 Form;Non-Form Reject :PC. F = Formulary :PC. G = Paid Non-Formulary w/oMsg :PC. H = Capture Claim :PC. I = 15 Form;Non-Form Reject :PC. J = 1 F;Non-F(NoDed/BenAccum)(Unavailable for Drug Status User Messages) :PC. K = Formulary(SkipDed/BenMax) :PC. L = Non-Form (SkipDed/BenMax) :PC. M = Message :PC. N = Non-Formulary Reject :PC. O = Override :PC. P = Prior Authorization :PC. Q = F:Don't use GPI Price Dtl :PC. R = Reject :PC. S = Formulary(NoDed/BenAccum) :PC. T = Non-Form (NoDed/BenAccum) :PC. U = 5 Formulary; Prior Auth :PC. V = 05 Paid Non-Form; Reject :PC. W = Negative Pharmacy List; R :PC. X = Preferred Product :PC. Y = Diag Cde Mismatch, Bypass :PC. Z = Formulary Alternative :PC. a = Plan Default :PC. b = Non-Formulary (Skip OOP) :PC. c = Diag Cde Mismatch, next list :PC. d = Non-Form (No BenMaxAccum) :PC. e = NFrm(NoDed/Ben;Apply OOP) :PC. f = Form(NoDed/Ben;Apply OOP) :PC. g = Form(NoOOP;apply Ded/Ben) :PC. h = Override-List/PA Dtls  2 :PC. j = Reject, Generic First :PC. p = 1 Pd Non-Frm;Pref Product :PC. x = O Non-Form w/msg; Form :PC. y = Y Form; Non-Form w/Msg :PC. z = Y Form; Non-Form Reject :PC. 3 = Override-Use List/PA Dtls :PC. 4 = G NF:Don't Use Price Dtl :PC. 5 = Formulary 5 :PC. 6 = Formulary 6 :PC. 7 = Non-Formulary Captured :PC. 8 = Non-Preferred Form Reject :PC. 9 = Y Pd NFw/oMSG; Pd NFw/MSG :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2enib /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PGO Cont Ther Prtcl Lvl"
+ BizComment:"Valid Values are: :P. C = Carrier :PC. Search for the member's claim history in all accounts within the member's assigned carrier. :P. A = Carrier/Account :PC. Search for the member's claim history in all groups within the members assigned account. :P. G = Carrier/Account/Group :PC. Search for the member's claim history within the member's current group. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=20)  c2obhf /*CHAR(20) NOT NULL */ /*@
+BizName:"RCMNOP: CTS Cont Ther Sched ID"
+ BizComment:"Schedule   Display Only Schedule ID of the selected Contingent Therapy Schedule"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2skid /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Patient Age Override"
+ BizComment:"The Patient Age Override indicates if the age restriction should be overridden regardless of the member's age. :P. Values BLANK and N=No perform in the same manner. :P. Valid Values: :PC. BLANK :PC. N=No :PC. Y=Yes :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2q0od /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO FDA Non-Approval"
+ BizComment:"FDA Non-Approval flag is to indicate if NDC(s) is FDA not approved."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2dxai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period PSQ Type"
+ BizComment:"Indicates a period of time the specified Package Size Quantity limit applies to."
+@*/;
+  little endian integer(2)  c2bxal /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period PSQ Days"
+ BizComment:"Limit on the days supply of the drugs within a period of time specified in Package Size Quantity - Type."
+@*/;
+  decimal("".3, sign_reserved)  c2b3qu /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period PSQ Maximum"
+ BizComment:"The maximum days supply allowed during the period of time identified."
+@*/;
+  string(unsigned integer(1),maximum_length=6)  c2oohb /*CHAR(6) NOT NULL */ /*@
+BizName:"RCMNOP: SNH Super Network ID"
+ BizComment:"ID for the Super Network."
+@*/;
+  little endian integer(4)  c2n4hr /*DECIMAL(5) NOT NULL */ /*@
+BizName:"RCMNOP: SNH Seq Nbr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2h0ai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Super Network Qual"
+ BizComment:"Pharmacy Super Network Qualifier. :P. Valid Values: :P. D=Use Plan Default Status :P. P=Use Price Detail :P. S=Standard Inclusive Edit :P. 1=Use next PA if not found :P. I=Inclusive-Go to next list :LINES. :ELINES."
+@*/;
+  decimal("".3, sign_reserved)  c2duqu /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Period Fills Max Qty"
+ BizComment:"Indicates the formulary quantity limit in days supply or daily dose."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2y5aj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMNOP: PNO Therapeutic Class"
+ BizComment:"Indicates whether Therapeutic Class-specific fill limits defined at the plan level will be overridden with the limits specified within this record. :P. This field can contain one of the following values: :P. X = Override: The values in the three Fills fields in the Period to Date section on this screen will override the corresponding values in the Therapeutic Class Level Fill Limits section of the Refill Limits plan edit (Plan Edit 15). :P. e = Exempt: The values in the three Fills fields in the Period to Date section on this screen will override the corresponding values in the Therapeutic Class Level Fill Limits section of the Refill Limits plan edit. Furthermore, the claim will not count towards any fill limit accumulations in that section.  The Refill Exempt field on the Claim Transaction Additional Info screen will be populated if the claim was exempt from one or multiple sections of the Refill Limits plan edit. :P. *BLANK = BLANK: The values in the Therapeutic Class Level Fill Limits section of the Refill Limits plan edit override any values in three Fills fields in the Period to Date section on this screen. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2s8ho /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: ISC Incentive Sched ID"
+ BizComment:"Incentive Schedule :P. Contains an Incentive Schedule to be applied for the specified requested drug. :LINES. :ELINES."
+@*/;
+  
+  string(unsigned integer(1),maximum_length=6)  c2g4hp /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCMNOP: RTX Taxonomy List ID"
+ BizComment:""
+@*/;
+  
+  string(unsigned integer(1),maximum_length=1)  c2c0an /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMNOP: MNO Taxonomy List Qual"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2c8an /*CHAR(1) NOT NULL*/  /*@
+BizName:"RCMNOP: MNO Taxonomy Lst Drug Sts"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  c2ucan /*CHAR(1) NOT NULL*/  /*@
+BizName:"RCMNOP: MNO PTD Source"
+ BizComment:""
+@*/;
+  little endian integer(4)  c2utce /*DECIMAL(7) NOT NULL*/   /*@
+BizName:"RCMNOP: MNO PTD Eff From"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2q7hq /*CHAR(10) NOT NULL*/   /*@
+BizName:"RCMNOP: MNO Worker Comp State Lst"
+ BizComment:""
+@*/;
+  
+ string(unsigned integer(1),maximum_length=10)  c2akvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  little endian integer(4)  c2c2dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  little endian integer(4)  c2adtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMNOP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2alvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2advn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  c2bmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMNOP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  c2abtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMNOP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  c2aevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMNOP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

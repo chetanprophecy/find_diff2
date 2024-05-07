@@ -1,0 +1,25 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.pll_pharm_netwk_list_name  :: in.grzwc3;
+  out.pld_pharmacy_network_id    :: in.grzzc3;
+  out.pld_carrier_id             :: in.grzxc3;
+  out.pld_region_code            :: in.grzyc3;
+  out.pld_pharm_netwk_type       :: in.grh9s3;
+  out.pld_pharm_netwk_name       :: in.grb6na;
+  out.add_time                   :: in.gradtm;
+  out.add_program_name           :: in.gralvn;
+  out.chg_time                   :: in.grabtm;
+  out.chg_program_name           :: in.graevn;
+  out.add_date                   :: in.grc2dt;
+  out.add_user_name              :: in.grakvn;
+  out.chg_date                   :: in.grbmdt;
+  out.chg_user_name              :: in.gradvn;
+  out.rxt_src_envrt_id           :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm           :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm            :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid             :: 'app_orca_rxclaim';
+  out.rxt_create_run_id          :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd            :: '';
+  out.*                          :: in.*;
+end;

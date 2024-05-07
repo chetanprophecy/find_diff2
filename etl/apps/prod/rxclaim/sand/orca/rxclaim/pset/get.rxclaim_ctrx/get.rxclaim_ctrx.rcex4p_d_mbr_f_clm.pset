@@ -1,0 +1,21 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_ctrx.rcex4p
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_member
+JOIN_TYPE|l|||Left Outer Join with ICFF Lookup
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{carrier_id;account_id;employer_group_id;mbr_id}
+TARGET_NAME||||rxclaim_ctrx.rcex4p_d_mbr_f_clm
+DRIVER_FILE_TYPE||||Clean
+OVERRIDE_JOIN_KEY||||{carrier_id;account_id;employer_group_id;mbr_id}
+DO_CLEAN||||1
+NON_DRIVER_1_FILE_TYPE||||IDS
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nlet decimal("\\\\x01",0) claim_nbr = fail_if_error(in.amp2nb);\r\nlet decimal("\\\\x01",0) claim_seq_nbr = fail_if_error(if (in.ams6nb < 0) in.ams6nb else 1000 - in.ams6nb);\r\nlet string("\\\\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = fail_if_error(in.amzsst);\r\n\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = fail_if_error(in.ams5cd);\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) carrier_id = fail_if_error(in.ams6cd);\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=40)  account_id = fail_if_error(in.ams7cd);\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = fail_if_error(in.ams8cd);\r\n\r\n\r\n\r\n\r\n  out.mbr_id::mbr_id;\r\n  out.carrier_id::carrier_id;\r\n  out.account_id::account_id;\r\n  out.employer_group_id::employer_group_id;\r\n\r\nout.src_env_sk :: (decimal(""))in.rxt_src_envrt_id;\r\n  \r\n  out.claim_nbr::claim_nbr;\r\n  out.claim_seq_nbr::claim_seq_nbr;\r\n  out.claim_stat_id::claim_stat_id;\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_OUTPUT_FIELDS||||mbr_id,carrier_id,account_id,employer_group_id,mbr_hic_cd
+NON_DRIVER_2_SOURCE_NAME||||ids_rxclaim.f_claim_transaction.reduced
+ENABLE_JOIN_LEVEL_2||||1
+JOIN_LEVEL_2_TYPE||||Left Outer Join with ICFF Lookup
+JOIN_LEVEL_2_KEY||||{claim_nbr; claim_seq_nbr; claim_stat_id; src_env_sk}
+OVERRIDE_JOIN_LEVEL_2_KEY||||{claim_nbr; claim_seq_nbr; claim_stat_id; src_env_sk}
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+NON_DRIVER_2_OUTPUT_FIELDS||||claim_nbr,claim_seq_nbr,claim_stat_id,prod_sk,compound_sk,app_due_amt,clt_due_amt,filled_dt,filled_dt_sk
+ADDITIONAL_FIELDS_DML||||record\r\n  string("\\x01",charset="iso-8859-15", maximum_length=20)   mbr_id = NULL("");\r\n  string("\\x01",charset="iso-8859-15", maximum_length=30)   carrier_id = NULL("");\r\n  string("\\x01",charset="iso-8859-15", maximum_length=40)   account_id = NULL("");\r\n  string("\\x01",charset="iso-8859-15", maximum_length=30)   employer_group_id = NULL("");\r\n  string("\\x01",charset="iso-8859-15", maximum_length=20)  mbr_hic_cd = NULL("");\r\n  decimal("\\\\x01",0)  claim_nbr /*BIGINT NOT NULL*/;\r\n  decimal("\\\\x01",0) claim_seq_nbr /*INTEGER NOT NULL*/;\r\n  string("\\\\x01",charset="iso-8859-15", maximum_length=1)  claim_stat_id /*CHAR(1) NOT NULL*/;\r\n  decimal("\\\\x01",0) src_env_sk = NULL /*BIGINT*/;\r\nend

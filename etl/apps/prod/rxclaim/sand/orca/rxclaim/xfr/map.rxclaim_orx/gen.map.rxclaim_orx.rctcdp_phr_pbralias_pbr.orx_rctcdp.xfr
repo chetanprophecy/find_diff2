@@ -1,0 +1,885 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_58f4750c_24cc_1
+    BizHidden:true
+@*/
+/*   lookup LKP: D_CAG   */
+out0::bzt_2_6c54cc0a_58f4750c_24cc_1(in0,in1,in2)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL(""), account_nm = NULL(""), employer_group_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL(""), gps_plan_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_only_ind = NULL(""), hm_dlvry_stat_ind = NULL(""), rebates_only_ind = NULL(""), rebates_stat_ind = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_CAG",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58f4750c_24cc_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.audit_clms.dqujcd,[passthrough],in0.phr_id]
+  [out0.audit_clms.mbr_sk,[transform],]
+  [out0.audit_clms.pbp_id,[transform],in0.dqs8cd,
+     in0.dqs7cd,
+     in0.dqs6cd,
+     'lookup("LKP: D_CAG").pbp_id']
+  [out0.cag.employer_group_id,[transform],in0.dqs8cd]
+  [out0.mbr.account_id,[transform],in0.dqs7cd]
+  [out0.mbr.carrier_id,[transform],in0.dqs6cd]
+  [out0.audit_clms.dqc4dt,[transform],in0.dqc4dt]
+  [out0.audit_clms.compound_sk,[transform],]
+  [out0.audit_clms.dqilcj,[passthrough],in0.pbr_id_qlfr]
+  [out0.audit_clms.cag_sk,[transform],]
+  [out0.compound.compound_cd,[transform],in0.dqk2st]
+  [out0.audit_clms.contract_num,[transform],in0.dqs8cd,
+     in0.dqs7cd,
+     in0.dqs6cd,
+     'lookup("LKP: D_CAG").contract_num']
+  [out0.mbr.employer_group_id,[transform],in0.dqs8cd]
+  [out0.cag.account_id,[transform],in0.dqs7cd]
+  [out0.prod.prod_id_qlfr_cd,[transform],in0.dqhtcj]
+  [out0.phr.phr_id,[passthrough],in0.phr_id]
+  [out0.audit_clms.phr_sk,[transform],]
+  [out0.prod.prod_id,[transform],in0.dqric4]
+  [out0.audit_clms.prod_sk,[transform],]
+  [out0.cag.carrier_id,[transform],in0.dqs6cd]
+  [out0.mbr.mbr_id,[transform],in0.dqs5cd]
+  [out0.audit_clms.dqtccd,[passthrough],in0.pbr_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.audit_clms.dqb7ik,'audit_clms.dqb7ik',1,0]
+     [out0.audit_clms.dqb4ik,'audit_clms.dqb4ik',1,0]
+     [out0.audit_clms.dqujcd,'audit_clms.dqujcd',1,0]
+     [out0.audit_clms.dqdrpr,'audit_clms.dqdrpr',1,0]
+     [out0.audit_clms.dqk8tx,'audit_clms.dqk8tx',1,0]
+     [out0.audit_clms.dqhypr,'audit_clms.dqhypr',1,0]
+     [out0.audit_clms.dqs5hz,'audit_clms.dqs5hz',1,0]
+     [out0.audit_clms.dqs3hz,'audit_clms.dqs3hz',1,0]
+     [out0.audit_clms.dqlost,'audit_clms.dqlost',1,0]
+     [out0.audit_clms.dqpecd,'audit_clms.dqpecd',1,0]
+     [out0.audit_clms.dqdnp4,'audit_clms.dqdnp4',1,0]
+     [out0.audit_clms.dqshhz,'audit_clms.dqshhz',1,0]
+     [out0.audit_clms.dqsvhz,'audit_clms.dqsvhz',1,0]
+     [out0.audit_clms.dqxjn1,'audit_clms.dqxjn1',1,0]
+     [out0.audit_clms.dqs6st,'audit_clms.dqs6st',1,0]
+     [out0.audit_clms.dqc2dt,'audit_clms.dqc2dt',1,0]
+     [out0.audit_clms.dqoucj,'audit_clms.dqoucj',1,0]
+     [out0.audit_clms.dqtshz,'audit_clms.dqtshz',1,0]
+     [out0.audit_clms.dqsrhz,'audit_clms.dqsrhz',1,0]
+     [out0.audit_clms.dqsoc4,'audit_clms.dqsoc4',1,0]
+     [out0.audit_clms.dqs4hz,'audit_clms.dqs4hz',1,0]
+     [out0.audit_clms.dqz8ih,'audit_clms.dqz8ih',1,0]
+     [out0.audit_clms.dqetpr,'audit_clms.dqetpr',1,0]
+     [out0.audit_clms.pbr_dea_cd,'audit_clms.pbr_dea_cd',1,0]
+     [out0.audit_clms.dqewpr,'audit_clms.dqewpr',1,0]
+     [out0.audit_clms.mbr_sk,'audit_clms.mbr_sk',1,0]
+     [out0.audit_clms.dqovcd,'audit_clms.dqovcd',1,0]
+     [out0.audit_clms.dqs8cd,'audit_clms.dqs8cd',1,0]
+     [out0.audit_clms.phy_pbr_key,'audit_clms.phy_pbr_key',1,0]
+     [out0.audit_clms.dqadvn,'audit_clms.dqadvn',1,0]
+     [out0.audit_clms.phr_st_cd,'audit_clms.phr_st_cd',1,0]
+     [out0.audit_clms.dqo2cj,'audit_clms.dqo2cj',1,0]
+     [out0.audit_clms.dqg7pp,'audit_clms.dqg7pp',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.audit_clms.pbr_npi_id,'audit_clms.pbr_npi_id',1,0]
+     [out0.audit_clms.dqdop4,'audit_clms.dqdop4',1,0]
+     [out0.audit_clms.dqubst,'audit_clms.dqubst',1,0]
+     [out0.audit_clms.dqgxcj,'audit_clms.dqgxcj',1,0]
+     [out0.audit_clms.dqhspr,'audit_clms.dqhspr',1,0]
+     [out0.audit_clms.pbr_dea_id,'audit_clms.pbr_dea_id',1,0]
+     [out0.audit_clms.dqdlp4,'audit_clms.dqdlp4',1,0]
+     [out0.audit_clms.dqoxcj,'audit_clms.dqoxcj',1,0]
+     [out0.audit_clms.dqycn2,'audit_clms.dqycn2',1,0]
+     [out0.audit_clms.pbp_id,'audit_clms.pbp_id',1,0]
+     [out0.audit_clms.dqlnst,'audit_clms.dqlnst',1,0]
+     [out0.cag.employer_group_id,'cag.employer_group_id',1,0]
+     [out0.audit_clms.dqbvod,'audit_clms.dqbvod',1,0]
+     [out0.audit_clms.dqlest,'audit_clms.dqlest',1,0]
+     [out0.audit_clms.dqhzpr,'audit_clms.dqhzpr',1,0]
+     [out0.mbr.account_id,'mbr.account_id',1,0]
+     [out0.audit_clms.dqbrod,'audit_clms.dqbrod',1,0]
+     [out0.audit_clms.dqhqpr,'audit_clms.dqhqpr',1,0]
+     [out0.audit_clms.dqe0pr,'audit_clms.dqe0pr',1,0]
+     [out0.audit_clms.dqhtpr,'audit_clms.dqhtpr',1,0]
+     [out0.audit_clms.dqvqp1,'audit_clms.dqvqp1',1,0]
+     [out0.audit_clms.dqhwpr,'audit_clms.dqhwpr',1,0]
+     [out0.audit_clms.dqkicj,'audit_clms.dqkicj',1,0]
+     [out0.audit_clms.dqikcj,'audit_clms.dqikcj',1,0]
+     [out0.audit_clms.dqtchz,'audit_clms.dqtchz',1,0]
+     [out0.audit_clms.dqbuod,'audit_clms.dqbuod',1,0]
+     [out0.audit_clms.dqb9ik,'audit_clms.dqb9ik',1,0]
+     [out0.audit_clms.dqwep1,'audit_clms.dqwep1',1,0]
+     [out0.audit_clms.dqsphz,'audit_clms.dqsphz',1,0]
+     [out0.audit_clms.dqs6hz,'audit_clms.dqs6hz',1,0]
+     [out0.mbr.carrier_id,'mbr.carrier_id',1,0]
+     [out0.audit_clms.dqtkn2,'audit_clms.dqtkn2',1,0]
+     [out0.audit_clms.dqtecd,'audit_clms.dqtecd',1,0]
+     [out0.audit_clms.dqimnb,'audit_clms.dqimnb',1,0]
+     [out0.audit_clms.dqsnhz,'audit_clms.dqsnhz',1,0]
+     [out0.audit_clms.dqton2,'audit_clms.dqton2',1,0]
+     [out0.audit_clms.dqbood,'audit_clms.dqbood',1,0]
+     [out0.audit_clms.dqtin2,'audit_clms.dqtin2',1,0]
+     [out0.audit_clms.dqc4dt,'audit_clms.dqc4dt',1,0]
+     [out0.audit_clms.dqkwst,'audit_clms.dqkwst',1,0]
+     [out0.audit_clms.compound_sk,'audit_clms.compound_sk',1,0]
+     [out0.audit_clms.dqbmdt,'audit_clms.dqbmdt',1,0]
+     [out0.audit_clms.dqktst,'audit_clms.dqktst',1,0]
+     [out0.audit_clms.dqs9hz,'audit_clms.dqs9hz',1,0]
+     [out0.audit_clms.dqs2hz,'audit_clms.dqs2hz',1,0]
+     [out0.audit_clms.dqeypr,'audit_clms.dqeypr',1,0]
+     [out0.audit_clms.phr_npi_no,'audit_clms.phr_npi_no',1,0]
+     [out0.audit_clms.dqdppr,'audit_clms.dqdppr',1,0]
+     [out0.audit_clms.dqilcj,'audit_clms.dqilcj',1,0]
+     [out0.audit_clms.dqiicj,'audit_clms.dqiicj',1,0]
+     [out0.audit_clms.dqh0pr,'audit_clms.dqh0pr',1,0]
+     [out0.audit_clms.cag_sk,'audit_clms.cag_sk',1,0]
+     [out0.audit_clms.e0d2pr,'audit_clms.e0d2pr',1,0]
+     [out0.audit_clms.dqo4cj,'audit_clms.dqo4cj',1,0]
+     [out0.audit_clms.dqlrst,'audit_clms.dqlrst',1,0]
+     [out0.audit_clms.dqabda,'audit_clms.dqabda',1,0]
+     [out0.audit_clms.dqovcj,'audit_clms.dqovcj',1,0]
+     [out0.audit_clms.dqbpod,'audit_clms.dqbpod',1,0]
+     [out0.audit_clms.dqlhst,'audit_clms.dqlhst',1,0]
+     [out0.audit_clms.dqezpr,'audit_clms.dqezpr',1,0]
+     [out0.audit_clms.dqq3c3,'audit_clms.dqq3c3',1,0]
+     [out0.audit_clms.dqadtm,'audit_clms.dqadtm',1,0]
+     [out0.audit_clms.dqespr,'audit_clms.dqespr',1,0]
+     [out0.audit_clms.src_env_sk,'audit_clms.src_env_sk',1,0]
+     [out0.compound.compound_cd,'compound.compound_cd',1,0]
+     [out0.audit_clms.dqbnod,'audit_clms.dqbnod',1,0]
+     [out0.audit_clms.dqsohz,'audit_clms.dqsohz',1,0]
+     [out0.audit_clms.dqhtcj,'audit_clms.dqhtcj',1,0]
+     [out0.audit_clms.dqk0st,'audit_clms.dqk0st',1,0]
+     [out0.audit_clms.pbr_sk,'audit_clms.pbr_sk',1,0]
+     [out0.audit_clms.dqlrtx,'audit_clms.dqlrtx',1,0]
+     [out0.audit_clms.dqo5cj,'audit_clms.dqo5cj',1,0]
+     [out0.audit_clms.dqo3cj,'audit_clms.dqo3cj',1,0]
+     [out0.audit_clms.dqwkp1,'audit_clms.dqwkp1',1,0]
+     [out0.audit_clms.phr_ncpdp_id,'audit_clms.phr_ncpdp_id',1,0]
+     [out0.audit_clms.dqbbda,'audit_clms.dqbbda',1,0]
+     [out0.audit_clms.dqoecd,'audit_clms.dqoecd',1,0]
+     [out0.audit_clms.dqg6pp,'audit_clms.dqg6pp',1,0]
+     [out0.audit_clms.dqexpr,'audit_clms.dqexpr',1,0]
+     [out0.audit_clms.contract_num,'audit_clms.contract_num',1,0]
+     [out0.mbr.employer_group_id,'mbr.employer_group_id',1,0]
+     [out0.audit_clms.dqw5hk,'audit_clms.dqw5hk',1,0]
+     [out0.audit_clms.dqw3hk,'audit_clms.dqw3hk',1,0]
+     [out0.audit_clms.dqbsod,'audit_clms.dqbsod',1,0]
+     [out0.audit_clms.dqasda,'audit_clms.dqasda',1,0]
+     [out0.audit_clms.dqhvpr,'audit_clms.dqhvpr',1,0]
+     [out0.audit_clms.dqwmp1,'audit_clms.dqwmp1',1,0]
+     [out0.audit_clms.dqhrpr,'audit_clms.dqhrpr',1,0]
+     [out0.audit_clms.dqtjcd,'audit_clms.dqtjcd',1,0]
+     [out0.audit_clms.dqk3st,'audit_clms.dqk3st',1,0]
+     [out0.audit_clms.dqeai1,'audit_clms.dqeai1',1,0]
+     [out0.audit_clms.dqtahz,'audit_clms.dqtahz',1,0]
+     [out0.audit_clms.dqs1hz,'audit_clms.dqs1hz',1,0]
+     [out0.audit_clms.dqk7tx,'audit_clms.dqk7tx',1,0]
+     [out0.cag.account_id,'cag.account_id',1,0]
+     [out0.audit_clms.dqtgn2,'audit_clms.dqtgn2',1,0]
+     [out0.audit_clms.dqo0cj,'audit_clms.dqo0cj',1,0]
+     [out0.audit_clms.dqbqod,'audit_clms.dqbqod',1,0]
+     [out0.audit_clms.dqybn2,'audit_clms.dqybn2',1,0]
+     [out0.audit_clms.dqric4,'audit_clms.dqric4',1,0]
+     [out0.audit_clms.dqtqn2,'audit_clms.dqtqn2',1,0]
+     [out0.audit_clms.dqucst,'audit_clms.dqucst',1,0]
+     [out0.audit_clms.dqw4hk,'audit_clms.dqw4hk',1,0]
+     [out0.audit_clms.dqohnb,'audit_clms.dqohnb',1,0]
+     [out0.audit_clms.dqplnb,'audit_clms.dqplnb',1,0]
+     [out0.audit_clms.dqtzn2,'audit_clms.dqtzn2',1,0]
+     [out0.audit_clms.dqtsn2,'audit_clms.dqtsn2',1,0]
+     [out0.audit_clms.dqabtm,'audit_clms.dqabtm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.audit_clms.dqk7st,'audit_clms.dqk7st',1,0]
+     [out0.audit_clms.dqk4st,'audit_clms.dqk4st',1,0]
+     [out0.audit_clms.dqilnb,'audit_clms.dqilnb',1,0]
+     [out0.audit_clms.dqtrhz,'audit_clms.dqtrhz',1,0]
+     [out0.audit_clms.dqsshz,'audit_clms.dqsshz',1,0]
+     [out0.audit_clms.dqp2nb,'audit_clms.dqp2nb',1,0]
+     [out0.audit_clms.dqaldt,'audit_clms.dqaldt',1,0]
+     [out0.audit_clms.dqbmod,'audit_clms.dqbmod',1,0]
+     [out0.audit_clms.dqs7cd,'audit_clms.dqs7cd',1,0]
+     [out0.prod.prod_id_qlfr_cd,'prod.prod_id_qlfr_cd',1,0]
+     [out0.audit_clms.dqg8pp,'audit_clms.dqg8pp',1,0]
+     [out0.audit_clms.dqeupr,'audit_clms.dqeupr',1,0]
+     [out0.audit_clms.dqotcj,'audit_clms.dqotcj',1,0]
+     [out0.audit_clms.dqowcj,'audit_clms.dqowcj',1,0]
+     [out0.audit_clms.dqsqhz,'audit_clms.dqsqhz',1,0]
+     [out0.audit_clms.dqcaik,'audit_clms.dqcaik',1,0]
+     [out0.phr.phr_id,'phr.phr_id',1,0]
+     [out0.audit_clms.dqs5cd,'audit_clms.dqs5cd',1,0]
+     [out0.audit_clms.dqomcd,'audit_clms.dqomcd',1,0]
+     [out0.audit_clms.phr_sk,'audit_clms.phr_sk',1,0]
+     [out0.audit_clms.dqtmn2,'audit_clms.dqtmn2',1,0]
+     [out0.prod.prod_id,'prod.prod_id',1,0]
+     [out0.audit_clms.dqtlc4,'audit_clms.dqtlc4',1,0]
+     [out0.audit_clms.dqionb,'audit_clms.dqionb',1,0]
+     [out0.audit_clms.dqw6hk,'audit_clms.dqw6hk',1,0]
+     [out0.audit_clms.dqvbie,'audit_clms.dqvbie',1,0]
+     [out0.audit_clms.prod_sk,'audit_clms.prod_sk',1,0]
+     [out0.audit_clms.dqtcn2,'audit_clms.dqtcn2',1,0]
+     [out0.audit_clms.dqafcd,'audit_clms.dqafcd',1,0]
+     [out0.audit_clms.dqtfcd,'audit_clms.dqtfcd',1,0]
+     [out0.audit_clms.dquxp1,'audit_clms.dquxp1',1,0]
+     [out0.audit_clms.dqkxst,'audit_clms.dqkxst',1,0]
+     [out0.audit_clms.dqi4nb,'audit_clms.dqi4nb',1,0]
+     [out0.audit_clms.dqerpr,'audit_clms.dqerpr',1,0]
+     [out0.audit_clms.dqqxh6,'audit_clms.dqqxh6',1,0]
+     [out0.audit_clms.dqo0c3,'audit_clms.dqo0c3',1,0]
+     [out0.audit_clms.dqk2st,'audit_clms.dqk2st',1,0]
+     [out0.audit_clms.dqk9st,'audit_clms.dqk9st',1,0]
+     [out0.audit_clms.dqaevn,'audit_clms.dqaevn',1,0]
+     [out0.audit_clms.dqozcj,'audit_clms.dqozcj',1,0]
+     [out0.audit_clms.dqevpr,'audit_clms.dqevpr',1,0]
+     [out0.audit_clms.dqhxpr,'audit_clms.dqhxpr',1,0]
+     [out0.audit_clms.dqugst,'audit_clms.dqugst',1,0]
+     [out0.audit_clms.dqdmp4,'audit_clms.dqdmp4',1,0]
+     [out0.audit_clms.dqhopr,'audit_clms.dqhopr',1,0]
+     [out0.audit_clms.dqulcd,'audit_clms.dqulcd',1,0]
+     [out0.audit_clms.dqakvn,'audit_clms.dqakvn',1,0]
+     [out0.audit_clms.dqoycj,'audit_clms.dqoycj',1,0]
+     [out0.audit_clms.dqoinb,'audit_clms.dqoinb',1,0]
+     [out0.audit_clms.pbr_st_cd,'audit_clms.pbr_st_cd',1,0]
+     [out0.audit_clms.dqbtod,'audit_clms.dqbtod',1,0]
+     [out0.audit_clms.dqs6cd,'audit_clms.dqs6cd',1,0]
+     [out0.audit_clms.dqhupr,'audit_clms.dqhupr',1,0]
+     [out0.audit_clms.dqo1cj,'audit_clms.dqo1cj',1,0]
+     [out0.audit_clms.dqukcd,'audit_clms.dqukcd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cag.carrier_id,'cag.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.audit_clms.dqalvn,'audit_clms.dqalvn',1,0]
+     [out0.audit_clms.dqtbhz,'audit_clms.dqtbhz',1,0]
+     [out0.mbr.mbr_id,'mbr.mbr_id',1,0]
+     [out0.audit_clms.dqtccd,'audit_clms.dqtccd',1,0]
+  ]
+  impacts:
+  [
+     [in0.dqycn2,'dqycn2',1,1]
+     [in0.dqdmp4,'dqdmp4',1,1]
+     [in0.phy_pbr_key,'phy_pbr_key',1,1]
+     [in0.dqs5cd,'dqs5cd',2,2]
+     [in0.dqp2nb,'dqp2nb',1,1]
+     [in0.dqhopr,'dqhopr',1,1]
+     [in0.dqdnp4,'dqdnp4',1,1]
+     [in0.dqlest,'dqlest',1,1]
+     [in0.dqk0st,'dqk0st',1,1]
+     [in0.dqexpr,'dqexpr',1,1]
+     [in0.pbr_dea_id,'pbr_dea_id',1,1]
+     ['lookup("LKP: D_CAG").pbp_id','pbp_id',1,1]
+     [in0.dqs6cd,'dqs6cd',5,5]
+     [in0.pbr_id_qlfr,'pbr_id_qlfr',1,1]
+     [in0.phr_id,'phr_id',2,2]
+     [in0.dqhupr,'dqhupr',1,1]
+     [in0.dqadvn,'dqadvn',1,1]
+     [in0.dqs7cd,'dqs7cd',5,5]
+     [in0.dqaevn,'dqaevn',1,1]
+     [in0.dqozcj,'dqozcj',1,1]
+     [in0.dqotcj,'dqotcj',1,1]
+     [in0.dquxp1,'dquxp1',1,1]
+     [in0.dqafcd,'dqafcd',1,1]
+     [in0.dqlrtx,'dqlrtx',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dqsvhz,'dqsvhz',1,1]
+     [in0.phr_npi_no,'phr_npi_no',1,1]
+     [in0.dqg8pp,'dqg8pp',1,1]
+     [in0.dqdppr,'dqdppr',1,1]
+     [in0.dqewpr,'dqewpr',1,1]
+     [in0.dqdop4,'dqdop4',1,1]
+     [in0.dqkxst,'dqkxst',1,1]
+     [in0.dqe0pr,'dqe0pr',1,1]
+     [in0.dqlhst,'dqlhst',1,1]
+     [in0.dqgxcj,'dqgxcj',1,1]
+     [in0.dqhvpr,'dqhvpr',1,1]
+     [in0.dqk8tx,'dqk8tx',1,1]
+     [in0.dqalvn,'dqalvn',1,1]
+     [in0.dqybn2,'dqybn2',1,1]
+     [in0.dqwkp1,'dqwkp1',1,1]
+     [in0.dqsnhz,'dqsnhz',1,1]
+     [in0.dqasda,'dqasda',1,1]
+     [in0.dqplnb,'dqplnb',1,1]
+     [in0.dqkwst,'dqkwst',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dqs4hz,'dqs4hz',1,1]
+     [in0.dqb7ik,'dqb7ik',1,1]
+     [in0.dqbqod,'dqbqod',1,1]
+     [in0.dqsohz,'dqsohz',1,1]
+     [in0.dqz8ih,'dqz8ih',1,1]
+     [in0.dqohnb,'dqohnb',1,1]
+     [in0.dqs3hz,'dqs3hz',1,1]
+     [in0.dqhypr,'dqhypr',1,1]
+     [in0.dqo5cj,'dqo5cj',1,1]
+     [in0.dqbuod,'dqbuod',1,1]
+     [in0.dqomcd,'dqomcd',1,1]
+     [in0.dqvqp1,'dqvqp1',1,1]
+     [in0.dqhwpr,'dqhwpr',1,1]
+     [in0.dqbnod,'dqbnod',1,1]
+     [in0.dqlrst,'dqlrst',1,1]
+     [in0.dqeupr,'dqeupr',1,1]
+     [in0.dqwmp1,'dqwmp1',1,1]
+     [in0.dqb9ik,'dqb9ik',1,1]
+     [in0.dqtin2,'dqtin2',1,1]
+     [in0.dqbmod,'dqbmod',1,1]
+     [in0.dqoinb,'dqoinb',1,1]
+     [in0.dqo1cj,'dqo1cj',1,1]
+     [in0.dqbood,'dqbood',1,1]
+     [in0.dqw6hk,'dqw6hk',1,1]
+     [in0.dqbbda,'dqbbda',1,1]
+     [in0.dqhxpr,'dqhxpr',1,1]
+     [in0.dqtjcd,'dqtjcd',1,1]
+     [in0.dqucst,'dqucst',1,1]
+     [in0.dqtsn2,'dqtsn2',1,1]
+     [in0.dqsqhz,'dqsqhz',1,1]
+     [in0.dqw5hk,'dqw5hk',1,1]
+     [in0.e0d2pr,'e0d2pr',1,1]
+     [in0.dqionb,'dqionb',1,1]
+     [in0.dqhqpr,'dqhqpr',1,1]
+     [in0.dqc2dt,'dqc2dt',1,1]
+     [in0.dqukcd,'dqukcd',1,1]
+     [in0.dqabtm,'dqabtm',1,1]
+     [in0.dqeypr,'dqeypr',1,1]
+     [in0.dqtzn2,'dqtzn2',1,1]
+     [in0.dqkicj,'dqkicj',1,1]
+     [in0.dqhtcj,'dqhtcj',2,2]
+     [in0.dqtrhz,'dqtrhz',1,1]
+     [in0.dqi4nb,'dqi4nb',1,1]
+     [in0.dqdrpr,'dqdrpr',1,1]
+     [in0.dqk3st,'dqk3st',1,1]
+     [in0.phr_st_cd,'phr_st_cd',1,1]
+     [in0.dqtgn2,'dqtgn2',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dqbvod,'dqbvod',1,1]
+     [in0.dqs6st,'dqs6st',1,1]
+     [in0.dqikcj,'dqikcj',1,1]
+     [in0.dqk4st,'dqk4st',1,1]
+     [in0.dqo2cj,'dqo2cj',1,1]
+     [in0.dqh0pr,'dqh0pr',1,1]
+     [in0.dqovcd,'dqovcd',1,1]
+     [in0.dqevpr,'dqevpr',1,1]
+     [in0.pbr_sk,'pbr_sk',1,1]
+     [in0.pbr_npi_id,'pbr_npi_id',1,1]
+     [in0.dqimnb,'dqimnb',1,1]
+     [in0.dqubst,'dqubst',1,1]
+     [in0.dqqxh6,'dqqxh6',1,1]
+     [in0.dqtshz,'dqtshz',1,1]
+     [in0.dqs2hz,'dqs2hz',1,1]
+     [in0.dqowcj,'dqowcj',1,1]
+     ['lookup("LKP: D_CAG").contract_num','contract_num',1,1]
+     [in0.dqs8cd,'dqs8cd',5,5]
+     [in0.dqbtod,'dqbtod',1,1]
+     [in0.dqetpr,'dqetpr',1,1]
+     [in0.dqezpr,'dqezpr',1,1]
+     [in0.dqtbhz,'dqtbhz',1,1]
+     [in0.dqg7pp,'dqg7pp',1,1]
+     [in0.dqtcn2,'dqtcn2',1,1]
+     [in0.dqdlp4,'dqdlp4',1,1]
+     [in0.dqulcd,'dqulcd',1,1]
+     [in0.dqg6pp,'dqg6pp',1,1]
+     [in0.dqoxcj,'dqoxcj',1,1]
+     [in0.dqtecd,'dqtecd',1,1]
+     [in0.dqk9st,'dqk9st',1,1]
+     [in0.dqtahz,'dqtahz',1,1]
+     [in0.dqtlc4,'dqtlc4',1,1]
+     [in0.dqktst,'dqktst',1,1]
+     [in0.dqlnst,'dqlnst',1,1]
+     [in0.dqerpr,'dqerpr',1,1]
+     [in0.dqugst,'dqugst',1,1]
+     [in0.dqshhz,'dqshhz',1,1]
+     [in0.dqs1hz,'dqs1hz',1,1]
+     [in0.dqtmn2,'dqtmn2',1,1]
+     [in0.dqbrod,'dqbrod',1,1]
+     [in0.dqtchz,'dqtchz',1,1]
+     [in0.dqb4ik,'dqb4ik',1,1]
+     [in0.dqespr,'dqespr',1,1]
+     [in0.dqsphz,'dqsphz',1,1]
+     [in0.dqlost,'dqlost',1,1]
+     [in0.dqk7tx,'dqk7tx',1,1]
+     [in0.dqton2,'dqton2',1,1]
+     [in0.dqs6hz,'dqs6hz',1,1]
+     [in0.dqs5hz,'dqs5hz',1,1]
+     [in0.dqsoc4,'dqsoc4',1,1]
+     [in0.dqcaik,'dqcaik',1,1]
+     [in0.pbr_st_cd,'pbr_st_cd',1,1]
+     [in0.dqo0c3,'dqo0c3',1,1]
+     [in0.dqeai1,'dqeai1',1,1]
+     [in0.dqo0cj,'dqo0cj',1,1]
+     [in0.dqbsod,'dqbsod',1,1]
+     [in0.dqric4,'dqric4',2,2]
+     [in0.dqsrhz,'dqsrhz',1,1]
+     [in0.dqtfcd,'dqtfcd',1,1]
+     [in0.dqo3cj,'dqo3cj',1,1]
+     [in0.dqadtm,'dqadtm',1,1]
+     [in0.pbr_id,'pbr_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dqtkn2,'dqtkn2',1,1]
+     [in0.dqk2st,'dqk2st',2,2]
+     [in0.dqo4cj,'dqo4cj',1,1]
+     [in0.dqaldt,'dqaldt',1,1]
+     [in0.dqhtpr,'dqhtpr',1,1]
+     [in0.dqbmdt,'dqbmdt',1,1]
+     [in0.dqw4hk,'dqw4hk',1,1]
+     [in0.dqtqn2,'dqtqn2',1,1]
+     [in0.dqc4dt,'dqc4dt',1,1]
+     [in0.dqs9hz,'dqs9hz',1,1]
+     [in0.dqhzpr,'dqhzpr',1,1]
+     [in0.dqoucj,'dqoucj',1,1]
+     [in0.dqsshz,'dqsshz',1,1]
+     [in0.dqakvn,'dqakvn',1,1]
+     [in0.dqbpod,'dqbpod',1,1]
+     [in0.dqw3hk,'dqw3hk',1,1]
+     [in0.dqabda,'dqabda',1,1]
+     [in0.dqoecd,'dqoecd',1,1]
+     [in0.dqk7st,'dqk7st',1,1]
+     [in0.dqovcj,'dqovcj',1,1]
+     [in0.dqvbie,'dqvbie',1,1]
+     [in0.dqq3c3,'dqq3c3',1,1]
+     [in0.dqhspr,'dqhspr',1,1]
+     [in0.pbr_dea_cd,'pbr_dea_cd',1,1]
+     [in0.dqxjn1,'dqxjn1',1,1]
+     [in0.dqilnb,'dqilnb',1,1]
+     [in0.dqwep1,'dqwep1',1,1]
+     [in0.dqiicj,'dqiicj',1,1]
+     [in0.dqpecd,'dqpecd',1,1]
+     [in0.phr_ncpdp_id,'phr_ncpdp_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dqoycj,'dqoycj',1,1]
+     [in0.dqhrpr,'dqhrpr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) audit_clms_cag_sk = -1;
+let decimal("\x01",0) audit_clms_mbr_sk = -1;
+let decimal("\x01",0) audit_clms_phr_sk = -1;
+let decimal("\x01",0) audit_clms_prod_sk = -1;
+let decimal("\x01",0) audit_clms_compound_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=12) audit_clms_phr_ncpdp_id = fail_if_error(in0.phr_ncpdp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) audit_clms_phr_npi_no = fail_if_error(in0.phr_npi_no);
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_clms_phr_st_cd = fail_if_error(in0.phr_st_cd);
+let decimal("\x01",0) audit_clms_pbr_sk = fail_if_error(in0.pbr_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=10) audit_clms_phy_pbr_key = fail_if_error(in0.phy_pbr_key);
+let string("\x01",charset="iso-8859-15", maximum_length=15) audit_clms_pbr_dea_id = fail_if_error(in0.pbr_dea_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) audit_clms_pbr_npi_id = fail_if_error(in0.pbr_npi_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_clms_pbr_st_cd = fail_if_error(in0.pbr_st_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=7) audit_clms_pbr_dea_cd = fail_if_error(in0.pbr_dea_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=5) audit_clms_contract_num;
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_clms_pbp_id;
+let decimal("\x01",0, maximum_length=16, sign_reserved) audit_clms_dqp2nb = fail_if_error(in0.dqp2nb);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqoinb = fail_if_error(in0.dqoinb);
+let string("\x01", maximum_length=2) audit_clms_dqiicj = fail_if_error(in0.dqiicj);
+let string("\x01", maximum_length=15) audit_clms_dqujcd = fail_if_error(in0.phr_id);
+let string("\x01", maximum_length=1) audit_clms_dqikcj = fail_if_error(in0.dqikcj);
+let string("\x01", maximum_length=12) audit_clms_dqukcd = fail_if_error(in0.dqukcd);
+let decimal("\x01",0, maximum_length=9, sign_reserved) audit_clms_dqbbda = fail_if_error(in0.dqbbda);
+let string("\x01", maximum_length=2) audit_clms_dqulcd = fail_if_error(in0.dqulcd);
+let string("\x01", maximum_length=2) audit_clms_dqsoc4 = fail_if_error(in0.dqsoc4);
+let string("\x01", maximum_length=2) audit_clms_dqoecd = fail_if_error(in0.dqoecd);
+let decimal("\x01",0, maximum_length=9, sign_reserved) audit_clms_dqaldt = fail_if_error(in0.dqaldt);
+let string("\x01", maximum_length=1) audit_clms_dqkxst = fail_if_error(in0.dqkxst);
+let string("\x01", maximum_length=2) audit_clms_dqk0st = fail_if_error(in0.dqk0st);
+let string("\x01", maximum_length=12) audit_clms_dqk7tx = fail_if_error(in0.dqk7tx);
+let string("\x01", maximum_length=15) audit_clms_dqk8tx = fail_if_error(in0.dqk8tx);
+let decimal("\x01",0, maximum_length=6, sign_reserved) audit_clms_dqilnb = fail_if_error(in0.dqilnb);
+let decimal("\x01".3, maximum_length=13, sign_reserved) audit_clms_dqionb = fail_if_error(in0.dqionb);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqimnb = fail_if_error(in0.dqimnb);
+let string("\x01", maximum_length=1) audit_clms_dqk2st = fail_if_error(in0.dqk2st);
+let string("\x01", maximum_length=2) audit_clms_dqhtcj = fail_if_error(in0.dqhtcj);
+let string("\x01", maximum_length=20) audit_clms_dqric4 = fail_if_error(in0.dqric4);
+let decimal("\x01",0, maximum_length=10, sign_reserved) audit_clms_dqtcn2 = fail_if_error(in0.dqtcn2);
+let string("\x01", maximum_length=1) audit_clms_dqk3st = fail_if_error(in0.dqk3st);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdrpr = fail_if_error(in0.dqdrpr);
+let decimal("\x01",0, maximum_length=9, sign_reserved) audit_clms_dqabda = fail_if_error(in0.dqabda);
+let decimal("\x01",0, maximum_length=2, sign_reserved) audit_clms_dqg6pp = fail_if_error(in0.dqg6pp);
+let string("\x01", maximum_length=2) audit_clms_dqk7st = fail_if_error(in0.dqk7st);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdppr = fail_if_error(in0.dqdppr);
+let string("\x01", maximum_length=2) audit_clms_dqk4st = fail_if_error(in0.dqk4st);
+let string("\x01", maximum_length=11) audit_clms_dqomcd = fail_if_error(in0.dqomcd);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtgn2 = fail_if_error(in0.dqtgn2);
+let string("\x01", maximum_length=2) audit_clms_dqgxcj = fail_if_error(in0.dqgxcj);
+let string("\x01", maximum_length=15) audit_clms_dqk9st = fail_if_error(in0.dqk9st);
+let string("\x01", maximum_length=1) audit_clms_dqkicj = fail_if_error(in0.dqkicj);
+let string("\x01", maximum_length=2) audit_clms_dqilcj = fail_if_error(in0.pbr_id_qlfr);
+let string("\x01", maximum_length=15) audit_clms_dqtccd = fail_if_error(in0.pbr_id);
+let string("\x01", maximum_length=1) audit_clms_dqktst = fail_if_error(in0.dqktst);
+let string("\x01", maximum_length=1) audit_clms_dqlhst = fail_if_error(in0.dqlhst);
+let string("\x01", maximum_length=1) audit_clms_dqs6st = fail_if_error(in0.dqs6st);
+let string("\x01", maximum_length=1) audit_clms_dqlest = fail_if_error(in0.dqlest);
+let string("\x01", maximum_length=1) audit_clms_dqkwst = fail_if_error(in0.dqkwst);
+let string("\x01", maximum_length=1) audit_clms_dqlrst = fail_if_error(in0.dqlrst);
+let string("\x01", maximum_length=1) audit_clms_dqlost = fail_if_error(in0.dqlost);
+let string("\x01", maximum_length=14) audit_clms_dqpecd = fail_if_error(in0.dqpecd);
+let date("YYYYMMDD")("\x01") audit_clms_dqc4dt;
+let string("\x01", maximum_length=2) audit_clms_dqugst = fail_if_error(in0.dqugst);
+let string("\x01", maximum_length=11) audit_clms_dqtecd = fail_if_error(in0.dqtecd);
+let string("\x01", maximum_length=18) audit_clms_dqovcd = fail_if_error(in0.dqovcd);
+let string("\x01", maximum_length=6) audit_clms_dqafcd = fail_if_error(in0.dqafcd);
+let string("\x01", maximum_length=6) audit_clms_dqlrtx = fail_if_error(in0.dqlrtx);
+let string("\x01", maximum_length=1) audit_clms_dqlnst = fail_if_error(in0.dqlnst);
+let string("\x01", maximum_length=10) audit_clms_dqtjcd = fail_if_error(in0.dqtjcd);
+let decimal("\x01",0, maximum_length=8, sign_reserved) audit_clms_dqasda = fail_if_error(in0.dqasda);
+let string("\x01", maximum_length=20) audit_clms_dqs5cd = fail_if_error(in0.dqs5cd);
+let string("\x01", maximum_length=9) audit_clms_dqs6cd = fail_if_error(in0.dqs6cd);
+let string("\x01", maximum_length=15) audit_clms_dqs7cd = fail_if_error(in0.dqs7cd);
+let string("\x01", maximum_length=15) audit_clms_dqs8cd = fail_if_error(in0.dqs8cd);
+let string("\x01", maximum_length=1) audit_clms_dqubst = fail_if_error(in0.dqubst);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqplnb = fail_if_error(in0.dqplnb);
+let string("\x01", maximum_length=1) audit_clms_dqucst = fail_if_error(in0.dqucst);
+let decimal("\x01".3, maximum_length=13, sign_reserved) audit_clms_dqxjn1 = fail_if_error(in0.dqxjn1);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqybn2 = fail_if_error(in0.dqybn2);
+let decimal("\x01".3, maximum_length=13, sign_reserved) audit_clms_dqycn2 = fail_if_error(in0.dqycn2);
+let string("\x01", maximum_length=10) audit_clms_dqo0c3 = fail_if_error(in0.dqo0c3);
+let string("\x01", maximum_length=9) audit_clms_dqq3c3 = fail_if_error(in0.dqq3c3);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqi4nb = fail_if_error(in0.dqi4nb);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtin2 = fail_if_error(in0.dqtin2);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtkn2 = fail_if_error(in0.dqtkn2);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtmn2 = fail_if_error(in0.dqtmn2);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqton2 = fail_if_error(in0.dqton2);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtqn2 = fail_if_error(in0.dqtqn2);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqtsn2 = fail_if_error(in0.dqtsn2);
+let string("\x01", maximum_length=1) audit_clms_dqotcj = fail_if_error(in0.dqotcj);
+let string("\x01", maximum_length=1) audit_clms_dqoucj = fail_if_error(in0.dqoucj);
+let string("\x01", maximum_length=1) audit_clms_dqovcj = fail_if_error(in0.dqovcj);
+let string("\x01", maximum_length=1) audit_clms_dqowcj = fail_if_error(in0.dqowcj);
+let string("\x01", maximum_length=1) audit_clms_dqoxcj = fail_if_error(in0.dqoxcj);
+let string("\x01", maximum_length=1) audit_clms_dqoycj = fail_if_error(in0.dqoycj);
+let string("\x01", maximum_length=1) audit_clms_dqozcj = fail_if_error(in0.dqozcj);
+let string("\x01", maximum_length=1) audit_clms_dqo0cj = fail_if_error(in0.dqo0cj);
+let string("\x01", maximum_length=1) audit_clms_dqo1cj = fail_if_error(in0.dqo1cj);
+let string("\x01", maximum_length=1) audit_clms_dqo2cj = fail_if_error(in0.dqo2cj);
+let string("\x01", maximum_length=1) audit_clms_dqo3cj = fail_if_error(in0.dqo3cj);
+let string("\x01", maximum_length=1) audit_clms_dqo4cj = fail_if_error(in0.dqo4cj);
+let string("\x01", maximum_length=1) audit_clms_dqo5cj = fail_if_error(in0.dqo5cj);
+let string("\x01", maximum_length=1) audit_clms_dqeai1 = fail_if_error(in0.dqeai1);
+let string("\x01", maximum_length=1) audit_clms_dqqxh6 = fail_if_error(in0.dqqxh6);
+let string("\x01", maximum_length=1) audit_clms_dqvbie = fail_if_error(in0.dqvbie);
+let decimal("\x01",0, maximum_length=2, sign_reserved) audit_clms_dqg7pp = fail_if_error(in0.dqg7pp);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqerpr = fail_if_error(in0.dqerpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqespr = fail_if_error(in0.dqespr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqetpr = fail_if_error(in0.dqetpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqeupr = fail_if_error(in0.dqeupr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqevpr = fail_if_error(in0.dqevpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhopr = fail_if_error(in0.dqhopr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqewpr = fail_if_error(in0.dqewpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdlp4 = fail_if_error(in0.dqdlp4);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdmp4 = fail_if_error(in0.dqdmp4);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqexpr = fail_if_error(in0.dqexpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqwmp1 = fail_if_error(in0.dqwmp1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqeypr = fail_if_error(in0.dqeypr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqezpr = fail_if_error(in0.dqezpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqe0pr = fail_if_error(in0.dqe0pr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dquxp1 = fail_if_error(in0.dquxp1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqvqp1 = fail_if_error(in0.dqvqp1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqshhz = fail_if_error(in0.dqshhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsnhz = fail_if_error(in0.dqsnhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsohz = fail_if_error(in0.dqsohz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsphz = fail_if_error(in0.dqsphz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsqhz = fail_if_error(in0.dqsqhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsrhz = fail_if_error(in0.dqsrhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsshz = fail_if_error(in0.dqsshz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhqpr = fail_if_error(in0.dqhqpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhrpr = fail_if_error(in0.dqhrpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhspr = fail_if_error(in0.dqhspr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqwep1 = fail_if_error(in0.dqwep1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhtpr = fail_if_error(in0.dqhtpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhupr = fail_if_error(in0.dqhupr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhvpr = fail_if_error(in0.dqhvpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhwpr = fail_if_error(in0.dqhwpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhxpr = fail_if_error(in0.dqhxpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqwkp1 = fail_if_error(in0.dqwkp1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhypr = fail_if_error(in0.dqhypr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqhzpr = fail_if_error(in0.dqhzpr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqh0pr = fail_if_error(in0.dqh0pr);
+let string("\x01", maximum_length=10) audit_clms_dqtfcd = fail_if_error(in0.dqtfcd);
+let decimal("\x01",0, maximum_length=3, sign_reserved) audit_clms_dqohnb = fail_if_error(in0.dqohnb);
+let string("\x01", maximum_length=10) audit_clms_dqtlc4 = fail_if_error(in0.dqtlc4);
+let decimal("\x01",0, maximum_length=3, sign_reserved) audit_clms_dqtzn2 = fail_if_error(in0.dqtzn2);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdnp4 = fail_if_error(in0.dqdnp4);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqdop4 = fail_if_error(in0.dqdop4);
+let string("\x01", maximum_length=13) audit_clms_dqz8ih = fail_if_error(in0.dqz8ih);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqsvhz = fail_if_error(in0.dqsvhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs1hz = fail_if_error(in0.dqs1hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs2hz = fail_if_error(in0.dqs2hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs3hz = fail_if_error(in0.dqs3hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs4hz = fail_if_error(in0.dqs4hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs5hz = fail_if_error(in0.dqs5hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs6hz = fail_if_error(in0.dqs6hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqb4ik = fail_if_error(in0.dqb4ik);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqb9ik = fail_if_error(in0.dqb9ik);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqb7ik = fail_if_error(in0.dqb7ik);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqcaik = fail_if_error(in0.dqcaik);
+let decimal("\x01",0, maximum_length=4, sign_reserved) audit_clms_dqg8pp = fail_if_error(in0.dqg8pp);
+let string("\x01", maximum_length=1) audit_clms_dqbpod = fail_if_error(in0.dqbpod);
+let string("\x01", maximum_length=1) audit_clms_dqbmod = fail_if_error(in0.dqbmod);
+let string("\x01", maximum_length=1) audit_clms_dqbnod = fail_if_error(in0.dqbnod);
+let string("\x01", maximum_length=1) audit_clms_dqbood = fail_if_error(in0.dqbood);
+let string("\x01", maximum_length=1) audit_clms_dqbqod = fail_if_error(in0.dqbqod);
+let string("\x01", maximum_length=1) audit_clms_dqbrod = fail_if_error(in0.dqbrod);
+let string("\x01", maximum_length=1) audit_clms_dqbsod = fail_if_error(in0.dqbsod);
+let string("\x01", maximum_length=1) audit_clms_dqbtod = fail_if_error(in0.dqbtod);
+let string("\x01", maximum_length=1) audit_clms_dqbuod = fail_if_error(in0.dqbuod);
+let string("\x01", maximum_length=1) audit_clms_dqbvod = fail_if_error(in0.dqbvod);
+let string("\x01", maximum_length=10) audit_clms_dqw3hk = fail_if_error(in0.dqw3hk);
+let string("\x01", maximum_length=10) audit_clms_dqw4hk = fail_if_error(in0.dqw4hk);
+let string("\x01", maximum_length=10) audit_clms_dqw5hk = fail_if_error(in0.dqw5hk);
+let string("\x01", maximum_length=10) audit_clms_dqw6hk = fail_if_error(in0.dqw6hk);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqs9hz = fail_if_error(in0.dqs9hz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqtahz = fail_if_error(in0.dqtahz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqtbhz = fail_if_error(in0.dqtbhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqtchz = fail_if_error(in0.dqtchz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqtrhz = fail_if_error(in0.dqtrhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_clms_dqtshz = fail_if_error(in0.dqtshz);
+let string("\x01", maximum_length=10) audit_clms_dqakvn = fail_if_error(in0.dqakvn);
+let decimal("\x01",0, maximum_length=8, sign_reserved) audit_clms_dqc2dt = fail_if_error(in0.dqc2dt);
+let decimal("\x01",0, maximum_length=7, sign_reserved) audit_clms_dqadtm = fail_if_error(in0.dqadtm);
+let string("\x01", maximum_length=10) audit_clms_dqalvn = fail_if_error(in0.dqalvn);
+let string("\x01", maximum_length=10) audit_clms_dqadvn = fail_if_error(in0.dqadvn);
+let decimal("\x01",0, maximum_length=8, sign_reserved) audit_clms_dqbmdt = fail_if_error(in0.dqbmdt);
+let decimal("\x01",0, maximum_length=7, sign_reserved) audit_clms_dqabtm = fail_if_error(in0.dqabtm);
+let string("\x01", maximum_length=10) audit_clms_dqaevn = fail_if_error(in0.dqaevn);
+let decimal("\x01".2, maximum_length=13) audit_clms_e0d2pr = fail_if_error(in0.e0d2pr);
+let decimal("\x01",0) audit_clms_src_env_sk = fail_if_error(in0.src_env_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_carrier_id = fail_if_error(string_lrtrim(in0.dqs6cd));
+let string("\x01",charset="iso-8859-15", maximum_length=40) cag_account_id = fail_if_error(string_lrtrim(in0.dqs7cd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_employer_group_id = fail_if_error(string_lrtrim(in0.dqs8cd));
+let string("\x01",charset="iso-8859-15", maximum_length=1) compound_compound_cd = fail_if_error(string_lrtrim(in0.dqk2st));
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_carrier_id = fail_if_error(string_lrtrim(in0.dqs6cd));
+let string("\x01",charset="iso-8859-15", maximum_length=40) mbr_account_id = fail_if_error(string_lrtrim(in0.dqs7cd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_employer_group_id = fail_if_error(string_lrtrim(in0.dqs8cd));
+let string("\x01",charset="iso-8859-15", maximum_length=20) mbr_mbr_id = fail_if_error(string_lrtrim(in0.dqs5cd));
+let string("\x01",charset="iso-8859-15", maximum_length=12) phr_phr_id = fail_if_error(in0.phr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) prod_prod_id = fail_if_error(string_lrtrim(in0.dqric4));
+let string("\x01",charset="iso-8859-15", maximum_length=2) prod_prod_id_qlfr_cd = fail_if_error(string_lrtrim(in0.dqhtcj));
+
+
+
+/*   Default value   */
+audit_clms_pbp_id=fail_if_error(bzt_2_6c54cc0a_58f4750c_24cc_1(string_lrtrim(in0.dqs6cd), string_lrtrim(in0.dqs7cd), string_lrtrim(in0.dqs8cd)).pbp_id);
+
+/*   Default value   */
+audit_clms_dqc4dt=fail_if_error(date_check(in0.dqc4dt));
+
+/*   Default value   */
+audit_clms_contract_num=fail_if_error(bzt_2_6c54cc0a_58f4750c_24cc_1(string_lrtrim(in0.dqs6cd), string_lrtrim(in0.dqs7cd), string_lrtrim(in0.dqs8cd)).contract_num);
+
+  out0.audit_clms.cag_sk::audit_clms_cag_sk;
+  out0.audit_clms.mbr_sk::audit_clms_mbr_sk;
+  out0.audit_clms.phr_sk::audit_clms_phr_sk;
+  out0.audit_clms.prod_sk::audit_clms_prod_sk;
+  out0.audit_clms.compound_sk::audit_clms_compound_sk;
+  out0.audit_clms.phr_ncpdp_id::audit_clms_phr_ncpdp_id;
+  out0.audit_clms.phr_npi_no::audit_clms_phr_npi_no;
+  out0.audit_clms.phr_st_cd::audit_clms_phr_st_cd;
+  out0.audit_clms.pbr_sk::audit_clms_pbr_sk;
+  out0.audit_clms.phy_pbr_key::audit_clms_phy_pbr_key;
+  out0.audit_clms.pbr_dea_id::audit_clms_pbr_dea_id;
+  out0.audit_clms.pbr_npi_id::audit_clms_pbr_npi_id;
+  out0.audit_clms.pbr_st_cd::audit_clms_pbr_st_cd;
+  out0.audit_clms.pbr_dea_cd::audit_clms_pbr_dea_cd;
+  out0.audit_clms.contract_num::audit_clms_contract_num;
+  out0.audit_clms.pbp_id::audit_clms_pbp_id;
+  out0.audit_clms.dqp2nb::audit_clms_dqp2nb;
+  out0.audit_clms.dqoinb::audit_clms_dqoinb;
+  out0.audit_clms.dqiicj::audit_clms_dqiicj;
+  out0.audit_clms.dqujcd::audit_clms_dqujcd;
+  out0.audit_clms.dqikcj::audit_clms_dqikcj;
+  out0.audit_clms.dqukcd::audit_clms_dqukcd;
+  out0.audit_clms.dqbbda::audit_clms_dqbbda;
+  out0.audit_clms.dqulcd::audit_clms_dqulcd;
+  out0.audit_clms.dqsoc4::audit_clms_dqsoc4;
+  out0.audit_clms.dqoecd::audit_clms_dqoecd;
+  out0.audit_clms.dqaldt::audit_clms_dqaldt;
+  out0.audit_clms.dqkxst::audit_clms_dqkxst;
+  out0.audit_clms.dqk0st::audit_clms_dqk0st;
+  out0.audit_clms.dqk7tx::audit_clms_dqk7tx;
+  out0.audit_clms.dqk8tx::audit_clms_dqk8tx;
+  out0.audit_clms.dqilnb::audit_clms_dqilnb;
+  out0.audit_clms.dqionb::audit_clms_dqionb;
+  out0.audit_clms.dqimnb::audit_clms_dqimnb;
+  out0.audit_clms.dqk2st::audit_clms_dqk2st;
+  out0.audit_clms.dqhtcj::audit_clms_dqhtcj;
+  out0.audit_clms.dqric4::audit_clms_dqric4;
+  out0.audit_clms.dqtcn2::audit_clms_dqtcn2;
+  out0.audit_clms.dqk3st::audit_clms_dqk3st;
+  out0.audit_clms.dqdrpr::audit_clms_dqdrpr;
+  out0.audit_clms.dqabda::audit_clms_dqabda;
+  out0.audit_clms.dqg6pp::audit_clms_dqg6pp;
+  out0.audit_clms.dqk7st::audit_clms_dqk7st;
+  out0.audit_clms.dqdppr::audit_clms_dqdppr;
+  out0.audit_clms.dqk4st::audit_clms_dqk4st;
+  out0.audit_clms.dqomcd::audit_clms_dqomcd;
+  out0.audit_clms.dqtgn2::audit_clms_dqtgn2;
+  out0.audit_clms.dqgxcj::audit_clms_dqgxcj;
+  out0.audit_clms.dqk9st::audit_clms_dqk9st;
+  out0.audit_clms.dqkicj::audit_clms_dqkicj;
+  out0.audit_clms.dqilcj::audit_clms_dqilcj;
+  out0.audit_clms.dqtccd::audit_clms_dqtccd;
+  out0.audit_clms.dqktst::audit_clms_dqktst;
+  out0.audit_clms.dqlhst::audit_clms_dqlhst;
+  out0.audit_clms.dqs6st::audit_clms_dqs6st;
+  out0.audit_clms.dqlest::audit_clms_dqlest;
+  out0.audit_clms.dqkwst::audit_clms_dqkwst;
+  out0.audit_clms.dqlrst::audit_clms_dqlrst;
+  out0.audit_clms.dqlost::audit_clms_dqlost;
+  out0.audit_clms.dqpecd::audit_clms_dqpecd;
+  out0.audit_clms.dqc4dt::audit_clms_dqc4dt;
+  out0.audit_clms.dqugst::audit_clms_dqugst;
+  out0.audit_clms.dqtecd::audit_clms_dqtecd;
+  out0.audit_clms.dqovcd::audit_clms_dqovcd;
+  out0.audit_clms.dqafcd::audit_clms_dqafcd;
+  out0.audit_clms.dqlrtx::audit_clms_dqlrtx;
+  out0.audit_clms.dqlnst::audit_clms_dqlnst;
+  out0.audit_clms.dqtjcd::audit_clms_dqtjcd;
+  out0.audit_clms.dqasda::audit_clms_dqasda;
+  out0.audit_clms.dqs5cd::audit_clms_dqs5cd;
+  out0.audit_clms.dqs6cd::audit_clms_dqs6cd;
+  out0.audit_clms.dqs7cd::audit_clms_dqs7cd;
+  out0.audit_clms.dqs8cd::audit_clms_dqs8cd;
+  out0.audit_clms.dqubst::audit_clms_dqubst;
+  out0.audit_clms.dqplnb::audit_clms_dqplnb;
+  out0.audit_clms.dqucst::audit_clms_dqucst;
+  out0.audit_clms.dqxjn1::audit_clms_dqxjn1;
+  out0.audit_clms.dqybn2::audit_clms_dqybn2;
+  out0.audit_clms.dqycn2::audit_clms_dqycn2;
+  out0.audit_clms.dqo0c3::audit_clms_dqo0c3;
+  out0.audit_clms.dqq3c3::audit_clms_dqq3c3;
+  out0.audit_clms.dqi4nb::audit_clms_dqi4nb;
+  out0.audit_clms.dqtin2::audit_clms_dqtin2;
+  out0.audit_clms.dqtkn2::audit_clms_dqtkn2;
+  out0.audit_clms.dqtmn2::audit_clms_dqtmn2;
+  out0.audit_clms.dqton2::audit_clms_dqton2;
+  out0.audit_clms.dqtqn2::audit_clms_dqtqn2;
+  out0.audit_clms.dqtsn2::audit_clms_dqtsn2;
+  out0.audit_clms.dqotcj::audit_clms_dqotcj;
+  out0.audit_clms.dqoucj::audit_clms_dqoucj;
+  out0.audit_clms.dqovcj::audit_clms_dqovcj;
+  out0.audit_clms.dqowcj::audit_clms_dqowcj;
+  out0.audit_clms.dqoxcj::audit_clms_dqoxcj;
+  out0.audit_clms.dqoycj::audit_clms_dqoycj;
+  out0.audit_clms.dqozcj::audit_clms_dqozcj;
+  out0.audit_clms.dqo0cj::audit_clms_dqo0cj;
+  out0.audit_clms.dqo1cj::audit_clms_dqo1cj;
+  out0.audit_clms.dqo2cj::audit_clms_dqo2cj;
+  out0.audit_clms.dqo3cj::audit_clms_dqo3cj;
+  out0.audit_clms.dqo4cj::audit_clms_dqo4cj;
+  out0.audit_clms.dqo5cj::audit_clms_dqo5cj;
+  out0.audit_clms.dqeai1::audit_clms_dqeai1;
+  out0.audit_clms.dqqxh6::audit_clms_dqqxh6;
+  out0.audit_clms.dqvbie::audit_clms_dqvbie;
+  out0.audit_clms.dqg7pp::audit_clms_dqg7pp;
+  out0.audit_clms.dqerpr::audit_clms_dqerpr;
+  out0.audit_clms.dqespr::audit_clms_dqespr;
+  out0.audit_clms.dqetpr::audit_clms_dqetpr;
+  out0.audit_clms.dqeupr::audit_clms_dqeupr;
+  out0.audit_clms.dqevpr::audit_clms_dqevpr;
+  out0.audit_clms.dqhopr::audit_clms_dqhopr;
+  out0.audit_clms.dqewpr::audit_clms_dqewpr;
+  out0.audit_clms.dqdlp4::audit_clms_dqdlp4;
+  out0.audit_clms.dqdmp4::audit_clms_dqdmp4;
+  out0.audit_clms.dqexpr::audit_clms_dqexpr;
+  out0.audit_clms.dqwmp1::audit_clms_dqwmp1;
+  out0.audit_clms.dqeypr::audit_clms_dqeypr;
+  out0.audit_clms.dqezpr::audit_clms_dqezpr;
+  out0.audit_clms.dqe0pr::audit_clms_dqe0pr;
+  out0.audit_clms.dquxp1::audit_clms_dquxp1;
+  out0.audit_clms.dqvqp1::audit_clms_dqvqp1;
+  out0.audit_clms.dqshhz::audit_clms_dqshhz;
+  out0.audit_clms.dqsnhz::audit_clms_dqsnhz;
+  out0.audit_clms.dqsohz::audit_clms_dqsohz;
+  out0.audit_clms.dqsphz::audit_clms_dqsphz;
+  out0.audit_clms.dqsqhz::audit_clms_dqsqhz;
+  out0.audit_clms.dqsrhz::audit_clms_dqsrhz;
+  out0.audit_clms.dqsshz::audit_clms_dqsshz;
+  out0.audit_clms.dqhqpr::audit_clms_dqhqpr;
+  out0.audit_clms.dqhrpr::audit_clms_dqhrpr;
+  out0.audit_clms.dqhspr::audit_clms_dqhspr;
+  out0.audit_clms.dqwep1::audit_clms_dqwep1;
+  out0.audit_clms.dqhtpr::audit_clms_dqhtpr;
+  out0.audit_clms.dqhupr::audit_clms_dqhupr;
+  out0.audit_clms.dqhvpr::audit_clms_dqhvpr;
+  out0.audit_clms.dqhwpr::audit_clms_dqhwpr;
+  out0.audit_clms.dqhxpr::audit_clms_dqhxpr;
+  out0.audit_clms.dqwkp1::audit_clms_dqwkp1;
+  out0.audit_clms.dqhypr::audit_clms_dqhypr;
+  out0.audit_clms.dqhzpr::audit_clms_dqhzpr;
+  out0.audit_clms.dqh0pr::audit_clms_dqh0pr;
+  out0.audit_clms.dqtfcd::audit_clms_dqtfcd;
+  out0.audit_clms.dqohnb::audit_clms_dqohnb;
+  out0.audit_clms.dqtlc4::audit_clms_dqtlc4;
+  out0.audit_clms.dqtzn2::audit_clms_dqtzn2;
+  out0.audit_clms.dqdnp4::audit_clms_dqdnp4;
+  out0.audit_clms.dqdop4::audit_clms_dqdop4;
+  out0.audit_clms.dqz8ih::audit_clms_dqz8ih;
+  out0.audit_clms.dqsvhz::audit_clms_dqsvhz;
+  out0.audit_clms.dqs1hz::audit_clms_dqs1hz;
+  out0.audit_clms.dqs2hz::audit_clms_dqs2hz;
+  out0.audit_clms.dqs3hz::audit_clms_dqs3hz;
+  out0.audit_clms.dqs4hz::audit_clms_dqs4hz;
+  out0.audit_clms.dqs5hz::audit_clms_dqs5hz;
+  out0.audit_clms.dqs6hz::audit_clms_dqs6hz;
+  out0.audit_clms.dqb4ik::audit_clms_dqb4ik;
+  out0.audit_clms.dqb9ik::audit_clms_dqb9ik;
+  out0.audit_clms.dqb7ik::audit_clms_dqb7ik;
+  out0.audit_clms.dqcaik::audit_clms_dqcaik;
+  out0.audit_clms.dqg8pp::audit_clms_dqg8pp;
+  out0.audit_clms.dqbpod::audit_clms_dqbpod;
+  out0.audit_clms.dqbmod::audit_clms_dqbmod;
+  out0.audit_clms.dqbnod::audit_clms_dqbnod;
+  out0.audit_clms.dqbood::audit_clms_dqbood;
+  out0.audit_clms.dqbqod::audit_clms_dqbqod;
+  out0.audit_clms.dqbrod::audit_clms_dqbrod;
+  out0.audit_clms.dqbsod::audit_clms_dqbsod;
+  out0.audit_clms.dqbtod::audit_clms_dqbtod;
+  out0.audit_clms.dqbuod::audit_clms_dqbuod;
+  out0.audit_clms.dqbvod::audit_clms_dqbvod;
+  out0.audit_clms.dqw3hk::audit_clms_dqw3hk;
+  out0.audit_clms.dqw4hk::audit_clms_dqw4hk;
+  out0.audit_clms.dqw5hk::audit_clms_dqw5hk;
+  out0.audit_clms.dqw6hk::audit_clms_dqw6hk;
+  out0.audit_clms.dqs9hz::audit_clms_dqs9hz;
+  out0.audit_clms.dqtahz::audit_clms_dqtahz;
+  out0.audit_clms.dqtbhz::audit_clms_dqtbhz;
+  out0.audit_clms.dqtchz::audit_clms_dqtchz;
+  out0.audit_clms.dqtrhz::audit_clms_dqtrhz;
+  out0.audit_clms.dqtshz::audit_clms_dqtshz;
+  out0.audit_clms.dqakvn::audit_clms_dqakvn;
+  out0.audit_clms.dqc2dt::audit_clms_dqc2dt;
+  out0.audit_clms.dqadtm::audit_clms_dqadtm;
+  out0.audit_clms.dqalvn::audit_clms_dqalvn;
+  out0.audit_clms.dqadvn::audit_clms_dqadvn;
+  out0.audit_clms.dqbmdt::audit_clms_dqbmdt;
+  out0.audit_clms.dqabtm::audit_clms_dqabtm;
+  out0.audit_clms.dqaevn::audit_clms_dqaevn;
+  out0.audit_clms.e0d2pr::audit_clms_e0d2pr;
+  out0.audit_clms.src_env_sk::audit_clms_src_env_sk;
+  out0.cag.carrier_id::cag_carrier_id;
+  out0.cag.account_id::cag_account_id;
+  out0.cag.employer_group_id::cag_employer_group_id;
+  out0.compound.compound_cd::compound_compound_cd;
+  out0.mbr.carrier_id::mbr_carrier_id;
+  out0.mbr.account_id::mbr_account_id;
+  out0.mbr.employer_group_id::mbr_employer_group_id;
+  out0.mbr.mbr_id::mbr_mbr_id;
+  out0.phr.phr_id::phr_phr_id;
+  out0.prod.prod_id::prod_prod_id;
+  out0.prod.prod_id_qlfr_cd::prod_prod_id_qlfr_cd;
+  out0.*::in0.*;
+
+end;

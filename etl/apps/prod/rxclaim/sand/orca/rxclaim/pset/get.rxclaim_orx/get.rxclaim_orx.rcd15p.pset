@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcd15p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcd15p                  asnxcd,asnkcd,asben3,asaack,asabck,asacck,asdsvg,asf7bs,asf9bs,asdtvg,asduvg,asdvvg,asgabs,asnmvg,astkau,ask3bs,astlau,asnlvg,asgxbt,asrgvh,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcd15p')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[  if (START_CHANGES_TIME != '') \n    "WHERE rcd15p.asbmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcd15p.asbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcd15p.asbmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcd15p.asbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"]
+DO_LOOKUP||||0

@@ -1,0 +1,79 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5d1a1a24_675f_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.gpi_generic.non_competing_catgy,[passthrough],in0.Non_Competing_Category]
+  [out0.gpi_generic.gpi_nm,[passthrough],in0.GPI_Name]
+  [out0.gpi_generic.non_competing_gpi_sk,[transform],]
+  [out0.gpi_generic.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.gpi_generic.gpi_id,[passthrough],in0.GPI]
+  [out0.gpi_generic.non_competing_start_dt_sk,[transform],in0.Non_Competing_Start_Date]
+  [out0.gpi_generic.nbr_of_mfg_lbl,[passthrough],in0.Mfg_Labelers]
+  [out0.gpi_generic.up_to_dt_sk,[transform],in0.UptoDate]
+  [out0.gpi_generic.non_competing_end_dt_sk,[transform],in0.Non_Competing_End_Date]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.gpi_generic.non_competing_catgy,'gpi_generic.non_competing_catgy',1,0]
+     [out0.gpi_generic.gpi_nm,'gpi_generic.gpi_nm',1,0]
+     [out0.gpi_generic.non_competing_gpi_sk,'gpi_generic.non_competing_gpi_sk',1,0]
+     [out0.gpi_generic.src_env_sk,'gpi_generic.src_env_sk',1,0]
+     [out0.gpi_generic.gpi_id,'gpi_generic.gpi_id',1,0]
+     [out0.gpi_generic.non_competing_start_dt_sk,'gpi_generic.non_competing_start_dt_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.gpi_generic.nbr_of_mfg_lbl,'gpi_generic.nbr_of_mfg_lbl',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.gpi_generic.up_to_dt_sk,'gpi_generic.up_to_dt_sk',1,0]
+     [out0.gpi_generic.non_competing_end_dt_sk,'gpi_generic.non_competing_end_dt_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.GPI_Name,'GPI_Name',1,1]
+     [in0.Non_Competing_Category,'Non_Competing_Category',1,1]
+     [in0.Non_Competing_Start_Date,'Non_Competing_Start_Date',1,1]
+     [in0.UptoDate,'UptoDate',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.Non_Competing_End_Date,'Non_Competing_End_Date',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.Mfg_Labelers,'Mfg_Labelers',1,1]
+     [in0.GPI,'GPI',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) gpi_generic_non_competing_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_generic_gpi_id = fail_if_error(in0.GPI);
+let string("\x01",charset="iso-8859-15", maximum_length=100) gpi_generic_gpi_nm = fail_if_error(in0.GPI_Name);
+let decimal("\x01",0) gpi_generic_non_competing_start_dt_sk = fail_if_error((date("YYYYMMDD")) (date("MM/DD/YYYY")) in0.Non_Competing_Start_Date);
+let decimal("\x01",0) gpi_generic_non_competing_end_dt_sk = fail_if_error((date("YYYYMMDD")) (date("MM/DD/YYYY")) in0.Non_Competing_End_Date);
+let string("\x01",charset="iso-8859-15", maximum_length=30) gpi_generic_non_competing_catgy = fail_if_error(in0.Non_Competing_Category);
+let decimal("\x01",0) gpi_generic_nbr_of_mfg_lbl = fail_if_error(in0.Mfg_Labelers);
+let decimal("\x01",0) gpi_generic_up_to_dt_sk = fail_if_error((date("YYYYMMDD")) (date("MM/DD/YYYY")) in0.UptoDate);
+let decimal("\x01",0) gpi_generic_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.gpi_generic.non_competing_gpi_sk::gpi_generic_non_competing_gpi_sk;
+  out0.gpi_generic.gpi_id::gpi_generic_gpi_id;
+  out0.gpi_generic.gpi_nm::gpi_generic_gpi_nm;
+  out0.gpi_generic.non_competing_start_dt_sk::gpi_generic_non_competing_start_dt_sk;
+  out0.gpi_generic.non_competing_end_dt_sk::gpi_generic_non_competing_end_dt_sk;
+  out0.gpi_generic.non_competing_catgy::gpi_generic_non_competing_catgy;
+  out0.gpi_generic.nbr_of_mfg_lbl::gpi_generic_nbr_of_mfg_lbl;
+  out0.gpi_generic.up_to_dt_sk::gpi_generic_up_to_dt_sk;
+  out0.gpi_generic.src_env_sk::gpi_generic_src_env_sk;
+  out0.*::in0.*;
+
+end;

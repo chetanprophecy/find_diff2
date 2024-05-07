@@ -1,0 +1,96 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58e3a671_553_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mm_as_sn_c.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mm_as_sn_c.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mm_as_sn_c.cpp_member_assessment_sk,[transform],in0.sequence_num,
+     in0.member_assessment_id,
+     'lookup("c_member_assessment").dxf_sk']
+  [out0.c_mm_as_sn_c.cpp_member_assessment_snomed_cd_sk,[transform],]
+  [out0.c_mm_as_sn_c.cpp_snomed_cd_sk,[transform],in0.snomed_cd_id,
+     'lookup("c_snomed_cd").dxf_sk']
+  [out0.c_mm_as_sn_c.src_env_sk,[transform],]
+  [out0.c_mm_as_sn_c.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mm_as_sn_c.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mm_as_sn_c.cpp_update_ts,'c_mm_as_sn_c.cpp_update_ts',1,0]
+     [out0.c_mm_as_sn_c.cpp_create_ts,'c_mm_as_sn_c.cpp_create_ts',1,0]
+     [out0.c_mm_as_sn_c.cpp_member_assessment_sk,'c_mm_as_sn_c.cpp_member_assessment_sk',1,0]
+     [out0.c_mm_as_sn_c.snomed_cd_id,'c_mm_as_sn_c.snomed_cd_id',1,0]
+     [out0.c_mm_as_sn_c.cpp_member_assessment_snomed_cd_sk,'c_mm_as_sn_c.cpp_member_assessment_snomed_cd_sk',1,0]
+     [out0.c_mm_as_sn_c.sequence_num,'c_mm_as_sn_c.sequence_num',1,0]
+     [out0.c_mm_as_sn_c.cpp_snomed_cd_sk,'c_mm_as_sn_c.cpp_snomed_cd_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mm_as_sn_c.member_assessment_id,'c_mm_as_sn_c.member_assessment_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mm_as_sn_c.src_env_sk,'c_mm_as_sn_c.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mm_as_sn_c.cpp_created_by,'c_mm_as_sn_c.cpp_created_by',1,0]
+     [out0.c_mm_as_sn_c.cpp_updated_by,'c_mm_as_sn_c.cpp_updated_by',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     ['lookup("c_snomed_cd").dxf_sk','dxf_sk',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.snomed_cd_id,'snomed_cd_id',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.member_assessment_id,'member_assessment_id',2,2]
+     ['lookup("c_member_assessment").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mm_as_sn_c_cpp_member_assessment_snomed_cd_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_mm_as_sn_c_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let decimal("\x01",0) c_mm_as_sn_c_cpp_member_assessment_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mm_as_sn_c_snomed_cd_id = fail_if_error(in0.snomed_cd_id);
+let decimal("\x01",0) c_mm_as_sn_c_cpp_snomed_cd_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mm_as_sn_c_sequence_num = fail_if_error(in0.sequence_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mm_as_sn_c_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mm_as_sn_c_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mm_as_sn_c_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mm_as_sn_c_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mm_as_sn_c_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mm_as_sn_c_cpp_member_assessment_sk=fail_if_error(first_defined(lookup("c_member_assessment",in0.member_assessment_id,in0.sequence_num).dxf_sk,-1));
+
+/*   Default value   */
+c_mm_as_sn_c_cpp_snomed_cd_sk=fail_if_error(first_defined(lookup("c_snomed_cd",in0.snomed_cd_id).dxf_sk,-1));
+
+  out0.c_mm_as_sn_c.cpp_member_assessment_snomed_cd_sk::c_mm_as_sn_c_cpp_member_assessment_snomed_cd_sk;
+  out0.c_mm_as_sn_c.member_assessment_id::c_mm_as_sn_c_member_assessment_id;
+  out0.c_mm_as_sn_c.cpp_member_assessment_sk::c_mm_as_sn_c_cpp_member_assessment_sk;
+  out0.c_mm_as_sn_c.snomed_cd_id::c_mm_as_sn_c_snomed_cd_id;
+  out0.c_mm_as_sn_c.cpp_snomed_cd_sk::c_mm_as_sn_c_cpp_snomed_cd_sk;
+  out0.c_mm_as_sn_c.sequence_num::c_mm_as_sn_c_sequence_num;
+  out0.c_mm_as_sn_c.cpp_update_ts::c_mm_as_sn_c_cpp_update_ts;
+  out0.c_mm_as_sn_c.cpp_updated_by::c_mm_as_sn_c_cpp_updated_by;
+  out0.c_mm_as_sn_c.cpp_create_ts::c_mm_as_sn_c_cpp_create_ts;
+  out0.c_mm_as_sn_c.cpp_created_by::c_mm_as_sn_c_cpp_created_by;
+  out0.c_mm_as_sn_c.src_env_sk::c_mm_as_sn_c_src_env_sk;
+  out0.*::in0.*;
+
+end;

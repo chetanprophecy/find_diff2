@@ -1,0 +1,887 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_cag_carr_sk   */
+out0::bzt_4_6c54cc0a_59437409_7bd6_0(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) carrier_sk = NULL(""), carrier_acct_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL(""), account_nm = NULL(""), employer_group_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL(""), gps_plan_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_only_ind = NULL(""), hm_dlvry_stat_ind = NULL(""), rebates_only_ind = NULL(""), rebates_stat_ind = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_cag_carr_sk",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup f_claim_transaction.reduced   */
+out0::bzt_3_6c54cc0a_59437409_7bd6_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("f_claim_transaction.reduced",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup lkp_join_rctc2p_rcpdmp   */
+out0::bzt_5_6c54cc0a_59437409_7bd6_0(in0,in1)=
+begin
+let record
+  decimal("\x01",0, maximum_length=16) dup2nb = NULL("");
+  decimal("\x01",0, maximum_length=4) duoinb = NULL("");
+  string("\x01", maximum_length=40) dulptx = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_join_rctc2p_rcpdmp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rctc2p_to_the_ctrx_f_claim_trx_common_dtl2_ILM_documentation(in)=
+begin
+
+out0.clm_trx_dtl2.discount_flg::depends_on(
+         in.qng6an
+         );
+
+
+out0.clm_trx_dtl2.him_aptc_ind::depends_on(
+         in.qnedaq
+         );
+
+
+out0.clm_trx_dtl2.him_st_cd::depends_on(
+         in.qneiaq
+         );
+
+
+out0.clm_trx_dtl2.bypass_acc_flg::depends_on(
+         in.qnhean
+         );
+
+
+out0.clm_trx_dtl2.clt_amt_due_step_no::depends_on(
+         in.qnkban
+         );
+
+
+out0.clm_trx_dtl2.phr_xref_vldn_flg::depends_on(
+         in.qnejaj
+         );
+
+
+out0.clm_trx_dtl2.bla_ovrd_flg::depends_on(
+         in.qneuai
+         );
+
+
+out0.clm_trx_dtl2.him_grace_perd_ind::depends_on(
+         in.qnegaq
+         );
+
+
+out0.clm_trx_dtl2.std_thrpc_cls_cd::depends_on(
+         in.qnzbaj
+         );
+
+
+out0.clm_trx_dtl2.dx_typ2_cd::depends_on(
+         in.qnhian
+         );
+
+
+out0.clm_trx_dtl2.claim_pricing_flg::depends_on(
+         in.qngwam
+         );
+
+
+out0.clm_trx_dtl2.unauthorized_pbr_flg::depends_on(
+         in.qno9ak
+         );
+
+
+out0.clm_trx_dtl2.multi_source_cd::depends_on(
+         in.qnhaan
+         );
+
+
+out0.clm_trx_dtl2.claim_nbr::depends_on(
+         in.qnp2nb
+         );
+
+
+out0.clm_trx_dtl2.toc_ovrd_drg_stat::depends_on(
+         in.qnywau
+         );
+
+
+out0.clm_trx_dtl2.dx_typ3_cd::depends_on(
+         in.qnhjan
+         );
+
+
+out0.clm_trx_dtl2.nda_ovrd_flg::depends_on(
+         in.qnetai
+         );
+
+
+out0.clm_trx_dtl2.gen_drg_cov_cd::depends_on(
+         in.qndcai
+         );
+
+
+out0.clm_trx_dtl2.pps_ds_ovrd_flg::depends_on(
+         in.qng8an
+         );
+
+
+out0.clm_trx_dtl2.mbr_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.dqs6st,
+         in.qnoinb,
+         in.qnp2nb,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').mbr_sk  
+         );
+
+
+out0.clm_trx_dtl2.short_cycle_clm_qlfr_cd::depends_on(
+         in.qnxham
+         );
+
+
+out0.clm_trx_dtl2.letter_rsn_cd::depends_on(
+         in.qnr0vg
+         );
+
+
+out0.clm_trx_dtl2.clt_amt_due_sched_id::depends_on(
+         in.qnk7hp
+         );
+
+
+out0.clm_trx_dtl2.next_refill_dt::depends_on(
+         in.qnance
+         );
+
+
+out0.clm_trx_dtl2.maint_list_stat_cd::depends_on(
+         in.qnaqai
+         );
+
+
+out0.clm_trx_dtl2.rsp_pyr_id_qlfr_cd::depends_on(
+         in.qng7an
+         );
+
+
+out0.clm_trx_dtl2.mbr_tb_elgblty_flg::depends_on(
+         in.qnrlak
+         );
+
+
+out0.clm_trx_dtl2.cost_ovrd_ind::depends_on(
+         in.qntpaj
+         );
+
+
+out0.clm_trx_dtl2.trans_ref_id::depends_on(
+         in.qnshho
+         );
+
+
+out0.clm_trx_dtl2.cob_data_flg::depends_on(
+         in.qnwmak
+         );
+
+
+out0.clm_trx_dtl2.toc_enr_typ_cd::depends_on(
+         in.qnyvau
+         );
+
+
+out0.clm_trx_dtl2.toc_ovrd_sched::depends_on(
+         in.qnryvg
+         );
+
+
+out0.clm_trx_dtl2.him_seq_no::depends_on(
+         in.qnehaq
+         );
+
+
+out0.clm_trx_dtl2.spread_pricing_flg::depends_on(
+         in.qnikao
+         );
+
+
+out0.clm_trx_dtl2.dcs_dly_prorate::depends_on(
+         in.qnp7ap
+         );
+
+
+out0.clm_trx_dtl2.future_use2_cd::depends_on(
+         in.qnj8hp
+         );
+
+
+out0.clm_trx_dtl2.future_use_stat14_cd::depends_on(
+         in.qnhlan
+         );
+
+
+out0.clm_trx_dtl2.grace_perd_end_dt::depends_on(
+         in.qnj7hp
+         );
+
+
+out0.clm_trx_dtl2.medicaid_subrogation_flg::depends_on(
+         in.qnhgak
+         );
+
+
+out0.clm_trx_dtl2.future_use_stat13_cd::depends_on(
+         in.qnhkan
+         );
+
+
+out0.clm_trx_dtl2.short_cycle_prov_qlfr_cd::depends_on(
+         in.qnxfam
+         );
+
+
+out0.clm_trx_dtl2.future_use_stat9_cd::depends_on(
+         in.qnhgan
+         );
+
+
+out0.clm_trx_dtl2.clt_tax_ovrd_flg::depends_on(
+         in.qng9an
+         );
+
+
+out0.clm_trx_dtl2.gppc_id::depends_on(
+         in.qntaho
+         );
+
+
+out0.clm_trx_dtl2.tb_prequal_pass_flg::depends_on(
+         in.qnbgak
+         );
+
+
+out0.clm_trx_dtl2.carrier_sk::depends_on(
+         in.dqs6st,
+         in.rxt_src_envrt_id,
+         in.qnp2nb,
+         in.qnoinb,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').cag_sk  ,
+         lookup("d_cag_carr_sk",'keystr').carrier_sk
+         );
+
+
+out0.clm_trx_dtl2.him_std_compnt::depends_on(
+         in.qnkthr
+         );
+
+
+out0.clm_trx_dtl2.him_ethnicity_cd::depends_on(
+         in.qneeaq
+         );
+
+
+out0.clm_trx_dtl2.dx_list_qlfr_cd::depends_on(
+         in.qnl5am
+         );
+
+
+out0.clm_trx_dtl2.him_issuer_di::depends_on(
+         in.qnkrhr
+         );
+
+
+out0.clm_trx_dtl2.sbm_original_rx_nbr::depends_on(
+         in.qnxihn
+         );
+
+
+out0.clm_trx_dtl2.him_prod_nbr::depends_on(
+         in.qnkshr
+         );
+
+
+out0.clm_trx_dtl2.rsp_payer_id::depends_on(
+         in.qnj6hp
+         );
+
+
+out0.clm_trx_dtl2.incent_sched_id::depends_on(
+         in.qntbho
+         );
+
+
+out0.clm_trx_dtl2.hic3_ovrd_flg::depends_on(
+         in.qnjgai
+         );
+
+
+out0.clm_trx_dtl2.dly_cst_shr_round_typ_flg::depends_on(
+         in.qnhban
+         );
+
+
+out0.clm_trx_dtl2.claim_seq_nbr::depends_on(
+         in.qnoinb
+         );
+
+
+out0.clm_trx_dtl2.toc_claim_ind::depends_on(
+         in.qnyuau
+         );
+
+
+out0.clm_trx_dtl2.cag_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.dqs6st,
+         in.qnoinb,
+         in.qnp2nb,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').cag_sk  
+         );
+
+
+out0.clm_trx_dtl2.him_csr_lvl::depends_on(
+         in.qnecaq
+         );
+
+
+out0.clm_trx_dtl2.spread_pricing_pct::depends_on(
+         in.qnobqu
+         );
+
+
+out0.clm_trx_dtl2.rx_otc_ind::depends_on(
+         in.qnkvai
+         );
+
+
+out0.clm_trx_dtl2.him_pln_metal_ind::depends_on(
+         in.qnefaq
+         );
+
+
+out0.clm_trx_dtl2.pde_form_nform_stat_cd::depends_on(
+         in.qne0ai
+         );
+
+
+out0.clm_trx_dtl2.bla_flg::depends_on(
+         in.qnewai
+         );
+
+
+out0.clm_trx_dtl2.future_use_stat15_cd::depends_on(
+         in.qnhman
+         );
+
+
+out0.clm_trx_dtl2.cred_455_ind::depends_on(
+         in.qnynau
+         );
+
+
+out0.clm_trx_dtl2.phr_amt_due_step_no::depends_on(
+         in.qnkaan
+         );
+
+
+out0.clm_trx_dtl2.short_cycle_disp_std_no::depends_on(
+         in.qnggan
+         );
+
+
+out0.clm_trx_dtl2.ndc_list_id::depends_on(
+         in.qnz5hm
+         );
+
+
+out0.clm_trx_dtl2.biosimilar_prod_flg::depends_on(
+         in.qnhfan
+         );
+
+
+out0.clm_trx_dtl2.short_cycle_prod_qlfr_cd::depends_on(
+         in.qnxgam
+         );
+
+
+out0.clm_trx_dtl2.toc_prequal_ind::depends_on(
+         in.qnyxau
+         );
+
+
+out0.clm_trx_dtl2.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.clm_trx_dtl2.nda_flg::depends_on(
+         in.qnevai
+         );
+
+
+out0.clm_trx_dtl2.phr_amt_due_sched_id::depends_on(
+         in.qnk6hp
+         );
+
+
+out0.clm_trx_dtl2.dly_cst_shr_round_len_flg::depends_on(
+         in.qnhcan
+         );
+
+
+out0.clm_trx_dtl2.toc_grace_fill::depends_on(
+         in.qnoinb,
+         in.qnp2nb,
+         lookup("lkp_join_rctc2p_rcpdmp",'keystr','keystr').dulptx  
+         );
+
+
+out0.clm_trx_dtl2.auto_pay_rejctn_flg::depends_on(
+         in.qnhdan
+         );
+
+
+out0.clm_trx_dtl2.dx_typ1_cd::depends_on(
+         in.qnhhan
+         );
+
+
+out0.clm_trx_dtl2.future_use3_cd::depends_on(
+         in.qnj9hp
+         );
+
+
+out0.clm_trx_dtl2.dx_list_id::depends_on(
+         in.qnvmho
+         );
+
+
+out0.clm_trx_dtl2.suppress_ltr_flg::depends_on(
+         in.qnsaak
+         );
+
+
+out0.clm_trx_dtl2.claim_nbr_encrp::depends_on(
+         in.qnp2nb
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rctc2p_to_the_ctrx_f_claim_trx_common_dtl2_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.clm_trx_dtl2.discount_flg,'clm_trx_dtl2.discount_flg',1,0]
+     [out0.clm_trx_dtl2.him_aptc_ind,'clm_trx_dtl2.him_aptc_ind',1,0]
+     [out0.clm_trx_dtl2.him_st_cd,'clm_trx_dtl2.him_st_cd',1,0]
+     [out0.clm_trx_dtl2.bypass_acc_flg,'clm_trx_dtl2.bypass_acc_flg',1,0]
+     [out0.clm_trx_dtl2.clt_amt_due_step_no,'clm_trx_dtl2.clt_amt_due_step_no',1,0]
+     [out0.clm_trx_dtl2.phr_xref_vldn_flg,'clm_trx_dtl2.phr_xref_vldn_flg',1,0]
+     [out0.clm_trx_dtl2.bla_ovrd_flg,'clm_trx_dtl2.bla_ovrd_flg',1,0]
+     [out0.clm_trx_dtl2.him_grace_perd_ind,'clm_trx_dtl2.him_grace_perd_ind',1,0]
+     [out0.clm_trx_dtl2.std_thrpc_cls_cd,'clm_trx_dtl2.std_thrpc_cls_cd',1,0]
+     [out0.clm_trx_dtl2.dx_typ2_cd,'clm_trx_dtl2.dx_typ2_cd',1,0]
+     [out0.clm_trx_dtl2.claim_pricing_flg,'clm_trx_dtl2.claim_pricing_flg',1,0]
+     [out0.clm_trx_dtl2.unauthorized_pbr_flg,'clm_trx_dtl2.unauthorized_pbr_flg',1,0]
+     [out0.clm_trx_dtl2.multi_source_cd,'clm_trx_dtl2.multi_source_cd',1,0]
+     [out0.clm_trx_dtl2.claim_nbr,'clm_trx_dtl2.claim_nbr',1,0]
+     [out0.clm_trx_dtl2.sec_flg,'clm_trx_dtl2.sec_flg',1,0]
+     [out0.clm_trx_dtl2.toc_ovrd_drg_stat,'clm_trx_dtl2.toc_ovrd_drg_stat',1,0]
+     [out0.clm_trx_dtl2.dx_typ3_cd,'clm_trx_dtl2.dx_typ3_cd',1,0]
+     [out0.clm_trx_dtl2.nda_ovrd_flg,'clm_trx_dtl2.nda_ovrd_flg',1,0]
+     [out0.clm_trx_dtl2.gen_drg_cov_cd,'clm_trx_dtl2.gen_drg_cov_cd',1,0]
+     [out0.clm_trx_dtl2.pps_ds_ovrd_flg,'clm_trx_dtl2.pps_ds_ovrd_flg',1,0]
+     [out0.clm_trx_dtl2.mbr_sk,'clm_trx_dtl2.mbr_sk',1,0]
+     [out0.clm_trx_dtl2.short_cycle_clm_qlfr_cd,'clm_trx_dtl2.short_cycle_clm_qlfr_cd',1,0]
+     [out0.clm_trx_dtl2.letter_rsn_cd,'clm_trx_dtl2.letter_rsn_cd',1,0]
+     [out0.clm_trx_dtl2.clt_amt_due_sched_id,'clm_trx_dtl2.clt_amt_due_sched_id',1,0]
+     [out0.clm_trx_dtl2.next_refill_dt,'clm_trx_dtl2.next_refill_dt',1,0]
+     [out0.clm_trx_dtl2.maint_list_stat_cd,'clm_trx_dtl2.maint_list_stat_cd',1,0]
+     [out0.clm_trx_dtl2.rsp_pyr_id_qlfr_cd,'clm_trx_dtl2.rsp_pyr_id_qlfr_cd',1,0]
+     [out0.clm_trx_dtl2.mbr_tb_elgblty_flg,'clm_trx_dtl2.mbr_tb_elgblty_flg',1,0]
+     [out0.clm_trx_dtl2.cost_ovrd_ind,'clm_trx_dtl2.cost_ovrd_ind',1,0]
+     [out0.clm_trx_dtl2.trans_ref_id,'clm_trx_dtl2.trans_ref_id',1,0]
+     [out0.clm_trx_dtl2.cob_data_flg,'clm_trx_dtl2.cob_data_flg',1,0]
+     [out0.clm_trx_dtl2.toc_enr_typ_cd,'clm_trx_dtl2.toc_enr_typ_cd',1,0]
+     [out0.clm_trx_dtl2.toc_ovrd_sched,'clm_trx_dtl2.toc_ovrd_sched',1,0]
+     [out0.clm_trx_dtl2.him_seq_no,'clm_trx_dtl2.him_seq_no',1,0]
+     [out0.clm_trx_dtl2.spread_pricing_flg,'clm_trx_dtl2.spread_pricing_flg',1,0]
+     [out0.clm_trx_dtl2.dcs_dly_prorate,'clm_trx_dtl2.dcs_dly_prorate',1,0]
+     [out0.clm_trx_dtl2.future_use2_cd,'clm_trx_dtl2.future_use2_cd',1,0]
+     [out0.clm_trx_dtl2.future_use_stat14_cd,'clm_trx_dtl2.future_use_stat14_cd',1,0]
+     [out0.clm_trx_dtl2.grace_perd_end_dt,'clm_trx_dtl2.grace_perd_end_dt',1,0]
+     [out0.clm_trx_dtl2.medicaid_subrogation_flg,'clm_trx_dtl2.medicaid_subrogation_flg',1,0]
+     [out0.clm_trx_dtl2.future_use_stat13_cd,'clm_trx_dtl2.future_use_stat13_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.clm_trx_dtl2.short_cycle_prov_qlfr_cd,'clm_trx_dtl2.short_cycle_prov_qlfr_cd',1,0]
+     [out0.clm_trx_dtl2.future_use_stat9_cd,'clm_trx_dtl2.future_use_stat9_cd',1,0]
+     [out0.clm_trx_dtl2.clt_tax_ovrd_flg,'clm_trx_dtl2.clt_tax_ovrd_flg',1,0]
+     [out0.clm_trx_dtl2.gppc_id,'clm_trx_dtl2.gppc_id',1,0]
+     [out0.clm_trx_dtl2.tb_prequal_pass_flg,'clm_trx_dtl2.tb_prequal_pass_flg',1,0]
+     [out0.clm_trx_dtl2.carrier_sk,'clm_trx_dtl2.carrier_sk',1,1]
+     [out0.clm_trx_dtl2.him_std_compnt,'clm_trx_dtl2.him_std_compnt',1,0]
+     [out0.clm_trx_dtl2.him_ethnicity_cd,'clm_trx_dtl2.him_ethnicity_cd',1,0]
+     [out0.clm_trx_dtl2.dx_list_qlfr_cd,'clm_trx_dtl2.dx_list_qlfr_cd',1,0]
+     [out0.clm_trx_dtl2.him_issuer_di,'clm_trx_dtl2.him_issuer_di',1,0]
+     [out0.clm_trx_dtl2.sbm_original_rx_nbr,'clm_trx_dtl2.sbm_original_rx_nbr',1,0]
+     [out0.clm_trx_dtl2.him_prod_nbr,'clm_trx_dtl2.him_prod_nbr',1,0]
+     [out0.clm_trx_dtl2.rsp_payer_id,'clm_trx_dtl2.rsp_payer_id',1,0]
+     [out0.clm_trx_dtl2.incent_sched_id,'clm_trx_dtl2.incent_sched_id',1,0]
+     [out0.clm_trx_dtl2.hic3_ovrd_flg,'clm_trx_dtl2.hic3_ovrd_flg',1,0]
+     [out0.clm_trx_dtl2.dly_cst_shr_round_typ_flg,'clm_trx_dtl2.dly_cst_shr_round_typ_flg',1,0]
+     [out0.clm_trx_dtl2.claim_seq_nbr,'clm_trx_dtl2.claim_seq_nbr',1,0]
+     [out0.clm_trx_dtl2.toc_claim_ind,'clm_trx_dtl2.toc_claim_ind',1,0]
+     [out0.clm_trx_dtl2.cag_sk,'clm_trx_dtl2.cag_sk',2,0]
+     [out0.clm_trx_dtl2.him_csr_lvl,'clm_trx_dtl2.him_csr_lvl',1,0]
+     [out0.clm_trx_dtl2.spread_pricing_pct,'clm_trx_dtl2.spread_pricing_pct',1,0]
+     [out0.clm_trx_dtl2.rx_otc_ind,'clm_trx_dtl2.rx_otc_ind',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.clm_trx_dtl2.him_pln_metal_ind,'clm_trx_dtl2.him_pln_metal_ind',1,0]
+     [out0.clm_trx_dtl2.pde_form_nform_stat_cd,'clm_trx_dtl2.pde_form_nform_stat_cd',1,0]
+     [out0.clm_trx_dtl2.bla_flg,'clm_trx_dtl2.bla_flg',1,0]
+     [out0.clm_trx_dtl2.future_use_stat15_cd,'clm_trx_dtl2.future_use_stat15_cd',1,0]
+     [out0.clm_trx_dtl2.cred_455_ind,'clm_trx_dtl2.cred_455_ind',1,0]
+     [out0.clm_trx_dtl2.phr_amt_due_step_no,'clm_trx_dtl2.phr_amt_due_step_no',1,0]
+     [out0.clm_trx_dtl2.short_cycle_disp_std_no,'clm_trx_dtl2.short_cycle_disp_std_no',1,0]
+     [out0.clm_trx_dtl2.ndc_list_id,'clm_trx_dtl2.ndc_list_id',1,0]
+     [out0.clm_trx_dtl2.biosimilar_prod_flg,'clm_trx_dtl2.biosimilar_prod_flg',1,0]
+     [out0.clm_trx_dtl2.short_cycle_prod_qlfr_cd,'clm_trx_dtl2.short_cycle_prod_qlfr_cd',1,0]
+     [out0.clm_trx_dtl2.toc_prequal_ind,'clm_trx_dtl2.toc_prequal_ind',1,0]
+     [out0.clm_trx_dtl2.src_env_sk,'clm_trx_dtl2.src_env_sk',1,0]
+     [out0.clm_trx_dtl2.nda_flg,'clm_trx_dtl2.nda_flg',1,0]
+     [out0.clm_trx_dtl2.phr_amt_due_sched_id,'clm_trx_dtl2.phr_amt_due_sched_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.clm_trx_dtl2.dly_cst_shr_round_len_flg,'clm_trx_dtl2.dly_cst_shr_round_len_flg',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.clm_trx_dtl2.toc_grace_fill,'clm_trx_dtl2.toc_grace_fill',1,0]
+     [out0.clm_trx_dtl2.auto_pay_rejctn_flg,'clm_trx_dtl2.auto_pay_rejctn_flg',1,0]
+     [out0.clm_trx_dtl2.dx_typ1_cd,'clm_trx_dtl2.dx_typ1_cd',1,0]
+     [out0.clm_trx_dtl2.future_use3_cd,'clm_trx_dtl2.future_use3_cd',1,0]
+     [out0.clm_trx_dtl2.dx_list_id,'clm_trx_dtl2.dx_list_id',1,0]
+     [out0.clm_trx_dtl2.suppress_ltr_flg,'clm_trx_dtl2.suppress_ltr_flg',1,0]
+     [out0.clm_trx_dtl2.claim_nbr_encrp,'clm_trx_dtl2.claim_nbr_encrp',1,0]
+  ]
+  impacts:
+  [
+     [in0.qnkthr,'qnkthr',1,1]
+     [in0.qnbgak,'qnbgak',1,1]
+     [in0.qnxfam,'qnxfam',1,1]
+     [in0.qnance,'qnance',1,1]
+     [in0.qnhfan,'qnhfan',1,1]
+     [in0.qno9ak,'qno9ak',1,1]
+     [in0.qntbho,'qntbho',1,1]
+     [in0.qnxihn,'qnxihn',1,1]
+     [in0.qnzbaj,'qnzbaj',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.qnyvau,'qnyvau',1,1]
+     [in0.qnk6hp,'qnk6hp',1,1]
+     [in0.qnewai,'qnewai',1,1]
+     [in0.qnj9hp,'qnj9hp',1,1]
+     [in0.qng9an,'qng9an',1,1]
+     [in0.qnefaq,'qnefaq',1,1]
+     [in0.qnkaan,'qnkaan',1,1]
+     [in0.qnk7hp,'qnk7hp',1,1]
+     [in0.qnhkan,'qnhkan',1,1]
+     [in0.qnikao,'qnikao',1,1]
+     [in0.qnhgak,'qnhgak',1,1]
+     [in0.qntaho,'qntaho',1,1]
+     [in0.qnhcan,'qnhcan',1,1]
+     [in0.qnhian,'qnhian',1,1]
+     [in0.qnvmho,'qnvmho',1,1]
+     [in0.qnhdan,'qnhdan',1,1]
+     [in0.qnhean,'qnhean',1,1]
+     [in0.qnhjan,'qnhjan',1,1]
+     [in0.qnecaq,'qnecaq',1,1]
+     [in0.qneiaq,'qneiaq',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.qneeaq,'qneeaq',1,1]
+     [in0.qnedaq,'qnedaq',1,1]
+     [in0.qnjgai,'qnjgai',1,1]
+     [in0.qnetai,'qnetai',1,1]
+     [in0.qneuai,'qneuai',1,1]
+     [in0.qntpaj,'qntpaj',1,1]
+     [in0.qnp7ap,'qnp7ap',1,1]
+     [in0.qnkvai,'qnkvai',1,1]
+     [in0.qnl5am,'qnl5am',1,1]
+     [in0.qnkban,'qnkban',1,1]
+     [in0.qnr0vg,'qnr0vg',1,1]
+     [in0.qnhlan,'qnhlan',1,1]
+     [in0.qnshho,'qnshho',1,1]
+     [in0.qng8an,'qng8an',1,1]
+     [in0.qnhaan,'qnhaan',1,1]
+     [in0.qnggan,'qnggan',1,1]
+     [in0.qnj8hp,'qnj8hp',1,1]
+     [in0.qnryvg,'qnryvg',1,1]
+     [in0.qnegaq,'qnegaq',1,1]
+     [in0.qnwmak,'qnwmak',1,1]
+     [in0.qnywau,'qnywau',1,1]
+     [in0.qnaqai,'qnaqai',1,1]
+     [in0.qnevai,'qnevai',1,1]
+     [in0.qnxgam,'qnxgam',1,1]
+     [in0.qnp2nb,'qnp2nb',9,6]
+     [in0.qnj6hp,'qnj6hp',1,1]
+     [in0.qnhgan,'qnhgan',1,1]
+     [in0.qnkrhr,'qnkrhr',1,1]
+     [in0.qnobqu,'qnobqu',1,1]
+     [in0.qng6an,'qng6an',1,1]
+     [in0.qnj7hp,'qnj7hp',1,1]
+     [in0.qnhman,'qnhman',1,1]
+     [in0.qnehaq,'qnehaq',1,1]
+     [in0.qnhban,'qnhban',1,1]
+     [in0.dqs6st,'dqs6st',2,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.qne0ai,'qne0ai',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',3,4]
+     [in0.qng7an,'qng7an',1,1]
+     [in0.qnkshr,'qnkshr',1,1]
+     [in0.qnz5hm,'qnz5hm',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.qnrlak,'qnrlak',1,1]
+     [in0.qngwam,'qngwam',1,1]
+     [in0.qndcai,'qndcai',1,1]
+     [in0.qnsaak,'qnsaak',1,1]
+     [in0.qnyxau,'qnyxau',1,1]
+     [in0.qnoinb,'qnoinb',10,5]
+     [in0.qnejaj,'qnejaj',1,1]
+     [in0.qnxham,'qnxham',1,1]
+     [in0.qnynau,'qnynau',1,1]
+     [in0.qnyuau,'qnyuau',1,1]
+     [in0.qnhhan,'qnhhan',1,1]
+     ['lookup("lkp_join_rctc2p_rcpdmp").dulptx','dulptx',1,1]
+     ['lookup("d_cag_carr_sk").carrier_sk','carrier_sk',1,1]
+     ['lookup("f_claim_transaction.reduced").cag_sk','cag_sk',1,2]
+     ['lookup("f_claim_transaction.reduced").mbr_sk','mbr_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) clm_trx_dtl2_claim_nbr = fail_if_error(in0.qnp2nb);
+let decimal("\x01",0) clm_trx_dtl2_claim_seq_nbr = fail_if_error(if(in0.qnoinb <0) in0.qnoinb else (1000 - in0.qnoinb));
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_ndc_list_id = fail_if_error(in0.qnz5hm);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_maint_list_stat_cd = fail_if_error(in0.qnaqai);
+let date("YYYYMMDD")("\x01") clm_trx_dtl2_next_refill_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_gen_drg_cov_cd = fail_if_error(in0.qndcai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_nda_flg = fail_if_error(in0.qnevai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_nda_ovrd_flg = fail_if_error(in0.qnetai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_bla_flg = fail_if_error(in0.qnewai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_bla_ovrd_flg = fail_if_error(in0.qneuai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_pde_form_nform_stat_cd = fail_if_error(in0.qne0ai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_hic3_ovrd_flg = fail_if_error(in0.qnjgai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_rx_otc_ind = fail_if_error(in0.qnkvai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_phr_xref_vldn_flg = fail_if_error(in0.qnejaj);
+let string("\x01",charset="iso-8859-15", maximum_length=12) clm_trx_dtl2_sbm_original_rx_nbr = fail_if_error(in0.qnxihn);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_cost_ovrd_ind = fail_if_error(in0.qntpaj);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_std_thrpc_cls_cd = fail_if_error(in0.qnzbaj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_tb_prequal_pass_flg = fail_if_error(in0.qnbgak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_medicaid_subrogation_flg = fail_if_error(in0.qnhgak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_unauthorized_pbr_flg = fail_if_error(in0.qno9ak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_mbr_tb_elgblty_flg = fail_if_error(in0.qnrlak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_suppress_ltr_flg = fail_if_error(in0.qnsaak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_cob_data_flg = fail_if_error(in0.qnwmak);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_trans_ref_id = fail_if_error(in0.qnshho);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_claim_pricing_flg = fail_if_error(in0.qngwam);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_gppc_id = fail_if_error(in0.qntaho);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_incent_sched_id = fail_if_error(in0.qntbho);
+let string("\x01",charset="iso-8859-15", maximum_length=6) clm_trx_dtl2_dx_list_id = fail_if_error(in0.qnvmho);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dx_list_qlfr_cd = fail_if_error(in0.qnl5am);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_short_cycle_prov_qlfr_cd = fail_if_error(in0.qnxfam);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_short_cycle_prod_qlfr_cd = fail_if_error(in0.qnxgam);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_short_cycle_clm_qlfr_cd = fail_if_error(in0.qnxham);
+let decimal("\x01",0) clm_trx_dtl2_short_cycle_disp_std_no = fail_if_error(in0.qnggan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_discount_flg = fail_if_error(in0.qng6an);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_rsp_pyr_id_qlfr_cd = fail_if_error(in0.qng7an);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_rsp_payer_id = fail_if_error(in0.qnj6hp);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_phr_amt_due_sched_id = fail_if_error(in0.qnk6hp);
+let decimal("\x01",0) clm_trx_dtl2_phr_amt_due_step_no = fail_if_error(in0.qnkaan);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_clt_amt_due_sched_id = fail_if_error(in0.qnk7hp);
+let decimal("\x01",0) clm_trx_dtl2_clt_amt_due_step_no = fail_if_error(in0.qnkban);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_pps_ds_ovrd_flg = fail_if_error(in0.qng8an);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_clt_tax_ovrd_flg = fail_if_error(in0.qng9an);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_multi_source_cd = fail_if_error(in0.qnhaan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dly_cst_shr_round_typ_flg = fail_if_error(in0.qnhban);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dly_cst_shr_round_len_flg = fail_if_error(in0.qnhcan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_auto_pay_rejctn_flg = fail_if_error(in0.qnhdan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_bypass_acc_flg = fail_if_error(in0.qnhean);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_biosimilar_prod_flg = fail_if_error(in0.qnhfan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_future_use_stat9_cd = fail_if_error(in0.qnhgan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dx_typ1_cd = fail_if_error(in0.qnhhan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dx_typ2_cd = fail_if_error(in0.qnhian);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_dx_typ3_cd = fail_if_error(in0.qnhjan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_future_use_stat13_cd = fail_if_error(in0.qnhkan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_future_use_stat14_cd = fail_if_error(in0.qnhlan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_future_use_stat15_cd = fail_if_error(in0.qnhman);
+let date("YYYYMMDD")("\x01") clm_trx_dtl2_grace_perd_end_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_future_use2_cd = fail_if_error(in0.qnj8hp);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_future_use3_cd = fail_if_error(in0.qnj9hp);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_spread_pricing_flg = fail_if_error(in0.qnikao);
+let decimal("\x01".6, maximum_length=10, sign_reserved) clm_trx_dtl2_spread_pricing_pct = fail_if_error(in0.qnobqu);
+let decimal("\x01".4, maximum_length=14, sign_reserved) clm_trx_dtl2_dcs_dly_prorate = fail_if_error(in0.qnp7ap);
+let decimal("\x01",0) clm_trx_dtl2_him_seq_no = fail_if_error(in0.qnehaq);
+let string("\x01",charset="iso-8859-15", maximum_length=5) clm_trx_dtl2_him_issuer_di = fail_if_error(in0.qnkrhr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_him_st_cd = fail_if_error(in0.qneiaq);
+let string("\x01",charset="iso-8859-15", maximum_length=3) clm_trx_dtl2_him_prod_nbr = fail_if_error(in0.qnkshr);
+let string("\x01",charset="iso-8859-15", maximum_length=4) clm_trx_dtl2_him_std_compnt = fail_if_error(in0.qnkthr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_him_csr_lvl = fail_if_error(in0.qnecaq);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_him_aptc_ind = fail_if_error(in0.qnedaq);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_him_ethnicity_cd = fail_if_error(in0.qneeaq);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_him_pln_metal_ind = fail_if_error(in0.qnefaq);
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_him_grace_perd_ind = fail_if_error(in0.qnegaq);
+let decimal("\x01",0) clm_trx_dtl2_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+let decimal("\x01",0) clm_trx_dtl2_cag_sk;
+let decimal("\x01",0) clm_trx_dtl2_mbr_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=2) clm_trx_dtl2_cred_455_ind = fail_if_error(in0.qnynau);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_toc_claim_ind = fail_if_error(in0.qnyuau);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_toc_enr_typ_cd = fail_if_error(in0.qnyvau);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_toc_ovrd_drg_stat = fail_if_error(in0.qnywau);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_trx_dtl2_toc_prequal_ind = fail_if_error(in0.qnyxau);
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_toc_ovrd_sched = fail_if_error(in0.qnryvg);
+let decimal("\x01",0) clm_trx_dtl2_toc_grace_fill;
+let string("\x01",charset="iso-8859-15", maximum_length=10) clm_trx_dtl2_letter_rsn_cd = fail_if_error(in0.qnr0vg);
+let decimal("\x01",0) clm_trx_dtl2_carrier_sk;
+let decimal("\x01",0) clm_trx_dtl2_claim_nbr_encrp;
+let decimal("\x01",0) clm_trx_dtl2_sec_flg = 0;
+
+
+
+/*   Default value   */
+clm_trx_dtl2_mbr_sk=fail_if_error(bzt_3_6c54cc0a_59437409_7bd6_0(in0.qnp2nb,if(in0.qnoinb <0) in0.qnoinb else (1000 - in0.qnoinb),in0.dqs6st,in0.rxt_src_envrt_id).mbr_sk);
+
+/*   Default value   */
+clm_trx_dtl2_next_refill_dt=fail_if_error(date_check(in0.qnance));
+
+/*   Default value   */
+clm_trx_dtl2_grace_perd_end_dt=fail_if_error(date_check(in0.qnj7hp));
+
+/*   Default value   */
+clm_trx_dtl2_cag_sk=fail_if_error(bzt_3_6c54cc0a_59437409_7bd6_0(in0.qnp2nb,if(in0.qnoinb <0) in0.qnoinb else (1000 - in0.qnoinb),in0.dqs6st,in0.rxt_src_envrt_id).cag_sk);
+
+/*   Default value   */
+clm_trx_dtl2_carrier_sk=fail_if_error(first_defined(bzt_4_6c54cc0a_59437409_7bd6_0(clm_trx_dtl2_cag_sk).carrier_sk,-1));
+
+/*   Default value   */
+clm_trx_dtl2_toc_grace_fill=fail_if_error((decimal(''))(string_substring(string_lrtrim(bzt_5_6c54cc0a_59437409_7bd6_0(in0.qnp2nb,in0.qnoinb).dulptx),30,1)));
+
+/*   Default value   */
+clm_trx_dtl2_claim_nbr_encrp=fail_if_error(if(in0.qnp2nb>0) (decimal(''))(string_concat(string_substring((decimal(''))in0.qnp2nb,1,2),ff3_encrypt_idwdata((decimal(''))in0.qnp2nb)))
+else (decimal(''))(string_concat(string_substring((decimal(''))in0.qnp2nb,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs((decimal(''))in0.qnp2nb))))));
+
+  out0.clm_trx_dtl2.claim_nbr::clm_trx_dtl2_claim_nbr;
+  out0.clm_trx_dtl2.claim_seq_nbr::clm_trx_dtl2_claim_seq_nbr;
+  out0.clm_trx_dtl2.ndc_list_id::clm_trx_dtl2_ndc_list_id;
+  out0.clm_trx_dtl2.maint_list_stat_cd::clm_trx_dtl2_maint_list_stat_cd;
+  out0.clm_trx_dtl2.next_refill_dt::clm_trx_dtl2_next_refill_dt;
+  out0.clm_trx_dtl2.gen_drg_cov_cd::clm_trx_dtl2_gen_drg_cov_cd;
+  out0.clm_trx_dtl2.nda_flg::clm_trx_dtl2_nda_flg;
+  out0.clm_trx_dtl2.nda_ovrd_flg::clm_trx_dtl2_nda_ovrd_flg;
+  out0.clm_trx_dtl2.bla_flg::clm_trx_dtl2_bla_flg;
+  out0.clm_trx_dtl2.bla_ovrd_flg::clm_trx_dtl2_bla_ovrd_flg;
+  out0.clm_trx_dtl2.pde_form_nform_stat_cd::clm_trx_dtl2_pde_form_nform_stat_cd;
+  out0.clm_trx_dtl2.hic3_ovrd_flg::clm_trx_dtl2_hic3_ovrd_flg;
+  out0.clm_trx_dtl2.rx_otc_ind::clm_trx_dtl2_rx_otc_ind;
+  out0.clm_trx_dtl2.phr_xref_vldn_flg::clm_trx_dtl2_phr_xref_vldn_flg;
+  out0.clm_trx_dtl2.sbm_original_rx_nbr::clm_trx_dtl2_sbm_original_rx_nbr;
+  out0.clm_trx_dtl2.cost_ovrd_ind::clm_trx_dtl2_cost_ovrd_ind;
+  out0.clm_trx_dtl2.std_thrpc_cls_cd::clm_trx_dtl2_std_thrpc_cls_cd;
+  out0.clm_trx_dtl2.tb_prequal_pass_flg::clm_trx_dtl2_tb_prequal_pass_flg;
+  out0.clm_trx_dtl2.medicaid_subrogation_flg::clm_trx_dtl2_medicaid_subrogation_flg;
+  out0.clm_trx_dtl2.unauthorized_pbr_flg::clm_trx_dtl2_unauthorized_pbr_flg;
+  out0.clm_trx_dtl2.mbr_tb_elgblty_flg::clm_trx_dtl2_mbr_tb_elgblty_flg;
+  out0.clm_trx_dtl2.suppress_ltr_flg::clm_trx_dtl2_suppress_ltr_flg;
+  out0.clm_trx_dtl2.cob_data_flg::clm_trx_dtl2_cob_data_flg;
+  out0.clm_trx_dtl2.trans_ref_id::clm_trx_dtl2_trans_ref_id;
+  out0.clm_trx_dtl2.claim_pricing_flg::clm_trx_dtl2_claim_pricing_flg;
+  out0.clm_trx_dtl2.gppc_id::clm_trx_dtl2_gppc_id;
+  out0.clm_trx_dtl2.incent_sched_id::clm_trx_dtl2_incent_sched_id;
+  out0.clm_trx_dtl2.dx_list_id::clm_trx_dtl2_dx_list_id;
+  out0.clm_trx_dtl2.dx_list_qlfr_cd::clm_trx_dtl2_dx_list_qlfr_cd;
+  out0.clm_trx_dtl2.short_cycle_prov_qlfr_cd::clm_trx_dtl2_short_cycle_prov_qlfr_cd;
+  out0.clm_trx_dtl2.short_cycle_prod_qlfr_cd::clm_trx_dtl2_short_cycle_prod_qlfr_cd;
+  out0.clm_trx_dtl2.short_cycle_clm_qlfr_cd::clm_trx_dtl2_short_cycle_clm_qlfr_cd;
+  out0.clm_trx_dtl2.short_cycle_disp_std_no::clm_trx_dtl2_short_cycle_disp_std_no;
+  out0.clm_trx_dtl2.discount_flg::clm_trx_dtl2_discount_flg;
+  out0.clm_trx_dtl2.rsp_pyr_id_qlfr_cd::clm_trx_dtl2_rsp_pyr_id_qlfr_cd;
+  out0.clm_trx_dtl2.rsp_payer_id::clm_trx_dtl2_rsp_payer_id;
+  out0.clm_trx_dtl2.phr_amt_due_sched_id::clm_trx_dtl2_phr_amt_due_sched_id;
+  out0.clm_trx_dtl2.phr_amt_due_step_no::clm_trx_dtl2_phr_amt_due_step_no;
+  out0.clm_trx_dtl2.clt_amt_due_sched_id::clm_trx_dtl2_clt_amt_due_sched_id;
+  out0.clm_trx_dtl2.clt_amt_due_step_no::clm_trx_dtl2_clt_amt_due_step_no;
+  out0.clm_trx_dtl2.pps_ds_ovrd_flg::clm_trx_dtl2_pps_ds_ovrd_flg;
+  out0.clm_trx_dtl2.clt_tax_ovrd_flg::clm_trx_dtl2_clt_tax_ovrd_flg;
+  out0.clm_trx_dtl2.multi_source_cd::clm_trx_dtl2_multi_source_cd;
+  out0.clm_trx_dtl2.dly_cst_shr_round_typ_flg::clm_trx_dtl2_dly_cst_shr_round_typ_flg;
+  out0.clm_trx_dtl2.dly_cst_shr_round_len_flg::clm_trx_dtl2_dly_cst_shr_round_len_flg;
+  out0.clm_trx_dtl2.auto_pay_rejctn_flg::clm_trx_dtl2_auto_pay_rejctn_flg;
+  out0.clm_trx_dtl2.bypass_acc_flg::clm_trx_dtl2_bypass_acc_flg;
+  out0.clm_trx_dtl2.biosimilar_prod_flg::clm_trx_dtl2_biosimilar_prod_flg;
+  out0.clm_trx_dtl2.future_use_stat9_cd::clm_trx_dtl2_future_use_stat9_cd;
+  out0.clm_trx_dtl2.dx_typ1_cd::clm_trx_dtl2_dx_typ1_cd;
+  out0.clm_trx_dtl2.dx_typ2_cd::clm_trx_dtl2_dx_typ2_cd;
+  out0.clm_trx_dtl2.dx_typ3_cd::clm_trx_dtl2_dx_typ3_cd;
+  out0.clm_trx_dtl2.future_use_stat13_cd::clm_trx_dtl2_future_use_stat13_cd;
+  out0.clm_trx_dtl2.future_use_stat14_cd::clm_trx_dtl2_future_use_stat14_cd;
+  out0.clm_trx_dtl2.future_use_stat15_cd::clm_trx_dtl2_future_use_stat15_cd;
+  out0.clm_trx_dtl2.grace_perd_end_dt::clm_trx_dtl2_grace_perd_end_dt;
+  out0.clm_trx_dtl2.future_use2_cd::clm_trx_dtl2_future_use2_cd;
+  out0.clm_trx_dtl2.future_use3_cd::clm_trx_dtl2_future_use3_cd;
+  out0.clm_trx_dtl2.spread_pricing_flg::clm_trx_dtl2_spread_pricing_flg;
+  out0.clm_trx_dtl2.spread_pricing_pct::clm_trx_dtl2_spread_pricing_pct;
+  out0.clm_trx_dtl2.dcs_dly_prorate::clm_trx_dtl2_dcs_dly_prorate;
+  out0.clm_trx_dtl2.him_seq_no::clm_trx_dtl2_him_seq_no;
+  out0.clm_trx_dtl2.him_issuer_di::clm_trx_dtl2_him_issuer_di;
+  out0.clm_trx_dtl2.him_st_cd::clm_trx_dtl2_him_st_cd;
+  out0.clm_trx_dtl2.him_prod_nbr::clm_trx_dtl2_him_prod_nbr;
+  out0.clm_trx_dtl2.him_std_compnt::clm_trx_dtl2_him_std_compnt;
+  out0.clm_trx_dtl2.him_csr_lvl::clm_trx_dtl2_him_csr_lvl;
+  out0.clm_trx_dtl2.him_aptc_ind::clm_trx_dtl2_him_aptc_ind;
+  out0.clm_trx_dtl2.him_ethnicity_cd::clm_trx_dtl2_him_ethnicity_cd;
+  out0.clm_trx_dtl2.him_pln_metal_ind::clm_trx_dtl2_him_pln_metal_ind;
+  out0.clm_trx_dtl2.him_grace_perd_ind::clm_trx_dtl2_him_grace_perd_ind;
+  out0.clm_trx_dtl2.src_env_sk::clm_trx_dtl2_src_env_sk;
+  out0.clm_trx_dtl2.cag_sk::clm_trx_dtl2_cag_sk;
+  out0.clm_trx_dtl2.mbr_sk::clm_trx_dtl2_mbr_sk;
+  out0.clm_trx_dtl2.cred_455_ind::clm_trx_dtl2_cred_455_ind;
+  out0.clm_trx_dtl2.toc_claim_ind::clm_trx_dtl2_toc_claim_ind;
+  out0.clm_trx_dtl2.toc_enr_typ_cd::clm_trx_dtl2_toc_enr_typ_cd;
+  out0.clm_trx_dtl2.toc_ovrd_drg_stat::clm_trx_dtl2_toc_ovrd_drg_stat;
+  out0.clm_trx_dtl2.toc_prequal_ind::clm_trx_dtl2_toc_prequal_ind;
+  out0.clm_trx_dtl2.toc_ovrd_sched::clm_trx_dtl2_toc_ovrd_sched;
+  out0.clm_trx_dtl2.toc_grace_fill::clm_trx_dtl2_toc_grace_fill;
+  out0.clm_trx_dtl2.letter_rsn_cd::clm_trx_dtl2_letter_rsn_cd;
+  out0.clm_trx_dtl2.carrier_sk::clm_trx_dtl2_carrier_sk;
+  out0.clm_trx_dtl2.claim_nbr_encrp::clm_trx_dtl2_claim_nbr_encrp;
+  out0.clm_trx_dtl2.sec_flg::clm_trx_dtl2_sec_flg;
+  out0.*::in0.*;
+end;

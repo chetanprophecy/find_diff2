@@ -1,0 +1,75 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+
+//Function to get the path of the governance properties file
+
+out :: get_ids_governance_properties_file_path()=
+begin
+  let string("\x01") path = $PUB_DXF_META;
+  path = path + "/ids_governance_properties.dat";
+  out :: path;
+end;
+
+//Function to get all data from IDS governance properties meta file
+
+governance_properties_type[] out :: get_all_ids_governance_properties()=
+begin
+  let string("\x01") contents = read_file(get_ids_governance_properties_file_path());
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let governance_properties_type[] props = [vector];
+  for(let line in lines)
+  begin
+    if(not is_blank(line) and not starts_with(line, "#"))
+    begin
+      let string("") l = line + "\n";
+      let governance_properties_type p = reinterpret(l);
+      props = vector_append(props, p);
+    end
+  end
+  out :: props;
+end;
+
+
+//Function to get data from IDS Governance Properties based on table name
+governance_properties_type out :: get_ids_governance_properties(table)=
+begin
+  let governance_properties_type[] props_all = get_all_ids_governance_properties();
+  let props = for(let prop in props_all): if(prop.table == table) prop;
+  
+  out :1: if(length_of(props)) props[0];
+  out :: allocate_with_defaults();
+end;
+
+
+//Function to get all the tables configured in IDS Governance Properties
+out :: get_ids_governance_table_list()=
+begin
+  let governance_properties_type[] props_all = get_all_ids_governance_properties();
+  out :: for(let prop in props_all): prop.table;
+end;
+
+//Function to get retention type based on the table
+out :: get_ids_governance_retention_type(table)=
+begin
+  out :: get_ids_governance_properties(table).retention_type;
+end;
+
+//Funtion to get any specific property from governance properties
+out :: get_all_governance_by_property_name(property_name)=
+begin
+  let governance_properties_type[] props_all = get_all_ids_governance_properties();
+  out :: for(let prop in props_all): (string(""))eval(prop, property_name);
+end
+
+//Function to get retention period based on the table
+out :: get_ids_governance_retention_period(table)=
+begin
+  out :: get_ids_governance_properties(table).file_data_retention_period;
+end;
+
+
+//Function to get truncate and load flag based on the table
+out :: get_ids_governance_tnl_flag(table)=
+begin
+  out :: get_ids_governance_properties(table).is_truncate_and_load;
+end;

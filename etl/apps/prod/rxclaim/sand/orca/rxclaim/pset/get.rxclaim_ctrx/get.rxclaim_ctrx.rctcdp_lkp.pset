@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rctcdp_lkp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rctcdp                  dqp2nb,dqoinb,dqs6st,dqotcj,dqc4dt
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||0
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ \n  "WHERE rctcdp.dqc4dt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) + \n    " AND rctcdp.dqc4dt < " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+DO_LOOKUP||||1
+LOOKUP_KEY||||{dqp2nb; dqoinb; dqs6st; dxf_src_sys_id}
+DO_CONS_LOOKUP||||0
+LOOKUP_FIELDS||||

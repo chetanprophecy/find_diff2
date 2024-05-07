@@ -1,0 +1,67 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_alt_drg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_alt_drg.alt_drg_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_alt_drg.alt_drg_cost,'l_alt_drg.alt_drg_cost',1,0]
+     [out0.l_alt_drg.src_env_sk,'l_alt_drg.src_env_sk',1,0]
+     [out0.l_alt_drg.user_id,'l_alt_drg.user_id',1,0]
+     [out0.l_alt_drg.alt_drg_comments,'l_alt_drg.alt_drg_comments',1,0]
+     [out0.l_alt_drg.ndc_short,'l_alt_drg.ndc_short',1,0]
+     [out0.l_alt_drg.alt_drg,'l_alt_drg.alt_drg',1,0]
+     [out0.l_alt_drg.alt_drg_sk,'l_alt_drg.alt_drg_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_alt_drg.carrier_type,'l_alt_drg.carrier_type',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.alt_drg_comments,'alt_drg_comments',1,1]
+     [in0.alt_drg_cost,'alt_drg_cost',1,1]
+     [in0.user_id,'user_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.alt_drg,'alt_drg',1,1]
+     [in0.carrier_type,'carrier_type',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ndc_short,'ndc_short',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_alt_drg_alt_drg_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=12) l_alt_drg_ndc_short = fail_if_error(in0.ndc_short);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_alt_drg_carrier_type = fail_if_error(in0.carrier_type);
+let string("\x01",charset="iso-8859-15", maximum_length=70) l_alt_drg_alt_drg = fail_if_error(in0.alt_drg);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_alt_drg_alt_drg_cost = fail_if_error(in0.alt_drg_cost);
+let string("\x01",charset="iso-8859-15", maximum_length=150) l_alt_drg_alt_drg_comments = fail_if_error(in0.alt_drg_comments);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_alt_drg_user_id = fail_if_error(in0.user_id);
+let decimal("\x01",0) l_alt_drg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_alt_drg.alt_drg_sk::l_alt_drg_alt_drg_sk;
+  out0.l_alt_drg.ndc_short::l_alt_drg_ndc_short;
+  out0.l_alt_drg.carrier_type::l_alt_drg_carrier_type;
+  out0.l_alt_drg.alt_drg::l_alt_drg_alt_drg;
+  out0.l_alt_drg.alt_drg_cost::l_alt_drg_alt_drg_cost;
+  out0.l_alt_drg.alt_drg_comments::l_alt_drg_alt_drg_comments;
+  out0.l_alt_drg.user_id::l_alt_drg_user_id;
+  out0.l_alt_drg.src_env_sk::l_alt_drg_src_env_sk;
+  out0.*::in0.*;
+
+end;

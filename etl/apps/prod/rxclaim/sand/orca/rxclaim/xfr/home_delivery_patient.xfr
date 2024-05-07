@@ -1,0 +1,38 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID          :: "003";
+  out.SRC_PATIENT_ID      :: in.PATIENT_NBR;
+  out.LAST_NAME           :: "";//First part of DOCTOR_NAME separated by comma. For Example: If DOCTOR_NAME = 'Stella, Tak Truong, then LAST_NAME = 'Stella';
+  out.FIRST_NAME          :: "";//Second part of DOCTOR_NAME separated by comma (first word from the string)  For Example: If DOCTOR_NAME = 'Stella, Tak Truong, then FIRST_NAME = 'Tak';
+  out.BIRTH_DT            :: in.BIRTH_DATE;
+  out.GENDER              :: in.GENDER;
+  out.ADDRESS1            :: in.FM_ADDRESS_I;
+  out.ADDRESS2            :: in.FM_ADDRESS_II;
+  out.CITY                :: in.CITY_FM;
+  out.STATE               :: in.STATE_FM;
+  out.ZIP                 :: in.ZIP_CODE_FM;
+  out.PHONE_NBR           :: in.PHONE;
+  out.EMAIL               :: in.EMAIL_ADDRESS;
+  out.PATIENT_TYPE        :: in.PATIENT_TYPE;
+  out.PRIMARY_HEALTH_CAT  :: NULL;
+  out.ALT_PATIENT_ID      :: if(first_defined((decimal(""))in.SSN,-1)==0) ' ' else in.SSN;
+  out.ALT_PATIENT_QUAL    :: if(first_defined((decimal(""))in.SSN,-1)==0) ' ' else in.SSN;
+  out.MI                  :: "";//Second part of DOCTOR_NAME separated by comma (second word from the string)  For Example: If DOCTOR_NAME = Stella, Tak Truong, then LAST_NAME = 'Truong';
+  out.CELL_NBR            :: NULL;
+  out.EXTRACT_DT          :: in.EXTRACT_FILE_DATE;
+  out.EXTRACT_TIME        :: in.EXTRACT_FILE_TIMESTAMP;/*
+  out.LOAD_DT             :: "";//PATIENT.LOAD_DT (Lookup Query 1) format YYYYMMDD;
+  out.LOAD_TIME           :: "";//PATIENT.LOAD_TIME (Lookup Query 1) format HHMMSS;
+  out.REC_PROCESS         :: "";//if PATIENT.LOAD_DT IS NULL or 0  then 'Y' else 'N';
+  out.RUN_NBR             :: "0";
+  out.SRC_UPDT_DT         :: "0";
+  out.SRC_UPDT_TIME       :: "0";
+  out.rxt_src_envrt_id    :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm    :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm     :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid      :: 'app_orca_rxclaim';
+  out.rxt_create_run_id   :: "${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd     :: '';*/
+  out.*                   :: in.*;
+end;

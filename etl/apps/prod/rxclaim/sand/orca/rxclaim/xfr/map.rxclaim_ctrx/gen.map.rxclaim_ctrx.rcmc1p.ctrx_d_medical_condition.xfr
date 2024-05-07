@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.med_cond.med_cond_typ,[passthrough],in0.m1w2ie]
+  [out0.med_cond.mc_thru_age,[passthrough],in0.m1yehu]
+  [out0.med_cond.mc_frm_age,[passthrough],in0.m1ydhu]
+  [out0.med_cond.mc_duration_cd,[passthrough],in0.m1w8ie]
+  [out0.med_cond.mc_stat_cd,[passthrough],in0.m1w9ie]
+  [out0.med_cond.mc_gender,[passthrough],in0.m1w4ie]
+  [out0.med_cond.med_cond_sk,[transform],]
+  [out0.med_cond.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.med_cond.mc_age_unit_cd,[passthrough],in0.m1w7ie]
+  [out0.med_cond.mc_lactation_cd,[passthrough],in0.m1w6ie]
+  [out0.med_cond.med_cond_cd,[transform],in0.m1urhj]
+  [out0.med_cond.mc_class,[passthrough],in0.m1w3ie]
+  [out0.med_cond.mc_pregnancy_cd,[passthrough],in0.m1w5ie]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.med_cond.med_cond_typ,'med_cond.med_cond_typ',1,0]
+     [out0.med_cond.mc_thru_age,'med_cond.mc_thru_age',1,0]
+     [out0.med_cond.mc_frm_age,'med_cond.mc_frm_age',1,0]
+     [out0.med_cond.mc_duration_cd,'med_cond.mc_duration_cd',1,0]
+     [out0.med_cond.mc_stat_cd,'med_cond.mc_stat_cd',1,0]
+     [out0.med_cond.mc_gender,'med_cond.mc_gender',1,0]
+     [out0.med_cond.med_cond_sk,'med_cond.med_cond_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.med_cond.src_env_sk,'med_cond.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.med_cond.mc_age_unit_cd,'med_cond.mc_age_unit_cd',1,0]
+     [out0.med_cond.mc_lactation_cd,'med_cond.mc_lactation_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.med_cond.med_cond_cd,'med_cond.med_cond_cd',1,0]
+     [out0.med_cond.mc_class,'med_cond.mc_class',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.med_cond.mc_pregnancy_cd,'med_cond.mc_pregnancy_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.m1w6ie,'m1w6ie',1,1]
+     [in0.m1w4ie,'m1w4ie',1,1]
+     [in0.m1w9ie,'m1w9ie',1,1]
+     [in0.m1ydhu,'m1ydhu',1,1]
+     [in0.m1yehu,'m1yehu',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.m1w2ie,'m1w2ie',1,1]
+     [in0.m1w7ie,'m1w7ie',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.m1urhj,'m1urhj',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.m1w3ie,'m1w3ie',1,1]
+     [in0.m1w8ie,'m1w8ie',1,1]
+     [in0.m1w5ie,'m1w5ie',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) med_cond_med_cond_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=7) med_cond_med_cond_cd = fail_if_error(string_lrtrim(in0.m1urhj));
+let string("\x01",charset="iso-8859-15", maximum_length=2) med_cond_med_cond_typ = fail_if_error(in0.m1w2ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_class = fail_if_error(in0.m1w3ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_gender = fail_if_error(in0.m1w4ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_pregnancy_cd = fail_if_error(in0.m1w5ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_lactation_cd = fail_if_error(in0.m1w6ie);
+let decimal("\x01",0) med_cond_mc_frm_age = fail_if_error(in0.m1ydhu);
+let decimal("\x01",0) med_cond_mc_thru_age = fail_if_error(in0.m1yehu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_age_unit_cd = fail_if_error(in0.m1w7ie);
+let string("\x01",charset="iso-8859-15", maximum_length=2) med_cond_mc_duration_cd = fail_if_error(in0.m1w8ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cond_mc_stat_cd = fail_if_error(in0.m1w9ie);
+let decimal("\x01",0) med_cond_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.med_cond.med_cond_sk::med_cond_med_cond_sk;
+  out0.med_cond.med_cond_cd::med_cond_med_cond_cd;
+  out0.med_cond.med_cond_typ::med_cond_med_cond_typ;
+  out0.med_cond.mc_class::med_cond_mc_class;
+  out0.med_cond.mc_gender::med_cond_mc_gender;
+  out0.med_cond.mc_pregnancy_cd::med_cond_mc_pregnancy_cd;
+  out0.med_cond.mc_lactation_cd::med_cond_mc_lactation_cd;
+  out0.med_cond.mc_frm_age::med_cond_mc_frm_age;
+  out0.med_cond.mc_thru_age::med_cond_mc_thru_age;
+  out0.med_cond.mc_age_unit_cd::med_cond_mc_age_unit_cd;
+  out0.med_cond.mc_duration_cd::med_cond_mc_duration_cd;
+  out0.med_cond.mc_stat_cd::med_cond_mc_stat_cd;
+  out0.med_cond.src_env_sk::med_cond_src_env_sk;
+  out0.*::in0.*;
+
+end;

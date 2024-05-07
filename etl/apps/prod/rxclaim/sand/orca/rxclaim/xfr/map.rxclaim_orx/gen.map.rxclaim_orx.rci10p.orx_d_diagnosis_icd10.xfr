@@ -1,0 +1,62 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_diag_icd10.icd10_cd_nm,[passthrough],in0.i1uniu]
+  [out0.d_diag_icd10.icd10_cd_type,[passthrough],in0.i1tnap]
+  [out0.d_diag_icd10.icd10_stat_cd,[passthrough],in0.i1toap]
+  [out0.d_diag_icd10.icd10_unfrmt_cd,[passthrough],in0.i1wnhq]
+  [out0.d_diag_icd10.icd10_frmt_cd,[passthrough],in0.i1wmhq]
+  [out0.d_diag_icd10.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_diag_icd10.icd10_cd_nm,'d_diag_icd10.icd10_cd_nm',1,0]
+     [out0.d_diag_icd10.icd10_cd_type,'d_diag_icd10.icd10_cd_type',1,0]
+     [out0.d_diag_icd10.icd10_stat_cd,'d_diag_icd10.icd10_stat_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_diag_icd10.icd10_unfrmt_cd,'d_diag_icd10.icd10_unfrmt_cd',1,0]
+     [out0.d_diag_icd10.icd10_frmt_cd,'d_diag_icd10.icd10_frmt_cd',1,0]
+     [out0.d_diag_icd10.src_env_sk,'d_diag_icd10.src_env_sk',1,1]
+  ]
+  impacts:
+  [
+     [in0.i1wmhq,'i1wmhq',1,1]
+     [in0.i1uniu,'i1uniu',1,1]
+     [in0.i1wnhq,'i1wnhq',1,1]
+     [in0.i1toap,'i1toap',1,1]
+     [in0.i1tnap,'i1tnap',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let little endian integer(2) DXF_Source_System_ID;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_diag_icd10_icd10_cd_type = fail_if_error(in0.i1tnap);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_diag_icd10_icd10_frmt_cd = fail_if_error(in0.i1wmhq);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_diag_icd10_icd10_unfrmt_cd = fail_if_error(in0.i1wnhq);
+let string("\x01",charset="iso-8859-15", maximum_length=100) d_diag_icd10_icd10_cd_nm = fail_if_error(in0.i1uniu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_diag_icd10_icd10_stat_cd = fail_if_error(in0.i1toap);
+let decimal("\x01",0) d_diag_icd10_src_env_sk;
+
+
+
+/*   Default value   */
+d_diag_icd10_src_env_sk=fail_if_error(DXF_Source_System_ID);
+
+  out0.dxf_src_sys_id::DXF_Source_System_ID;
+  out0.d_diag_icd10.icd10_cd_type::d_diag_icd10_icd10_cd_type;
+  out0.d_diag_icd10.icd10_frmt_cd::d_diag_icd10_icd10_frmt_cd;
+  out0.d_diag_icd10.icd10_unfrmt_cd::d_diag_icd10_icd10_unfrmt_cd;
+  out0.d_diag_icd10.icd10_cd_nm::d_diag_icd10_icd10_cd_nm;
+  out0.d_diag_icd10.icd10_stat_cd::d_diag_icd10_icd10_stat_cd;
+  out0.d_diag_icd10.src_env_sk::d_diag_icd10_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,64 @@
+type logical_pcms_f_rxl_mbc_transaction_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) icn;
+  string("\x01",charset="iso-8859-15", maximum_length=10) certification_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rqstd_drg_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) rqstd_ndc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=150) rqstd_drg_cvrg_code = NULL("");
+  decimal("\x01", maximum_length=10) rqstd_daysupply = NULL("");
+  decimal("\x01", maximum_length=10) rqstd_quantity = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) rqstd_provider_npi = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) rqstd_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rqstd_phrmcy_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) rqstd_phrmcy_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rqstd_pbm_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) rqstd_mbr_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rqstd_mbr_first_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rqstd_mbr_last_name = NULL("");
+  date("YYYYMMDD")("\x01") rqstd_mbr_dob = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) rqstd_epa_rtbi_status = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) rqstd_event_status = NULL("");
+  date("YYYYMMDD")("\x01") rqstd_date = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rqstd_event_start_time = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rqstd_event_end_time = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) rqstd_response_time = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) rqstd_alternate_drg_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) rqstd_alternate_phrmcy_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) is_clicked_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) retracted_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) altered_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) associated_icn = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) prscrbd_drg_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) prscrbd_ndc = NULL("");
+  decimal("\x01", maximum_length=10) prscrbd_dayssupply = NULL("");
+  decimal("\x01", maximum_length=10) prscrbd_quantity = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) prscrbd_provider_npi = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) prscrbd_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) prscrbd_phrmcy_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) prscrbd_phrmcy_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) prscrbd_pbm_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) prscrbd_mbr_fst_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) prscrbd_mbr_lst_name = NULL("");
+  date("YYYYMMDD")("\x01") prscrbd_mbr_dob = NULL("");
+  date("YYYYMMDD")("\x01") prscrbd_date = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prescription_sent_flg = NULL("");
+  date("YYYYMMDD")("\x01") prscrptn_sent_date = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prscrptn_cancel_flg = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) insert_uid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) update_uid = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") insert_ts = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts = NULL("");
+  decimal("\x01",0) run_id = NULL("");
+  decimal("\x01",0) rec_stat_cd = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_pcms_f_rxl_mbc_transaction_t mbc_trans  /*@ BizName:'mbc trans' */;
+end;

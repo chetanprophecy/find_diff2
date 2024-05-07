@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This process uses the pharmacy files created by &quot;Data Intake&quot; and creates an ICFF file having all the pharmacy claims . It keeps appending everyday's data to the same pharma ICFF file. Its dependent on &quot;member match&quot; file since it uses the lookups created by mbr_match plan." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="90AA0D85-CBA6-49E0-4ACE-23F3BFB48498" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Pharmacy Claims" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL_INT"/>
+
+  <mainAction executablePath="${AI_PLAN}/pharma_claim_intake_and_incr_load.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-31Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="23:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="60" fileURL="$PUB_CLINICAL_DATAHUB_MFS_INBOUND/ids/f_claim_transaction_*.dat.gz" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+    </fileAndEventConstraints>
+    <predecessors>
+      <predecessor jobDefinitionGuid="ECD9F7E8-BD0C-C283-1B3A-18C314DDE1C0"/>
+      <predecessor jobDefinitionGuid="31179A17-A464-3D4A-CF53-1E6CFA5A8FE3"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

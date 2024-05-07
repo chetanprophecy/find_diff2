@@ -1,0 +1,560 @@
+/* Tests:
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'to_text(1)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'to_text((decimal("X"))1)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'to_text((date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'high_date()' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval '(datetime("YYYY-MM-DD HH24:MI:SS"))high_date()' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name(today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name((date("YYYY-MM-DD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_quarter_name(now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((string(""))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((decimal(""))(string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD((integer(4))(decimal(""))(string(int))(date("YYYYMMDD"))today())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD(2000)' -print-type # Expect NULL
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((datetime("HH24MISS"))now())' -print-type # Expect Type Failure.
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((string(""))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((decimal(""))(string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS((integer(4))(decimal(""))(string(int))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'HHMMSS(2000)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'YYYYMMDD_HHMMSS((date("YYYYMMDD"))today(), (decimal(""))(string(""))(datetime("HH24MISS"))now())' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null((string(""))NULL)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null("")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null("  ")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null(U"x")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'trim_no_null((decimal(""))1)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_datetime(36000)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_datetime(36000.5)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_date(36000.5)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_date(0)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_date("")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'excel_date(NULL)' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 1)' -print-type # Returns NULL
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 2)' -print-type # Returns NULL
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 3)' -print-type # Returns 8A
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'get_error_code("{1073,!,?},{1073,!,?},{25824,8A,?}", 4)' -print-type # Returns NULL
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'datetime_non_nk("20161412000000")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'datetime_non_nk("")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_non_nk("20161412")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_non_nk("")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'date_non_nk("20161401")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'str_non_nk("functiontest")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'str_non_nk(" ")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'str_non_nk("\x00")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'numeric_non_nk((decimal(""))" ")' -print-type
+AB_INCLUDE_FILES="$PUB_DXF_XFR/bre_helper.map.xfr" m_eval 'numeric_non_nk((decimal(""))123)' -print-type // It will return as string as per format of m_eval 'decimal("") '
+*/
+
+include "/~$AB_COMPONENTS/Interchange/Excel/excel_to_dml_date.xfr";
+include "/~$PUB_DXF_XFR/common_functions.xfr";
+
+/*@
+Name:excel_datetime
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:excel_dttm_nbr  BizComment:"The number produced by Excel for a date/time value."}
+]
+BizComment:"Returns the Date and Time that corresponds to the given Excel Date/Time Number.  Returns NULL for invalid or values <= 0."
+@*/
+out :: excel_datetime(decimal("") excel_dttm_nbr) =
+begin
+  out :: if ( is_valid(excel_dttm_nbr) and excel_dttm_nbr > 0 )
+    (datetime("YYYY-MM-DD HH24:MI:SS"))excel_to_dml_datetime2(excel_dttm_nbr, 0);
+end;
+
+/*@
+Name:excel_date
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:excel_dttm_nbr  BizComment:"The number produced by Excel for a date value."}
+]
+BizComment:"Returns the Date (only) that corresponds to the given Excel Date/Time Number.  Returns NULL for invalid or values <= 0."
+@*/
+out :: excel_date(decimal("") excel_dttm_nbr) =
+begin
+  out :: if ( is_valid(excel_dttm_nbr) and excel_dttm_nbr > 0 )
+    (date("YYYY-MM-DD"))excel_to_dml_date(excel_dttm_nbr);
+end;
+
+
+
+/*@
+Name:high_date
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[]
+BizComment:"Returns the highest allowed time, for example 9999-12-31 23:59:59."
+@*/
+out :: high_date() =
+begin
+  out :: (datetime("YYYY-MM-DD HH24:MI:SS"))$AI_MAX_DATETIME;
+end;
+
+
+/*@
+Name:low_date
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[]
+BizComment:"Returns the lowest allowed time, for example 1800-01-01 00:00:00."
+@*/
+out :: low_date() =
+begin
+  out :: (datetime("YYYY-MM-DD HH24:MI:SS"))$AI_MIN_DATETIME;
+end;
+
+
+/*@
+Name:YYYYMMDD
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String, Number, Date or Time"}
+]
+BizComment:"Converts any value that is in the form YYYYMMDD to a date.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD(in) =
+begin
+  let decimal("") num = switch ( type_info(type_of(in)).form )
+    case "integer": in;
+    case "decimal", "string": string_lrtrim((decimal(""))in);
+    case "date", "datetime": (string(""))(date("YYYYMMDD"))in;
+    default: force_error("Unexpected Type: " + type_of(in));
+  end;
+  //write_to_log_file("/~stdout", num);
+  out :: if ( string_length(num) == 8 )
+    (date("YYYYMMDD"))(string(""))num;
+end;
+
+
+/*@
+Name:YYYYMMDD_decimal
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String, Number, Date or Time"}
+]
+BizComment:"Converts any value that is in the form YYYYMMDD to a date.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD_decimal(in) =
+begin
+  let string("") num = string_lrtrim((decimal(""))in);
+  out :: if ( string_length(num) == 8 )
+    (date("YYYYMMDD"))(string(""))num;
+end;
+
+/*@
+Name:CYYMMDD
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String, Number"}
+]
+BizComment:"Converts any value that is in the form CYYMMDD to a date."
+@*/
+out :: CYYMMDD(in) =
+begin
+  let dteyyy=string_substring((string(""))in,1,3);
+  let dtemmdd=string_substring((string(""))in,4,4);
+
+  let dteyyyy=1900+((decimal(""))dteyyy);
+  
+  out :: (date("YYYYMMDD"))string_concat(string_lrtrim(dteyyyy),dtemmdd);
+end;
+
+
+/*@
+Name:HHMMSS
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{Name:in  BizComment:"String or Number"}
+]
+BizComment:"Converts any value that is in the form HHMMSS to a time.  If not in that form, returns NULL."
+@*/
+out :: HHMMSS(in) =
+begin
+  let decimal("") num = (long)(decimal(""))in;
+//write_to_log_file("/~stdout", num);
+  out :: if ( string_length(num) <= 6 )
+    (datetime("HH24MISS"))decimal_lpad(num, 6);
+end;
+
+/*@
+Name:YYYYMMDD_HHMMSS
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{Name:dt  BizComment:"String, Number, Date or Time"}
+{Name:tm  BizComment:"String or Number"}
+]
+BizComment:"Converts a date in YYYYMMDD form and a time that is in HHMMSS form to a date/time.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD_HHMMSS(dt, tm) =
+begin
+  out :: (datetime("YYYYMMDDHH24MISS"))string_concat(YYYYMMDD(dt), HHMMSS(tm));
+end;
+
+
+/*@
+Name:YYYYMMDD_HHMMSS_decimal
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{Name:dt  BizComment:"String, Number, Date or Time"}
+{Name:tm  BizComment:"String or Number"}
+]
+BizComment:"Converts a date in YYYYMMDD form and a time that is in HHMMSS form to a date/time.  If not in that form, returns NULL."
+@*/
+out :: YYYYMMDD_HHMMSS_decimal(dt, tm) =
+begin
+  out :: (datetime("YYYYMMDDHH24MISS"))string_concat(YYYYMMDD_decimal(dt), HHMMSS(tm));
+end;
+
+
+/*@
+Name:date_quarter_name
+BizReturnValueType:String
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Date  Name:in  BizComment:" Date or Time"}
+]
+BizComment:'Converts a date or datetime to "1st Quarter", etc.'
+@*/
+string("")
+out :: date_quarter_name(in) =
+begin
+  out :: switch ( date_month(in) )
+    case 1, 2, 3: "1st Quarter";
+    case 4, 5, 6: "2nd Quarter";
+    case 7, 8, 9: "3rd Quarter";
+    default: "4th Quarter";
+  end;
+end;
+
+
+/*@
+Name:to_text
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:Number  Name:number  BizComment:"The number to be converted to text."}
+]
+BizComment:"Returns text string that represents the given number."
+@*/
+out :: to_text(in) =
+begin
+  let decimal("") num = switch ( type_info(type_of(in)).form )
+    case "integer": in;
+    case "decimal", "string": string_lrtrim((decimal(""))in);
+    case "date": (string(""))(date("YYYYMMDD"))in;
+    default: force_error("Unexpected Type: " + type_of(in));
+  end;
+  out :: (string(""))num;
+end;
+
+
+/*@
+Name:trim_no_null
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:str  BizComment:"The string to be trimmed."}
+]
+BizComment:"Returns a left/right trimmed string, except that NULL or blanks return a single space."
+@*/
+out :: trim_no_null(str) =
+begin
+  out :1: if ( not is_blank(str) )
+    string_lrtrim(str);
+  out :: " ";
+end;
+
+
+/*@
+Name:seconds_to_time
+BizReturnValueType:Time
+BizCategory:"Time Functions"
+Arguments:[
+{BizType:Number  Name:in_sec  BizComment:"The time in seconds."}
+]
+BizComment:'Returns datetime("HH24MISS") for elapsed seconds.'
+@*/
+out :: seconds_to_time(in_sec) =
+begin
+  let decimal(6) ss    = in_sec ;
+  let decimal(2) tm_hh = decimal_truncate(in_sec/3600,0) - 0;
+  let decimal(2) tm_mi = decimal_truncate(in_sec/60,0) - (tm_hh * 60) ;
+  let decimal(4) tm_ss = in_sec   - (tm_mi * 60) ;
+  let string(2) str_hh = decimal_lpad(tm_hh,2) ;
+  let string(2) str_mi = decimal_lpad(tm_mi,2) ;
+  let string(2) str_ss = string_substring(tm_ss,3,2);
+  let string(6) tm_str = string_concat(string_substring(str_hh,1,2),string_substring(str_mi,1,2),str_ss);
+  let datetime("HH24MISS") tm = tm_str;
+  let null_or_invalid_time = tm;
+  null_or_invalid_time = "";
+
+  out :: if ( is_null(in_sec) or in_sec > 86400 or in_sec < 0 )
+             null_or_invalid_time
+         else
+             tm;
+end;
+
+
+/*@
+Name:get_error_code
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:error_code_list  BizComment:"The Error Code List to be parsed."}
+{BizType:Number  Name:pos              BizComment:"The offset within the list to fetch the Error Code from.  Starts from 1."}
+]
+BizComment:'Given an Error Code List and a Position (counting from 1), returns the nth Error Code from the list.  Note that "!" is handled specially and returns NULL.
+For example, given an Error Code List of "{1073,!,?},{1073,!,?},{25824,8A,?}", 1 returns NULL, 2 returns NULL, 3 returns "8A", and 4 or greater returns NULL.'
+@*/
+out :: get_error_code(error_code_list, pos) =
+begin
+  let error_code_group_vec = string_split(error_code_list, "},{");
+  let error_code_group = null_if_error(error_code_group_vec[pos - 1]);
+  let error_code_vec = string_split(error_code_group, ",");
+  let error_code = null_if_error(error_code_vec[1]);
+  
+  out :: if ( error_code != "!" )
+    error_code;
+end;
+
+
+/*@
+Name:str_nk
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The string to be trimmed."}
+]
+BizComment:"TRIMS input NK field which is not BLANK or not NULL else assigns BLANK to them"
+@*/
+out :: str_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld) )
+                ""
+	  else 
+                string_lrtrim(input_fld) ;
+end;
+
+/*@
+Name:str_non_nk
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The string to be trimmed."}
+]
+BizComment:"TRIMS input non NK fields which is not BLANK or not NULL else assigns "-" to them"
+@*/
+out :: str_non_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld) )
+		 "-"
+	  else 
+                string_lrtrim(input_fld) ;
+end;
+
+
+
+/*@
+Name:numeric_nk
+BizReturnValueType:Decimal
+BizCategory:"Decimal Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The numeric value will passthrough"}
+]
+BizComment:"Returns decimal NK fields which are not BLANK or not NULL else assigns BLANK to them"
+@*/
+out :: numeric_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank((string(""))input_fld)  )
+		 ""
+          else if( is_valid( (decimal(""))input_fld ) )
+                input_fld
+          else
+               force_error("Not a valid number", (string("")) input_fld);
+end;
+
+/*@
+Name:numeric_non_nk
+BizReturnValueType:Decimal
+BizCategory:"Decimal Functions"
+Arguments:[
+{Name:input_fld  BizComment:"The numeric value will passthrough"}
+]
+BizComment:"Returns decimal non NK fields which are not BLANK or not NULL else assigns 0 to them"
+@*/
+out :: numeric_non_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank( (string(""))input_fld) )
+		 0
+	  else if( is_valid((decimal(""))input_fld ) )
+                input_fld
+          else
+                force_error("Not a valid number", (string(""))input_fld);
+end;
+
+
+/*@
+Name:date_nk
+BizReturnValueType:Date
+BizCategory:"Time Functions"
+Arguments:[
+{Name:input_fld  BizComment:"Standard date format"}
+]
+BizComment:"Returns standard Date format for valid Date values else assigns blank in case of BLANK or NULL values "
+@*/
+out :: date_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld)  )
+		 ""
+	  else if( is_valid ( (date("YYYYMMDD")) input_fld ))
+                (date("YYYYMMDD")) input_fld 
+          else
+                force_error("Please send date in format YYYYMMDD", (string(""))input_fld);
+end;
+
+
+/*@
+Name:date_non_nk
+BizReturnValueType:Date
+BizCategory:"Date Functions"
+Arguments:[
+{Name:input_fld  BizComment:"Standard date format"}
+]
+BizComment:"Returns standard Date format for valid Date values else assigns 19000101 in case of BLANK or NULL values "
+@*/
+out :: date_non_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld) )
+		 (date("YYYYMMDD")) "19000101"
+          else if( is_valid ( (date("YYYYMMDD")) input_fld ))
+                (date("YYYYMMDD")) input_fld 
+          else
+                force_error("Please send date in format YYYYMMDD", (string(""))input_fld);
+end;
+
+
+
+/*@
+Name:datetime_nk
+BizReturnValueType:DateTime
+BizCategory:"DateTime Functions"
+Arguments:[
+{Name:input_fld  BizComment:"Standard date format"}
+]
+BizComment:"Returns standard DateTime format for valid DateTime values else assigns blank in case of BLANK or NULL values "
+@*/
+out :: datetime_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld)  )
+		 ""
+	  else if( is_valid ( (datetime("YYYYMMDDHH24MISS")) input_fld ))
+                (datetime("YYYYMMDDHH24MISS")) input_fld 
+          else
+                force_error("Please send date in format YYYYMMDDHH24MISS", (string(""))input_fld);
+end;
+
+
+/*@
+Name:datetime_non_nk
+BizReturnValueType:DateTime
+BizCategory:"DateTime Functions"
+Arguments:[
+{Name:input_fld  BizComment:"Standard date format"}
+]
+BizComment:"Returns standard DateTime format for valid DateTime values else assigns 19000101000000 in case of BLANK or NULL values "
+@*/
+out :: datetime_non_nk(input_fld) =
+begin  
+  out :: if ( is_null(input_fld) || is_blank(input_fld) )
+		 (datetime("YYYYMMDDHH24MISS")) "19000101000000"
+          else if( is_valid ( (datetime("YYYYMMDDHH24MISS")) input_fld ))
+                (datetime("YYYYMMDDHH24MISS")) input_fld 
+          else
+                force_error("Please send date in format YYYYMMDDHH24MISS", (string(""))input_fld);
+end;
+
+
+/*@
+Name:substr_rcagfp_lkp
+BizReturnValueType:String
+BizCategory:"String Functions"
+Arguments:[
+{BizType:String  Name:client_cd  BizComment:"The Client Code to be parsed."}
+{BizType:Number  Name:start_pos  BizComment:"The offset within the list to fetch the Client Code from.  Starts from 1."}
+{BizType:Number  Name:len  		 BizComment:"The length of chanracters extracted."}
+]
+BizComment:'Given an Client Code and a Position (counting from 1), returns the extracted characters ad defined in len.
+For example, given an Client Code="AB0704607A0004704607 0004POSMM2", if the start_pos=3 and len=4 then the Code retuned is "0704" '
+@*/
+
+out :: substr_rcagfp_lkp(client_cd,start_pos,len) =
+begin  
+  out :: if ( is_null(client_cd) || is_blank(client_cd) )
+                ""
+	  else if (start_pos > 0 && len > 0) 
+                string_substring(client_cd,start_pos,len) ;
+end;
+
+
+
+
+ 
+/*@
+Name:encrypt_memberid
+BizReturnValueType:String
+BizCategory:"Custom Functions"
+Arguments:[
+{BizType:String  Name:memberid  BizComment:"The memberid to be encrypted."}
+]
+BizComment:"Returns encrypted string that represents the given memberid."
+@*/
+ 
+ 
+out :: encrypt_memberid(memberid) =
+begin
+ 
+  let string(1)[19] src = allocate_with_defaults();
+  let decimal(3) odd_sum=0;
+  let decimal(3) even_sum=0;
+  let decimal(3) tot_sum=0;
+  let int i=1;
+  while(i <= 18)
+  begin
+        src[i] = string_substring(memberid,i,1);
+        if(is_blank(src[i]))
+                src[i]='^';
+        if(string_is_numeric(src[i]))
+           if( i % 2 == 0)
+              even_sum = even_sum + (decimal('')) src[i];
+           else
+              odd_sum = odd_sum + (decimal('')) src[i];
+    
+     i= i + 1;
+  end;
+ 
+  tot_sum = ((even_sum % 10) + (odd_sum % 10) % 10);
+  i = 1;
+  while(i <= 18)
+  begin
+        if(string_is_numeric(src[i]))
+                src[i] = (decimal(1))((tot_sum + (decimal('')) src[i]) % 10);
+                
+        i= i + 1;
+  end;
+ 
+  
+  out :: string_trim(string_replace(string_concat(src[14], src[13], src[16] , src[15], src[18], src[17], src[2], src[1] , src[4], src[3] , src[6], src[5], src[8] , src[7] , src[10], src[9], src[12], src[11]),'^',''));
+  
+  end;
+ 
+ 

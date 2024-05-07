@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcfpep
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcprdp                  newline\nclmprdfil_bk1 rcfpep                  feiin2,fefdhd,fex9h9,feyah9,feakvn,fec2dt,feadtm,fealvn,feadvn,febmdt,feabtm,feaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcprdp") + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcfpep")]
+WHERE_CLAUSE||||WHERE rcfpep.feiin2 = rcprdp.sziin2 \nOPTIMIZE FOR ALL ROWS\n
+DO_SOURCE||||0
+DO_CLEAN||||0
+DO_LOOKUP||||1
+LOOKUP_NAME_OVERRIDE||||rcfpep_lkp
+DO_CONS_LOOKUP||||1
+LOOKUP_KEY||||{feiin2; feyah9; dxf_src_sys_id}

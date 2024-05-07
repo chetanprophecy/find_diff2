@@ -1,0 +1,342 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_result_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/09/22  Paul Thompson           Initial version
+ *  2016/10/05  Paul Thompson           Added mtm_idntfn_t
+ *  2016/10/06  Paul Thompson           Added disease identification types
+ *                                      Revised evdnce_t and intvn_idntfn_evdnce_t
+ *                                      Added prototype types for risk scoring
+ *  2016/10/07  Maumita Sengupta        Added pharma_service_dt_vec and medical_service_dt_vec to disease_idntfn_evdnce_t
+ *  2016/10/07  Paul Thompson           Renamed pharma_service_dt_vec -> pharma_claim_service_dt_vec (and corrected BizName)
+ *                                              medical_service_dt_vec -> med_claim_service_dt_vec (and corrected BizName)
+ *  2016/10/10  Maumita Sengupta        Added claim_service_dt_vec as service date list which will have both medical and 
+                                        pharmacy claims service date to be used in disease index date logic in TMR's
+ *  2016/10/18  Maumita Sengupta        Making disease_idntfn_id visible to linking it to the TMR and MTM disease evidence
+ *  2016/10/18  Maumita Sengupta        Changing job_id type from cli_integer_t to cli_integer_id_t to make it consistent with cli_id_functions.xfr for surrogate key generation
+ *  2016/10/23  Maumita Sengupta        Changing the Trigger Claim ID from vector to Flat type in evdnce_t
+ *  2016/10/23  Paul Thompson           Renamed clt_id -> cli_clt_id (and changed type from cli_clt_id_t -> cli_pega_id_t)
+ *  2016/11/06  Abhijeet Tyagi          Changed med_claim_id_vec to med_claim_cd_id_vec in disease_idntfn_evdnce_t, evdnce_t types
+ *  2016/11/12  Paul Thompson           Added intvn_cmphsve_claim_t type for compreshensive claims
+ *  2016/11/30  Maumita Sengupta        Added mbr_flag_hist_t type for member flag hist table result type for loading the cognitive impairment flag
+ *  2016/12/21  Maumita Sengupta        Changed the disease_idntfn_txn_dtl_t type to add idntfn_cd and intvn_cd field
+ *  2016/12/22  Maumita Sengupta        Changed the intvn_idntfn_txn_dtl_t type to add rules sweep indicator
+ *  2017/02/04  Rahul Jain              Added Severity lvl in disease_idntfn_txn_dtl_t
+ *  2017/02/21  Maumita Sengupta        Added CAGM_NK to mbr_flag_hist_t
+ ***********************************************************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+/**************************/
+/* Disease Evidence Types */
+/**************************/
+
+type disease_idntfn_evdnce_t =
+utf8 record
+  cli_claim_id_vec_t        pharma_claim_id_vec                 = [vector] /*@ BizName:"Pharmacy Claim ID List"                  @*/;
+  cli_date_t                pharma_claim_review_period_start_dt = NULL     /*@ BizName:"Pharmacy Claim Review Period Start Date" @*/;
+  cli_date_t                pharma_claim_review_period_end_dt   = NULL     /*@ BizName:"Pharmacy Claim Review Period End Date"   @*/;
+  
+  cli_med_cd_id_vec_t       med_claim_cd_id_vec                 = [vector] /*@ BizName:"Medical Claim Code ID List" @*/;
+  cli_date_t                med_claim_review_period_start_dt    = NULL     /*@ BizName:"Medical Claim Review Period Start Date"  @*/;
+  cli_date_t                med_claim_review_period_end_dt      = NULL     /*@ BizName:"Medical Claim Review Period End Date"    @*/;
+  
+  cli_date_t[int]           claim_service_dt_vec                = [vector] /*@ BizName:"Claim Service Date List"                 @*/;
+end;
+type disease_idntfn_evdnce_vec_t = disease_idntfn_evdnce_t[int];
+
+/********************************/
+/* Disease Identification Types */
+/********************************/
+
+type disease_idntfn_txn_dtl_t =
+utf8 record
+  cli_integer_id_t          disease_idntfn_id = NULL  /*@ BizName: "Disease Identification ID" BizComments: "Disease Identification Surrogate Key" @*/;
+  
+  cli_date_t                biz_dt            = NULL  /*@ BizHidden @*/;
+  cli_pega_id_t             cli_clt_id        = NULL  /*@ BizHidden @*/;
+  
+  cli_date_t                idntfn_dt         = now() /*@ BizHidden @*/;
+  cli_idntfn_nm_t           disease_nm        = NULL  /*@ BizName:"Disease Name" @*/;
+  
+  cli_boolean_t             idntfn_state              /*@ BizName:"Identification Result" BizNamedConstants:[
+    {BizName:"TRUE"  Value:1}
+    {BizName:"FALSE" Value:0}
+  ]@*/;
+  
+  cli_datetime_t            create_ts = now()         /*@ BizHidden @*/;
+  cli_user_t                create_by = 'ABINITIO'    /*@ BizHidden @*/;
+  cli_datetime_t            update_ts = now()         /*@ BizHidden @*/;
+  cli_user_t                update_by = 'ABINITIO'    /*@ BizHidden @*/;
+  cli_string_t              idntfn_cd =NULL           /*@ BizName: "Identification Code" @*/;
+  cli_string_t              intvn_cd  =NULL           /*@ BizName: "Intervention Code" @*/;
+  cli_decimal_t             severity_level= NULL;     /*@ BizName:"Severity Level" @*/
+end;
+
+type disease_idntfn_t =
+utf8 record
+  cagm_t                 clt_mbr                   /*@ BizName:"Client Member"  @*/;
+  disease_idntfn_txn_dtl_t  idntfn                    /*@ BizName:"Identification" @*/;
+  disease_idntfn_evdnce_t   evdnce                    /*@ BizName:"Evidence"       @*/;
+end;
+type disease_idntfn_vec_t = disease_idntfn_t[int];
+
+/********************************************/
+/* MTM / EMTM / Intervention Evidence Types */
+/********************************************/
+
+type evdnce_t =
+utf8 record
+  cli_integer_id_t          evdnce_id                   = NULL     /*@ BizHidden @*/;
+  
+  cli_evdnce_type_t         evdnce_type                            /*@ BizName:"Evidence Type"                           @*/;
+  cli_evdnce_value_t        evdnce_value                           /*@ BizName:"Evidence Value"                          @*/;
+  cli_evdnce_type_t         ref_type                    = NULL     /*@ BizName:"Reference Type"                          @*/;
+  cli_evdnce_value_t        ref_value                   = NULL     /*@ BizName:"Reference Value"                         @*/;
+  
+  cli_date_t                evdnce_review_period_start_dt          /*@ BizName:"Evidence Review Period Start Date"       @*/;
+  cli_date_t                evdnce_review_period_end_dt            /*@ BizName:"Evidence Review Period End Date"         @*/;
+  
+  cli_claim_id_t            trigger_pharma_claim_id     = NULL     /*@ BizName:"Evidence Trigger Pharmacy Claim ID"      @*/;
+  cli_claim_id_vec_t        pharma_claim_id_vec         = [vector] /*@ BizName:"Evidence Pharmacy Claim ID List"         @*/;
+  cli_med_cd_id_vec_t       med_claim_cd_id_vec         = [vector] /*@ BizName:"Medical Claim Code ID List"              @*/;
+  cli_integer_id_vec_t      disease_idntfn_id_vec       = [vector] /*@ BizName:"Evidence Disease Identification ID List" @*/;
+end;
+type evdnce_vec_t = evdnce_t[int];
+
+type intvn_idntfn_evdnce_t =
+utf8 record
+  cli_claim_id_t            trigger_pharma_claim_id     = NULL /*@ BizName:"Trigger Pharmacy Claim ID "          @*/;
+  cli_claim_id_vec_t        pharma_claim_id_vec         = [vector] /*@ BizName:"Pharmacy Claim ID List"                  @*/;
+  evdnce_vec_t              evdnce_vec                  = [vector] /*@ BizName:"Evidence List"                           @*/;
+end;
+type intvn_idntfn_evdnce_vec_t = intvn_idntfn_evdnce_t[int];
+
+/*************************************/
+/* Intervention Identification Types */
+/*************************************/
+
+type intvn_idntfn_txn_dtl_t =
+utf8 record
+  cli_integer_id_t          intvn_idntfn_id    = NULL    /*@ BizHidden @*/;
+  
+  cli_date_t                biz_dt             = NULL    /*@ BizHidden @*/;
+  cli_pega_id_t             cli_clt_id         = NULL    /*@ BizHidden @*/;
+  cli_integer_id_t          job_id             = NULL    /*@ BizHidden @*/;
+  cli_program_id_t          program_id         = NULL    /*@ BizHidden @*/;
+  cli_rules_config_id_t     config_id          = NULL    /*@ BizHidden @*/;
+  
+  cli_date_t                intvn_dt           = today() /*@ BizHidden @*/;
+  cli_intvn_nm_t            intvn_nm           = NULL    /*@ BizHidden @*/;
+  cli_intvn_desc_t          intvn_desc         = NULL    /*@ BizHidden @*/;
+  cli_idntfn_cd_t           idntfn_cd          = NULL    /*@ BizName:"Identification Code" @*/;
+  cli_intvn_cd_t            intvn_cd           = NULL    /*@ BizName:"Intervention Code"   @*/;
+  cli_flag_t                severity_lvl       = NULL    /*@ BizName:"Severity Level"      @*/;
+  cli_decimal_t             risk_score         = NULL    /*@ BizName:"Risk Score"          @*/;
+  cli_string_t              risk_catg          = NULL    /*@ BizName:"Risk Category"       @*/;
+  cli_flag_t                intvn_process_flag = NULL    /*@ BizHidden @*/;
+  
+  cli_date_t                claim_review_period_start_dt /*@ BizName:"Claim Review Period Start Date" @*/;
+  cli_date_t                claim_review_period_end_dt   /*@ BizName:"Claim Review Period End Date"   @*/;
+  
+  cli_boolean_t             idntfn_state                 /*@ BizName:"Identification Result" BizNamedConstants:[
+    {BizName:"TRUE"  Value:1}
+    {BizName:"FALSE" Value:0}
+  ]@*/;
+  
+  cli_boolean_t             rules_sweep_ind  = 0           /*@ BizName:"Rules Sweep Indicator"  BizNamedConstants:[
+    {BizName:"TRUE"  Value:1}
+    {BizName:"FALSE" Value:0}
+  ]@*/;
+
+  cli_datetime_t            create_ts = now()            /*@ BizHidden @*/;
+  cli_user_t                create_by = 'ABINITIO'       /*@ BizHidden @*/;
+  cli_datetime_t            update_ts = now()            /*@ BizHidden @*/;
+  cli_user_t                update_by = 'ABINITIO'       /*@ BizHidden @*/;
+end;
+type intvn_idntfn_txn_dtl_vec_t = intvn_idntfn_txn_dtl_t[int];
+
+type intvn_idntfn_t =
+utf8 record
+  cagm_t                 clt_mbr                /*@ BizName:"Client Member"  @*/;
+  cagm_t                 claim_mbr = NULL       /*@ BizName:"Claim Member"   @*/;
+  //cagm_nk_t                 clt_mbr_nk             /*@ BizName:"Client Member NK"  @*/;
+  //cagm_nk_t                 claim_mbr_nk = NULL    /*@ BizName:"Claim Member NK"   @*/;
+
+  
+  intvn_idntfn_txn_dtl_t    idntfn                 /*@ BizName:"Identification" @*/;
+  intvn_idntfn_evdnce_t     evdnce                 /*@ BizName:"Evidence"       @*/;
+end;
+type intvn_idntfn_vec_t = intvn_idntfn_t[int];
+
+/**********************/
+/* MTM Identification */
+/**********************/
+
+type mtm_idntfn_t =
+utf8 record
+  cagm_t                    clt_mbr                /*@ BizName:"Client Member"          @*/;
+  intvn_idntfn_txn_dtl_t     idntfn                 /*@ BizName:"Identification"         @*/;
+  intvn_idntfn_evdnce_t     disease_count_evdnce   /*@ BizName:"Disease Count Evidence" @*/;
+  intvn_idntfn_evdnce_t     drug_count_evdnce      /*@ BizName:"Drug Count Evidence"    @*/;
+  intvn_idntfn_evdnce_t     drug_spend_evdnce      /*@ BizName:"Drug Spend Evidence"    @*/;
+end;
+type mtm_idntfn_vec_t = mtm_idntfn_t[int];
+
+/***********************/
+/* EMTM Identification */
+/***********************/
+
+type emtm_idntfn_t =
+utf8 record
+  cagm_t                    clt_mbr                /*@ BizName:"Client Member"  @*/;
+  
+  intvn_idntfn_txn_dtl_t    idntfn                 /*@ BizName:"Identification" @*/;
+  intvn_idntfn_evdnce_t     evdnce                 /*@ BizName:"Evidence"       @*/;
+end;
+type emtm_idntfn_vec_t = emtm_idntfn_t[int];
+
+/***************************/
+/* Intervention Risk Score */
+/***************************/
+
+type intvn_risk_score_txn_dtl_t =
+utf8 record
+  cagm_t                    clt_mbr                      /*@ BizName:"Client Member" @*/;
+  
+  cli_integer_id_t          intvn_idntfn_id    = NULL    /*@ BizHidden @*/;
+  cli_date_t                biz_dt             = NULL    /*@ BizHidden @*/;
+  cli_pega_id_t             cli_clt_id         = NULL    /*@ BizHidden @*/;
+  cli_integer_id_t          job_id             = NULL    /*@ BizHidden @*/;
+  cli_program_id_t          program_id         = NULL    /*@ BizHidden @*/;
+  cli_rules_config_id_t     config_id          = NULL    /*@ BizHidden @*/;
+  
+  cli_date_t                risk_score_dt      = today() /*@ BizHidden @*/;
+  cli_decimal_t             risk_score         = NULL    /*@ BizName:"Risk Score"    @*/;
+  
+  decimal(15.4)             constant_value;
+  
+  cli_integer_t             pharma_claim_count;
+  cli_integer_t             pharmacy_count;
+  cli_integer_t             prescriber_count;
+  cli_date_t                birth_dt           = NULL;
+  decimal(6.2)              age                = NULL;
+  cli_sex_t                 sex                = NULL;
+  cli_idntfn_nm_t[int]      disease_nm_vec = [vector];
+  cli_integer_t             disease_count;
+  cli_boolean_t             hepatic_disease_ind;
+  cli_boolean_t             renal_disease_ind;
+  cli_boolean_t             quality_measure_ind;
+  cli_boolean_t             severity_1_ind;
+  cli_boolean_t             severity_2_ind;
+  
+  cli_risk_score_coef_t     pharma_claim_count_coef;
+  cli_risk_score_coef_t     pharmacy_count_coef;
+  cli_risk_score_coef_t     prescriber_count_coef;
+  cli_risk_score_coef_t     age_coef;
+  cli_risk_score_coef_t     sex_coef;
+  cli_risk_score_coef_t     disease_count_coef;
+  cli_risk_score_coef_t     hepatic_disease_coef;
+  cli_risk_score_coef_t     renal_disease_coef;
+  cli_risk_score_coef_t     quality_measure_coef;
+  cli_risk_score_coef_t     severity_1_coef;
+  cli_risk_score_coef_t     severity_2_coef;
+  
+  cli_datetime_t            create_ts = now()      /*@ BizHidden @*/;
+  cli_user_t                create_by = 'ABINITIO' /*@ BizHidden @*/;
+  cli_datetime_t            update_ts = now()      /*@ BizHidden @*/;
+  cli_user_t                update_by = 'ABINITIO' /*@ BizHidden @*/;
+end;
+
+type mbr_intvn_risk_score_txn_dtl_t =
+utf8 record
+  cagm_t                    clt_mbr                /*@ BizName:"Client Member" @*/;
+  
+  cli_integer_t             pharma_claim_count;
+  cli_integer_t             pharmacy_count;
+  cli_integer_t             prescriber_count;
+  cli_date_t                birth_dt        = NULL;
+  decimal(6.2)              age             = NULL;
+  cli_sex_t                 sex             = NULL;  
+end;
+
+type mbr_disease_intvn_risk_score_txn_dtl_t =
+utf8 record
+  cagm_t                    clt_mbr                /*@ BizName:"Client Member" @*/;
+  
+  cli_idntfn_nm_t[int]      disease_nm_vec = [vector];
+  cli_integer_t             disease_count;
+  cli_boolean_t             hepatic_disease_ind;
+  cli_boolean_t             renal_disease_ind;
+end;
+
+/*********************/
+/* Member Risk Score */
+/*********************/
+
+type mbr_risk_score_t =
+utf8 record
+  cagm_t                    clt_mbr                 /*@ BizName:"Client Member" @*/;
+  
+  cli_date_t                biz_dt        = NULL    /*@ BizHidden @*/;
+  cli_pega_id_t             cli_clt_id    = NULL    /*@ BizHidden @*/;
+  cli_date_t                risk_score_dt = today() /*@ BizHidden @*/;
+  cli_decimal_t             risk_score    = NULL    /*@ BizName:"Risk Score"    @*/;
+  
+  cli_datetime_t            create_ts = now()       /*@ BizHidden @*/;
+  cli_user_t                create_by = 'ABINITIO'  /*@ BizHidden @*/;
+  cli_datetime_t            update_ts = now()       /*@ BizHidden @*/;
+  cli_user_t                update_by = 'ABINITIO'  /*@ BizHidden @*/;
+end;
+
+/************************/
+/* Comprehensive Claims */
+/************************/
+
+type intvn_cmphsve_claim_t =
+record
+  cagm_t                    clt_mbr                        /*@ BizName:"Client Member"              @*/;
+  
+  cli_integer_id_t          intvn_idntfn_id                /*@ BizHidden @*/;
+  cli_date_t                biz_dt                         /*@ BizHidden @*/;
+  cli_pega_id_t             cli_clt_id                     /*@ BizHidden @*/;
+  cli_integer_id_t          job_id                         /*@ BizHidden @*/;
+  cli_program_id_t          program_id                     /*@ BizHidden @*/;
+  cli_rules_config_id_t     config_id                      /*@ BizHidden @*/;
+  cli_date_t                intvn_dt           = today()   /*@ BizHidden @*/;
+  
+  cli_claim_id_vec_t        pharma_claim_id_vec = [vector] /*@ BizName:"Pharmacy Claim ID List"     @*/;
+  cli_med_cd_id_vec_t       med_claim_cd_id_vec = [vector] /*@ BizName:"Medical Claim Code ID List" @*/;
+  
+  cli_datetime_t            create_ts = now()              /*@ BizHidden @*/;
+  cli_user_t                create_by = 'ABINITIO'         /*@ BizHidden @*/;
+  cli_datetime_t            update_ts = now()              /*@ BizHidden @*/;
+  cli_user_t                update_by = 'ABINITIO'         /*@ BizHidden @*/;
+end;
+
+/********************/
+/* Member Flag Hist */ 
+/********************/
+
+
+type mbr_flag_hist_t =
+record
+   cagm_t                    clt_mbr                                             /*@ BizName:"Client Member"              @*/;
+ //cagm_nk_t                 clt_mbr_nk                                          /*@ BizName:"Client Member Natural Keys"              @*/;                                  
+   cli_mbr_flg_hst_id_t      mbr_flg_hst_id                                     /*@ BizHidden @*/;
+   cli_date_t                rprt_dt             =today()                       /*@ BizHidden @*/;
+   cli_mbr_flg_hst_flg_typ_t flg_typ                                            /*@ BizHidden @*/;
+   cli_flag_t                flg_vl                                             /*@ BizHidden @*/;
+   cli_datetime_t            flg_act_dt          =now()                         /*@ BizHidden @*/;
+   cli_datetime_t            flg_end_dt          =(cli_datetime_t)"99991231 000000"    /*@ BizHidden @*/;  
+   cli_datetime_t            create_ts           = now()                        /*@ BizHidden @*/;
+   cli_user_t                create_by           = 'ABINITIO'                   /*@ BizHidden @*/;
+   cli_datetime_t            update_ts           = now()                        /*@ BizHidden @*/;
+   cli_user_t                update_by           = 'ABINITIO'                   /*@ BizHidden @*/;
+end;   
+   
+   

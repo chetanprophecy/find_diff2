@@ -1,0 +1,17 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+
+  out.car_carrier_id::in.niaacd;
+  out.rcex1_extract_file::in.niixc3;
+  out.rcex2_extract_file::in.niiyc3;
+  out.rcex3_extract_file::in.niizc3;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;
+

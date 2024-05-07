@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rboinmfil.rxcui_assignment_ndc
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrboinmfil     rxcui_assignment        ndc,product_key,active_ind,rxcui,partd_ind,override_level,ext_override_id,eff_dt,term_dt,rxcui_type_cd,subset_type_cd,frf_related_ndc_flag,frf_replace_ndc_flag,frf_proxy_ndc_ind,gpi,product_name,otc,msc,product_label,gpi_name,source_ndc,run_id,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST,AI_SOURCE_DB_GROUPS, 'rboinmfil','rxcui_assignment')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SQL||||select ndc, rxcui, msc, active_ind,partd_ind, eff_dt, term_dt , rxcui_type_cd  from rboinmfil.rxcui_assignment where active_ind='Y' and partd_ind='Y' and $[string_concat("'",(date("YYYY-MM-DD"))(datetime("YYYYMMDDHH24MISS")) RUN_ID,"'")]  between eff_dt and term_dt OPTIMIZE FOR ALL ROWS
+RUN_ID||||20180307000000
+DO_LOOKUP||||1
+LOOKUP_FIELDS||||dxf_src_sys_id,ndc,rxcui,msc,active_ind,partd_ind,eff_dt,term_dt,rxcui_type_cd
+LOOKUP_KEY||||{dxf_src_sys_id;ndc; rxcui; msc; active_ind; partd_ind; eff_dt; term_dt; rxcui_type_cd}

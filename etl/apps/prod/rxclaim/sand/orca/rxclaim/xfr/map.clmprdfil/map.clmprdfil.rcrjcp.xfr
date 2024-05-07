@@ -1,0 +1,31 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.rxs_rxclaim_nbr                                           :: in.dyp2nb;
+  out.tcd_claim_seq_nbr_999s_comp                               :: 1000 - in.dyoinb;
+  out.rjc_reject_seq_nbr                                        :: in.dyq3n2;
+  out.rjc_reject_cde_1                                          :: in.dys8st;
+  out.rjc_reject_cde_2                                          :: in.dys9st;
+  out.rjc_reject_cde_3                                          :: in.dyt1st;
+  out.rjc_reject_cde_4                                          :: in.dyt2st;
+  out.rjc_reject_cde_5                                          :: in.dyt3st;
+  out.rjc_reject_cde_6                                          :: in.dyt4st;
+  out.rjc_reject_cde_7                                          :: in.dyt5st;
+  out.rjc_reject_cde_8                                          :: in.dyt6st;
+  out.rjc_reject_cde_9                                          :: in.dyt7st;
+  out.rjc_reject_cde_10                                         :: in.dyt8st;/*
+  out.source_environment                                        :: in.Source Schema Name;
+  out.record_load_datetime                                      :: in.current_timestamp();
+  out.record_upate_datetime                                     :: in.current_timestamp();
+  out.record_load_reason                                        :: in.01;
+  out.record_upate_reason                                       :: in.00;
+  out.record_load_crm_ref_id                                    :: in.Undefined;
+  out.record_update_crm_ref_id                                  :: in.Undefined;*/
+  out.rxt_src_envrt_id 		  :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm 		  :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm 		  :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid 		  :: 'app_orca_rxclaim';
+  out.rxt_create_run_id 	  :: (decimal(""))${RUN_TIMESTAMP};
+  out.rxt_rec_stat_cd 		  :: '';
+  out.* 			  :: in.*;
+end;

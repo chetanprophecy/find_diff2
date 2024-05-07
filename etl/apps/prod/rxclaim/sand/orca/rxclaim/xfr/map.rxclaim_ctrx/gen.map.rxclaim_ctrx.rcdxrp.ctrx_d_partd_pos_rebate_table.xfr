@@ -1,0 +1,87 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcdxrp_to_the_ctrx_d_partd_pos_rebate_table_ILM_documentation(in)=
+begin
+
+out0.d_part_pos.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.d_part_pos.rebate_stat_id::depends_on(
+         in.aoq0ax
+         );
+
+
+out0.d_part_pos.exclusion_tbl::depends_on(
+         in.aoqovi
+         );
+
+
+out0.d_part_pos.rebate_desc::depends_on(
+         in.aok6iz
+         );
+
+
+out0.d_part_pos.rebate_tbl_id::depends_on(
+         in.aoqnvi
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcdxrp_to_the_ctrx_d_partd_pos_rebate_table_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_part_pos.src_env_sk,'d_part_pos.src_env_sk',1,0]
+     [out0.d_part_pos.rebate_stat_id,'d_part_pos.rebate_stat_id',1,0]
+     [out0.d_part_pos.rebate_tbl_sk,'d_part_pos.rebate_tbl_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_part_pos.exclusion_tbl,'d_part_pos.exclusion_tbl',1,0]
+     [out0.d_part_pos.rebate_desc,'d_part_pos.rebate_desc',1,0]
+     [out0.d_part_pos.rebate_tbl_id,'d_part_pos.rebate_tbl_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.aoqnvi,'aoqnvi',1,1]
+     [in0.aoq0ax,'aoq0ax',1,1]
+     [in0.aok6iz,'aok6iz',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.aoqovi,'aoqovi',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_part_pos_rebate_tbl_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_part_pos_rebate_tbl_id = fail_if_error(in0.aoqnvi);
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_part_pos_rebate_desc = fail_if_error(in0.aok6iz);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_part_pos_rebate_stat_id = fail_if_error(in0.aoq0ax);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_part_pos_exclusion_tbl = fail_if_error(in0.aoqovi);
+let decimal("\x01",0) d_part_pos_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+
+
+
+  out0.d_part_pos.rebate_tbl_sk::d_part_pos_rebate_tbl_sk;
+  out0.d_part_pos.rebate_tbl_id::d_part_pos_rebate_tbl_id;
+  out0.d_part_pos.rebate_desc::d_part_pos_rebate_desc;
+  out0.d_part_pos.rebate_stat_id::d_part_pos_rebate_stat_id;
+  out0.d_part_pos.exclusion_tbl::d_part_pos_exclusion_tbl;
+  out0.d_part_pos.src_env_sk::d_part_pos_src_env_sk;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,37 @@
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+
+type program_targeting_dml_t = utf8 record
+  cli_decimal_t adh_targeting_id;
+  cli_date_t business_date;
+  hash_key_t  supplalid_hash= allocate_with_defaults();
+  string(int, maximum_length=20)  mbi=NULL;
+  hash_key_t  cagm_hash= allocate_with_defaults();
+  cli_carrier_id_t                              carrier_id                      /*VARCHAR(30)*/=NULL;
+  cli_carrier_acct_id_t                         account_id                      /*VARCHAR(40)*/=NULL;
+  cli_employer_group_id_t                       employer_group_id               /*VARCHAR(30)*/=NULL;
+  cli_mbr_id_t                                  mbr_id                          /*VARCHAR(20)*/=NULL;
+  cli_integer_id_t  patient_id=NULL;
+  cli_pega_id_t[int]       cli_clt_id_vec =[vector];
+  cli_pega_id_t      cli_clt_id= NULL;
+  cli_contract_nbr_t contract_id=NULL;
+  cli_pbp_id_t pbp_id=NULL;
+  string(int, maximum_length=50) program_targeting=NULL;
+  string(int, maximum_length=10) adh_type=NULL;
+  cli_decimal_t  day_supply_goal=NULL;
+  cli_claim_id_t  claim_id=NULL;
+  cli_gpi_id_t  gpi=NULL;
+  cli_date_t service_date=NULL;
+  cli_decimal_t  allowable_day = NULL;
+  cli_date_t absolute_fail_date=NULL;
+  cli_ind_t case_close_flag ='N';
+  cli_decimal_t no_match_flag=1;
+  rcmsip_suppl_hash_lkup_t[int] cagm_dtls_vec =[vector];
+  mbr_elig_t elig_cagm_dtls= allocate_with_defaults();
+  cli_app_config_nm_t              app_config_nm   = NULL('');
+  cli_app_config_nm_t[int]              app_config_nm_vec   = [vector];
+  string(1) newline = '\n';  
+end;
+
+metadata type = program_targeting_dml_t;

@@ -1,0 +1,22 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prd_xwalk_prod_id = fail_if_error(in0.drug_ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prd_xwalk_brnd_nm = fail_if_error(in0.prod_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prd_xwalk_prod_grp = fail_if_error(in0.thrpc_class_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prd_xwalk_dise_cat_nm = fail_if_error(in0.dise_cat_nm);
+let decimal("\x01",0) d_prd_xwalk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.d_prd_xwalk.prod_id::d_prd_xwalk_prod_id;
+  out0.d_prd_xwalk.brnd_nm::d_prd_xwalk_brnd_nm;
+  out0.d_prd_xwalk.prod_grp::d_prd_xwalk_prod_grp;
+  out0.d_prd_xwalk.dise_cat_nm::d_prd_xwalk_dise_cat_nm;
+  out0.d_prd_xwalk.src_env_sk::d_prd_xwalk_src_env_sk;
+  out0.*::in0.*;
+
+end;

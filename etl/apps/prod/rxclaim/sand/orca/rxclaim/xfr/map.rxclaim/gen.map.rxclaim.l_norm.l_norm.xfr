@@ -1,0 +1,88 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58f8bb5b_30a1_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_norm.norm_typ,[passthrough],in0.normType]
+  [out0.l_norm.group_id,[transform],in0.group]
+  [out0.l_norm.client_typ,[passthrough],in0.clientType]
+  [out0.l_norm.src_env_sk,[passthrough],in0.src_env_sk_in]
+  [out0.l_norm.service_typ,[passthrough],in0.serviceType]
+  [out0.l_norm.norm_sk,[transform],]
+  [out0.l_norm.account_id,[transform],in0.account]
+  [out0.l_norm.carrier_id,[transform],in0.carrier]
+  [out0.l_norm.business_typ,[passthrough],in0.businessType]
+  [out0.l_norm.current_flg,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_norm.norm_typ,'l_norm.norm_typ',1,0]
+     [out0.l_norm.group_id,'l_norm.group_id',1,0]
+     [out0.l_norm.client_typ,'l_norm.client_typ',1,0]
+     [out0.l_norm.src_env_sk,'l_norm.src_env_sk',1,0]
+     [out0.l_norm.service_typ,'l_norm.service_typ',1,0]
+     [out0.l_norm.norm_sk,'l_norm.norm_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.l_norm.account_id,'l_norm.account_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_norm.version,'l_norm.version',1,0]
+     [out0.l_norm.carrier_id,'l_norm.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_norm.business_typ,'l_norm.business_typ',1,0]
+     [out0.l_norm.current_flg,'l_norm.current_flg',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.version,'version',1,1]
+     [in0.group,'group',1,1]
+     [in0.src_env_sk_in,'src_env_sk_in',1,1]
+     [in0.carrier,'carrier',1,1]
+     [in0.serviceType,'serviceType',1,1]
+     [in0.normType,'normType',1,1]
+     [in0.businessType,'businessType',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.account,'account',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.clientType,'clientType',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_norm_norm_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_norm_carrier_id = fail_if_error(string_lrtrim(in0.carrier));
+let string("\x01",charset="iso-8859-15", maximum_length=40) l_norm_account_id = fail_if_error(string_lrtrim(in0.account));
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_norm_group_id = fail_if_error(string_lrtrim(in0.group));
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_norm_norm_typ = fail_if_error(in0.normType);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_norm_service_typ = fail_if_error(in0.serviceType);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_norm_business_typ = fail_if_error(in0.businessType);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_norm_client_typ = fail_if_error(in0.clientType);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_norm_version = fail_if_error(in0.version);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_norm_current_flg = 'Y';
+let decimal("\x01",0) l_norm_src_env_sk = fail_if_error(in0.src_env_sk_in);
+
+
+
+  out0.l_norm.norm_sk::l_norm_norm_sk;
+  out0.l_norm.carrier_id::l_norm_carrier_id;
+  out0.l_norm.account_id::l_norm_account_id;
+  out0.l_norm.group_id::l_norm_group_id;
+  out0.l_norm.norm_typ::l_norm_norm_typ;
+  out0.l_norm.service_typ::l_norm_service_typ;
+  out0.l_norm.business_typ::l_norm_business_typ;
+  out0.l_norm.client_typ::l_norm_client_typ;
+  out0.l_norm.version::l_norm_version;
+  out0.l_norm.current_flg::l_norm_current_flg;
+  out0.l_norm.src_env_sk::l_norm_src_env_sk;
+  out0.*::in0.*;
+
+end;

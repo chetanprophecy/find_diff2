@@ -1,0 +1,28 @@
+/* This function is optional. */
+/*Number of records to output.  Either this function or finished() must be defined.*/
+let string("")[int] field_vec = [vector];
+
+
+out::length(in)=
+begin
+out:: (if(is_defined(in.CONTINUE))1 else 0) + (if(is_defined(in.REPEAT_NTC))1 else 0) +
+(if(is_defined(in.VALIDATE_DOB))1 else 0) + (if(is_defined(in.REFILL_YET_ONE))1 else 0) +
+(if(is_defined(in.REFILL_YET_MULTI))1 else 0) + (if(is_defined(in.TRANSFER))1 else 0) +
+(if(is_defined(in.GET_RX_BOTTLE))1 else 0) + (if(is_defined(in.ARE_YOU_READY))1 else 0) +
+(if(is_defined(in.REPEAT_TRANSFER))1 else 0) + (if(is_defined(in.REFILL_INTENT))1 else 0) +
+(if(is_defined(in.STILL_TAKING))1 else 0) + (if(is_defined(in.DOCTOR_STOP))1 else 0) +
+(if(is_defined(in.SECOND_TRANSFER))1 else 0) + (if(is_defined(in.REPEAT_SECOND_TRANSFER))1 else 0) +
+(if(is_defined(in.REP_SEC_TRANSFER_OTH))1 else 0);
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+  out.* :: in.*;
+  out.RESPONSE :: if(index == 0) in.CONTINUE else if(index == 1) in.REPEAT_NTC else if(index == 2) in.VALIDATE_DOB else if(index == 3) in.REFILL_YET_ONE else if(index == 4) in.REFILL_YET_MULTI else if(index == 5) in.TRANSFER else if(index == 6) in.GET_RX_BOTTLE else if(index == 7) in.ARE_YOU_READY else if(index == 8) in.REPEAT_TRANSFER else if(index == 9) in.REFILL_INTENT else if(index == 10) in.STILL_TAKING else if(index == 11) in.DOCTOR_STOP else if(index == 12) in.SECOND_TRANSFER else if(index == 13) in.REPEAT_SECOND_TRANSFER else if(index == 14) in.REP_SEC_TRANSFER_OTH;
+  out.QUESTION_FK :: index+1;
+end
+out :: output_select(out) =
+begin
+  out :: is_defined(out.RESPONSE);
+end;

@@ -1,0 +1,48 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59f1e340_5a9a_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.ddp_ndc.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ddp_ndc.asric4,'ddp_ndc.asric4',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ddp_ndc.asp2nb,'ddp_ndc.asp2nb',1,0]
+     [out0.ddp_ndc.src_env_sk,'ddp_ndc.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.asp2nb,'asp2nb',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.asric4,'asric4',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string(unsigned integer(1),maximum_length=20) ddp_ndc_asric4 = fail_if_error(in0.asric4);
+let decimal('') ddp_ndc_asp2nb = fail_if_error(in0.asp2nb);
+let decimal("\x01",0) ddp_ndc_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.ddp_ndc.asric4::ddp_ndc_asric4;
+  out0.ddp_ndc.asp2nb::ddp_ndc_asp2nb;
+  out0.ddp_ndc.src_env_sk::ddp_ndc_src_env_sk;
+  out0.*::in0.*;
+
+end;

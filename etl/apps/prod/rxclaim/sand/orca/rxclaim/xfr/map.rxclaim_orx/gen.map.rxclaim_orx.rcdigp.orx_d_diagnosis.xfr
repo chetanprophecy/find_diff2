@@ -1,0 +1,63 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.diagnosis.diag_sk,[transform],]
+  [out0.diagnosis.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.diagnosis.diag_typ_cd,[passthrough],in0.axsiaq]
+  [out0.diagnosis.diag_qualifier,[passthrough],in0.axshaq]
+  [out0.diagnosis.diag_cd,[passthrough],in0.axblcd]
+  [out0.diagnosis.diag_desc,[passthrough],in0.axc1tx]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.diagnosis.diag_sk,'diagnosis.diag_sk',1,0]
+     [out0.diagnosis.src_env_sk,'diagnosis.src_env_sk',1,0]
+     [out0.diagnosis.diag_typ_cd,'diagnosis.diag_typ_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.diagnosis.diag_qualifier,'diagnosis.diag_qualifier',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.diagnosis.diag_cd,'diagnosis.diag_cd',1,0]
+     [out0.diagnosis.diag_desc,'diagnosis.diag_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.axshaq,'axshaq',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.axc1tx,'axc1tx',1,1]
+     [in0.axsiaq,'axsiaq',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.axblcd,'axblcd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) diagnosis_diag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) diagnosis_diag_qualifier = fail_if_error(in0.axshaq);
+let string("\x01",charset="iso-8859-15", maximum_length=1) diagnosis_diag_typ_cd = fail_if_error(in0.axsiaq);
+let string("\x01",charset="iso-8859-15", maximum_length=20) diagnosis_diag_cd = fail_if_error(in0.axblcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) diagnosis_diag_desc = fail_if_error(in0.axc1tx);
+let decimal("\x01",0) diagnosis_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.diagnosis.diag_sk::diagnosis_diag_sk;
+  out0.diagnosis.diag_qualifier::diagnosis_diag_qualifier;
+  out0.diagnosis.diag_typ_cd::diagnosis_diag_typ_cd;
+  out0.diagnosis.diag_cd::diagnosis_diag_cd;
+  out0.diagnosis.diag_desc::diagnosis_diag_desc;
+  out0.diagnosis.src_env_sk::diagnosis_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,39 @@
+out :: length(in) =
+begin
+  out :: if(lookup_match("D_MED_LIMIT_THRSHLD_IDS", in.amnxcd, in.amnkcd, in.amh8au, in.amkkaw, in.amk9aw, in.dxf_src_sys_id) and 
+			((date("YYYYMMDD"))lookup("D_MED_LIMIT_THRSHLD_IDS", in.amnxcd, in.amnkcd, in.amh8au, in.amkkaw, in.amk9aw ,in.dxf_src_sys_id).med_limit_from_dt) != (date("YYYYMMDD"))string_lrtrim(in.ambmdt + 19000000 )
+			) 2 else 1;
+end;
+
+out :: normalize(in, index) =
+begin
+
+let lkp_d_med_limit_thrshld = lookup("D_MED_LIMIT_THRSHLD_IDS", in.amnxcd, in.amnkcd, in.amh8au, in.amkkaw, in.amk9aw, in.dxf_src_sys_id);
+  out.* :0: if(index == 0)in.*;
+  out.ambmdt_from_dt :0: if(index == 0)(date("YYYYMMDD"))string_lrtrim(in.ambmdt + 19000000 ) ;
+  out.ambmdt_thru_dt :0: if(index == 0)( date("YYYYMMDD")) "99991231";
+   out.amnxcd :0: if(index == 0)in.amnxcd;
+   out.amnkcd :0: if(index == 0)in.amnkcd;
+   out.amf5bs :0: if(index == 0)in.amf5bs;
+   out.amh8au :0: if(index == 0)in.amh8au;
+   out.amdqvg :0: if(index == 0)in.amdqvg;
+   out.amf8bs :0: if(index == 0)in.amf8bs;
+   out.amk2bs :0: if(index == 0)in.amk2bs;
+   out.ammwav :0: if(index == 0)in.ammwav;
+   out.amkkaw :0: if(index == 0)in.amkkaw;
+   out.amk9aw :0: if(index == 0)in.amk9aw;
+   out.dxf_src_sys_id :: in.dxf_src_sys_id; 
+   out.amnxcd :: lkp_d_med_limit_thrshld.dur_tbl_nm;
+   out.amnkcd :: lkp_d_med_limit_thrshld.dur_srvc_nm;
+   out.amf5bs :: lkp_d_med_limit_thrshld.med_limit;
+   out.amh8au :: lkp_d_med_limit_thrshld.med_limit_resp;
+   out.amdqvg :: lkp_d_med_limit_thrshld.med_limit_msg_cd;
+   out.amf8bs :: lkp_d_med_limit_thrshld.med_limit_pbr_thrshld;
+   out.amk2bs :: lkp_d_med_limit_thrshld.med_limit_phr_thrshld;
+   out.ammwav :: lkp_d_med_limit_thrshld.med_limit_thrshld_qual;
+   out.amkkaw :: lkp_d_med_limit_thrshld.med_limit_new_mbr;
+   out.amk9aw :: lkp_d_med_limit_thrshld.med_limit_ir_flg;
+   out.ambmdt_from_dt :: ( date("YYYYMMDD"))lkp_d_med_limit_thrshld.med_limit_from_dt;
+   out.ambmdt_thru_dt :: ( date("YYYYMMDD"))lkp_d_med_limit_thrshld.med_limit_thru_dt;
+  //out.* :: lkp_d_med_limit_thrshld.*;
+end;

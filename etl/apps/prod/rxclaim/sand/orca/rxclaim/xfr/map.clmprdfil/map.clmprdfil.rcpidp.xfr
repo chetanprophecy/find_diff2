@@ -1,0 +1,40 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.pty_product_type_code      :: in.s4nqs3;
+  out.pid_product_id             :: in.s4e6c4;
+  out.prd_key                    :: in.s4iin2;
+  out.pid_id_format_code         :: in.s4whs3;
+  out.pid_product_status         :: in.s4xvs3;
+  out.pid_origin_code            :: in.s4qns3;
+  out.mfg_manufacturer_id        :: in.s4d9c4;
+  out.mfg_manufacturer_abbrv     :: in.s4btt3;
+  out.prd_name_ext               :: in.s4cot3;
+  out.prd_description_abbrv      :: in.s4cnt3;
+  out.gpi_id_number              :: in.s4efc4;
+  out.gpm_gppc_id                :: in.s4kcc4;
+  out.prd_gcn                    :: in.s4cjv1;
+  out.prd_gcn_sequence           :: in.s4ckv1;
+  out.ddi_drug_descriptor_id     :: in.s4eic4;
+  out.prd_kdc                    :: in.s4civ1;
+  out.df1_dosage_form_code       :: in.s4fvc4;
+  out.prd_package_size           :: in.s4e8qt;
+  out.prd_strength               :: in.s4cpt3;
+  out.prd_strength_uom           :: in.s4cqt3;
+  out.prd_multi_source           :: in.s4ozs3;
+  out.add_user_name              :: in.s4akvn;
+  out.add_date                   :: in.s4c2dt;
+  out.add_time                   :: in.s4adtm;
+  out.add_program_name           :: in.s4alvn;
+  out.chg_user_name              :: in.s4advn;
+  out.chg_date                   :: in.s4bmdt;
+  out.chg_time                   :: in.s4abtm;
+  out.chg_program_name           :: in.s4aevn;
+  out.rxt_src_envrt_id           :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm           :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm            :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid             :: 'app_orca_rxclaim';
+  out.rxt_create_run_id          :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd            :: '';
+end;

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="PUB_CLINICAL_TEMPLATES_PROGRAM" description="This job will execute all disease configs for a given day execution." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="76BF1438-532E-ADB6-BF15-AF16B853947F" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name=" Disease Execution Process" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/pub_clinical_templates_program" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$PUB_CLINICAL_TEMPLATES_PLAN/pctm_disease_idntfn_process.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-04-26Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="5E73B6A2-5D68-3104-5D41-AF1B50EAE079"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

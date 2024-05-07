@@ -1,0 +1,44 @@
+include "/~$PUB_DXF_XFR/standardize.xfr";
+
+out :: match_external_table_to_api(in) = 
+begin
+  out :: if(string_index(in,'\\')==0)
+           in
+         else
+           string_pad(
+               string_replace(string_replace(string_replace(string_replace(string_replace(string_replace(in,
+                                                   '\\x01',''),
+                                                   '\\\x00','\x00'),    // Remove backslash escape character for binary zero          (external table mode adds unwanted escape char)
+                                                   '\\NULL','NULL'),    // Replace backslash NULL with NULL                           (external table mode adds unwanted escape char)
+                                                   '\\\x01','\x01'),    // Remove backslash escape character for delimiter for binary 1
+                                                   '\\\n','\n'),        // Remove backslash escape character for delimiter for newline
+                                                   '\\\\','\\')         // Replace two backslashes with a single backslash
+           ,
+               string_length(
+                   string_replace(string_replace(string_replace(string_replace(string_replace(in,
+                                                   '\\\x00','\x00'),    // Remove backslash escape character for binary zero          (external table mode adds unwanted escape char)
+                                                   '\\NULL','NULL'),    // Replace backslash NULL with NULL                           (external table mode adds unwanted escape char)
+                                                   '\\\x01','\x01'),    // Remove backslash escape character for delimiter for binary 1
+                                                   '\\\n','\n'),        // Remove backslash escape character for delimiter for newline
+                                                   '\\\\','\\')         // Replace two backslashes with a single backslash
+           )+
+           //If API unloaded a CHAR field size 20 and 19 characters were used for data including a backslash, there will be an extra space in the API unload.
+           //External table adds an extra backslash first which brings the total character length to 20.  Then we remove the extra backslash down to 19 chars.
+           //We do not pad back to 20 because we don't think we have space to pad.  This function thought there were no extra spaces to eat.
+           if(string_suffix(in,1)==' ')                                                
+                length_of(first_defined(re_get_matches(in,'\\\\NULL'),[vector])) +    // When external table adds a backslash in front of NULL, it eats a trailing space
+                length_of(first_defined(re_get_matches(in,'\\\\\\\\'),[vector]))      // When external table adds a backslash in front of another backslash, it eats a trailing space
+              else
+                0
+            );                                // Pad the eaten characters back in.
+end;
+
+/*Reformat operation*/
+out::reformat(in)=
+begin
+  // Find single backslashes and remove them (because they were used to escape other characters)
+  // Find double backslashes and reduce them to single backslashes
+  out.(*, form == 'string') :1: string_trim_no_empty(match_external_table_to_api(in.*));              
+  out.(*, form == 'decimal') :2: in.* + 1 - 1;                      // Add and subtract 1 to preserve ones-place zero on decimals (similar to API mode)
+  out.* :3: in.*;
+end;

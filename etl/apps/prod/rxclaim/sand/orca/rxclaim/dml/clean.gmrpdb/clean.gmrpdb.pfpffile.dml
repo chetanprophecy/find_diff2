@@ -1,0 +1,17 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  jobid /*INTEGER NOT NULL*/;
+  utf8 string("\x01", maximum_length=20)  contract /*VARCHAR(5) NOT NULL*/;
+  utf8 string("\x01", maximum_length=12)  priceid /*VARCHAR(3) NOT NULL*/;
+  utf8 string("\x01", maximum_length=44)  ndc /*VARCHAR(11) NOT NULL*/;
+  utf8 string("\x01", maximum_length=8)  daysupply /*VARCHAR(2) NOT NULL*/;
+  utf8 string("\x01", maximum_length=4)  ismail /*VARCHAR(1) NOT NULL*/;
+  decimal("\x01".4, maximum_length=14, sign_reserved)  unitcost = NULL("") /*DECIMAL(12,4)*/;
+  utf8 string("\x01", maximum_length=4)  hasceilingcost = NULL("") /*VARCHAR(1)*/;
+  date("YYYY-MM-DD")("\x01")  cmspostdate = NULL("") /*DATE*/;
+  utf8 string("\x01", maximum_length=16)  planyear /*VARCHAR(4) NOT NULL*/;
+  string(1)  newline =  "\n";
+end

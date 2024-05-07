@@ -1,0 +1,74 @@
+record
+   utf8 string(int, maximum_length=15)                    cli_clt_id;
+   utf8 record
+   // Natural Key
+   utf8 string(int, maximum_length=30)                 carrier_id                    /* VARCHAR(30)  NOT NULL */;
+   utf8 string(int, maximum_length=40)            carrier_acct_id               /* VARCHAR(40)  NOT NULL */;
+   utf8 string(int, maximum_length=30)          employer_group_id             /* VARCHAR(40)  NOT NULL */;
+   utf8 string(int, maximum_length=20)                     mbr_id;
+      long                 cli_mbr_id;
+	  // CAGM Hash
+  void(16)                       cagm_hash;
+  long                 ptnt_id            = NULL     /*                       */;
+  long                 mast_prsn_id       = NULL     /* BIGINT                */;
+  utf8 string(int, maximum_length=1)                     mbr_typ            = NULL('') /* CHAR(1)               */;
+  utf8 string(int, maximum_length=20)                     fam_id             = NULL('') /* VARCHAR(20)           */; 
+  utf8 string(int, maximum_length=1)                     fam_typ_cd         = NULL('') /* CHAR(1)               */;
+  utf8 string(int, maximum_length=1)                        fam_ind            = NULL('') /* CHAR(1)               */; 
+  utf8 string(int, maximum_length=50)                     clt_id             = NULL('') /* VARCHAR(50)           */; 
+  utf8 string(int, maximum_length=1)                        alt_ins_ind        = NULL('') /* CHAR(1)               */; 
+
+  string(int, maximum_length=10)   alt_ins_id         = NULL('') /* VARCHAR(10)           */; 
+  utf8 string(int, maximum_length=20)                     alt_ins_mbr_id     = NULL('') /* VARCHAR(20)           */; 
+  utf8 string(int, maximum_length=25)                   first_nm           = NULL('') /* VARCHAR(25)           */;  
+  utf8 string(int, maximum_length=1)                mid_init_nm        = NULL('') /* CHAR(1)               */; 
+  utf8 string(int, maximum_length=35)                    last_nm            = NULL('') /* VARCHAR(35)           */; 
+
+  datetime('YYYYMMDD HH24:MI:SS')                       birth_dt           = NULL('') /* DATE                  */;  
+  utf8 string(int, maximum_length=1)                        sex                = NULL('') /* CHAR(1)               */; 
+  utf8 string(int, maximum_length=9)                        ssn_nbr            = NULL('') /* VARCHAR(10)           */; 
+  utf8 string(int, maximum_length=12)                     hic_cd             = NULL('') /* VARCHAR(11)           */;  
+  utf8 string(int, maximum_length=3)                    prsn_cd            = NULL('') /* VARCHAR(3)            */;  
+  utf8 string(int, maximum_length=1)                  relshp_cd          = NULL('') /* CHAR(1)               */; 
+  utf8 string(int, maximum_length=60)                       addr1              = NULL('') /* VARCHAR(60)           */;  
+  utf8 string(int, maximum_length=60)                       addr2              = NULL('') /* VARCHAR(60)           */;  
+  utf8 string(int, maximum_length=60)                       addr3              = NULL('') /* VARCHAR(60)           */;  
+  utf8 string(int, maximum_length=30)                    city_nm            = NULL('') /* VARCHAR(30)           */;  
+  utf8 string(int, maximum_length=3)                      st_cd              = NULL('') /* VARCHAR(3)            */; 
+  utf8 string(int, maximum_length=5)                        zip                = NULL('') /* VARCHAR(5)            */; 
+  utf8 string(int, maximum_length=4)                       zip2               = NULL('') /* VARCHAR(4)            */;  
+  utf8 string(int, maximum_length=2)                       zip4               = NULL('') /* VARCHAR(2)            */;  
+  utf8 string(int, maximum_length=4)                      cntry              = NULL('') /* VARCHAR(4)            */;   
+  decimal('|')                    phone              = NULL('') /* BIGINT                */;  
+  utf8 string(int, maximum_length=80)                   eml_addr           = NULL('') /* VARCHAR(80)           */; 
+  utf8 string(int, maximum_length=1)                     mcre_covrg_typ     = NULL('') /* CHAR(1)               */;
+  datetime('YYYYMMDD HH24:MI:SS')                       mel_strt_dt        = NULL('') /* DATE                  */;  
+  datetime('YYYYMMDD HH24:MI:SS')                       mel_end_dt         = NULL('') /* DATE                  */;  
+  utf8 string(int, maximum_length=3)                    lang_cd            = NULL('') /* VARCHAR(3)            */;  
+  utf8 string(int, maximum_length=1)                       dur_prcs_flag      = NULL('') /* CHAR(1)               */; 
+  integer(4)                    mltpl_brth_cd      = NULL     /* BYTEINT               */;
+  datetime('YYYYMMDD HH24:MI:SS')                   ids_create_dttm    = NULL('') /* TIMESTAMP(6)          */; 
+  datetime('YYYYMMDD HH24:MI:SS')                   ids_updt_dttm      = NULL('') /* TIMESTAMP(6)          */; 
+  //string(1) newline = '\\n';
+  end                            clt_mbr; 
+  record
+  utf8 string(int, maximum_length=25)                 program_id;  
+  string(int, maximum_length=100)  program_nm        = NULL('');   
+  utf8 string(int, maximum_length=10)                   idntfn_job_freq   = NULL('');  
+  utf8 string(int, maximum_length=25)            program_type_cd;
+  end[int]             clt_prgm_freq; 
+utf8 record
+utf8 string(int, maximum_length=30)         carrier_id            /* VARCHAR(30)  NOT NULL */;  
+ utf8 string(int, maximum_length=40)    carrier_acct_id       /* VARCHAR(40)  NOT NULL */;  
+ utf8 string(int, maximum_length=30)  employer_group_id     /* VARCHAR(40)  NOT NULL */;
+ utf8 string(int, maximum_length=20)             mbr_id                /*@ BizName:\"Member ID\" @*/;  
+ end[int]                    ptnt_cagm_vec   = [vector];   
+ record
+ datetime('YYYYMMDD HH24:MI:SS')                       mel_eff_dt   = NULL('') /* DATE                  */;  
+ datetime('YYYYMMDD HH24:MI:SS')                       mel_thru_dt  = NULL('') /* DATE                  */;
+ end[int]                mbr_elig_dt_vec = [vector];
+ utf8 string(int, maximum_length=20)                    plan_cd       = NULL(''); 
+ utf8 string(int, maximum_length=5)               contract_nbr  = NULL('');
+ utf8 string(int, maximum_length=3)                     pbp_id        = NULL('');
+  utf8 string("\x01", maximum_length=1) actn_flag = NULL('');
+end

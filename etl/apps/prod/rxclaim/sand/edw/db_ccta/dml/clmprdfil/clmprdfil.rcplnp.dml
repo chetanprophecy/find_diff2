@@ -1,0 +1,216 @@
+record
+  string("\x01", maximum_length=10) adaecd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Code"
+ BizComment:"Code used to identify a specific plan.  This code combined with a plan effective date uniquely identifies the plan in the RxCLAIM system."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) adakdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Eff Date"
+ BizComment:"The date plan/benefit became effective.  Claims submitted prior to this date will not be accepted."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) ada1dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Term Date"
+ BizComment:"The date that the plan becomes inactive.  Claims submitted after this date will not be accepted."
+@*/;
+  string("\x01", maximum_length=25) adbotx /*CHAR(25) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Name"
+ BizComment:"Text field used to describe or identify the plan."
+@*/;
+  string("\x01", maximum_length=1) adcrst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Member"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked the transaction processor during claim adjudication.  This flag is used to tell the system to check member eligibility. :P. Valid values are: :P. Y = Yes :P. N = No :P. D = Dynamic PA Only :PC. Read member eligibility edit and apply only the dynamic PA function within the edit. Member eligibility checking (or any other option) within this edit is NOT applied to adjudication. :P. P = Prior Auth Only :PC. Only uses PA and Dynamic PA fields in the Eligibility edit; disregards the PA's Ignore PA Status field value; and will not use or require Member Eligibility to be present or active. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adczst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify RX Network"
+ BizComment:"Flag that tells the system if an edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to validate a specific pharmacy within a pharmacy network. :PC. Valid values are: A=Validation, N=No, Y=Yes :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adc1st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan DEA Validation"
+ BizComment:"Prescriber Validation REQUIRED :P. Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to validate the submitted prescriber number against the DEA/NPI algorithm and to determine what type of prescriber ID's are allowed. :P. Valid values: :PC. N - Claim will reject if DEA not found. :P. Y - Claim will not reject if DEA is not valid.  Instead, a message is sent indicating that the claim will continue to process. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcsst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Preferred Formulary"
+ BizComment:"Flag used to tell the system whether a particular edit is to invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the file for"
+@*/;
+  string("\x01", maximum_length=1) adctst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Default Drug Status"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is the default drug status used if all other edits are passed. A =1 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) B = No Prescrptn Drug Benefit C = Paid Non-Formulary w/ Msg D = 15 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) E = 1 Form;Non-Form Reject F = Formulary G = Paid Non-Formulary w/oMsg H = Capture Claim I = 15 Form;Non-Form Reject J = 1 F;Non-F(NoDed/BenAccum)(Unavailable for Drug Status User Messages) K = Formulary(SkipDed/BenMax) L = Non-Form (SkipDed/BenMax) M = Message N = Non-Formulary Reject O = Override P = Prior Authorization Q = F:Don't use GPI Price Dtl R = Reject S = Formulary(NoDed/BenAccum) T = Non-Form (NoDed/BenAccum) U = 5 Formulary; Prior Auth V = 05 Paid Non-Form; Reject W = Negative Pharmacy List; R X = Preferred Product Y = Diag Cde Mismatch, Bypass Z = Formulary Alternative a = Plan Default b = Non-Formulary (Skip OOP) c = Diag Cde Mismatch, next list e = NFrm(NoDed/Ben;Apply OOP) f = Form(NoDed/Ben;Apply OOP) g = Form(NoOOP;apply Ded/Ben) h = Override-List/PA Dtls  2 x = O Non-Form w/msg; Form y = Y Form; Non-Form w/Msg z = Y Form; Non-Form Reject 3 = Override-Use List/PA Dtls 5 = Formulary 5 6 = Formulary 6 7 = Non-Formulary Captured 8 = Non-Preferred Form Reject 9 = Y Pd NFw/oMSG; Pd NFw/MSG"
+@*/;
+  string("\x01", maximum_length=1) adc5st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Eligibility Override"
+ BizComment:"Flag use to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the eligibility override code submitted by the pharmacy. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcust /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan DESI Indicator"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the DESI indicator on the drug file. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcvst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify MD Network"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to verify a submitted Prescriber ID against those in the Prescriber Network attached to this plan. :P. Valid values are: :PC. M  Master Prescriber File :PC. This value will verify that the submitted Prescriber ID exists within the master Prescriber file.  If the submitted Prescriber ID exists within a Prescriber Network attached to this Plan, the system will use the parameters of that attachment to adjudicate the claim. :P. I  Master Prscbr w/ Incident :PC. This value will verify that the submitted Prescriber ID exists within the master Prescriber File.  If the submitted Prescriber ID exists within a Prescriber Network attached to this Plan, the system will use the parameters of that attachment to adjudicate the claim.  If the submitted Prescriber ID does not exist within a Prescriber Network attached to this Plan, the system will verify that the Incident record for the Member contains Employer Name, Employer Address, Employer City, Employer State, Employer Zip, and Injury Date.  If this information is missing from the Member Incident, the claim rejects.  If the information is present, the claim passes this edit. :P. N  No :PC. This value performs no checks against the Prescriber ID. :P. Y  Yes :PC. This value will verity that the submitted Prescriber ID exists within a Prescriber Network attached to this Plan, using the parameters of that attachment to adjudicate the claim.  If the submitted Prescriber does not exist within any of the Prescriber Networks attached to this Plan, the claim will reject. :P. O  Open :PC. If the submitted Prescriber ID exists within a Prescriber Network attached to this Plan, the system will use the parameters of that attachment to adjudicate the claim.  If the submitted Prescriber ID does not exist within a Prescriber Network attached to this Plan, no additional verifications are made by the Prescriber Network Plan Option.  Additional checks may be performed through subsequent checks. :P. A  Like M,Recheck Pharm Ntwk :PC. This value functions identical to value M explained above, however should a Plan Override be found on the Prescriber Network in which the submitted Prescriber ID is found, the system will re-examine the Pharmacy Network option on that Plan Override.  The Prescriber Network on that Plan Override will not be re-examined. :P. B  Like I,Recheck Pharm Ntwk :PC. This value functions identical to value I explained above, however should a Plan Override be found on the Prescriber Network in which the submitted Prescriber ID is found, the system will re-examine the Pharmacy Network option on that Plan Override.  The Preon that Plan Override will not be re-examined. :P. C  Like O,Recheck Pharm Ntwk :PC. This value functions identical to value O explained above, however should a Plan Override be found on the Prescriber Network in which the submitted Prescriber ID is found, the system will re-examine the Pharmacy Network option on that Plan Override.  The Prescriber Network on that Plan Override will not be re-examined. :P. D  Like Y,Recheck Pharm Ntwk :PC. This value functions identical to value Y explained above, however should a Plan Override be found on the Prescriber Network in which the submitted Prescriber ID is found, the system will re-examine the Pharmacy Network option on that Plan Override.  The Prescriber Network on that Plan Override will not be re-examined. :P. Z  Like O,Check Prscbr Valid :PC. This value functions identical to value O explained above; however once a claim passes the Prescriber Network plan edit, then the system will read the Provider Validation plan edit. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcwst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify MD Specialty"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the specialty code field in the doctor file. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcxst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Care Facility"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the submitted 'Clinic ID' and match against the care facility that is in the care facility network file. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adc0st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Restrictions"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the submitted dollar amount and match it against the Max dollar amount for this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adcyst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Pricing"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to access a pricing table defined by the plan. :P. The pricing flag is automatically activated when a price schedule is entered for a plan."
+@*/;
+  string("\x01", maximum_length=1) addzst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Therapy"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the AHFSCC therapeutic code on the drug file. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhtst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Brnd/Gen Subs"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the tranaction processor during claim adjudication.  This flag is used to tell the system to verify the submitted product selection code against a used defined table set to perform this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhust /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify 3rd Pty Excp"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to look at the third party exception code on the drug file before performing further edits on the claim. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhvst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Legend OTC"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to verify the Rx/OTC indicator on the drug file before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhwst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify FDA Ther Equi"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the FDA therapeutic equivilent from the drug file for the submitted drug. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhxst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify DEA Code"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the the system to check the drug file for the DEA class (I,II, III, IV, V) for the submitted drug before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhyst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Dosage Form"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check dosage form field on the drug file before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adhzst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Route of Admn"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the ROUTE field on the drug file before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adh0st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Packaging"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check UD/UU indicator on the drug file before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adh1st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Maint Drug"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the systen to check for an 'X' in the MAINT field of the drug file before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adj6st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Compound"
+ BizComment:"Flag used to tell the system whether a particualr edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the compound code of the incoming record before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adj7st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Level of Service"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the level of service code submitted by the pharmacy before performing this edit. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adj8st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Days Supply/Qty Disp Lmts"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to determine if an edit is to be performed based on the submitted quantity and/or days supply. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adj9st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Refill Limits"
+ BizComment:"Flag used to tell the system whether a particular edit si to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to perform an edit based on the refill code submitted by the pharmacy. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adkast /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Deductible/Cap Limits"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system to check the deductible records for the member number being submitted on the claim. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adkbst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Customer Location"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is used to tell the system check the location code being submitted by the pharmacy. :PC. Valid values are: Y=Yes, N=No :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) adr5h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Patient Pay Qual"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr3h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify NDC List"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr4h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify GPI List"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr6h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify COB"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=8) adnxcd /*CHAR(8) NOT NULL*/ /*@
+BizName:"RCPLNP: DUG Table Name"
+ BizComment:"This is the NAME of the Drug Use Review Table.  This Name can be referenced by a PLAN to indicate the type of processing to be done on-line for DUR Editing."
+@*/;
+  string("\x01", maximum_length=10) adcct3 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Qualifier"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) admkh6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Audit Flag"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr7h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify Specialty Pgm"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr8h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Verify FormMgmtSrvc"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adr9h6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Future Use Flag 3"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) adsah6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Future Use Flag 4"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) adbihb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan Pref Prod Schedule"
+ BizComment:"This is the ID and Description of the Preferred Product Schedule.  This can be optionally referenced during adjudication to associate a Tier to the incoming product."
+@*/;
+  string("\x01", maximum_length=10) adbjhb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: Plan External Program"
+ BizComment:"OPTIONAL"
+@*/;
+  string("\x01", maximum_length=10) adakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) adc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPLNP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) adadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPLNP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) adalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) adadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) adbmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPLNP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) adabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPLNP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) adaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPLNP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

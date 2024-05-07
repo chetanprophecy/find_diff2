@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcphdp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcphdp                  aseycd,asfsnb,asavcd,asfonb,aso2cd,asaacd,asfhst,asgpdt,asgqdt,asikc3,asejhb,asaecd,asakdt,aselhb,asekhb,asghhi,asr8hj,asywhq,asyxhq,asclvd,ascivd,ascjvd,asckvd,aschvd,ascgvd,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcphdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[\n "WHERE ASBMDT >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n " AND ASBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)\n ] OPTIMIZE FOR ALL ROWS
+DO_PUBLISH_CLEAN_FILE||||1
+SQL||||select\r\nrcphdp.aseycd,\r\nrcphdp.asfsnb,\r\nrcphdp.asavcd,\r\nrcphdp.asfonb,\r\nrcphdp.aso2cd,\r\nrcphdp.asaacd,\r\nrcphdp.asfhst,\r\nrcphdp.asgpdt,\r\nrcphdp.asgqdt,\r\nrcphdp.asikc3,\r\nrcphdp.asejhb,\r\nrcphdp.asaecd,\r\nrcphdp.asakdt,\r\nrcphdp.aselhb,\r\nrcphdp.asekhb,\r\nrcphdp.asghhi,\r\nrcphdp.asr8hj,\r\nrcphdp.asywhq,\r\nrcphdp.asyxhq,\r\nrcphdp.asclvd,\r\nrcphdp.ascivd,\r\nrcphdp.ascjvd,\r\nrcphdp.asckvd,\r\nrcphdp.aschvd,\r\nrcphdp.ascgvd,\r\nrcphdp.asakvn,\r\nrcphdp.asc2dt,\r\nrcphdp.asadtm,\r\nrcphdp.asalvn,\r\nrcphdp.asadvn,\r\nrcphdp.asbmdt,\r\nrcphdp.asabtm,\r\nrcphdp.asaevn,\r\nrcpscp.qlgocd\r\nfrom clmprdfil.rcphdp rcphdp left join\r\nclmprdfil.rcpscp rcpscp on \r\nrcphdp.asikc3=rcpscp.qlgocd $WHERE_CLAUSE

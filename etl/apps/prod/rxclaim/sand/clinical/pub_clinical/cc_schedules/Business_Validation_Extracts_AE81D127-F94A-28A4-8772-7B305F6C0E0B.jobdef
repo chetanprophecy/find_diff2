@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="EXTRACTS" description="This job will extract data from all required tables after Loads for business users to validate." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="AE81D127-F94A-28A4-8772-7B305F6C0E0B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Business Validation Extracts" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/extracts" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/BVE_Extract.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-09-13Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="34B47F5B-254C-28E8-4E2D-2ED82EB6BF80"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

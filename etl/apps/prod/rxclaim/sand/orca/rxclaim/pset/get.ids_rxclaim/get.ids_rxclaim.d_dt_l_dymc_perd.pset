@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_common.d_date
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.l_dynamic_period
+JOIN_TYPE|l|||Cartesian Product
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{}
+ADDITIONAL_FIELDS_DML||||
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\n\r\nend
+TARGET_NAME||||ids_rxclaim.d_dt_l_dymc_perd
+DRIVER_OUTPUT_FIELDS||||dt_sk,cal_day_dt
+NON_DRIVER_1_OUTPUT_FIELDS||||dxf_hk_part1,dxf_hk_part2,dxf_sk,dynamic_perd_sk,perd_type_nbr,perd_type_nm,perd_start_dt_sk,perd_start_dt,perd_end_dt,perd_order_no,perd_order_nm,src_env_sk,dxf_src_sys_id,ids_create_dttm,ids_create_uid,ids_create_run_id,ids_updt_dttm,ids_updt_uid,ids_updt_run_id,ids_rec_stat_cd,newline
+OUTPUT_FILTER_EXPR||||(perd_type_nbr == 2 and cal_day_dt >= perd_start_dt and cal_day_dt <= perd_end_dt) || (perd_type_nbr > 2 and cal_day_dt >= perd_end_dt and cal_day_dt <= (date("YYYYMMDD"))string_concat((string(""))(date("YYYYMM"))perd_start_dt, (decimal(""))date_month_end(date_month((date("YYYYMMDD"))perd_start_dt),date_year((date("YYYYMMDD"))perd_start_dt))))
+DO_LOOKUP||||0
+DO_CLEAN||||1

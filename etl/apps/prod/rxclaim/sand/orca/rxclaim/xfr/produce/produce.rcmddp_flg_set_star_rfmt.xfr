@@ -1,0 +1,17 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+  
+let decimal ("\x01",0) pde_claim_nbr_temp=allocate_with_defaults();
+let little endian integer(2)dxf_src_sys_id_temp=allocate_with_defaults();
+let hash_key_combine_type dxf_hk=allocate_with_defaults();
+ 
+out :: reformat(in) = 
+begin
+
+  pde_claim_nbr_temp = in.asp2nb;
+  dxf_src_sys_id_temp  = in.dxf_src_sys_id;
+  dxf_hk = reinterpret_as(hash_key_combine_type, hash_value([record x pde_claim_nbr_temp y dxf_src_sys_id_temp],{x;y}, "murmur"));  
+  out.dxf_hk_part1::dxf_hk.dxf_hk_part1;
+  out.dxf_hk_part2::dxf_hk.dxf_hk_part2;
+  out.*::in.*;
+    
+end;

@@ -1,0 +1,112 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c120afb_fdff_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_prd_id_lnk.alt_prod_type,[passthrough],in0.ilqvoc]
+  [out0.d_prd_id_lnk.alt_prod_key,[passthrough],in0.ild9pp]
+  [out0.d_prd_id_lnk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_prd_id_lnk.alt_lnk_type,[passthrough],in0.ilqroc]
+  [out0.d_prd_id_lnk.prod_key,[passthrough],in0.ild8pp]
+  [out0.d_prd_id_lnk.prod_id_lnk_sk,[transform],]
+  [out0.d_prd_id_lnk.status_cd,[passthrough],in0.ilqpoc]
+  [out0.d_prd_id_lnk.inactive_dt,[transform],in0.ilmnhh]
+  [out0.d_prd_id_lnk.prod_id,[passthrough],in0.iltjhk]
+  [out0.d_prd_id_lnk.prod_type,[passthrough],in0.ilquoc]
+  [out0.d_prd_id_lnk.origin_cd,[passthrough],in0.ilqsoc]
+  [out0.d_prd_id_lnk.lnk_type,[passthrough],in0.ilqqoc]
+  [out0.d_prd_id_lnk.alt_prod_id,[passthrough],in0.iltkhk]
+  [out0.d_prd_id_lnk.orig_prod_key,[passthrough],in0.ild6pp]
+  [out0.d_prd_id_lnk.seq_nbr,[passthrough],in0.ild5pp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_prd_id_lnk.alt_prod_type,'d_prd_id_lnk.alt_prod_type',1,0]
+     [out0.d_prd_id_lnk.alt_prod_key,'d_prd_id_lnk.alt_prod_key',1,0]
+     [out0.d_prd_id_lnk.src_env_sk,'d_prd_id_lnk.src_env_sk',1,0]
+     [out0.d_prd_id_lnk.alt_lnk_type,'d_prd_id_lnk.alt_lnk_type',1,0]
+     [out0.d_prd_id_lnk.prod_key,'d_prd_id_lnk.prod_key',1,0]
+     [out0.d_prd_id_lnk.prod_id_lnk_sk,'d_prd_id_lnk.prod_id_lnk_sk',1,0]
+     [out0.d_prd_id_lnk.status_cd,'d_prd_id_lnk.status_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_prd_id_lnk.inactive_dt,'d_prd_id_lnk.inactive_dt',1,0]
+     [out0.d_prd_id_lnk.prod_id,'d_prd_id_lnk.prod_id',1,0]
+     [out0.d_prd_id_lnk.prod_type,'d_prd_id_lnk.prod_type',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_prd_id_lnk.origin_cd,'d_prd_id_lnk.origin_cd',1,0]
+     [out0.d_prd_id_lnk.lnk_type,'d_prd_id_lnk.lnk_type',1,0]
+     [out0.d_prd_id_lnk.alt_prod_id,'d_prd_id_lnk.alt_prod_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_prd_id_lnk.orig_prod_key,'d_prd_id_lnk.orig_prod_key',1,0]
+     [out0.d_prd_id_lnk.seq_nbr,'d_prd_id_lnk.seq_nbr',1,0]
+  ]
+  impacts:
+  [
+     [in0.ilmnhh,'ilmnhh',1,1]
+     [in0.ilqvoc,'ilqvoc',1,1]
+     [in0.iltjhk,'iltjhk',1,1]
+     [in0.ild8pp,'ild8pp',1,1]
+     [in0.iltkhk,'iltkhk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ilqqoc,'ilqqoc',1,1]
+     [in0.ild5pp,'ild5pp',1,1]
+     [in0.ilquoc,'ilquoc',1,1]
+     [in0.ilqpoc,'ilqpoc',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ild9pp,'ild9pp',1,1]
+     [in0.ilqroc,'ilqroc',1,1]
+     [in0.ild6pp,'ild6pp',1,1]
+     [in0.ilqsoc,'ilqsoc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_prd_id_lnk_prod_id_lnk_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prd_id_lnk_prod_type = fail_if_error(in0.ilquoc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prd_id_lnk_prod_id = fail_if_error(in0.iltjhk);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prd_id_lnk_alt_prod_type = fail_if_error(in0.ilqvoc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prd_id_lnk_alt_prod_id = fail_if_error(in0.iltkhk);
+let decimal("\x01",0) d_prd_id_lnk_seq_nbr = fail_if_error(in0.ild5pp);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prd_id_lnk_status_cd = fail_if_error(in0.ilqpoc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prd_id_lnk_lnk_type = fail_if_error(in0.ilqqoc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prd_id_lnk_alt_lnk_type = fail_if_error(in0.ilqroc);
+let decimal("\x01",0) d_prd_id_lnk_orig_prod_key = fail_if_error(in0.ild6pp);
+let date("YYYYMMDD")("\x01") d_prd_id_lnk_inactive_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prd_id_lnk_origin_cd = fail_if_error(in0.ilqsoc);
+let decimal("\x01",0) d_prd_id_lnk_prod_key = fail_if_error(in0.ild8pp);
+let decimal("\x01",0) d_prd_id_lnk_alt_prod_key = fail_if_error(in0.ild9pp);
+let decimal("\x01",0) d_prd_id_lnk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_prd_id_lnk_inactive_dt=fail_if_error(date_check(in0.ilmnhh));
+
+  out0.d_prd_id_lnk.prod_id_lnk_sk::d_prd_id_lnk_prod_id_lnk_sk;
+  out0.d_prd_id_lnk.prod_type::d_prd_id_lnk_prod_type;
+  out0.d_prd_id_lnk.prod_id::d_prd_id_lnk_prod_id;
+  out0.d_prd_id_lnk.alt_prod_type::d_prd_id_lnk_alt_prod_type;
+  out0.d_prd_id_lnk.alt_prod_id::d_prd_id_lnk_alt_prod_id;
+  out0.d_prd_id_lnk.seq_nbr::d_prd_id_lnk_seq_nbr;
+  out0.d_prd_id_lnk.status_cd::d_prd_id_lnk_status_cd;
+  out0.d_prd_id_lnk.lnk_type::d_prd_id_lnk_lnk_type;
+  out0.d_prd_id_lnk.alt_lnk_type::d_prd_id_lnk_alt_lnk_type;
+  out0.d_prd_id_lnk.orig_prod_key::d_prd_id_lnk_orig_prod_key;
+  out0.d_prd_id_lnk.inactive_dt::d_prd_id_lnk_inactive_dt;
+  out0.d_prd_id_lnk.origin_cd::d_prd_id_lnk_origin_cd;
+  out0.d_prd_id_lnk.prod_key::d_prd_id_lnk_prod_key;
+  out0.d_prd_id_lnk.alt_prod_key::d_prd_id_lnk_alt_prod_key;
+  out0.d_prd_id_lnk.src_env_sk::d_prd_id_lnk_src_env_sk;
+  out0.*::in0.*;
+
+end;

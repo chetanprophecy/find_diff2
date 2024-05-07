@@ -1,0 +1,121 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5acf0b28_b8d8_0
+    BizHidden:true
+@*/
+/*   lookup f_mpd_pde_report_lkp   */
+out0::bzt_2_6c54cc0a_5acf0b28_b8d8_0(in0)=
+begin
+let record
+  string("\x01") PDR_DATE, PDR_FILE_ID;
+  string("\n") PDR_ACCEPT_REJECT;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("f_mpd_pde_report_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5acf0b28_b8d8_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.f_mpd_ctrx.mdh_chg_ts,[transform],in0.aqabtm,
+     in0.aqbmdt]
+  [out0.f_mpd_ctrx.pde_file_id,[passthrough],in0.aqpwih]
+  [out0.f_mpd_ctrx.pdfs_curr_status,[transform],in0.aqpwih,
+     'lookup("f_mpd_pde_report_lkp").PDR_ACCEPT_REJECT']
+  [out0.f_mpd_ctrx.pde_file_sbm_ts,[transform],in0.aqadtm,
+     in0.aqc2dt]
+  [out0.f_mpd_ctrx.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.f_mpd_ctrx.ddps_process_ts,[transform],in0.aqbqtz,
+     in0.aqnfce]
+  [out0.f_mpd_ctrx.resp_file_dt,[transform],in0.aqpwih,
+     'lookup("f_mpd_pde_report_lkp").PDR_DATE']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_mpd_ctrx.mdh_chg_ts,'f_mpd_ctrx.mdh_chg_ts',1,1]
+     [out0.f_mpd_ctrx.pde_file_id,'f_mpd_ctrx.pde_file_id',1,0]
+     [out0.f_mpd_ctrx.pdfs_curr_status,'f_mpd_ctrx.pdfs_curr_status',1,0]
+     [out0.f_mpd_ctrx.pde_file_sbm_ts,'f_mpd_ctrx.pde_file_sbm_ts',1,1]
+     [out0.f_mpd_ctrx.src_env_sk,'f_mpd_ctrx.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_mpd_ctrx.ddps_process_ts,'f_mpd_ctrx.ddps_process_ts',1,1]
+     [out0.f_mpd_ctrx.resp_file_dt,'f_mpd_ctrx.resp_file_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.aqbmdt,'aqbmdt',1,2]
+     [in0.aqc2dt,'aqc2dt',1,2]
+     [in0.aqabtm,'aqabtm',1,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("f_mpd_pde_report_lkp").PDR_ACCEPT_REJECT','PDR_ACCEPT_REJECT',1,1]
+     [in0.aqadtm,'aqadtm',1,2]
+     [in0.aqpwih,'aqpwih',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     ['lookup("f_mpd_pde_report_lkp").PDR_DATE','PDR_DATE',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.aqbqtz,'aqbqtz',1,2]
+     [in0.aqnfce,'aqnfce',1,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_mpd_ctrx_pde_file_id = fail_if_error(in0.aqpwih);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") f_mpd_ctrx_pde_file_sbm_ts;
+let date("YYYYMMDD")("\x01") f_mpd_ctrx_resp_file_dt;
+let string("\x01") f_mpd_ctrx_pdfs_curr_status;
+let string("\x01") f_mpd_ctrx_ddps_process_ts;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") f_mpd_ctrx_mdh_chg_ts;
+let decimal("\x01",0) f_mpd_ctrx_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let unicode string(int) temp_pde_file_sbm_ts;
+let unicode string(int) temp_ddps_process_ts;
+let unicode string(int) temp_mdh_chg_ts;
+
+
+
+/*   Default value   */
+temp_pde_file_sbm_ts=fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))(string_concat((date("YYYYMMDD"))date_check(in0.aqc2dt),time_check(in0.aqadtm))));
+
+/*   Default value   */
+f_mpd_ctrx_pde_file_sbm_ts=fail_if_error(temp_pde_file_sbm_ts);
+
+/*   Default value   */
+f_mpd_ctrx_pdfs_curr_status=fail_if_error(bzt_2_6c54cc0a_5acf0b28_b8d8_0(in0.aqpwih).PDR_ACCEPT_REJECT);
+
+/*   Default value   */
+temp_mdh_chg_ts=fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))(string_concat((date("YYYYMMDD"))date_check(in0.aqbmdt),time_check(in0.aqabtm))));
+
+/*   Default value   */
+f_mpd_ctrx_mdh_chg_ts=fail_if_error(temp_mdh_chg_ts);
+
+/*   Default value   */
+temp_ddps_process_ts=fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))(string_concat((date("YYYYMMDD"))date_check(in0.aqnfce),time_check(in0.aqbqtz))));
+
+/*   Default value   */
+f_mpd_ctrx_ddps_process_ts=fail_if_error(temp_ddps_process_ts);
+
+/*   Default value   */
+f_mpd_ctrx_resp_file_dt=fail_if_error(bzt_2_6c54cc0a_5acf0b28_b8d8_0(in0.aqpwih).PDR_DATE);
+
+  out0.f_mpd_ctrx.pde_file_id::f_mpd_ctrx_pde_file_id;
+  out0.f_mpd_ctrx.pde_file_sbm_ts::f_mpd_ctrx_pde_file_sbm_ts;
+  out0.f_mpd_ctrx.resp_file_dt::f_mpd_ctrx_resp_file_dt;
+  out0.f_mpd_ctrx.pdfs_curr_status::f_mpd_ctrx_pdfs_curr_status;
+  out0.f_mpd_ctrx.ddps_process_ts::f_mpd_ctrx_ddps_process_ts;
+  out0.f_mpd_ctrx.mdh_chg_ts::f_mpd_ctrx_mdh_chg_ts;
+  out0.f_mpd_ctrx.src_env_sk::f_mpd_ctrx_src_env_sk;
+  out0.*::in0.*;
+
+end;

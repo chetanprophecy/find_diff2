@@ -1,0 +1,301 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+type bzt_5_97d014ac_576b8636_2d81_0 = record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) acct_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) acct_nm = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup lkp_f_benft_file_extnd_carr_acct   */
+out0::bzt_10_97d014ac_576b8636_2d81_0(in0,in1)=
+begin
+let bzt_5_97d014ac_576b8636_2d81_0 __bzt_local_res__;
+if(!bzt_13_97d014ac_576b8636_2d81_0)begin
+  bzt_13_97d014ac_576b8636_2d81_0 = 1;
+  bzt_12_97d014ac_576b8636_2d81_0 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("lkp_f_benft_file_extnd_carr_acct",in0,in1));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_11_97d014ac_576b8636_2d81_0 = __bzt_local_res__;
+     bzt_12_97d014ac_576b8636_2d81_0 = 1;
+  end
+end
+  out0:1:if(bzt_12_97d014ac_576b8636_2d81_0)bzt_11_97d014ac_576b8636_2d81_0;
+  out0::NULL;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_carrier   */
+out0::bzt_14_97d014ac_576b8636_2d81_0(in0)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) carrier_state_cd = NULL("");
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_carrier",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup client_account_hierarchy   */
+out0::bzt_9_97d014ac_576b8636_2d81_0(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01",charset="iso-8859-15") carrier_id, account_id, acct_client_type_id, acct_client_type_desc, acct_product_type_id, acct_product_type_desc, acct_product_line_id, acct_product_line_desc;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("client_account_hierarchy",in0,in1));
+  out0::__bzt_local_res__;
+end;
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=30) inner = NULL;
+end bzt_0_97d014ac_576b8636_2d81_0 = allocate_with_nulls();
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=40) inner = NULL;
+end bzt_1_97d014ac_576b8636_2d81_0 = allocate_with_nulls();
+let bzt_5_97d014ac_576b8636_2d81_0 bzt_11_97d014ac_576b8636_2d81_0 = allocate_with_nulls();  /*   lookup lkp_f_benft_file_extnd_carr_acct   */
+let int bzt_12_97d014ac_576b8636_2d81_0 = 0;
+let int bzt_13_97d014ac_576b8636_2d81_0 = 0;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_rcaccp_to_the_orx_d_carrier_acct_ILM_documentation(in)=
+begin
+
+out0.c_d_carr_acc.carrier_id::depends_on(
+         in.anaacd
+         );
+
+
+out0.c_d_carr_acc.acct_client_type_desc::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_client_type_desc  
+         );
+
+
+out0.c_d_carr_acc.account_nm::depends_on(
+         in.anaacd,
+         in.anbjtx,
+         in.anaccd,
+         lookup("lkp_f_benft_file_extnd_carr_acct",'keystr','keystr').acct_nm  
+         );
+
+
+out0.c_d_carr_acc.acct_product_line_id::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_product_line_id  
+         );
+
+
+out0.c_d_carr_acc.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.c_d_carr_acc.acct_product_line_desc::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_product_line_desc  
+         );
+
+
+out0.c_d_carr_acc.carrier_nm::depends_on(
+         in.anaacd,
+         in.anaccd,
+         lookup("d_carrier",'keystr').carrier_nm,
+         lookup("lkp_f_benft_file_extnd_carr_acct",'keystr','keystr').carrier_nm  
+         );
+
+
+out0.d_carr.carrier_id::depends_on(
+         in.anaacd
+         );
+
+
+out0.c_d_carr_acc.acct_product_type_id::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_product_type_id  
+         );
+
+
+out0.c_d_carr_acc.account_id::depends_on(
+         in.anaccd
+         );
+
+
+out0.c_d_carr_acc.acct_product_type_desc::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_product_type_desc  
+         );
+
+
+out0.c_d_carr_acc.acct_client_type_id::depends_on(
+         in.anaccd,
+         in.anaacd,
+         lookup("client_account_hierarchy",'keystr','keystr').acct_client_type_id  
+         );
+
+
+out0.dxf_src_rec_cnt::depends_on(
+         in.dxf_src_rec_cnt
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_rcaccp_to_the_orx_d_carrier_acct_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_d_carr_acc.carrier_id,'c_d_carr_acc.carrier_id',2,0]
+     [out0.c_d_carr_acc.rebates_stat_ind,'c_d_carr_acc.rebates_stat_ind',1,0]
+     [out0.c_d_carr_acc.acct_client_type_desc,'c_d_carr_acc.acct_client_type_desc',1,0]
+     [out0.c_d_carr_acc.account_nm,'c_d_carr_acc.account_nm',1,2]
+     [out0.c_d_carr_acc.hm_dlvry_stat_ind,'c_d_carr_acc.hm_dlvry_stat_ind',1,0]
+     [out0.c_d_carr_acc.acct_product_line_id,'c_d_carr_acc.acct_product_line_id',1,0]
+     [out0.c_d_carr_acc.carrier_sk,'c_d_carr_acc.carrier_sk',1,0]
+     [out0.c_d_carr_acc.carrier_acct_sk,'c_d_carr_acc.carrier_acct_sk',1,0]
+     [out0.c_d_carr_acc.src_env_sk,'c_d_carr_acc.src_env_sk',1,0]
+     [out0.c_d_carr_acc.acct_product_line_desc,'c_d_carr_acc.acct_product_line_desc',1,0]
+     [out0.c_d_carr_acc.hm_dlvry_only_ind,'c_d_carr_acc.hm_dlvry_only_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_d_carr_acc.carrier_nm,'c_d_carr_acc.carrier_nm',1,3]
+     [out0.d_carr.carrier_id,'d_carr.carrier_id',1,0]
+     [out0.c_d_carr_acc.acct_product_type_id,'c_d_carr_acc.acct_product_type_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_d_carr_acc.account_id,'c_d_carr_acc.account_id',2,0]
+     [out0.c_d_carr_acc.acct_product_type_desc,'c_d_carr_acc.acct_product_type_desc',1,0]
+     [out0.c_d_carr_acc.rebates_only_ind,'c_d_carr_acc.rebates_only_ind',1,0]
+     [out0.c_d_carr_acc.acct_client_type_id,'c_d_carr_acc.acct_client_type_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_d_carr_acc.rec_sts,'c_d_carr_acc.rec_sts',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.anbjtx,'anbjtx',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.anaacd,'anaacd',11,11]
+     [in0.anaccd,'anaccd',10,10]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("d_carrier").carrier_nm','carrier_nm',3,1]
+     ['lookup("client_account_hierarchy").acct_client_type_desc','acct_client_type_desc',1,1]
+     ['lookup("client_account_hierarchy").acct_client_type_id','acct_client_type_id',1,1]
+     ['lookup("client_account_hierarchy").acct_product_line_desc','acct_product_line_desc',1,1]
+     ['lookup("client_account_hierarchy").acct_product_type_id','acct_product_type_id',1,1]
+     ['lookup("client_account_hierarchy").acct_product_type_desc','acct_product_type_desc',1,1]
+     ['lookup("client_account_hierarchy").acct_product_line_id','acct_product_line_id',1,1]
+     ['lookup("lkp_f_benft_file_extnd_carr_acct").carrier_nm','carrier_nm',1,1]
+     ['lookup("lkp_f_benft_file_extnd_carr_acct").acct_nm','acct_nm',4,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let little endian integer(4) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) c_d_carr_acc_carrier_acct_sk = -1;
+let decimal("\x01",0) c_d_carr_acc_carrier_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_d_carr_acc_carrier_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_d_carr_acc_account_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_d_carr_acc_acct_client_type_id;
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_d_carr_acc_acct_client_type_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_d_carr_acc_acct_product_type_id;
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_d_carr_acc_acct_product_type_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_d_carr_acc_acct_product_line_id;
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_d_carr_acc_acct_product_line_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_d_carr_acc_rec_sts = "Y";
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_d_carr_acc_hm_dlvry_only_ind = "N";
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_d_carr_acc_hm_dlvry_stat_ind = "N";
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_d_carr_acc_rebates_only_ind = "N";
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_d_carr_acc_rebates_stat_ind = "N";
+let decimal("\x01",0) c_d_carr_acc_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_carr_carrier_id = fail_if_error(in0.anaacd);
+let unicode string(int) carrier_id_default = fail_if_error((if ((is_null(in0.anaacd) || is_blank(in0.anaacd)))
+   '-'
+ else
+   in0.anaacd));
+
+bzt_13_97d014ac_576b8636_2d81_0 = 0;
+bzt_0_97d014ac_576b8636_2d81_0.inner = fail_if_error(in0.anaacd);
+bzt_1_97d014ac_576b8636_2d81_0.inner = fail_if_error(in0.anaccd);
+
+
+/*   Default value   */
+c_d_carr_acc_acct_client_type_desc=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd,in0.anaccd).acct_client_type_desc);
+
+/*   Default value   */
+c_d_carr_acc_acct_product_line_id=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd, in0.anaccd).acct_product_line_id);
+
+/*   Default value   */
+c_d_carr_acc_acct_product_line_desc=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd,in0.anaccd).acct_product_line_desc);
+
+/*   Default value   */
+c_d_carr_acc_acct_product_type_id=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd,in0.anaccd).acct_product_type_id);
+
+/*   Default value   */
+c_d_carr_acc_account_nm=fail_if_error((if (sql_or((is_null(bzt_10_97d014ac_576b8636_2d81_0(bzt_0_97d014ac_576b8636_2d81_0.inner,bzt_1_97d014ac_576b8636_2d81_0.inner).acct_nm) || is_blank(bzt_10_97d014ac_576b8636_2d81_0(bzt_0_97d014ac_576b8636_2d81_0.inner,bzt_1_97d014ac_576b8636_2d81_0.inner).acct_nm)),(bzt_10_97d014ac_576b8636_2d81_0(bzt_0_97d014ac_576b8636_2d81_0.inner,bzt_1_97d014ac_576b8636_2d81_0.inner).acct_nm=='-')))
+   in0.anbjtx
+ else
+   bzt_10_97d014ac_576b8636_2d81_0(bzt_0_97d014ac_576b8636_2d81_0.inner,bzt_1_97d014ac_576b8636_2d81_0.inner).acct_nm));
+
+/*   Default value   */
+c_d_carr_acc_carrier_nm=fail_if_error((if ((is_null(bzt_14_97d014ac_576b8636_2d81_0(carrier_id_default).carrier_nm) || is_blank(bzt_14_97d014ac_576b8636_2d81_0(carrier_id_default).carrier_nm)))
+   bzt_10_97d014ac_576b8636_2d81_0(bzt_0_97d014ac_576b8636_2d81_0.inner,bzt_1_97d014ac_576b8636_2d81_0.inner).carrier_nm
+ else
+   bzt_14_97d014ac_576b8636_2d81_0(carrier_id_default).carrier_nm));
+
+/*   Default value   */
+c_d_carr_acc_acct_product_type_desc=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd,in0.anaccd).acct_product_type_desc);
+
+/*   Default value   */
+c_d_carr_acc_acct_client_type_id=fail_if_error(bzt_9_97d014ac_576b8636_2d81_0(in0.anaacd,in0.anaccd).acct_client_type_id);
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.c_d_carr_acc.carrier_acct_sk::c_d_carr_acc_carrier_acct_sk;
+  out0.c_d_carr_acc.carrier_sk::c_d_carr_acc_carrier_sk;
+  out0.c_d_carr_acc.carrier_id::bzt_0_97d014ac_576b8636_2d81_0.inner;
+  out0.c_d_carr_acc.account_id::bzt_1_97d014ac_576b8636_2d81_0.inner;
+  out0.c_d_carr_acc.carrier_nm::c_d_carr_acc_carrier_nm;
+  out0.c_d_carr_acc.account_nm::c_d_carr_acc_account_nm;
+  out0.c_d_carr_acc.acct_client_type_id::c_d_carr_acc_acct_client_type_id;
+  out0.c_d_carr_acc.acct_client_type_desc::c_d_carr_acc_acct_client_type_desc;
+  out0.c_d_carr_acc.acct_product_type_id::c_d_carr_acc_acct_product_type_id;
+  out0.c_d_carr_acc.acct_product_type_desc::c_d_carr_acc_acct_product_type_desc;
+  out0.c_d_carr_acc.acct_product_line_id::c_d_carr_acc_acct_product_line_id;
+  out0.c_d_carr_acc.acct_product_line_desc::c_d_carr_acc_acct_product_line_desc;
+  out0.c_d_carr_acc.rec_sts::c_d_carr_acc_rec_sts;
+  out0.c_d_carr_acc.hm_dlvry_only_ind::c_d_carr_acc_hm_dlvry_only_ind;
+  out0.c_d_carr_acc.hm_dlvry_stat_ind::c_d_carr_acc_hm_dlvry_stat_ind;
+  out0.c_d_carr_acc.rebates_only_ind::c_d_carr_acc_rebates_only_ind;
+  out0.c_d_carr_acc.rebates_stat_ind::c_d_carr_acc_rebates_stat_ind;
+  out0.c_d_carr_acc.src_env_sk::c_d_carr_acc_src_env_sk;
+  out0.d_carr.carrier_id::d_carr_carrier_id;
+  out0.*::in0.*;
+end;

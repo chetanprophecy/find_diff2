@@ -1,0 +1,87 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/pharma_claim_t_onetime.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/07/13  Sarani Bhattacharya     Initial version
+ *  
+ ******************************************************************************************************************************************/
+ 
+include "~$PUB_CLINICAL_DML/cli_scoop_types.dml";
+
+type pharma_claim_txn_dtl_t_1 =
+utf8 record
+  // Surrogate key
+  cli_decimal_t                    cli_claim_id;
+
+  // CAG Natural Keys
+  cli_carrier_id_t                 carrier_id        /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id   /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id /* VARCHAR(40)  NOT NULL */;
+  
+  // Member Identifier
+  cli_mbr_id_t                     mbr_id;
+  
+  // Source Environment ID, Claim Number and Sequence Number
+  cli_src_env_id_t                 src_env_id        /* VARCHAR(4)   NOT NULL */;
+  cli_pharma_claim_nbr_t           claim_nbr         /* BIGINT       NOT NULL */;
+  cli_pharma_claim_seq_nbr_t       claim_seq_nbr     /* INTEGER      NOT NULL */;
+  string(int, maximum_length=2)    vers_nbr          /* VARCHAR(2)            */;
+  
+  // More Dates
+  cli_date_t                       cli_recv_dt                = NULL('');
+  cli_date_t                       sbm_dt                     = NULL('');
+  cli_date_t                       filled_dt                  = NULL('');
+  cli_date_t                       rx_written_dt              = NULL('');
+  
+  // Prescriber Qualifier Code and Alias ID
+  cli_dea_id_t                     prescriber_dea_id          = NULL;
+  cli_npi_id_t                     prescriber_npi             = NULL;
+  cli_prescriber_qlfr_cd_t         prescriber_qlfr_cd;
+  cli_prescriber_alias_id_t        prescriber_alias_id;
+  
+  cli_prescriber_qlfr_cd_t         spclty_prescriber_qlfr_cd  = NULL('');
+  cli_prescriber_alias_id_t        spclty_prescriber_alias_id = NULL('');
+  
+  // Pharmacy Qualifier Code and ID
+  cli_pharmacy_qlfr_cd_t           pharmacy_qlfr_cd;
+  cli_pharmacy_alias_id_t          pharmacy_alias_id;
+  
+  // Drug Details
+  cli_ndc_id_t                     ndc_id;
+  cli_gpi_id_t                     gpi_id                     = NULL('');
+  decimal('\x01'.3, maximum_length=13, sign_reserved) drg_qty = NULL('');
+  cli_typ_cd_t                     drg_category_code          = NULL('');
+  cli_typ_cd_t                     drg_maint_cd               = NULL('');
+  cli_typ_cd_t                     drg_coverage_stat_cd       = NULL('');
+  
+  //Product details
+  cli_product_qlfr_cd_t            product_id_qlfr_cd         = NULL('');
+  string(int, maximum_length=20)   product_id                 = NULL('');
+  
+  // More Stuff
+  cli_rx_num_t                     rx_num                     = NULL('');
+  cli_stat_t                       mail_service_ind           = NULL('');         
+  cli_stat_t                       claim_stat_id;
+  cli_stat_t                       net_out_ind                = NULL('');
+  cli_stat_t                       daw_cd                     = NULL(''); 
+  cli_cust_loc_t                   cust_loc                   = NULL('');
+  cli_residence_cd_t               residence_cd               = NULL('');
+  cli_pbp_id_t                     cms_pbp_id                 = NULL('');
+  cli_contract_nbr_t               cms_contract_nbr           = NULL('');
+  cli_decimal_t                    days_sply                  = NULL('');
+end;
+
+
+
+type pharma_claim_t_1 =
+utf8 record
+  pharma_claim_txn_dtl_t_1  txn_dtl;
+  pharma_claim_adjud_t    adjud;
+  hash_key_t              cagm_hash;
+end;
+
+
+

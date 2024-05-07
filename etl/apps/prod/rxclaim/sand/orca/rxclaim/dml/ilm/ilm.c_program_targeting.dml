@@ -1,0 +1,45 @@
+type logical_ids_common_c_program_targeting_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cpp_program_targeting_sk = NULL("");
+  utf8 string("\x01", maximum_length=100) program_id = NULL("");
+  decimal("\x01",0) cpp_program_sk = NULL("");
+  utf8 string("\x01", maximum_length=32) program_targeting_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pt_member_name_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pt_member_dob_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pt_prev_targ_member_flag = NULL("");
+  utf8 string("\x01", maximum_length=100) pt_prev_targ_rule_name = NULL("");
+  decimal("\x01",0) pt_retarg_times_count = NULL("");
+  decimal("\x01",0) pt_cal_days = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) targ_prescriber_rule_flag = NULL("");
+  utf8 string("\x01", maximum_length=200) targ_prescriber_option = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) deid_prescriber_demog_flag = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_update_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_updated_by = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_create_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_created_by = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_member_name_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_member_dob_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_prev_targ_member_flag = NULL("");
+  utf8 string("\x01", maximum_length=100) mt_prev_targ_rule_name = NULL("");
+  decimal("\x01",0) mt_retarg_times_count = NULL("");
+  decimal("\x01",0) mt_cal_days = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_excl_member_addr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_excl_member_phone = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mt_member_addr_flag = NULL("");
+  utf8 string("\x01", maximum_length=60) gpi_list_id = NULL("");
+  utf8 string("\x01", maximum_length=200) evdnce_to_provider = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_c_program_targeting_t c_prog_trgt  /*@ BizName:'c prog trgt' */;
+end;

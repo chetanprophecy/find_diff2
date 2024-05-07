@@ -1,0 +1,369 @@
+############################################
+## Netezza Database Configuration Information
+##
+## You need to edit this file once, after you create
+## it. This file contains the information needed
+## to connect to your Netezza database.
+##
+## This file must always be named with the extension .dbc.
+##
+## Each line of this file must have the following form:
+## <tag>:  <value>
+##
+## Each tag must be at the start of a line and be
+## immediately followed by a colon (:). All white space
+## characters, such as blanks and tabs, are ignored.
+##
+## This file also contains information about assigning
+## and editing the values of tags.
+##
+## Pound signs at the beginning of a line denote
+## comments. The IDB database components ignore these
+## lines.
+############################################
+
+dbms: netezza
+## REQUIRED. Do not change the value of this tag from netezza.
+
+db_version: ${DB_RXCLAIM_DB_HPMS_VERSION}
+## REQUIRED. Enter the Netezza version number. For example: 
+##    1.2
+
+db_name: ${DB_RXCLAIM_HPMS_PAS_DB_NAME}
+#db_name_repo: netezza
+## OPTIONAL. Enter the name of the Netezza database
+## to which you want to connect.
+## If present, this value will override any database
+## specified in the ODBC data source.
+
+odbc_data_source_name: ${DB_RXCLAIM_N24_ODBC_HPMS_DSN}
+## REQUIRED data source name for the ODBC connection.
+## This should be the name of a data source that you have
+## configured in your .odbc.ini file on UNIX, or via the
+## ODBC Data Sources from the Control Panel on Microsoft
+## Windows.  If the name includes spaces, enclose the name
+## in double quotes.  For more information on configuring
+## an ODBC connection, consult the Netezza System
+## Administrator's Guide.
+
+## nz_odbc_ini_path: 
+## OPTIONAL. On Unix systems this can be used to set the location
+## of the initialization file used by the Netezza ODBC driver.
+## This value is used to set the value of the NZ_ODBC_INI_PATH
+## environment variable, which is assumed by the Netezza drivers
+## to point to a location containing an odbc.ini file.
+## The Netezza drivers look for ODBC configuration information in three
+## locations, in the following order:
+##   1) $NZ_ODBC_INI_PATH/odbc.ini
+##   2) $HOME/.odbc.ini
+##   3) /usr/local/etc/odbc.ini
+## Note that the name of second file starts with a period (.) character.
+
+db_home: ${DB_RXCLAIM_DB_HPMS_HOME}
+## REQUIRED. Enter the path to your Netezza installation.
+
+## client_directory: 
+## OPTIONAL.  Enter the name of the directory in your
+## Netezza installation that holds the ODBC libraries.
+## In most cases the directory is named "lib".
+
+db_nodes: ${DB_RXCLAIM_DB_HPMS_NODES}
+## REQUIRED. Enter the name of the machine where the Netezza ODBC driver
+## that you are using is located.
+
+## use_nzload_loader: 
+## OPTIONAL. If the value of this tag is set to 'false', The Netezza utility mode loader
+## for Output Table will use a remote external table to load the target table.  If the value
+## is not set, or is set to 'true', the loader will invoke the nzload utility program to
+## load the target table.
+
+## local_log_path: 
+## server_log_path: 
+## When you load in utility mode using a remote external table, Log information
+## and rejected records are written to a directory on the NPS server. In order for
+## the Output Table component to access the log and the rejected records, you can
+## either map this server location to the client computer using NFS or Samba, or you
+## can retrieve the files using scp. The client_log_path and server_log_path tags
+## control this behavior as follows:
+##  - If local_log_path is set, a mapped drive is assumed, and the directory on the
+##    NPS server specified by server_log_path must be mapped to the directory on
+##    the client machine specified by local_log_path.
+##  - If local_log_path is not set, files are retrieved by scp.  If server_log_path
+##    is set, files are written to, and retrieved from, that location on the server.
+##    If server_log_path is unset, /tmp is used by default.
+## When you use the nzload utility instead of external tables, the log and rejects
+## are not written on the NPS server and these tags should be commented out.
+
+## system_user: 
+## system_encrypted_password: 
+## If you are using external tables to load into Netezza (if 'use_nzload_loader:' is set to 'false')
+## then log and reject information is written to the NPS server, and must be retrieved using
+## an NFS-mounted drive or the scp file transfer utility over an ssh connection.  If you use scp,
+## the remote files are also removed from the remote server using ssh.
+## Uncomment the tags above to provide the user ID and passphrase used to connect to the 
+## database server. As with the 'user:' and 'encrypted_password:' tags below, you can use
+## environment variables to set the value of these tags.
+
+## default_catalog_case: 
+## Netezza databases are case-sensitive, but identifiers in SQL CREATE statements that are not quoted
+## will typically be forced to either lowercase or uppercase in the catalog tables. When the database interface
+## searches for objects in the database, unquoted names will be treated in the same fashion.  By default,
+## unquoted names are forced to lowercase.  If your database forces names to uppercase, uncomment this
+## tag and set it to 'uppercase'.  Names in quotes will not be altered.
+## 
+
+## session_startup_sql: 
+## When uncommented and set, the specified sql statement will be executed
+## at the time that connection is made to the database. 
+## The expected use for this tag is to execute statements
+## which set the session environment.
+## Use multiple instances of this tag to execute multiple sql statements.
+##
+## This is generally only useful for api mode operations.
+
+user: ${DB_RXCLAIM_N24_HPMS_USER}
+encrypted_password: ${DB_RXCLAIM_N24_HPMS_ENCRYPTED_PASSWORD}
+## If your database connection requires a username and
+## password, then uncomment the preceding tags and enter
+## the appropriate values.  If a password is to be specified, 
+## it should be encrypted with the "m_password" utility and 
+## the resulting string should be given as the value to the
+## "encrypted_password" tag.  Alternatively, the password
+## can be specified in plain text with the "password" tag.
+## If both "encrypted_password" and "password" tags are 
+## specified, "encrypted_password" is ignored.  You can use
+## environment variables instead of values. Use ${} to surround
+## each environment variable. For example:
+## user:      ${MY_USERNAME}
+## encrypted_password:  ${MY_ENCRYPTED_PASSWORD}
+
+case: lower
+## The default value lower causes the database package to
+## generate DML in lower case. If you want the database
+## package to generate DML in upper case, change the value to
+## upper. For example:
+## case: upper
+## If you want the database package to preserve the case
+## as it is returned from the database system, change the
+## value to mixed.  For example:
+## case: mixed
+
+## quote_column_names: 
+## When configured with only a table name in API mode, Output and Input Table
+## will generate INSERT and SELECT statements automatically.  By default, if
+## case is set to 'mixed', then column names within these statements will be
+## quoted.  Otherwise, column names are not quoted.  To force column name
+## quoting on or off, uncomment this tag and set the value to 'true' (to
+## enable quoting) or 'false' (to disable quoting).
+
+## column_delimiter: 
+## The default value is "\001".  If you want to change
+## the value, then uncomment the preceding tag and
+## set column_delimiter to the default value you want.
+
+default_date_format: YYYYMMDD
+## Use this default date format when generating DML for database types
+## which are equivalent to the DML DATE type. For example:
+## default_date_format: YYYYMMDD
+
+default_datetime_format: YYYYMMDD HH24:MI:SS
+## Use this default datetime format when generating DML for database types
+## which are equivalent to the DML DATETIME type. For example:
+## default_datetime_format: YYYYMMDD HH24:MI:SS
+
+generate_dml_with_nulls: true
+## If the value is true, the database automatically
+## generates DML NULL() for database columns which allow NULL.
+
+## default_null_value: 
+## When delimited DML is generated, fields which can be NULL 
+## are given a default value of the empty string ("").
+## Databases which distinguish between NULL and the empty 
+## string may require a specific NULL default value other than the
+## empty string when using utility loaders or unloaders.
+
+field_type_preference: delimited
+## Identifies the rules used when generating dml for the
+## database components.  For most of the supported databases
+## only 'delimited' is supported for the utility loaders.
+## The supported values for this tag are delimited, variable and fixed.
+
+## fixed_size_dml: false
+## If the value is false, the database generates delimited
+## types whenever possible. We recommend that this value
+## remain false and that you use delimited DML for database
+## interaction, in order to represent NULLs as zero-length
+## data.
+## This tag is deprecated - please use the field_type_preference tag instead.
+
+oldstyle_emptystring_as_null: false
+## Set to true for the behavior used in older releases.
+## If the value is true when writing delimited data to a table and
+## the dml definition of the field does not include a NULL value,
+## then zero-length strings will be written to the table as NULL as
+## if the dml field definition had included '= NULL("")'.
+## This tag is ignored if AB_COMPATIBILITY is set to a value earlier 
+## than 2.12.
+## It is recommended that oldstyle_emptystring_as_null be set
+## to false when the generate_dml_with_nulls tag is set to true.
+
+fully_qualify_dml: false
+## If the value is true record formats will be generated with fully
+## qualified dml.  I.e. all fields will have an explicit character set
+## and all integer fields will have an explicit endianness.
+
+dml_with_maximum_length: true
+## If the value is true, variable-length fields in record formats will be
+## generated with explicit maximum_length qualifiers based on size 
+## information obtained from the database for the corresponding
+## columns.
+
+interface: default
+##   WARNING: The 'interface' tag is only used with database
+##            components generated by GUI releases earlier
+##            than 1.8.25.  Beginning with GUI 1.8.25,
+##            use the interface parameter on each database
+##            component to choose an interface.
+## Each database usually provides multiple interfaces to perform
+## any one task.  For example, databases usually allow two ways
+## to load data: via a load utility, or transactional APIs.
+## The setting of this tag affects which interface will be used for all
+## IDB database components.  The default setting will typically
+## use the best performing interface for this database on a
+## component-by-component basis.
+## If you wish to have all components use the API interface
+## then set this value to api.  For example:
+## interface: api
+
+## client_version: 
+## If the version of the local client software used to
+## connect to the database is different from the
+## version of the database server version to which
+## you are connecting, then uncomment this tag and
+## enter the version of the local client software.
+
+## generate_floating_decimals: 
+## Set this tag to true to cause delimited dml generated for 
+## decimal columns to be in a floating decimal point
+## format, i.e. without an implicit or explicit specification
+## of scale.  This form was standard in Co>Operating
+## System releases prior to 2.15.  The default value is false.
+
+## environment: 
+## Uncomment this tag to set or propagate environment variables
+## to all database components. Use the following form:
+## environment:  <env-var>=<value>
+
+## max_data_size: 
+## Uncomment this tag to specify the maximum expected size of the data per field.
+## This can be used for varying length fields (like VARCHAR) which
+## need an internal maximum size to allocate (defaults to 100000).
+
+## rowset_size: 
+## The array size for receiving query result sets; defaults to 1000
+## for most operations.  Given a certain query result set, increasing
+## this size will decrease the number of fetches in which the results
+## will be brought to the client, cutting down on the number of
+## communication acts between the client and server.  This may lead
+## in noticeable performance improvements in the environments with
+## high network latency.
+
+## rows_per_commit: 
+## Uncomment this tag to specify a default for the commit size
+## of appropriate components.
+## We recommend leaving this commented out for most cases and
+## supplying the commit size via the component parameter.
+
+## commit_table: 
+## Uncomment this tag to set the name of the commit table to be used. This is 
+## required if rows_per_commit is non-zero.
+
+## use_32_bit_database_client: 
+## Uncomment this tag and to set to true if the Co>Operating System is a combined
+## 32- and 64-bits and the desired database vendor's client libraries are only 
+## available in 32-bits.
+
+## memory_buffer_lower_bound_bytes: 
+## If set, this tag controls the initial size (in bytes) 
+## of the memory buffer for the input flow of a database 
+## component such as Update Table, Join with DB or 
+## Multi Update Table that can batch its input records.
+## If not set the default value is 10000.  This tag will
+## be ignored if the configuration variable AB_IDB_MEMORY_BUFFER_LOWER_BOUND
+## is set.
+
+## memory_buffer_upper_bound_bytes: 
+## If set, this tag controls the maximum size (in bytes) of
+## the memory buffer for the input flow of a database component
+## such as Update Table, Join with DB or Multi Update Table 
+## that can batch its input records.  The default value of 
+## 100000000 byes is set very large so that usually all 
+## records will be held in memory.  When an input record does 
+## not fit into the buffer it will be stored in a temporary file.
+## This tag will be ignored if the configuration variable 
+## AB_IDB_MEMORY_BUFFER_UPPER_BOUND is set.
+
+## micrograph_transaction_style: 
+## This tag is applicable only to micrographs.  Uncomment this tag to set the 
+## name of the style of transaction that database components should employ
+## in micrographs.  If not set, the default value two-phase-commit will be
+## used but note that that value is only supported by dbms types that
+## support XA transactions.  Acceptable values for this tag are:
+##       two-phase-commit                 (the default)
+##       one+two-phase-commit             (requires the micrograph_commit_table
+##                                        tag to also be set)
+##       one-phase-commit-recoverable     (requires the micrograph_commit_table
+##                                        tag to also be set)
+##       one-phase-commit-nonrecoverable  (the micrograph_commit_table tag must
+##                                        not be set)
+
+## micrograph_commit_table: 
+## This tag is applicable only to micrographs.  Uncomment this tag to set 
+## the name of the commit table to be used in micrographs that are performing 
+## one-phase-commit-recoverable transactions.
+
+## array_interface_buffer_size: 
+## Uncomment this tag to set the array size while binding input parameters
+## in prepared statements; defaults to 4096.  This is only used by Output Table
+## and (when possible) Update Table for databases that support api-level
+## batch loads and updates.
+
+## catalog_query_unconvertible_replacement_string: 
+## If set, the value of this tag is used in an internal call to the
+## string_convert_explicit dml function when it is invoked on the results
+## of calls that database components make to the database catalog.
+## Its default value is "#" (without the quotes).
+
+## catalog_sql_corrupt_replacement_string: 
+## If set, the value of this tag is used in an internal call to the
+## string_cleanse dml function when it is invoked on the results of
+## calls that database components make to the database catalog.  Its
+## default value is "!" (without the quotes).
+
+## skip_modify_select_for_describe: 
+## If not set to 'true', the code may modify the supplied SELECT statements when finding
+## the result set metadata, in order to avoid the real selecting fetching data,
+## which some database client libraries do in preparing a SQL statement
+
+## add_false_predicate_to_select_for_describe: 
+## If set to 'true', SELECT statements used internally for finding information about table
+## columns will be modified by appending 'WHERE 1=0', in order to avoid the real selecting
+## and fetching data, which some database client libraries do in preparing a SQL statement,
+## or to pacify database monitoring software that doesn't like unqualified SELECTs from
+## large tables.
+
+## generate_select_from_dml: 
+## If not set or set to true, when api-mode Input Table has a table name
+## specified, the generated select statement will be derived from the component's
+## read port dml rather than a simple "select * from <table name>".
+##
+## Parallel unload from a partitioned db2 database (dbms type db2eee) is
+## a special case.   If this tag is not explicitly set to true then the default
+## behavior for a parallel db2eee unload is false:  this is because generating 
+## the select in that case will require an additional (short-lived) connection 
+## to the database.
+
+
+
+
+client_directory: lib64

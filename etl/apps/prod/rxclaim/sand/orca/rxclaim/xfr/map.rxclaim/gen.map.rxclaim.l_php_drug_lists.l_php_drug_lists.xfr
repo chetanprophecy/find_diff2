@@ -1,0 +1,110 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a82c8d3_3354_0
+    BizHidden:true
+@*/
+/*   lookup d_gpi   */
+out0::bzt_2_6c54cc0a_5a82c8d3_3354_0(in0)=
+begin
+let record
+  decimal("\x01",0) gpi_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_gpi",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a82c8d3_3354_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_php_drg.gpi_id,[passthrough],in0.GPI]
+  [out0.l_php_drg.gpi_sk,[transform],in0.GPI,
+     'lookup("d_gpi").gpi_sk']
+  [out0.l_php_drg.php_drg_lst_sk,[transform],]
+  [out0.l_php_drg.list_id,[passthrough],in0.LIST_ID]
+  [out0.l_php_drg.custom1_val,[passthrough],in0.CUSTOM1]
+  [out0.l_php_drg.label_nm,[passthrough],in0.LABEL_NAME]
+  [out0.l_php_drg.ndc_id,[passthrough],in0.NDC]
+  [out0.l_php_drg.app_pid,[passthrough],in0.APP_PID]
+  [out0.l_php_drg.custom2_val,[passthrough],in0.CUSTOM2]
+  [out0.l_php_drg.generic_name,[passthrough],in0.GENERIC_NAME]
+  [out0.l_php_drg.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_php_drg.gpi_id,'l_php_drg.gpi_id',1,0]
+     [out0.l_php_drg.gpi_sk,'l_php_drg.gpi_sk',1,0]
+     [out0.l_php_drg.php_drg_lst_sk,'l_php_drg.php_drg_lst_sk',1,0]
+     [out0.l_php_drg.list_id,'l_php_drg.list_id',1,0]
+     [out0.l_php_drg.custom1_val,'l_php_drg.custom1_val',1,0]
+     [out0.l_php_drg.label_nm,'l_php_drg.label_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_php_drg.ndc_id,'l_php_drg.ndc_id',1,0]
+     [out0.l_php_drg.app_pid,'l_php_drg.app_pid',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_php_drg.custom2_val,'l_php_drg.custom2_val',1,0]
+     [out0.l_php_drg.generic_name,'l_php_drg.generic_name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_php_drg.src_env_sk,'l_php_drg.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.LIST_ID,'LIST_ID',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.NDC,'NDC',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.APP_PID,'APP_PID',1,1]
+     ['lookup("d_gpi").gpi_sk','gpi_sk',1,1]
+     [in0.CUSTOM2,'CUSTOM2',1,1]
+     [in0.GENERIC_NAME,'GENERIC_NAME',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.CUSTOM1,'CUSTOM1',1,1]
+     [in0.LABEL_NAME,'LABEL_NAME',1,1]
+     [in0.GPI,'GPI',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_php_drg_php_drg_lst_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_php_drg_app_pid = fail_if_error(in0.APP_PID);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_php_drg_list_id = fail_if_error(in0.LIST_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=14) l_php_drg_gpi_id = fail_if_error(in0.GPI);
+let decimal("\x01",0) l_php_drg_gpi_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=70) l_php_drg_generic_name = fail_if_error(in0.GENERIC_NAME);
+let string("\x01",charset="iso-8859-15", maximum_length=11) l_php_drg_ndc_id = fail_if_error(in0.NDC);
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_php_drg_label_nm = fail_if_error(in0.LABEL_NAME);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_php_drg_custom1_val = fail_if_error(in0.CUSTOM1);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_php_drg_custom2_val = fail_if_error(in0.CUSTOM2);
+let decimal("\x01",0) l_php_drg_src_env_sk = 800;
+
+
+
+/*   Default value   */
+l_php_drg_gpi_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_5a82c8d3_3354_0(in0.GPI).gpi_sk,-1));
+
+  out0.l_php_drg.php_drg_lst_sk::l_php_drg_php_drg_lst_sk;
+  out0.l_php_drg.app_pid::l_php_drg_app_pid;
+  out0.l_php_drg.list_id::l_php_drg_list_id;
+  out0.l_php_drg.gpi_id::l_php_drg_gpi_id;
+  out0.l_php_drg.gpi_sk::l_php_drg_gpi_sk;
+  out0.l_php_drg.generic_name::l_php_drg_generic_name;
+  out0.l_php_drg.ndc_id::l_php_drg_ndc_id;
+  out0.l_php_drg.label_nm::l_php_drg_label_nm;
+  out0.l_php_drg.custom1_val::l_php_drg_custom1_val;
+  out0.l_php_drg.custom2_val::l_php_drg_custom2_val;
+  out0.l_php_drg.src_env_sk::l_php_drg_src_env_sk;
+  out0.*::in0.*;
+
+end;

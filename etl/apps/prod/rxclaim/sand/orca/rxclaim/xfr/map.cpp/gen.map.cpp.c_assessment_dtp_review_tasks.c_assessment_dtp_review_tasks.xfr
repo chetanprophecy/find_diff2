@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58de5776_16e_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_a_d_r_t.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_a_d_r_t.cpp_member_assessment_sk,[transform],in0.sequence_num,
+     in0.member_assessment_id,
+     'lookup("c_member_assessment").dxf_sk']
+  [out0.c_a_d_r_t.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_a_d_r_t.src_env_sk,[transform],]
+  [out0.c_a_d_r_t.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_a_d_r_t.cpp_assessment_dtp_review_task_sk,[transform],]
+  [out0.c_a_d_r_t.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_a_d_r_t.cpp_create_ts,'c_a_d_r_t.cpp_create_ts',1,0]
+     [out0.c_a_d_r_t.case_id,'c_a_d_r_t.case_id',1,0]
+     [out0.c_a_d_r_t.tasks_to_be_performed,'c_a_d_r_t.tasks_to_be_performed',1,0]
+     [out0.c_a_d_r_t.member_assessment_id,'c_a_d_r_t.member_assessment_id',1,0]
+     [out0.c_a_d_r_t.cpp_member_assessment_sk,'c_a_d_r_t.cpp_member_assessment_sk',1,0]
+     [out0.c_a_d_r_t.reported_dt,'c_a_d_r_t.reported_dt',1,0]
+     [out0.c_a_d_r_t.cpp_created_by,'c_a_d_r_t.cpp_created_by',1,0]
+     [out0.c_a_d_r_t.sequence_num,'c_a_d_r_t.sequence_num',1,0]
+     [out0.c_a_d_r_t.src_env_sk,'c_a_d_r_t.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_a_d_r_t.cpp_updated_by,'c_a_d_r_t.cpp_updated_by',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_a_d_r_t.cpp_assessment_dtp_review_task_sk,'c_a_d_r_t.cpp_assessment_dtp_review_task_sk',1,0]
+     [out0.c_a_d_r_t.cpp_update_ts,'c_a_d_r_t.cpp_update_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.tasks_to_be_performed,'tasks_to_be_performed',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.member_assessment_id,'member_assessment_id',2,2]
+     ['lookup("c_member_assessment").dxf_sk','dxf_sk',1,1]
+     [in0.reported_dt,'reported_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_a_d_r_t_cpp_assessment_dtp_review_task_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_a_d_r_t_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let decimal("\x01",0) c_a_d_r_t_cpp_member_assessment_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_a_d_r_t_sequence_num = fail_if_error(in0.sequence_num);
+let utf8 string("\x01", maximum_length=60) c_a_d_r_t_case_id = fail_if_error(in0.case_id);
+let utf8 string("\x01", maximum_length=8192) c_a_d_r_t_tasks_to_be_performed = fail_if_error(in0.tasks_to_be_performed);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_a_d_r_t_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_a_d_r_t_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_a_d_r_t_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_a_d_r_t_cpp_created_by = fail_if_error(in0.created_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_a_d_r_t_reported_dt = fail_if_error(in0.reported_dt);
+let decimal("\x01",0) c_a_d_r_t_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_a_d_r_t_cpp_member_assessment_sk=fail_if_error(first_defined(lookup("c_member_assessment",in0.member_assessment_id,in0.sequence_num).dxf_sk,-1));
+
+  out0.c_a_d_r_t.cpp_assessment_dtp_review_task_sk::c_a_d_r_t_cpp_assessment_dtp_review_task_sk;
+  out0.c_a_d_r_t.member_assessment_id::c_a_d_r_t_member_assessment_id;
+  out0.c_a_d_r_t.cpp_member_assessment_sk::c_a_d_r_t_cpp_member_assessment_sk;
+  out0.c_a_d_r_t.sequence_num::c_a_d_r_t_sequence_num;
+  out0.c_a_d_r_t.case_id::c_a_d_r_t_case_id;
+  out0.c_a_d_r_t.tasks_to_be_performed::c_a_d_r_t_tasks_to_be_performed;
+  out0.c_a_d_r_t.cpp_update_ts::c_a_d_r_t_cpp_update_ts;
+  out0.c_a_d_r_t.cpp_updated_by::c_a_d_r_t_cpp_updated_by;
+  out0.c_a_d_r_t.cpp_create_ts::c_a_d_r_t_cpp_create_ts;
+  out0.c_a_d_r_t.cpp_created_by::c_a_d_r_t_cpp_created_by;
+  out0.c_a_d_r_t.reported_dt::c_a_d_r_t_reported_dt;
+  out0.c_a_d_r_t.src_env_sk::c_a_d_r_t_src_env_sk;
+  out0.*::in0.*;
+
+end;

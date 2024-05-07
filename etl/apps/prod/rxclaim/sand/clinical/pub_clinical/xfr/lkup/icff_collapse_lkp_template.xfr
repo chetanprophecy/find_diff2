@@ -1,0 +1,59 @@
+/******************************************************************************************************************************************
+ * enrichments -> $PUB_CLINICAL_XFR/LKUP/icff_collapse_lkp_template.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/01/12  Chinmay Sahoo           Initial version
+ ******************************************************************************************************************************************/
+ 
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+constant cli_string_t  ICFF_PATH parameter;
+constant cli_integer_t GEN_CNT   parameter;
+
+
+type pharma_claim_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  pharma_claim_t              RecordFormat()      = allocate_with_nulls(); 
+  string('')             key()                    = {cagm_hash; txn_dtl.filled_dt}; 
+  int keep_on_disk()                              = 1;
+  int block_compressed()                          = 1;
+  int cache()                                     = 1;
+  int load_once()                                 = 1;
+  int only_last_key_instance()                    = 0;
+  int direct_addressed()                          = 0;
+end;
+
+type med_claim_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  med_claim_icff_t              RecordFormat()         = allocate_with_nulls(); 
+  string('')             key()                    = {ptnt_id; med_claim.txn_dtl.svc_start_dt};
+  int keep_on_disk()                              = 1;
+  int block_compressed()                          = 1;
+  int cache()                                     = 1;
+  int load_once()                                 = 1;
+  int only_last_key_instance()                    = 0;
+  int direct_addressed()                          = 0;
+end;
+
+
+out::get_icff_list_pharma_claim_icff(cli_string_t file_nm)inline =
+begin
+  let cli_string_t         lkup_datapath     = (ICFF_PATH + '/' + file_nm);
+  let cli_string_t         lkup_indexpath    = re_replace(lkup_datapath, '\\.dat.gz', '.idx');
+  let pharma_claim_lukp_t  lkp_phrmcy_claim  = lookup_load(this_partition_path(lkup_datapath),this_partition_path(lkup_indexpath),GEN_CNT);
+  out   :: file_nm;
+end;
+
+out::get_icff_list_med_claim_icff(cli_string_t file_nm)inline =
+begin
+  let cli_string_t         lkup_datapath     = (ICFF_PATH + '/' + file_nm);
+  let cli_string_t         lkup_indexpath    = re_replace(lkup_datapath, '\\.dat.gz', '.idx');
+  let med_claim_lukp_t     lkp_med_claim     = lookup_load(this_partition_path(lkup_datapath),this_partition_path(lkup_indexpath),GEN_CNT);
+  out   :: file_nm;
+end;

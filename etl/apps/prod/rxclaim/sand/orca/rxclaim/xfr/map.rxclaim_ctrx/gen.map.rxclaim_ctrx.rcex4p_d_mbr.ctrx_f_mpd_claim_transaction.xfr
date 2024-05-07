@@ -1,0 +1,1581 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_14_6c54cc0a_58524748_2b0e_0
+    BizHidden:true
+@*/
+/*   lookup rcmsip_lkp   */
+out0::bzt_14_6c54cc0a_58524748_2b0e_0(in0,in1,in2,in3)=
+begin
+let record
+  string("\x01", maximum_length=20) mbr_id;
+  string("\x01", maximum_length=30) carrier_id;
+  string("\x01", maximum_length=40) account_id;
+  string("\x01", maximum_length=30) employer_group_id;
+  decimal("\x01",0) msi_seq_nbr;
+  string("\x01", maximum_length=1) msi_stat_cd = NULL("");
+  date("YYYYMMDD")("\x01") msi_frm_dt = NULL(""), msi_thru_dt = NULL("");
+  string("\x01", maximum_length=2) msi_suppl_id_type = NULL("");
+  string("\x01", maximum_length=20) msi_suppl_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rcmsip_lkp",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_13_6c54cc0a_58524748_2b0e_0
+    BizHidden:true
+@*/
+/*   lookup l_days_of_supply_lkp   */
+out0::bzt_13_6c54cc0a_58524748_2b0e_0(in0)=
+begin
+let record
+  decimal("\x01",0) days_of_supply_sk = NULL(""), days_of_supply_min = NULL(""), days_of_supply_max = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_days_of_supply_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_15_6c54cc0a_58524748_2b0e_0
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_alias_lkp   */
+out0::bzt_15_6c54cc0a_58524748_2b0e_0(in0,in1,in2,in3)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias_lkp",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_12_6c54cc0a_58524748_2b0e_0
+    BizHidden:true
+@*/
+/*   lookup rcexbp_lkp   */
+out0::bzt_12_6c54cc0a_58524748_2b0e_0(in0,in1,in2,in3)=
+begin
+let record
+  decimal("\x01", maximum_length=18) acp2nb;
+  decimal("\x01", maximum_length=6) acoinb;
+  string("\x01", maximum_length=1) acs6st;
+  decimal("\x01".2, maximum_length=15) acs9qu = NULL(""), actaqu = NULL(""), actbqu = NULL(""), actcqu = NULL(""), actequ = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rcexbp_lkp",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.res_cd.residence_cd,[passthrough],in0.amaxod]
+  [out0.medicareprty.amn_pbr_qlfr_cd,[passthrough],in0.amc3ap]
+  [out0.medicareprty.true_disc_elig_amt,[passthrough],in0.amambj]
+  [out0.medicareprty.dispensing_stat_cd,[passthrough],in0.amj3cj]
+  [out0.medicareprty.clt_ingred_cost_paid,[transform],in0.src_env_sk,
+     in0.amp2nb,
+     in0.amzsst,
+     in0.rxt_src_envrt_id,
+     in0.ams6nb,
+     in0.amv7hy,
+     'lookup("rcexbp_lkp").acp2nb',
+     'lookup("rcexbp_lkp").acs9qu']
+  [out0.medicareprty.refill_nbr,[passthrough],in0.amulcd]
+  [out0.d_mbr.employer_group_id,[passthrough],in0.ams8cd]
+  [out0.medicareprty.true_oop_accum_amt,[transform],in0.ambjqu,
+     in0.amzsst]
+  [out0.medicareprty.amn_pat_residence_cd,[passthrough],in0.amc5ap]
+  [out0.medicareprty.clt_due_amt,[transform],in0.src_env_sk,
+     in0.amp2nb,
+     in0.amzsst,
+     in0.rxt_src_envrt_id,
+     in0.ams6nb,
+     'lookup("rcexbp_lkp").acp2nb',
+     'lookup("rcexbp_lkp").actequ']
+  [out0.medicareprty.tot_drg_cst_acc_gross_amt,[transform],in0.ambiqu,
+     in0.amzsst]
+  [out0.rx_org.rx_origin_cd,[passthrough],in0.amk6st]
+  [out0.medicareprty.svc_claim_ind,[passthrough],in0.ami9id]
+  [out0.medicareprty.amt_twd_plan_cat_amt,[transform],in0.amn4hy,
+     in0.amzsst]
+  [out0.medicareprty.egwp_troop_sched_id,[passthrough],in0.amzgbj]
+  [out0.medicareprty.amt_twd_plan_gap_amt,[transform],in0.amn3hy,
+     in0.amzsst]
+  [out0.medicareprty.dual_amt,[passthrough],in0.amqxqu]
+  [out0.medicareprty.egwp_cg_drg_spnd_amt,[passthrough],in0.amzbbj]
+  [out0.d_carr_acct.account_id,[passthrough],in0.ams7cd]
+  [out0.medicareprty.carrier_acct_sk,[transform],]
+  [out0.medicareprty.tc4_plan_cd,[passthrough],in0.amiehe]
+  [out0.medicareprty.clt_dispensing_fee,[transform],in0.src_env_sk,
+     in0.amp2nb,
+     in0.amzsst,
+     in0.rxt_src_envrt_id,
+     in0.amv8hy,
+     in0.ams6nb,
+     'lookup("rcexbp_lkp").acp2nb',
+     'lookup("rcexbp_lkp").actaqu']
+  [out0.medicareprty.lics_drg_spnd_ded_amt,[passthrough],in0.amhuik]
+  [out0.medicareprty.tc4_account_id,[passthrough],in0.amifhe]
+  [out0.medicareprty.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.medicareprty.tc4_employer_group_id,[passthrough],in0.amighe]
+  [out0.clm_orgn_cd.rx_origin_cd,[passthrough],in0.amkwst]
+  [out0.medicareprty.npp_amt,[transform],in0.amnohy,
+     in0.amzsst]
+  [out0.medicareprty.subrogation_amt,[transform],in0.amenhz,
+     in0.amzsst]
+  [out0.medicareprty.mbr_sk,[transform],]
+  [out0.medicareprty.prod_sk,[transform],]
+  [out0.medicareprty.prod_key,[passthrough],in0.amtcn2]
+  [out0.medicareprty.claim_stat_sk,[transform],]
+  [out0.medicareprty.egwp_cat_mbr_pay_amt,[passthrough],in0.amzebj]
+  [out0.medicareprty.contract_pbp_sk,[transform],]
+  [out0.medicareprty.pdp_seq_no,[passthrough],in0.amr5hs]
+  [out0.medicareprty.residence_cd_sk,[transform],]
+  [out0.medicareprty.claim_cntr,[transform],in0.amzsst]
+  [out0.medicareprty.rbl_oth_pyr_recog_amt,[transform],in0.amvkp1,
+     in0.amzsst]
+  [out0.medicareprty.shortcycle_prov_qlfr_cd,[passthrough],in0.amxfam]
+  [out0.medicareprty.tc4_plan_eff_dt,[transform],in0.amurhg]
+  [out0.medicareprty.drg_cov_stat_cd,[passthrough],in0.amo6h9]
+  [out0.medicareprty.prod_sel_cd,[passthrough],in0.amk3st]
+  [out0.medicareprty.ded_lvl_troop_amt,[passthrough],in0.amoahy]
+  [out0.medicareprty.medicaid_subrogation_ind,[passthrough],in0.amhgak]
+  [out0.medicareprty.drg_cov_stat_sched_id,[passthrough],in0.amwlhc]
+  [out0.medicareprty.egwp_plan_cat_amt,[passthrough],in0.amzlbj]
+  [out0.medicareprty.egwp_dedlvl_drg_spnd_amt,[passthrough],in0.amzibj]
+  [out0.final_pln.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_carrier.carrier_id,[passthrough],in0.ams6cd]
+  [out0.medicareprty.egwp_amt_twd_plan_ded_amt,[passthrough],in0.amznbj]
+  [out0.medicareprty.plan_benefit_pkg_cd,[passthrough],in0.amwjhc]
+  [out0.medicareprty.amendment_ind,[passthrough],in0.amqrap]
+  [out0.medicareprty.end_benefit_phase_sk,[transform],]
+  [out0.medicareprty.cag_sk,[transform],]
+  [out0.medicareprty.claim_seq_nbr,[transform],in0.ams6nb]
+  [out0.medicareprty.lics_sched_step_no,[passthrough],in0.ambwht]
+  [out0.medicareprty.days_of_supply_sk,[transform],in0.amimnb,
+     'lookup("l_days_of_supply_lkp").days_of_supply_sk']
+  [out0.medicareprty.adjud_beign_timestamp,[passthrough],in0.ambqir]
+  [out0.medicareprty.src_chg_timestamp,[transform],in0.amabtm,
+     in0.ambmdt]
+  [out0.medicareprty.gap_brnd_disc_amt,[passthrough],in0.amcvqu]
+  [out0.medicareprty.src_add_user_nm,[passthrough],in0.amakvn]
+  [out0.medicareprty.mbr_hicn_id,[transform],in0.account_id,
+     in0.ams8cd,
+     in0.employer_group_id,
+     in0.ams5cd,
+     in0.ams7cd,
+     in0.carrier_id,
+     in0.mbr_hic_cd,
+     in0.mbr_id,
+     in0.ams6cd,
+     'lookup("rcmsip_lkp").msi_suppl_id']
+  [out0.medicareprty.src_chg_dt,[transform],in0.ambmdt]
+  [out0.medicareprty.copay_catgry_cd,[passthrough],in0.amrmh9]
+  [out0.medicareprty.phr_sales_tax_paid,[transform],in0.amjdhz,
+     in0.amzsst]
+  [out0.medicareprty.sbm_dt,[transform],in0.ame1hk]
+  [out0.medicareprty.amn_pbr_id,[passthrough],in0.amqihq]
+  [out0.medicareprty.gdcb_amt,[transform],in0.amnnhy,
+     in0.amzsst]
+  [out0.medicareprty.formulary_cd,[passthrough],in0.amc8ai]
+  [out0.medicareprty.prior_troop_amt,[passthrough],in0.amxghx]
+  [out0.cntrct_pbp.sequence_no,[transform],]
+  [out0.medicareprty.egwp_troop_sched_step_no,[passthrough],in0.amzhbj]
+  [out0.medicareprty.oth_pyr_paid_amt,[transform],in0.amdspr,
+     in0.amzsst]
+  [out0.medicareprty.phr_patient_pay_amt,[transform],in0.amwbhy,
+     in0.amzsst]
+  [out0.medicareprty.ntwk_sk,[transform],]
+  [out0.cntrct_pbp.plan_cd,[passthrough],in0.amiehe]
+  [out0.medicareprty.shortcycle_claim_qlfr_cd,[passthrough],in0.amxham]
+  [out0.d_mbr.mbr_id,[passthrough],in0.ams5cd]
+  [out0.medicareprty.reprocess_claim_seq_no,[passthrough],in0.amrhht]
+  [out0.d_carr_acct.carrier_id,[passthrough],in0.ams6cd]
+  [out0.medicareprty.cpp_amt,[transform],in0.amxfhx,
+     in0.amzsst]
+  [out0.medicareprty.mbr_amt_twd_gap_amt,[transform],in0.amokhy,
+     in0.amzsst]
+  [out0.cntrct_pbp.employer_group_id,[passthrough],in0.amighe]
+  [out0.medicareprty.subsidy_lvl_nbr,[passthrough],in0.amychc]
+  [out0.medicareprty.plan_troop_sched_id,[passthrough],in0.amwxhe]
+  [out0.medicareprty.cat_cov_cd,[passthrough],in0.amnbia]
+  [out0.medicareprty.rx_nbr,[passthrough],in0.amukcd]
+  [out0.medicareprty.subm_clfctn_cd,[passthrough],in0.amk7st]
+  [out0.medicareprty.egwp_icl_drg_spnd_amt,[passthrough],in0.amvtbj]
+  [out0.medicareprty.prod_claim_prod_id,[passthrough],in0.amquhq]
+  [out0.medicareprty.prod_claim_seq_no,[passthrough],in0.amsdht]
+  [out0.final_pln.pln_cd,[passthrough],in0.amtjcd]
+  [out0.medicareprty.dcs_daily_prorate_no,[passthrough],in0.amp7ap]
+  [out0.medicareprty.mbr_amt_twd_init_cov_amt,[transform],in0.amomhy,
+     in0.amzsst]
+  [out0.medicareprty.prod_id,[passthrough],in0.amric4]
+  [out0.medicareprty.phr_vacc_adm_fee_amt,[transform],in0.amjihz,
+     in0.amzsst]
+  [out0.medicareprty.amt_twd_plan_ded_amt,[transform],in0.amnjhy,
+     in0.amzsst]
+  [out0.medicareprty.egwp_ded_mbr_pay_amt,[passthrough],in0.amvwbj]
+  [out0.medicareprty.brand_generic_cd,[passthrough],in0.amc4ai]
+  [out0.medicareprty.created_by_version_nbr,[passthrough],in0.ampdiu]
+  [out0.medicareprty.sbm_dt_sk,[transform],]
+  [out0.medicareprty.orig_claim_rcvd_dt,[transform],in0.amaqce]
+  [out0.medicareprty.compound_sk,[transform],]
+  [out0.d_cag.employer_group_id,[passthrough],in0.ams8cd]
+  [out0.medicareprty.moop_mbr_pay_amt,[passthrough],in0.amulbj]
+  [out0.medicareprty.lics_troop_nbr_steps_no,[passthrough],in0.ambxht]
+  [out0.medicareprty.medicare_plan_type_cd,[passthrough],in0.amxli1]
+  [out0.medicareprty.filled_dt_sk,[transform],]
+  [out0.medicareprty.qual_serv_prov_id,[passthrough],in0.amiicj]
+  [out0.medicareprty.plan_pay_init_cov_lvl_amt,[transform],in0.amnhhy,
+     in0.amzsst]
+  [out0.medicareprty.subm_yr,[transform],in0.ame1hk]
+  [out0.medicareprty.prod_claim_gpi_nbr,[passthrough],in0.amqvhq]
+  [out0.medicareprty.tier_ind,[passthrough],in0.amc7ai]
+  [out0.medicareprty.egwp_plan_pay_icl_amt,[passthrough],in0.amzqbj]
+  [out0.medicareprty.final_pln_sk,[transform],]
+  [out0.medicareprty.begin_benefit_phase_sk,[transform],]
+  [out0.d_sbm_dt.cal_day_dt,[transform],in0.ame1hk]
+  [out0.pharmacy.phr_id,[passthrough],in0.amujcd]
+  [out0.medicareprty.pds_rebate_est_amt,[passthrough],in0.amwfhy]
+  [out0.medicareprty.subm_qtr,[transform],in0.ame1hk]
+  [out0.medicareprty.gap_disc_pln_ovrd_cd,[passthrough],in0.amc9ai]
+  [out0.medicareprty.drg_spnd_twd_cat_amt,[transform],in0.amwdhy,
+     in0.amzsst]
+  [out0.medicareprty.rej_reason3,[passthrough],in0.ame6hn]
+  [out0.medicareprty.egwp_icl_mbr_pay_amt,[passthrough],in0.amvsbj]
+  [out0.d_mbr.account_id,[passthrough],in0.ams7cd]
+  [out0.medicareprty.drg_spnd_twd_gap_amt,[transform],in0.amwchy,
+     in0.amzsst]
+  [out0.medicareprty.lics_troop_sched_id,[passthrough],in0.amw2he]
+  [out0.medicareprty.egwp_ded_drg_spnd_amt,[passthrough],in0.amvxbj]
+  [out0.medicareprty.claim_origination_code_sk,[transform],]
+  [out0.medicareprty.egwp_dedlvl_troop_amt,[passthrough],in0.amzobj]
+  [out0.medicareprty.compound_cd,[passthrough],in0.amk2st]
+  [out0.medicareprty.pbr_sk,[transform],in0.amtccd,
+     in0.amilcj,
+     in0.src_env_sk,
+     in0.amzsst,
+     in0.rxt_src_envrt_id,
+     'lookup("d_prescriber_alias_lkp").pbr_sk']
+  [out0.medicareprty.subm_oth_covrg_cd,[passthrough],in0.amk0st]
+  [out0.medicareprty.gnrc_ind_sk,[transform],]
+  [out0.medicareprty.create_update_by_ind,[passthrough],in0.amgiic]
+  [out0.d_mbr.carrier_id,[passthrough],in0.ams6cd]
+  [out0.medicareprty.phr_dispensing_fee,[transform],in0.amjhhz,
+     in0.amzsst]
+  [out0.final_pln.pln_eff_dt,[transform],in0.amasda]
+  [out0.medicareprty.gdca_amt,[transform],in0.amnmhy,
+     in0.amzsst]
+  [out0.medicareprty.lics_amt,[transform],in0.amnfhy,
+     in0.amzsst]
+  [out0.medicareprty.claim_nbr,[passthrough],in0.amp2nb]
+  [out0.bgn_bnft_phase.benefit_phase_cd,[passthrough],in0.amc5ai]
+  [out0.medicareprty.out_of_netwk_cd,[passthrough],in0.amlcie]
+  [out0.medicareprty.tc3_srv_prov_id,[passthrough],in0.amythe]
+  [out0.medicareprty.phr_ingred_cost_paid,[transform],in0.amjghz,
+     in0.amzsst]
+  [out0.medicareprty.contract_id,[passthrough],in0.amwihc]
+  [out0.medicareprty.src_chg_user_nm,[passthrough],in0.amadvn]
+  [out0.medicareprty.src_add_dt,[transform],in0.amc2dt]
+  [out0.medicareprty.rej_reason2,[passthrough],in0.ame5hn]
+  [out0.medicareprty.src_add_timestamp,[transform],in0.amadtm,
+     in0.amc2dt]
+  [out0.medicareprty.cob_ind,[passthrough],in0.amsoc4]
+  [out0.medicareprty.amn_contract_id,[passthrough],in0.amqjhq]
+  [out0.medicareprty.ded_lvl_drg_spnd_amt,[passthrough],in0.amnghy]
+  [out0.medicareprty.mbr_amt_twd_cat_amt,[transform],in0.amolhy,
+     in0.amzsst]
+  [out0.medicareprty.subm_yr_mnth,[transform],in0.ame1hk]
+  [out0.medicareprty.prod_claim_prod_key,[passthrough],in0.amddap]
+  [out0.medicareprty.carrier_sk,[transform],]
+  [out0.cntrct_pbp.account_id,[passthrough],in0.amifhe]
+  [out0.medicareprty.amn_rx_origin_cd,[passthrough],in0.amc4ap]
+  [out0.medicareprty.egwp_plan_icl_amt,[passthrough],in0.amzpbj]
+  [out0.medicareprty.claim_stat_id,[passthrough],in0.amzsst]
+  [out0.medicareprty.gpi_sk,[transform],]
+  [out0.medicareprty.clt_vacc_adm_fee_amt,[transform],in0.amwghy,
+     in0.amzsst]
+  [out0.medicareprty.egwp_cat_drg_spnd_amt,[passthrough],in0.amzfbj]
+  [out0.medicareprty.phr_oth_pyr_recog_amt,[transform],in0.amjjhz,
+     in0.amzsst]
+  [out0.medicareprty.moop_drg_spnd_amt,[passthrough],in0.amumbj]
+  [out0.medicareprty.tc3_rx_origin_cd,[passthrough],in0.amk6st]
+  [out0.medicareprty.clt_patient_pay_amt,[transform],in0.amwahy,
+     in0.amzsst]
+  [out0.medicareprty.subm_mnth,[transform],in0.ame1hk]
+  [out0.medicareprty.tc3_srv_prov_id_qlfr_cd,[passthrough],in0.amn5ia]
+  [out0.medicareprty.drg_spnd_amt,[transform],in0.amnphy,
+     in0.amzsst]
+  [out0.medicareprty.client_patient_pay_amt,[transform],in0.amejhz,
+     in0.amzsst]
+  [out0.medicareprty.rej_reason1,[passthrough],in0.ame4hn]
+  [out0.d_cag.carrier_id,[passthrough],in0.ams6cd]
+  [out0.end_bnft_phase.benefit_phase_cd,[passthrough],in0.amc6ai]
+  [out0.gncr_in.gnrc_mdspn_ind,[passthrough],in0.amlrst]
+  [out0.medicareprty.prod_claim_no,[passthrough],in0.amsaht]
+  [out0.medicareprty.plan_cat_amt,[passthrough],in0.amnihy]
+  [out0.medicareprty.shortcycle_prod_qlfr_cd,[passthrough],in0.amxgam]
+  [out0.medicareprty.drg_spnd_twd_init_cov_amt,[transform],in0.amwehy,
+     in0.amzsst]
+  [out0.medicareprty.clt_sales_tax_paid,[transform],in0.src_env_sk,
+     in0.amp2nb,
+     in0.amzsst,
+     in0.amv9hy,
+     in0.rxt_src_envrt_id,
+     in0.ams6nb,
+     'lookup("rcexbp_lkp").acp2nb',
+     'lookup("rcexbp_lkp").actbqu',
+     'lookup("rcexbp_lkp").actcqu']
+  [out0.medicareprty.egwp_amt_twd_plan_cat_amt,[passthrough],in0.amzmbj]
+  [out0.medicareprty.troop_sched_id,[passthrough],in0.amwkhc]
+  [out0.d_cag.account_id,[passthrough],in0.ams7cd]
+  [out0.medicareprty.tc3_phr_svc_type_cd,[passthrough],in0.amavod]
+  [out0.medicareprty.egwp_amt_twd_plan_gap_amt,[passthrough],in0.amzkbj]
+  [out0.medicareprty.drg_qty,[passthrough],in0.amionb]
+  [out0.medicareprty.plan_init_cov_amt,[passthrough],in0.amn5hy]
+  [out0.gpi.gpi_id,[passthrough],in0.ampecd]
+  [out0.medicareprty.tc4_carrier_id,[passthrough],in0.amidhe]
+  [out0.medicareprty.report_gap_disc_amt,[transform],in0.ambkqu,
+     in0.amzsst]
+  [out0.clm_stat.claim_stat_id,[passthrough],in0.amzsst]
+  [out0.medicareprty.pbr_npi_id,[passthrough],in0.amq1hq]
+  [out0.cntrct_pbp.carrier_id,[passthrough],in0.amidhe]
+  [out0.medicareprty.phr_sk,[transform],]
+  [out0.medicareprty.days_sply,[passthrough],in0.amimnb]
+  [out0.medicareprty.rx_origin_cd_sk,[transform],]
+  [out0.medicareprty.sbm_srv_dt,[transform],in0.ambbda]
+  [out0.medicareprty.dmr_ind,[passthrough],in0.amlest]
+  [out0.medicareprty.mbr_amt_twd_ded_amt,[transform],in0.amojhy,
+     in0.amzsst]
+  [out0.medicareprty.lics_drg_spnd_ded_bal_amt,[passthrough],in0.amhtik]
+  [out0.medicareprty.accum_basis_cd,[passthrough],in0.amtfie]
+  [out0.medicareprty.egwp_cg_mbr_pay_amt,[passthrough],in0.amzabj]
+  [out0.medicareprty.drg_spnd_twd_ded_amt,[transform],in0.amxihy,
+     in0.amzsst]
+  [out0.medicareprty.amn_pbp_nbr,[passthrough],in0.amqkhq]
+  [out0.medicareprty.amn_phr_svc_type_cd,[passthrough],in0.amc2ap]
+  [out0.medicareprty.plan_gap_amt,[passthrough],in0.amnlhy]
+  [out0.medicareprty.egwp_plan_gap_amt,[passthrough],in0.amzjbj]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.res_cd.residence_cd,'res_cd.residence_cd',1,0]
+     [out0.medicareprty.amn_pbr_qlfr_cd,'medicareprty.amn_pbr_qlfr_cd',1,0]
+     [out0.medicareprty.true_disc_elig_amt,'medicareprty.true_disc_elig_amt',1,0]
+     [out0.medicareprty.dispensing_stat_cd,'medicareprty.dispensing_stat_cd',1,0]
+     [out0.medicareprty.clt_ingred_cost_paid,'medicareprty.clt_ingred_cost_paid',1,0]
+     [out0.medicareprty.refill_nbr,'medicareprty.refill_nbr',1,0]
+     [out0.d_mbr.employer_group_id,'d_mbr.employer_group_id',1,0]
+     [out0.medicareprty.true_oop_accum_amt,'medicareprty.true_oop_accum_amt',1,0]
+     [out0.medicareprty.amn_pat_residence_cd,'medicareprty.amn_pat_residence_cd',1,0]
+     [out0.medicareprty.clt_due_amt,'medicareprty.clt_due_amt',1,0]
+     [out0.medicareprty.tot_drg_cst_acc_gross_amt,'medicareprty.tot_drg_cst_acc_gross_amt',1,0]
+     [out0.rx_org.rx_origin_cd,'rx_org.rx_origin_cd',1,0]
+     [out0.medicareprty.svc_claim_ind,'medicareprty.svc_claim_ind',1,0]
+     [out0.medicareprty.amt_twd_plan_cat_amt,'medicareprty.amt_twd_plan_cat_amt',1,0]
+     [out0.medicareprty.egwp_troop_sched_id,'medicareprty.egwp_troop_sched_id',1,0]
+     [out0.medicareprty.amt_twd_plan_gap_amt,'medicareprty.amt_twd_plan_gap_amt',1,0]
+     [out0.medicareprty.dual_amt,'medicareprty.dual_amt',1,0]
+     [out0.medicareprty.egwp_cg_drg_spnd_amt,'medicareprty.egwp_cg_drg_spnd_amt',1,0]
+     [out0.d_carr_acct.account_id,'d_carr_acct.account_id',1,0]
+     [out0.medicareprty.carrier_acct_sk,'medicareprty.carrier_acct_sk',1,0]
+     [out0.medicareprty.tc4_plan_cd,'medicareprty.tc4_plan_cd',1,0]
+     [out0.medicareprty.clt_dispensing_fee,'medicareprty.clt_dispensing_fee',1,0]
+     [out0.medicareprty.lics_drg_spnd_ded_amt,'medicareprty.lics_drg_spnd_ded_amt',1,0]
+     [out0.medicareprty.tc4_account_id,'medicareprty.tc4_account_id',1,0]
+     [out0.medicareprty.src_env_sk,'medicareprty.src_env_sk',1,0]
+     [out0.medicareprty.tc4_employer_group_id,'medicareprty.tc4_employer_group_id',1,0]
+     [out0.clm_orgn_cd.rx_origin_cd,'clm_orgn_cd.rx_origin_cd',1,0]
+     [out0.medicareprty.npp_amt,'medicareprty.npp_amt',1,0]
+     [out0.medicareprty.subrogation_amt,'medicareprty.subrogation_amt',1,0]
+     [out0.medicareprty.mbr_sk,'medicareprty.mbr_sk',1,0]
+     [out0.medicareprty.prod_sk,'medicareprty.prod_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.medicareprty.prod_key,'medicareprty.prod_key',1,0]
+     [out0.medicareprty.claim_stat_sk,'medicareprty.claim_stat_sk',1,0]
+     [out0.medicareprty.egwp_cat_mbr_pay_amt,'medicareprty.egwp_cat_mbr_pay_amt',1,0]
+     [out0.medicareprty.contract_pbp_sk,'medicareprty.contract_pbp_sk',1,0]
+     [out0.medicareprty.pdp_seq_no,'medicareprty.pdp_seq_no',1,0]
+     [out0.medicareprty.residence_cd_sk,'medicareprty.residence_cd_sk',1,0]
+     [out0.medicareprty.claim_cntr,'medicareprty.claim_cntr',1,0]
+     [out0.medicareprty.rbl_oth_pyr_recog_amt,'medicareprty.rbl_oth_pyr_recog_amt',1,0]
+     [out0.medicareprty.shortcycle_prov_qlfr_cd,'medicareprty.shortcycle_prov_qlfr_cd',1,0]
+     [out0.medicareprty.tc4_plan_eff_dt,'medicareprty.tc4_plan_eff_dt',3,2]
+     [out0.medicareprty.drg_cov_stat_cd,'medicareprty.drg_cov_stat_cd',1,0]
+     [out0.medicareprty.prod_sel_cd,'medicareprty.prod_sel_cd',1,0]
+     [out0.medicareprty.ded_lvl_troop_amt,'medicareprty.ded_lvl_troop_amt',1,0]
+     [out0.medicareprty.medicaid_subrogation_ind,'medicareprty.medicaid_subrogation_ind',1,0]
+     [out0.medicareprty.drg_cov_stat_sched_id,'medicareprty.drg_cov_stat_sched_id',1,0]
+     [out0.medicareprty.egwp_plan_cat_amt,'medicareprty.egwp_plan_cat_amt',1,0]
+     [out0.medicareprty.egwp_dedlvl_drg_spnd_amt,'medicareprty.egwp_dedlvl_drg_spnd_amt',1,0]
+     [out0.final_pln.src_env_sk,'final_pln.src_env_sk',1,0]
+     [out0.d_carrier.carrier_id,'d_carrier.carrier_id',1,0]
+     [out0.medicareprty.egwp_amt_twd_plan_ded_amt,'medicareprty.egwp_amt_twd_plan_ded_amt',1,0]
+     [out0.medicareprty.plan_benefit_pkg_cd,'medicareprty.plan_benefit_pkg_cd',1,0]
+     [out0.medicareprty.amendment_ind,'medicareprty.amendment_ind',1,0]
+     [out0.medicareprty.end_benefit_phase_sk,'medicareprty.end_benefit_phase_sk',1,0]
+     [out0.medicareprty.cag_sk,'medicareprty.cag_sk',1,0]
+     [out0.medicareprty.claim_seq_nbr,'medicareprty.claim_seq_nbr',1,0]
+     [out0.medicareprty.lics_sched_step_no,'medicareprty.lics_sched_step_no',1,0]
+     [out0.medicareprty.days_of_supply_sk,'medicareprty.days_of_supply_sk',1,0]
+     [out0.medicareprty.adjud_beign_timestamp,'medicareprty.adjud_beign_timestamp',1,0]
+     [out0.medicareprty.src_chg_timestamp,'medicareprty.src_chg_timestamp',1,3]
+     [out0.medicareprty.gap_brnd_disc_amt,'medicareprty.gap_brnd_disc_amt',1,0]
+     [out0.medicareprty.src_add_user_nm,'medicareprty.src_add_user_nm',1,0]
+     [out0.medicareprty.mbr_hicn_id,'medicareprty.mbr_hicn_id',1,0]
+     [out0.medicareprty.src_chg_dt,'medicareprty.src_chg_dt',1,3]
+     [out0.medicareprty.copay_catgry_cd,'medicareprty.copay_catgry_cd',1,0]
+     [out0.medicareprty.phr_sales_tax_paid,'medicareprty.phr_sales_tax_paid',1,0]
+     [out0.medicareprty.sbm_dt,'medicareprty.sbm_dt',1,3]
+     [out0.medicareprty.amn_pbr_id,'medicareprty.amn_pbr_id',1,0]
+     [out0.medicareprty.gdcb_amt,'medicareprty.gdcb_amt',1,0]
+     [out0.medicareprty.formulary_cd,'medicareprty.formulary_cd',1,0]
+     [out0.medicareprty.prior_troop_amt,'medicareprty.prior_troop_amt',1,0]
+     [out0.cntrct_pbp.sequence_no,'cntrct_pbp.sequence_no',1,0]
+     [out0.medicareprty.egwp_troop_sched_step_no,'medicareprty.egwp_troop_sched_step_no',1,0]
+     [out0.medicareprty.oth_pyr_paid_amt,'medicareprty.oth_pyr_paid_amt',1,0]
+     [out0.medicareprty.phr_patient_pay_amt,'medicareprty.phr_patient_pay_amt',1,0]
+     [out0.medicareprty.ntwk_sk,'medicareprty.ntwk_sk',1,0]
+     [out0.cntrct_pbp.plan_cd,'cntrct_pbp.plan_cd',1,0]
+     [out0.medicareprty.shortcycle_claim_qlfr_cd,'medicareprty.shortcycle_claim_qlfr_cd',1,0]
+     [out0.d_mbr.mbr_id,'d_mbr.mbr_id',1,0]
+     [out0.medicareprty.reprocess_claim_seq_no,'medicareprty.reprocess_claim_seq_no',1,0]
+     [out0.d_carr_acct.carrier_id,'d_carr_acct.carrier_id',1,0]
+     [out0.medicareprty.cpp_amt,'medicareprty.cpp_amt',1,0]
+     [out0.medicareprty.mbr_amt_twd_gap_amt,'medicareprty.mbr_amt_twd_gap_amt',1,0]
+     [out0.cntrct_pbp.employer_group_id,'cntrct_pbp.employer_group_id',1,0]
+     [out0.medicareprty.subsidy_lvl_nbr,'medicareprty.subsidy_lvl_nbr',1,0]
+     [out0.medicareprty.plan_troop_sched_id,'medicareprty.plan_troop_sched_id',1,0]
+     [out0.medicareprty.cat_cov_cd,'medicareprty.cat_cov_cd',1,0]
+     [out0.medicareprty.rx_nbr,'medicareprty.rx_nbr',1,0]
+     [out0.medicareprty.subm_clfctn_cd,'medicareprty.subm_clfctn_cd',1,0]
+     [out0.medicareprty.egwp_icl_drg_spnd_amt,'medicareprty.egwp_icl_drg_spnd_amt',1,0]
+     [out0.medicareprty.prod_claim_prod_id,'medicareprty.prod_claim_prod_id',1,0]
+     [out0.medicareprty.prod_claim_seq_no,'medicareprty.prod_claim_seq_no',1,0]
+     [out0.final_pln.pln_cd,'final_pln.pln_cd',1,0]
+     [out0.medicareprty.dcs_daily_prorate_no,'medicareprty.dcs_daily_prorate_no',1,0]
+     [out0.medicareprty.mbr_amt_twd_init_cov_amt,'medicareprty.mbr_amt_twd_init_cov_amt',1,0]
+     [out0.medicareprty.prod_id,'medicareprty.prod_id',1,0]
+     [out0.medicareprty.phr_vacc_adm_fee_amt,'medicareprty.phr_vacc_adm_fee_amt',1,0]
+     [out0.medicareprty.amt_twd_plan_ded_amt,'medicareprty.amt_twd_plan_ded_amt',1,0]
+     [out0.medicareprty.egwp_ded_mbr_pay_amt,'medicareprty.egwp_ded_mbr_pay_amt',1,0]
+     [out0.medicareprty.brand_generic_cd,'medicareprty.brand_generic_cd',1,0]
+     [out0.medicareprty.created_by_version_nbr,'medicareprty.created_by_version_nbr',1,0]
+     [out0.medicareprty.sbm_dt_sk,'medicareprty.sbm_dt_sk',1,0]
+     [out0.medicareprty.orig_claim_rcvd_dt,'medicareprty.orig_claim_rcvd_dt',3,2]
+     [out0.medicareprty.compound_sk,'medicareprty.compound_sk',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.medicareprty.moop_mbr_pay_amt,'medicareprty.moop_mbr_pay_amt',1,0]
+     [out0.medicareprty.lics_troop_nbr_steps_no,'medicareprty.lics_troop_nbr_steps_no',1,0]
+     [out0.medicareprty.medicare_plan_type_cd,'medicareprty.medicare_plan_type_cd',1,0]
+     [out0.medicareprty.filled_dt_sk,'medicareprty.filled_dt_sk',1,0]
+     [out0.medicareprty.qual_serv_prov_id,'medicareprty.qual_serv_prov_id',1,0]
+     [out0.medicareprty.plan_pay_init_cov_lvl_amt,'medicareprty.plan_pay_init_cov_lvl_amt',1,0]
+     [out0.medicareprty.subm_yr,'medicareprty.subm_yr',1,3]
+     [out0.medicareprty.prod_claim_gpi_nbr,'medicareprty.prod_claim_gpi_nbr',1,0]
+     [out0.medicareprty.tier_ind,'medicareprty.tier_ind',1,0]
+     [out0.medicareprty.egwp_plan_pay_icl_amt,'medicareprty.egwp_plan_pay_icl_amt',1,0]
+     [out0.medicareprty.final_pln_sk,'medicareprty.final_pln_sk',1,0]
+     [out0.medicareprty.begin_benefit_phase_sk,'medicareprty.begin_benefit_phase_sk',1,0]
+     [out0.d_sbm_dt.cal_day_dt,'d_sbm_dt.cal_day_dt',3,2]
+     [out0.pharmacy.phr_id,'pharmacy.phr_id',1,0]
+     [out0.medicareprty.pds_rebate_est_amt,'medicareprty.pds_rebate_est_amt',1,0]
+     [out0.medicareprty.subm_qtr,'medicareprty.subm_qtr',1,3]
+     [out0.medicareprty.gap_disc_pln_ovrd_cd,'medicareprty.gap_disc_pln_ovrd_cd',1,0]
+     [out0.medicareprty.drg_spnd_twd_cat_amt,'medicareprty.drg_spnd_twd_cat_amt',1,0]
+     [out0.medicareprty.rej_reason3,'medicareprty.rej_reason3',1,0]
+     [out0.medicareprty.egwp_icl_mbr_pay_amt,'medicareprty.egwp_icl_mbr_pay_amt',1,0]
+     [out0.d_mbr.account_id,'d_mbr.account_id',1,0]
+     [out0.medicareprty.drg_spnd_twd_gap_amt,'medicareprty.drg_spnd_twd_gap_amt',1,0]
+     [out0.medicareprty.lics_troop_sched_id,'medicareprty.lics_troop_sched_id',1,0]
+     [out0.medicareprty.egwp_ded_drg_spnd_amt,'medicareprty.egwp_ded_drg_spnd_amt',1,0]
+     [out0.medicareprty.claim_origination_code_sk,'medicareprty.claim_origination_code_sk',1,0]
+     [out0.medicareprty.egwp_dedlvl_troop_amt,'medicareprty.egwp_dedlvl_troop_amt',1,0]
+     [out0.medicareprty.compound_cd,'medicareprty.compound_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.medicareprty.pbr_sk,'medicareprty.pbr_sk',1,0]
+     [out0.medicareprty.subm_oth_covrg_cd,'medicareprty.subm_oth_covrg_cd',1,0]
+     [out0.medicareprty.gnrc_ind_sk,'medicareprty.gnrc_ind_sk',1,0]
+     [out0.medicareprty.create_update_by_ind,'medicareprty.create_update_by_ind',1,0]
+     [out0.d_mbr.carrier_id,'d_mbr.carrier_id',1,0]
+     [out0.medicareprty.phr_dispensing_fee,'medicareprty.phr_dispensing_fee',1,0]
+     [out0.final_pln.pln_eff_dt,'final_pln.pln_eff_dt',3,2]
+     [out0.medicareprty.gdca_amt,'medicareprty.gdca_amt',1,0]
+     [out0.medicareprty.lics_amt,'medicareprty.lics_amt',1,0]
+     [out0.medicareprty.claim_nbr,'medicareprty.claim_nbr',1,0]
+     [out0.bgn_bnft_phase.benefit_phase_cd,'bgn_bnft_phase.benefit_phase_cd',1,0]
+     [out0.medicareprty.out_of_netwk_cd,'medicareprty.out_of_netwk_cd',1,0]
+     [out0.medicareprty.tc3_srv_prov_id,'medicareprty.tc3_srv_prov_id',1,0]
+     [out0.medicareprty.phr_ingred_cost_paid,'medicareprty.phr_ingred_cost_paid',1,0]
+     [out0.medicareprty.contract_id,'medicareprty.contract_id',1,0]
+     [out0.medicareprty.src_chg_user_nm,'medicareprty.src_chg_user_nm',1,0]
+     [out0.medicareprty.src_add_dt,'medicareprty.src_add_dt',1,3]
+     [out0.medicareprty.rej_reason2,'medicareprty.rej_reason2',1,0]
+     [out0.medicareprty.src_add_timestamp,'medicareprty.src_add_timestamp',1,3]
+     [out0.medicareprty.cob_ind,'medicareprty.cob_ind',1,0]
+     [out0.medicareprty.amn_contract_id,'medicareprty.amn_contract_id',1,0]
+     [out0.medicareprty.ded_lvl_drg_spnd_amt,'medicareprty.ded_lvl_drg_spnd_amt',1,0]
+     [out0.medicareprty.mbr_amt_twd_cat_amt,'medicareprty.mbr_amt_twd_cat_amt',1,0]
+     [out0.medicareprty.subm_yr_mnth,'medicareprty.subm_yr_mnth',1,3]
+     [out0.medicareprty.prod_claim_prod_key,'medicareprty.prod_claim_prod_key',1,0]
+     [out0.medicareprty.carrier_sk,'medicareprty.carrier_sk',1,0]
+     [out0.cntrct_pbp.account_id,'cntrct_pbp.account_id',1,0]
+     [out0.medicareprty.amn_rx_origin_cd,'medicareprty.amn_rx_origin_cd',1,0]
+     [out0.medicareprty.egwp_plan_icl_amt,'medicareprty.egwp_plan_icl_amt',1,0]
+     [out0.medicareprty.claim_stat_id,'medicareprty.claim_stat_id',1,0]
+     [out0.medicareprty.gpi_sk,'medicareprty.gpi_sk',1,0]
+     [out0.medicareprty.clt_vacc_adm_fee_amt,'medicareprty.clt_vacc_adm_fee_amt',1,0]
+     [out0.medicareprty.egwp_cat_drg_spnd_amt,'medicareprty.egwp_cat_drg_spnd_amt',1,0]
+     [out0.medicareprty.phr_oth_pyr_recog_amt,'medicareprty.phr_oth_pyr_recog_amt',1,0]
+     [out0.medicareprty.moop_drg_spnd_amt,'medicareprty.moop_drg_spnd_amt',1,0]
+     [out0.medicareprty.tc3_rx_origin_cd,'medicareprty.tc3_rx_origin_cd',1,0]
+     [out0.medicareprty.clt_patient_pay_amt,'medicareprty.clt_patient_pay_amt',1,0]
+     [out0.medicareprty.subm_mnth,'medicareprty.subm_mnth',1,3]
+     [out0.medicareprty.tc3_srv_prov_id_qlfr_cd,'medicareprty.tc3_srv_prov_id_qlfr_cd',1,0]
+     [out0.medicareprty.drg_spnd_amt,'medicareprty.drg_spnd_amt',1,0]
+     [out0.medicareprty.client_patient_pay_amt,'medicareprty.client_patient_pay_amt',1,0]
+     [out0.medicareprty.rej_reason1,'medicareprty.rej_reason1',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.end_bnft_phase.benefit_phase_cd,'end_bnft_phase.benefit_phase_cd',1,0]
+     [out0.gncr_in.gnrc_mdspn_ind,'gncr_in.gnrc_mdspn_ind',1,0]
+     [out0.medicareprty.prod_claim_no,'medicareprty.prod_claim_no',1,0]
+     [out0.medicareprty.plan_cat_amt,'medicareprty.plan_cat_amt',1,0]
+     [out0.medicareprty.shortcycle_prod_qlfr_cd,'medicareprty.shortcycle_prod_qlfr_cd',1,0]
+     [out0.medicareprty.drg_spnd_twd_init_cov_amt,'medicareprty.drg_spnd_twd_init_cov_amt',1,0]
+     [out0.medicareprty.clt_sales_tax_paid,'medicareprty.clt_sales_tax_paid',1,0]
+     [out0.medicareprty.egwp_amt_twd_plan_cat_amt,'medicareprty.egwp_amt_twd_plan_cat_amt',1,0]
+     [out0.medicareprty.troop_sched_id,'medicareprty.troop_sched_id',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.medicareprty.tc3_phr_svc_type_cd,'medicareprty.tc3_phr_svc_type_cd',1,0]
+     [out0.medicareprty.egwp_amt_twd_plan_gap_amt,'medicareprty.egwp_amt_twd_plan_gap_amt',1,0]
+     [out0.medicareprty.drg_qty,'medicareprty.drg_qty',1,0]
+     [out0.medicareprty.plan_init_cov_amt,'medicareprty.plan_init_cov_amt',1,0]
+     [out0.gpi.gpi_id,'gpi.gpi_id',1,0]
+     [out0.medicareprty.tc4_carrier_id,'medicareprty.tc4_carrier_id',1,0]
+     [out0.medicareprty.report_gap_disc_amt,'medicareprty.report_gap_disc_amt',1,0]
+     [out0.clm_stat.claim_stat_id,'clm_stat.claim_stat_id',1,0]
+     [out0.medicareprty.pbr_npi_id,'medicareprty.pbr_npi_id',1,0]
+     [out0.cntrct_pbp.carrier_id,'cntrct_pbp.carrier_id',1,0]
+     [out0.medicareprty.phr_sk,'medicareprty.phr_sk',1,0]
+     [out0.medicareprty.days_sply,'medicareprty.days_sply',1,0]
+     [out0.medicareprty.rx_origin_cd_sk,'medicareprty.rx_origin_cd_sk',1,0]
+     [out0.medicareprty.sbm_srv_dt,'medicareprty.sbm_srv_dt',3,2]
+     [out0.medicareprty.dmr_ind,'medicareprty.dmr_ind',1,0]
+     [out0.medicareprty.mbr_amt_twd_ded_amt,'medicareprty.mbr_amt_twd_ded_amt',1,0]
+     [out0.medicareprty.lics_drg_spnd_ded_bal_amt,'medicareprty.lics_drg_spnd_ded_bal_amt',1,0]
+     [out0.medicareprty.accum_basis_cd,'medicareprty.accum_basis_cd',1,0]
+     [out0.medicareprty.egwp_cg_mbr_pay_amt,'medicareprty.egwp_cg_mbr_pay_amt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.medicareprty.drg_spnd_twd_ded_amt,'medicareprty.drg_spnd_twd_ded_amt',1,0]
+     [out0.medicareprty.amn_pbp_nbr,'medicareprty.amn_pbp_nbr',1,0]
+     [out0.medicareprty.amn_phr_svc_type_cd,'medicareprty.amn_phr_svc_type_cd',1,0]
+     [out0.medicareprty.plan_gap_amt,'medicareprty.plan_gap_amt',1,0]
+     [out0.medicareprty.egwp_plan_gap_amt,'medicareprty.egwp_plan_gap_amt',1,0]
+  ]
+  impacts:
+  [
+     [in0.amc4ai,'amc4ai',1,1]
+     [in0.amk3st,'amk3st',1,1]
+     [in0.amgiic,'amgiic',1,1]
+     [in0.amlcie,'amlcie',1,1]
+     [in0.amwghy,'amwghy',3,1]
+     [in0.amimnb,'amimnb',2,2]
+     [in0.amnbia,'amnbia',1,1]
+     [in0.ami9id,'ami9id',1,1]
+     [in0.amc8ai,'amc8ai',1,1]
+     [in0.amdspr,'amdspr',3,1]
+     [in0.amolhy,'amolhy',3,1]
+     [in0.amxghx,'amxghx',1,1]
+     [in0.amzebj,'amzebj',1,1]
+     [in0.account_id,'account_id',1,1]
+     [in0.amujcd,'amujcd',1,1]
+     [in0.amddap,'amddap',1,1]
+     [in0.amc2dt,'amc2dt',6,5]
+     [in0.amionb,'amionb',1,1]
+     [in0.amabtm,'amabtm',1,1]
+     [in0.amukcd,'amukcd',1,1]
+     [in0.amvsbj,'amvsbj',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.amjjhz,'amjjhz',3,1]
+     [in0.amulbj,'amulbj',1,1]
+     [in0.amqvhq,'amqvhq',1,1]
+     ['lookup("d_prescriber_alias_lkp").pbr_sk','pbr_sk',1,1]
+     [in0.amzpbj,'amzpbj',1,1]
+     [in0.amvtbj,'amvtbj',1,1]
+     [in0.amtjcd,'amtjcd',1,1]
+     [in0.amwfhy,'amwfhy',1,1]
+     [in0.amnnhy,'amnnhy',3,1]
+     [in0.ambbda,'ambbda',6,3]
+     [in0.amzlbj,'amzlbj',1,1]
+     [in0.amquhq,'amquhq',1,1]
+     [in0.amvkp1,'amvkp1',3,1]
+     [in0.amnmhy,'amnmhy',3,1]
+     [in0.amv7hy,'amv7hy',1,1]
+     [in0.amn3hy,'amn3hy',3,1]
+     [in0.amcvqu,'amcvqu',1,1]
+     [in0.amtfie,'amtfie',1,1]
+     [in0.amnohy,'amnohy',3,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.amn4hy,'amn4hy',3,1]
+     [in0.amxfhx,'amxfhx',3,1]
+     [in0.amzhbj,'amzhbj',1,1]
+     [in0.amlrst,'amlrst',1,1]
+     [in0.amqkhq,'amqkhq',1,1]
+     ['lookup("rcexbp_lkp").acp2nb','acp2nb',4,4]
+     [in0.ambxht,'ambxht',1,1]
+     [in0.amkwst,'amkwst',1,1]
+     [in0.amw2he,'amw2he',1,1]
+     [in0.amxihy,'amxihy',3,1]
+     [in0.amj3cj,'amj3cj',1,1]
+     [in0.amzfbj,'amzfbj',1,1]
+     [in0.amqjhq,'amqjhq',1,1]
+     [in0.amxli1,'amxli1',1,1]
+     [in0.amhgak,'amhgak',1,1]
+     [in0.amnjhy,'amnjhy',3,1]
+     [in0.ame1hk,'ame1hk',12,11]
+     [in0.amhtik,'amhtik',1,1]
+     [in0.amzibj,'amzibj',1,1]
+     [in0.ambwht,'ambwht',1,1]
+     [in0.amv9hy,'amv9hy',1,1]
+     [in0.amqxqu,'amqxqu',1,1]
+     [in0.amr5hs,'amr5hs',1,1]
+     [in0.amasda,'amasda',6,3]
+     [in0.amrmh9,'amrmh9',1,1]
+     [in0.amsdht,'amsdht',1,1]
+     [in0.amwkhc,'amwkhc',1,1]
+     [in0.amtccd,'amtccd',1,1]
+     [in0.ams7cd,'ams7cd',4,4]
+     [in0.ame5hn,'ame5hn',1,1]
+     [in0.amadvn,'amadvn',1,1]
+     [in0.amwjhc,'amwjhc',1,1]
+     [in0.ame6hn,'ame6hn',1,1]
+     [in0.amaqce,'amaqce',6,3]
+     [in0.amambj,'amambj',1,1]
+     [in0.ampdiu,'ampdiu',1,1]
+     [in0.amzgbj,'amzgbj',1,1]
+     ['lookup("rcexbp_lkp").acs9qu','acs9qu',3,1]
+     [in0.amc4ap,'amc4ap',1,1]
+     [in0.src_env_sk,'src_env_sk',2,5]
+     [in0.ams5cd,'ams5cd',2,2]
+     [in0.amp2nb,'amp2nb',18,5]
+     [in0.amwdhy,'amwdhy',3,1]
+     [in0.amwehy,'amwehy',3,1]
+     [in0.amc3ap,'amc3ap',1,1]
+     [in0.ambkqu,'ambkqu',3,1]
+     [in0.ambjqu,'ambjqu',3,1]
+     [in0.ams6cd,'ams6cd',5,5]
+     ['lookup("rcexbp_lkp").actcqu','actcqu',3,1]
+     [in0.amlest,'amlest',1,1]
+     [in0.amk0st,'amk0st',1,1]
+     [in0.ampecd,'ampecd',1,1]
+     [in0.amomhy,'amomhy',3,1]
+     [in0.amc6ai,'amc6ai',1,1]
+     [in0.amiicj,'amiicj',1,1]
+     [in0.amythe,'amythe',1,1]
+     [in0.amavod,'amavod',1,1]
+     [in0.amumbj,'amumbj',1,1]
+     [in0.amifhe,'amifhe',2,2]
+     [in0.amk6st,'amk6st',2,2]
+     [in0.ams6nb,'ams6nb',20,5]
+     [in0.amychc,'amychc',1,1]
+     [in0.amc5ai,'amc5ai',1,1]
+     [in0.amwlhc,'amwlhc',1,1]
+     [in0.amn5ia,'amn5ia',1,1]
+     [in0.amhuik,'amhuik',1,1]
+     [in0.employer_group_id,'employer_group_id',1,1]
+     [in0.amoahy,'amoahy',1,1]
+     [in0.amo6h9,'amo6h9',1,1]
+     [in0.amqrap,'amqrap',1,1]
+     [in0.amk7st,'amk7st',1,1]
+     [in0.amurhg,'amurhg',6,3]
+     [in0.amxfam,'amxfam',1,1]
+     [in0.amc7ai,'amc7ai',1,1]
+     [in0.amjihz,'amjihz',3,1]
+     ['lookup("rcmsip_lkp").msi_suppl_id','msi_suppl_id',1,1]
+     [in0.amvxbj,'amvxbj',1,1]
+     [in0.amakvn,'amakvn',1,1]
+     [in0.amenhz,'amenhz',3,1]
+     [in0.amighe,'amighe',2,2]
+     [in0.amzabj,'amzabj',1,1]
+     [in0.ambmdt,'ambmdt',6,5]
+     [in0.amnhhy,'amnhhy',3,1]
+     [in0.amjghz,'amjghz',3,1]
+     [in0.amzobj,'amzobj',1,1]
+     [in0.amwxhe,'amwxhe',1,1]
+     [in0.amq1hq,'amq1hq',1,1]
+     [in0.amxgam,'amxgam',1,1]
+     ['lookup("rcexbp_lkp").actaqu','actaqu',3,1]
+     [in0.amadtm,'amadtm',1,1]
+     [in0.amric4,'amric4',1,1]
+     [in0.amn5hy,'amn5hy',1,1]
+     [in0.amzbbj,'amzbbj',1,1]
+     [in0.amzmbj,'amzmbj',1,1]
+     [in0.amvwbj,'amvwbj',1,1]
+     ['lookup("l_days_of_supply_lkp").days_of_supply_sk','days_of_supply_sk',1,1]
+     [in0.amk2st,'amk2st',1,1]
+     [in0.amnlhy,'amnlhy',1,1]
+     [in0.amv8hy,'amv8hy',1,1]
+     [in0.amnphy,'amnphy',3,1]
+     [in0.amznbj,'amznbj',1,1]
+     ['lookup("rcexbp_lkp").actbqu','actbqu',3,1]
+     [in0.amwahy,'amwahy',3,1]
+     [in0.amzsst,'amzsst',94,41]
+     [in0.amqihq,'amqihq',1,1]
+     [in0.amp7ap,'amp7ap',1,1]
+     [in0.amc2ap,'amc2ap',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.mbr_hic_cd,'mbr_hic_cd',1,1]
+     ['lookup("rcexbp_lkp").actequ','actequ',1,1]
+     [in0.amsoc4,'amsoc4',1,1]
+     [in0.amejhz,'amejhz',3,1]
+     [in0.amzqbj,'amzqbj',1,1]
+     [in0.amnihy,'amnihy',1,1]
+     [in0.amzjbj,'amzjbj',1,1]
+     [in0.amwbhy,'amwbhy',3,1]
+     [in0.ambqir,'ambqir',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.amzkbj,'amzkbj',1,1]
+     [in0.amiehe,'amiehe',2,2]
+     [in0.amjdhz,'amjdhz',3,1]
+     [in0.amnfhy,'amnfhy',3,1]
+     [in0.amidhe,'amidhe',2,2]
+     [in0.mbr_id,'mbr_id',1,1]
+     [in0.amokhy,'amokhy',3,1]
+     [in0.amc9ai,'amc9ai',1,1]
+     [in0.amwihc,'amwihc',1,1]
+     [in0.amxham,'amxham',1,1]
+     [in0.amulcd,'amulcd',1,1]
+     [in0.amojhy,'amojhy',3,1]
+     [in0.ame4hn,'ame4hn',1,1]
+     [in0.amsaht,'amsaht',1,1]
+     [in0.amnghy,'amnghy',1,1]
+     [in0.ams8cd,'ams8cd',3,3]
+     [in0.amilcj,'amilcj',1,1]
+     [in0.amjhhz,'amjhhz',3,1]
+     [in0.amrhht,'amrhht',1,1]
+     [in0.amwchy,'amwchy',3,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',20,7]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.amtcn2,'amtcn2',1,1]
+     [in0.amc5ap,'amc5ap',1,1]
+     [in0.ambiqu,'ambiqu',3,1]
+     [in0.amaxod,'amaxod',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_4 = 0;
+let int bzt_5 = 0;
+let int bzt_6 = 0;
+let int bzt_7 = 0;
+let int bzt_8 = 0;
+let int bzt_9 = 0;
+let int bzt_10 = 0;
+let int bzt_11 = 0;
+let decimal("\x01",0) medicareprty_claim_nbr = fail_if_error(in0.amp2nb);
+let decimal("\x01",0) medicareprty_claim_seq_nbr = fail_if_error(if (in0.ams6nb < 0) in0.ams6nb else 1000 - in0.ams6nb);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_claim_stat_id = fail_if_error(in0.amzsst);
+let decimal("\x01",0) medicareprty_claim_stat_sk = -1;
+let decimal("\x01",0) medicareprty_sbm_dt_sk = -1;
+let decimal("\x01",0) medicareprty_carrier_sk = -1;
+let decimal("\x01",0) medicareprty_carrier_acct_sk = -1;
+let decimal("\x01",0) medicareprty_cag_sk = -1;
+let decimal("\x01",0) medicareprty_mbr_sk = -1;
+let decimal("\x01",0) medicareprty_final_pln_sk = -1;
+let decimal("\x01",0) medicareprty_phr_sk = -1;
+let decimal("\x01",0) medicareprty_ntwk_sk = -1;
+let decimal("\x01",0) medicareprty_pbr_sk;
+let decimal("\x01",0) medicareprty_gpi_sk = -1;
+let decimal("\x01",0) medicareprty_prod_sk = -1;
+let decimal("\x01",0) medicareprty_compound_sk = -1;
+let decimal("\x01",0) medicareprty_gnrc_ind_sk = -1;
+let decimal("\x01",0) medicareprty_days_of_supply_sk;
+let decimal("\x01",0) medicareprty_filled_dt_sk = -1;
+let decimal("\x01",0) medicareprty_contract_pbp_sk = -1;
+let decimal("\x01",0) medicareprty_residence_cd_sk = -1;
+let decimal("\x01",0) medicareprty_claim_origination_code_sk = -1;
+let decimal("\x01",0) medicareprty_begin_benefit_phase_sk = -1;
+let decimal("\x01",0) medicareprty_end_benefit_phase_sk = -1;
+let decimal("\x01",0) medicareprty_rx_origin_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) medicareprty_rej_reason1 = fail_if_error(in0.ame4hn);
+let string("\x01",charset="iso-8859-15", maximum_length=5) medicareprty_rej_reason2 = fail_if_error(in0.ame5hn);
+let string("\x01",charset="iso-8859-15", maximum_length=5) medicareprty_rej_reason3 = fail_if_error(in0.ame6hn);
+let string("\x01",charset="iso-8859-15", maximum_length=30) medicareprty_tc4_carrier_id = fail_if_error(in0.amidhe);
+let string("\x01",charset="iso-8859-15", maximum_length=40) medicareprty_tc4_account_id = fail_if_error(in0.amifhe);
+let string("\x01",charset="iso-8859-15", maximum_length=30) medicareprty_tc4_employer_group_id = fail_if_error(in0.amighe);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_tc4_plan_cd = fail_if_error(in0.amiehe);
+let date("YYYYMMDD")("\x01") medicareprty_tc4_plan_eff_dt;
+let decimal("\x01",0) medicareprty_claim_cntr = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       1
+else
+       0);
+let date("YYYYMMDD")("\x01") medicareprty_sbm_dt;
+let decimal("\x01",0) medicareprty_subm_yr;
+let decimal("\x01",0) medicareprty_subm_mnth;
+let decimal("\x01",0) medicareprty_subm_yr_mnth;
+let string("\x01",charset="iso-8859-15", maximum_length=8) medicareprty_subm_qtr;
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_refill_nbr = fail_if_error(in0.amulcd);
+let decimal("\x01",0) medicareprty_days_sply = fail_if_error(in0.amimnb);
+let decimal("\x01".3, maximum_length=13, sign_reserved) medicareprty_drg_qty = fail_if_error(in0.amionb);
+let string("\x01",charset="iso-8859-15", maximum_length=12) medicareprty_rx_nbr = fail_if_error(in0.amukcd);
+let date("YYYYMMDD")("\x01") medicareprty_sbm_srv_dt;
+let decimal("\x01",0) medicareprty_prod_key = fail_if_error(in0.amtcn2);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medicareprty_prod_id = fail_if_error(in0.amric4);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_compound_cd = fail_if_error(in0.amk2st);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_prod_sel_cd = fail_if_error(in0.amk3st);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_cob_ind = fail_if_error(in0.amsoc4);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_dmr_ind = fail_if_error(in0.amlest);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_qual_serv_prov_id = fail_if_error(in0.amiicj);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_subm_oth_covrg_cd = fail_if_error(in0.amk0st);
+let string("\x01",charset="iso-8859-15", maximum_length=4) medicareprty_subm_clfctn_cd = fail_if_error(in0.amk7st);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_tc3_srv_prov_id_qlfr_cd = fail_if_error(in0.amn5ia);
+let string("\x01",charset="iso-8859-15", maximum_length=15) medicareprty_tc3_srv_prov_id = fail_if_error(in0.amythe);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_tc3_rx_origin_cd = fail_if_error(in0.amk6st);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_tc3_phr_svc_type_cd = fail_if_error(in0.amavod);
+let string("\x01",charset="iso-8859-15", maximum_length=5) medicareprty_contract_id = fail_if_error(in0.amwihc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) medicareprty_plan_benefit_pkg_cd = fail_if_error(in0.amwjhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_troop_sched_id = fail_if_error(in0.amwkhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_drg_cov_stat_sched_id = fail_if_error(in0.amwlhc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_drg_cov_stat_cd = fail_if_error(in0.amo6h9);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_brand_generic_cd = fail_if_error(in0.amc4ai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_accum_basis_cd = fail_if_error(in0.amtfie);
+let decimal("\x01",0) medicareprty_pdp_seq_no = fail_if_error(in0.amr5hs);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_cpp_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amxfhx)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amxfhx))
+else
+       in0.amxfhx);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_prior_troop_amt = fail_if_error(in0.amxghx);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_lics_drg_spnd_ded_bal_amt = fail_if_error(in0.amhtik);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_lics_drg_spnd_ded_amt = fail_if_error(in0.amhuik);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_client_patient_pay_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amejhz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amejhz))
+else
+       in0.amejhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_tot_drg_cst_acc_gross_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.ambiqu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.ambiqu))
+else
+       in0.ambiqu);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_true_oop_accum_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.ambjqu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.ambjqu))
+else
+       in0.ambjqu);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_true_disc_elig_amt = fail_if_error(in0.amambj);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_gap_brnd_disc_amt = fail_if_error(in0.amcvqu);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_ded_mbr_pay_amt = fail_if_error(in0.amvwbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_ded_drg_spnd_amt = fail_if_error(in0.amvxbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_cg_mbr_pay_amt = fail_if_error(in0.amzabj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_cg_drg_spnd_amt = fail_if_error(in0.amzbbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_cat_mbr_pay_amt = fail_if_error(in0.amzebj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_cat_drg_spnd_amt = fail_if_error(in0.amzfbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_icl_mbr_pay_amt = fail_if_error(in0.amvsbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_icl_drg_spnd_amt = fail_if_error(in0.amvtbj);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_dual_amt = fail_if_error(in0.amqxqu);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_moop_mbr_pay_amt = fail_if_error(in0.amulbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_moop_drg_spnd_amt = fail_if_error(in0.amumbj);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_ingred_cost_paid = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amjghz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amjghz))
+else
+       in0.amjghz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_dispensing_fee = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amjhhz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amjhhz))
+else
+       in0.amjhhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_sales_tax_paid = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amjdhz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amjdhz))
+else
+       in0.amjdhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_patient_pay_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwbhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwbhy))
+else
+       in0.amwbhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_ingred_cost_paid;
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_dispensing_fee;
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_sales_tax_paid;
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_patient_pay_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwahy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwahy))
+else
+       in0.amwahy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_due_amt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_cat_cov_cd = fail_if_error(in0.amnbia);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_plan_troop_sched_id = fail_if_error(in0.amwxhe);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_lics_troop_sched_id = fail_if_error(in0.amw2he);
+let decimal("\x01",0) medicareprty_lics_sched_step_no = fail_if_error(in0.ambwht);
+let decimal("\x01",0) medicareprty_lics_troop_nbr_steps_no = fail_if_error(in0.ambxht);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_lics_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnfhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnfhy))
+else
+       in0.amnfhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_ded_lvl_drg_spnd_amt = fail_if_error(in0.amnghy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_amt_twd_plan_ded_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnjhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnjhy))
+else
+       in0.amnjhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_ded_lvl_troop_amt = fail_if_error(in0.amoahy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_plan_gap_amt = fail_if_error(in0.amnlhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_amt_twd_plan_gap_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amn3hy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amn3hy))
+else
+       in0.amn3hy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_plan_cat_amt = fail_if_error(in0.amnihy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_amt_twd_plan_cat_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amn4hy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amn4hy))
+else
+       in0.amn4hy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_plan_init_cov_amt = fail_if_error(in0.amn5hy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_plan_pay_init_cov_lvl_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnhhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnhhy))
+else
+       in0.amnhhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_mbr_amt_twd_ded_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amojhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amojhy))
+else
+       in0.amojhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_drg_spnd_twd_ded_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amxihy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amxihy))
+else
+       in0.amxihy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_mbr_amt_twd_gap_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amokhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amokhy))
+else
+       in0.amokhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_drg_spnd_twd_gap_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwchy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwchy))
+else
+       in0.amwchy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_mbr_amt_twd_cat_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amolhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amolhy))
+else
+       in0.amolhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_drg_spnd_twd_cat_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwdhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwdhy))
+else
+       in0.amwdhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_mbr_amt_twd_init_cov_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amomhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amomhy))
+else
+       in0.amomhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_drg_spnd_twd_init_cov_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwehy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwehy))
+else
+       in0.amwehy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_gdca_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnmhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnmhy))
+else
+       in0.amnmhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_gdcb_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnnhy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnnhy))
+else
+       in0.amnnhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_npp_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnohy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnohy))
+else
+       in0.amnohy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_drg_spnd_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amnphy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amnphy))
+else
+       in0.amnphy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_pds_rebate_est_amt = fail_if_error(in0.amwfhy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_clt_vacc_adm_fee_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amwghy)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amwghy))
+else
+       in0.amwghy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_rbl_oth_pyr_recog_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amvkp1)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amvkp1))
+else
+       in0.amvkp1);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_vacc_adm_fee_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amjihz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amjihz))
+else
+       in0.amjihz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_phr_oth_pyr_recog_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amjjhz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amjjhz))
+else
+       in0.amjjhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_oth_pyr_paid_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amdspr)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amdspr))
+else
+       in0.amdspr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_subrogation_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.amenhz)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.amenhz))
+else
+       in0.amenhz);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_report_gap_disc_amt = fail_if_error(if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(in0.ambkqu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(in0.ambkqu))
+else
+       in0.ambkqu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_medicaid_subrogation_ind = fail_if_error(in0.amhgak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_shortcycle_prov_qlfr_cd = fail_if_error(in0.amxfam);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_shortcycle_prod_qlfr_cd = fail_if_error(in0.amxgam);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_shortcycle_claim_qlfr_cd = fail_if_error(in0.amxham);
+let decimal("\x01".4, maximum_length=13, sign_reserved) medicareprty_dcs_daily_prorate_no = fail_if_error(in0.amp7ap);
+let decimal("\x01",0) medicareprty_prod_claim_no = fail_if_error(in0.amsaht);
+let decimal("\x01",0) medicareprty_prod_claim_seq_no = fail_if_error(in0.amsdht);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_create_update_by_ind = fail_if_error(in0.amgiic);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_svc_claim_ind = fail_if_error(in0.ami9id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_out_of_netwk_cd = fail_if_error(in0.amlcie);
+let date("YYYYMMDD")("\x01") medicareprty_orig_claim_rcvd_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=30) medicareprty_adjud_beign_timestamp = fail_if_error(in0.ambqir);
+let decimal("\x01".2, maximum_length=11, sign_reserved) medicareprty_reprocess_claim_seq_no = fail_if_error(in0.amrhht);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_tier_ind = fail_if_error(in0.amc7ai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_formulary_cd = fail_if_error(in0.amc8ai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_gap_disc_pln_ovrd_cd = fail_if_error(in0.amc9ai);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medicareprty_prod_claim_prod_id = fail_if_error(in0.amquhq);
+let decimal("\x01",0) medicareprty_prod_claim_prod_key = fail_if_error(in0.amddap);
+let string("\x01",charset="iso-8859-15", maximum_length=14) medicareprty_prod_claim_gpi_nbr = fail_if_error(in0.amqvhq);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_pbr_npi_id = fail_if_error(in0.amq1hq);
+let string("\x01",charset="iso-8859-15", maximum_length=3) medicareprty_created_by_version_nbr = fail_if_error(in0.ampdiu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_medicare_plan_type_cd = fail_if_error(in0.amxli1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_dispensing_stat_cd = fail_if_error(in0.amj3cj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_copay_catgry_cd = fail_if_error(in0.amrmh9);
+let string("\x01",charset="iso-8859-15", maximum_length=3) medicareprty_subsidy_lvl_nbr = fail_if_error(in0.amychc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medicareprty_mbr_hicn_id;
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_amendment_ind = fail_if_error(in0.amqrap);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_amn_phr_svc_type_cd = fail_if_error(in0.amc2ap);
+let string("\x01",charset="iso-8859-15", maximum_length=15) medicareprty_amn_pbr_id = fail_if_error(in0.amqihq);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_amn_pbr_qlfr_cd = fail_if_error(in0.amc3ap);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medicareprty_amn_rx_origin_cd = fail_if_error(in0.amc4ap);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medicareprty_amn_pat_residence_cd = fail_if_error(in0.amc5ap);
+let string("\x01",charset="iso-8859-15", maximum_length=5) medicareprty_amn_contract_id = fail_if_error(in0.amqjhq);
+let string("\x01",charset="iso-8859-15", maximum_length=3) medicareprty_amn_pbp_nbr = fail_if_error(in0.amqkhq);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_egwp_troop_sched_id = fail_if_error(in0.amzgbj);
+let decimal("\x01",0) medicareprty_egwp_troop_sched_step_no = fail_if_error(in0.amzhbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_dedlvl_drg_spnd_amt = fail_if_error(in0.amzibj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_amt_twd_plan_ded_amt = fail_if_error(in0.amznbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_dedlvl_troop_amt = fail_if_error(in0.amzobj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_plan_gap_amt = fail_if_error(in0.amzjbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_amt_twd_plan_gap_amt = fail_if_error(in0.amzkbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_plan_cat_amt = fail_if_error(in0.amzlbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_amt_twd_plan_cat_amt = fail_if_error(in0.amzmbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_plan_icl_amt = fail_if_error(in0.amzpbj);
+let decimal("\x01".2, maximum_length=13, sign_reserved) medicareprty_egwp_plan_pay_icl_amt = fail_if_error(in0.amzqbj);
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_src_add_user_nm = fail_if_error(in0.amakvn);
+let date("YYYYMMDD")("\x01") medicareprty_src_add_dt;
+let datetime("YYYYMMDDHH24MISS")("\x01") medicareprty_src_add_timestamp;
+let string("\x01",charset="iso-8859-15", maximum_length=10) medicareprty_src_chg_user_nm = fail_if_error(in0.amadvn);
+let date("YYYYMMDD")("\x01") medicareprty_src_chg_dt;
+let datetime("YYYYMMDDHH24MISS")("\x01") medicareprty_src_chg_timestamp;
+let decimal("\x01",0) medicareprty_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) bgn_bnft_phase_benefit_phase_cd = fail_if_error(in0.amc5ai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_orgn_cd_rx_origin_cd = fail_if_error(in0.amkwst);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_stat_claim_stat_id = fail_if_error(in0.amzsst);
+let string("\x01",charset="iso-8859-15", maximum_length=30) cntrct_pbp_carrier_id = fail_if_error(in0.amidhe);
+let string("\x01",charset="iso-8859-15", maximum_length=40) cntrct_pbp_account_id = fail_if_error(in0.amifhe);
+let string("\x01",charset="iso-8859-15", maximum_length=30) cntrct_pbp_employer_group_id = fail_if_error(in0.amighe);
+let string("\x01",charset="iso-8859-15", maximum_length=10) cntrct_pbp_plan_cd = fail_if_error(in0.amiehe);
+let decimal("\x01",0) cntrct_pbp_sequence_no = 9999;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.ams6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.ams7cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.ams8cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_carr_acct_carrier_id = fail_if_error(in0.ams6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_carr_acct_account_id = fail_if_error(in0.ams7cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_carrier_carrier_id = fail_if_error(in0.ams6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_carrier_id = fail_if_error(in0.ams6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_account_id = fail_if_error(in0.ams7cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_employer_group_id = fail_if_error(in0.ams8cd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_mbr_id = fail_if_error(in0.ams5cd);
+let date("YYYYMMDD")("\x01") d_sbm_dt_cal_day_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) end_bnft_phase_benefit_phase_cd = fail_if_error(in0.amc6ai);
+let string("\x01",charset="iso-8859-15", maximum_length=10) final_pln_pln_cd = fail_if_error(in0.amtjcd);
+let date("YYYYMMDD")("\x01") final_pln_pln_eff_dt;
+let decimal("\x01",0) final_pln_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) gncr_in_gnrc_mdspn_ind = fail_if_error(in0.amlrst);
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_gpi_id = fail_if_error(in0.ampecd);
+let string("\x01",charset="iso-8859-15", maximum_length=12) pharmacy_phr_id = fail_if_error(in0.amujcd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) res_cd_residence_cd = fail_if_error(in0.amaxod);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rx_org_rx_origin_cd = fail_if_error(in0.amk6st);
+let unicode string(int) ambmdt_temp;
+let unicode string(int) amc2dt_temp;
+let unicode string(int) ame1hk_temp;
+
+
+
+/*   Rule:Compute medicareprty.tc4_plan_eff_dt  (#1)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.amurhg) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amurhg))))) ==1) && ((sql_and((length_of(in0.amurhg) member [vector 8]),is_valid(YYYYMMDD(in0.amurhg)))) ==0)),0))begin
+  bzt_4=1;
+  medicareprty_tc4_plan_eff_dt=YYYYMMDD(19000000 + in0.amurhg);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.amurhg) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amurhg))))) ==0) && ((sql_and((length_of(in0.amurhg) member [vector 8]),is_valid(YYYYMMDD(in0.amurhg)))) ==1)),0))begin
+  bzt_4=1;
+  medicareprty_tc4_plan_eff_dt=YYYYMMDD(in0.amurhg);
+end
+
+/*   Default value   */
+if(!bzt_4)begin
+  medicareprty_tc4_plan_eff_dt=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Rule:Compute medicareprty.sbm_srv_dt  (#2)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.ambbda) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ambbda))))) ==1) && ((sql_and((length_of(in0.ambbda) member [vector 8]),is_valid(YYYYMMDD(in0.ambbda)))) ==0)),0))begin
+  bzt_5=1;
+  medicareprty_sbm_srv_dt=YYYYMMDD(19000000 + in0.ambbda);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.ambbda) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ambbda))))) ==0) && ((sql_and((length_of(in0.ambbda) member [vector 8]),is_valid(YYYYMMDD(in0.ambbda)))) ==1)),0))begin
+  bzt_5=1;
+  medicareprty_sbm_srv_dt=YYYYMMDD(in0.ambbda);
+end
+
+/*   Default value   */
+if(!bzt_5)begin
+  medicareprty_sbm_srv_dt=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Rule:Compute ambmdt_temp  (#3)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.ambmdt) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ambmdt))))) ==1) && ((sql_and((length_of(in0.ambmdt) member [vector 8]),is_valid(YYYYMMDD(in0.ambmdt)))) ==0)),0))begin
+  bzt_6=1;
+  ambmdt_temp=YYYYMMDD(19000000 + in0.ambmdt);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.ambmdt) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ambmdt))))) ==0) && ((sql_and((length_of(in0.ambmdt) member [vector 8]),is_valid(YYYYMMDD(in0.ambmdt)))) ==1)),0))begin
+  bzt_6=1;
+  ambmdt_temp=YYYYMMDD(in0.ambmdt);
+end
+
+/*   Default value   */
+if(!bzt_6)begin
+  ambmdt_temp=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Default value   */
+medicareprty_src_chg_timestamp=fail_if_error(YYYYMMDD_HHMMSS(ambmdt_temp,decimal_lpad((decimal(""))in0.amabtm , 6)));
+
+/*   Default value   */
+medicareprty_src_chg_dt=fail_if_error(ambmdt_temp);
+
+/*   Rule:Compute amc2dt_temp  (#4)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.amc2dt) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amc2dt))))) ==1) && ((sql_and((length_of(in0.amc2dt) member [vector 8]),is_valid(YYYYMMDD(in0.amc2dt)))) ==0)),0))begin
+  bzt_7=1;
+  amc2dt_temp=YYYYMMDD(19000000 + in0.amc2dt);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.amc2dt) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amc2dt))))) ==0) && ((sql_and((length_of(in0.amc2dt) member [vector 8]),is_valid(YYYYMMDD(in0.amc2dt)))) ==1)),0))begin
+  bzt_7=1;
+  amc2dt_temp=YYYYMMDD(in0.amc2dt);
+end
+
+/*   Default value   */
+if(!bzt_7)begin
+  amc2dt_temp=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Default value   */
+medicareprty_src_add_timestamp=fail_if_error(YYYYMMDD_HHMMSS(amc2dt_temp,decimal_lpad((decimal(""))in0.amadtm , 6)));
+
+/*   Default value   */
+medicareprty_src_add_dt=fail_if_error(amc2dt_temp);
+
+/*   Rule:Compute ame1hk_temp  (#5)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.ame1hk) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ame1hk))))) ==1) && ((sql_and((length_of(in0.ame1hk) member [vector 8]),is_valid(YYYYMMDD(in0.ame1hk)))) ==0)),0))begin
+  bzt_8=1;
+  ame1hk_temp=YYYYMMDD(19000000 + in0.ame1hk);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.ame1hk) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ame1hk))))) ==0) && ((sql_and((length_of(in0.ame1hk) member [vector 8]),is_valid(YYYYMMDD(in0.ame1hk)))) ==1)),0))begin
+  bzt_8=1;
+  ame1hk_temp=YYYYMMDD(in0.ame1hk);
+end
+
+/*   Default value   */
+if(!bzt_8)begin
+  ame1hk_temp=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Default value   */
+medicareprty_subm_yr_mnth=fail_if_error(string_substring(ame1hk_temp , 1 , 6 ));
+
+/*   Default value   */
+medicareprty_subm_mnth=fail_if_error(string_substring(ame1hk_temp , 5 , 2 ));
+
+/*   Default value   */
+medicareprty_subm_qtr=fail_if_error(if(string_substring(ame1hk_temp , 5 , 2 ) member  [vector  '01','02','03']) (string_concat(string_substring(ame1hk_temp , 5 , 2 )," Q1"))  
+else if(string_substring(ame1hk_temp , 5 , 2 ) member  [vector  '04','05','06']) (string_concat(string_substring(ame1hk_temp , 5 , 2 )," Q2")) 
+else if(string_substring(ame1hk_temp , 5 , 2 ) member  [vector  '07','08','09']) (string_concat(string_substring(ame1hk_temp , 5 , 2 )," Q3"))
+else (string_concat(string_substring(ame1hk_temp , 5 , 2 )," Q4")));
+
+/*   Default value   */
+medicareprty_subm_yr=fail_if_error(string_substring(ame1hk_temp , 1 , 4 ));
+
+/*   Default value   */
+medicareprty_sbm_dt=fail_if_error(ame1hk_temp);
+
+/*   Rule:Compute final_pln.pln_eff_dt  (#6)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.amasda) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amasda))))) ==1) && ((sql_and((length_of(in0.amasda) member [vector 8]),is_valid(YYYYMMDD(in0.amasda)))) ==0)),0))begin
+  bzt_9=1;
+  final_pln_pln_eff_dt=YYYYMMDD(19000000 + in0.amasda);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.amasda) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amasda))))) ==0) && ((sql_and((length_of(in0.amasda) member [vector 8]),is_valid(YYYYMMDD(in0.amasda)))) ==1)),0))begin
+  bzt_9=1;
+  final_pln_pln_eff_dt=YYYYMMDD(in0.amasda);
+end
+
+/*   Default value   */
+if(!bzt_9)begin
+  final_pln_pln_eff_dt=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Rule:Compute d_sbm_dt.cal_day_dt  (#7)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.ame1hk) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ame1hk))))) ==1) && ((sql_and((length_of(in0.ame1hk) member [vector 8]),is_valid(YYYYMMDD(in0.ame1hk)))) ==0)),0))begin
+  bzt_10=1;
+  d_sbm_dt_cal_day_dt=YYYYMMDD(19000000 + in0.ame1hk);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.ame1hk) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.ame1hk))))) ==0) && ((sql_and((length_of(in0.ame1hk) member [vector 8]),is_valid(YYYYMMDD(in0.ame1hk)))) ==1)),0))begin
+  bzt_10=1;
+  d_sbm_dt_cal_day_dt=YYYYMMDD(in0.ame1hk);
+end
+
+/*   Default value   */
+if(!bzt_10)begin
+  d_sbm_dt_cal_day_dt=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Rule:Compute medicareprty.orig_claim_rcvd_dt  (#8)   */
+if(first_defined(fail_if_error(((sql_and((length_of(in0.amaqce) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amaqce))))) ==1) && ((sql_and((length_of(in0.amaqce) member [vector 8]),is_valid(YYYYMMDD(in0.amaqce)))) ==0)),0))begin
+  bzt_11=1;
+  medicareprty_orig_claim_rcvd_dt=YYYYMMDD(19000000 + in0.amaqce);
+end
+else if(first_defined(fail_if_error(((sql_and((length_of(in0.amaqce) member [vector 6,7]),is_valid(YYYYMMDD((19000000+in0.amaqce))))) ==0) && ((sql_and((length_of(in0.amaqce) member [vector 8]),is_valid(YYYYMMDD(in0.amaqce)))) ==1)),0))begin
+  bzt_11=1;
+  medicareprty_orig_claim_rcvd_dt=YYYYMMDD(in0.amaqce);
+end
+
+/*   Default value   */
+if(!bzt_11)begin
+  medicareprty_orig_claim_rcvd_dt=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Default value   */
+medicareprty_clt_ingred_cost_paid=fail_if_error(if(!is_null(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acp2nb)) 
+if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acs9qu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acs9qu))
+else
+       bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acs9qu
+	   else in0.amv7hy);
+
+/*   Default value   */
+medicareprty_clt_due_amt=fail_if_error(if(!is_null(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acp2nb)) bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actequ else -1);
+
+/*   Default value   */
+medicareprty_clt_dispensing_fee=fail_if_error(if(!is_null(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acp2nb)) 
+if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actaqu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actaqu))
+else
+       bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actaqu
+	   else in0.amv8hy);
+
+/*   Default value   */
+medicareprty_days_of_supply_sk=fail_if_error(first_defined(bzt_13_6c54cc0a_58524748_2b0e_0(in0.amimnb).days_of_supply_sk,-1));
+
+/*   Default value   */
+medicareprty_mbr_hicn_id=fail_if_error(first_defined(bzt_14_6c54cc0a_58524748_2b0e_0(in0.ams5cd, in0.ams6cd, in0.ams7cd, in0.ams8cd).msi_suppl_id, in0.mbr_hic_cd));
+
+/*   Default value   */
+medicareprty_pbr_sk=fail_if_error(first_defined(bzt_15_6c54cc0a_58524748_2b0e_0(in0.amtccd, in0.amilcj, in0.amzsst, in0.rxt_src_envrt_id).pbr_sk,-1));
+
+/*   Default value   */
+medicareprty_clt_sales_tax_paid=fail_if_error(if(!is_null(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).acp2nb)) 
+if (in0.amzsst member  [vector  'X', 'Z']) 
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actbqu + bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actcqu)) * -1
+else if  (in0.amzsst member  [vector  'P', 'C'])
+       decimal_strip(math_abs(bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actbqu + bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actcqu))
+else
+       bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actbqu + bzt_12_6c54cc0a_58524748_2b0e_0(in0.amp2nb, in0.ams6nb, in0.amzsst, in0.rxt_src_envrt_id).actcqu
+	   else in0.amv9hy);
+
+  out0.medicareprty.claim_nbr::medicareprty_claim_nbr;
+  out0.medicareprty.claim_seq_nbr::medicareprty_claim_seq_nbr;
+  out0.medicareprty.claim_stat_id::medicareprty_claim_stat_id;
+  out0.medicareprty.claim_stat_sk::medicareprty_claim_stat_sk;
+  out0.medicareprty.sbm_dt_sk::medicareprty_sbm_dt_sk;
+  out0.medicareprty.carrier_sk::medicareprty_carrier_sk;
+  out0.medicareprty.carrier_acct_sk::medicareprty_carrier_acct_sk;
+  out0.medicareprty.cag_sk::medicareprty_cag_sk;
+  out0.medicareprty.mbr_sk::medicareprty_mbr_sk;
+  out0.medicareprty.final_pln_sk::medicareprty_final_pln_sk;
+  out0.medicareprty.phr_sk::medicareprty_phr_sk;
+  out0.medicareprty.ntwk_sk::medicareprty_ntwk_sk;
+  out0.medicareprty.pbr_sk::medicareprty_pbr_sk;
+  out0.medicareprty.gpi_sk::medicareprty_gpi_sk;
+  out0.medicareprty.prod_sk::medicareprty_prod_sk;
+  out0.medicareprty.compound_sk::medicareprty_compound_sk;
+  out0.medicareprty.gnrc_ind_sk::medicareprty_gnrc_ind_sk;
+  out0.medicareprty.days_of_supply_sk::medicareprty_days_of_supply_sk;
+  out0.medicareprty.filled_dt_sk::medicareprty_filled_dt_sk;
+  out0.medicareprty.contract_pbp_sk::medicareprty_contract_pbp_sk;
+  out0.medicareprty.residence_cd_sk::medicareprty_residence_cd_sk;
+  out0.medicareprty.claim_origination_code_sk::medicareprty_claim_origination_code_sk;
+  out0.medicareprty.begin_benefit_phase_sk::medicareprty_begin_benefit_phase_sk;
+  out0.medicareprty.end_benefit_phase_sk::medicareprty_end_benefit_phase_sk;
+  out0.medicareprty.rx_origin_cd_sk::medicareprty_rx_origin_cd_sk;
+  out0.medicareprty.rej_reason1::medicareprty_rej_reason1;
+  out0.medicareprty.rej_reason2::medicareprty_rej_reason2;
+  out0.medicareprty.rej_reason3::medicareprty_rej_reason3;
+  out0.medicareprty.tc4_carrier_id::medicareprty_tc4_carrier_id;
+  out0.medicareprty.tc4_account_id::medicareprty_tc4_account_id;
+  out0.medicareprty.tc4_employer_group_id::medicareprty_tc4_employer_group_id;
+  out0.medicareprty.tc4_plan_cd::medicareprty_tc4_plan_cd;
+  out0.medicareprty.tc4_plan_eff_dt::medicareprty_tc4_plan_eff_dt;
+  out0.medicareprty.claim_cntr::medicareprty_claim_cntr;
+  out0.medicareprty.sbm_dt::medicareprty_sbm_dt;
+  out0.medicareprty.subm_yr::medicareprty_subm_yr;
+  out0.medicareprty.subm_mnth::medicareprty_subm_mnth;
+  out0.medicareprty.subm_yr_mnth::medicareprty_subm_yr_mnth;
+  out0.medicareprty.subm_qtr::medicareprty_subm_qtr;
+  out0.medicareprty.refill_nbr::medicareprty_refill_nbr;
+  out0.medicareprty.days_sply::medicareprty_days_sply;
+  out0.medicareprty.drg_qty::medicareprty_drg_qty;
+  out0.medicareprty.rx_nbr::medicareprty_rx_nbr;
+  out0.medicareprty.sbm_srv_dt::medicareprty_sbm_srv_dt;
+  out0.medicareprty.prod_key::medicareprty_prod_key;
+  out0.medicareprty.prod_id::medicareprty_prod_id;
+  out0.medicareprty.compound_cd::medicareprty_compound_cd;
+  out0.medicareprty.prod_sel_cd::medicareprty_prod_sel_cd;
+  out0.medicareprty.cob_ind::medicareprty_cob_ind;
+  out0.medicareprty.dmr_ind::medicareprty_dmr_ind;
+  out0.medicareprty.qual_serv_prov_id::medicareprty_qual_serv_prov_id;
+  out0.medicareprty.subm_oth_covrg_cd::medicareprty_subm_oth_covrg_cd;
+  out0.medicareprty.subm_clfctn_cd::medicareprty_subm_clfctn_cd;
+  out0.medicareprty.tc3_srv_prov_id_qlfr_cd::medicareprty_tc3_srv_prov_id_qlfr_cd;
+  out0.medicareprty.tc3_srv_prov_id::medicareprty_tc3_srv_prov_id;
+  out0.medicareprty.tc3_rx_origin_cd::medicareprty_tc3_rx_origin_cd;
+  out0.medicareprty.tc3_phr_svc_type_cd::medicareprty_tc3_phr_svc_type_cd;
+  out0.medicareprty.contract_id::medicareprty_contract_id;
+  out0.medicareprty.plan_benefit_pkg_cd::medicareprty_plan_benefit_pkg_cd;
+  out0.medicareprty.troop_sched_id::medicareprty_troop_sched_id;
+  out0.medicareprty.drg_cov_stat_sched_id::medicareprty_drg_cov_stat_sched_id;
+  out0.medicareprty.drg_cov_stat_cd::medicareprty_drg_cov_stat_cd;
+  out0.medicareprty.brand_generic_cd::medicareprty_brand_generic_cd;
+  out0.medicareprty.accum_basis_cd::medicareprty_accum_basis_cd;
+  out0.medicareprty.pdp_seq_no::medicareprty_pdp_seq_no;
+  out0.medicareprty.cpp_amt::medicareprty_cpp_amt;
+  out0.medicareprty.prior_troop_amt::medicareprty_prior_troop_amt;
+  out0.medicareprty.lics_drg_spnd_ded_bal_amt::medicareprty_lics_drg_spnd_ded_bal_amt;
+  out0.medicareprty.lics_drg_spnd_ded_amt::medicareprty_lics_drg_spnd_ded_amt;
+  out0.medicareprty.client_patient_pay_amt::medicareprty_client_patient_pay_amt;
+  out0.medicareprty.tot_drg_cst_acc_gross_amt::medicareprty_tot_drg_cst_acc_gross_amt;
+  out0.medicareprty.true_oop_accum_amt::medicareprty_true_oop_accum_amt;
+  out0.medicareprty.true_disc_elig_amt::medicareprty_true_disc_elig_amt;
+  out0.medicareprty.gap_brnd_disc_amt::medicareprty_gap_brnd_disc_amt;
+  out0.medicareprty.egwp_ded_mbr_pay_amt::medicareprty_egwp_ded_mbr_pay_amt;
+  out0.medicareprty.egwp_ded_drg_spnd_amt::medicareprty_egwp_ded_drg_spnd_amt;
+  out0.medicareprty.egwp_cg_mbr_pay_amt::medicareprty_egwp_cg_mbr_pay_amt;
+  out0.medicareprty.egwp_cg_drg_spnd_amt::medicareprty_egwp_cg_drg_spnd_amt;
+  out0.medicareprty.egwp_cat_mbr_pay_amt::medicareprty_egwp_cat_mbr_pay_amt;
+  out0.medicareprty.egwp_cat_drg_spnd_amt::medicareprty_egwp_cat_drg_spnd_amt;
+  out0.medicareprty.egwp_icl_mbr_pay_amt::medicareprty_egwp_icl_mbr_pay_amt;
+  out0.medicareprty.egwp_icl_drg_spnd_amt::medicareprty_egwp_icl_drg_spnd_amt;
+  out0.medicareprty.dual_amt::medicareprty_dual_amt;
+  out0.medicareprty.moop_mbr_pay_amt::medicareprty_moop_mbr_pay_amt;
+  out0.medicareprty.moop_drg_spnd_amt::medicareprty_moop_drg_spnd_amt;
+  out0.medicareprty.phr_ingred_cost_paid::medicareprty_phr_ingred_cost_paid;
+  out0.medicareprty.phr_dispensing_fee::medicareprty_phr_dispensing_fee;
+  out0.medicareprty.phr_sales_tax_paid::medicareprty_phr_sales_tax_paid;
+  out0.medicareprty.phr_patient_pay_amt::medicareprty_phr_patient_pay_amt;
+  out0.medicareprty.clt_ingred_cost_paid::medicareprty_clt_ingred_cost_paid;
+  out0.medicareprty.clt_dispensing_fee::medicareprty_clt_dispensing_fee;
+  out0.medicareprty.clt_sales_tax_paid::medicareprty_clt_sales_tax_paid;
+  out0.medicareprty.clt_patient_pay_amt::medicareprty_clt_patient_pay_amt;
+  out0.medicareprty.clt_due_amt::medicareprty_clt_due_amt;
+  out0.medicareprty.cat_cov_cd::medicareprty_cat_cov_cd;
+  out0.medicareprty.plan_troop_sched_id::medicareprty_plan_troop_sched_id;
+  out0.medicareprty.lics_troop_sched_id::medicareprty_lics_troop_sched_id;
+  out0.medicareprty.lics_sched_step_no::medicareprty_lics_sched_step_no;
+  out0.medicareprty.lics_troop_nbr_steps_no::medicareprty_lics_troop_nbr_steps_no;
+  out0.medicareprty.lics_amt::medicareprty_lics_amt;
+  out0.medicareprty.ded_lvl_drg_spnd_amt::medicareprty_ded_lvl_drg_spnd_amt;
+  out0.medicareprty.amt_twd_plan_ded_amt::medicareprty_amt_twd_plan_ded_amt;
+  out0.medicareprty.ded_lvl_troop_amt::medicareprty_ded_lvl_troop_amt;
+  out0.medicareprty.plan_gap_amt::medicareprty_plan_gap_amt;
+  out0.medicareprty.amt_twd_plan_gap_amt::medicareprty_amt_twd_plan_gap_amt;
+  out0.medicareprty.plan_cat_amt::medicareprty_plan_cat_amt;
+  out0.medicareprty.amt_twd_plan_cat_amt::medicareprty_amt_twd_plan_cat_amt;
+  out0.medicareprty.plan_init_cov_amt::medicareprty_plan_init_cov_amt;
+  out0.medicareprty.plan_pay_init_cov_lvl_amt::medicareprty_plan_pay_init_cov_lvl_amt;
+  out0.medicareprty.mbr_amt_twd_ded_amt::medicareprty_mbr_amt_twd_ded_amt;
+  out0.medicareprty.drg_spnd_twd_ded_amt::medicareprty_drg_spnd_twd_ded_amt;
+  out0.medicareprty.mbr_amt_twd_gap_amt::medicareprty_mbr_amt_twd_gap_amt;
+  out0.medicareprty.drg_spnd_twd_gap_amt::medicareprty_drg_spnd_twd_gap_amt;
+  out0.medicareprty.mbr_amt_twd_cat_amt::medicareprty_mbr_amt_twd_cat_amt;
+  out0.medicareprty.drg_spnd_twd_cat_amt::medicareprty_drg_spnd_twd_cat_amt;
+  out0.medicareprty.mbr_amt_twd_init_cov_amt::medicareprty_mbr_amt_twd_init_cov_amt;
+  out0.medicareprty.drg_spnd_twd_init_cov_amt::medicareprty_drg_spnd_twd_init_cov_amt;
+  out0.medicareprty.gdca_amt::medicareprty_gdca_amt;
+  out0.medicareprty.gdcb_amt::medicareprty_gdcb_amt;
+  out0.medicareprty.npp_amt::medicareprty_npp_amt;
+  out0.medicareprty.drg_spnd_amt::medicareprty_drg_spnd_amt;
+  out0.medicareprty.pds_rebate_est_amt::medicareprty_pds_rebate_est_amt;
+  out0.medicareprty.clt_vacc_adm_fee_amt::medicareprty_clt_vacc_adm_fee_amt;
+  out0.medicareprty.rbl_oth_pyr_recog_amt::medicareprty_rbl_oth_pyr_recog_amt;
+  out0.medicareprty.phr_vacc_adm_fee_amt::medicareprty_phr_vacc_adm_fee_amt;
+  out0.medicareprty.phr_oth_pyr_recog_amt::medicareprty_phr_oth_pyr_recog_amt;
+  out0.medicareprty.oth_pyr_paid_amt::medicareprty_oth_pyr_paid_amt;
+  out0.medicareprty.subrogation_amt::medicareprty_subrogation_amt;
+  out0.medicareprty.report_gap_disc_amt::medicareprty_report_gap_disc_amt;
+  out0.medicareprty.medicaid_subrogation_ind::medicareprty_medicaid_subrogation_ind;
+  out0.medicareprty.shortcycle_prov_qlfr_cd::medicareprty_shortcycle_prov_qlfr_cd;
+  out0.medicareprty.shortcycle_prod_qlfr_cd::medicareprty_shortcycle_prod_qlfr_cd;
+  out0.medicareprty.shortcycle_claim_qlfr_cd::medicareprty_shortcycle_claim_qlfr_cd;
+  out0.medicareprty.dcs_daily_prorate_no::medicareprty_dcs_daily_prorate_no;
+  out0.medicareprty.prod_claim_no::medicareprty_prod_claim_no;
+  out0.medicareprty.prod_claim_seq_no::medicareprty_prod_claim_seq_no;
+  out0.medicareprty.create_update_by_ind::medicareprty_create_update_by_ind;
+  out0.medicareprty.svc_claim_ind::medicareprty_svc_claim_ind;
+  out0.medicareprty.out_of_netwk_cd::medicareprty_out_of_netwk_cd;
+  out0.medicareprty.orig_claim_rcvd_dt::medicareprty_orig_claim_rcvd_dt;
+  out0.medicareprty.adjud_beign_timestamp::medicareprty_adjud_beign_timestamp;
+  out0.medicareprty.reprocess_claim_seq_no::medicareprty_reprocess_claim_seq_no;
+  out0.medicareprty.tier_ind::medicareprty_tier_ind;
+  out0.medicareprty.formulary_cd::medicareprty_formulary_cd;
+  out0.medicareprty.gap_disc_pln_ovrd_cd::medicareprty_gap_disc_pln_ovrd_cd;
+  out0.medicareprty.prod_claim_prod_id::medicareprty_prod_claim_prod_id;
+  out0.medicareprty.prod_claim_prod_key::medicareprty_prod_claim_prod_key;
+  out0.medicareprty.prod_claim_gpi_nbr::medicareprty_prod_claim_gpi_nbr;
+  out0.medicareprty.pbr_npi_id::medicareprty_pbr_npi_id;
+  out0.medicareprty.created_by_version_nbr::medicareprty_created_by_version_nbr;
+  out0.medicareprty.medicare_plan_type_cd::medicareprty_medicare_plan_type_cd;
+  out0.medicareprty.dispensing_stat_cd::medicareprty_dispensing_stat_cd;
+  out0.medicareprty.copay_catgry_cd::medicareprty_copay_catgry_cd;
+  out0.medicareprty.subsidy_lvl_nbr::medicareprty_subsidy_lvl_nbr;
+  out0.medicareprty.mbr_hicn_id::medicareprty_mbr_hicn_id;
+  out0.medicareprty.amendment_ind::medicareprty_amendment_ind;
+  out0.medicareprty.amn_phr_svc_type_cd::medicareprty_amn_phr_svc_type_cd;
+  out0.medicareprty.amn_pbr_id::medicareprty_amn_pbr_id;
+  out0.medicareprty.amn_pbr_qlfr_cd::medicareprty_amn_pbr_qlfr_cd;
+  out0.medicareprty.amn_rx_origin_cd::medicareprty_amn_rx_origin_cd;
+  out0.medicareprty.amn_pat_residence_cd::medicareprty_amn_pat_residence_cd;
+  out0.medicareprty.amn_contract_id::medicareprty_amn_contract_id;
+  out0.medicareprty.amn_pbp_nbr::medicareprty_amn_pbp_nbr;
+  out0.medicareprty.egwp_troop_sched_id::medicareprty_egwp_troop_sched_id;
+  out0.medicareprty.egwp_troop_sched_step_no::medicareprty_egwp_troop_sched_step_no;
+  out0.medicareprty.egwp_dedlvl_drg_spnd_amt::medicareprty_egwp_dedlvl_drg_spnd_amt;
+  out0.medicareprty.egwp_amt_twd_plan_ded_amt::medicareprty_egwp_amt_twd_plan_ded_amt;
+  out0.medicareprty.egwp_dedlvl_troop_amt::medicareprty_egwp_dedlvl_troop_amt;
+  out0.medicareprty.egwp_plan_gap_amt::medicareprty_egwp_plan_gap_amt;
+  out0.medicareprty.egwp_amt_twd_plan_gap_amt::medicareprty_egwp_amt_twd_plan_gap_amt;
+  out0.medicareprty.egwp_plan_cat_amt::medicareprty_egwp_plan_cat_amt;
+  out0.medicareprty.egwp_amt_twd_plan_cat_amt::medicareprty_egwp_amt_twd_plan_cat_amt;
+  out0.medicareprty.egwp_plan_icl_amt::medicareprty_egwp_plan_icl_amt;
+  out0.medicareprty.egwp_plan_pay_icl_amt::medicareprty_egwp_plan_pay_icl_amt;
+  out0.medicareprty.src_add_user_nm::medicareprty_src_add_user_nm;
+  out0.medicareprty.src_add_dt::medicareprty_src_add_dt;
+  out0.medicareprty.src_add_timestamp::medicareprty_src_add_timestamp;
+  out0.medicareprty.src_chg_user_nm::medicareprty_src_chg_user_nm;
+  out0.medicareprty.src_chg_dt::medicareprty_src_chg_dt;
+  out0.medicareprty.src_chg_timestamp::medicareprty_src_chg_timestamp;
+  out0.medicareprty.src_env_sk::medicareprty_src_env_sk;
+  out0.bgn_bnft_phase.benefit_phase_cd::bgn_bnft_phase_benefit_phase_cd;
+  out0.clm_orgn_cd.rx_origin_cd::clm_orgn_cd_rx_origin_cd;
+  out0.clm_stat.claim_stat_id::clm_stat_claim_stat_id;
+  out0.cntrct_pbp.carrier_id::cntrct_pbp_carrier_id;
+  out0.cntrct_pbp.account_id::cntrct_pbp_account_id;
+  out0.cntrct_pbp.employer_group_id::cntrct_pbp_employer_group_id;
+  out0.cntrct_pbp.plan_cd::cntrct_pbp_plan_cd;
+  out0.cntrct_pbp.sequence_no::cntrct_pbp_sequence_no;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_carr_acct.carrier_id::d_carr_acct_carrier_id;
+  out0.d_carr_acct.account_id::d_carr_acct_account_id;
+  out0.d_carrier.carrier_id::d_carrier_carrier_id;
+  out0.d_mbr.carrier_id::d_mbr_carrier_id;
+  out0.d_mbr.account_id::d_mbr_account_id;
+  out0.d_mbr.employer_group_id::d_mbr_employer_group_id;
+  out0.d_mbr.mbr_id::d_mbr_mbr_id;
+  out0.d_sbm_dt.cal_day_dt::d_sbm_dt_cal_day_dt;
+  out0.end_bnft_phase.benefit_phase_cd::end_bnft_phase_benefit_phase_cd;
+  out0.final_pln.pln_cd::final_pln_pln_cd;
+  out0.final_pln.pln_eff_dt::final_pln_pln_eff_dt;
+  out0.final_pln.src_env_sk::final_pln_src_env_sk;
+  out0.gncr_in.gnrc_mdspn_ind::gncr_in_gnrc_mdspn_ind;
+  out0.gpi.gpi_id::gpi_gpi_id;
+  out0.pharmacy.phr_id::pharmacy_phr_id;
+  out0.res_cd.residence_cd::res_cd_residence_cd;
+  out0.rx_org.rx_origin_cd::rx_org_rx_origin_cd;
+  out0.*::in0.*;
+
+end;

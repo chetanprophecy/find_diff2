@@ -1,0 +1,39 @@
+include "/~$PUB_DXF_DML/ids/cpp_inbound_control_file.dml";
+let cpp_inbound_control_type_t _g_control_info = allocate_with_defaults();
+
+type temporary_type =
+record
+
+  cpp_inbound_control_type_t control_info = allocate_with_defaults();
+end;
+
+out :: initialize( in) =
+begin
+let int i = 9;
+
+ out :: reinterpret_as( cpp_inbound_control_type_t, in.event_text);
+end
+
+out :: rollup( temp, in)=
+begin
+
+  let datetime("YYYYMMDDHH24MISS") _l_data_timestamp = (datetime("YYYYMMDDHH24MISS")) datetime_from_unixtime( multifile_information( "${SOURCE_FILE_URL}").created);
+
+  //Add logic to get the last file timestamp for Delta
+  _g_control_info = reinterpret_as( cpp_inbound_control_type_t, in.event_text);
+
+  out.control_info.ids_table_name :: "${SOURCE}";
+  out.control_info.file_type :: "${DATASET_FULL_OR_DELTA}";
+  out.control_info.insert_count :: if( "${DATASET_FULL_OR_DELTA}" == "DELTA") ( first_defined( temp.control_info.insert_count, 0) + first_defined( _g_control_info.insert_count, 0));
+  out.control_info.update_count :: if( "${DATASET_FULL_OR_DELTA}" == "DELTA") ( first_defined( temp.control_info.update_count, 0) + first_defined( _g_control_info.update_count, 0));
+  out.control_info.delete_count :: if( "${DATASET_FULL_OR_DELTA}" == "DELTA") ( first_defined( temp.control_info.delete_count, 0) + first_defined( _g_control_info.delete_count, 0));
+  out.control_info.data_timestamp :: (string(""))(datetime("YYYYMMDDHH24MISS")) if( "${DATASET_FULL_OR_DELTA}" == "FULL") _l_data_timestamp else (datetime("YYYYMMDDHH24MISS")) "${RUN_DTTM}";
+  out.control_info.total_count :: first_defined( temp.control_info.total_count, 0) + first_defined( _g_control_info.total_count, 0);
+  out.control_info.etl_app_user_id :: "${ETL_APP_USER}"; 
+end
+
+out :: finalize( temp, in) =
+begin
+
+  out :: temp.control_info;
+end

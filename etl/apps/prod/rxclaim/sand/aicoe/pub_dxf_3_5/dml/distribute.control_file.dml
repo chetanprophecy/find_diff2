@@ -1,0 +1,12 @@
+type cpp_inbound_control_type_t =
+record
+  string("|") ids_source_name;
+  string("|") target_dataset_type;  //Full or Delta
+  decimal("|") insert_count = NULL(""); // null for full snapshot
+  decimal("|") update_count = NULL(""); // null for full snapshot
+  decimal("|") delete_count = NULL(""); // null for full snapshot
+  datetime("YYYYMMDDHH24MISS")("|") create_timestamp = NULL(""); // This contains the timestamp of last changes picked up, or the timestamp when the full snapshot was picked up
+  decimal("|") total_count = NULL(""); // null for delta
+  string("|\n") etl_app_user_id = NULL("");
+end;
+metadata type = cpp_inbound_control_type_t;

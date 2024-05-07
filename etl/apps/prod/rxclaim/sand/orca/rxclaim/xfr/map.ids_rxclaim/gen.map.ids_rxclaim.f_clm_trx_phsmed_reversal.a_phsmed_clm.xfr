@@ -1,0 +1,328 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_6_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_generic_medispan_indicator_lkp   */
+out0::bzt_6_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  decimal("\x01",0) gnrc_mdspn_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_ind = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_generic_medispan_indicator_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_8_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_product_lkp   */
+out0::bzt_8_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) drg_ndc_desc = NULL("");
+  decimal("\x01",0) gpi_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_no = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_product_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_9_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_drug_lkp   */
+out0::bzt_9_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=4) drg_class_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) drg_subclass_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) drg_nm_extn_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_drug_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_10_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_alias_lkp   */
+out0::bzt_10_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_7_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_date_lkp   */
+out0::bzt_7_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("");
+  decimal("\x01",0) cal_yr_mnth_id = NULL(""), cal_yr_qtr_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_date_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_11_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_submarket_id_lkp   */
+out0::bzt_11_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=9) carrier_id = NULL("");
+  decimal("\x01",0) submarket_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_submarket_id_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.a_phsmed_clm.gnrc_mdspn_ind,[transform],in0.gnrc_mdspn_ind_sk,
+     'lookup("l_generic_medispan_indicator_lkp").gnrc_mdspn_ind']
+  [out0.a_phsmed_clm.cal_yr_qtr_id,[transform],in0.sbm_dt,
+     'lookup("d_date_lkp").cal_yr_qtr_id']
+  [out0.a_phsmed_clm.copay,[transform],in0.clt_patient_pay_amt,
+     in0.app_patient_pay_amt,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.a_phsmed_clm.amount_paid,[transform],in0.clt_due_amt,
+     in0.app_due_amt,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.a_phsmed_clm.carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.a_phsmed_clm.rxcount_formulary_generic,[transform],in0.claim_cntr,
+     in0.gnrc_mdspn_ind_sk,
+     in0.formulary_flg,
+     'lookup("l_generic_medispan_indicator_lkp").gnrc_mdspn_ind']
+  [out0.a_phsmed_clm.rxcount_formulary,[transform],in0.claim_cntr,
+     in0.formulary_flg]
+  [out0.a_phsmed_clm.drg_ndc_desc,[transform],in0.prod_sk,
+     in0.dxf_sk,
+     'lookup("d_product_lkp").drg_ndc_desc']
+  [out0.a_phsmed_clm.rxcount_generic,[transform],in0.claim_cntr,
+     in0.gnrc_mdspn_ind_sk,
+     'lookup("l_generic_medispan_indicator_lkp").gnrc_mdspn_ind']
+  [out0.a_phsmed_clm.drg_class_id,[transform],in0.drug_sk,
+     in0.dxf_sk,
+     'lookup("d_drug_lkp").drg_class_id']
+  [out0.a_phsmed_clm.pbr_id,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_alias_lkp").pbr_id']
+  [out0.a_phsmed_clm.submarket_id,[transform],in0.orig_carrier_id,
+     'lookup("l_submarket_id_lkp").submarket_id']
+  [out0.a_phsmed_clm.drg_subclass_id,[transform],in0.drug_sk,
+     'lookup("d_drug_lkp").drg_subclass_id']
+  [out0.a_phsmed_clm.rxcount_brand,[transform],in0.claim_cntr,
+     in0.gnrc_mdspn_ind_sk,
+     'lookup("l_generic_medispan_indicator_lkp").gnrc_mdspn_ind']
+  [out0.a_phsmed_clm.ingredient_cost,[transform],in0.clt_ingred_cost_paid,
+     in0.app_ingred_cost_paid,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.a_phsmed_clm.src_env_sk,'a_phsmed_clm.src_env_sk',1,0]
+     [out0.a_phsmed_clm.gnrc_mdspn_ind,'a_phsmed_clm.gnrc_mdspn_ind',1,1]
+     [out0.a_phsmed_clm.cal_yr_qtr_id,'a_phsmed_clm.cal_yr_qtr_id',1,0]
+     [out0.a_phsmed_clm.copay,'a_phsmed_clm.copay',1,0]
+     [out0.a_phsmed_clm.amount_paid,'a_phsmed_clm.amount_paid',1,0]
+     [out0.a_phsmed_clm.carrier_id,'a_phsmed_clm.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.a_phsmed_clm.rxcount_formulary_generic,'a_phsmed_clm.rxcount_formulary_generic',1,1]
+     [out0.a_phsmed_clm.rxcount_formulary,'a_phsmed_clm.rxcount_formulary',1,0]
+     [out0.a_phsmed_clm.drg_ndc_desc,'a_phsmed_clm.drg_ndc_desc',1,0]
+     [out0.a_phsmed_clm.rxcount_generic,'a_phsmed_clm.rxcount_generic',1,1]
+     [out0.a_phsmed_clm.drg_class_id,'a_phsmed_clm.drg_class_id',1,0]
+     [out0.a_phsmed_clm.days_sply,'a_phsmed_clm.days_sply',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.a_phsmed_clm.dxf_hk_part1,'a_phsmed_clm.dxf_hk_part1',1,0]
+     [out0.a_phsmed_clm.pbr_id,'a_phsmed_clm.pbr_id',1,0]
+     [out0.a_phsmed_clm.care_fac_adjud_sk,'a_phsmed_clm.care_fac_adjud_sk',1,0]
+     [out0.a_phsmed_clm.dxf_hk_part2,'a_phsmed_clm.dxf_hk_part2',1,0]
+     [out0.a_phsmed_clm.claim_cntr,'a_phsmed_clm.claim_cntr',1,0]
+     [out0.a_phsmed_clm.submarket_id,'a_phsmed_clm.submarket_id',1,0]
+     [out0.a_phsmed_clm.drg_subclass_id,'a_phsmed_clm.drg_subclass_id',1,0]
+     [out0.a_phsmed_clm.formulary_flg,'a_phsmed_clm.formulary_flg',1,0]
+     [out0.a_phsmed_clm.pbr_sk,'a_phsmed_clm.pbr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.a_phsmed_clm.rxcount_brand,'a_phsmed_clm.rxcount_brand',1,1]
+     [out0.a_phsmed_clm.ingredient_cost,'a_phsmed_clm.ingredient_cost',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.a_phsmed_clm.dxf_sk,'a_phsmed_clm.dxf_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.days_sply,'days_sply',1,1]
+     [in0.filled_dt,'filled_dt',3,3]
+     ['lookup("d_drug_lkp").drg_subclass_id','drg_subclass_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     ['lookup("d_prescriber_alias_lkp").pbr_id','pbr_id',1,1]
+     [in0.care_fac_adjud_sk,'care_fac_adjud_sk',2,2]
+     [in0.drug_sk,'drug_sk',2,2]
+     [in0.orig_carrier_id,'orig_carrier_id',8,5]
+     ['lookup("d_drug_lkp").drg_class_id','drg_class_id',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.app_patient_pay_amt,'app_patient_pay_amt',1,1]
+     [in0.clt_patient_pay_amt,'clt_patient_pay_amt',1,1]
+     ['lookup("l_generic_medispan_indicator_lkp").gnrc_mdspn_ind','gnrc_mdspn_ind',1,5]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.claim_cntr,'claim_cntr',5,5]
+     ['lookup("d_product_lkp").drg_ndc_desc','drg_ndc_desc',1,1]
+     [in0.dxf_sk,'dxf_sk',3,3]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.app_due_amt,'app_due_amt',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.formulary_flg,'formulary_flg',3,3]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.app_ingred_cost_paid,'app_ingred_cost_paid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.clt_ingred_cost_paid,'clt_ingred_cost_paid',1,1]
+     ['lookup("l_submarket_id_lkp").submarket_id','submarket_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.gnrc_mdspn_ind_sk,'gnrc_mdspn_ind_sk',2,5]
+     ['lookup("d_date_lkp").cal_yr_qtr_id','cal_yr_qtr_id',1,1]
+     [in0.pbr_sk,'pbr_sk',3,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) a_phsmed_clm_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) a_phsmed_clm_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) a_phsmed_clm_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=9) a_phsmed_clm_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_phsmed_clm_submarket_id;
+let decimal("\x01",0) a_phsmed_clm_care_fac_adjud_sk = fail_if_error(in0.care_fac_adjud_sk);
+let decimal("\x01",0) a_phsmed_clm_cal_yr_qtr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=11) a_phsmed_clm_drg_ndc_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=4) a_phsmed_clm_drg_class_id;
+let string("\x01",charset="iso-8859-15", maximum_length=6) a_phsmed_clm_drg_subclass_id;
+let decimal("\x01",0) a_phsmed_clm_pbr_sk = fail_if_error(in0.pbr_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=15) a_phsmed_clm_pbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=1) a_phsmed_clm_formulary_flg = fail_if_error(in0.formulary_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) a_phsmed_clm_gnrc_mdspn_ind;
+let decimal("\x01",0) a_phsmed_clm_claim_cntr = fail_if_error(in0.claim_cntr);
+let decimal("\x01",0) a_phsmed_clm_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=11, sign_reserved) a_phsmed_clm_amount_paid = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and((in0.orig_carrier_id member [vector"PSI2560","PSI2565","PSI2570"]),(in0.filled_dt<"20050101"))))
+   in0.app_due_amt
+ else
+   in0.clt_due_amt));
+let decimal("\x01".2, maximum_length=11, sign_reserved) a_phsmed_clm_copay = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and((in0.orig_carrier_id member [vector"PSI2560","PSI2565","PSI2570"]),(in0.filled_dt<"20050101"))))
+   in0.app_patient_pay_amt
+ else
+   in0.clt_patient_pay_amt));
+let decimal("\x01".2, maximum_length=11, sign_reserved) a_phsmed_clm_ingredient_cost = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and((in0.orig_carrier_id member [vector"PSI2560","PSI2565","PSI2570"]),(in0.filled_dt<"20050101"))))
+   in0.app_ingred_cost_paid
+ else
+   in0.clt_ingred_cost_paid));
+let decimal("\x01",0) a_phsmed_clm_rxcount_formulary = fail_if_error(if(in0.formulary_flg == "Y") in0.claim_cntr else 0);
+let decimal("\x01",0) a_phsmed_clm_rxcount_generic;
+let decimal("\x01",0) a_phsmed_clm_rxcount_formulary_generic;
+let decimal("\x01",0) a_phsmed_clm_rxcount_brand;
+let decimal("\x01",0) a_phsmed_clm_src_env_sk = fail_if_error(in0.src_env_sk);
+let unicode string(int) v_gnrc_mdspn_ind;
+
+
+
+/*   Default value   */
+v_gnrc_mdspn_ind=fail_if_error(bzt_6_6c54cc0a_58d0f5d0_636b_2(in0.gnrc_mdspn_ind_sk).gnrc_mdspn_ind);
+
+/*   Default value   */
+a_phsmed_clm_rxcount_brand=fail_if_error(if(v_gnrc_mdspn_ind member  [vector  'M', 'N', 'O']) in0.claim_cntr else 0);
+
+/*   Default value   */
+a_phsmed_clm_rxcount_formulary_generic=fail_if_error((if (sql_and((in0.formulary_flg=="Y"),(v_gnrc_mdspn_ind=="Y")))
+   in0.claim_cntr
+ else
+   0));
+
+/*   Default value   */
+a_phsmed_clm_rxcount_generic=fail_if_error(if(v_gnrc_mdspn_ind == "Y") in0.claim_cntr else 0);
+
+/*   Default value   */
+a_phsmed_clm_gnrc_mdspn_ind=fail_if_error(v_gnrc_mdspn_ind);
+
+/*   Default value   */
+a_phsmed_clm_cal_yr_qtr_id=fail_if_error(bzt_7_6c54cc0a_58d0f5d0_636b_2((decimal(""))(string(""))string_substring(str=in0.sbm_dt , start_index= 1, length=6 )
+).cal_yr_qtr_id);
+
+/*   Default value   */
+a_phsmed_clm_drg_ndc_desc=fail_if_error(bzt_8_6c54cc0a_58d0f5d0_636b_2(in0.prod_sk).drg_ndc_desc);
+
+/*   Default value   */
+a_phsmed_clm_drg_class_id=fail_if_error(bzt_9_6c54cc0a_58d0f5d0_636b_2(in0.drug_sk).drg_class_id);
+
+/*   Default value   */
+a_phsmed_clm_pbr_id=fail_if_error(bzt_10_6c54cc0a_58d0f5d0_636b_2(in0.pbr_sk).pbr_id);
+
+/*   Default value   */
+a_phsmed_clm_submarket_id=fail_if_error(bzt_11_6c54cc0a_58d0f5d0_636b_2(in0.orig_carrier_id).submarket_id);
+
+/*   Default value   */
+a_phsmed_clm_drg_subclass_id=fail_if_error(bzt_9_6c54cc0a_58d0f5d0_636b_2(in0.drug_sk).drg_subclass_id);
+
+  out0.a_phsmed_clm.dxf_hk_part1::a_phsmed_clm_dxf_hk_part1;
+  out0.a_phsmed_clm.dxf_hk_part2::a_phsmed_clm_dxf_hk_part2;
+  out0.a_phsmed_clm.dxf_sk::a_phsmed_clm_dxf_sk;
+  out0.a_phsmed_clm.carrier_id::a_phsmed_clm_carrier_id;
+  out0.a_phsmed_clm.submarket_id::a_phsmed_clm_submarket_id;
+  out0.a_phsmed_clm.care_fac_adjud_sk::a_phsmed_clm_care_fac_adjud_sk;
+  out0.a_phsmed_clm.cal_yr_qtr_id::a_phsmed_clm_cal_yr_qtr_id;
+  out0.a_phsmed_clm.drg_ndc_desc::a_phsmed_clm_drg_ndc_desc;
+  out0.a_phsmed_clm.drg_class_id::a_phsmed_clm_drg_class_id;
+  out0.a_phsmed_clm.drg_subclass_id::a_phsmed_clm_drg_subclass_id;
+  out0.a_phsmed_clm.pbr_sk::a_phsmed_clm_pbr_sk;
+  out0.a_phsmed_clm.pbr_id::a_phsmed_clm_pbr_id;
+  out0.a_phsmed_clm.formulary_flg::a_phsmed_clm_formulary_flg;
+  out0.a_phsmed_clm.gnrc_mdspn_ind::a_phsmed_clm_gnrc_mdspn_ind;
+  out0.a_phsmed_clm.claim_cntr::a_phsmed_clm_claim_cntr;
+  out0.a_phsmed_clm.days_sply::a_phsmed_clm_days_sply;
+  out0.a_phsmed_clm.amount_paid::a_phsmed_clm_amount_paid;
+  out0.a_phsmed_clm.copay::a_phsmed_clm_copay;
+  out0.a_phsmed_clm.ingredient_cost::a_phsmed_clm_ingredient_cost;
+  out0.a_phsmed_clm.rxcount_formulary::a_phsmed_clm_rxcount_formulary;
+  out0.a_phsmed_clm.rxcount_generic::a_phsmed_clm_rxcount_generic;
+  out0.a_phsmed_clm.rxcount_formulary_generic::a_phsmed_clm_rxcount_formulary_generic;
+  out0.a_phsmed_clm.rxcount_brand::a_phsmed_clm_rxcount_brand;
+  out0.a_phsmed_clm.src_env_sk::a_phsmed_clm_src_env_sk;
+  out0.*::in0.*;
+
+end;

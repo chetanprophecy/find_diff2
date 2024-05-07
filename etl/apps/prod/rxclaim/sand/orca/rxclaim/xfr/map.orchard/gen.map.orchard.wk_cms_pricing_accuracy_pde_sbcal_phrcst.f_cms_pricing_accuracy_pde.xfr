@@ -1,0 +1,477 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_58d3a52b_874_1
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PHARMACY   */
+out0::bzt_2_6c54cc0a_58d3a52b_874_1(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) phr_sk = NULL(""), phr_dispnsr_type_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL(""), phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) phr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_affl_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) phr_zip_cd = NULL("");
+  decimal("\x01",0) phr_phone_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) dispr_typ_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PHARMACY",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58d3a52b_874_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.fcmspracpde.pde_filled_dt,[passthrough],in0.rxs_filled_date]
+  [out0.fcmspracpde.pde_claim_seq_nbr_src,[passthrough],in0.claim_seq_nbr]
+  [out0.fcmspracpde.pde_crosstab_month,[passthrough],in0.crosstab_month]
+  [out0.fcmspracpde.pde_brand_generic_cd,[transform],in0.brand_generic_code_key]
+  [out0.fcmspracpde.pde_days_of_supply,[passthrough],in0.days_of_supply_num]
+  [out0.fcmspracpde.pde_drg_qty,[passthrough],in0.dispensed_qty]
+  [out0.fcmspracpde.pde_residence_cd_desc,[passthrough],in0.residence_cd_desc]
+  [out0.fcmspracpde.claim_phr_sk,[transform],in0.pharmacy_id,
+     'lookup("LKP: D_PHARMACY").phr_sk']
+  [out0.fcmspracpde.pde_final_pln_sk,[passthrough],in0.rxs_final_plan_code_key]
+  [out0.fcmspracpde.pde_final_pln_cd,[passthrough],in0.final_plan_code]
+  [out0.fcmspracpde.tot_pde_drug_cost,[transform],in0.dispensed_qty,
+     in0.clr_ingredient_cost_paid_amt]
+  [out0.fcmspracpde.pde_ndc_label_nm,[passthrough],in0.ndc_long_desc]
+  [out0.fcmspracpde.pde_contract_id,[passthrough],in0.rxs_contract_num]
+  [out0.fcmspracpde.pde_phr_sk,[passthrough],in0.rxs_pharmacy_key]
+  [out0.fcmspracpde.pde_adj_del_sk,[passthrough],in0.pde_adjustment_deletion_key]
+  [out0.fcmspracpde.pde_prxy_ndc_id,[passthrough],in0.proxy_ndc_id]
+  [out0.fcmspracpde.pde_residence_cd_sk,[passthrough],in0.residence_cd_sk]
+  [out0.fcmspracpde.tot_est_discrepancy,[transform],in0.brand_dispensing_fee_90,
+     in0.mpf_days_of_supply,
+     in0.clr_ingredient_cost_paid_amt,
+     in0.generic_dispensing_fee_60,
+     in0.brand_dispensing_fee_60,
+     in0.dispensed_qty,
+     in0.generic_dispensing_fee_30,
+     in0.brand_generic_code_key,
+     in0.generic_dispensing_fee_90,
+     in0.clr_dispensing_fee_paid_amt,
+     in0.brand_dispensing_fee_30,
+     in0.unit_cost]
+  [out0.fcmspracpde.pde_crosstab_year,[passthrough],in0.crosstab_year]
+  [out0.fcmspracpde.pde_det_resp_sk,[passthrough],in0.pde_det_resp_key]
+  [out0.fcmspracpde.pde_claim_sbm_dt,[passthrough],in0.rxs_submitted_date]
+  [out0.fcmspracpde.pde_phr_svc_typ,[passthrough],in0.phr_svc_typ_submd]
+  [out0.fcmspracpde.mpf_dispensing_fee,[transform],in0.brand_dispensing_fee_90,
+     in0.mpf_days_of_supply,
+     in0.generic_dispensing_fee_60,
+     in0.brand_dispensing_fee_60,
+     in0.generic_dispensing_fee_30,
+     in0.brand_generic_code_key,
+     in0.generic_dispensing_fee_90,
+     in0.brand_dispensing_fee_30]
+  [out0.fcmspracpde.pde_pbp_id,[passthrough],in0.rxs_pbp_id]
+  [out0.fcmspracpde.pde_cag_sk,[passthrough],in0.carrier_account_group_key]
+  [out0.fcmspracpde.pde_claim_stat_id,[passthrough],in0.claim_stat_id]
+  [out0.fcmspracpde.mpf_ndc_unit_cost,[passthrough],in0.unit_cost]
+  [out0.fcmspracpde.pde_compound_sk,[passthrough],in0.compound_code_key]
+  [out0.fcmspracpde.pde_residence_cd,[passthrough],in0.residence_cd]
+  [out0.fcmspracpde.pde_ndc_id,[passthrough],in0.ndc_id]
+  [out0.fcmspracpde.pde_phr_npi_id,[passthrough],in0.pharmacy_npi_id]
+  [out0.fcmspracpde.pde_proc_dt,[transform],in0.pde_processed_datetime_id]
+  [out0.fcmspracpde.pde_phr_id,[passthrough],in0.pharmacy_id]
+  [out0.fcmspracpde.pde_prxy_ndc_label_nm,[passthrough],in0.prxy_ndc_label_nm]
+  [out0.fcmspracpde.pde_resp_rec_type_sk,[passthrough],in0.pde_resp_record_type_key]
+  [out0.fcmspracpde.tot_mpf_drug_cost,[transform],in0.dispensed_qty,
+     in0.unit_cost]
+  [out0.fcmspracpde.pde_pbp_sk,[passthrough],in0.pde_plan_type_key]
+  [out0.fcmspracpde.pde_carrier_id,[passthrough],in0.carrier_id]
+  [out0.fcmspracpde.pde_ndc_unit_cost,[transform],in0.dispensed_qty,
+     in0.clr_ingredient_cost_paid_amt]
+  [out0.fcmspracpde.pde_dispensing_fee,[passthrough],in0.clr_dispensing_fee_paid_amt]
+  [out0.fcmspracpde.tot_est_pde_cost,[transform],in0.clr_ingredient_cost_paid_amt,
+     in0.dispensed_qty,
+     in0.clr_dispensing_fee_paid_amt]
+  [out0.fcmspracpde.tot_est_mpf_cost,[transform],in0.brand_dispensing_fee_90,
+     in0.mpf_days_of_supply,
+     in0.generic_dispensing_fee_60,
+     in0.brand_dispensing_fee_60,
+     in0.dispensed_qty,
+     in0.generic_dispensing_fee_30,
+     in0.brand_generic_code_key,
+     in0.generic_dispensing_fee_90,
+     in0.brand_dispensing_fee_30,
+     in0.unit_cost]
+  [out0.fcmspracpde.pde_claim_nbr,[passthrough],in0.claim_nbr]
+  [out0.fcmspracpde.pde_sbm_dt,[transform],in0.pde_submitted_datetime_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.fcmspracpde.src_env_sk,'fcmspracpde.src_env_sk',1,0]
+     [out0.fcmspracpde.pde_filled_dt,'fcmspracpde.pde_filled_dt',1,0]
+     [out0.fcmspracpde.pde_claim_seq_nbr_src,'fcmspracpde.pde_claim_seq_nbr_src',1,0]
+     [out0.fcmspracpde.cms_stars_calendar_submission_sk,'fcmspracpde.cms_stars_calendar_submission_sk',1,0]
+     [out0.fcmspracpde.pde_crosstab_month,'fcmspracpde.pde_crosstab_month',1,0]
+     [out0.fcmspracpde.pde_brand_generic_cd,'fcmspracpde.pde_brand_generic_cd',4,2]
+     [out0.fcmspracpde.pde_days_of_supply,'fcmspracpde.pde_days_of_supply',1,0]
+     [out0.fcmspracpde.pde_drg_qty,'fcmspracpde.pde_drg_qty',5,0]
+     [out0.fcmspracpde.pde_residence_cd_desc,'fcmspracpde.pde_residence_cd_desc',1,0]
+     [out0.fcmspracpde.claim_phr_sk,'fcmspracpde.claim_phr_sk',1,0]
+     [out0.fcmspracpde.phr_retail_flg,'fcmspracpde.phr_retail_flg',1,0]
+     [out0.fcmspracpde.pde_final_pln_sk,'fcmspracpde.pde_final_pln_sk',1,0]
+     [out0.fcmspracpde.phr_ltc_flg,'fcmspracpde.phr_ltc_flg',1,0]
+     [out0.fcmspracpde.pde_final_pln_cd,'fcmspracpde.pde_final_pln_cd',1,0]
+     [out0.fcmspracpde.tot_pde_drug_cost,'fcmspracpde.tot_pde_drug_cost',1,2]
+     [out0.fcmspracpde.pde_ndc_label_nm,'fcmspracpde.pde_ndc_label_nm',1,0]
+     [out0.fcmspracpde.pde_contract_id,'fcmspracpde.pde_contract_id',1,0]
+     [out0.fcmspracpde.report_ndc_sk,'fcmspracpde.report_ndc_sk',1,0]
+     [out0.fcmspracpde.preferred_status_mail_flg,'fcmspracpde.preferred_status_mail_flg',1,0]
+     [out0.fcmspracpde.pde_phr_sk,'fcmspracpde.pde_phr_sk',1,0]
+     [out0.fcmspracpde.phr_la_drugs_flg,'fcmspracpde.phr_la_drugs_flg',1,0]
+     [out0.fcmspracpde.price_id,'fcmspracpde.price_id',1,0]
+     [out0.fcmspracpde.pde_adj_del_sk,'fcmspracpde.pde_adj_del_sk',1,0]
+     [out0.fcmspracpde.pde_prxy_ndc_id,'fcmspracpde.pde_prxy_ndc_id',1,0]
+     [out0.fcmspracpde.pde_residence_cd_sk,'fcmspracpde.pde_residence_cd_sk',1,0]
+     [out0.fcmspracpde.pde_ndc_sk,'fcmspracpde.pde_ndc_sk',1,0]
+     [out0.fcmspracpde.tot_est_discrepancy,'fcmspracpde.tot_est_discrepancy',1,17]
+     [out0.fcmspracpde.cms_drug_pricing_file_sk,'fcmspracpde.cms_drug_pricing_file_sk',1,0]
+     [out0.fcmspracpde.phr_mail_flg,'fcmspracpde.phr_mail_flg',1,0]
+     [out0.fcmspracpde.pde_crosstab_year,'fcmspracpde.pde_crosstab_year',1,0]
+     [out0.fcmspracpde.cms_prxy_ndc_sk,'fcmspracpde.cms_prxy_ndc_sk',1,0]
+     [out0.fcmspracpde.pde_det_resp_sk,'fcmspracpde.pde_det_resp_sk',1,0]
+     [out0.fcmspracpde.pde_claim_sbm_dt,'fcmspracpde.pde_claim_sbm_dt',1,0]
+     [out0.fcmspracpde.pde_phr_svc_typ,'fcmspracpde.pde_phr_svc_typ',1,0]
+     [out0.fcmspracpde.mpf_dispensing_fee,'fcmspracpde.mpf_dispensing_fee',7,10]
+     [out0.fcmspracpde.pde_pbp_id,'fcmspracpde.pde_pbp_id',1,0]
+     [out0.fcmspracpde.pde_cag_sk,'fcmspracpde.pde_cag_sk',1,0]
+     [out0.fcmspracpde.pde_claim_stat_id,'fcmspracpde.pde_claim_stat_id',1,0]
+     [out0.fcmspracpde.mpf_ndc_unit_cost,'fcmspracpde.mpf_ndc_unit_cost',3,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.fcmspracpde.cal_start_dt,'fcmspracpde.cal_start_dt',1,0]
+     [out0.fcmspracpde.pde_compound_sk,'fcmspracpde.pde_compound_sk',1,0]
+     [out0.fcmspracpde.report_prxy_ndc_sk,'fcmspracpde.report_prxy_ndc_sk',1,0]
+     [out0.fcmspracpde.pde_residence_cd,'fcmspracpde.pde_residence_cd',1,0]
+     [out0.fcmspracpde.pde_ndc_id,'fcmspracpde.pde_ndc_id',1,0]
+     [out0.fcmspracpde.pde_phr_npi_id,'fcmspracpde.pde_phr_npi_id',1,0]
+     [out0.fcmspracpde.pde_proc_dt,'fcmspracpde.pde_proc_dt',1,0]
+     [out0.fcmspracpde.pde_phr_id,'fcmspracpde.pde_phr_id',1,0]
+     [out0.fcmspracpde.pde_prxy_ndc_label_nm,'fcmspracpde.pde_prxy_ndc_label_nm',1,0]
+     [out0.fcmspracpde.pde_resp_rec_type_sk,'fcmspracpde.pde_resp_rec_type_sk',1,0]
+     [out0.fcmspracpde.tot_mpf_drug_cost,'fcmspracpde.tot_mpf_drug_cost',1,2]
+     [out0.fcmspracpde.mpf_days_of_supply,'fcmspracpde.mpf_days_of_supply',2,0]
+     [out0.fcmspracpde.cms_prxy_ndc_mon_sk,'fcmspracpde.cms_prxy_ndc_mon_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.fcmspracpde.pde_pbp_sk,'fcmspracpde.pde_pbp_sk',1,0]
+     [out0.fcmspracpde.src_insert_ts,'fcmspracpde.src_insert_ts',1,0]
+     [out0.fcmspracpde.cms_segment_id,'fcmspracpde.cms_segment_id',1,0]
+     [out0.fcmspracpde.pde_carrier_id,'fcmspracpde.pde_carrier_id',1,0]
+     [out0.fcmspracpde.pde_ndc_unit_cost,'fcmspracpde.pde_ndc_unit_cost',3,0]
+     [out0.fcmspracpde.pde_dispensing_fee,'fcmspracpde.pde_dispensing_fee',2,0]
+     [out0.fcmspracpde.cms_pharmacy_cost_sk,'fcmspracpde.cms_pharmacy_cost_sk',1,0]
+     [out0.fcmspracpde.tot_est_pde_cost,'fcmspracpde.tot_est_pde_cost',2,3]
+     [out0.fcmspracpde.prod_directory_dt,'fcmspracpde.prod_directory_dt',1,0]
+     [out0.fcmspracpde.cms_ndc_sk,'fcmspracpde.cms_ndc_sk',1,0]
+     [out0.fcmspracpde.tot_est_mpf_cost,'fcmspracpde.tot_est_mpf_cost',2,13]
+     [out0.fcmspracpde.pde_prxy_ndc_sk,'fcmspracpde.pde_prxy_ndc_sk',1,0]
+     [out0.fcmspracpde.pde_claim_nbr,'fcmspracpde.pde_claim_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.fcmspracpde.preferred_status_retail_flg,'fcmspracpde.preferred_status_retail_flg',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.fcmspracpde.pricing_file_mail_flg,'fcmspracpde.pricing_file_mail_flg',1,0]
+     [out0.fcmspracpde.pde_sbm_dt,'fcmspracpde.pde_sbm_dt',1,0]
+     [out0.fcmspracpde.phr_hi_flg,'fcmspracpde.phr_hi_flg',1,0]
+     [out0.fcmspracpde.cal_end_dt,'fcmspracpde.cal_end_dt',1,0]
+  ]
+  impacts:
+  [
+     [in0.brand_dispensing_fee_90,'brand_dispensing_fee_90',1,9]
+     [in0.pde_resp_record_type_key,'pde_resp_record_type_key',1,1]
+     [in0.rxs_pharmacy_key,'rxs_pharmacy_key',1,1]
+     [in0.phr_mail_flg,'phr_mail_flg',1,1]
+     [in0.residence_cd_desc,'residence_cd_desc',1,1]
+     [in0.generic_dispensing_fee_60,'generic_dispensing_fee_60',1,9]
+     [in0.phr_retail_flg,'phr_retail_flg',1,1]
+     [in0.crosstab_month,'crosstab_month',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.rxs_filled_date,'rxs_filled_date',1,1]
+     [in0.dispensed_qty,'dispensed_qty',2,7]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ndc_id,'ndc_id',1,1]
+     [in0.rxs_pbp_id,'rxs_pbp_id',1,1]
+     [in0.days_of_supply_num,'days_of_supply_num',1,1]
+     [in0.cal_start_dt,'cal_start_dt',1,1]
+     [in0.ndc_long_desc,'ndc_long_desc',1,1]
+     [in0.phr_ltc_flg,'phr_ltc_flg',1,1]
+     [in0.report_ndc_sk,'report_ndc_sk',1,1]
+     [in0.pde_submitted_datetime_id,'pde_submitted_datetime_id',1,1]
+     [in0.rxs_final_plan_code_key,'rxs_final_plan_code_key',1,1]
+     [in0.mpf_days_of_supply,'mpf_days_of_supply',1,10]
+     [in0.pde_processed_datetime_id,'pde_processed_datetime_id',1,1]
+     [in0.final_plan_code,'final_plan_code',1,1]
+     [in0.rxs_submitted_date,'rxs_submitted_date',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.rxs_contract_num,'rxs_contract_num',1,1]
+     [in0.price_id,'price_id',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.generic_dispensing_fee_30,'generic_dispensing_fee_30',1,9]
+     [in0.prxy_ndc_label_nm,'prxy_ndc_label_nm',1,1]
+     [in0.brand_generic_code_key,'brand_generic_code_key',1,12]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     [in0.proxy_ndc_id,'proxy_ndc_id',1,1]
+     [in0.residence_cd_sk,'residence_cd_sk',1,1]
+     [in0.pricing_file_mail_flg,'pricing_file_mail_flg',1,1]
+     [in0.preferred_status_retail_flg,'preferred_status_retail_flg',1,1]
+     [in0.clr_ingredient_cost_paid_amt,'clr_ingredient_cost_paid_amt',1,4]
+     [in0.prod_directory_dt,'prod_directory_dt',1,1]
+     [in0.cms_prxy_ndc_mon_sk,'cms_prxy_ndc_mon_sk',1,1]
+     [in0.report_prxy_ndc_sk,'report_prxy_ndc_sk',1,1]
+     [in0.brand_dispensing_fee_60,'brand_dispensing_fee_60',1,9]
+     [in0.pharmacy_id,'pharmacy_id',2,2]
+     ['lookup("LKP: D_PHARMACY").phr_sk','phr_sk',1,1]
+     [in0.carrier_account_group_key,'carrier_account_group_key',1,1]
+     [in0.cms_drug_pricing_file_sk,'cms_drug_pricing_file_sk',1,1]
+     [in0.pde_det_resp_key,'pde_det_resp_key',1,1]
+     [in0.cms_stars_calendar_submission_sk,'cms_stars_calendar_submission_sk',1,1]
+     [in0.pde_adjustment_deletion_key,'pde_adjustment_deletion_key',1,1]
+     [in0.compound_code_key,'compound_code_key',1,1]
+     [in0.pde_prxy_ndc_sk,'pde_prxy_ndc_sk',1,1]
+     [in0.preferred_status_mail_flg,'preferred_status_mail_flg',1,1]
+     [in0.generic_dispensing_fee_90,'generic_dispensing_fee_90',1,9]
+     [in0.clr_dispensing_fee_paid_amt,'clr_dispensing_fee_paid_amt',1,3]
+     [in0.cms_prxy_ndc_sk,'cms_prxy_ndc_sk',1,1]
+     [in0.residence_cd,'residence_cd',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.pde_plan_type_key,'pde_plan_type_key',1,1]
+     [in0.cms_pharmacy_cost_sk,'cms_pharmacy_cost_sk',1,1]
+     [in0.phr_hi_flg,'phr_hi_flg',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cal_end_dt,'cal_end_dt',1,1]
+     [in0.phr_la_drugs_flg,'phr_la_drugs_flg',1,1]
+     [in0.pharmacy_npi_id,'pharmacy_npi_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.crosstab_year,'crosstab_year',1,1]
+     [in0.cms_ndc_sk,'cms_ndc_sk',1,1]
+     [in0.phr_svc_typ_submd,'phr_svc_typ_submd',1,1]
+     [in0.cms_segment_id,'cms_segment_id',1,1]
+     [in0.pde_ndc_sk,'pde_ndc_sk',1,1]
+     [in0.src_insert_ts,'src_insert_ts',1,1]
+     [in0.unit_cost,'unit_cost',1,4]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+     [in0.brand_dispensing_fee_30,'brand_dispensing_fee_30',1,9]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let long bzt_3 = 0;
+let decimal("\x01",0) fcmspracpde_pde_det_resp_sk = fail_if_error(in0.pde_det_resp_key);
+let decimal("\x01",0) fcmspracpde_pde_resp_rec_type_sk = fail_if_error(in0.pde_resp_record_type_key);
+let decimal("\x01",0) fcmspracpde_pde_adj_del_sk = fail_if_error(in0.pde_adjustment_deletion_key);
+let decimal("\x01",0) fcmspracpde_cms_pharmacy_cost_sk = fail_if_error(in0.cms_pharmacy_cost_sk);
+let decimal("\x01",0) fcmspracpde_cms_drug_pricing_file_sk = fail_if_error(in0.cms_drug_pricing_file_sk);
+let decimal("\x01",0) fcmspracpde_cms_prxy_ndc_mon_sk = fail_if_error(in0.cms_prxy_ndc_mon_sk);
+let decimal("\x01",0) fcmspracpde_cms_stars_calendar_submission_sk = fail_if_error(in0.cms_stars_calendar_submission_sk);
+let decimal("\x01",0) fcmspracpde_cms_prxy_ndc_sk = fail_if_error(in0.cms_prxy_ndc_sk);
+let decimal("\x01",0) fcmspracpde_cms_ndc_sk = fail_if_error(in0.cms_ndc_sk);
+let decimal("\x01",0) fcmspracpde_pde_prxy_ndc_sk = fail_if_error(in0.pde_prxy_ndc_sk);
+let decimal("\x01",0) fcmspracpde_pde_ndc_sk = fail_if_error(in0.pde_ndc_sk);
+let decimal("\x01",0) fcmspracpde_report_prxy_ndc_sk = fail_if_error(in0.report_prxy_ndc_sk);
+let decimal("\x01",0) fcmspracpde_report_ndc_sk = fail_if_error(in0.report_ndc_sk);
+let decimal("\x01",0) fcmspracpde_pde_cag_sk = fail_if_error(in0.carrier_account_group_key);
+let decimal("\x01",0) fcmspracpde_pde_phr_sk = fail_if_error(in0.rxs_pharmacy_key);
+let decimal("\x01",0) fcmspracpde_claim_phr_sk;
+let decimal("\x01",0) fcmspracpde_pde_pbp_sk = fail_if_error(in0.pde_plan_type_key);
+let decimal("\x01",0) fcmspracpde_pde_compound_sk = fail_if_error(in0.compound_code_key);
+let decimal("\x01",0) fcmspracpde_pde_final_pln_sk = fail_if_error(in0.rxs_final_plan_code_key);
+let decimal("\x01",0) fcmspracpde_pde_residence_cd_sk = fail_if_error(in0.residence_cd_sk);
+let decimal("\x01",0) fcmspracpde_pde_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) fcmspracpde_pde_claim_seq_nbr_src = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_pde_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let string("\x01",charset="iso-8859-15", maximum_length=5) fcmspracpde_pde_contract_id = fail_if_error(in0.rxs_contract_num);
+let string("\x01",charset="iso-8859-15", maximum_length=3) fcmspracpde_pde_pbp_id = fail_if_error(in0.rxs_pbp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=9) fcmspracpde_pde_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) fcmspracpde_pde_final_pln_cd = fail_if_error(in0.final_plan_code);
+let string("\x01",charset="iso-8859-15", maximum_length=20) fcmspracpde_pde_prxy_ndc_id = fail_if_error(in0.proxy_ndc_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) fcmspracpde_pde_prxy_ndc_label_nm = fail_if_error(in0.prxy_ndc_label_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=20) fcmspracpde_pde_ndc_id = fail_if_error(in0.ndc_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) fcmspracpde_pde_ndc_label_nm = fail_if_error(in0.ndc_long_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_pde_brand_generic_cd = "U";
+let string("\x01",charset="iso-8859-15", maximum_length=15) fcmspracpde_pde_phr_id = fail_if_error(in0.pharmacy_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) fcmspracpde_pde_phr_npi_id = fail_if_error(in0.pharmacy_npi_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) fcmspracpde_pde_phr_svc_typ = fail_if_error(in0.phr_svc_typ_submd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) fcmspracpde_pde_residence_cd = fail_if_error(in0.residence_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=100) fcmspracpde_pde_residence_cd_desc = fail_if_error(in0.residence_cd_desc);
+let date("YYYYMMDD")("\x01") fcmspracpde_pde_claim_sbm_dt = fail_if_error(in0.rxs_submitted_date);
+let date("YYYYMMDD")("\x01") fcmspracpde_pde_filled_dt = fail_if_error(in0.rxs_filled_date);
+let date("YYYYMMDD")("\x01") fcmspracpde_pde_sbm_dt = fail_if_error((date("YYYYMMDD"))(string(""))(decimal(""))in0.pde_submitted_datetime_id);
+let date("YYYYMMDD")("\x01") fcmspracpde_pde_proc_dt = fail_if_error((date("YYYYMMDD"))string_substring((string(""))(decimal(""))in0.pde_processed_datetime_id, 0, 8));
+let string("\x01",charset="iso-8859-15", maximum_length=2) fcmspracpde_pde_crosstab_month = fail_if_error(in0.crosstab_month);
+let string("\x01",charset="iso-8859-15", maximum_length=4) fcmspracpde_pde_crosstab_year = fail_if_error(in0.crosstab_year);
+let date("YYYYMMDD")("\x01") fcmspracpde_cal_start_dt = fail_if_error(in0.cal_start_dt);
+let date("YYYYMMDD")("\x01") fcmspracpde_cal_end_dt = fail_if_error(in0.cal_end_dt);
+let date("YYYYMMDD")("\x01") fcmspracpde_prod_directory_dt = fail_if_error(in0.prod_directory_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=3) fcmspracpde_cms_segment_id = fail_if_error(in0.cms_segment_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) fcmspracpde_price_id = fail_if_error(in0.price_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_preferred_status_retail_flg = fail_if_error(in0.preferred_status_retail_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_phr_retail_flg = fail_if_error(in0.phr_retail_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_phr_mail_flg = fail_if_error(in0.phr_mail_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_phr_la_drugs_flg = fail_if_error(in0.phr_la_drugs_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_phr_hi_flg = fail_if_error(in0.phr_hi_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_phr_ltc_flg = fail_if_error(in0.phr_ltc_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_preferred_status_mail_flg = fail_if_error(in0.preferred_status_mail_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) fcmspracpde_pricing_file_mail_flg = fail_if_error(in0.pricing_file_mail_flg);
+let decimal("\x01".3, maximum_length=13, sign_reserved) fcmspracpde_pde_drg_qty = fail_if_error(in0.dispensed_qty);
+let decimal("\x01",0) fcmspracpde_pde_days_of_supply = fail_if_error(in0.days_of_supply_num);
+let decimal("\x01",0) fcmspracpde_mpf_days_of_supply = fail_if_error(in0.mpf_days_of_supply);
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_pde_ndc_unit_cost = fail_if_error(in0.clr_ingredient_cost_paid_amt/in0.dispensed_qty);
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_mpf_ndc_unit_cost = fail_if_error(in0.unit_cost);
+let decimal("\x01".4, maximum_length=10, sign_reserved) fcmspracpde_pde_dispensing_fee = fail_if_error(in0.clr_dispensing_fee_paid_amt);
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_mpf_dispensing_fee;
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_tot_pde_drug_cost;
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_tot_mpf_drug_cost;
+let decimal("\x01".2, maximum_length=15, sign_reserved) fcmspracpde_tot_est_pde_cost;
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_tot_est_mpf_cost;
+let decimal("\x01".4, maximum_length=15, sign_reserved) fcmspracpde_tot_est_discrepancy;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") fcmspracpde_src_insert_ts = fail_if_error(in0.src_insert_ts);
+let decimal("\x01",0) fcmspracpde_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Rule:Compute fcmspracpde.pde_brand_generic_cd  (#2)   */
+if((in0.brand_generic_code_key ==1))begin
+  fcmspracpde_pde_brand_generic_cd="B";
+end
+else if((in0.brand_generic_code_key ==2))begin
+  fcmspracpde_pde_brand_generic_cd="G";
+end
+
+/*   Default value   */
+fcmspracpde_claim_phr_sk=fail_if_error(bzt_2_6c54cc0a_58d3a52b_874_1(in0.pharmacy_id).phr_sk);
+
+/*   Default value   */
+fcmspracpde_tot_mpf_drug_cost=fail_if_error(fcmspracpde_mpf_ndc_unit_cost*fcmspracpde_pde_drg_qty);
+
+/*   Rule:Compute fcmspracpde.mpf_dispensing_fee  (#1)   */
+bzt_3=fail_if_error(fcmspracpde_mpf_days_of_supply);
+switch(first_defined(bzt_3,-112377))
+case 30:
+begin
+  if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="B")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.brand_dispensing_fee_30;
+  end
+  else if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="G")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.generic_dispensing_fee_30;
+  end
+end
+case 60:
+begin
+  if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="B")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.brand_dispensing_fee_60;
+  end
+  else if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="G")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.generic_dispensing_fee_60;
+  end
+end
+case 90:
+begin
+  if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="B")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.brand_dispensing_fee_90;
+  end
+  else if(first_defined(fail_if_error((fcmspracpde_pde_brand_generic_cd =="G")),0))begin
+     fcmspracpde_mpf_dispensing_fee=in0.generic_dispensing_fee_90;
+  end
+end
+end
+
+/*   Default value   */
+fcmspracpde_tot_est_mpf_cost=fail_if_error((fcmspracpde_mpf_ndc_unit_cost*fcmspracpde_pde_drg_qty) + fcmspracpde_mpf_dispensing_fee);
+
+/*   Default value   */
+fcmspracpde_tot_pde_drug_cost=fail_if_error(fcmspracpde_pde_ndc_unit_cost*fcmspracpde_pde_drg_qty);
+
+/*   Default value   */
+fcmspracpde_tot_est_pde_cost=fail_if_error((fcmspracpde_pde_ndc_unit_cost*fcmspracpde_pde_drg_qty) + fcmspracpde_pde_dispensing_fee);
+
+/*   Default value   */
+fcmspracpde_tot_est_discrepancy=fail_if_error(fcmspracpde_tot_est_pde_cost - fcmspracpde_tot_est_mpf_cost);
+
+  out0.fcmspracpde.pde_det_resp_sk::fcmspracpde_pde_det_resp_sk;
+  out0.fcmspracpde.pde_resp_rec_type_sk::fcmspracpde_pde_resp_rec_type_sk;
+  out0.fcmspracpde.pde_adj_del_sk::fcmspracpde_pde_adj_del_sk;
+  out0.fcmspracpde.cms_pharmacy_cost_sk::fcmspracpde_cms_pharmacy_cost_sk;
+  out0.fcmspracpde.cms_drug_pricing_file_sk::fcmspracpde_cms_drug_pricing_file_sk;
+  out0.fcmspracpde.cms_prxy_ndc_mon_sk::fcmspracpde_cms_prxy_ndc_mon_sk;
+  out0.fcmspracpde.cms_stars_calendar_submission_sk::fcmspracpde_cms_stars_calendar_submission_sk;
+  out0.fcmspracpde.cms_prxy_ndc_sk::fcmspracpde_cms_prxy_ndc_sk;
+  out0.fcmspracpde.cms_ndc_sk::fcmspracpde_cms_ndc_sk;
+  out0.fcmspracpde.pde_prxy_ndc_sk::fcmspracpde_pde_prxy_ndc_sk;
+  out0.fcmspracpde.pde_ndc_sk::fcmspracpde_pde_ndc_sk;
+  out0.fcmspracpde.report_prxy_ndc_sk::fcmspracpde_report_prxy_ndc_sk;
+  out0.fcmspracpde.report_ndc_sk::fcmspracpde_report_ndc_sk;
+  out0.fcmspracpde.pde_cag_sk::fcmspracpde_pde_cag_sk;
+  out0.fcmspracpde.pde_phr_sk::fcmspracpde_pde_phr_sk;
+  out0.fcmspracpde.claim_phr_sk::fcmspracpde_claim_phr_sk;
+  out0.fcmspracpde.pde_pbp_sk::fcmspracpde_pde_pbp_sk;
+  out0.fcmspracpde.pde_compound_sk::fcmspracpde_pde_compound_sk;
+  out0.fcmspracpde.pde_final_pln_sk::fcmspracpde_pde_final_pln_sk;
+  out0.fcmspracpde.pde_residence_cd_sk::fcmspracpde_pde_residence_cd_sk;
+  out0.fcmspracpde.pde_claim_nbr::fcmspracpde_pde_claim_nbr;
+  out0.fcmspracpde.pde_claim_seq_nbr_src::fcmspracpde_pde_claim_seq_nbr_src;
+  out0.fcmspracpde.pde_claim_stat_id::fcmspracpde_pde_claim_stat_id;
+  out0.fcmspracpde.pde_contract_id::fcmspracpde_pde_contract_id;
+  out0.fcmspracpde.pde_pbp_id::fcmspracpde_pde_pbp_id;
+  out0.fcmspracpde.pde_carrier_id::fcmspracpde_pde_carrier_id;
+  out0.fcmspracpde.pde_final_pln_cd::fcmspracpde_pde_final_pln_cd;
+  out0.fcmspracpde.pde_prxy_ndc_id::fcmspracpde_pde_prxy_ndc_id;
+  out0.fcmspracpde.pde_prxy_ndc_label_nm::fcmspracpde_pde_prxy_ndc_label_nm;
+  out0.fcmspracpde.pde_ndc_id::fcmspracpde_pde_ndc_id;
+  out0.fcmspracpde.pde_ndc_label_nm::fcmspracpde_pde_ndc_label_nm;
+  out0.fcmspracpde.pde_brand_generic_cd::fcmspracpde_pde_brand_generic_cd;
+  out0.fcmspracpde.pde_phr_id::fcmspracpde_pde_phr_id;
+  out0.fcmspracpde.pde_phr_npi_id::fcmspracpde_pde_phr_npi_id;
+  out0.fcmspracpde.pde_phr_svc_typ::fcmspracpde_pde_phr_svc_typ;
+  out0.fcmspracpde.pde_residence_cd::fcmspracpde_pde_residence_cd;
+  out0.fcmspracpde.pde_residence_cd_desc::fcmspracpde_pde_residence_cd_desc;
+  out0.fcmspracpde.pde_claim_sbm_dt::fcmspracpde_pde_claim_sbm_dt;
+  out0.fcmspracpde.pde_filled_dt::fcmspracpde_pde_filled_dt;
+  out0.fcmspracpde.pde_sbm_dt::fcmspracpde_pde_sbm_dt;
+  out0.fcmspracpde.pde_proc_dt::fcmspracpde_pde_proc_dt;
+  out0.fcmspracpde.pde_crosstab_month::fcmspracpde_pde_crosstab_month;
+  out0.fcmspracpde.pde_crosstab_year::fcmspracpde_pde_crosstab_year;
+  out0.fcmspracpde.cal_start_dt::fcmspracpde_cal_start_dt;
+  out0.fcmspracpde.cal_end_dt::fcmspracpde_cal_end_dt;
+  out0.fcmspracpde.prod_directory_dt::fcmspracpde_prod_directory_dt;
+  out0.fcmspracpde.cms_segment_id::fcmspracpde_cms_segment_id;
+  out0.fcmspracpde.price_id::fcmspracpde_price_id;
+  out0.fcmspracpde.preferred_status_retail_flg::fcmspracpde_preferred_status_retail_flg;
+  out0.fcmspracpde.phr_retail_flg::fcmspracpde_phr_retail_flg;
+  out0.fcmspracpde.phr_mail_flg::fcmspracpde_phr_mail_flg;
+  out0.fcmspracpde.phr_la_drugs_flg::fcmspracpde_phr_la_drugs_flg;
+  out0.fcmspracpde.phr_hi_flg::fcmspracpde_phr_hi_flg;
+  out0.fcmspracpde.phr_ltc_flg::fcmspracpde_phr_ltc_flg;
+  out0.fcmspracpde.preferred_status_mail_flg::fcmspracpde_preferred_status_mail_flg;
+  out0.fcmspracpde.pricing_file_mail_flg::fcmspracpde_pricing_file_mail_flg;
+  out0.fcmspracpde.pde_drg_qty::fcmspracpde_pde_drg_qty;
+  out0.fcmspracpde.pde_days_of_supply::fcmspracpde_pde_days_of_supply;
+  out0.fcmspracpde.mpf_days_of_supply::fcmspracpde_mpf_days_of_supply;
+  out0.fcmspracpde.pde_ndc_unit_cost::fcmspracpde_pde_ndc_unit_cost;
+  out0.fcmspracpde.mpf_ndc_unit_cost::fcmspracpde_mpf_ndc_unit_cost;
+  out0.fcmspracpde.pde_dispensing_fee::fcmspracpde_pde_dispensing_fee;
+  out0.fcmspracpde.mpf_dispensing_fee::fcmspracpde_mpf_dispensing_fee;
+  out0.fcmspracpde.tot_pde_drug_cost::fcmspracpde_tot_pde_drug_cost;
+  out0.fcmspracpde.tot_mpf_drug_cost::fcmspracpde_tot_mpf_drug_cost;
+  out0.fcmspracpde.tot_est_pde_cost::fcmspracpde_tot_est_pde_cost;
+  out0.fcmspracpde.tot_est_mpf_cost::fcmspracpde_tot_est_mpf_cost;
+  out0.fcmspracpde.tot_est_discrepancy::fcmspracpde_tot_est_discrepancy;
+  out0.fcmspracpde.src_insert_ts::fcmspracpde_src_insert_ts;
+  out0.fcmspracpde.src_env_sk::fcmspracpde_src_env_sk;
+  out0.*::in0.*;
+
+end;

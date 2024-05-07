@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rboinmfil/clean.rboinmfil.rxcui_assignment_ndc.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rboinmfil/clean.rboinmfil.rxcui_assignment_ndc.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.rboinmfil/clean.rboinmfil.rxcui_assignment_ndc_dedup.${RUN_ID}.dat.gz
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rboinmfil/clean.rboinmfil.rxcui_assignment_ndc_dedup.dml
+LOOKUP_KEY||||$SORT_KEY
+SORT_KEY||||{dxf_src_sys_id ;ndc ;rxcui}
+USE_DEDUP||||True
+RUN_ID||||20181011000000
+AB_CATALOG|$|||$AI_CAT/produce/produce.rboinmfil.rxcui_assignment_ndc.cat
+FILTER_EXPR|$|||(lookup_match("rcnd2p_ndc",dxf_src_sys_id,ndc) or (dxf_src_sys_id==500 and (lookup_match("rcnd2p_ndc",480,ndc))))

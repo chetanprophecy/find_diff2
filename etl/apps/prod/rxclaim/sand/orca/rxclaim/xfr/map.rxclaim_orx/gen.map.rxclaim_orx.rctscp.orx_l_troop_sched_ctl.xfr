@@ -1,0 +1,118 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.trp_schd_ctl.src_add_dttm,[transform],in0.qmadtm,
+     in0.qmc2dt]
+  [out0.trp_schd_ctl.cov_gap_calc_ind,[passthrough],in0.qmniak]
+  [out0.trp_schd_ctl.display_rec_flg,[passthrough],in0.qmhtak]
+  [out0.trp_schd_ctl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.trp_schd_ctl.src_chg_dttm,[transform],in0.qmabtm,
+     in0.qmbmdt]
+  [out0.trp_schd_ctl.generic_ded_skip_ind,[passthrough],in0.qmxear]
+  [out0.trp_schd_ctl.cross_over_flg_cd,[passthrough],in0.qmjyic]
+  [out0.trp_schd_ctl.sched_nm,[passthrough],in0.qmv7hc]
+  [out0.trp_schd_ctl.troop_sched_sk,[transform],]
+  [out0.trp_schd_ctl.step_cnt_nbr,[passthrough],in0.qmdchs]
+  [out0.trp_schd_ctl.drg_spnd_accum_comp_cd,[passthrough],in0.qmyui1]
+  [out0.trp_schd_ctl.troop_accum_comp_cd,[passthrough],in0.qmyti1]
+  [out0.trp_schd_ctl.sched_desc,[passthrough],in0.qml7ih]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.trp_schd_ctl.src_add_dttm,'trp_schd_ctl.src_add_dttm',1,2]
+     [out0.trp_schd_ctl.cov_gap_calc_ind,'trp_schd_ctl.cov_gap_calc_ind',1,0]
+     [out0.trp_schd_ctl.display_rec_flg,'trp_schd_ctl.display_rec_flg',1,0]
+     [out0.trp_schd_ctl.src_env_sk,'trp_schd_ctl.src_env_sk',1,0]
+     [out0.trp_schd_ctl.src_chg_dttm,'trp_schd_ctl.src_chg_dttm',1,2]
+     [out0.trp_schd_ctl.generic_ded_skip_ind,'trp_schd_ctl.generic_ded_skip_ind',1,0]
+     [out0.trp_schd_ctl.cross_over_flg_cd,'trp_schd_ctl.cross_over_flg_cd',1,0]
+     [out0.trp_schd_ctl.sched_nm,'trp_schd_ctl.sched_nm',1,0]
+     [out0.trp_schd_ctl.troop_sched_sk,'trp_schd_ctl.troop_sched_sk',1,0]
+     [out0.trp_schd_ctl.step_cnt_nbr,'trp_schd_ctl.step_cnt_nbr',1,0]
+     [out0.trp_schd_ctl.drg_spnd_accum_comp_cd,'trp_schd_ctl.drg_spnd_accum_comp_cd',1,0]
+     [out0.trp_schd_ctl.troop_accum_comp_cd,'trp_schd_ctl.troop_accum_comp_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.trp_schd_ctl.sched_desc,'trp_schd_ctl.sched_desc',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.qmadtm,'qmadtm',2,2]
+     [in0.qmniak,'qmniak',1,1]
+     [in0.qmabtm,'qmabtm',2,2]
+     [in0.qmjyic,'qmjyic',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.qmbmdt,'qmbmdt',1,2]
+     [in0.qmc2dt,'qmc2dt',1,2]
+     [in0.qml7ih,'qml7ih',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.qmhtak,'qmhtak',1,1]
+     [in0.qmxear,'qmxear',1,1]
+     [in0.qmyui1,'qmyui1',1,1]
+     [in0.qmyti1,'qmyti1',1,1]
+     [in0.qmv7hc,'qmv7hc',1,1]
+     [in0.qmdchs,'qmdchs',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) trp_schd_ctl_troop_sched_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) trp_schd_ctl_sched_nm = fail_if_error(in0.qmv7hc);
+let string("\x01",charset="iso-8859-15", maximum_length=25) trp_schd_ctl_sched_desc = fail_if_error(in0.qml7ih);
+let decimal("\x01",0) trp_schd_ctl_step_cnt_nbr = fail_if_error(in0.qmdchs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) trp_schd_ctl_troop_accum_comp_cd = fail_if_error(in0.qmyti1);
+let string("\x01",charset="iso-8859-15", maximum_length=2) trp_schd_ctl_drg_spnd_accum_comp_cd = fail_if_error(in0.qmyui1);
+let string("\x01",charset="iso-8859-15", maximum_length=2) trp_schd_ctl_cross_over_flg_cd = fail_if_error(in0.qmjyic);
+let string("\x01",charset="iso-8859-15", maximum_length=1) trp_schd_ctl_display_rec_flg = fail_if_error(in0.qmhtak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) trp_schd_ctl_cov_gap_calc_ind = fail_if_error(in0.qmniak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) trp_schd_ctl_generic_ded_skip_ind = fail_if_error(in0.qmxear);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") trp_schd_ctl_src_add_dttm;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") trp_schd_ctl_src_chg_dttm;
+let decimal("\x01",0) trp_schd_ctl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let unicode string(int) src_add_dt;
+let unicode string(int) src_add_tm = fail_if_error(is_valid( (datetime("HH24MISS")) decimal_lpad(in0.qmadtm,6))  ? decimal_lpad(in0.qmadtm,6) : "000000");
+let unicode string(int) src_chg_dt;
+let unicode string(int) src_chg_tm = fail_if_error(is_valid( (datetime("HH24MISS")) decimal_lpad(in0.qmabtm,6))  ? decimal_lpad(in0.qmabtm,6) : "000000");
+
+
+
+/*   Default value   */
+src_chg_dt=fail_if_error(date_check(in0.qmbmdt));
+
+/*   Default value   */
+trp_schd_ctl_src_chg_dttm=fail_if_error(YYYYMMDD_HHMMSS(src_chg_dt,src_chg_tm));
+
+/*   Default value   */
+src_add_dt=fail_if_error(date_check(in0.qmc2dt));
+
+/*   Default value   */
+trp_schd_ctl_src_add_dttm=fail_if_error(YYYYMMDD_HHMMSS(src_add_dt,src_add_tm));
+
+  out0.trp_schd_ctl.troop_sched_sk::trp_schd_ctl_troop_sched_sk;
+  out0.trp_schd_ctl.sched_nm::trp_schd_ctl_sched_nm;
+  out0.trp_schd_ctl.sched_desc::trp_schd_ctl_sched_desc;
+  out0.trp_schd_ctl.step_cnt_nbr::trp_schd_ctl_step_cnt_nbr;
+  out0.trp_schd_ctl.troop_accum_comp_cd::trp_schd_ctl_troop_accum_comp_cd;
+  out0.trp_schd_ctl.drg_spnd_accum_comp_cd::trp_schd_ctl_drg_spnd_accum_comp_cd;
+  out0.trp_schd_ctl.cross_over_flg_cd::trp_schd_ctl_cross_over_flg_cd;
+  out0.trp_schd_ctl.display_rec_flg::trp_schd_ctl_display_rec_flg;
+  out0.trp_schd_ctl.cov_gap_calc_ind::trp_schd_ctl_cov_gap_calc_ind;
+  out0.trp_schd_ctl.generic_ded_skip_ind::trp_schd_ctl_generic_ded_skip_ind;
+  out0.trp_schd_ctl.src_add_dttm::trp_schd_ctl_src_add_dttm;
+  out0.trp_schd_ctl.src_chg_dttm::trp_schd_ctl_src_chg_dttm;
+  out0.trp_schd_ctl.src_env_sk::trp_schd_ctl_src_env_sk;
+  out0.*::in0.*;
+
+end;

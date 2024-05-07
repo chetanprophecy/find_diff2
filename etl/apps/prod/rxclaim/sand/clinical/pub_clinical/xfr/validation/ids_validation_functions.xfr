@@ -1,0 +1,88 @@
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_carrier_cli_in_t.dml";
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_carrier_acct_cli_in_t.dml";
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_cag_cli_in_t.dml";
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_member_cli_in_t.dml";
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_gpi_cli_in_t.dml";
+include "~$PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_product_cli_in_t.dml";
+
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/carrier_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/carrier_acct_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/cag_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/mbr_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/gpi_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/product_lkup_functions.xfr";
+
+//type data_validation_error_t =
+//record
+//  cli_string_t  error_type_cd;
+//  cli_string_t  error_details;
+//end;
+
+cli_string_t[int] out :: validate_carrier(d_carrier_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+  
+  // Add validation here
+  
+  out :: error_vec;
+end;
+
+cli_string_t[int] out :: validate_carrier_acct(d_carrier_acct_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+  
+ 
+  if (is_null(get_carrier(in.carrier_id))) error_vec = vector_append(error_vec, 'Carrier not found');
+
+  out :: error_vec;
+end;
+
+cli_string_t[int] out :: validate_cag(d_cag_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+    
+  if (is_null(get_carrier     ( in.carrier_id                ))) error_vec = vector_append(error_vec, 'Carrier not found');
+  if (is_null(get_carrier_acct( in.carrier_id, in.account_id ))) error_vec = vector_append(error_vec, 'Carrier Account not found');
+
+  out :: error_vec;
+end;
+
+
+cli_string_t[int] out :: validate_mbr(d_member_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+    
+  if (is_null(get_carrier( in.carrier_id))) error_vec = vector_append(error_vec, 'Carrier not found');
+  if (is_null(get_carrier_acct( in.carrier_id, in.account_id ))) error_vec = vector_append(error_vec, 'Carrier Account not found');
+  if (is_null(get_cag(in.carrier_id, in.account_id,in.employer_group_id))) error_vec = vector_append(error_vec, 'Carrier Account Group not found');
+
+  out :: error_vec;
+end;
+
+
+cli_string_t[int] out :: validate_gpi(d_gpi_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+    
+  if (is_null(in.gpi_nm)) error_vec = vector_append(error_vec, 'Gpi name is null');  
+
+  out :: error_vec;
+end;
+
+
+cli_string_t[int] out :: validate_product(d_product_cli_in_t in) inline =
+begin
+  let cli_string_t[int] error_vec = [vector];
+    
+  if (is_null(in.drg_multi_src_cd) or is_null(in.drg_grp_nm)) error_vec = vector_append(error_vec, 'Drug Multi Source Code or Drug grp nm is null');  
+
+  out :: error_vec;
+end;
+
+
+
+
+

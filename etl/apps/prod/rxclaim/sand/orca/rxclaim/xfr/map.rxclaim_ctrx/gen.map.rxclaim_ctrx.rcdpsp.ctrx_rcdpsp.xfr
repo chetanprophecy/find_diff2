@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_rcdpsp.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_rcdpsp.aor7c4,'ctrx_rcdpsp.aor7c4',1,0]
+     [out0.ctrx_rcdpsp.aoi1cj,'ctrx_rcdpsp.aoi1cj',1,0]
+     [out0.ctrx_rcdpsp.aoi2cj,'ctrx_rcdpsp.aoi2cj',1,0]
+     [out0.ctrx_rcdpsp.aolbst,'ctrx_rcdpsp.aolbst',1,0]
+     [out0.ctrx_rcdpsp.aolcst,'ctrx_rcdpsp.aolcst',1,0]
+     [out0.ctrx_rcdpsp.aolast,'ctrx_rcdpsp.aolast',1,0]
+     [out0.ctrx_rcdpsp.aooinb,'ctrx_rcdpsp.aooinb',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_rcdpsp.aor5n2,'ctrx_rcdpsp.aor5n2',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_rcdpsp.src_env_sk,'ctrx_rcdpsp.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_rcdpsp.aop2nb,'ctrx_rcdpsp.aop2nb',1,0]
+  ]
+  impacts:
+  [
+     [in0.aolcst,'aolcst',1,1]
+     [in0.aoi1cj,'aoi1cj',1,1]
+     [in0.aor7c4,'aor7c4',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.aolbst,'aolbst',1,1]
+     [in0.aolast,'aolast',1,1]
+     [in0.aor5n2,'aor5n2',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.aooinb,'aooinb',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.aoi2cj,'aoi2cj',1,1]
+     [in0.aop2nb,'aop2nb',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01", maximum_length=18) ctrx_rcdpsp_aop2nb = fail_if_error(in0.aop2nb);
+let decimal("\x01", maximum_length=6) ctrx_rcdpsp_aooinb = fail_if_error(in0.aooinb);
+let decimal("\x01", maximum_length=6) ctrx_rcdpsp_aor5n2 = fail_if_error(in0.aor5n2);
+let string("\x01", maximum_length=2) ctrx_rcdpsp_aolast = fail_if_error(in0.aolast);
+let string("\x01", maximum_length=2) ctrx_rcdpsp_aolbst = fail_if_error(in0.aolbst);
+let string("\x01", maximum_length=2) ctrx_rcdpsp_aolcst = fail_if_error(in0.aolcst);
+let string("\x01", maximum_length=2) ctrx_rcdpsp_aoi1cj = fail_if_error(in0.aoi1cj);
+let string("\x01", maximum_length=2) ctrx_rcdpsp_aoi2cj = fail_if_error(in0.aoi2cj);
+let string("\x01", maximum_length=20) ctrx_rcdpsp_aor7c4 = fail_if_error(in0.aor7c4);
+let decimal("\x01",0) ctrx_rcdpsp_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.ctrx_rcdpsp.aop2nb::ctrx_rcdpsp_aop2nb;
+  out0.ctrx_rcdpsp.aooinb::ctrx_rcdpsp_aooinb;
+  out0.ctrx_rcdpsp.aor5n2::ctrx_rcdpsp_aor5n2;
+  out0.ctrx_rcdpsp.aolast::ctrx_rcdpsp_aolast;
+  out0.ctrx_rcdpsp.aolbst::ctrx_rcdpsp_aolbst;
+  out0.ctrx_rcdpsp.aolcst::ctrx_rcdpsp_aolcst;
+  out0.ctrx_rcdpsp.aoi1cj::ctrx_rcdpsp_aoi1cj;
+  out0.ctrx_rcdpsp.aoi2cj::ctrx_rcdpsp_aoi2cj;
+  out0.ctrx_rcdpsp.aor7c4::ctrx_rcdpsp_aor7c4;
+  out0.ctrx_rcdpsp.src_env_sk::ctrx_rcdpsp_src_env_sk;
+  out0.*::in0.*;
+
+end;

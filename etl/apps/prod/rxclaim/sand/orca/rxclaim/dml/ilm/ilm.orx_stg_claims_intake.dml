@@ -1,0 +1,57 @@
+type logical_ids_rxclaim_stg_claims_intake_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  utf8 string("\x01", maximum_length=255) account_id = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) amountpaid = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") submitted_date = NULL("");
+  utf8 string("\x01", maximum_length=255) carrier_id = NULL("");
+  utf8 string("\x01", maximum_length=20) client_mac_id = NULL("");
+  utf8 string("\x01", maximum_length=255) clm_num = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) clm_seq_num = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) cob_indicator = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) compound_code = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") date_key = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) daw_code = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) dayssupply = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) dispensingfee = NULL("");
+  utf8 string("\x01", maximum_length=255) dmr_indicator = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) drugquantity = NULL("");
+  utf8 string("\x01", maximum_length=255) drug_class_desc = NULL("");
+  utf8 string("\x01", maximum_length=255) drug_rx_otc_indicator = NULL("");
+  utf8 string("\x01", maximum_length=255) employer_group_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") filled_date = NULL("");
+  utf8 string("\x01", maximum_length=255) generic_medispan_indicator = NULL("");
+  utf8 string("\x01", maximum_length=255) gpi_id = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) ingredientcost = NULL("");
+  utf8 string("\x01", maximum_length=255) mail_service_indicator = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) medispan_adj_ext = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) medispan_pub_ext = NULL("");
+  utf8 string("\x01", maximum_length=255) ndc_desc = NULL("");
+  utf8 string("\x01", maximum_length=20) network_id = NULL("");
+  utf8 string("\x01", maximum_length=255) pharmacy_id = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) rx_count = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) salestax = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) submittedusualandcustomary = NULL("");
+  utf8 string("\x01", maximum_length=255) super_network_desc = NULL("");
+  utf8 string("\x01", maximum_length=255) super_network_id = NULL("");
+  utf8 string("\x01", maximum_length=255) affiliation_grp_id = NULL("");
+  utf8 string("\x01", maximum_length=255) pharmacy_dispenser_type_code = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") data_set_date = NULL("");
+  utf8 string("\x01", maximum_length=8) claim_status_id = NULL("");
+  utf8 string("\x01", maximum_length=255) client_price_type = NULL("");
+  decimal("\x01", maximum_length=102, sign_reserved) awpextendedcost = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  date("YYYYMMDD")("\x01") cur_datsbm_dt = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_stg_claims_intake_t stg_clm_intk  /*@ BizName:'stg clm intk' */;
+end;

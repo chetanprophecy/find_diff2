@@ -1,0 +1,132 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_sav_carrier_map_to_the_r_carrier_sav_xref_ILM_documentation(in)=
+begin
+
+out0.r_sav_car.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.sv_car_id.carrier_id::depends_on(
+         in.sav_carrier_id
+         );
+
+
+out0.r_sav_car.sav_employer_group_id::depends_on(
+         in.sav_group_id
+         );
+
+
+out0.sv_cg.account_id::depends_on(
+         in.sav_account_id
+         );
+
+
+out0.sv_cg.carrier_id::depends_on(
+         in.sav_carrier_id
+         );
+
+
+out0.r_sav_car.carrier_id::depends_on(
+         in.carrier_id
+         );
+
+
+out0.car_id.carrier_id::depends_on(
+         in.carrier_id
+         );
+
+
+out0.sv_cg.employer_group_id::depends_on(
+         in.sav_group_id
+         );
+
+
+out0.r_sav_car.sav_account_id::depends_on(
+         in.sav_account_id
+         );
+
+
+out0.r_sav_car.sav_carrier_id::depends_on(
+         in.sav_carrier_id
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_sav_carrier_map_to_the_r_carrier_sav_xref_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.r_sav_car.sav_carrier_sk,'r_sav_car.sav_carrier_sk',1,0]
+     [out0.r_sav_car.src_env_sk,'r_sav_car.src_env_sk',1,0]
+     [out0.sv_car_id.carrier_id,'sv_car_id.carrier_id',1,0]
+     [out0.r_sav_car.sav_employer_group_id,'r_sav_car.sav_employer_group_id',1,0]
+     [out0.sv_cg.account_id,'sv_cg.account_id',1,0]
+     [out0.r_sav_car.carrier_sk,'r_sav_car.carrier_sk',1,0]
+     [out0.sv_cg.carrier_id,'sv_cg.carrier_id',1,0]
+     [out0.r_sav_car.sav_cag_sk,'r_sav_car.sav_cag_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.r_sav_car.carrier_id,'r_sav_car.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.car_id.carrier_id,'car_id.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.sv_cg.employer_group_id,'sv_cg.employer_group_id',1,0]
+     [out0.r_sav_car.sav_account_id,'r_sav_car.sav_account_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.r_sav_car.sav_carrier_id,'r_sav_car.sav_carrier_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.sav_carrier_id,'sav_carrier_id',3,3]
+     [in0.sav_account_id,'sav_account_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.sav_group_id,'sav_group_id',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) r_sav_car_carrier_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) r_sav_car_carrier_id = fail_if_error(in0.carrier_id);
+let decimal("\x01",0) r_sav_car_sav_carrier_sk = -1;
+let decimal("\x01",0) r_sav_car_sav_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) r_sav_car_sav_carrier_id = fail_if_error(in0.sav_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) r_sav_car_sav_account_id = fail_if_error(in0.sav_account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) r_sav_car_sav_employer_group_id = fail_if_error(in0.sav_group_id);
+let decimal("\x01",0) r_sav_car_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) car_id_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) sv_car_id_carrier_id = fail_if_error(in0.sav_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) sv_cg_carrier_id = fail_if_error(in0.sav_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) sv_cg_account_id = fail_if_error(in0.sav_account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) sv_cg_employer_group_id = fail_if_error(in0.sav_group_id);
+
+
+
+  out0.r_sav_car.carrier_sk::r_sav_car_carrier_sk;
+  out0.r_sav_car.carrier_id::r_sav_car_carrier_id;
+  out0.r_sav_car.sav_carrier_sk::r_sav_car_sav_carrier_sk;
+  out0.r_sav_car.sav_cag_sk::r_sav_car_sav_cag_sk;
+  out0.r_sav_car.sav_carrier_id::r_sav_car_sav_carrier_id;
+  out0.r_sav_car.sav_account_id::r_sav_car_sav_account_id;
+  out0.r_sav_car.sav_employer_group_id::r_sav_car_sav_employer_group_id;
+  out0.r_sav_car.src_env_sk::r_sav_car_src_env_sk;
+  out0.car_id.carrier_id::car_id_carrier_id;
+  out0.sv_car_id.carrier_id::sv_car_id_carrier_id;
+  out0.sv_cg.carrier_id::sv_cg_carrier_id;
+  out0.sv_cg.account_id::sv_cg_account_id;
+  out0.sv_cg.employer_group_id::sv_cg_employer_group_id;
+  out0.*::in0.*;
+end;

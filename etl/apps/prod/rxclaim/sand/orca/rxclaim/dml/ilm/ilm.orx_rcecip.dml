@@ -1,0 +1,83 @@
+type logical_ids_common_rcecip_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) ocd_cmpnd_seq_nbr = NULL("");
+  decimal("\x01",0) ocd_cmpnd_prod_id_qlfr = NULL("");
+  string("\x01", maximum_length=20) ocd_cmpnd_prod_id = NULL("");
+  decimal("\x01",0) ocd_cmpnd_prod_key = NULL("");
+  string("\x01", maximum_length=30) prod_short_nm = NULL("");
+  string("\x01", maximum_length=70) prod_nm = NULL("");
+  string("\x01", maximum_length=5) drg_mfrr_id = NULL("");
+  string("\x01", maximum_length=10) drg_mfrr_nm = NULL("");
+  string("\x01", maximum_length=14) gpi_no = NULL("");
+  string("\x01", maximum_length=60) drg_gnrc_nm = NULL("");
+  decimal("\x01",0) drg_desc_id = NULL("");
+  decimal("\x01",0) gcn_no = NULL("");
+  decimal("\x01",0) gcn_id_seq_no = NULL("");
+  decimal("\x01",0) prod_kdc = NULL("");
+  string("\x01", maximum_length=8) ahfs_class_cd = NULL("");
+  string("\x01", maximum_length=1) drg_dea_cd = NULL("");
+  string("\x01", maximum_length=1) drg_otc_ind = NULL("");
+  string("\x01", maximum_length=1) drg_multi_src_cd = NULL("");
+  string("\x01", maximum_length=1) gnrc_ind_ovrd = NULL("");
+  string("\x01", maximum_length=1) prod_reim_ind = NULL("");
+  string("\x01", maximum_length=1) brnd_nm_cd = NULL("");
+  string("\x01", maximum_length=2) drg_fda_thrpc_equiv = NULL("");
+  decimal("\x01",11) drg_strngth_qty = NULL("");
+  string("\x01", maximum_length=10) drg_strngth_uom_cd = NULL("");
+  string("\x01", maximum_length=2) admin_route_cd = NULL("");
+  string("\x01", maximum_length=4) drg_dosag_frm_id = NULL("");
+  string("\x01", maximum_length=1) drg_maint_ind = NULL("");
+  string("\x01", maximum_length=1) drg_3rd_prty_excpn_ind = NULL("");
+  string("\x01", maximum_length=1) drg_unit_dose_use_ind = NULL("");
+  decimal("\x01",11) ocd_sbm_cmp_int_qty = NULL("");
+  decimal("\x01",9) ocd_sbm_cmp_int_cst = NULL("");
+  string("\x01", maximum_length=2) ocd_sbm_cmp_bas_cst = NULL("");
+  string("\x01", maximum_length=1) ocd_ing_stat_id = NULL("");
+  decimal("\x01",9) cmd_cal_ing_cst = NULL("");
+  decimal("\x01",9) cmd_app_ing_cst = NULL("");
+  decimal("\x01",9) cmd_clt_ing_cst = NULL("");
+  string("\x01", maximum_length=1) cmd_app_cst_src = NULL("");
+  string("\x01", maximum_length=10) cmd_app_cst_typ_cd = NULL("");
+  decimal("\x01",13) cmd_app_cst_typ_unit_cst = NULL("");
+  string("\x01", maximum_length=1) cmd_clt_cst_src_cd = NULL("");
+  string("\x01", maximum_length=10) cmd_clt_cst_typ_cd = NULL("");
+  decimal("\x01",13) cmd_clt_cst_typ_unit_cst = NULL("");
+  decimal("\x01",13) cmd_awp_unit_cst = NULL("");
+  decimal("\x01",9) cmd_cal_prof_srvc_fee_amt = NULL("");
+  decimal("\x01",9) cmd_app_prof_srvc_fee_amt = NULL("");
+  decimal("\x01",9) cmd_clt_prof_srvc_fee_amt = NULL("");
+  string("\x01", maximum_length=1) eci_rm_ind = NULL("");
+  string("\x01", maximum_length=1) eci_px_ind = NULL("");
+  string("\x01", maximum_length=1) eci_ms_ind = NULL("");
+  decimal("\x01",5) pdt_phr_drg_cst_percnt = NULL("");
+  decimal("\x01",5) pdt_rbl_drg_cst_percnt = NULL("");
+  decimal("\x01",5) cmd_ing_mod_cd_cnt = NULL("");
+  string("\x01", maximum_length=2) cmd_ing_mod_cd1 = NULL("");
+  string("\x01", maximum_length=2) cmd_ing_mod_cd2 = NULL("");
+  string("\x01", maximum_length=2) cmd_ing_mod_cd3 = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_drg_cov_stat_cd = NULL("");
+  string("\x01", maximum_length=1) tc4_drg_cov_stat_cd = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_nda_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_bla_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_nda_ovrd_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_bla_ovrd_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_anda_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_ing_anda_ovrd_flg = NULL("");
+  string("\x01", maximum_length=1) cmd_expen_ing_flg = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_rcecip_t orx_rcecip  /*@ BizName:'orx rcecip' */;
+end;

@@ -1,0 +1,96 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_dy_pd_mthr.perd_start_dt_sk,[transform],in0.dt_sk]
+  [out0.l_dy_pd_mthr.perd_order_no,[passthrough],in0.rank]
+  [out0.l_dy_pd_mthr.dynamic_perd_sk,[transform],]
+  [out0.l_dy_pd_mthr.perd_end_dt,[transform],in0.cal_day_dt]
+  [out0.l_dy_pd_mthr.perd_type_nm,[transform],]
+  [out0.l_dy_pd_mthr.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_dy_pd_mthr.perd_type_nbr,[transform],]
+  [out0.l_dy_pd_mthr.perd_start_dt,[passthrough],in0.cal_day_dt]
+  [out0.l_dy_pd_mthr.perd_order_nm,[transform],in0.rank]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_dy_pd_mthr.perd_start_dt_sk,'l_dy_pd_mthr.perd_start_dt_sk',1,0]
+     [out0.l_dy_pd_mthr.dxf_hk_part2,'l_dy_pd_mthr.dxf_hk_part2',1,0]
+     [out0.l_dy_pd_mthr.perd_order_no,'l_dy_pd_mthr.perd_order_no',3,0]
+     [out0.l_dy_pd_mthr.dxf_hk_part1,'l_dy_pd_mthr.dxf_hk_part1',1,0]
+     [out0.l_dy_pd_mthr.dynamic_perd_sk,'l_dy_pd_mthr.dynamic_perd_sk',1,0]
+     [out0.l_dy_pd_mthr.perd_end_dt,'l_dy_pd_mthr.perd_end_dt',1,0]
+     [out0.l_dy_pd_mthr.dxf_sk,'l_dy_pd_mthr.dxf_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_dy_pd_mthr.perd_type_nm,'l_dy_pd_mthr.perd_type_nm',1,0]
+     [out0.l_dy_pd_mthr.src_env_sk,'l_dy_pd_mthr.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_dy_pd_mthr.perd_type_nbr,'l_dy_pd_mthr.perd_type_nbr',1,0]
+     [out0.l_dy_pd_mthr.perd_start_dt,'l_dy_pd_mthr.perd_start_dt',1,0]
+     [out0.l_dy_pd_mthr.perd_order_nm,'l_dy_pd_mthr.perd_order_nm',2,3]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.dt_sk,'dt_sk',1,1]
+     [in0.rank,'rank',1,4]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cal_day_dt,'cal_day_dt',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let little endian integer(4) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let unsigned integer(8) l_dy_pd_mthr_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) l_dy_pd_mthr_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) l_dy_pd_mthr_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) l_dy_pd_mthr_dynamic_perd_sk = -1;
+let decimal("\x01",0) l_dy_pd_mthr_perd_type_nbr = 4;
+let string("\x01",charset="iso-8859-15", maximum_length=35) l_dy_pd_mthr_perd_type_nm = '12 Month Rolling';
+let decimal("\x01",0) l_dy_pd_mthr_perd_start_dt_sk = fail_if_error(string_lrtrim(in0.dt_sk));
+let date("YYYYMMDD")("\x01") l_dy_pd_mthr_perd_start_dt = fail_if_error(in0.cal_day_dt);
+let date("YYYYMMDD")("\x01") l_dy_pd_mthr_perd_end_dt = fail_if_error((date("YYYYMMDD")) date_add_months((date("YYYYMMDD")) in0.cal_day_dt, -11));
+let decimal("\x01",0) l_dy_pd_mthr_perd_order_no = fail_if_error(in0.rank -1);
+let string("\x01",charset="iso-8859-15", maximum_length=35) l_dy_pd_mthr_perd_order_nm;
+let decimal("\x01",0) l_dy_pd_mthr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute l_dy_pd_mthr.perd_order_nm  (#1)   */
+if(first_defined(fail_if_error(((l_dy_pd_mthr_perd_order_no == 0) ==1)),0))begin
+  l_dy_pd_mthr_perd_order_nm='Current';
+end
+else if(first_defined(fail_if_error(((l_dy_pd_mthr_perd_order_no == 0) ==0)),0))begin
+  l_dy_pd_mthr_perd_order_nm=string_concat(str1='Previous ' , str2= (string("")) l_dy_pd_mthr_perd_order_no);
+end
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.l_dy_pd_mthr.dxf_hk_part1::l_dy_pd_mthr_dxf_hk_part1;
+  out0.l_dy_pd_mthr.dxf_hk_part2::l_dy_pd_mthr_dxf_hk_part2;
+  out0.l_dy_pd_mthr.dxf_sk::l_dy_pd_mthr_dxf_sk;
+  out0.l_dy_pd_mthr.dynamic_perd_sk::l_dy_pd_mthr_dynamic_perd_sk;
+  out0.l_dy_pd_mthr.perd_type_nbr::l_dy_pd_mthr_perd_type_nbr;
+  out0.l_dy_pd_mthr.perd_type_nm::l_dy_pd_mthr_perd_type_nm;
+  out0.l_dy_pd_mthr.perd_start_dt_sk::l_dy_pd_mthr_perd_start_dt_sk;
+  out0.l_dy_pd_mthr.perd_start_dt::l_dy_pd_mthr_perd_start_dt;
+  out0.l_dy_pd_mthr.perd_end_dt::l_dy_pd_mthr_perd_end_dt;
+  out0.l_dy_pd_mthr.perd_order_no::l_dy_pd_mthr_perd_order_no;
+  out0.l_dy_pd_mthr.perd_order_nm::l_dy_pd_mthr_perd_order_nm;
+  out0.l_dy_pd_mthr.src_env_sk::l_dy_pd_mthr_src_env_sk;
+  out0.*::in0.*;
+
+end;

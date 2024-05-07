@@ -1,0 +1,49 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_rcmodp.mod_nm,[passthrough],in0.sjbrt3]
+  [out0.orx_rcmodp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.orx_rcmodp.mod_cd,[passthrough],in0.sjd8c4]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_rcmodp.mod_nm,'orx_rcmodp.mod_nm',1,0]
+     [out0.orx_rcmodp.src_env_sk,'orx_rcmodp.src_env_sk',1,0]
+     [out0.orx_rcmodp.mod_cd,'orx_rcmodp.mod_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.sjd8c4,'sjd8c4',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.sjbrt3,'sjbrt3',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=6) orx_rcmodp_mod_cd = fail_if_error(in0.sjd8c4);
+let string("\x01",charset="iso-8859-15", maximum_length=25) orx_rcmodp_mod_nm = fail_if_error(in0.sjbrt3);
+let decimal("\x01",0) orx_rcmodp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.orx_rcmodp.mod_cd::orx_rcmodp_mod_cd;
+  out0.orx_rcmodp.mod_nm::orx_rcmodp_mod_nm;
+  out0.orx_rcmodp.src_env_sk::orx_rcmodp_src_env_sk;
+  out0.*::in0.*;
+
+end;

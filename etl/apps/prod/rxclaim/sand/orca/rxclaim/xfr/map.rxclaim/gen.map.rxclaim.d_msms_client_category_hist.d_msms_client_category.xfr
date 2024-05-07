@@ -1,0 +1,92 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5982fd5b_164b_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.msms_clt_cat.employer_group_id,[passthrough],in0.group_id]
+  [out0.d_cag.account_id,[passthrough],in0.account_id]
+  [out0.msms_clt_cat.account_id,[passthrough],in0.account_id]
+  [out0.msms_clt_cat.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_cag.carrier_id,[passthrough],in0.carrier_id]
+  [out0.msms_clt_cat.policy_no,[passthrough],in0.policy_no]
+  [out0.msms_clt_cat.cag_sk,[passthrough],in0.cag_sk]
+  [out0.msms_clt_cat.msms_catgry,[passthrough],in0.msms_catgry]
+  [out0.msms_clt_cat.carrier_id,[passthrough],in0.carrier_id]
+  [out0.msms_clt_cat.situs_state_cd,[passthrough],in0.situs_state_cd]
+  [out0.msms_clt_cat.funding_arrangment_cd,[passthrough],in0.funding_arrangment_cd]
+  [out0.d_cag.employer_group_id,[passthrough],in0.group_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.msms_clt_cat.employer_group_id,'msms_clt_cat.employer_group_id',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.msms_clt_cat.account_id,'msms_clt_cat.account_id',1,0]
+     [out0.msms_clt_cat.src_env_sk,'msms_clt_cat.src_env_sk',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.msms_clt_cat.policy_no,'msms_clt_cat.policy_no',1,0]
+     [out0.msms_clt_cat.cag_sk,'msms_clt_cat.cag_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.msms_clt_cat.msms_catgry,'msms_clt_cat.msms_catgry',1,0]
+     [out0.msms_clt_cat.carrier_id,'msms_clt_cat.carrier_id',1,0]
+     [out0.msms_clt_cat.situs_state_cd,'msms_clt_cat.situs_state_cd',1,0]
+     [out0.msms_clt_cat.funding_arrangment_cd,'msms_clt_cat.funding_arrangment_cd',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.msms_catgry,'msms_catgry',1,1]
+     [in0.funding_arrangment_cd,'funding_arrangment_cd',1,1]
+     [in0.account_id,'account_id',2,2]
+     [in0.situs_state_cd,'situs_state_cd',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.group_id,'group_id',2,2]
+     [in0.policy_no,'policy_no',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) msms_clt_cat_cag_sk = fail_if_error(in0.cag_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=30) msms_clt_cat_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) msms_clt_cat_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) msms_clt_cat_employer_group_id = fail_if_error(in0.group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=7) msms_clt_cat_policy_no = fail_if_error(in0.policy_no);
+let string("\x01",charset="iso-8859-15", maximum_length=1) msms_clt_cat_funding_arrangment_cd = fail_if_error(in0.funding_arrangment_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) msms_clt_cat_situs_state_cd = fail_if_error(in0.situs_state_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) msms_clt_cat_msms_catgry = fail_if_error(in0.msms_catgry);
+let decimal("\x01",0) msms_clt_cat_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.group_id);
+
+
+
+  out0.msms_clt_cat.cag_sk::msms_clt_cat_cag_sk;
+  out0.msms_clt_cat.carrier_id::msms_clt_cat_carrier_id;
+  out0.msms_clt_cat.account_id::msms_clt_cat_account_id;
+  out0.msms_clt_cat.employer_group_id::msms_clt_cat_employer_group_id;
+  out0.msms_clt_cat.policy_no::msms_clt_cat_policy_no;
+  out0.msms_clt_cat.funding_arrangment_cd::msms_clt_cat_funding_arrangment_cd;
+  out0.msms_clt_cat.situs_state_cd::msms_clt_cat_situs_state_cd;
+  out0.msms_clt_cat.msms_catgry::msms_clt_cat_msms_catgry;
+  out0.msms_clt_cat.src_env_sk::msms_clt_cat_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.*::in0.*;
+
+end;

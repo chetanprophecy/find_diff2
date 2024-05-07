@@ -1,0 +1,39 @@
+DROP TABLE ${STAGING_SCHEMA}.d_rpt_sco_cal_00_u;
+
+CREATE TABLE ${STAGING_SCHEMA}.d_rpt_sco_cal_00_u
+( record_code                      BIGINT
+, claim_no                         BIGINT
+, trlr_code                        BIGINT
+, detail_code                      BIGINT
+, header_code                      BIGINT
+, zip_code                         VARCHAR(9)
+, payee_id                         VARCHAR(10)
+, seq_no                           BIGINT
+, line_no                          SMALLINT
+, det_amt_ind                      DECIMAL(15,2)
+, payment_amt                      DECIMAL(15,2)
+, filler_1                         VARCHAR(4)
+, payee_name                       VARCHAR(30)
+, filler_2                         VARCHAR(4)
+, address_line1                    VARCHAR(30)
+, address_line2                    VARCHAR(30)
+, address_line3                    VARCHAR(30)
+, address_line4                    VARCHAR(30)
+, reportable_code                  CHAR(1)
+, filler_3                         VARCHAR(4)
+, bank_transaction_code            VARCHAR(2)
+, bank_transit_routing_code        VARCHAR(9)
+, bank_account_number              VARCHAR(17)
+, print_suppression                CHAR(1)
+, filler_4                         VARCHAR(4)
+, trace_number                     VARCHAR(50)
+, file_id                          VARCHAR(25)
+, src_env_sk                       BIGINT
+, insert_ts                        TIMESTAMP
+, update_ts                        TIMESTAMP
+, insert_uid                       VARCHAR(20)
+, update_uid                       VARCHAR(20)
+, run_id                           BIGINT
+, rec_stat_cd                      BYTEINT
+);
+

@@ -1,0 +1,123 @@
+$[
+begin
+
+let string("") _g_fld_str = "string_concat( ";
+let dml_field_info_vec _g_ctrl_file_info_vec = record_info( read_file( "$PUB_DXF_DML/ids/cpp_inbound_control_file.dml"));
+let string("") _g_event_count_stmts = "";
+
+let int i = 0;
+
+if( DATASET_FULL_OR_DELTA == "DELTA") 
+begin
+   _g_event_count_stmts = '
+    _g_control_info.insert_count = _g_control_info.insert_count + if( in.event_indicator == "I") 1 else 0;
+    _g_control_info.update_count = _g_control_info.update_count + if( in.event_indicator == "U") 1 else 0;
+    _g_control_info.delete_count = _g_control_info.delete_count + if( in.event_indicator == "D") 1 else 0;  
+    ';
+end
+else 
+begin
+  _g_event_count_stmts = '';
+end
+
+for( i, i < length_of( _g_ctrl_file_info_vec))
+begin
+
+  _g_fld_str = _g_fld_str + 'first_defined( _g_control_info.' + _g_ctrl_file_info_vec[i].name + ', ""),"|",';
+  if( length_of( _g_ctrl_file_info_vec) - i == 1) _g_fld_str = string_prefix( _g_fld_str, string_length( _g_fld_str) - 5) + ')'; //remove the ',"|",' from the last field
+end;
+
+result :: 'include "/~$PUB_DXF_XFR/dataset_id.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+include "/~$PUB_DXF_DML/ids/cpp_inbound_control_file.dml";
+include "~ab_home/include/log-event-type.dml";
+include "~ab_home/include/event-info-type.dml";
+
+let long dxf_src_sys_id = name_to_sys_id( "' + SUBJECT_AREA + '");
+let long dxf_src_dataset_id = 0;  /* The index into the Source Process table. */
+let long dxf_src_rec_cnt=0;
+let string( unsigned integer(1)) dxf_src_file_name="";
+let start_time = now();
+let cpp_inbound_control_type_t _g_control_info = allocate_with_defaults();
+  
+/* Always output 1 record.  Also increments the record counter. */
+out :: length(in) =
+begin
+
+  out :: 1;
+end;
+
+/* Add Source ID and Record Number.  Remove trailing blanks from strings.*/
+out :: normalize( in, index) =
+begin
+
+  if( is_null( _g_control_info.total_count)) _g_control_info.total_count = 0;
+
+  if( "' + DATASET_FULL_OR_DELTA+ '" == "DELTA")
+  begin
+    
+    if( is_null( _g_control_info.insert_count))
+    begin
+    
+      _g_control_info.insert_count = 0;
+      _g_control_info.update_count = 0;
+      _g_control_info.delete_count = 0;
+    end
+   ' + _g_event_count_stmts + '
+  end
+  
+  _g_control_info.total_count = _g_control_info.total_count + 1;
+  
+  dxf_src_file_name = in.filename;
+  dxf_src_rec_cnt = in.file_rec_cntr;
+  out.(*, name == "dxf_src_sys_id") :2: dxf_src_sys_id;
+  out.(*, name == "dxf_src_dataset_id") :3: dxf_src_dataset_id;
+  out.(*, name == "dxf_src_rec_cnt") :4: dxf_src_rec_cnt;
+  out.(*, name == "dxf_src_file_name") :5: dxf_src_file_name;
+  //For FULL files, we need to assign legacy_src_env_id which gets assigned in combine
+  ' + ( if( DATASET_FULL_OR_DELTA == "FULL") 'out.(*, name == "legacy_src_env_id") :1: in.src_env_sk;
+  ' else '') + ' 
+  
+  out.(*, form == "string") :99: string_and_hex_replace( string_convert_explicit( in.*, "iso-8859-1", replace_str = " "));
+  out.* :: in.*;
+end;
+
+/* Function to allow the output of an additional record at event */
+//Here used to write the Control file info to Log.
+out :: output_at_event( event_info) =
+begin
+
+  if( event_info.event_type == SHUTDOWN)
+  begin
+
+    _g_control_info.ids_table_name = "' + SOURCE + '";
+    _g_control_info.file_type = "' + DATASET_FULL_OR_DELTA+ '";
+    _g_control_info.etl_app_user_id = "' + ETL_APP_USER+ '";
+    _g_control_info.data_timestamp = "' + (string("")) RUN_DTTM + '";
+
+    write_to_log( event_type = "Control File Info", event_text = ' + _g_fld_str + ');
+  end
+
+  out :: NULL; // no record is sent to the out port
+end;
+
+/* Write the Source ID and Record Count to the log. */
+log_event :: final_log_output() =
+begin
+
+  let dxf_job_event_text_t job_info = [record
+    dxf_src_dataset_id  dxf_src_dataset_id,  // Only set in partition 0.
+    dxf_src_file_name   dxf_src_file_name,
+    dxf_src_rec_cnt     dxf_src_rec_cnt,
+    dataset_start_dttm  start_time,
+    dataset_end_dttm    now(),
+  ];
+
+  log_event.event_type :: "DXF Job Log: 0"; // We need to include a fake dataset ID for the rollup key that follows.
+  log_event.event_text :: job_info.as_event_text();
+end;';
+
+end
+]

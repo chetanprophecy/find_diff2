@@ -1,0 +1,131 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59d33671_5ad1_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_cl_p_pg_bl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_cl_p_pg_bl.cpp_product_sk,[transform],in0.product_id,
+     'lookup("c_product").dxf_sk']
+  [out0.c_cl_p_pg_bl.cpp_client_sk,[transform],in0.client_id,
+     'lookup("c_client").dxf_sk']
+  [out0.c_cl_p_pg_bl.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_cl_p_pg_bl.cpp_client_product_program_bill_sk,[transform],]
+  [out0.c_cl_p_pg_bl.cpp_program_sk,[transform],in0.program_id,
+     'lookup("c_program").dxf_sk']
+  [out0.c_cl_p_pg_bl.src_env_sk,[transform],]
+  [out0.c_cl_p_pg_bl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_cl_p_pg_bl.cpp_client_product_program_sk,[transform],in0.program_id,
+     in0.product_id,
+     in0.client_id,
+     'lookup("c_client_product_program").dxf_sk']
+  [out0.c_cl_p_pg_bl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_cl_p_pg_bl.cpp_create_ts,'c_cl_p_pg_bl.cpp_create_ts',1,0]
+     [out0.c_cl_p_pg_bl.program_id,'c_cl_p_pg_bl.program_id',1,0]
+     [out0.c_cl_p_pg_bl.cpp_product_sk,'c_cl_p_pg_bl.cpp_product_sk',1,0]
+     [out0.c_cl_p_pg_bl.cpp_client_sk,'c_cl_p_pg_bl.cpp_client_sk',1,0]
+     [out0.c_cl_p_pg_bl.cpp_update_ts,'c_cl_p_pg_bl.cpp_update_ts',1,0]
+     [out0.c_cl_p_pg_bl.product_id,'c_cl_p_pg_bl.product_id',1,0]
+     [out0.c_cl_p_pg_bl.client_id,'c_cl_p_pg_bl.client_id',1,0]
+     [out0.c_cl_p_pg_bl.cpp_client_product_program_bill_sk,'c_cl_p_pg_bl.cpp_client_product_program_bill_sk',1,0]
+     [out0.c_cl_p_pg_bl.bill_amount,'c_cl_p_pg_bl.bill_amount',1,0]
+     [out0.c_cl_p_pg_bl.bill_category,'c_cl_p_pg_bl.bill_category',1,0]
+     [out0.c_cl_p_pg_bl.cpp_program_sk,'c_cl_p_pg_bl.cpp_program_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_cl_p_pg_bl.src_env_sk,'c_cl_p_pg_bl.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_cl_p_pg_bl.cpp_updated_by,'c_cl_p_pg_bl.cpp_updated_by',1,0]
+     [out0.c_cl_p_pg_bl.cpp_client_product_program_sk,'c_cl_p_pg_bl.cpp_client_product_program_sk',1,0]
+     [out0.c_cl_p_pg_bl.cpp_created_by,'c_cl_p_pg_bl.cpp_created_by',1,0]
+     [out0.c_cl_p_pg_bl.client_product_program_bill_id,'c_cl_p_pg_bl.client_product_program_bill_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_cl_p_pg_bl.bill_method,'c_cl_p_pg_bl.bill_method',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.bill_category,'bill_category',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.client_product_program_bill_id,'client_product_program_bill_id',1,1]
+     ['lookup("c_client_product_program").dxf_sk','dxf_sk',1,1]
+     [in0.bill_amount,'bill_amount',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.program_id,'program_id',3,3]
+     [in0.client_id,'client_id',3,3]
+     ['lookup("c_product").dxf_sk','dxf_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.product_id,'product_id',3,3]
+     ['lookup("c_client").dxf_sk','dxf_sk',1,1]
+     ['lookup("c_program").dxf_sk','dxf_sk',1,1]
+     [in0.bill_method,'bill_method',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_cl_p_pg_bl_cpp_client_product_program_bill_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_cl_p_pg_bl_client_product_program_bill_id = fail_if_error(in0.client_product_program_bill_id);
+let utf8 string("\x01", maximum_length=80) c_cl_p_pg_bl_bill_category = fail_if_error(in0.bill_category);
+let utf8 string("\x01", maximum_length=200) c_cl_p_pg_bl_bill_method = fail_if_error(in0.bill_method);
+let decimal("\x01".2, maximum_length=40, sign_reserved) c_cl_p_pg_bl_bill_amount = fail_if_error(in0.bill_amount);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_cl_p_pg_bl_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_cl_p_pg_bl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_cl_p_pg_bl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_cl_p_pg_bl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_cl_p_pg_bl_cpp_client_product_program_sk;
+let utf8 string("\x01", maximum_length=60) c_cl_p_pg_bl_client_id = fail_if_error(in0.client_id);
+let decimal("\x01",0) c_cl_p_pg_bl_cpp_client_sk;
+let utf8 string("\x01", maximum_length=60) c_cl_p_pg_bl_product_id = fail_if_error(in0.product_id);
+let decimal("\x01",0) c_cl_p_pg_bl_cpp_product_sk;
+let utf8 string("\x01", maximum_length=100) c_cl_p_pg_bl_program_id = fail_if_error(in0.program_id);
+let decimal("\x01",0) c_cl_p_pg_bl_cpp_program_sk;
+let decimal("\x01",0) c_cl_p_pg_bl_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_cl_p_pg_bl_cpp_product_sk=fail_if_error(first_defined(lookup("c_product",in0.product_id).dxf_sk,-1));
+
+/*   Default value   */
+c_cl_p_pg_bl_cpp_client_sk=fail_if_error(first_defined(lookup("c_client",in0.client_id).dxf_sk,-1));
+
+/*   Default value   */
+c_cl_p_pg_bl_cpp_program_sk=fail_if_error(first_defined(lookup("c_program",in0.program_id).dxf_sk,-1));
+
+/*   Default value   */
+c_cl_p_pg_bl_cpp_client_product_program_sk=fail_if_error(first_defined(lookup("c_client_product_program",in0.client_id,in0.product_id,in0.program_id).dxf_sk,-1));
+
+  out0.c_cl_p_pg_bl.cpp_client_product_program_bill_sk::c_cl_p_pg_bl_cpp_client_product_program_bill_sk;
+  out0.c_cl_p_pg_bl.client_product_program_bill_id::c_cl_p_pg_bl_client_product_program_bill_id;
+  out0.c_cl_p_pg_bl.bill_category::c_cl_p_pg_bl_bill_category;
+  out0.c_cl_p_pg_bl.bill_method::c_cl_p_pg_bl_bill_method;
+  out0.c_cl_p_pg_bl.bill_amount::c_cl_p_pg_bl_bill_amount;
+  out0.c_cl_p_pg_bl.cpp_update_ts::c_cl_p_pg_bl_cpp_update_ts;
+  out0.c_cl_p_pg_bl.cpp_updated_by::c_cl_p_pg_bl_cpp_updated_by;
+  out0.c_cl_p_pg_bl.cpp_create_ts::c_cl_p_pg_bl_cpp_create_ts;
+  out0.c_cl_p_pg_bl.cpp_created_by::c_cl_p_pg_bl_cpp_created_by;
+  out0.c_cl_p_pg_bl.cpp_client_product_program_sk::c_cl_p_pg_bl_cpp_client_product_program_sk;
+  out0.c_cl_p_pg_bl.client_id::c_cl_p_pg_bl_client_id;
+  out0.c_cl_p_pg_bl.cpp_client_sk::c_cl_p_pg_bl_cpp_client_sk;
+  out0.c_cl_p_pg_bl.product_id::c_cl_p_pg_bl_product_id;
+  out0.c_cl_p_pg_bl.cpp_product_sk::c_cl_p_pg_bl_cpp_product_sk;
+  out0.c_cl_p_pg_bl.program_id::c_cl_p_pg_bl_program_id;
+  out0.c_cl_p_pg_bl.cpp_program_sk::c_cl_p_pg_bl_cpp_program_sk;
+  out0.c_cl_p_pg_bl.src_env_sk::c_cl_p_pg_bl_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,4 @@
+!prototype|P|||$AI_MP/history/create_reduced_and_archive.mp
+FILTER_EXPR||||sbm_dt >  (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -60 ) ||  filled_dt_sk > (decimal(8)) (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -60 )
+IDS_DATASET||||ids_rxclaim.f_claim_transaction.reduced2
+ARCHIVE_PURGE_FILTER||||sbm_dt < (decimal(8)) (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -365 ) ||  filled_dt_sk < (decimal(8)) (date("YYYYMMDD")) datetime_add(in_datetime = (date("YYYYMMDD")) now(), days = -365 )

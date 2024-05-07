@@ -1,0 +1,31 @@
+/******************************************************************************************************************************************
+ * pub_clinical_templates -> $PUB_CLINICAL_DML/outcome/eval_config_parse.dml
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2018/06/08  Sundar Rao           Initial version
+ ******************************************************************************************************************************************/
+
+type eval_rules_config_normalize_t=
+record
+  utf8 string(int)           app_templ_nm;
+  utf8 string(int)           app_config_nm;
+  utf8 string(int)           var_type_cd;
+  utf8 string(int)           var_value;
+end;
+metadata type =eval_rules_config_normalize_t;
+
+type eval_rules_config_parse_t =
+record
+utf8 string("\x01", maximum_length=100) app_templ_nm;
+utf8 string("\x01", maximum_length=100) evltn_rules_config_name ;
+utf8 string("\x01", maximum_length=10) method_id ;
+utf8 string("\x01", maximum_length=100) outcome_ctgry = NULL("") ;
+utf8 string("\x01", maximum_length=126) gpi_list_1 = NULL("");
+utf8 string("\x01", maximum_length=126) gpi_list_2 = NULL("");
+decimal("\x01",0, maximum_length=39) pharma_rvw_prd = NULL("");
+decimal("\x01",0, maximum_length=39) pre_eval_prd = NULL("") ;
+decimal("\x01",0, maximum_length=39) Pdc_cnt = NULL("") ;
+end;
+metadata type =eval_rules_config_parse_t;

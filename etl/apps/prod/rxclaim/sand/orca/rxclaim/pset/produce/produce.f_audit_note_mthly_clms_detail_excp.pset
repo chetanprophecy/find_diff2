@@ -1,0 +1,19 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_SERIAL/get.rxclaim/rxclaim.f_audit_note_mthly_clms_detail_excp.dat
+NORM_XFR||||$AI_XFR/produce/produce.f_audit_note_mthly_clms_detail_excp_nrmlz.xfr
+MAPPING_XFR|$|||$AI_XFR/produce/produce.f_audit_note_mthly_clms_detail_excp_rfmt.xfr
+USE_SORT||||True
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$[PUB_DATAHUB_MFS_LOOKUP + "/ids/ids_rxclaim/many/f_audit_note_mthly_clms_detail."+ string_substring(RUN_ID,1,8)+ ".dat.gz"]
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.f_audit_note_mthly_clms_detail.dml
+RUN_ID||||$[(datetime("YYYYMMDDHH24MISS"))now()]
+OUTPUT_FILE_DML|$|||$AI_DML/get.rxclaim/get.rxclaim.f_audit_note_mthly_clms_detail_excp.dml
+USE_NORM||||False
+FILTER_EXPR|$|||is_null(claim_stat_id)
+NORM_FILE_DML|$|||$AI_DML/get.rxclaim/get.rxclaim.f_audit_note_mthly_clms_detail_excp_nrmlz.dml
+SORT_KEY||||claim_nbr
+USE_DEDUP||||True
+INPUT_BACKUP_FILE_PATH||||$[if(INPUT_FILE_PATH == OUTPUT_FILE_LOCATION)  (if(ends_with(INPUT_FILE_PATH, ".dat.gz")) string_replace(INPUT_FILE_PATH, (string("")) RUN_ID + ".dat.gz", "backup." + (string(""))RUN_ID + ".dat.gz") else if(!ends_with(INPUT_FILE_PATH, ".dat.gz")) string_replace(INPUT_FILE_PATH, (string("")) RUN_ID + ".dat", ".backup." + (string("")) RUN_ID + ".dat")) else ""]
+READ_MULTI_ICFF||||N

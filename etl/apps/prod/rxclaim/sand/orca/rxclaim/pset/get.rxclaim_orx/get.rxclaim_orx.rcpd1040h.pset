@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil_bk1.rcpd1040h
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpd1040h               cmspstdte,planyear,pdpcarrier,pdpaccount,pdpgroup,pdpplan,pdpplaneff,contractid,pbpid,ndcid,gpinum,pdpdate,pfrecord,pffileid,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil_bk1', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ " where substr(replace(char(DATE(TIMESTAMP_FORMAT(CHAR(rcpd1040h.cmspstdte),'YYYYMMDD') + 13 days)),'-',''),1,4) = rcpd1040h.planyear and rcpd1040h.cmspstdte >="  + (string("\\x01"))(date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME +  " and substr(rcpd1040h.pffileid,8,3) >= "  + "'" +(string("\\x01")) (date("JJJ")) (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME +  "'" + " and substr(rcpd1040h.pffileid,8,3) < " + "'" + (string("\\x01")) (string_lpad(string_lrtrim((( (decimal("\\x01")) (string("\\x01"))((date("JJJ"))(date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS"))  START_CHANGES_TIME)) + ((decimal("\\x01"))date_difference_days((date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME,(date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS"))START_CHANGES_TIME)))),3,"0")) +  "'" + " and MONTH(rcpd1040h.cmspstdte) NOT IN (9, 10, 11)" ] OPTIMIZE FOR ALL ROWS
+START_CHANGES_TIME||||2020-12-30 00:00:00
+END_CHANGES_TIME||||2021-01-03 00:00:00

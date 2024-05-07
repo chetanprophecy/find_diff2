@@ -1,0 +1,29 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID           :: "003";
+  out.PLAN_ID              :: in.CARRIER_ID;
+  out.BIN                  :: in.BIN_NBR;
+  out.PROCESSOR_CNTRL_NBR  :: in.PROCESSOR_NBR;
+  out.PLAN_NAME            :: first_defined(lookup("RCCARP", in.CARRIER_ID).aaaatx,'abc');//+lookup("RCACCP", in.CARRIER_ID, 'PCN').anbjtx);//RTCAGP.ACAATX(Lookup Query 2)
+  out.PAYOR_NAME           :: NULL;
+  out.PAYOR_ID             :: NULL;
+  out.STATE_DPS_NBR        :: NULL;
+  out.MEDICAID_ID          :: NULL;
+  out.MEDICARE_ID          :: NULL;
+  out.EXTRACT_DT           :: in.EXTRACT_FILE_DATE;
+  out.EXTRACT_TIME         :: in.EXTRACT_FILE_TIMESTAMP;/*
+  out.LOAD_DT              :: "";//PLANS.LOAD_DT (Lookup Query 1) format YYYYMMDD;
+  out.LOAD_TIME            :: "";//PLANS.LOAD_TIME (Lookup Query 1) format HHMMSS;
+  out.REC_PROCESS          :: "";//if PLANS.LOAD_DT IS NULL or 0  then 'Y' else 'N';
+  out.RUN_NBR              :: "0";
+  out.SRC_UPDT_DT          :: "0";
+  out.SRC_UPDT_TIME        :: "0";
+  out.rxt_src_envrt_id     :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm     :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm      :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid       :: 'app_orca_rxclaim';
+  out.rxt_create_run_id    :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd      :: '';*/
+  out.*                    :: in.*;
+end

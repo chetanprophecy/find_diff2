@@ -1,0 +1,231 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a0190b3_6d7a_0
+    BizHidden:true
+@*/
+/*   lookup f_claim_transaction.reduced   */
+out0::bzt_2_6c54cc0a_5a0190b3_6d7a_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) employer_group_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL(""), mbr_adjud_sk = NULL(""), pbr_sk = NULL(""), pbr_adjud_sk = NULL(""), phr_sk = NULL(""), phr_adjud_sk = NULL(""), pln_adjud_sk = NULL(""), prod_sk = NULL(""), prod_adjud_sk = NULL(""), care_fac_adjud_sk = NULL(""), claim_stat_sk = NULL(""), carrier_sk = NULL(""), carrier_acct_sk = NULL(""), final_pln_sk = NULL(""), compound_sk = NULL(""), orig_carrier_sk = NULL(""), orig_mbr_sk = NULL(""), orig_cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) orig_account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) orig_member_id = NULL("");
+  decimal("\x01",0) claim_seq_nbr_src = NULL(""), sbm_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  decimal("\x01",0) filled_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL(""), rx_written_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) rx_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) refill_nbr = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) drg_qty = NULL("");
+  decimal("\x01".8, maximum_length=26, sign_reserved) awp_unit_cost = NULL("");
+  decimal("\x01".5, maximum_length=15, sign_reserved) extd_awp_cost = NULL("");
+  decimal("\x01",0) refill_max = NULL(""), days_sply = NULL(""), days_of_supply_sk = NULL(""), dmr_ind_sk = NULL(""), injectable_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_patient_pay_amt = NULL(""), app_due_amt = NULL(""), clt_due_amt = NULL(""), clt_ingred_cost_paid = NULL(""), clt_dispensing_fee = NULL(""), sbm_ingred_cost_paid = NULL(""), sbm_dispensing_fee = NULL(""), sbm_patient_pay_amt = NULL(""), sbm_due_amt = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("f_claim_transaction.reduced",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a0190b3_6d7a_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cst_clnt_ind.custom_client_ind,[passthrough],in0.custom_client_indicator]
+  [out0.f_clm_trx_mn.custom_client_ind_sk,[transform],]
+  [out0.f_clm_trx_mn.ntpn_ind,[passthrough],in0.ntpn_indicator]
+  [out0.f_clm_trx_mn.claim_nbr,[passthrough],in0.claim_number]
+  [out0.f_clm_trx_mn.mbr_sk,[transform],in0.claim_status_id,
+     in0.claim_number,
+     in0.claim_seq_number,
+     in0.rxclaim_bob_key,
+     'lookup("f_claim_transaction.reduced").mbr_sk']
+  [out0.injct_ind.injectable_ind,[passthrough],in0.injectable_indicator]
+  [out0.f_clm_trx_mn.dmr_ind,[passthrough],in0.dmr_indicator]
+  [out0.f_clm_trx_mn.clt_formulary_sk,[transform],]
+  [out0.f_clm_trx_mn.clt_formulary_flg,[passthrough],in0.formulary_flag]
+  [out0.dmrind.dmr_ind,[passthrough],in0.dmr_indicator]
+  [out0.f_clm_trx_mn.claim_origin_cd,[passthrough],in0.claim_origination_code]
+  [out0.frmlry.formulary_id,[passthrough],in0.formulary_flag]
+  [out0.f_clm_trx_mn.cag_sk,[transform],in0.claim_status_id,
+     in0.claim_number,
+     in0.claim_seq_number,
+     in0.rxclaim_bob_key,
+     'lookup("f_claim_transaction.reduced").cag_sk']
+  [out0.f_clm_trx_mn.claim_seq_nbr,[passthrough],in0.claim_seq_number]
+  [out0.f_clm_trx_mn.risk_pool_sk,[transform],]
+  [out0.f_clm_trx_mn.claim_stat_id,[passthrough],in0.claim_status_id]
+  [out0.f_clm_trx_mn.injectable_ind_sk,[transform],]
+  [out0.f_clm_trx_mn.rxsol_formulary_sk,[transform],]
+  [out0.f_clm_trx_mn.prior_auth_sk,[transform],]
+  [out0.f_clm_trx_mn.injectable_ind,[passthrough],in0.injectable_indicator]
+  [out0.f_clm_trx_mn.dmr_ind_sk,[transform],]
+  [out0.f_clm_trx_mn.src_env_sk,[transform],in0.rxclaim_bob_key]
+  [out0.f_clm_trx_mn.claim_origination_code_sk,[transform],]
+  [out0.f_clm_trx_mn.sbm_dt,[passthrough],in0.submitted_date]
+  [out0.f_clm_trx_mn.custom_client_ind,[passthrough],in0.custom_client_indicator]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cst_clnt_ind.custom_client_ind,'cst_clnt_ind.custom_client_ind',1,0]
+     [out0.f_clm_trx_mn.rxsol_formulary_id,'f_clm_trx_mn.rxsol_formulary_id',1,0]
+     [out0.prior_auth.prior_auth_id,'prior_auth.prior_auth_id',1,0]
+     [out0.f_clm_trx_mn.custom_client_ind_sk,'f_clm_trx_mn.custom_client_ind_sk',1,0]
+     [out0.f_clm_trx_mn.ntpn_ind,'f_clm_trx_mn.ntpn_ind',1,0]
+     [out0.f_clm_trx_mn.claim_nbr,'f_clm_trx_mn.claim_nbr',1,0]
+     [out0.f_clm_trx_mn.mbr_sk,'f_clm_trx_mn.mbr_sk',1,1]
+     [out0.injct_ind.injectable_ind,'injct_ind.injectable_ind',1,0]
+     [out0.f_clm_trx_mn.prior_auth_id,'f_clm_trx_mn.prior_auth_id',1,0]
+     [out0.f_clm_trx_mn.risk_pool_id,'f_clm_trx_mn.risk_pool_id',1,0]
+     [out0.f_clm_trx_mn.dmr_ind,'f_clm_trx_mn.dmr_ind',1,0]
+     [out0.f_clm_trx_mn.client_cost_tier_amt,'f_clm_trx_mn.client_cost_tier_amt',1,0]
+     [out0.f_clm_trx_mn.clt_formulary_sk,'f_clm_trx_mn.clt_formulary_sk',1,0]
+     [out0.f_clm_trx_mn.clt_formulary_flg,'f_clm_trx_mn.clt_formulary_flg',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_clm_trx_mn.reported_gap_discount_amt,'f_clm_trx_mn.reported_gap_discount_amt',1,0]
+     [out0.risk_pool.risk_pool_id,'risk_pool.risk_pool_id',1,0]
+     [out0.dmrind.dmr_ind,'dmrind.dmr_ind',1,0]
+     [out0.f_clm_trx_mn.claim_origin_cd,'f_clm_trx_mn.claim_origin_cd',1,0]
+     [out0.frmlry.formulary_id,'frmlry.formulary_id',1,0]
+     [out0.f_clm_trx_mn.cag_sk,'f_clm_trx_mn.cag_sk',1,1]
+     [out0.f_clm_trx_mn.claim_seq_nbr,'f_clm_trx_mn.claim_seq_nbr',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_clm_trx_mn.risk_pool_sk,'f_clm_trx_mn.risk_pool_sk',1,0]
+     [out0.f_clm_trx_mn.claim_stat_id,'f_clm_trx_mn.claim_stat_id',1,0]
+     [out0.rxsol_frmlry.rxsol_formulary_id,'rxsol_frmlry.rxsol_formulary_id',1,0]
+     [out0.f_clm_trx_mn.injectable_ind_sk,'f_clm_trx_mn.injectable_ind_sk',1,0]
+     [out0.f_clm_trx_mn.rxsol_formulary_sk,'f_clm_trx_mn.rxsol_formulary_sk',1,0]
+     [out0.f_clm_trx_mn.prior_auth_sk,'f_clm_trx_mn.prior_auth_sk',1,0]
+     [out0.f_clm_trx_mn.injectable_ind,'f_clm_trx_mn.injectable_ind',1,0]
+     [out0.f_clm_trx_mn.dmr_ind_sk,'f_clm_trx_mn.dmr_ind_sk',1,0]
+     [out0.f_clm_trx_mn.src_env_sk,'f_clm_trx_mn.src_env_sk',3,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_clm_trx_mn.claim_origination_code_sk,'f_clm_trx_mn.claim_origination_code_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_clm_trx_mn.sbm_dt,'f_clm_trx_mn.sbm_dt',1,0]
+     [out0.f_clm_trx_mn.custom_client_ind,'f_clm_trx_mn.custom_client_ind',1,0]
+  ]
+  impacts:
+  [
+     [in0.rxsol_formulary_id,'rxsol_formulary_id',2,2]
+     ['lookup("f_claim_transaction.reduced").mbr_sk','mbr_sk',1,1]
+     [in0.prior_auth_id,'prior_auth_id',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.claim_seq_number,'claim_seq_number',3,3]
+     [in0.rxclaim_bob_key,'rxclaim_bob_key',2,3]
+     [in0.dmr_indicator,'dmr_indicator',2,2]
+     ['lookup("f_claim_transaction.reduced").cag_sk','cag_sk',1,1]
+     [in0.formulary_flag,'formulary_flag',2,2]
+     [in0.client_cost_tier_amt,'client_cost_tier_amt',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.claim_status_id,'claim_status_id',3,3]
+     [in0.injectable_indicator,'injectable_indicator',2,2]
+     [in0.custom_client_indicator,'custom_client_indicator',2,2]
+     [in0.risk_pool_id,'risk_pool_id',2,2]
+     [in0.claim_origination_code,'claim_origination_code',1,1]
+     [in0.submitted_date,'submitted_date',1,1]
+     [in0.claim_number,'claim_number',3,3]
+     [in0.reported_gap_discount_amt,'reported_gap_discount_amt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ntpn_indicator,'ntpn_indicator',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) f_clm_trx_mn_claim_nbr = fail_if_error(in0.claim_number);
+let decimal("\x01",0) f_clm_trx_mn_claim_seq_nbr = fail_if_error(in0.claim_seq_number);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_claim_stat_id = fail_if_error(in0.claim_status_id);
+let decimal("\x01",0) f_clm_trx_mn_cag_sk;
+let decimal("\x01",0) f_clm_trx_mn_mbr_sk;
+let decimal("\x01",0) f_clm_trx_mn_injectable_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_clt_formulary_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_risk_pool_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_prior_auth_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_rxsol_formulary_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_dmr_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_custom_client_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_claim_origination_code_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_injectable_ind = fail_if_error(in0.injectable_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_clt_formulary_flg = fail_if_error(in0.formulary_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_risk_pool_id = fail_if_error(in0.risk_pool_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_prior_auth_id = fail_if_error(in0.prior_auth_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_rxsol_formulary_id = fail_if_error(in0.rxsol_formulary_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_claim_origin_cd = fail_if_error(in0.claim_origination_code);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_ntpn_ind = fail_if_error(in0.ntpn_indicator);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_clm_trx_mn_reported_gap_discount_amt = fail_if_error(in0.reported_gap_discount_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_dmr_ind = fail_if_error(in0.dmr_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_custom_client_ind = fail_if_error(in0.custom_client_indicator);
+let date("YYYYMMDD")("\x01") f_clm_trx_mn_sbm_dt = fail_if_error(in0.submitted_date);
+let decimal("\x01",0) f_clm_trx_mn_src_env_sk = fail_if_error(if(in0.rxclaim_bob_key==1)480 else if(in0.rxclaim_bob_key==2) 490);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_clm_trx_mn_client_cost_tier_amt = fail_if_error(in0.client_cost_tier_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cst_clnt_ind_custom_client_ind = fail_if_error(in0.custom_client_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) dmrind_dmr_ind = fail_if_error(in0.dmr_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) frmlry_formulary_id = fail_if_error(in0.formulary_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) injct_ind_injectable_ind = fail_if_error(in0.injectable_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_prior_auth_id = fail_if_error(in0.prior_auth_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_risk_pool_id = fail_if_error(in0.risk_pool_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_frmlry_rxsol_formulary_id = fail_if_error(in0.rxsol_formulary_id);
+
+
+
+/*   Default value   */
+f_clm_trx_mn_cag_sk=fail_if_error(bzt_2_6c54cc0a_5a0190b3_6d7a_0(in0.claim_number, in0.claim_seq_number, in0.claim_status_id, f_clm_trx_mn_src_env_sk).cag_sk);
+
+/*   Default value   */
+f_clm_trx_mn_mbr_sk=fail_if_error(bzt_2_6c54cc0a_5a0190b3_6d7a_0(in0.claim_number, in0.claim_seq_number, in0.claim_status_id, f_clm_trx_mn_src_env_sk).mbr_sk);
+
+  out0.f_clm_trx_mn.claim_nbr::f_clm_trx_mn_claim_nbr;
+  out0.f_clm_trx_mn.claim_seq_nbr::f_clm_trx_mn_claim_seq_nbr;
+  out0.f_clm_trx_mn.claim_stat_id::f_clm_trx_mn_claim_stat_id;
+  out0.f_clm_trx_mn.cag_sk::f_clm_trx_mn_cag_sk;
+  out0.f_clm_trx_mn.mbr_sk::f_clm_trx_mn_mbr_sk;
+  out0.f_clm_trx_mn.injectable_ind_sk::f_clm_trx_mn_injectable_ind_sk;
+  out0.f_clm_trx_mn.clt_formulary_sk::f_clm_trx_mn_clt_formulary_sk;
+  out0.f_clm_trx_mn.risk_pool_sk::f_clm_trx_mn_risk_pool_sk;
+  out0.f_clm_trx_mn.prior_auth_sk::f_clm_trx_mn_prior_auth_sk;
+  out0.f_clm_trx_mn.rxsol_formulary_sk::f_clm_trx_mn_rxsol_formulary_sk;
+  out0.f_clm_trx_mn.dmr_ind_sk::f_clm_trx_mn_dmr_ind_sk;
+  out0.f_clm_trx_mn.custom_client_ind_sk::f_clm_trx_mn_custom_client_ind_sk;
+  out0.f_clm_trx_mn.claim_origination_code_sk::f_clm_trx_mn_claim_origination_code_sk;
+  out0.f_clm_trx_mn.injectable_ind::f_clm_trx_mn_injectable_ind;
+  out0.f_clm_trx_mn.clt_formulary_flg::f_clm_trx_mn_clt_formulary_flg;
+  out0.f_clm_trx_mn.risk_pool_id::f_clm_trx_mn_risk_pool_id;
+  out0.f_clm_trx_mn.prior_auth_id::f_clm_trx_mn_prior_auth_id;
+  out0.f_clm_trx_mn.rxsol_formulary_id::f_clm_trx_mn_rxsol_formulary_id;
+  out0.f_clm_trx_mn.claim_origin_cd::f_clm_trx_mn_claim_origin_cd;
+  out0.f_clm_trx_mn.ntpn_ind::f_clm_trx_mn_ntpn_ind;
+  out0.f_clm_trx_mn.reported_gap_discount_amt::f_clm_trx_mn_reported_gap_discount_amt;
+  out0.f_clm_trx_mn.dmr_ind::f_clm_trx_mn_dmr_ind;
+  out0.f_clm_trx_mn.custom_client_ind::f_clm_trx_mn_custom_client_ind;
+  out0.f_clm_trx_mn.sbm_dt::f_clm_trx_mn_sbm_dt;
+  out0.f_clm_trx_mn.src_env_sk::f_clm_trx_mn_src_env_sk;
+  out0.f_clm_trx_mn.client_cost_tier_amt::f_clm_trx_mn_client_cost_tier_amt;
+  out0.cst_clnt_ind.custom_client_ind::cst_clnt_ind_custom_client_ind;
+  out0.dmrind.dmr_ind::dmrind_dmr_ind;
+  out0.frmlry.formulary_id::frmlry_formulary_id;
+  out0.injct_ind.injectable_ind::injct_ind_injectable_ind;
+  out0.prior_auth.prior_auth_id::prior_auth_prior_auth_id;
+  out0.risk_pool.risk_pool_id::risk_pool_risk_pool_id;
+  out0.rxsol_frmlry.rxsol_formulary_id::rxsol_frmlry_rxsol_formulary_id;
+  out0.*::in0.*;
+
+end;

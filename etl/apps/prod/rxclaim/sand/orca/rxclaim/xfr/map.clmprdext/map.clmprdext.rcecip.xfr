@@ -1,0 +1,63 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.cmpnd_seq_nbr :: in.agr7n2;
+  out.compnd_prod_id_ql :: in.agi5cj;
+  out.sbm_cmp_prod_id :: in.agr9c4;
+  out.compound_prod_key :: in.agr9n2;
+  out.prd_description_abbrv :: in.agcnt3;
+  out.prd_name_name_ext :: in.agcot3;
+  out.drug_manufacturer_id :: in.agdlcd;
+  out.drug_manufacturer :: in.agdgcd;
+  out.cmd_gpi_number :: in.agqihb;
+  out.drug_generic_name :: in.agxktx;
+  out.drug_descriptor :: in.agh6t2;
+  out.generic_cde_nbr :: in.agxrn1;
+  out.gcn_sequence_nbr :: in.agxsn1;
+  out.prd_kdc :: in.agciv1;
+  out.ahfs_class_code :: in.agebc4;
+  out.drug_dea_code :: in.agddea;
+  out.drug_rx_otc_indicator :: in.agdrxo;
+  out.prd_multi_source :: in.agozs3;
+  out.generic_ind_override :: if(is_blank(string_lrtrim(in.agzxst))) 
+                                in.agozs3 
+                              else 
+                                in.agzxst;
+  out.prod_reimbursemnt_ind :: in.agpdc3;
+  out.brand_trade_name_code :: in.agpfc3;
+  out.drug_fda_thera_equiv :: in.agdkcd;
+  out.dm_metric_strength :: in.agagqt;
+  out.drug_strength_uom :: in.agtat3;
+  out.drug_route_of_admin :: in.agdicd;
+  out.drug_dosage_form :: in.agdhcd;
+  out.drug_maintenance_code :: in.agmdcd;
+  out.drug_3rd_pty_excp_cde :: in.agd3px;
+  out.drug_unitdose_unituse :: in.agdudu;
+  out.sbm_cmp_ingrd_qty :: in.agsan2;
+  out.sbm_cmp_ingrd_cst :: in.aguip1;
+  out.sbm_cmp_cst_basis :: in.agi6cj;
+  out.ingredient_status :: in.agjah7;
+  out.cal_ingredient_cost :: in.agilhx;
+  out.app_ingredient_cst :: in.agimhx;
+  out.clt_ingredient_cost :: in.aginhx;
+  out.app_cost_source :: in.agi8h7;
+  out.app_cost_type_cde :: in.agqjhb;
+  out.app_cst_typ_unit_cost :: in.agiohx;
+  out.clt_cost_source :: in.agi9h7;
+  out.clt_cost_type_cde :: in.agqkhb;
+  out.clt_cst_typ_unit_cost :: in.agiphx;
+  out.awp_unit_cost :: in.agikhx;
+  out.cal_prof_srv_fee_paid :: in.agj7hy;
+  out.app_prof_srv_fee_paid :: in.agj8hy;
+  out.clt_prof_srv_fee_paid :: in.agj9hy;
+  out.rm_indicator :: in.agqjia;
+  out.px_indicator :: in.agqkia;
+  out.ms_indicator :: in.agqlia;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

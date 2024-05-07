@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||dwxtract_bk1.rx64607p1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\ndwxtract_bk1  rx64607p1               net_rxclaimnbr,net_clmseqnbr,net_claimsts,net_datesbm,net_clientdef3,net_reimbursmt,net_clmorigin,net_ambkqu,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "dwxtract_bk1", "rx64607p1")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rx64607p1.net_datesbm >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) + \r\n    " AND rx64607p1.net_datesbm <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rx64607p1.net_datesbm >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " AND rx64607p1.net_datesbm <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]
+SELECT_FIELDS||||rx64607p1.net_rxclaimnbr\r\n     , rx64607p1.net_clmseqnbr\r\n     , rx64607p1.net_claimsts\r\n     , rx64607p1.net_datesbm\r\n     , '*'||rx64607p1.net_clientdef3||'*' net_clientdef3\r\n     , rx64607p1.net_reimbursmt\r\n     , rx64607p1.net_clmorigin\r\n     , rx64607p1.net_ambkqu

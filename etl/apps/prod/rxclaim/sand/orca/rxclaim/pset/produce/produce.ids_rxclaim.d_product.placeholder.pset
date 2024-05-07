@@ -1,0 +1,15 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_common/clean.ids_common.d_product.${RUN_ID}.dat.gz
+OUTPUT_FILE_LOCATION||||$AI_MFS/placeholder/placeholder.ctrx.produce.d_product.ids_common.d_product.${RUN_ID}.dat.gz
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.ids_rxclaim.d_product_rfmt.xfr
+USE_SORT||||False
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_common/clean.ids_common.d_product.dml
+FILTER_EXPR|$|||ids_rec_stat_cd=='03' and ((is_null(thrpc_class_nm) or thrpc_class_nm=='-') or (is_null(dise_cat_nm) or dise_cat_nm=='-'))
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_common/split.ids_common.d_product.dml
+AB_CATALOG|$|||$AI_CAT/produce/produce.ids_rxclaim.d_product.cat
+ACE_CATALOG_CONTENTS|$|||dise_cat_nm_thrpc_lkp,{drg_bsic_nm_gpi_08},/~$AI_SERIAL_LOOKUP/lookup.deltadmaenhanceddls/lookup.deltadmaenhanceddls.v_d_spe_gpi08_xwalk.dat,/~$AI_DML/lookup.deltadmaenhanceddls/lookup.deltadmaenhanceddls.v_d_spe_gpi08_xwalk.dml\r\nl_dise_cat,{dise_cat_nm},/~$AI_SERIAL_LOOKUP/lookup.ids_rxclaim/lookup.ids_rxclaim.l_disease_category.dat,/~$AI_DML/lookup.ids_rxclaim/lookup.ids_rxclaim.l_disease_category.dml\r\nl_thera_class,{thrpc_class_nm},/~$AI_SERIAL_LOOKUP/lookup.ids_rxclaim/lookup.ids_rxclaim.l_therapeutic_class.dat,/~$AI_DML/lookup.ids_rxclaim/lookup.ids_rxclaim.l_therapeutic_class.dml
+analysis_level|Pl|||ignore_sql_errors

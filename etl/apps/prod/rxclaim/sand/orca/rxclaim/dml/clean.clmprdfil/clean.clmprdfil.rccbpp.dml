@@ -1,0 +1,31 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  ajp2nb /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCCBPP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  little endian integer(2)  ajoinb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCCBPP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  little endian integer(2)  ajven2 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCCBPP: COB Seq Nbr"
+ BizComment:""
+@*/;
+  little endian integer(2)  ajvgn2 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCCBPP: CBP Seq Nbr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  ajircj /*CHAR(2) NOT NULL */ /*@
+BizName:"RCCBPP: CBP Sbm Oth Pyr AmtPd Ql"
+ BizComment:""
+@*/;
+  decimal("".2, sign_reserved)  ajdspr /*DECIMAL(9,2) NOT NULL */ /*@
+BizName:"RCCBPP: CBP Sbm Oth Pyr AmtPd"
+ BizComment:"Dollar amount of payment known by the pharmacy from other sources."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  claimsts /*CHAR(1) NOT NULL*/;
+end

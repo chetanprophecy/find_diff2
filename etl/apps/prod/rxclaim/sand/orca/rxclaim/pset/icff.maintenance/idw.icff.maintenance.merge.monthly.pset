@@ -1,0 +1,7 @@
+!prototype|P|||$AI_PSET/icff.maintenance.merge.interim.pset
+IDS_PATH||||$PUB_DATAHUB_MFS_LOOKUP
+SEND_TO||||$[\r\nbegin\r\n        let string("") table_list = read_file(AI_META + '/idw_maintenance/idw_icff_maintenance_mail_list.txt');\r\n        result :: string_substring(table_list,1,string_length(table_list)-1);\r\nend]
+EMAIL_SUBJECT_META||||"ICFF maintenance process status "
+IDS_DATASET_LIST||||$[\r\nbegin\r\n        let string("") table_list = read_file(AI_META + '/idw_maintenance/idw_icff_maintenance_merge_monthly.txt');\r\n        result :: if(!is_blank(IDS_DATASET_MANUAL)) IDS_DATASET_MANUAL else string_substring(table_list,1,string_length(table_list)-1);\r\nend\r\n]
+APPLICATION||||IDW
+IDS_DML_WITH_NK_DML:sandbox||||$[\r\nfor(let ids_dataset in IDS_DATASET_VEC) : \r\nget_ids_with_nk_flag(string_split(ids_dataset, ".")[0], ids_dataset, AI_PSET, PUB_DATAHUB_DML)\r\n]

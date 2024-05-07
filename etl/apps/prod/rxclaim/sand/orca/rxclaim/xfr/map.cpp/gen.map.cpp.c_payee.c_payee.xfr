@@ -1,0 +1,117 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59e4b088_57b2_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_payee.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_payee.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_payee.cpp_payee_sk,[transform],]
+  [out0.c_payee.src_env_sk,[transform],]
+  [out0.c_payee.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_payee.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_payee.pymt_cntry,'c_payee.pymt_cntry',1,0]
+     [out0.c_payee.cpp_created_by,'c_payee.cpp_created_by',1,0]
+     [out0.c_payee.payee_type,'c_payee.payee_type',1,0]
+     [out0.c_payee.cpp_update_ts,'c_payee.cpp_update_ts',1,0]
+     [out0.c_payee.pymt_st,'c_payee.pymt_st',1,0]
+     [out0.c_payee.member_payee_stts,'c_payee.member_payee_stts',1,0]
+     [out0.c_payee.payee_short_name,'c_payee.payee_short_name',1,0]
+     [out0.c_payee.cpp_payee_sk,'c_payee.cpp_payee_sk',1,0]
+     [out0.c_payee.src_env_sk,'c_payee.src_env_sk',1,0]
+     [out0.c_payee.pymt_city,'c_payee.pymt_city',1,0]
+     [out0.c_payee.pymt_addr_line_1,'c_payee.pymt_addr_line_1',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_payee.pymt_addr_line_2,'c_payee.pymt_addr_line_2',1,0]
+     [out0.c_payee.payee_id,'c_payee.payee_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_payee.sequence_num,'c_payee.sequence_num',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_payee.cpp_updated_by,'c_payee.cpp_updated_by',1,0]
+     [out0.c_payee.payee_name,'c_payee.payee_name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_payee.cpp_create_ts,'c_payee.cpp_create_ts',1,0]
+     [out0.c_payee.pymt_zip,'c_payee.pymt_zip',1,0]
+     [out0.c_payee.pymt_addr_line_3,'c_payee.pymt_addr_line_3',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.payee_id,'payee_id',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.member_payee_stts,'member_payee_stts',1,1]
+     [in0.payee_type,'payee_type',1,1]
+     [in0.sequence_num,'sequence_num',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pymt_cntry,'pymt_cntry',1,1]
+     [in0.pymt_st,'pymt_st',1,1]
+     [in0.pymt_addr_line_3,'pymt_addr_line_3',1,1]
+     [in0.payee_short_name,'payee_short_name',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.pymt_city,'pymt_city',1,1]
+     [in0.pymt_addr_line_2,'pymt_addr_line_2',1,1]
+     [in0.pymt_addr_line_1,'pymt_addr_line_1',1,1]
+     [in0.payee_name,'payee_name',1,1]
+     [in0.pymt_zip,'pymt_zip',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_payee_cpp_payee_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=12) c_payee_payee_id = fail_if_error(in0.payee_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_payee_sequence_num = fail_if_error(in0.sequence_num);
+let utf8 string("\x01", maximum_length=240) c_payee_payee_name = fail_if_error(in0.payee_name);
+let utf8 string("\x01", maximum_length=60) c_payee_payee_short_name = fail_if_error(in0.payee_short_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_payee_payee_type = fail_if_error(in0.payee_type);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_payee_member_payee_stts = fail_if_error(in0.member_payee_stts);
+let utf8 string("\x01", maximum_length=220) c_payee_pymt_addr_line_1 = fail_if_error(in0.pymt_addr_line_1);
+let utf8 string("\x01", maximum_length=220) c_payee_pymt_addr_line_2 = fail_if_error(in0.pymt_addr_line_2);
+let utf8 string("\x01", maximum_length=220) c_payee_pymt_addr_line_3 = fail_if_error(in0.pymt_addr_line_3);
+let utf8 string("\x01", maximum_length=120) c_payee_pymt_city = fail_if_error(in0.pymt_city);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_payee_pymt_st = fail_if_error(in0.pymt_st);
+let string("\x01",charset="iso-8859-15", maximum_length=5) c_payee_pymt_zip = fail_if_error(in0.pymt_zip);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_payee_pymt_cntry = fail_if_error(in0.pymt_cntry);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_payee_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_payee_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_payee_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_payee_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_payee_src_env_sk = 710;
+
+
+
+  out0.c_payee.cpp_payee_sk::c_payee_cpp_payee_sk;
+  out0.c_payee.payee_id::c_payee_payee_id;
+  out0.c_payee.sequence_num::c_payee_sequence_num;
+  out0.c_payee.payee_name::c_payee_payee_name;
+  out0.c_payee.payee_short_name::c_payee_payee_short_name;
+  out0.c_payee.payee_type::c_payee_payee_type;
+  out0.c_payee.member_payee_stts::c_payee_member_payee_stts;
+  out0.c_payee.pymt_addr_line_1::c_payee_pymt_addr_line_1;
+  out0.c_payee.pymt_addr_line_2::c_payee_pymt_addr_line_2;
+  out0.c_payee.pymt_addr_line_3::c_payee_pymt_addr_line_3;
+  out0.c_payee.pymt_city::c_payee_pymt_city;
+  out0.c_payee.pymt_st::c_payee_pymt_st;
+  out0.c_payee.pymt_zip::c_payee_pymt_zip;
+  out0.c_payee.pymt_cntry::c_payee_pymt_cntry;
+  out0.c_payee.cpp_update_ts::c_payee_cpp_update_ts;
+  out0.c_payee.cpp_updated_by::c_payee_cpp_updated_by;
+  out0.c_payee.cpp_create_ts::c_payee_cpp_create_ts;
+  out0.c_payee.cpp_created_by::c_payee_cpp_created_by;
+  out0.c_payee.src_env_sk::c_payee_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,291 @@
+<AppConfTempl name="Replicate IDS (Cross Cluster)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all">/Projects/aicoe/datahub</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[include "~$PUB_DXF_XFR/ids/ids_replication.xfr";
+include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(rpath, appconf_name, clusters) =
+begin
+  out :1: if(rpath != "/Projects/aicoe/datahub") "You can only create configs for this template in the project /Projects/aicoe/datahub";
+  out :2: if ( not starts_with(appconf_name, "replicate_ids.") or string_filter(appconf_name, ".") != ".."
+               or first_without_error(string_split(appconf_name, ".")[1], "") not member string_split(clusters, ","))
+    "This application configuration must be named: replicate_ids.<i>cluster_identifier</i>.<i>application_identifier</i>.\n\n" +
+    "where <i>application_identifier</i> is user defined\n" +
+    "and <i>cluster_identifier</i> must be one of the following:\n" +
+    "<b>" + string_replace(clusters, ",", ", ") + "</b>\n\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="target_cluster_launcher_node" type="string"/>
+      <ListVariable name="ids_replication" type="compound">
+        <Variable name="ids" type="string"/>
+        <Variable name="data" type="boolean"/>
+        <Variable name="xref" type="boolean"/>
+        <Variable name="event" type="boolean"/>
+      </ListVariable>
+    </Variables>
+    <Variables name="uivars">
+      <Variable name="errors" type="string"/>
+      <ListVariable name="ids_list" type="string"/>
+      <Variable name="unused_ids_message" type="string"/>
+    </Variables>
+    <Project name="proj">
+      <Pset name="rep" prototype_path="$AI_PSET/replicate_ids.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check for Naming Convention">
+      <SourceValue is_expression="true">check_appconf(built_in.project_rpath, built_in, proj.rep.TARGET_CLUSTER_NAME_LIST)</SourceValue>
+      <TargetValue reference="uivars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_table_list_sorted()</SourceValue>
+      <TargetValue reference="uivars.ids_list"/>
+    </Assignment>
+    <Assignment name="Pset Name">
+      <SourceValue is_expression="true">"pset/replicate_ids/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.rep" property="relative_path"/>
+      <Condition is_expression="true">uivars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="proj.rep.TARGET_CLUSTER"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[2]</SourceValue>
+      <TargetValue reference="proj.rep.APP_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("\x01") message = "";
+  let list = for(let ids_rep in vars.ids_replication):
+               if(not (ids_rep.data or ids_rep.xref or ids_rep.event))
+                 ids_rep.ids;
+  if(length_of(list) != 0)
+    message = "Warning: Please select at least one copy option for IDS datasets\n" + 
+                "&lt;i&gt;" + string_join(list, "\n") + "&lt;/i&gt;";
+  result :: message;
+end</SourceValue>
+      <TargetValue reference="uivars.unused_ids_message"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let rep in vars.ids_replication):
+  if(rep.data) rep.ids</SourceValue>
+      <TargetValue reference="proj.rep.IDS_DATA_LIST_VEC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let rep in vars.ids_replication):
+  if(rep.xref) rep.ids</SourceValue>
+      <TargetValue reference="proj.rep.IDS_XREF_LIST_VEC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let rep in vars.ids_replication):
+  if(rep.event) rep.ids</SourceValue>
+      <TargetValue reference="proj.rep.IDS_EVENT_LIST_VEC"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Main Settings</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true">uivars.errors == ''</Visible>
+          <Label>Clusters</Label>
+          <UIElements>
+            <Box>
+              <Label>Source Cluster</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"cluster_1\n" +
+"Serial node: " + get_serial_node(proj.rep.CLUSTER_LIST, "cluster_1") + "\n" +
+"MFS nodes: " + string_join(get_mfs_nodes(proj.rep.CLUSTER_LIST, "cluster_1"), ",")</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>Target Cluster</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.rep.TARGET_CLUSTER + "\n" +
+"Serial node: " + get_serial_node(proj.rep.CLUSTER_LIST, proj.rep.TARGET_CLUSTER) + "\n" +
+"MFS nodes: " + string_join(get_mfs_nodes(proj.rep.CLUSTER_LIST, proj.rep.TARGET_CLUSTER), ",")</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>For Application</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">string_split(built_in, ".")[2]</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>mapping</Style>
+        </Box>
+        <Box>
+          <Label>Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="uivars.errors"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">uivars.errors != ''</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">uivars.errors == ''</Visible>
+        <Box>
+          <Label>IDS Datasets to Copy</Label>
+          <UIElements>
+            <Popup>
+              <Label is_expression="true">"Select IDS Datasets (" + (string(""))(decimal(""))length_of(vars.ids_replication.ids) + " selected) ..."</Label>
+              <Title/>
+              <UIElements>
+                <OrderedList>
+                  <Choices reference="uivars.ids_list"/>
+                  <Label>Select</Label>
+                  <SourceTargetValue reference="vars.ids_replication.ids"/>
+                </OrderedList>
+              </UIElements>
+            </Popup>
+            <Box>
+              <Label>Select what to copy</Label>
+              <UIElements>
+                <ForEach list_reference="vars.ids_replication" item="ids_rep">
+                  <UIElements>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">ids_rep.ids + ":"</Label>
+                        </TextLabel>
+                        <CheckBox>
+                          <Label>Data</Label>
+                          <SourceTargetValue reference="ids_rep.data"/>
+                        </CheckBox>
+                        <CheckBox>
+                          <Label>Xref</Label>
+                          <SourceTargetValue reference="ids_rep.xref"/>
+                        </CheckBox>
+                        <CheckBox>
+                          <Label>Event</Label>
+                          <SourceTargetValue reference="ids_rep.event"/>
+                        </CheckBox>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                </ForEach>
+              </UIElements>
+              <Visible is_expression="true">length_of(vars.ids_replication)</Visible>
+            </Box>
+            <Box>
+              <Label>Unused IDS datasets</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">'&lt;font color="#880000"&gt;' + uivars.unused_ids_message + '&lt;/font&gt;'</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>mainSource</Style>
+              <Visible is_expression="true">uivars.unused_ids_message != ''</Visible>
+            </Box>
+          </UIElements>
+          <Style>recval</Style>
+          <Visible is_expression="true">uivars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">uivars.errors == ''</Visible>
+        <Box>
+          <Label>Note</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>- Make sure that the relevant directories are created on the target cluster with the correct permissions
+- The copy commands will be executed by the user "aicoe" in production
+- If this is the first transfer being setup for this cluster, make sure that AICOE team has setup the required connectivity</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <LineIn>off</LineIn>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Visible is_expression="true">uivars.errors == ''</Visible>
+      <Label>Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.rep.PROJECT_DIR + "/" + proj.rep.relative_path + "&lt;/b&gt;"</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">if(file_information(proj.rep.PROJECT_DIR + "/" + proj.rep.relative_path).found)
+  read_file(proj.rep.PROJECT_DIR + "/" + proj.rep.relative_path)
+else
+  "Save and Refresh the configuration to view pset."</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label>&lt;font size="13 pt"&gt;
+        &lt;b&gt;How to Name Your Configs&lt;/b&gt;
+        
+        The naming convention is replicate_ids.&lt;i&gt;cluster_identifier&lt;/i&gt;.&lt;i&gt;application_identifier&lt;/i&gt;
+        
+        The underlying plan contains the master details of all clusters, and if you
+        use a &lt;i&gt;cluster_identifier&lt;/i&gt; other than a known one then the
+        configuration will display an error message and will inform you about the 
+        existing clusters that you can use. 
+        You may use any string for the &lt;i&gt;application_identifier&lt;/i&gt; that will help
+        group replicated IDS datasets for an application in one appconf. There is no
+        use of this identifier outside of the configuration, so you can choose any
+        sensible name.
+        
+        &lt;b&gt;What this Configuration is For&lt;/b&gt;
+        
+        Create a configuration for this template if your application is running on a
+        cluster of servers that is different from the cluster on which a set of IDS
+        datasets are being created/maintained, and you only want to read from the files.
+        In case your application also wants to write data to the IDS then you must run
+        your application on the same cluster, because IDS is not on a shared file
+        system.
+        
+        &lt;b&gt;About Record Formats&lt;/b&gt;
+        
+        Since the underlying plan uses a simple m_cp command, it is not necessary for
+        the plan to know the record formats (DMLs) of the IDS datasets. This also
+        implies that you have to take care of any changes in the IDS DMLs outside the
+        scope of this replication process. The replication process will not fail in
+        case the DMLs do not match between applications on different clusters.
+         
+        &lt;b&gt;Testing the Configuration&lt;/b&gt;
+        
+        In production the process runs under aicoe user, for which the connectivity will
+        be setup by AICOE team. However, if you want to test run the process in dev,
+        then ensure that the passwordless ssh connectivity is setup between the serial
+        nodes of the source and target clusters for your id.
+        
+        &lt;b&gt;Publishing Your Work&lt;/b&gt;
+        
+        Be sure to publish your working configuration once it is tested.  
+        This makes the work you have done available to others and unlocks the
+        configuration so that other people can work on it too. It is customary to
+        include a meaniful comment when you publish.
+        &lt;/font&gt;</Label>
+          <Width>1000</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

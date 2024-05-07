@@ -1,0 +1,141 @@
+type logical_ids_rxclaim_d_pharmacy_ntwk_rate_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) phrm_ntwk_rate_sk = NULL("");
+  decimal("\x01",0) pln_phr_ntwk_sk = NULL("");
+  decimal("\x01",0) pln_sk = NULL("");
+  decimal("\x01",0) ntwk_sk = NULL("");
+  decimal("\x01",0) phr_ntwk_ndc_list_nm_sk = NULL("");
+  decimal("\x01",0) phr_ntwk_gpi_list_nm_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("");
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_ntwk_prty = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_ntwk_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phn_phr_ntwk_id = NULL("");
+  decimal("\x01",0) phn_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_phr_ntwk_list_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_phr_ntwk_list_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_or_client_rate_cd = NULL("");
+  decimal("\x01",0) nra_seq_nbr = NULL("");
+  date("YYYYMMDD")("\x01") nra_start_dt = NULL("");
+  decimal("\x01",0) nra_start_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") nra_end_dt = NULL("");
+  decimal("\x01",0) nra_end_dt_sk = NULL("");
+  decimal("\x01".2, maximum_length=9, sign_reserved) rate_perct_factor = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) nra_status_ind = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d date: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type opt_nk_ids_common_d_plan_pharmacy_ntwk_dtl_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d plan pharmacy ntwk dtl: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_ntwk_prty = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_ntwk_type = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6) phn_phr_ntwk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phn_seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_phr_ntwk_list_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_phr_ntwk_list_type = NULL("") /*VARCHAR(2)*/;
+  decimal("\x01",0) rx5_seq_nbr = NULL("") /*INTEGER*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+type nk_ids_common_d_plan_pharmacy_ntwk_dtl_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_ntwk_prty = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_ntwk_type = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6) phn_phr_ntwk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phn_seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_phr_ntwk_list_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) pln_phr_ntwk_list_type = NULL("") /*VARCHAR(2)*/;
+  decimal("\x01",0) rx5_seq_nbr = NULL("") /*INTEGER*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+
+type opt_nk_ids_common_d_plan_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d plan: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+type nk_ids_common_d_plan_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_d_pharmacy_network_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d pharmacy network: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+end;
+type nk_ids_rxclaim_d_pharmacy_network_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+end;
+
+type opt_nk_ids_rxclaim_l_pharmacy_network_gpi_list_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l pharmacy network gpi list: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_ntwk_gpi_list_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_pharmacy_network_gpi_list_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_ntwk_gpi_list_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_l_pharmacy_network_ndc_list_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l pharmacy network ndc list: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_ntwk_ndc_list_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_pharmacy_network_ndc_list_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_ntwk_ndc_list_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_pharmacy_ntwk_rate_t d_phrcy_ntwk  /*@ BizName:'d phrcy ntwk' */;
+  opt_nk_ids_common_d_date_t d_date  /*@ BizName:'d date' */;
+  opt_nk_ids_common_d_date_t d_dt  /*@ BizName:'d dt' */;
+  opt_nk_ids_rxclaim_d_pharmacy_network_t d_pharmacy_network  /*@ BizName:'d pharmacy network' */;
+  opt_nk_ids_common_d_plan_t d_plan  /*@ BizName:'d plan' */;
+  opt_nk_ids_common_d_plan_pharmacy_ntwk_dtl_t d_plan_pharmacy_ntwk_dtl  /*@ BizName:'d plan pharmacy ntwk dtl' */;
+  opt_nk_ids_rxclaim_l_pharmacy_network_gpi_list_t l_pharmacy_network_gpi_list  /*@ BizName:'l pharmacy network gpi list' */;
+  opt_nk_ids_rxclaim_l_pharmacy_network_ndc_list_t l_pharmacy_network_ndc_list  /*@ BizName:'l pharmacy network ndc list' */;
+end;

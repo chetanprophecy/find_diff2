@@ -1,0 +1,154 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_595a0dbc_61ab_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cst_clnt_ind.custom_client_ind,[transform],]
+  [out0.dmr_ind.dmr_ind,[transform],in0.dmr_indicator_key]
+  [out0.f_clms_det.risk_pool_sk,[transform],]
+  [out0.f_clms_det.claim_origination_code_sk,[passthrough],in0.claim_origination_code_key]
+  [out0.f_clms_det.claim_seq_nbr,[passthrough],in0.claim_seq_number]
+  [out0.f_clms_det.injectable_ind_sk,[transform],]
+  [out0.clm_orgn_cd.rx_origin_cd,[passthrough],in0.claim_origination_code]
+  [out0.f_clms_det.dmr_ind_sk,[transform],]
+  [out0.f_clms_det.formulary_flg,[transform],in0.formulary_flag]
+  [out0.frmlry.formulary_id,[transform],in0.formulary_flag]
+  [out0.f_clms_det.src_env_sk,[transform],in0.rxclaim_bob_key]
+  [out0.f_clms_det.clt_formulary_sk,[transform],]
+  [out0.f_clms_det.custom_client_ind_sk,[transform],]
+  [out0.f_clms_det.claim_stat_id,[passthrough],in0.claim_status_id]
+  [out0.f_clms_det.injectable_ind,[transform],in0.injectable_indicator]
+  [out0.injct_ind.injectable_ind,[transform],in0.injectable_indicator]
+  [out0.f_clms_det.rxsol_formulary_sk,[transform],]
+  [out0.f_clms_det.ntpn_ind,[transform],in0.ntpn_indicator]
+  [out0.f_clms_det.claim_nbr,[passthrough],in0.claim_number]
+  [out0.f_clms_det.claim_origin_cd,[passthrough],in0.claim_origination_code]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cst_clnt_ind.custom_client_ind,'cst_clnt_ind.custom_client_ind',1,0]
+     [out0.risk_pool.risk_pool_id,'risk_pool.risk_pool_id',1,0]
+     [out0.dmr_ind.dmr_ind,'dmr_ind.dmr_ind',1,0]
+     [out0.f_clms_det.risk_pool_sk,'f_clms_det.risk_pool_sk',1,0]
+     [out0.f_clms_det.claim_origination_code_sk,'f_clms_det.claim_origination_code_sk',1,0]
+     [out0.f_clms_det.claim_seq_nbr,'f_clms_det.claim_seq_nbr',1,0]
+     [out0.f_clms_det.injectable_ind_sk,'f_clms_det.injectable_ind_sk',1,0]
+     [out0.f_clms_det.reported_gap_discount_amt,'f_clms_det.reported_gap_discount_amt',1,0]
+     [out0.f_clms_det.prior_auth_id,'f_clms_det.prior_auth_id',1,0]
+     [out0.clm_orgn_cd.rx_origin_cd,'clm_orgn_cd.rx_origin_cd',1,0]
+     [out0.f_clms_det.dmr_ind_sk,'f_clms_det.dmr_ind_sk',1,0]
+     [out0.f_clms_det.formulary_flg,'f_clms_det.formulary_flg',1,0]
+     [out0.frmlry.formulary_id,'frmlry.formulary_id',1,0]
+     [out0.f_clms_det.src_env_sk,'f_clms_det.src_env_sk',1,0]
+     [out0.f_clms_det.clt_formulary_sk,'f_clms_det.clt_formulary_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_clms_det.custom_client_ind_sk,'f_clms_det.custom_client_ind_sk',1,0]
+     [out0.f_clms_det.rxsol_formulary_id,'f_clms_det.rxsol_formulary_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_clms_det.claim_stat_id,'f_clms_det.claim_stat_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_clms_det.injectable_ind,'f_clms_det.injectable_ind',1,0]
+     [out0.rxsol_frmlry.rxsol_formulary_id,'rxsol_frmlry.rxsol_formulary_id',1,0]
+     [out0.f_clms_det.risk_pool_id,'f_clms_det.risk_pool_id',1,0]
+     [out0.injct_ind.injectable_ind,'injct_ind.injectable_ind',1,0]
+     [out0.f_clms_det.rxsol_formulary_sk,'f_clms_det.rxsol_formulary_sk',1,0]
+     [out0.f_clms_det.ntpn_ind,'f_clms_det.ntpn_ind',1,0]
+     [out0.f_clms_det.claim_nbr,'f_clms_det.claim_nbr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_clms_det.claim_origin_cd,'f_clms_det.claim_origin_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.claim_status_id,'claim_status_id',1,1]
+     [in0.rxsol_formulary_id,'rxsol_formulary_id',2,2]
+     [in0.injectable_indicator,'injectable_indicator',6,2]
+     [in0.claim_number,'claim_number',1,1]
+     [in0.reported_gap_discount_amt,'reported_gap_discount_amt',1,1]
+     [in0.prior_auth_id,'prior_auth_id',1,1]
+     [in0.formulary_flag,'formulary_flag',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dmr_indicator_key,'dmr_indicator_key',3,1]
+     [in0.ntpn_indicator,'ntpn_indicator',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.risk_pool_id,'risk_pool_id',2,2]
+     [in0.claim_origination_code,'claim_origination_code',2,2]
+     [in0.claim_origination_code_key,'claim_origination_code_key',1,1]
+     [in0.claim_seq_number,'claim_seq_number',1,1]
+     [in0.rxclaim_bob_key,'rxclaim_bob_key',2,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) f_clms_det_claim_nbr = fail_if_error(in0.claim_number);
+let decimal("\x01",0) f_clms_det_claim_seq_nbr = fail_if_error(in0.claim_seq_number);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_claim_stat_id = fail_if_error(in0.claim_status_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_injectable_ind = fail_if_error(if(in0.injectable_indicator == 1) "Y" 
+else if(in0.injectable_indicator == 0) "N" 
+else if(in0.injectable_indicator == 2) "-");
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_formulary_flg = fail_if_error((decimal(""))in0.formulary_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_risk_pool_id = fail_if_error(in0.risk_pool_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_prior_auth_id = fail_if_error(in0.prior_auth_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_rxsol_formulary_id = fail_if_error(in0.rxsol_formulary_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_ntpn_ind = fail_if_error((decimal(""))in0.ntpn_indicator);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clms_det_claim_origin_cd = fail_if_error(in0.claim_origination_code);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_clms_det_reported_gap_discount_amt = fail_if_error(in0.reported_gap_discount_amt);
+let decimal("\x01",0) f_clms_det_custom_client_ind_sk = -1;
+let decimal("\x01",0) f_clms_det_claim_origination_code_sk = fail_if_error(in0.claim_origination_code_key);
+let decimal("\x01",0) f_clms_det_clt_formulary_sk = -1;
+let decimal("\x01",0) f_clms_det_dmr_ind_sk = -1;
+let decimal("\x01",0) f_clms_det_injectable_ind_sk = -1;
+let decimal("\x01",0) f_clms_det_risk_pool_sk = -1;
+let decimal("\x01",0) f_clms_det_rxsol_formulary_sk = -1;
+let decimal("\x01",0) f_clms_det_src_env_sk = fail_if_error(if(in0.rxclaim_bob_key==1) 480 else if(in0.rxclaim_bob_key==2) 490);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_orgn_cd_rx_origin_cd = fail_if_error(in0.claim_origination_code);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cst_clnt_ind_custom_client_ind = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=1) dmr_ind_dmr_ind = fail_if_error(if(in0.dmr_indicator_key == 4954697203768240242) "P" 
+else if(in0.dmr_indicator_key == 7595633564847427181) "M"
+else if(in0.dmr_indicator_key == -1) "-");
+let string("\x01",charset="iso-8859-15", maximum_length=1) frmlry_formulary_id = fail_if_error((decimal(""))in0.formulary_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) injct_ind_injectable_ind = fail_if_error(if(in0.injectable_indicator == 1) "Y" 
+else if(in0.injectable_indicator == 0) "N" 
+else if(in0.injectable_indicator == 2) "-");
+let string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_risk_pool_id = fail_if_error(in0.risk_pool_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_frmlry_rxsol_formulary_id = fail_if_error(in0.rxsol_formulary_id);
+
+
+
+  out0.f_clms_det.claim_nbr::f_clms_det_claim_nbr;
+  out0.f_clms_det.claim_seq_nbr::f_clms_det_claim_seq_nbr;
+  out0.f_clms_det.claim_stat_id::f_clms_det_claim_stat_id;
+  out0.f_clms_det.injectable_ind::f_clms_det_injectable_ind;
+  out0.f_clms_det.formulary_flg::f_clms_det_formulary_flg;
+  out0.f_clms_det.risk_pool_id::f_clms_det_risk_pool_id;
+  out0.f_clms_det.prior_auth_id::f_clms_det_prior_auth_id;
+  out0.f_clms_det.rxsol_formulary_id::f_clms_det_rxsol_formulary_id;
+  out0.f_clms_det.ntpn_ind::f_clms_det_ntpn_ind;
+  out0.f_clms_det.claim_origin_cd::f_clms_det_claim_origin_cd;
+  out0.f_clms_det.reported_gap_discount_amt::f_clms_det_reported_gap_discount_amt;
+  out0.f_clms_det.custom_client_ind_sk::f_clms_det_custom_client_ind_sk;
+  out0.f_clms_det.claim_origination_code_sk::f_clms_det_claim_origination_code_sk;
+  out0.f_clms_det.clt_formulary_sk::f_clms_det_clt_formulary_sk;
+  out0.f_clms_det.dmr_ind_sk::f_clms_det_dmr_ind_sk;
+  out0.f_clms_det.injectable_ind_sk::f_clms_det_injectable_ind_sk;
+  out0.f_clms_det.risk_pool_sk::f_clms_det_risk_pool_sk;
+  out0.f_clms_det.rxsol_formulary_sk::f_clms_det_rxsol_formulary_sk;
+  out0.f_clms_det.src_env_sk::f_clms_det_src_env_sk;
+  out0.clm_orgn_cd.rx_origin_cd::clm_orgn_cd_rx_origin_cd;
+  out0.cst_clnt_ind.custom_client_ind::cst_clnt_ind_custom_client_ind;
+  out0.dmr_ind.dmr_ind::dmr_ind_dmr_ind;
+  out0.frmlry.formulary_id::frmlry_formulary_id;
+  out0.injct_ind.injectable_ind::injct_ind_injectable_ind;
+  out0.risk_pool.risk_pool_id::risk_pool_risk_pool_id;
+  out0.rxsol_frmlry.rxsol_formulary_id::rxsol_frmlry_rxsol_formulary_id;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,89 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c0e30a5_47c5_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_ans.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_ans.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_mem_ans.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_ans.cpp_member_assessement_ans_sk,[transform],]
+  [out0.c_mem_ans.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_ans.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_ans.cpp_updated_by,'c_mem_ans.cpp_updated_by',1,0]
+     [out0.c_mem_ans.src_env_sk,'c_mem_ans.src_env_sk',1,0]
+     [out0.c_mem_ans.cpp_update_ts,'c_mem_ans.cpp_update_ts',1,0]
+     [out0.c_mem_ans.qu_id,'c_mem_ans.qu_id',1,0]
+     [out0.c_mem_ans.cpp_member_assessement_ans_sk,'c_mem_ans.cpp_member_assessement_ans_sk',1,0]
+     [out0.c_mem_ans.ans,'c_mem_ans.ans',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mem_ans.member_assessment_id,'c_mem_ans.member_assessment_id',1,0]
+     [out0.c_mem_ans.member_assessement_ans_id,'c_mem_ans.member_assessement_ans_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_ans.cpp_create_ts,'c_mem_ans.cpp_create_ts',1,0]
+     [out0.c_mem_ans.case_id,'c_mem_ans.case_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_ans.cpp_created_by,'c_mem_ans.cpp_created_by',1,0]
+     [out0.c_mem_ans.sequence_num,'c_mem_ans.sequence_num',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_assessement_ans_id,'member_assessement_ans_id',1,1]
+     [in0.ans,'ans',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.qu_id,'qu_id',1,1]
+     [in0.sequence_num,'sequence_num',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.member_assessment_id,'member_assessment_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_ans_cpp_member_assessement_ans_sk = -1;
+let decimal("\x01",0) c_mem_ans_member_assessement_ans_id = fail_if_error(in0.member_assessement_ans_id);
+let decimal("\x01",0) c_mem_ans_sequence_num = fail_if_error(in0.sequence_num);
+let utf8 string("\x01", maximum_length=60) c_mem_ans_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_mem_ans_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mem_ans_qu_id = fail_if_error(in0.qu_id);
+let utf8 string("\x01", maximum_length=8192) c_mem_ans_ans = fail_if_error(in0.ans);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ans_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_ans_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ans_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_ans_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_ans_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_mem_ans.cpp_member_assessement_ans_sk::c_mem_ans_cpp_member_assessement_ans_sk;
+  out0.c_mem_ans.member_assessement_ans_id::c_mem_ans_member_assessement_ans_id;
+  out0.c_mem_ans.sequence_num::c_mem_ans_sequence_num;
+  out0.c_mem_ans.member_assessment_id::c_mem_ans_member_assessment_id;
+  out0.c_mem_ans.case_id::c_mem_ans_case_id;
+  out0.c_mem_ans.qu_id::c_mem_ans_qu_id;
+  out0.c_mem_ans.ans::c_mem_ans_ans;
+  out0.c_mem_ans.cpp_update_ts::c_mem_ans_cpp_update_ts;
+  out0.c_mem_ans.cpp_updated_by::c_mem_ans_cpp_updated_by;
+  out0.c_mem_ans.cpp_create_ts::c_mem_ans_cpp_create_ts;
+  out0.c_mem_ans.cpp_created_by::c_mem_ans_cpp_created_by;
+  out0.c_mem_ans.src_env_sk::c_mem_ans_src_env_sk;
+  out0.*::in0.*;
+
+end;

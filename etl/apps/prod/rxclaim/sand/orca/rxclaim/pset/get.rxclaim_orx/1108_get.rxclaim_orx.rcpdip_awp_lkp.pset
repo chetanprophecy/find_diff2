@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcpdip_awp_lkp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmprdfil_bk1 rcpdip                  r0p2nb,r0oinb,r0hhqw\r\ndwxtract_bk1  rcex1p                  rxclaimnbr,clmseqnbr,claimsts
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcpdip') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p')]
+DO_SOURCE||||0
+DO_LOOKUP||||0
+SQL||||SELECT rcex1p.rxclaimnbr claim_nbr,1000-rcex1p.clmseqnbr claim_seq_nbr,rcex1p.claimsts claim_stat_id,rcpdip.r0hhqw awp_unit_published,datesbm,FROM clmprdfil.rcpdip rcpdip , clmprdext2.rce12111 rcex1p WHERE rcpdip.r0p2nb=rcex1p.rxclaimnbr AND rcpdip.r0oinb=rcex1p.clmseqnbr and rcpdip.r0hhqw > 0 and rcex1p.claimsts != 'R' and rcex1p.datesbm >= 20211103  
+WHERE_CLAUSE||||WHERE rcpdip.r0p2nb=rcex1p.rxclaimnbr AND rcpdip.r0oinb=rcex1p.clmseqnbr  OPTIMIZE FOR ALL ROWS
+LOOKUP_FIELDS||||r0p2nb,r0oinb,r0hhqw,dxf_src_sys_id
+LOOKUP_KEY||||{r0p2nb; r0oinb;dxf_src_sys_id}
+DO_CLEAN||||1
+ABLOCAL_EXPR||||$[if((decimal("")) AI_MFS_ADHOC_DEPTH==4 ) \r\nstring_concat(' if (this_partition() == 0) ' , ' "MOD ( rcex1p.rxclaimnbr ,4 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rcex1p.rxclaimnbr ,4 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rcex1p.rxclaimnbr , 4 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rcex1p.rxclaimnbr , 4 ) = 3"\r\n   else "1 = 2" ' )\r\nelse if ( (decimal("")) AI_MFS_ADHOC_DEPTH==8  ) \r\n    string_concat(' if (this_partition() == 0) ' , ' "MOD ( rcex1p.rxclaimnbr ,8 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rcex1p.rxclaimnbr ,8 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rcex1p.rxclaimnbr , 8 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rcex1p.rxclaimnbr , 8 ) = 3"\r\n   else if (this_partition() == 4) "MOD( rcex1p.rxclaimnbr ,8 ) = 4"\r\n   else if (this_partition() == 5) "MOD(rcex1p.rxclaimnbr , 8 ) = 5"\r\n   else if (this_partition() == 6) "MOD( rcex1p.rxclaimnbr , 8 ) = 6"\r\n   else if (this_partition() == 7) "MOD( rcex1p.rxclaimnbr , 8 ) = 7"\r\n   else "1 = 2" ' )\r\n\r\nelse "" ]
+RUN_ID||||20211108001100

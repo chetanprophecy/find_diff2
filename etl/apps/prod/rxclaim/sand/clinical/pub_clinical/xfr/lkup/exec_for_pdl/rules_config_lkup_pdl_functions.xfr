@@ -1,0 +1,50 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/rules_config_lkup_pdl_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/15  Paul Thompson           Initial version
+ *  2016/11/16  Paul Thompson           Removed global variable accidentally left in place
+ *  2016/11/23  Rahul Sontakke          Added get_config_id function.
+ *  2016/11/23  Abhijeet Tyagi          prefixed config_id to 25 characters in get_config_id
+ *  2016/11/24  Abhijeet Tyagi          Changed type of config id function and parameter to cli_string_t
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+cli_string_t out :: get_rules_config_lkup_path(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + cli_string(biz_dt) + '/rules_config.dat';
+end;
+
+/*************************************************/
+/* Job Execution Lookup - Constant and Functions */
+/*************************************************/
+
+rules_config_lkup_t out :: load_rules_config_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_rules_config_lkup_path(lookup_dir, biz_dt));
+end;
+
+rules_config_t out :: get_rules_config(cli_string_t lookup_dir, cli_date_t biz_dt, cli_app_config_nm_t app_config_nm) inline =
+begin
+  let lkup = load_rules_config_lkup(lookup_dir, biz_dt);
+  out :: lookup(lkup, biz_dt, app_config_nm);
+end;
+
+cli_string_t out :: get_config_id(cli_string_t lookup_dir, cli_date_t biz_dt,cli_app_config_nm_t app_config_nm) inline =
+begin
+     
+        let cli_string_t config_id = string_replace(app_config_nm," ","_");
+         
+        if (file_information(string_concat(lookup_dir,"/" ,biz_dt, "/rules_config.dat")).found)
+                config_id = first_defined( get_rules_config(lookup_dir, biz_dt,app_config_nm).rules_config_cfg.rules_config_id,config_id );
+                
+out :: config_id; 
+  
+end;
+

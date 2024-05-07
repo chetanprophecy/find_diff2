@@ -1,0 +1,65 @@
+/*Reformat operation*/
+include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "~$PUB_DXF_XFR/common_functions.xfr";
+include "~$PUB_DXF_DML/generic_data_types.dml";
+let decimal("") v_dxf_src_env_rank_input_record=0;
+let string("") v_base_loc = $'PUB_DATAHUB_MFS_LOOKUP';
+let lookup_identifier_type current_lookup = lookup_not_loaded(); 
+let string("") datafile=this_partition_path(string_concat(v_base_loc,"/ids/ids_rxclaim/one/d_plan_ndc_option.reduced.dat.gz"));
+let string("") indexfile=this_partition_path(string_replace(string_concat(v_base_loc,"/ids/ids_rxclaim/one/d_plan_ndc_option.reduced.dat.gz"),".dat.gz", ".idx"));
+type lookup_record_type= $[read_file(LOOKUP_FILE_DML)]
+
+
+let  unsigned integer(8) v_hash_key_half=0;
+let lookup_identifier_type current_lookup1 = lookup_not_loaded();
+let lookup_record_type lookup_record_value = allocate_with_nulls();
+let lookup_record_type exact_record_value=allocate_with_defaults();
+let lookup_record_type exact_next_record_value=allocate_with_nulls();
+let  hash_key_type v_record_hash_from_in=allocate_with_defaults();
+let hash_key_type  v_record_hash_from_lkp=allocate_with_defaults(); 
+out::reformat(in)=
+begin
+let integer(2) match_count=0;
+let unsigned integer(8) v_dxf_hk_part1 = 0;
+let unsigned integer(8) v_dxf_hk_part2 = 0;
+let hash_key_combine_type dxf_hk =  reinterpret(get_hash(in, '{drg_ndc_lblr_cd;drg_ndc_prod_cd;drg_ndc_pkg_cd;src_env_sk}'));
+   v_dxf_hk_part1 = dxf_hk.dxf_hk_part1;
+   v_dxf_hk_part2 = dxf_hk.dxf_hk_part2;
+  
+    
+ exact_record_value=allocate_with_defaults();
+ if (current_lookup1 == lookup_not_loaded()) 
+     current_lookup1 = lookup_load(datafile /*@ eme_dataset_location: "${ICFF_FILE}" @*/,indexfile,"IDS ICFF LKP"); //Structured comment for eme dataset for dependency analysis error .
+ lookup_record_value = first_defined(lookup_last(current_lookup1, "IDS ICFF LKP", v_dxf_hk_part1),allocate_with_defaults() );
+ exact_record_value=allocate_with_defaults();
+ exact_record_value = if (lookup_record_value.dxf_hk_part1 ==0 ) lookup_record_value               // No Match found on half hash key , So this is insert record.
+                      else if  ( v_dxf_hk_part2 == lookup_record_value.dxf_hk_part2 ) lookup_record_value  //A match is found on dxf part1 as well as dxf part2 keys , this is an exact match in first inetration itself 
+                      else                                                                        //A Match is found on half hash key but not on full hash key, find exact match inside iteration  .
+                      begin
+                        match_count=lookup_count(current_lookup1, "IDS ICFF LKP", v_dxf_hk_part1);
+                          begin block exact_record_match
+                             for (let int k, k < match_count)
+                               begin 
+                                exact_next_record_value = if( k == 0 ) lookup_last(current_lookup1, "IDS ICFF LKP", v_dxf_hk_part1) else lookup_previous(current_lookup1,"IDS ICFF LKP");
+                                 if ( v_dxf_hk_part2 == exact_next_record_value.dxf_hk_part2 ) 
+                                  begin
+                                        exact_record_value = exact_next_record_value;
+                                        exit  exact_record_match;
+                                  end
+                                                                                                 
+                             end
+                          end block exact_record_match
+                       result :: exact_record_value ;
+                       end ; 
+                                                                      
+                                                      
+        
+        out.ndc_labeler_cd :: exact_record_value.ndc_labeler_cd;
+        out.ndc_lst_nm :: exact_record_value.ndc_lst_nm;
+        out.ndc_pkg_cd :: exact_record_value.ndc_pkg_cd;
+        out.ndc_prod_cd :: exact_record_value.ndc_prod_cd;
+        out.src_env_sk :: exact_record_value.src_env_sk;
+        out.curr_eff_dt :: exact_record_value.curr_eff_dt;
+        out.curr_thru_dt :: exact_record_value.curr_thru_dt;
+        out.vec_d_plna_ndc_option_p90 :: allocate_with_nulls();
+end;

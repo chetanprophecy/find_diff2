@@ -1,0 +1,16 @@
+let int ilm_parm_len=length_of(string_split($"AI_DML","/")); 
+let string("") v_app_nm=string_split($"AI_DML","/")[ilm_parm_len - 2 ];
+let string("") v_program_nm=string_upcase(string_split($"AI_DML","/")[ilm_parm_len - 3 ]);
+
+out :: reformat(in) =
+begin
+  out.program_nm :: v_program_nm;
+  out.application_nm :: v_program_nm;
+  //out.get_run_id :: in.run_id;
+  //out.get_file_count:: in.dxf_src_rec_cnt;
+  //out.get_run_date :: in.task_start_dttm;
+  //out.file_src_path :: in.file_path;
+  //out.src_file_nm :: string_lrtrim(in.dataset_name);
+  //out.run_date :: (datetime("YYYYMMDDHH24MISS")) now();
+  out.*:: in.*;
+end;

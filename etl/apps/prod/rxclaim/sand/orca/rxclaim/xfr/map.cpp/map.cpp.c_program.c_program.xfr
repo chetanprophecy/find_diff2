@@ -1,0 +1,292 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_4_6c54cc0a_5811f31e_4aa5_4
+    BizHidden:true
+@*/
+/*   lookup c_rules_config_eval   */
+out0::bzt_4_6c54cc0a_5811f31e_4aa5_4(in0)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  utf8 string("\x01", maximum_length=100) rules_config_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_update_ts = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("c_rules_config_eval",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_3_6c54cc0a_5811f31e_4aa5_4
+    BizHidden:true
+@*/
+/*   lookup c_rules_config_idntfn   */
+out0::bzt_3_6c54cc0a_5811f31e_4aa5_4(in0)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  utf8 string("\x01", maximum_length=100) rules_config_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_update_ts = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("c_rules_config_idntfn",in0));  
+out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5811f31e_4aa5_4 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_program.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_program.eval_job_freq,[passthrough],in0.eval_job_freq]
+  [out0.c_program.program_id,[passthrough],in0.program_id]
+  [out0.c_program.program_descr,[passthrough],in0.program_descr]
+  [out0.c_program.src_env_sk,[transform],]
+  [out0.c_program.elig_criteria,[passthrough],in0.elig_criteria]
+  [out0.c_program.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_program.cpp_program_type_sk,[transform],]
+  [out0.c_program.case_mgmt_performed_by,[passthrough],in0.case_mgmt_performed_by]
+  [out0.c_program.cpp_idntfn_rules_config_sk,[transform],in0.idntfn_rules_config_id,
+     'lookup("c_rules_config_idntfn").dxf_sk']
+  [out0.c_program.program_type_cd,[transform],]
+  [out0.c_program.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_program.cpp_eval_rules_config_sk,[transform],in0.eval_rules_config_id,
+     'lookup("c_rules_config_eval").dxf_sk']
+  [out0.c_program.eval_rules_config_id,[passthrough],in0.eval_rules_config_id]
+  [out0.c_program.program_exec_type,[passthrough],in0.program_exec_type]
+  [out0.c_program.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_program.provider_evdnce_data,[passthrough],in0.provider_evdnce_data]
+  [out0.c_program.cpp_program_sk,[transform],]
+  [out0.c_program.idntfn_job_freq,[passthrough],in0.idntfn_job_freq]
+  [out0.c_program.targeting_selection,[passthrough],in0.targeting_selection]
+  [out0.c_program.program_name,[passthrough],in0.program_name]
+  [out0.c_program.idntfn_rules_config_id,[passthrough],in0.idntfn_rules_config_id]
+  [out0.c_program.idntfn_performed_by,[passthrough],in0.idntfn_performed_by]
+  [out0.c_program.eval_selection,[passthrough],in0.eval_selection]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_program.cpp_update_ts,'c_program.cpp_update_ts',1,0]
+     [out0.c_program.eval_job_freq,'c_program.eval_job_freq',1,0]
+     [out0.c_program.program_id,'c_program.program_id',1,0]
+     [out0.c_program.followup_count,'c_program.followup_count',1,0]
+     [out0.c_program.program_descr,'c_program.program_descr',1,0]
+     [out0.c_program.src_env_sk,'c_program.src_env_sk',1,0]
+     [out0.c_program.idntfn_hold,'c_program.idntfn_hold',1,0]
+     [out0.c_program.elig_criteria,'c_program.elig_criteria',1,0]
+     [out0.c_program.cpp_created_by,'c_program.cpp_created_by',1,0]
+     [out0.c_program.post_cmr_material_template,'c_program.post_cmr_material_template',1,0]
+     [out0.c_program.risk_catgz_flag,'c_program.risk_catgz_flag',1,0]
+     [out0.c_program.cpp_program_type_sk,'c_program.cpp_program_type_sk',1,0]
+     [out0.c_program.nonrespdr_fulfillment_flag,'c_program.nonrespdr_fulfillment_flag',1,0]
+     [out0.c_program.case_mgmt_performed_by,'c_program.case_mgmt_performed_by',1,0]
+     [out0.c_program.cpp_idntfn_rules_config_sk,'c_program.cpp_idntfn_rules_config_sk',1,0]
+     [out0.c_program.scheduling_flag,'c_program.scheduling_flag',1,0]
+     [out0.c_program.program_type_cd,'c_program.program_type_cd',1,0]
+     [out0.c_program.snomed_flag,'c_program.snomed_flag',1,0]
+     [out0.c_program.post_cmr_material_flag,'c_program.post_cmr_material_flag',1,0]
+     [out0.c_program.cpp_updated_by,'c_program.cpp_updated_by',1,0]
+     [out0.c_program.cpp_eval_rules_config_sk,'c_program.cpp_eval_rules_config_sk',1,0]
+     [out0.c_program.followup_scheduling_type,'c_program.followup_scheduling_type',1,0]
+     [out0.c_program.eval_rules_config_id,'c_program.eval_rules_config_id',1,0]
+     [out0.c_program.program_exec_type,'c_program.program_exec_type',1,0]
+     [out0.c_program.cpp_create_ts,'c_program.cpp_create_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_program.supression_days,'c_program.supression_days',1,0]
+     [out0.c_program.provider_evdnce_data,'c_program.provider_evdnce_data',1,0]
+     [out0.c_program.cpp_program_sk,'c_program.cpp_program_sk',1,0]
+     [out0.c_program.enrollment_fulfillment_templat,'c_program.enrollment_fulfillment_templat',1,0]
+     [out0.c_program.stts,'c_program.stts',1,0]
+     [out0.c_program.followup_day_interval,'c_program.followup_day_interval',1,0]
+     [out0.c_program.assessment_followup_flag,'c_program.assessment_followup_flag',1,0]
+     [out0.c_program.assessment_flag,'c_program.assessment_flag',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_program.idntfn_job_freq,'c_program.idntfn_job_freq',1,0]
+     [out0.c_program.targeting_selection,'c_program.targeting_selection',1,0]
+     [out0.c_program.program_name,'c_program.program_name',1,0]
+     [out0.c_program.idntfn_rules_config_id,'c_program.idntfn_rules_config_id',1,0]
+     [out0.c_program.idntfn_performed_by,'c_program.idntfn_performed_by',1,0]
+     [out0.c_program.nonrespdr_fulfillment_template,'c_program.nonrespdr_fulfillment_template',1,0]
+     [out0.c_program.program_type_name,'c_program.program_type_name',1,0]
+     [out0.c_program.eval_selection,'c_program.eval_selection',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_program.enrollment_risk_category,'c_program.enrollment_risk_category',1,0]
+     [out0.c_program.enrollment_fullfillment_flag,'c_program.enrollment_fullfillment_flag',1,0]
+  ]
+  impacts:
+  [
+     [in0.enrollment_fulfillment_templat,'enrollment_fulfillment_templat',1,1]
+     [in0.eval_job_freq,'eval_job_freq',1,1]
+     [in0.program_exec_type,'program_exec_type',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.enrollment_fullfillment_flag,'enrollment_fullfillment_flag',1,1]
+     [in0.assessment_flag,'assessment_flag',1,1]
+     [in0.program_name,'program_name',1,1]
+     [in0.post_cmr_material_template,'post_cmr_material_template',1,1]
+     [in0.enrollment_risk_category,'enrollment_risk_category',1,1]
+     [in0.followup_day_interval,'followup_day_interval',1,1]
+     [in0.program_descr,'program_descr',1,1]
+     [in0.eval_selection,'eval_selection',1,1]
+     [in0.supression_days,'supression_days',1,1]
+     [in0.followup_scheduling_type,'followup_scheduling_type',1,1]
+     [in0.program_type_name,'program_type_name',1,1]
+     [in0.nonrespdr_fulfillment_flag,'nonrespdr_fulfillment_flag',1,1]
+     [in0.post_cmr_material_flag,'post_cmr_material_flag',1,1]
+     [in0.snomed_flag,'snomed_flag',1,1]
+     [in0.idntfn_performed_by,'idntfn_performed_by',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.risk_catgz_flag,'risk_catgz_flag',1,1]
+     [in0.followup_count,'followup_count',1,1]
+     [in0.scheduling_flag,'scheduling_flag',1,1]
+     [in0.stts,'stts',1,1]
+     [in0.case_mgmt_performed_by,'case_mgmt_performed_by',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.nonrespdr_fulfillment_template,'nonrespdr_fulfillment_template',1,1]
+     [in0.program_id,'program_id',1,1]
+     [in0.elig_criteria,'elig_criteria',1,1]
+     [in0.idntfn_job_freq,'idntfn_job_freq',1,1]
+     [in0.provider_evdnce_data,'provider_evdnce_data',1,1]
+     [in0.eval_rules_config_id,'eval_rules_config_id',2,2]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.targeting_selection,'targeting_selection',1,1]
+     [in0.idntfn_rules_config_id,'idntfn_rules_config_id',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.idntfn_hold,'idntfn_hold',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.assessment_followup_flag,'assessment_followup_flag',1,1]
+     ['lookup("c_rules_config").dxf_sk','dxf_sk',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_program_cpp_program_sk = -1;
+let utf8 string("\x01", maximum_length=100) c_program_program_id = fail_if_error(in0.program_id);
+let utf8 string("\x01", maximum_length=400) c_program_program_name = fail_if_error(in0.program_name);
+let utf8 string("\x01", maximum_length=40) c_program_eval_job_freq = fail_if_error(in0.eval_job_freq);
+let utf8 string("\x01", maximum_length=40) c_program_idntfn_job_freq = fail_if_error(in0.idntfn_job_freq);
+let utf8 string("\x01", maximum_length=1000) c_program_program_descr = fail_if_error(in0.program_descr);
+let utf8 string("\x01", maximum_length=100) c_program_program_exec_type = fail_if_error(in0.program_exec_type);
+let utf8 string("\x01", maximum_length=60) c_program_idntfn_performed_by = fail_if_error(in0.idntfn_performed_by);
+let utf8 string("\x01", maximum_length=60) c_program_case_mgmt_performed_by = fail_if_error(in0.case_mgmt_performed_by);
+let utf8 string("\x01", maximum_length=60) c_program_targeting_selection = fail_if_error(in0.targeting_selection);
+let utf8 string("\x01", maximum_length=60) c_program_eval_selection = fail_if_error(in0.eval_selection);
+let utf8 string("\x01", maximum_length=100) c_program_program_type_cd = '-';
+let decimal("\x01",0) c_program_cpp_program_type_sk = -1;
+let utf8 string("\x01", maximum_length=100) c_program_idntfn_rules_config_id = fail_if_error(in0.idntfn_rules_config_id);
+let decimal("\x01",0) c_program_cpp_idntfn_rules_config_sk;
+let utf8 string("\x01", maximum_length=100) c_program_eval_rules_config_id = fail_if_error(in0.eval_rules_config_id);
+let decimal("\x01",0) c_program_cpp_eval_rules_config_sk;
+let utf8 string("\x01", maximum_length=40) c_program_elig_criteria = fail_if_error(in0.elig_criteria);
+let utf8 string("\x01", maximum_length=100) c_program_provider_evdnce_data = fail_if_error(in0.provider_evdnce_data);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_program_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_program_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_program_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_program_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0, maximum_length=2, sign_reserved) c_program_idntfn_hold = fail_if_error(in0.idntfn_hold);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_stts = fail_if_error(in0.stts);
+let utf8 string("\x01", maximum_length=800) c_program_program_type_name = fail_if_error(in0.program_type_name);
+let decimal("\x01",0) c_program_src_env_sk = 710;
+let decimal("\x01",0) c_program_supression_days = fail_if_error(in0.supression_days);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_risk_catgz_flag = fail_if_error(in0.risk_catgz_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_program_enrollment_risk_category = fail_if_error(in0.enrollment_risk_category);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_enrollment_fullfillment_flag = fail_if_error(in0.enrollment_fullfillment_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_program_enrollment_fulfillment_templat = fail_if_error(in0.enrollment_fulfillment_templat);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_nonrespdr_fulfillment_flag = fail_if_error(in0.nonrespdr_fulfillment_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_program_nonrespdr_fulfillment_template = fail_if_error(in0.nonrespdr_fulfillment_template);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_scheduling_flag = fail_if_error(in0.scheduling_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_assessment_flag = fail_if_error(in0.assessment_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_post_cmr_material_flag = fail_if_error(in0.post_cmr_material_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_program_post_cmr_material_template = fail_if_error(in0.post_cmr_material_template);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_assessment_followup_flag = fail_if_error(in0.assessment_followup_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_program_followup_scheduling_type = fail_if_error(in0.followup_scheduling_type);
+let decimal("\x01",0) c_program_followup_day_interval = fail_if_error(in0.followup_day_interval);
+let decimal("\x01",0) c_program_followup_count = fail_if_error(in0.followup_count);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_program_snomed_flag = fail_if_error(in0.snomed_flag);
+
+
+
+/*   Default value   */
+c_program_cpp_idntfn_rules_config_sk=fail_if_error(first_defined(bzt_3_6c54cc0a_5811f31e_4aa5_4(in0.idntfn_rules_config_id).dxf_sk,-1));
+
+/*   Default value   */
+c_program_cpp_eval_rules_config_sk=fail_if_error(first_defined(bzt_4_6c54cc0a_5811f31e_4aa5_4(in0.eval_rules_config_id).dxf_sk,-1));
+
+  out0.c_program.cpp_program_sk::c_program_cpp_program_sk;
+  out0.c_program.program_id::c_program_program_id;
+  out0.c_program.program_name::c_program_program_name;
+  out0.c_program.eval_job_freq::c_program_eval_job_freq;
+  out0.c_program.idntfn_job_freq::c_program_idntfn_job_freq;
+  out0.c_program.program_descr::c_program_program_descr;
+  out0.c_program.program_exec_type::c_program_program_exec_type;
+  out0.c_program.idntfn_performed_by::c_program_idntfn_performed_by;
+  out0.c_program.case_mgmt_performed_by::c_program_case_mgmt_performed_by;
+  out0.c_program.targeting_selection::c_program_targeting_selection;
+  out0.c_program.eval_selection::c_program_eval_selection;
+  out0.c_program.program_type_cd::c_program_program_type_cd;
+  out0.c_program.cpp_program_type_sk::c_program_cpp_program_type_sk;
+  out0.c_program.idntfn_rules_config_id::c_program_idntfn_rules_config_id;
+  out0.c_program.cpp_idntfn_rules_config_sk::c_program_cpp_idntfn_rules_config_sk;
+  out0.c_program.eval_rules_config_id::c_program_eval_rules_config_id;
+  out0.c_program.cpp_eval_rules_config_sk::c_program_cpp_eval_rules_config_sk;
+  out0.c_program.elig_criteria::c_program_elig_criteria;
+  out0.c_program.provider_evdnce_data::c_program_provider_evdnce_data;
+  out0.c_program.cpp_update_ts::c_program_cpp_update_ts;
+  out0.c_program.cpp_updated_by::c_program_cpp_updated_by;
+  out0.c_program.cpp_create_ts::c_program_cpp_create_ts;
+  out0.c_program.cpp_created_by::c_program_cpp_created_by;
+  out0.c_program.idntfn_hold::c_program_idntfn_hold;
+  out0.c_program.stts::c_program_stts;
+  out0.c_program.program_type_name::c_program_program_type_name;
+  out0.c_program.src_env_sk::c_program_src_env_sk;
+  out0.c_program.supression_days::c_program_supression_days;
+  out0.c_program.risk_catgz_flag::c_program_risk_catgz_flag;
+  out0.c_program.enrollment_risk_category::c_program_enrollment_risk_category;
+  out0.c_program.enrollment_fullfillment_flag::c_program_enrollment_fullfillment_flag;
+  out0.c_program.enrollment_fulfillment_templat::c_program_enrollment_fulfillment_templat;
+  out0.c_program.nonrespdr_fulfillment_flag::c_program_nonrespdr_fulfillment_flag;
+  out0.c_program.nonrespdr_fulfillment_template::c_program_nonrespdr_fulfillment_template;
+  out0.c_program.scheduling_flag::c_program_scheduling_flag;
+  out0.c_program.assessment_flag::c_program_assessment_flag;
+  out0.c_program.post_cmr_material_flag::c_program_post_cmr_material_flag;
+  out0.c_program.post_cmr_material_template::c_program_post_cmr_material_template;
+  out0.c_program.assessment_followup_flag::c_program_assessment_followup_flag;
+  out0.c_program.followup_scheduling_type::c_program_followup_scheduling_type;
+  out0.c_program.followup_day_interval::c_program_followup_day_interval;
+  out0.c_program.followup_count::c_program_followup_count;
+  out0.c_program.snomed_flag::c_program_snomed_flag;
+  out0.*::in0.*;
+
+end;

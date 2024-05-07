@@ -1,0 +1,34 @@
+record
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  unsigned integer(8) dxf_hk_part1 = 0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8) dxf_hk_part2 = 0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) plan_cd = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) sequence_no = NULL("") /*INTEGER*/;
+  decimal("\x01",0) contract_pbp_sk = NULL("") /*BIGINT*/;
+  decimal("\x01".2, maximum_length=10) pdp_thrshld_ctstr_cvg = NULL("") /*PDP Thrshld Ctstrphic Cvg*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pdp_copay_coinsur_val1 = NULL("") /*PDP_Copay_Coinsurance_val1*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pdp_copay_coinsur_val2 = NULL("") /*PDP_Copay_Coinsurance_val2*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pdp_copay_coinsur_val3 = NULL("") /*PDP_Copay_Coinsurance_val3*/;
+  string("\x01",charset="iso-8859-15", maximum_length=60) pdp_website_addr = NULL("") /*PDP_Website_Address*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) pdp_med_pln_type = NULL("") /*PDP_MEDICARE_PLAN_TYPE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_no = NULL("") /*VARCHAR(5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pdp_frmlry_notice_list = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pdp_segment_id = NULL("");
+  date("YYYYMMDD")("\x01") pdp_from_dt /*DECIMAL(7) NOT NULL*/;
+  date("YYYYMMDD")("\x01") pdp_thru_dt /*DECIMAL(7) NOT NULL*/;
+  string("\x01", maximum_length=1) pdp_status_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0) src_env_sk /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_updt_run_id = 0;
+  string("\x01",maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end

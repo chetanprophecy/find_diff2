@@ -1,0 +1,52 @@
+type logical_ids_rxclaim_f_cob_extract_t =
+record
+  date("YYYYMMDD")("\x01") processing_month_start_dt;
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) orig_member_id = NULL("");
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) mb_first_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) mb_last_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_prsn_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) orig_account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) funding_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=55) phr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_store_no = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) rx_nbr = NULL("");
+  decimal("\x01",0) rej_cd1_sk = NULL("");
+  decimal("\x01",0) rej_cd2_sk = NULL("");
+  decimal("\x01",0) rej_cd3_sk = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_due_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) subm_oth_covrg_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=70) prod_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  decimal("\x01".8, maximum_length=26, sign_reserved) awp_unit_cost = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) drg_qty = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) subm_oth_payr_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_ingred_cost_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_dispensing_fee = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_patient_pay_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_origin_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_alt_ins_ind = NULL("");
+  decimal("\x01",0) residence_cd_sk = NULL("");
+  decimal("\x01",0) flag_fnl = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_f_cob_extract_t f_cob_extrt  /*@ BizName:'f cob extrt' */;
+end;

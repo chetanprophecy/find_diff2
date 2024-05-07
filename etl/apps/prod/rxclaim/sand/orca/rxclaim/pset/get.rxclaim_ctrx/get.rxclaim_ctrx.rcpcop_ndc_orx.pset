@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+SOURCE_NAME||||clmprdfil_bk1.rcpcop_ndc_orx
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpcop                  abiin2,abaacd,abfshn,abfthn,abrzht,abguh6,abdxhh,abdyhh,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil_bk1', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_DB_INFO_VEC||||$[begin\r\n//This PDL block was added by msing114 on 07/2017 to make progress on book1 & book2 project . However this process will be refined later to use more generic way of getting layout.\r\nresult ::  if ((string_index("rxclaim_orx","rxclaim_orx") || string_index("rxclaim_orx","_bk1") || string_index("rxclaim_orx","bk2"))  && !is_blank(ABLOCAL_EXPR) and !is_null(ABLOCAL_EXPR))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS_ADHOC)\r\n           else if (string_index("rxclaim_orx","rxclaim_orx") || string_index("rxclaim_orx","_bk1") || string_index("rxclaim_orx","bk2"))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS)           \r\n        else \r\n                get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS) ;\r\n                \r\nend\r\n ]
+WHERE_CLAUSE||||$[string_concat("WHERE ABGUH6 !='*' AND ABH5IC='A' AND ABDYHH>" , (date("CYYMMDD"))(date("YYYYMMDD"))string_substring(RUN_ID,1,8))]
+QUERY_TYPE_ID||||3
+RUN_ID||||20180301000000
+SQL||||$["select A.abiin2,A.abaacd,A.abfshn,A.abfthn,A.abrzht,A.abguh6,A.abdxhh,A.abdyhh,B.S4E6C4 from clmprdfil.RCPCOP A LEFT JOIN clmprdfil.RCPIDP B ON B.S4IIN2=A.ABIIN2 "+ WHERE_CLAUSE]

@@ -1,0 +1,47 @@
+let string("") [int] vec_val =[vector];
+let string("") [int] vec_temp =[vector];
+
+out :: length(in) =
+begin
+vec_temp=[vector];
+vec_temp=if(( (in.pbm_calpers_id!="4996760452") 
+				or  (is_null(in.claim_cycle_begin_date) or (string_substring(in.claim_cycle_begin_date,1,4)!="2019"))
+				or  (is_null(in.claim_cycle_end_date) or (string_substring(in.claim_cycle_end_date,1,4)!="2019"))
+				or  (is_null(in.claim_schedule_number) or length_of(in.claim_schedule_number)!=8)
+				or  (is_null(in.group_number) or in.group_number=="0000000" or length_of(in.group_number)<6 or length_of(in.group_number)>12) 
+				or  !(in.sub_account_number member [vector 'CALPANTH','CALPANTP','CALPHLNT','CALPSHARP','CALPUHC','CALPWHA','999HOLD','EGWPS032'])
+				or (is_null(in.plan_description) or  in.plan_description=="Unknown Category" )
+				or !(in.payee_provider_subscriber member [vector 'P','S'])
+				or (is_null(in.patient_ssn) or  length_of(in.patient_ssn)!=9)
+				or ( is_null(in.patient_first_name) or in.patient_first_name=='')
+				or (is_null(in.patient_last_name) or in.patient_last_name=='')
+				or ( is_null(in.patient_date_of_birth) or in.patient_date_of_birth=='')
+				or (is_null(in.claim_id) or in.claim_id=="000000000000000000" or length_of(in.claim_id)!=18)
+				or ( is_null(in.provider_name) or in.provider_name=='')
+				or (is_null(in.provider_id_npi) or in.provider_id_npi=='')
+				or (first_defined(in.tax_id,'-')=='')
+				or  !(in.egwp_wrap_y_n member [vector 'Y','N'])
+				or  !(in.relationship_to_subscriber member [vector '0','1','2' ])
+				or (in.relationship_to_subscriber=="0" and in.subscriber_ssn!=in.patient_ssn)
+				or !( in.claim_type member [vector '01','02','03','04','05','06','07','08','09'])
+				or !( in.adjustments member [vector 'P', 'X', 'R'])
+				or !(in.payment_type member [vector 'P','R'])
+				or (in.payment_type=="R" and is_null(in.original_claim_schedule_number) )
+				or (in.payment_type=="R" and is_null(in.original_warrant_eft_trace_number) )
+				or (in.payment_type=="R" and is_null(in.original_warrant_eft_issue_date) )
+				or !(in.issuance_indicator member [vector 'P','M','U']) )
+				and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615'])) vector_append(vec_temp,"Critical issue CalPERS Pharmacy Detail Claims") else vec_temp ;
+       vec_temp= if ((in.subscriber_ssn=="000000000" and in.adjustments!="R") 
+					and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615'])) vector_append(vec_temp,"Informational issue Missing SSN")else vec_temp ;
+		vec_temp=if (in.sub_account_number=="EGWPS032" and in.adjustments!="R" and (is_null(in.hicn) or in.hicn=="000000000000000000" or length_of(in.hicn)<9 or length_of(in.hicn)>13 )
+					and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615']))vector_append(vec_temp,"Informational issue Missing HICN") else vec_temp ;
+		vec_temp=if (first_defined(in.patient_calpers_id,'-')=="-" and in.adjustments!="R" and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615'])) vector_append(vec_temp,"Informational issue CalPERS IDs Missing")else vec_temp ;
+  out ::length_of(vec_temp);
+end;
+out :: normalize(in, index) =
+begin
+vec_val=vec_temp;
+
+out.*::in.*;
+  out.validation::vec_val[index];    
+end;

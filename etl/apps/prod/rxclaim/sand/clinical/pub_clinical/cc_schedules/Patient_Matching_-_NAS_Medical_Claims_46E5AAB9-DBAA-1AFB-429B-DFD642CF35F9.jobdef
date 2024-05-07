@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="PATIENT_MATCHING" description="This process uses the medical claims files created by process Data Intake process creates an ICFF file having all the medical claims . It keeps appending everyday's data to the same pharma ICFF file. It depends on &quot;member_match plan &quot; ." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="46E5AAB9-DBAA-1AFB-429B-DFD642CF35F9" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Patient Matching - NAS Medical Claims" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/patient_matching" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_MP}/med_claim_match_data_intake.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-31Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="23:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="6EA78FC7-2CB2-584C-D5CF-DFC89DCE6568"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

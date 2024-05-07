@@ -1,0 +1,36 @@
+out :: length(in) = 
+begin              
+        out :: 6;
+end;
+
+out :: normalize(in, index) =
+begin
+        let string("")[int] code_values_vec = allocate_with_nulls();        
+        
+        code_values_vec = if(!is_blank(in.carrier)) vector_append(code_values_vec,in.carrier) else vector_append(code_values_vec,"-"); 
+        code_values_vec = if(!is_blank(in.other_coverage_code)) vector_append(code_values_vec,in.other_coverage_code) else vector_append(code_values_vec,"-");         
+        code_values_vec = if(!is_blank(in.claim_org_code_online)) vector_append(code_values_vec,in.claim_org_code_online) else vector_append(code_values_vec,"-"); 
+        code_values_vec = if(!is_blank(in.claim_org_code_manual)) vector_append(code_values_vec,in.claim_org_code_manual) else vector_append(code_values_vec,"-"); 
+        code_values_vec = if(!is_blank(in.alternate_insurance_flag)) vector_append(code_values_vec,in.alternate_insurance_flag) else vector_append(code_values_vec,"-"); 
+        code_values_vec = if(!is_blank(in.residence_code)) vector_append(code_values_vec,in.residence_code) else vector_append(code_values_vec,"-"); 
+        
+        out.code :: switch(index)
+                case 0 : "CARRIERID";
+                case 1 : "OTHCOVRG";
+                case 2 : "CLMORIGIN_ONLINE";
+                case 3 : "CLMORIGIN_MANUAL";
+                case 4 : "MBRALTINFL";
+                case 5 : "RESCLOD";
+                end;
+        out.code_value :: switch(index)
+                case 0 : code_values_vec[index];
+                case 1 : code_values_vec[index];
+                case 2 : code_values_vec[index];
+                case 3 : code_values_vec[index];
+                case 4 : code_values_vec[index];
+                case 5 : code_values_vec[index];
+                end  ;                                   
+        out.created_on :: if(is_null(in.created_on) or is_blank(in.created_on)) "1900-01-01 00:00:00" else in.created_on;
+        out.user_created :: in.user_created;
+        out.* :: in.*;
+end

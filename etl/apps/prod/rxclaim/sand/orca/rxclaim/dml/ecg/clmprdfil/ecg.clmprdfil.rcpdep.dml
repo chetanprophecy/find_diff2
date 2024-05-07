@@ -1,0 +1,77 @@
+record
+  decimal("\x01") i2p2nb /*DECIMAL(15) NOT NULL   */ /*@
+BizName:"RCPDEP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  decimal("\x01") i2oinb /*DECIMAL(3) NOT NULL   */ /*@
+BizName:"RCPDEP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  decimal("\x01") i2eon1 /*DECIMAL(3) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Seq Nbr"
+ BizComment:"Sequence Number"
+@*/;
+  string("\x01",maximum_length=1) i2dws2 /*CHAR(1) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Flag"
+ BizComment:""
+@*/;
+  decimal("\x01") i2h2dt /*DECIMAL(7) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded From Date"
+ BizComment:""
+@*/;
+  decimal("\x01") i2h3dt /*DECIMAL(7) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Thru Date"
+ BizComment:""
+@*/;
+  string("\x01",maximum_length=1) i2dus2 /*CHAR(1) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Accum Level"
+ BizComment:"Accumulation Level Valid values are: D = Car/Act/Grp - # of digits C = Carrier A = Carrier/Account G = Carrier/Account/Group B = Grp Clnt Ben Cde-Press F1     Accumulation will occur for member records sharing the same     Member ID and Group Client Benefit Code across the Accounts     and Groups within the same Carrier."
+@*/;
+  string("\x01",maximum_length=10) i2rmc2 /*CHAR(10) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Accum Code"
+ BizComment:"This Accumulation Code is not used for Part D adjudication."
+@*/;
+  string("\x01",maximum_length=10) i2rlc2 /*CHAR(10) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Schedule"
+ BizComment:""
+@*/;
+  string("\x01",maximum_length=1) i2dvs2 /*CHAR(1) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Basis"
+ BizComment:"1 = Individual 2 = Family 3 = Individual or Family 4 = Individual w/Family Type 2&7; Family     Accumulates claims towards the individual limit for members     with family type of 2 or 7.  For all other familty types,     claims accumulate towards the family limit. 5 = Family, Mandatory Minimum 6 = Individual or Family (1 Mbr meets Ind) 7 = Individual or Family (2 Mbrs meet Ind) 8 = Individual or Family (3 Mbrs meet Ind) 9 = Individual or Family based on specified Family Type     Accumulates claims at the individual level and the family     level.  The family level accumulates per the limits     specified within the schedule step."
+@*/;
+  decimal("\x01") i2enn1 /*DECIMAL(2) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Step"
+ BizComment:"Step"
+@*/;
+  decimal("\x01".2) i2ncpr /*DECIMAL(9,2) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Copay/Ded Amt"
+ BizComment:"Member Pay"
+@*/;
+  string("\x01",maximum_length=1) i2d1s2 /*CHAR(1) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Copay/Ded Flg"
+ BizComment:"Valid values are: B=Benefit Over Max C=Copay D=Deductible G=Coverage Gap"
+@*/;
+  decimal("\x01".2) i2nhpr /*DECIMAL(9,2) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Plan Pay Amt"
+ BizComment:""
+@*/;
+  decimal("\x01") i2ocn2 /*DECIMAL(2) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Digits for Matching"
+ BizComment:""
+@*/;
+  string("\x01",maximum_length=10) i2n8hb /*CHAR(10) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Pharmacy Patient Pay"
+ BizComment:""
+@*/;
+  string("\x01",maximum_length=10) i2n6hb /*CHAR(10) NOT NULL   */ /*@
+BizName:"RCPDEP: PDE Client Patient Pay PS"
+ BizComment:""
+@*/;
+  string("\x01",maximum_length=5)  rxt_src_envrt_id = NULL("");
+  string("\x01",maximum_length=30)  rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")  rxt_create_dttm;
+  string("\x01",maximum_length=20)  rxt_create_uid = NULL("");
+  decimal("\x01",maximum_length=14)  rxt_create_run_id = NULL("");
+  string("\x01",maximum_length=2)  rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end

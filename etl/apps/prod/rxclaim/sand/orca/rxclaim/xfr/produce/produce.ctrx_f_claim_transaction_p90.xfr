@@ -1,0 +1,33 @@
+
+let string("\x01",charset="iso-8859-15", maximum_length=20)v_productid="";
+let string("\x01",charset="iso-8859-15", maximum_length=6) v_phr_super_ntwrk_id = "" /*VARCHAR(6)*/;
+
+
+//Final flags
+
+let string(1) v_day_90_prog_type="";
+let string(1) v_day_90_retail_prog_ind="";
+
+
+
+out::reformat(in)=
+begin
+
+v_day_90_prog_type="N";
+v_day_90_retail_prog_ind="N";
+
+v_productid=first_defined(string_lrtrim(lookup("d_product_p90",in.prod_sk).prod_id),"");
+v_phr_super_ntwrk_id=first_defined(string_lrtrim(lookup("d_pharmacy_super_network_p90",in.super_ntwk_sk).phr_super_ntwrk_id),"");
+
+v_day_90_retail_prog_ind=if(v_phr_super_ntwrk_id=="ORXS90")"W" else if (v_phr_super_ntwrk_id=="ORXC90")"C" else "N";
+
+
+
+
+out.ev_prod_id::v_productid;
+out.ev_day_90_prog_type::v_day_90_prog_type;
+out.ev_day_90_retail_prog_ind::v_day_90_retail_prog_ind;
+out.*::in.*;
+
+end;
+

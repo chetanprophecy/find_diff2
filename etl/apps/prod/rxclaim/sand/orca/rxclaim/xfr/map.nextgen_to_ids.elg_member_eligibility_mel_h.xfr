@@ -1,0 +1,59 @@
+include "/~$PUB_DXF_XFR/dataset_id.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+let string("") run_user_id = "aiorcrxc";/*$(echo '"'`whoami`'"')  ;*/
+let start_time = now();
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") v_START_CHANGES_TIME=if(is_blank($"START_CHANGES_TIME") or is_null($"START_CHANGES_TIME")) (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS")) now()
+                      else (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME" ;
+                      
+                      
+
+out :: reformat(in) =
+begin
+
+let decimal("") dxf_src_sys_id=in.src_env_sk;/*switch (lookup("lookup-platform_id",in.car_carrier_id).platform_id)
+                                 case "AZM" : 640;
+                                 case "BK2" : 480;
+                                 case "CTR" : 510;
+                                 case "GAM" : 550;
+                                 case "INM" : 530;
+                                 case "NVM" : 520;
+                                 case "SDM" : 610;
+                                 end;*/
+  out.* :: in.*;
+  
+  out.(*, name == "cdc_ts" ) :5: (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  v_START_CHANGES_TIME ;
+  out.(*, name == "cdc_flag"):6: "N";
+  out.(*, name == "rxt_src_envrt_id") :7: (string(""))(decimal(""))dxf_src_sys_id;   // Added for LCTRX direct access migration.
+  out.(*, name == "rxt_src_envrt_nm") :8:  system_number_to_name(dxf_src_sys_id);
+  out.(*, name == "rxt_create_uid") :9: run_user_id;
+  out.(*, name == "rxt_create_run_id") :10: (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS")) $"END_CHANGES_TIME";
+  out.(*, name == "rxt_create_dttm") :11: (datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME";
+  
+  out.dxf_src_sys_id :: dxf_src_sys_id;
+  
+  out.fladcd :: in.grp_group_id;
+  out.flaccd :: in.acc_account_id;
+  out.flaacd :: in.car_carrier_id;
+  out.flabcd :: in.mbr_member_id;
+  out.flc5n1 :: in.mel_seq_nbr;
+  out.flb9s2 :: in.mel_status;
+  out.flcpda :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.mel_eff_date;
+  out.flcqda :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.mel_thru_date;
+  out.fll8pr :: in.mel_copay_brand;
+  out.fll9pr :: in.mel_copay_generic;
+  out.flmapr :: in.mel_copay_3;
+  out.flmbpr :: in.mel_copay_4;
+  out.flpkc2 :: in.mel_client_product_code;
+  out.flplc2 :: in.mel_client_rider_code;
+  out.flaecd :: in.plan_code;
+  out.flakdt :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.plan_eff_date;
+  out.fll7hy :: in.mel_spend_down_amount;
+  out.flc2dt :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.add_date;
+  out.fladvn :: in.chg_user_name;
+  out.flbmdt :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.chg_date;
+  out.flabtm :: (decimal(""))(string(""))(datetime("HH24MISS"))(datetime("HH24:MI:SS"))in.chg_time;
+  out.flaevn :: in.chg_program_name;
+end;

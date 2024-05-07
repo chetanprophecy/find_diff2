@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcfsbp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcfsbp                  agqdal,agqeal,agqfal,agqial,agp2nb,agoinb\ndwxtract_bk1  rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcfsbp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p')]
+DO_LOOKUP||||1
+DO_SOURCE||||0
+LOOKUP_NAME_OVERRIDE||||rcfsbp_orx
+LOOKUP_FIELDS||||
+LOOKUP_KEY||||{agp2nb; agoinb; dxf_src_sys_id}
+SQL||||$["SELECT rcfsbp.agp2nb\n     , rcfsbp.agoinb\n     , rcfsbp.agqdal\n     , rcfsbp.agqeal\n     , rcfsbp.agqfal\n     , rcfsbp.agqial\n  FROM clmprdfil_bk1.rcfsbp  rcfsbp\n  inner join \ndwxtract_bk1.rcex1p rcex1p\non rcfsbp.agp2nb=rcex1p.rxclaimnbr\nand rcfsbp.agoinb=rcex1p.clmseqnbr\n"]

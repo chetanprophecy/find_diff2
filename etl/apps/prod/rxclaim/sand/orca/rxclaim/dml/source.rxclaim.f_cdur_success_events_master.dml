@@ -1,0 +1,41 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  cag_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0)  phr_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0)  prod_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0)  mbr_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0)  pbr_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0)  gpi_sk /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0)  claim_nbr = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  claim_seq_nbr = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  claim_stat_id = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)  claim_stat_sk /*BIGINT NOT NULL*/;
+  date("YYYYMMDD")("\x01")  sbm_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")  filled_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)  sbm_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  filled_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  rej_cd1_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  cnflct_claim_nbr = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  cnflct_claim_seq_nbr = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  cnflct_claim_stat_id = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)  cnflct_prod_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  dur_rsp_cd_cntr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)  dur_srvc_cd_rsn = NULL("") /*VARCHAR(2)*/;
+  decimal("\x01",0)  success_msmt_days = NULL("") /*SMALLINT*/;
+  decimal("\x01",2)  avg_drug_cost_amt = NULL("") /*SMALLINT*/;
+  decimal("\x01",2)  total_savings_amt = NULL("") /*SMALLINT*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved)  drug_quantity /*DECIMAL(11,3) NOT NULL*/;
+  decimal("\x01")    event_series_id = NULL("") /* default to 0 */;
+  string("\x01")    event_type = NULL("") /* valid type "T" = Trigger, "P" = Paid */;
+  string("\x01")    event_series_status = NULL("") /* valid type "O" = Open, "C" = Closed, calculated based on difference (34 days - parameter) between trigger event and current run date */;
+  date("YYYYMMDD")("\x01")    event_date = NULL("") /* set to submit date */;
+  date("YYYYMMDD")("\x01")    reverse_event_date = NULL("") /*only apply to event type "P",  set to sbm_dt of corresponding reverse "X" for Paid Event, otherwise is null*/;
+  string(1)  newline =  "\n";
+end
+;

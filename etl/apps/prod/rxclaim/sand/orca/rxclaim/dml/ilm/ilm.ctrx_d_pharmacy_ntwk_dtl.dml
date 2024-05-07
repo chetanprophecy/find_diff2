@@ -1,0 +1,101 @@
+type logical_ids_rxclaim_d_pharmacy_ntwk_dtl_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) ntwk_dtl_sk = NULL("");
+  decimal("\x01",0) ntwk_sk = NULL("");
+  decimal("\x01",0) phr_sk = NULL("");
+  decimal("\x01",0) seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) rgn_cd = NULL("");
+  decimal("\x01",0) carrier_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phd_stat = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("");
+  date("YYYYMMDD")("\x01") phd_frm_dt = NULL("");
+  date("YYYYMMDD")("\x01") phd_thru_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_prc_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_pat_pay = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("");
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_price_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_patient_pay = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_override_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) discount_table_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_2_price_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_3_price_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_patpay_grpschid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt1_prce_grpschid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt2_prce_grpschid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt3_prce_grpschid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_patpay_grpschid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_price_grpschid = NULL("");
+  date("YYYYMMDD")("\x01") add_dt = NULL("");
+  date("YYYYMMDD")("\x01") chg_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01",0) price_sched_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_carrier_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d car: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+type nk_ids_common_d_carrier_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_pharmacy_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d ph: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("") /*VARCHAR(12) NOT NULL*/;
+end;
+type nk_ids_common_d_pharmacy_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("") /*VARCHAR(12) NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_d_drug_price_sched_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d prc sched crt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) price_sched_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+type nk_ids_rxclaim_d_drug_price_sched_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) price_sched_nm = NULL("") /*VARCHAR(10) NOT NULL*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_d_pharmacy_network_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d nt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+end;
+type nk_ids_rxclaim_d_pharmacy_network_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+  decimal("\x01",0) phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_pharmacy_ntwk_dtl_t d_ph_ntwk  /*@ BizName:'d ph ntwk' */;
+  opt_nk_ids_common_d_carrier_t d_car  /*@ BizName:'d car' */;
+  opt_nk_ids_rxclaim_d_pharmacy_network_t d_nt  /*@ BizName:'d nt' */;
+  opt_nk_ids_common_d_pharmacy_t d_ph  /*@ BizName:'d ph' */;
+  opt_nk_ids_rxclaim_d_drug_price_sched_t d_prc_sched_crt  /*@ BizName:'d prc sched crt' */;
+end;

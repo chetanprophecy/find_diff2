@@ -1,0 +1,290 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.nat_drcd_mfr.limited_mkt_available_note,[transform],]
+  [out0.nat_drcd_mfr.src_drug_manufacturer_nm,[passthrough],in0.manunam]
+  [out0.nat_drcd_mfr.src_ndc_desc,[passthrough],in0.ndclnam]
+  [out0.nat_drcd_mfr.ndc_excl_termination_dt,[transform],in0.ndcedat1]
+  [out0.nat_drcd_mfr.src_add_by,[passthrough],in0.addbyusr]
+  [out0.nat_drcd_mfr.src_ndc_long_desc,[passthrough],in0.drgnam]
+  [out0.nat_drcd_mfr.src_drug_status_cd,[passthrough],in0.drgstas]
+  [out0.nat_drcd_mfr.gpi_id,[passthrough],in0.gpicde]
+  [out0.nat_drcd_mfr.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.nat_drcd_mfr.limited_mkt_available_cnt,[transform],]
+  [out0.nat_drcd_mfr.manufacturer_cd,[passthrough],in0.manucde]
+  [out0.nat_drcd_mfr.manufacturer_app_cd,[passthrough],in0.maplflg]
+  [out0.nat_drcd_mfr.ndc_begin_dt,[transform],in0.bgndat]
+  [out0.nat_drcd_mfr.nat_drg_cd_mfr_sk,[transform],]
+  [out0.nat_drcd_mfr.src_add_time,[passthrough],in0.addtme]
+  [out0.nat_drcd_mfr.src_drug_repackage_flg,[transform],in0.repkgcod]
+  [out0.nat_drcd_mfr.src_change_time,[passthrough],in0.updtme]
+  [out0.nat_drcd_mfr.current_flg,[transform],in0.bgndat,
+     in0.ndccde]
+  [out0.nat_drcd_mfr.fda_mkt_category_cd,[passthrough],in0.fdamcat]
+  [out0.nat_drcd_mfr.gpi_sk,[transform],]
+  [out0.nat_drcd_mfr.src_add_dt,[transform],in0.adddat]
+  [out0.nat_drcd_mfr.update_timestamp,[transform],]
+  [out0.nat_drcd_mfr.prod_id,[transform],in0.ndccde]
+  [out0.nat_drcd_mfr.src_change_dt,[transform],in0.upddat]
+  [out0.nat_drcd_mfr.drug_sum_mkt_category_cd,[passthrough],in0.dsmarcat]
+  [out0.nat_drcd_mfr.src_change_by,[passthrough],in0.updbyusr]
+  [out0.prod.prod_id_qlfr_cd,[transform],]
+  [out0.nat_drcd_mfr.limited_mkt_inactivation_dt,[transform],]
+  [out0.nat_drcd_mfr.manufacturer_cnt,[passthrough],in0.gencnt]
+  [out0.gpi.gpi_id,[passthrough],in0.gpicde]
+  [out0.nat_drcd_mfr.src_drug_rx_otc_ind_cd,[passthrough],in0.otcind]
+  [out0.nat_drcd_mfr.count_change_dt,[transform],in0.count_change_dt]
+  [out0.nat_drcd_mfr.exclude_mfg_flg,[transform],]
+  [out0.nat_drcd_mfr.limited_mkt_available_flg,[transform],in0.lmaflg]
+  [out0.drg_otc_ind.drug_rx_otc_ind,[passthrough],in0.otcind]
+  [out0.nat_drcd_mfr.limited_mkt_activation_dt,[transform],]
+  [out0.nat_drcd_mfr.multi_source_cd,[passthrough],in0.mulsrc]
+  [out0.nat_drcd_mfr.count_status_ind,[transform],]
+  [out0.nat_drcd_mfr.insert_timestamp,[transform],]
+  [out0.nat_drcd_mfr.manufacturer_app_no,[passthrough],in0.maplno]
+  [out0.nat_drcd_mfr.drop_record,[transform],]
+  [out0.prod.prod_id,[transform],in0.ndccde]
+  [out0.nat_drcd_mfr.src_ndc_effective_dt,[transform],in0.ndcedat]
+  [out0.nat_drcd_mfr.prod_sk,[transform],]
+  [out0.nat_drcd_mfr.ndc_end_dt,[transform],in0.enddat]
+  [out0.nat_drcd_mfr.drug_rx_otc_ind_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.nat_drcd_mfr.limited_mkt_available_note,'nat_drcd_mfr.limited_mkt_available_note',1,0]
+     [out0.nat_drcd_mfr.src_drug_manufacturer_nm,'nat_drcd_mfr.src_drug_manufacturer_nm',1,0]
+     [out0.nat_drcd_mfr.src_ndc_desc,'nat_drcd_mfr.src_ndc_desc',1,0]
+     [out0.nat_drcd_mfr.ndc_excl_termination_dt,'nat_drcd_mfr.ndc_excl_termination_dt',1,0]
+     [out0.nat_drcd_mfr.src_add_by,'nat_drcd_mfr.src_add_by',1,0]
+     [out0.nat_drcd_mfr.src_ndc_long_desc,'nat_drcd_mfr.src_ndc_long_desc',1,0]
+     [out0.nat_drcd_mfr.src_drug_status_cd,'nat_drcd_mfr.src_drug_status_cd',1,0]
+     [out0.nat_drcd_mfr.gpi_id,'nat_drcd_mfr.gpi_id',1,0]
+     [out0.nat_drcd_mfr.src_env_sk,'nat_drcd_mfr.src_env_sk',1,0]
+     [out0.nat_drcd_mfr.limited_mkt_available_cnt,'nat_drcd_mfr.limited_mkt_available_cnt',1,0]
+     [out0.nat_drcd_mfr.manufacturer_cd,'nat_drcd_mfr.manufacturer_cd',1,0]
+     [out0.nat_drcd_mfr.manufacturer_app_cd,'nat_drcd_mfr.manufacturer_app_cd',1,0]
+     [out0.nat_drcd_mfr.ndc_begin_dt,'nat_drcd_mfr.ndc_begin_dt',1,1]
+     [out0.nat_drcd_mfr.nat_drg_cd_mfr_sk,'nat_drcd_mfr.nat_drg_cd_mfr_sk',1,0]
+     [out0.nat_drcd_mfr.src_add_time,'nat_drcd_mfr.src_add_time',1,0]
+     [out0.nat_drcd_mfr.src_drug_repackage_flg,'nat_drcd_mfr.src_drug_repackage_flg',1,0]
+     [out0.nat_drcd_mfr.src_change_time,'nat_drcd_mfr.src_change_time',1,0]
+     [out0.nat_drcd_mfr.current_flg,'nat_drcd_mfr.current_flg',1,2]
+     [out0.nat_drcd_mfr.fda_mkt_category_cd,'nat_drcd_mfr.fda_mkt_category_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.nat_drcd_mfr.gpi_sk,'nat_drcd_mfr.gpi_sk',1,0]
+     [out0.nat_drcd_mfr.src_add_dt,'nat_drcd_mfr.src_add_dt',1,0]
+     [out0.nat_drcd_mfr.update_timestamp,'nat_drcd_mfr.update_timestamp',1,0]
+     [out0.nat_drcd_mfr.prod_id,'nat_drcd_mfr.prod_id',1,1]
+     [out0.nat_drcd_mfr.src_change_dt,'nat_drcd_mfr.src_change_dt',1,0]
+     [out0.nat_drcd_mfr.drug_sum_mkt_category_cd,'nat_drcd_mfr.drug_sum_mkt_category_cd',1,0]
+     [out0.nat_drcd_mfr.src_change_by,'nat_drcd_mfr.src_change_by',1,0]
+     [out0.prod.prod_id_qlfr_cd,'prod.prod_id_qlfr_cd',1,0]
+     [out0.nat_drcd_mfr.limited_mkt_inactivation_dt,'nat_drcd_mfr.limited_mkt_inactivation_dt',1,0]
+     [out0.nat_drcd_mfr.manufacturer_cnt,'nat_drcd_mfr.manufacturer_cnt',1,0]
+     [out0.gpi.gpi_id,'gpi.gpi_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.nat_drcd_mfr.src_drug_rx_otc_ind_cd,'nat_drcd_mfr.src_drug_rx_otc_ind_cd',1,0]
+     [out0.nat_drcd_mfr.count_change_dt,'nat_drcd_mfr.count_change_dt',1,0]
+     [out0.nat_drcd_mfr.exclude_mfg_flg,'nat_drcd_mfr.exclude_mfg_flg',1,0]
+     [out0.nat_drcd_mfr.limited_mkt_available_flg,'nat_drcd_mfr.limited_mkt_available_flg',1,0]
+     [out0.drg_otc_ind.drug_rx_otc_ind,'drg_otc_ind.drug_rx_otc_ind',1,0]
+     [out0.nat_drcd_mfr.limited_mkt_activation_dt,'nat_drcd_mfr.limited_mkt_activation_dt',1,0]
+     [out0.nat_drcd_mfr.multi_source_cd,'nat_drcd_mfr.multi_source_cd',1,0]
+     [out0.nat_drcd_mfr.count_status_ind,'nat_drcd_mfr.count_status_ind',1,0]
+     [out0.nat_drcd_mfr.insert_timestamp,'nat_drcd_mfr.insert_timestamp',1,0]
+     [out0.nat_drcd_mfr.manufacturer_app_no,'nat_drcd_mfr.manufacturer_app_no',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.nat_drcd_mfr.drop_record,'nat_drcd_mfr.drop_record',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.prod.prod_id,'prod.prod_id',1,1]
+     [out0.nat_drcd_mfr.src_ndc_effective_dt,'nat_drcd_mfr.src_ndc_effective_dt',1,0]
+     [out0.nat_drcd_mfr.prod_sk,'nat_drcd_mfr.prod_sk',1,0]
+     [out0.nat_drcd_mfr.ndc_end_dt,'nat_drcd_mfr.ndc_end_dt',1,0]
+     [out0.nat_drcd_mfr.drug_rx_otc_ind_sk,'nat_drcd_mfr.drug_rx_otc_ind_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.drgnam,'drgnam',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.lmaflg,'lmaflg',4,1]
+     [in0.dsmarcat,'dsmarcat',1,1]
+     [in0.addtme,'addtme',1,1]
+     [in0.enddat,'enddat',4,1]
+     [in0.updbyusr,'updbyusr',1,1]
+     [in0.ndcedat,'ndcedat',4,1]
+     [in0.ndcedat1,'ndcedat1',4,1]
+     [in0.count_change_dt,'count_change_dt',1,1]
+     [in0.manucde,'manucde',1,1]
+     [in0.upddat,'upddat',4,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.maplflg,'maplflg',1,1]
+     [in0.maplno,'maplno',1,1]
+     [in0.bgndat,'bgndat',4,3]
+     [in0.manunam,'manunam',1,1]
+     [in0.fdamcat,'fdamcat',1,1]
+     [in0.addbyusr,'addbyusr',1,1]
+     [in0.updtme,'updtme',1,1]
+     [in0.gencnt,'gencnt',1,1]
+     [in0.repkgcod,'repkgcod',4,1]
+     [in0.ndclnam,'ndclnam',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.adddat,'adddat',4,1]
+     [in0.ndccde,'ndccde',1,4]
+     [in0.gpicde,'gpicde',2,2]
+     [in0.drgstas,'drgstas',1,1]
+     [in0.otcind,'otcind',2,2]
+     [in0.mulsrc,'mulsrc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal(1) nat_drcd_mfr_drop_record = 0;
+let decimal("\x01",0) nat_drcd_mfr_nat_drg_cd_mfr_sk = 0;
+let decimal("\x01",0) nat_drcd_mfr_prod_sk = 0;
+let decimal("\x01",0) nat_drcd_mfr_drug_rx_otc_ind_sk = 0;
+let decimal("\x01",0) nat_drcd_mfr_gpi_sk = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=20) nat_drcd_mfr_prod_id;
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_ndc_begin_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=14) nat_drcd_mfr_gpi_id = fail_if_error(in0.gpicde);
+let decimal("\x01",0) nat_drcd_mfr_manufacturer_cnt = fail_if_error(in0.gencnt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_limited_mkt_available_flg = fail_if_error((if (sql_and(!is_null(in0.lmaflg),sql_or((in0.lmaflg=="Y"),(in0.lmaflg=="N"))))
+   in0.lmaflg
+ else
+   "-"));
+let string("\x01",charset="iso-8859-15", maximum_length=50) nat_drcd_mfr_src_ndc_desc = fail_if_error(in0.ndclnam);
+let string("\x01",charset="iso-8859-15", maximum_length=100) nat_drcd_mfr_src_ndc_long_desc = fail_if_error(in0.drgnam);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_src_drug_rx_otc_ind_cd = fail_if_error(in0.otcind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_src_drug_status_cd = fail_if_error(in0.drgstas);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_src_drug_repackage_flg = fail_if_error((if (sql_and(!is_null(in0.repkgcod),sql_or((in0.repkgcod=="Y"),(in0.repkgcod=="N"))))
+   in0.repkgcod
+ else
+   "-"));
+let string("\x01",charset="iso-8859-15", maximum_length=2) nat_drcd_mfr_fda_mkt_category_cd = fail_if_error(in0.fdamcat);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_manufacturer_app_cd = fail_if_error(in0.maplflg);
+let string("\x01",charset="iso-8859-15", maximum_length=2) nat_drcd_mfr_drug_sum_mkt_category_cd = fail_if_error(in0.dsmarcat);
+let string("\x01",charset="iso-8859-15", maximum_length=12) nat_drcd_mfr_manufacturer_app_no = fail_if_error(in0.maplno);
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_multi_source_cd = fail_if_error(in0.mulsrc);
+let string("\x01",charset="iso-8859-15", maximum_length=5) nat_drcd_mfr_manufacturer_cd = fail_if_error(in0.manucde);
+let string("\x01",charset="iso-8859-15", maximum_length=10) nat_drcd_mfr_src_drug_manufacturer_nm = fail_if_error(in0.manunam);
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_src_ndc_effective_dt = fail_if_error((if (sql_and(!is_null(in0.ndcedat),!is_blank(in0.ndcedat)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.ndcedat))))
+ else
+   in0.ndcedat));
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_ndc_excl_termination_dt = fail_if_error((if (sql_and(!is_null(in0.ndcedat1),!is_blank(in0.ndcedat1)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.ndcedat1))))
+ else
+   in0.ndcedat1));
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_ndc_end_dt = fail_if_error((if (sql_and(!is_null(in0.enddat),!is_blank(in0.enddat)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.enddat))))
+ else
+   in0.enddat));
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_count_change_dt;
+let decimal("\x01",0) nat_drcd_mfr_limited_mkt_available_cnt = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=255) nat_drcd_mfr_limited_mkt_available_note = "-";
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_limited_mkt_activation_dt = "19000101";
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_limited_mkt_inactivation_dt = "19000101";
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_count_status_ind = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_exclude_mfg_flg = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=1) nat_drcd_mfr_current_flg;
+let string("\x01",charset="iso-8859-15", maximum_length=10) nat_drcd_mfr_src_add_by = fail_if_error(in0.addbyusr);
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_src_add_dt = fail_if_error((if (sql_and(!is_null(in0.adddat),!is_blank(in0.adddat)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.adddat))))
+ else
+   in0.adddat));
+let decimal("\x01",0) nat_drcd_mfr_src_add_time = fail_if_error(in0.addtme);
+let string("\x01",charset="iso-8859-15", maximum_length=10) nat_drcd_mfr_src_change_by = fail_if_error(in0.updbyusr);
+let date("YYYYMMDD")("\x01") nat_drcd_mfr_src_change_dt = fail_if_error((if (sql_and(!is_null(in0.upddat),!is_blank(in0.upddat)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.upddat))))
+ else
+   in0.upddat));
+let decimal("\x01",0) nat_drcd_mfr_src_change_time = fail_if_error(in0.updtme);
+let datetime("YYYYMMDDHH24MISS")("\x01") nat_drcd_mfr_insert_timestamp = fail_if_error(now1());
+let datetime("YYYYMMDDHH24MISS")("\x01") nat_drcd_mfr_update_timestamp = fail_if_error(now1());
+let decimal("\x01",0) nat_drcd_mfr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) drg_otc_ind_drug_rx_otc_ind = fail_if_error(in0.otcind);
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_gpi_id = fail_if_error(in0.gpicde);
+let string("\x01",charset="iso-8859-15", maximum_length=20) prod_prod_id;
+let string("\x01",charset="iso-8859-15", maximum_length=2) prod_prod_id_qlfr_cd = "03";
+let unicode string(int) product_id = fail_if_error(in0.ndccde);
+let unicode date('YYYY-MM-DD') ndc_begin_date = fail_if_error((if (sql_and(!is_null(in0.bgndat),!is_blank(in0.bgndat)))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(19000000+in0.bgndat))))
+ else
+   in0.bgndat));
+
+
+
+/*   Default value   */
+nat_drcd_mfr_ndc_begin_dt=fail_if_error(ndc_begin_date);
+
+/*   Default value   */
+prod_prod_id=fail_if_error(product_id);
+
+/*   Default value   */
+nat_drcd_mfr_prod_id=fail_if_error(product_id);
+
+/*   Default value   */
+nat_drcd_mfr_current_flg=fail_if_error(if(lookup_match("LKP: D_NATIONAL_DRUG_CODE_MFR", string_lrtrim(product_id), ndc_begin_date)) "Y" else "N");
+
+/*   Default value   */
+nat_drcd_mfr_count_change_dt=fail_if_error(date_check(in0.count_change_dt));
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.nat_drcd_mfr.drop_record::nat_drcd_mfr_drop_record;
+  out0.nat_drcd_mfr.nat_drg_cd_mfr_sk::nat_drcd_mfr_nat_drg_cd_mfr_sk;
+  out0.nat_drcd_mfr.prod_sk::nat_drcd_mfr_prod_sk;
+  out0.nat_drcd_mfr.drug_rx_otc_ind_sk::nat_drcd_mfr_drug_rx_otc_ind_sk;
+  out0.nat_drcd_mfr.gpi_sk::nat_drcd_mfr_gpi_sk;
+  out0.nat_drcd_mfr.prod_id::nat_drcd_mfr_prod_id;
+  out0.nat_drcd_mfr.ndc_begin_dt::nat_drcd_mfr_ndc_begin_dt;
+  out0.nat_drcd_mfr.gpi_id::nat_drcd_mfr_gpi_id;
+  out0.nat_drcd_mfr.manufacturer_cnt::nat_drcd_mfr_manufacturer_cnt;
+  out0.nat_drcd_mfr.limited_mkt_available_flg::nat_drcd_mfr_limited_mkt_available_flg;
+  out0.nat_drcd_mfr.src_ndc_desc::nat_drcd_mfr_src_ndc_desc;
+  out0.nat_drcd_mfr.src_ndc_long_desc::nat_drcd_mfr_src_ndc_long_desc;
+  out0.nat_drcd_mfr.src_drug_rx_otc_ind_cd::nat_drcd_mfr_src_drug_rx_otc_ind_cd;
+  out0.nat_drcd_mfr.src_drug_status_cd::nat_drcd_mfr_src_drug_status_cd;
+  out0.nat_drcd_mfr.src_drug_repackage_flg::nat_drcd_mfr_src_drug_repackage_flg;
+  out0.nat_drcd_mfr.fda_mkt_category_cd::nat_drcd_mfr_fda_mkt_category_cd;
+  out0.nat_drcd_mfr.manufacturer_app_cd::nat_drcd_mfr_manufacturer_app_cd;
+  out0.nat_drcd_mfr.drug_sum_mkt_category_cd::nat_drcd_mfr_drug_sum_mkt_category_cd;
+  out0.nat_drcd_mfr.manufacturer_app_no::nat_drcd_mfr_manufacturer_app_no;
+  out0.nat_drcd_mfr.multi_source_cd::nat_drcd_mfr_multi_source_cd;
+  out0.nat_drcd_mfr.manufacturer_cd::nat_drcd_mfr_manufacturer_cd;
+  out0.nat_drcd_mfr.src_drug_manufacturer_nm::nat_drcd_mfr_src_drug_manufacturer_nm;
+  out0.nat_drcd_mfr.src_ndc_effective_dt::nat_drcd_mfr_src_ndc_effective_dt;
+  out0.nat_drcd_mfr.ndc_excl_termination_dt::nat_drcd_mfr_ndc_excl_termination_dt;
+  out0.nat_drcd_mfr.ndc_end_dt::nat_drcd_mfr_ndc_end_dt;
+  out0.nat_drcd_mfr.count_change_dt::nat_drcd_mfr_count_change_dt;
+  out0.nat_drcd_mfr.limited_mkt_available_cnt::nat_drcd_mfr_limited_mkt_available_cnt;
+  out0.nat_drcd_mfr.limited_mkt_available_note::nat_drcd_mfr_limited_mkt_available_note;
+  out0.nat_drcd_mfr.limited_mkt_activation_dt::nat_drcd_mfr_limited_mkt_activation_dt;
+  out0.nat_drcd_mfr.limited_mkt_inactivation_dt::nat_drcd_mfr_limited_mkt_inactivation_dt;
+  out0.nat_drcd_mfr.count_status_ind::nat_drcd_mfr_count_status_ind;
+  out0.nat_drcd_mfr.exclude_mfg_flg::nat_drcd_mfr_exclude_mfg_flg;
+  out0.nat_drcd_mfr.current_flg::nat_drcd_mfr_current_flg;
+  out0.nat_drcd_mfr.src_add_by::nat_drcd_mfr_src_add_by;
+  out0.nat_drcd_mfr.src_add_dt::nat_drcd_mfr_src_add_dt;
+  out0.nat_drcd_mfr.src_add_time::nat_drcd_mfr_src_add_time;
+  out0.nat_drcd_mfr.src_change_by::nat_drcd_mfr_src_change_by;
+  out0.nat_drcd_mfr.src_change_dt::nat_drcd_mfr_src_change_dt;
+  out0.nat_drcd_mfr.src_change_time::nat_drcd_mfr_src_change_time;
+  out0.nat_drcd_mfr.insert_timestamp::nat_drcd_mfr_insert_timestamp;
+  out0.nat_drcd_mfr.update_timestamp::nat_drcd_mfr_update_timestamp;
+  out0.nat_drcd_mfr.src_env_sk::nat_drcd_mfr_src_env_sk;
+  out0.drg_otc_ind.drug_rx_otc_ind::drg_otc_ind_drug_rx_otc_ind;
+  out0.gpi.gpi_id::gpi_gpi_id;
+  out0.prod.prod_id::prod_prod_id;
+  out0.prod.prod_id_qlfr_cd::prod_prod_id_qlfr_cd;
+  out0.*::in0.*;
+
+end;

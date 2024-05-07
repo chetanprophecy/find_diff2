@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rctc2p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rctc2p                  \nclmprdfil     rctcdp                  dqp2nb,dqoinb,dqc4dt,dqs6st
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctc2p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctcdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[\n "WHERE RCTCDP.DQP2NB = RCTC2P.QNP2NB\n and RCTCDP.DQOINB = RCTC2P.QNOINB\n and DQC4DT >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME,-1))) +\n " AND DQC4DT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME))\n ] OPTIMIZE FOR ALL ROWS
+DO_PUBLISH_CLEAN_FILE||||1

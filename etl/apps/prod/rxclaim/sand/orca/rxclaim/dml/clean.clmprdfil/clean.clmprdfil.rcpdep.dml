@@ -1,0 +1,74 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  i2p2nb /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCPDEP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  little endian integer(2)  i2oinb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCPDEP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  little endian integer(2)  i2eon1 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Seq Nbr"
+ BizComment:"Sequence Number"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  i2dws2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Flag"
+ BizComment:""
+@*/;
+  little endian integer(4)  i2h2dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded From Date"
+ BizComment:""
+@*/;
+  little endian integer(4)  i2h3dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Thru Date"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  i2dus2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Accum Level"
+ BizComment:"Accumulation Level Valid values are: D = Car/Act/Grp - # of digits C = Carrier A = Carrier/Account G = Carrier/Account/Group B = Grp Clnt Ben Cde-Press F1     Accumulation will occur for member records sharing the same     Member ID and Group Client Benefit Code across the Accounts     and Groups within the same Carrier."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  i2rmc2 /*CHAR(10) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Accum Code"
+ BizComment:"This Accumulation Code is not used for Part D adjudication."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  i2rlc2 /*CHAR(10) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Schedule"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  i2dvs2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Basis"
+ BizComment:"1 = Individual 2 = Family 3 = Individual or Family 4 = Individual w/Family Type 2&7; Family     Accumulates claims towards the individual limit for members     with family type of 2 or 7.  For all other familty types,     claims accumulate towards the family limit. 5 = Family, Mandatory Minimum 6 = Individual or Family (1 Mbr meets Ind) 7 = Individual or Family (2 Mbrs meet Ind) 8 = Individual or Family (3 Mbrs meet Ind) 9 = Individual or Family based on specified Family Type     Accumulates claims at the individual level and the family     level.  The family level accumulates per the limits     specified within the schedule step."
+@*/;
+  little endian integer(2)  i2enn1 /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Step"
+ BizComment:"Step"
+@*/;
+  decimal("".2, sign_reserved)  i2ncpr /*DECIMAL(9,2) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Copay/Ded Amt"
+ BizComment:"Member Pay"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  i2d1s2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Copay/Ded Flg"
+ BizComment:"Valid values are: B=Benefit Over Max C=Copay D=Deductible G=Coverage Gap"
+@*/;
+  decimal("".2, sign_reserved)  i2nhpr /*DECIMAL(9,2) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Ben/Ded Plan Pay Amt"
+ BizComment:""
+@*/;
+  little endian integer(2)  i2ocn2 /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Digits for Matching"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  i2n8hb /*CHAR(10) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Pharmacy Patient Pay"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  i2n6hb /*CHAR(10) NOT NULL */ /*@
+BizName:"RCPDEP: PDE Client Patient Pay PS"
+ BizComment:""
+@*/;
+end

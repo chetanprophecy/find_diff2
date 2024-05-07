@@ -1,0 +1,66 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rcphzp.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rcphzp.amv2hu,'rcphzp.amv2hu',1,0]
+     [out0.rcphzp.amrlhj,'rcphzp.amrlhj',1,0]
+     [out0.rcphzp.src_env_sk,'rcphzp.src_env_sk',1,0]
+     [out0.rcphzp.amv3hu,'rcphzp.amv3hu',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.rcphzp.amaqcd,'rcphzp.amaqcd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rcphzp.amp6ie,'rcphzp.amp6ie',1,0]
+     [out0.rcphzp.amsqio,'rcphzp.amsqio',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.amp6ie,'amp6ie',1,1]
+     [in0.amv3hu,'amv3hu',1,1]
+     [in0.amrlhj,'amrlhj',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.amaqcd,'amaqcd',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.amsqio,'amsqio',1,1]
+     [in0.amv2hu,'amv2hu',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let string("\x01", maximum_length=10) rcphzp_amaqcd = fail_if_error(in0.amaqcd);
+let string("\x01", maximum_length=10) rcphzp_amrlhj = fail_if_error(in0.amrlhj);
+let decimal("\x01", maximum_length=8) rcphzp_amv2hu = fail_if_error(in0.amv2hu);
+let decimal("\x01", maximum_length=8) rcphzp_amv3hu = fail_if_error(in0.amv3hu);
+let string("\x01", maximum_length=400) rcphzp_amsqio = fail_if_error(in0.amsqio);
+let string("\x01", maximum_length=1) rcphzp_amp6ie = fail_if_error(in0.amp6ie);
+let decimal("\x01",0) rcphzp_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.rcphzp.amaqcd::rcphzp_amaqcd;
+  out0.rcphzp.amrlhj::rcphzp_amrlhj;
+  out0.rcphzp.amv2hu::rcphzp_amv2hu;
+  out0.rcphzp.amv3hu::rcphzp_amv3hu;
+  out0.rcphzp.amsqio::rcphzp_amsqio;
+  out0.rcphzp.amp6ie::rcphzp_amp6ie;
+  out0.rcphzp.src_env_sk::rcphzp_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,68 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/pharmacy_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/30  Gaurav Mirje            Initial version, create lookup functions for pharmacy process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ *  2016/11/12  Paul Thompson           Added usage of indexes (when available) and also lookups on serial partitions
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_pharmacy_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/pharmacy.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/pharmacy.dat' );
+end;
+
+cli_string_t out :: get_pharmacy_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type pharmacy_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  pharmacy_hash_lkup_t    RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {pharmacy.pharmacy_id}; // In ids to cli mapping pharmacy_id (natural key) of ids mapped to cli_pharmacy_id in cli
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let pharmacy_lkup_t GLKUP_PHARMACY = allocate_with_nulls();
+
+pharmacy_lkup_t out :: load_pharmacy_lkup() inline =
+begin
+  if (GLKUP_PHARMACY.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_pharmacy_lkup_path();
+    let indx_path  = get_pharmacy_indx_path(lkup_path, 'pharmacy');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_PHARMACY = if (indx_found) lookup_load(lkup_path, indx_path)
+                     else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_PHARMACY;
+end;
+
+pharmacy_t out :: get_pharmacy(cli_pharmacy_id) inline =
+begin
+  let pharmacy_lkup_t lkup = load_pharmacy_lkup();
+  out :: lookup(lkup, cli_pharmacy_id).pharmacy;
+end;

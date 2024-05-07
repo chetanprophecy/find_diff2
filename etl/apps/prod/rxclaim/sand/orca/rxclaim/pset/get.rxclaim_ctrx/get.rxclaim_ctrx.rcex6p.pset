@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdext.rcex6p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdext     rcex6p                  abp2nb,aboinb,abdkhs,abpch9,abpdh9,abxyhc,abxzhc,abx0hc,abphh9,abpeh9,abylhc,abymhc,abynhc,abykhc,abpfh9,abwnhc,abc2hk,abpgh9,abwohc,abwphc,abpih9,abwqhc,abdlhs,abdmhs,abpjh9,abwshc,abwthc,abwuhc,abs4al,abs5al,abs6al,abwvhc,abwwhc,abwxhc,abyfal,abygal,abr8an,abkcbj,abmace,abbotz,abkdbj,abkebj,abmbce,abbptz,abkfbj,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex6p')]
+WHERE_CLAUSE||||$[ if(DAILY_FLAG != "Y")   if (CARRIER_ID_MIN == "*")    "WHERE rcex6p.abmbce between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS "   else    "WHERE rcex6p.abmbce between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " and rcex6p.abylhc between '" + CARRIER_ID_MIN + "' AND '" + CARRIER_ID_MAX + "'  OPTIMIZE FOR ALL ROWS " else   if (START_CHANGES_TIME != '')     "WHERE rcex6p.abmbce >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +     " AND rcex6p.abmbce <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"   else     "WHERE rcex6p.abmbce >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +     " AND rcex6p.abmbce <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"  ]
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1
+ENABLE_DEFAULT_RULES||||True

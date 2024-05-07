@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="OTHER" description="This job checks for the IDS trigger files and once received it triggers the IDS file copy job." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="ACA1FB8F-043C-F509-EEDA-AE64E9CBE848" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="CPP IDS File Watcher Batch Trigger" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/ids_trigger_send_mail.pset" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-03-26Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="300" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/ids_rxclaim_reconciliation_trigger.ctl" isFirstMatchOnly1X50="false" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false"/>
+    </fileAndEventConstraints>
+    <predecessors>
+      <predecessor jobDefinitionGuid="408673A8-864B-E096-6708-E0B1222DAE22"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

@@ -1,0 +1,162 @@
+record
+  string("\x01", maximum_length=10) qlgocd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PRC Price Schedule Name"
+ BizComment:"A definition of the pricing tables that are used within a plan."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qli3hs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Seq Nbr"
+ BizComment:"The Sequence is a unique user-defined number between 1 and 999 specifying the order in which the Criteria records are searched for a matching to the incoming claim."
+@*/;
+  string("\x01", maximum_length=1) qleti1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Claim Status"
+ BizComment:"The Claim Status is used to restrict the application of the Sequence based on the claim status determined during adjudication as 'P', Paid, or 'C', Captured.  An asterisk (*) is used to specify that the Sequence is not restricted based on the claim status."
+@*/;
+  string("\x01", maximum_length=2) qleui1 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Customer Location"
+ BizComment:"The Customer Location is used to restrict the application of the Sequence based on the submitted Customer Location Code.  Two asterisks (**) are used to specify that the Sequence is not restricted based on the submitted Customer Location Code.  Values list: **=All Customer Location Codes 00=Not Specified 01=Home 02=Intermediate Care 03=Nursing Home 04=Long Term/Extended Care 05=Rest Home 06=Boarding Home 07=Skilled Care Facility 08=Sub-Acute Care Facility 09=Acute Care Facility 10=Outpatient 11=Hospice 22=App Amt Due=Sbm Amt Due 72=COB-Full Remainder Amt 81=Plan Override - 81 82=Plan Override - 82 83=Plan Override - 83 84=Plan Override - 84 85=Plan Override - 85 86=Plan Override - 86 87=Plan Override - 87 88=Plan Override - 88 89=Plan Override - 89 90=CapturedClaimReimbursemnt 91=Member Reimbursement-91 92=Member Reimbursement-92 93=Member Reimbursement-93 94=Member Reimbursement-94 95=Member Reimbursement-95 96=Member Reimbursement-96 97=Member Reimbursement-97 98=Member Reimbursement-98 99=Member Reimbursement-99 XX=Skip sequence for v51 clm This value is used to define a sequence that is to be used for vD.0 claims only.  Claims submitted with v5.1 and prior versions will not use this sequence. Claims submitted with v5.1 and prior versions examine the Customer Location criteria, but ignore the Patient Residence criteria.  If a sequence is created for vD.0 claims which includes Patient Residence along with additional criteria, using XX in Customer Location prevents a v5.1 claim from matching on the additional criteria."
+@*/;
+  string("\x01", maximum_length=2) qlqeod /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Patient Residence"
+ BizComment:"The Patient Residence is used to restrict the application of the Sequence based on the submitted Patient Residence code.  Two asterisks (**) are used to specify that the Sequence is not restricted based on the submitted Patient Residence code. XX-Skip sequence for vD0 clm: This value is used to define a sequence that is to be used for v5.1 claims only.  Claims submitted with vD.0 and subsequent versions will not use this sequence. Claims submitted with vD.0 examine the Patient Residence criteria, but ignore the Customer Location criteria.  If a sequence is created for v5.1 claims which includes Customer Location along with additional criteria, using XX in Customer Location prevents a vD.0 claim from matching on the additional criteria."
+@*/;
+  string("\x01", maximum_length=1) qlevi1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Compound"
+ BizComment:"The Compound is used to restrict the application of the Sequence based on the submitted Compound code and presence (or non-presence) of the Compound Segment. An asterisks (*) are used to specify that the Sequence is not restricted based on the submitted Compound Code. Values list: * = All claims The Sequence is applicable regardless of the Compound status of the claim. C = All Compounds The Sequence is applicable to both single- and multiple-ingredient compounds. S = Single-Ingredient Compound The Sequence is applicable to a single-ingredient compound. A single-ingredient compound is identified by a claim submitted with a Compound Code of '2' and an NDC of 99999-9999-** (any value in the last two positions). M = Multi-Ingredient Compound The Sequence is applicable to a multi-ingredient compound.  A multi-ingredient compound is identified by a claim submitted with a Compound Code of '2', an NDC of one zero through 19 zeros and the presence of the Compound Segment on the claim."
+@*/;
+  string("\x01", maximum_length=1) qle3i1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Drug Status"
+ BizComment:"The Claim Status is used to restrict the application of the Sequence based on the claim status determined during adjudication of the Plan as 'P', Preferred, or 'N', Non-Preferred.  An asterisk (*) is used to specify that the Sequence is not restricted based on the drug status."
+@*/;
+  string("\x01", maximum_length=1) qlspan /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) qli4hs /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Maximum Manufacturers"
+ BizComment:"Identifies if the Sequence is restricted based on the number of manufacturers available for the product. The number of manufacturers is determined by retrieving within the GPI of the submitted products and then counting the number of unique labelers (based on the manufacturer ID) where multi-source codes match the selected multi-source codes on the Price Schedule Criteria and are active for the fill date of the claim."
+@*/;
+  string("\x01", maximum_length=1) qlewi1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source Code"
+ BizComment:"The Multi-Source Code or List is used to restrict the application of the Sequence based on the multi-source code (generic indicator) found during adjudication of the claim.  If an override multi-source code is the basis of its applicability to the Sequence, otherwise the multi-source code as found on the Product Detail is used. Values list: * = All Y = Generic M = Multi-Source Not Generic N = Single-Source Not Generic O = Original, Generics Avail."
+@*/;
+  string("\x01", maximum_length=10) qlidij /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source List"
+ BizComment:"The Multi-Source Code or List is used to restrict the application of the Sequence based on the multi-source code (generic indicator) found during adjudication of the claim.  If an override multi-source code is the basis of its applicability to the Sequence, otherwise the multi-source code as found on the Product Detail is used. Values list: * = All Y = Generic M = Multi-Source Not Generic N = Single-Source Not Generic O = Original, Generics Avail."
+@*/;
+  string("\x01", maximum_length=1) qlexi1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC OTC Indicator"
+ BizComment:"The OTC (Over-the-Counter) Code is used to restrict the Sequence based on the product's OTC indicator found during adjudication of the claim. If an OTC override is found that is the basis of its applicability to the Sequence, otherwise the OTC indicator as found on the Product Detail is used.  Values list: * = All products When '*' is specified all products reference the Sequence as long as long as all other characteristics of the product match the Sequence details. Y = Only OTC products When 'Y' is specified only products having an OTC indicator of 'O' and 'P' reference the Sequence as long as all other characteristics of the product match the Sequence details.  Products having a blank OTC indicator do no reference the Sequence even if all other characteristics of the product match the Sequence details."
+@*/;
+  string("\x01", maximum_length=1) qleyi1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Third Party Exception"
+ BizComment:"The Third Party Exception is used to restrict the Sequence based on the product's indicator found during adjudication of the claim.  If a Third Party Exception override is found that is the basis of its applicability to the Sequence, otherwise the indicator as found on the Product Detail is used.  Values list: * = All 3rd Part Except. Codes A valid Third Party Exception Code as populated in the 3rd Party Exception file"
+@*/;
+  string("\x01", maximum_length=2) qlieij /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Route of Admin"
+ BizComment:"The Route of Administration Code or List is used to restrict the application of the Sequence based on the Route of Administration code found during ajudication of the claim. When a Route of Administation override is found during adjudication, it is the basis of its applicability to the Sequence; otherwise the indicator as found on the Product Detail is used. Values List: AA-TEST TEST BU-BUCCAL CO-COMBINATION DT-DENTAL EP-EPIDURAL EV-EVU TEST EX-EXTERNAL IA-INTRA-ARTERIAL IC-INTRACAVERNOSAL ID-INTRADERMAL IJ-INJECTION IL-IMPLANT IM-INTRAMUSCULAR IN-INHALATION IO-INTRAOCULAR IP-INTRAPERITONEAL IR-IRRIGATION IS-INTRAVESICAL IT-INTRATHECAL IU-INTRAUTERINE IV-INTRAVENOUS IX-INTRA-ARTICULAR MT-MOUTH/THROAT NA-NASAL OP-OPHTHALMIC OR-ORAL OS-OSMOSIS OT-OTIC PF-PERFUSION PL-INTRAPLEURAL RE-RECTAL SC-SUBCUTANEOUS SL-SUBLINGUAL TD-TRANSDERMAL TL-TRANSLINGUAL UR-URETHRAL VA-VAGINAL VI-IN VITRO XX-DOES NOT APPLY"
+@*/;
+  string("\x01", maximum_length=10) qlezi1 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Route of Admin List"
+ BizComment:"The Route of Administration Code or List is used to restrict the application of the Sequence based on the Route of Administration code found during ajudication of the claim. When a Route of Administation override is found during adjudication, it is the basis of its applicability to the Sequence; otherwise the indicator as found on the Product Detail is used. Values List: AA-TEST TEST BU-BUCCAL CO-COMBINATION DT-DENTAL EP-EPIDURAL EV-EVU TEST EX-EXTERNAL IA-INTRA-ARTERIAL IC-INTRACAVERNOSAL ID-INTRADERMAL IJ-INJECTION IL-IMPLANT IM-INTRAMUSCULAR IN-INHALATION IO-INTRAOCULAR IP-INTRAPERITONEAL IR-IRRIGATION IS-INTRAVESICAL IT-INTRATHECAL IU-INTRAUTERINE IV-INTRAVENOUS IX-INTRA-ARTICULAR MT-MOUTH/THROAT NA-NASAL OP-OPHTHALMIC OR-ORAL OS-OSMOSIS OT-OTIC PF-PERFUSION PL-INTRAPLEURAL RE-RECTAL SC-SUBCUTANEOUS SL-SUBLINGUAL TD-TRANSDERMAL TL-TRANSLINGUAL UR-URETHRAL VA-VAGINAL VI-IN VITRO XX-DOES NOT APPLY"
+@*/;
+  string("\x01", maximum_length=1) qle0i1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC DEA Class"
+ BizComment:"The DEA Class Code or DEA Class List identifies that the Sequence is restricted to a specific class code or list of DEA class codes. Values List: *-All DEA Class Codes 0-Not Specified 1-DEA Class I 2-DEA Class II 3-DEA Class III 4-DEA Class IV 5-DEA Class V 6-DEA Class Blank"
+@*/;
+  string("\x01", maximum_length=10) qlifij /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC DEA Class List"
+ BizComment:"The DEA Class Code or DEA Class List identifies that the Sequence is restricted to a specific class code or list of DEA class codes. Values List: *-All DEA Class Codes 0-Not Specified 1-DEA Class I 2-DEA Class II 3-DEA Class III 4-DEA Class IV 5-DEA Class V 6-DEA Class Blank"
+@*/;
+  string("\x01", maximum_length=1) qle1i1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Packaging"
+ BizComment:"The Packaging Code or Packaging List identifies that the Sequence is restricted to a specific packaging code or list of packaging codes. Values List: *-All Packaging 0-Unit-of-Use,NotRepackaged 1-Unit-of-Use, Repackaged 2-Unit Dose, Not Repackaged 3-Unit Dose, Repackaged 4-Standard, Not Repackaged 5-Standard, Repackaged 6-All, Not Repackaged 7-All, Repackaged 8-Unit-of-Use, All 9-Unit Dose, All"
+@*/;
+  string("\x01", maximum_length=10) qligij /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Packaging List"
+ BizComment:"The Packaging Code or Packaging List identifies that the Sequence is restricted to a specific packaging code or list of packaging codes. Values List: *-All Packaging 0-Unit-of-Use,NotRepackaged 1-Unit-of-Use, Repackaged 2-Unit Dose, Not Repackaged 3-Unit Dose, Repackaged 4-Standard, Not Repackaged 5-Standard, Repackaged 6-All, Not Repackaged 7-All, Repackaged 8-Unit-of-Use, All 9-Unit Dose, All"
+@*/;
+  string("\x01", maximum_length=4) qle2i1 /*CHAR(4) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Dosage Form"
+ BizComment:"The Dosage Form Code or Dosage Form List identifies that the Sequence is restricted to a specific dosage form or list of dosage forms. Values List: AEPB-Arsl Pwdr-Breath Activate AERB-Aerosol, Breath Activated AERO-Aerosol AERP-Aerosol, powder AERS-Aerosol, solution BAR -Bar BEAD-Beads CAPS-Capsule, conventional CHEW-Tablet, chewable CONC-Concentrate CPCR-Capsule, controlled rlse CPDR-Capsule Delayed Release CPEP-Cap DR Particles CPSP-Capsule Sprinkle CP12-Cpsule SR 12 HR CP24-Cpsule SR 24 HR CREA-Cream CRYS-Crystals DCHE-Douche, not specified DCHP-Douche, powder DCHS-Douche, solution DEVI-Device (not specified) DISK-Disk DPRH-Diaphragm ELIX-Elixir EMUL-Emulsion ENEM-Enema EXTR-Fluid extract FILM-Film FLAK-Flakes FOAM-Foam GAS -Gas GEL -Gel (jelly) GRAN-Granules GREF-Granules Effervescent GUM -Gum IMPL-Implant INHA-Inhaler INJ -Injection (not specd) INST-Insert IUD -Intrauterine device KIT -Kit (multiple component) LEAV-Leaves LIQD-Liquid (Not spec'd) LOTN-Lotion LOZG-Lozenge LPOP-Lollipop LQCR-Liquid, cntrlld release MISC-Miscellaneous (Not specd) NEBU-Nebulization solution OCSY-Ocular System OIL -Oil OINT-Ointment PACK-Pack PADS-Pad PDEF-Powder Effervescent PLLT-Pellet POWD-Powder PSTE-Paste PTCH-Patch PTTW-Patch Biweekly PTWK-Patch Weekly PT24-Patch 24 HR PT72-Patch 72 HR PUDG-Pudding RING-Ring SHAM-Shampoo SHEE-Sheet SOLG-Gel Forming Solution SOLN-Solution SOLR-Solution, when reconst'd SPRT-Spirit STCK-Stick STRP-Strip SUBL-Tablet, sublingual SUPP-Suppository SUSP-Suspension SUSR-Suspension, when reconst SWAB-Swab SYRP-Syrup TABS-Tablet TAMP-Tampon TAPE-Tape TAR -Tar TBCR-Tablet, cntld release TBDP-Tablet Dispersible TBEC-Tablet Delayed Release TBEF-Tablet, effervescent TBSO-TABLET SOLUBLE TB12-TABLET SR 12 HR TB24-TABLET SR 24 HR TDSY-TRANSDERMAL SYSTEM TEST-DIAGNOSIS TEST(NOT SPCFD) TINC-TINCTURE TROC-TROCHE WAFR-WAFER WAX -WAX WHIP-WHIP"
+@*/;
+  string("\x01", maximum_length=10) qlihij /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Dosage Form List"
+ BizComment:"The Dosage Form Code or Dosage Form List identifies that the Sequence is restricted to a specific dosage form or list of dosage forms. Values List: AEPB-Arsl Pwdr-Breath Activate AERB-Aerosol, Breath Activated AERO-Aerosol AERP-Aerosol, powder AERS-Aerosol, solution BAR -Bar BEAD-Beads CAPS-Capsule, conventional CHEW-Tablet, chewable CONC-Concentrate CPCR-Capsule, controlled rlse CPDR-Capsule Delayed Release CPEP-Cap DR Particles CPSP-Capsule Sprinkle CP12-Cpsule SR 12 HR CP24-Cpsule SR 24 HR CREA-Cream CRYS-Crystals DCHE-Douche, not specified DCHP-Douche, powder DCHS-Douche, solution DEVI-Device (not specified) DISK-Disk DPRH-Diaphragm ELIX-Elixir EMUL-Emulsion ENEM-Enema EXTR-Fluid extract FILM-Film FLAK-Flakes FOAM-Foam GAS -Gas GEL -Gel (jelly) GRAN-Granules GREF-Granules Effervescent GUM -Gum IMPL-Implant INHA-Inhaler INJ -Injection (not specd) INST-Insert IUD -Intrauterine device KIT -Kit (multiple component) LEAV-Leaves LIQD-Liquid (Not spec'd) LOTN-Lotion LOZG-Lozenge LPOP-Lollipop LQCR-Liquid, cntrlld release MISC-Miscellaneous (Not specd) NEBU-Nebulization solution OCSY-Ocular System OIL -Oil OINT-Ointment PACK-Pack PADS-Pad PDEF-Powder Effervescent PLLT-Pellet POWD-Powder PSTE-Paste PTCH-Patch PTTW-Patch Biweekly PTWK-Patch Weekly PT24-Patch 24 HR PT72-Patch 72 HR PUDG-Pudding RING-Ring SHAM-Shampoo SHEE-Sheet SOLG-Gel Forming Solution SOLN-Solution SOLR-Solution, when reconst'd SPRT-Spirit STCK-Stick STRP-Strip SUBL-Tablet, sublingual SUPP-Suppository SUSP-Suspension SUSR-Suspension, when reconst SWAB-Swab SYRP-Syrup TABS-Tablet TAMP-Tampon TAPE-Tape TAR -Tar TBCR-Tablet, cntld release TBDP-Tablet Dispersible TBEC-Tablet Delayed Release TBEF-Tablet, effervescent TBSO-TABLET SOLUBLE TB12-TABLET SR 12 HR TB24-TABLET SR 24 HR TDSY-TRANSDERMAL SYSTEM TEST-DIAGNOSIS TEST(NOT SPCFD) TINC-TINCTURE TROC-TROCHE WAFR-WAFER WAX -WAX WHIP-WHIP"
+@*/;
+  string("\x01", maximum_length=13) qlkahd /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Price Table"
+ BizComment:"When all of the criteria of the Sequence are met, the claim/ingredient will reference the attached Price Table."
+@*/;
+  string("\x01", maximum_length=1) qlctie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source M"
+ BizComment:"PSC Multi-Source M - OPTIONAL Field is used to select the four choices - "M, N, O and Y" by placing an 'X' or a 'Z' right above the choice.  Multiple choices can be selected. Valid Values: X=All Products,incl Rpckgrs Z=Exclude Repackagers"
+@*/;
+  string("\x01", maximum_length=1) qlcuie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source N"
+ BizComment:"PSC Multi-Source N - OPTIONAL Field is used to select the four choices - "M, N, O and Y" by placing an 'X' or a 'Z'   . right above the choice.  Multiple choices can be selected. Valid Values: X=All Products,incl Rpckgrs Z=Exclude Repackagers"
+@*/;
+  string("\x01", maximum_length=1) qlcvie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source O"
+ BizComment:"PSC Multi-Source O - OPTIONAL Field is used to select the four choices - "M, N, O and Y" by placing an 'X' or a 'Z' right above the choice.  Multiple choices can be selected. Valid Values: X=All Products,incl Rpckgrs Z=Exclude Repackagers"
+@*/;
+  string("\x01", maximum_length=1) qlcwie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Multi-Source Y"
+ BizComment:"PSC Multi-Source Y - OPTIONAL Field is used to select the four choices - "M, N, O and Y" by placing an 'X' or a 'Z' right above the choice.  Multiple choices can be selected. Valid Values: X=All Products,incl Rpckgrs Z=Exclude Repackagers"
+@*/;
+  string("\x01", maximum_length=1) qlqxak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Status"
+ BizComment:"Status indicates if a price schedule criteria sequence is active or inactive.  Only active records are used in claims adjudication."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qldram /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Days Supply"
+ BizComment:"Day's Supply is a 3 digit numeric value 1-999"
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qldsam /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Quantity"
+ BizComment:"Quantity is a 3 digit numeric value 1-999"
+@*/;
+  string("\x01", maximum_length=1) qlrtam /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPSCP: PSC Max Mfg Qual Value"
+ BizComment:"Used to tell RxCLAIM where to find/calculate the Maximum manufactures value. Valid values: *BLANK = use standard RxCLAIM maximum manufacture selection logic (Default) C = Use the value defined in the Product Additional User Defined Field 3."
+@*/;
+  string("\x01", maximum_length=2) qlimiu /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1) qlisao /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) qlwihp /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) qlkihl /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) qlgmas /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) qlafav /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) qlrbaw /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) qluyvh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) qlrcaw /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) qlakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) qlc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPSCP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) qladtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPSCP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) qlalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) qladvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) qlbmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPSCP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) qlabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPSCP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) qlaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPSCP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

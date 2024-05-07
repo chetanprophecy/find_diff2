@@ -1,0 +1,213 @@
+record
+  string("\x01", maximum_length=9) als6cd /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Carrier ID"
+ BizComment:"The identification assigned to the carrier."
+@*/;
+  string("\x01", maximum_length=15) als7cd /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Account ID"
+ BizComment:"The identification assigned to the account."
+@*/;
+  string("\x01", maximum_length=15) als8cd /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Group ID"
+ BizComment:"The identification assigned to the group."
+@*/;
+  string("\x01", maximum_length=3) allmhb /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCMMFP: BCP System ID"
+ BizComment:"Identifies the "State" Medicaid of the MMF record. :P. Valid Values: :P. FLM - Florida Medicaid :P. NMM - New Mexico Medicaid :P. VAM - Virginia Medicaid"
+@*/;
+  decimal("\x01",0, maximum_length=16, sign_reserved) alp2nb /*DECIMAL(15) NOT NULL*/ /*@
+BizName:"RCMMFP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aloinb /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  string("\x01", maximum_length=1) als6st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Claim Status"
+ BizComment:"Code indicating the status of the claim. :P. Valid values are: :PC. C = Captured :PC. P = Paid :PC. R = Rejected :PC. X = Reversed/cancelled :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) alemda /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: Date Submitted"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) albbda /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: TCD Sbm Date of Service"
+ BizComment:"Date prescription dispensed."
+@*/;
+  string("\x01", maximum_length=1) als9t3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: Dispense Status"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) alpxhf /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: Provider NPI"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) alpzhf /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: Prescriber NPI"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) alntaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Non-Qualified"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) alo0is /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Generic Text 10"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=20) alo1is /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Generic Text 20"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aljual /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Generic Amt 9.2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) ale1ce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Generic Date 8"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) alosak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Ignore Transactn Flag"
+ BizComment:"Flag indicator to indicate whether other programs should ignore reading this record. :P. Y = Yes, Ignore Transaction :P. N = No, don't Ign Transaction"
+@*/;
+  string("\x01", maximum_length=1) alnuaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Status"
+ BizComment:"Indicates the status of the Paid Transaction. :P. P = Pending:  The Paid Transaction record is Pending and being withheld from being sent within an Encounter File. :P. S = Sent:  The Paid Transaction record has been sent within an Encounter File and is waiting for a response from the state Medicaid. :P. R = Received Response: A response has been received on the Paid Transaction by the state Medicaid Response File. :P. T = Transaction Resent:  A new MMF record for the RxCLAIM/Seq Number was created by an Encounter File. :P. W = Waiting to Resend:  This record is waiting for the Encounter File to generate a new MMF record for the RxCLAIM/Seq Number."
+@*/;
+  string("\x01", maximum_length=1) alhlho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Pending Rsn Code"
+ BizComment:"Reason Code for "Pending" Paid Status. :P. <BLANK> :P. E = Eligibility :P. P = Prescriber"
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) aletce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Date"
+ BizComment:"The date the Paid Transaction ID of the record was generated."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) alantz /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Time"
+ BizComment:"The time the Paid Transaction ID of the record was generated."
+@*/;
+  string("\x01", maximum_length=10) alopis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid File Name"
+ BizComment:"The File Name of the Encounter File that contains the record with the Paid Transaction ID."
+@*/;
+  string("\x01", maximum_length=10) aloqis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Trans ID"
+ BizComment:"The Paid Transaction ID of the record."
+@*/;
+  string("\x01", maximum_length=7) aloris /*CHAR(7) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Batch Num"
+ BizComment:"The Paid Batch Number of the record.  This is the ID that was generated from an Encounter File program for the Paid Transaction."
+@*/;
+  string("\x01", maximum_length=10) alosis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Accept FileID"
+ BizComment:"The File Name of the Encounter File that contains the record with the Paid Transaction ID."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) aleuce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Accepted Date"
+ BizComment:"The date of when the Response File was processed."
+@*/;
+  string("\x01", maximum_length=1) alotak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Client Resp Sts"
+ BizComment:"Paid Response from the state Medicaid Response File; this field indicates if the Paid Transaction was 'Rejected' or 'Accepted' by the state Medicaid. :P. *BLANK = Blank :P. A = Accepted :P. R = Rejected"
+@*/;
+  string("\x01", maximum_length=3) alhmho /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Paid Resp Reject Code"
+ BizComment:"Standard NCPDP Reject Codes"
+@*/;
+  string("\x01", maximum_length=1) alnvaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Status"
+ BizComment:"Indicates the status of the Reversed Transaction. :P. *BLANK = Blank :P. P = Pending:  The Reversed Transaction record is Pending and being withheld from being sent within an Encounter File. :P. S = Sent:  The Reversed Transaction record has been sent within an Encounter File and is waiting for a response from the state Medicaid. :P. R = Received Response: A response has been received on the Reversed Transaction by the state Medicaid Response File."
+@*/;
+  string("\x01", maximum_length=1) alhnho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Pending Reason Cd"
+ BizComment:"Reason Code for "Pending" Rev Status. :P. <BLANK> :P. P - Paid Claim Pending :P. N - Paid Claim not Accepted"
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) alevce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Date"
+ BizComment:"The date the Reversed Transaction ID of the record was generated."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) alaotz /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Time"
+ BizComment:"The time the Reversed Transaction ID of the record was generated."
+@*/;
+  string("\x01", maximum_length=10) alotis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev File Name"
+ BizComment:"The File Name of the Encounter File that contains the record with the Reversed Transaction ID."
+@*/;
+  string("\x01", maximum_length=10) alouis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Trans ID"
+ BizComment:"The Reversed Transaction ID of the record."
+@*/;
+  string("\x01", maximum_length=7) alovis /*CHAR(7) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Batch Num"
+ BizComment:"The Reversed Batch Number of the record.  This is the ID that was generated from an Encounter File program for the Reversed Transaction."
+@*/;
+  string("\x01", maximum_length=10) alowis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Accept File ID"
+ BizComment:"The File Name of the Encounter File that contains the record with the Reversed Transaction ID."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) alewce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Accepted Date"
+ BizComment:"The date of when the Response File was processed."
+@*/;
+  string("\x01", maximum_length=1) alouak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Client Resp Sts"
+ BizComment:"Reversed Response from the state Medicaid Response File; this field indicates if the Reversed Transaction was 'Rejected' or 'Accepted' by the state Medicaid. :P. *BLANK = Blank :P. A = Accepted :P. R = Rejected"
+@*/;
+  string("\x01", maximum_length=3) alhoho /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCMMFP: MMF Rev Resp Reject Code"
+ BizComment:"Standard NCPDP Reject Codes"
+@*/;
+  string("\x01", maximum_length=20) alb8iw /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=20) alygar /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=7) alaove /*CHAR(7) NOT NULL*/;
+  string("\x01", maximum_length=20) alb9iw /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=20) alcaiw /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=7) alapve /*CHAR(7) NOT NULL*/;
+  string("\x01", maximum_length=12) alienb /*CHAR(12) NOT NULL*/;
+  string("\x01", maximum_length=18) all1hi /*CHAR(18) NOT NULL*/;
+  string("\x01", maximum_length=20) alswvf /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=24) alsxvf /*CHAR(24) NOT NULL*/;
+  string("\x01", maximum_length=3) alsyvf /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=3) alszvf /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=3) als0vf /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=3) als1vf /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=40) als2vf /*CHAR(40) NOT NULL*/;
+  string("\x01", maximum_length=40) als3vf /*CHAR(40) NOT NULL*/;
+  string("\x01", maximum_length=40) als4vf /*CHAR(40) NOT NULL*/;
+  string("\x01", maximum_length=10) alakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) alc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMMFP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aladtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMMFP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) alalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) aladvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) albmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMMFP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) alabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMMFP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) alaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMMFP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

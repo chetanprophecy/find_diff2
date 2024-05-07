@@ -1,0 +1,308 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_hash_lkup_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Gaurav Mirje            Initial version, Created record type for reference files (used as lookup)
+ *  2016/09/13  Gaurav Mirje            Added lookup types for mbr_elig, drug, product, contract_pbp 
+ *  2016/10/01  Paul Thompson           Fixed type names (with backwards compatibility for now)
+ *                                      Renamed file from cli_lkp_types.dml -> cli_hash_lkup_types.dml (with backwards compatibility...)
+ *  2016/10/07 Chinmay Sahoo            Added record types for stage two file set.
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_refdata_types.dml";
+
+type src_env_hash_lkup_t =
+record
+  src_env_t                        src_env;               /* src_env_t type record format             */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type carrier_hash_lkup_t =
+record  
+  carrier_t                        carrier;               /* carrier_t type record format             */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type carrier_acct_hash_lkup_t =
+record  
+  carrier_acct_t                   carrier_acct;          /* carrier_acct_t type record format        */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type cag_hash_lkup_t =
+record
+  cag_t                            cag;                   /* cag_t type record format                 */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type clt_hash_lkup_t =
+record
+  clt_t                            clt;                   /* clt_t type record format                 */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+type client_hash_lkup_t = clt_hash_lkup_t;
+
+type contract_pbp_hash_lkup_t =
+record
+  contract_pbp_t                   contract_pbp;          /* contract_pbp_t type record format        */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type pharmacy_hash_lkup_t =
+record 
+  pharmacy_t                       pharmacy;              /* pharmacy_t type record format            */ 
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type plan_hash_lkup_t =
+record
+  plan_t                           plan;                  /* plan_t type record format                */     
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type prescriber_hash_lkup_t =
+record
+  prescriber_t                     prescriber;            /* prescriber_t type record format          */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type ahfs_hash_lkup_t =
+record
+  ahfs_t                           ahfs;                  /* ahfs_t type record format                */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type claim_status_hash_lkup_t =
+record 
+  claim_stat_t                     claim_stat;            /* claim_stat_t type record format          */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type compound_hash_lkup_t =
+record
+  compound_t                       compound;              /* compound_t type record format            */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type days_of_supply_hash_lkup_t =
+record
+  days_of_supply_t                 days_of_supply;        /* days_of_supply_t type record format      */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type drug_hash_lkup_t =
+record
+  drug_t                           drug;                  /* drug_t type record format                */           
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type drug_maintenance_hash_lkup_t =
+record
+  drug_maintenance_t               drug_maintenance;      /* drug_maintenance_t type record format    */                         
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type drug_otc_indicator_hash_lkup_t =
+record
+  drug_otc_indicator_t             drug_otc_indicator;    /* drug_otc_indicator_t type record format  */ 
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type gender_hash_lkup_t =
+record
+  gender_t                         gender;                /* gender_t type record format              */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type member_type_hash_lkup_t =
+record
+  member_type_t                    member_type;           /* member_type_t type record format         */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+
+type prescriber_id_qlfr_hash_lkup_t =
+record
+  prescriber_id_qlfr_t             prescriber_id_qlfr;    /* prescriber_id_qlfr_t type record format  */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type plan_qualifier_hash_lkup_t =
+record
+  plan_qlfr_t                      plan_qualifier;        /* plan_qlfr_t type record format           */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type plan_type_hash_lkup_t =
+record
+  plan_type_t                      plan_type;             /* plan_type_t type record format           */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type prescriber_specialty_hash_lkup_t =
+record
+  prescriber_spclty_t              prescriber_specialty;  /* prescriber_spclty_t type record format   */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type prod_qlfr_hash_lkup_t =
+record
+  product_qlfr_t                   prod_qlfr;             /* product_qlfr_t type record format        */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */ 
+end;
+
+type product_hash_lkup_t =
+record
+  product_t                        product;               /* product_t type record format             */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */ 
+end;
+
+type therapeutic_class_hash_lkup_t =
+record
+  thrpc_class_t                    therapeutic_class;     /* thrpc_class_t type record format         */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type gpi_hash_lkup_t =
+record
+  gpi_t                            gpi;                   /* gpi_t type record format                 */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type mbr_hash_lkup_t =
+record
+  mbr_t                            mbr;                   /* mbr_t type record format                 */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type member_eligibility_hash_lkup_t =
+record
+  mbr_elig_t                       mbr_elig;              /* mbr_elig_t type record format            */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type prescriber_alias_hash_lkup_t =
+record
+  prescriber_alias_t               prescriber_alias;      /* prescriber_t type record format          */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type cpt_code_hash_lkup_t =
+record
+  med_proc_cd_cfg_t                cpt_code;              /* med_proc_cd_cfg_t type record format     */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type cpt_mod_code_hash_lkup_t =
+record
+  med_proc_mod_cd_cfg_t            cpt_mod_code;          /* med_proc_mod_cd_cfg_t type record format */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+  
+type snomed_cd_hash_lkup_t =
+record
+  snomed_cd_cfg_t                  snomed_cd;             /* med_proc_mod_cd_cfg_t type record format */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+   
+type toc_hash_lkup_t =
+record
+  transition_in_care_cfg_t         toc;                   /* med_proc_mod_cd_cfg_t type record format */
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type lexis_nexis_prescriber_hash_lkup_t =
+record
+  lexis_nexis_prescriber_t  lexis_nexis_prescriber;
+  hash_key_t                dea_key_hash;
+  hash_key_t                npi_key_hash;
+  hash_key_t                st_lic_key_hash;
+  hash_key_t                ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type lexis_nexis_prescriber_addr_lkup_t=
+record
+  hash_key_t                dea_key_hash;
+  hash_key_t                npi_key_hash;
+  hash_key_t                st_lic_key_hash;
+  bc_lookup_address_type    addr;
+end;
+
+type rcprlp_hash_lkup_t=
+record
+  rcprlp_t                         rcprlp;
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type rcmsip_hash_lkup_t=
+record
+  rcmsip_t                         rcmsip;
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+
+type icd9_hash_lkup_t =
+record
+  rcicdp_t                         rcicdp;
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+type rcicdp_hash_lkup_t = icd9_hash_lkup_t;
+
+type icd10_hash_lkup_t =
+record
+  rci10p_t                         rci10p;
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+type rci10p_hash_lkup_t = icd10_hash_lkup_t;
+
+type grp_elig_hash_lkup_t =
+record
+  rcgelp_t                         rcgelp;
+  hash_key_t                       cag_hash;
+  hash_key_t                       ntrl_key_hash;         /* void(16) hash value of natural keys      */
+  hash_key_t                       funct_fld_hash;        /* void(16) hash value of functional fields */
+end;
+type rcgelp_hash_lkup_t = grp_elig_hash_lkup_t;

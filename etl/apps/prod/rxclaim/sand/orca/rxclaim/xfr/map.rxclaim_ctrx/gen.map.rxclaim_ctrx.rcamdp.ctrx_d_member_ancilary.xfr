@@ -1,0 +1,206 @@
+/*   Do not edit. Generated file - BRE 4.0.2.0;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcamdp_to_the_ctrx_d_member_ancilary_ILM_documentation(in)=
+begin
+
+out0.d_mbr_ancil.account_id::depends_on(
+         in.icaccd
+         );
+
+
+out0.d_member.employer_group_id::depends_on(
+         in.icadcd
+         );
+
+
+out0.d_mbr_ancil.carrier_id::depends_on(
+         in.icaacd
+         );
+
+
+out0.d_member.carrier_id::depends_on(
+         in.icaacd
+         );
+
+
+out0.d_member.mbr_id::depends_on(
+         in.icabcd
+         );
+
+
+out0.d_cag.account_id::depends_on(
+         in.icaccd
+         );
+
+
+out0.d_mbr_ancil.curr_ind::depends_on(
+         in.ica4ck
+         );
+
+
+out0.d_mbr_ancil.eff_thru_dt::depends_on(
+         in.icrpdt
+         );
+
+
+out0.d_mbr_ancil.employer_group_id::depends_on(
+         in.icadcd
+         );
+
+
+out0.d_mbr_ancil.eff_frm_dt::depends_on(
+         in.icrodt
+         );
+
+
+out0.d_mbr_ancil.fld_value::depends_on(
+         in.icvst3
+         );
+
+
+out0.d_cag.carrier_id::depends_on(
+         in.icaacd
+         );
+
+
+out0.d_mbr_ancil.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.d_mbr_ancil.lob::depends_on(
+         in.icaacd,
+         in.icvst3,
+         lookup("mbr_anclry_ref_lob_fld_strt_pos",'keystr','keystr').fld_max_len   ,
+         lookup("mbr_anclry_ref_lob_fld_strt_pos",'keystr','keystr').fld_strt_pos  
+         );
+
+
+out0.d_member.account_id::depends_on(
+         in.icaccd
+         );
+
+
+out0.d_cag.employer_group_id::depends_on(
+         in.icadcd
+         );
+
+
+out0.d_mbr_ancil.mbr_id::depends_on(
+         in.icabcd
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcamdp_to_the_ctrx_d_member_ancilary_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_mbr_ancil.account_id,'d_mbr_ancil.account_id',1,0]
+     [out0.d_mbr_ancil.cag_sk,'d_mbr_ancil.cag_sk',1,0]
+     [out0.d_member.employer_group_id,'d_member.employer_group_id',1,0]
+     [out0.d_mbr_ancil.carrier_id,'d_mbr_ancil.carrier_id',1,0]
+     [out0.d_member.carrier_id,'d_member.carrier_id',1,0]
+     [out0.d_member.mbr_id,'d_member.mbr_id',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.d_mbr_ancil.curr_ind,'d_mbr_ancil.curr_ind',1,0]
+     [out0.d_mbr_ancil.eff_thru_dt,'d_mbr_ancil.eff_thru_dt',1,0]
+     [out0.d_mbr_ancil.employer_group_id,'d_mbr_ancil.employer_group_id',1,0]
+     [out0.d_mbr_ancil.eff_frm_dt,'d_mbr_ancil.eff_frm_dt',1,0]
+     [out0.d_mbr_ancil.fld_value,'d_mbr_ancil.fld_value',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.d_mbr_ancil.src_env_sk,'d_mbr_ancil.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_mbr_ancil.mbr_sk,'d_mbr_ancil.mbr_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mbr_ancil.lob,'d_mbr_ancil.lob',1,0]
+     [out0.d_member.account_id,'d_member.account_id',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.d_mbr_ancil.mbr_id,'d_mbr_ancil.mbr_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.icaccd,'icaccd',3,3]
+     [in0.icadcd,'icadcd',3,3]
+     [in0.ica4ck,'ica4ck',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.icabcd,'icabcd',2,2]
+     [in0.icrpdt,'icrpdt',2,1]
+     [in0.icaacd,'icaacd',6,4]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.icvst3,'icvst3',4,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.icrodt,'icrodt',1,1]
+     ['lookup("mbr_anclry_ref_lob_fld_strt_pos").fld_max_len','fld_max_len',1,1]
+     ['lookup("mbr_anclry_ref_lob_fld_strt_pos").fld_strt_pos','fld_strt_pos',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_mbr_ancil_mbr_sk = -1;
+let decimal("\x01",0) d_mbr_ancil_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_ancil_mbr_id = fail_if_error(in0.icabcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_ancil_carrier_id = fail_if_error(in0.icaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_ancil_account_id = fail_if_error(in0.icaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_ancil_employer_group_id = fail_if_error(in0.icadcd);
+let date("YYYYMMDD")("\x01") d_mbr_ancil_eff_frm_dt;
+let date("YYYYMMDD")("\x01") d_mbr_ancil_eff_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=256) d_mbr_ancil_fld_value = fail_if_error(string_substring(in0.icvst3,2,string_length(in0.icvst3)-1));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mbr_ancil_curr_ind = fail_if_error(if (in0.ica4ck == 'A' ) 'Y' else 'N');
+let decimal("\x01",0) d_mbr_ancil_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_mbr_ancil_lob;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.icaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.icaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.icadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_carrier_id = fail_if_error(in0.icaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_member_account_id = fail_if_error(in0.icaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_employer_group_id = fail_if_error(in0.icadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_member_mbr_id = fail_if_error(in0.icabcd);
+
+
+
+/*   Default value   */
+d_mbr_ancil_eff_thru_dt=fail_if_error(if( date_check(in0.icrpdt) == (date("YYYYMMDD"))"19000101" )  high_date() else date_check(in0.icrpdt));
+
+/*   Default value   */
+d_mbr_ancil_eff_frm_dt=fail_if_error(date_check(in0.icrodt));
+
+/*   Default value   */
+d_mbr_ancil_lob=fail_if_error((if ((is_defined(in0.icvst3) && (lookup_match("mbr_anclry_ref_lob_fld_strt_pos",in0.icaacd,"LOB")==1)))
+   string_substring(in0.icvst3,(lookup("mbr_anclry_ref_lob_fld_strt_pos",in0.icaacd,"LOB").fld_strt_pos+1),lookup("mbr_anclry_ref_lob_fld_strt_pos",in0.icaacd,"LOB").fld_max_len)
+ else
+   ""));
+
+  out0.d_mbr_ancil.mbr_sk::d_mbr_ancil_mbr_sk;
+  out0.d_mbr_ancil.cag_sk::d_mbr_ancil_cag_sk;
+  out0.d_mbr_ancil.mbr_id::d_mbr_ancil_mbr_id;
+  out0.d_mbr_ancil.carrier_id::d_mbr_ancil_carrier_id;
+  out0.d_mbr_ancil.account_id::d_mbr_ancil_account_id;
+  out0.d_mbr_ancil.employer_group_id::d_mbr_ancil_employer_group_id;
+  out0.d_mbr_ancil.eff_frm_dt::d_mbr_ancil_eff_frm_dt;
+  out0.d_mbr_ancil.eff_thru_dt::d_mbr_ancil_eff_thru_dt;
+  out0.d_mbr_ancil.fld_value::d_mbr_ancil_fld_value;
+  out0.d_mbr_ancil.curr_ind::d_mbr_ancil_curr_ind;
+  out0.d_mbr_ancil.src_env_sk::d_mbr_ancil_src_env_sk;
+  out0.d_mbr_ancil.lob::d_mbr_ancil_lob;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_member.carrier_id::d_member_carrier_id;
+  out0.d_member.account_id::d_member_account_id;
+  out0.d_member.employer_group_id::d_member_employer_group_id;
+  out0.d_member.mbr_id::d_member_mbr_id;
+  out0.*::in0.*;
+end;

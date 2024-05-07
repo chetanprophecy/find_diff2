@@ -1,0 +1,51 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID            :: "003";
+  out.SRC_ORDERS_ID         :: in.ORDER_NUMBER;
+  out.YR_ORDER_RECVD        :: string_substring((string(""))in.ORDER_RECEIVED_DATE,1,4);//in.Extract Year from  ORDER_RECEIVED_DATE in the format YYYY;
+  out.MON_ORDER_RECVD       :: string_substring((string(""))in.ORDER_RECEIVED_DATE,5,2);//Extract month from  ORDER_RECEIVED_DATE  in the format MM;
+  out.YR_MON_ORDER_RECVD    :: string_substring((string(""))in.ORDER_RECEIVED_DATE,7,2);//Extract Year and Month from  ORDER_RECEIVED_DATE in the format YYYYMM;
+  out.DT_ORDER_RECVD        :: in.ORDER_RECEIVED_DATE;
+  out.YR_ORDER_ENTRD        :: string_substring((string(""))in.ORDER_ENTRY_DATE,1,4);//Extract Year from  ORDER_ENTRY_DATE  in the format YYYY;
+  out.MON_ORDER_ENTRD       :: string_substring((string(""))in.ORDER_ENTRY_DATE,5,2);//Extract month from  ORDER_ENTRY_DATE in the format MM;
+  out.YR_MON_ORDER_ENTRD    :: string_substring((string(""))in.ORDER_ENTRY_DATE,1,6);//Extract Year and Month from  ORDER_ENTRY_DATE in the format YYYYMM;
+  out.DT_ORDER_ENTRD        :: in.ORDER_ENTRY_DATE;//ORDER_ENTRY_DATE  in the format YYYYMMDD;
+  out.TM_ORDER_ENTRD        :: string_substring((string(""))in.ORDER_ENTRY_TIME,1,6);//in.ORDER_ENTRY_TIME  in format HHMMSS;
+  out.YR_ORDER_SHIPPED      :: string_substring((string(""))in.ORDER_SHIP_DATE,1,4);//Extract Year from  ORDER_SHIP_DATE  in the format YYYY;
+  out.MON_ORDER_SHIPPED     :: string_substring((string(""))in.ORDER_SHIP_DATE,5,2);//Extract month from  ORDER_SHIP_DATE in the format MM;
+  out.YR_MON_ORDER_SHIPPED  :: string_substring((string(""))in.ORDER_SHIP_DATE,1,6);//Extract Year and Month from  ORDER_SHIP_DATE in the format YYYYMM;
+  out.DT_ORDER_SHIPPED      :: in.ORDER_SHIP_DATE;//ORDER_SHIP_DATE in the format YYYYMMDD;
+  out.TM_ORDER_SHIPPED      :: string_substring((string(""))in.ORDER_SHIP_TIME,1,6);//in.ORDER_SHIP_TIME  in format HHMMSS;
+  out.SHIP_METHOD           :: in.SHIP_METHOD;
+  out.SHIP_TRACK_NBR        :: in.SHIPMENT_TRACKING_NUMBER;
+  out.MANFST_TRACK_NBR      :: in.MANIFEST_TRACKING_NUMBER;
+  out.SHIP_TO_NAME          :: in.SHIPPING_NAME;
+  out.SHIP_ADDR1            :: in.SHIPPING_ADDRESS1;
+  out.SHIP_ADDR2            :: in.SHIPPING_ADDRESS2;
+  out.SHIP_CITY             :: in.SHIPPING_CITY;
+  out.SHIP_STATE            :: in.SHIPPING_STATE;
+  out.SHIP_ZIP              :: in.SHIPPING_ZIP;
+  out.ACT_SHIP_COST         :: in.SHIPPING_HANDLING_CHARGES;
+  out.PAT_SHIP_COST         :: in.FRIEGHT_COST;
+  out.ORDER_DAYS            :: in.ELAPSED_DAYS;
+  out.ORDER_HRS             :: in.ELAPSED_HOURS;
+  out.ORDER_MIN             :: in.ELAPSED_MINUTES;
+  out.EXCEPT_FLAG           :: in.ORDER_EXCEPTION_FLAG;
+  out.EXCEPT_DAYS           :: in.EXCEPTION_DAYS;
+  out.EXCEPT_HRS            :: in.EXCEPTION_HOURS;
+  out.EXCEPT_MIN            :: in.EXCEPTION_MINUTES;
+  out.CLEAN_DAYS            :: in.CLEAN_RECORD_DAYS;
+  out.CLEAN_HRS             :: in.CLEAN_RECORD_HOURS;
+  out.CLEAN_MIN             :: in.CLEAN_RECORD_MINUTES;/*
+  out.LOAD_DT               :: "";//ORDERS.LOAD_DT (Lokkup Query 1) in format YYYYMMDD;
+  out.LOAD_TIME             :: "";//ORDERS.LOAD_TM (Lokkup Query 1) in format HHMMSS;
+  out.REC_PROCESS           :: "";//if ORDER.LOAD_DT IS NULL or 0  then 'Y' else 'N';*/
+/*  out.rxt_src_envrt_id      :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm      :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm       :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid        :: 'app_orca_rxclaim';
+  out.rxt_create_run_id     :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd       :: '';*/
+  out.*                     :: in.*;
+end

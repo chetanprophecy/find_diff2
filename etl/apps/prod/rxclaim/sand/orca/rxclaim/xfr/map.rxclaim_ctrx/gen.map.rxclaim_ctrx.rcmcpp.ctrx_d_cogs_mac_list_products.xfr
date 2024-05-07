@@ -1,0 +1,131 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59ccd1a5_42a2_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.mac_prdcts.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.mac_prdcts.chg_dt_ref,[transform],in0.klbmdt]
+  [out0.mac_prdcts.add_dt,[transform],in0.klc2dt]
+  [out0.mac_prdcts.mac_ndc_prod_cd,[passthrough],in0.klvrc2]
+  [out0.mac_prdcts.ndc11,[transform],in0.klvsc2,
+     in0.klvrc2,
+     in0.klvqc2]
+  [out0.mac_prdcts.mac_ndc_pkg_cd,[passthrough],in0.klvsc2]
+  [out0.mac_prdcts.mac_gppc,[passthrough],in0.klvoc2]
+  [out0.mac_prdcts.chg_tm,[transform],in0.klabtm]
+  [out0.mac_prdcts.mac_list_prod_sk,[transform],]
+  [out0.mac_prdcts.chg_user_nm,[passthrough],in0.kladvn]
+  [out0.mac_prdcts.car_carrier_id,[passthrough],in0.klaacd]
+  [out0.mac_prdcts.chg_dt,[transform],in0.klbmdt]
+  [out0.mac_prdcts.mac_genric_nm,[passthrough],in0.klvpc2]
+  [out0.mac_prdcts.mac_gpi,[passthrough],in0.klvnc2]
+  [out0.mac_prdcts.mac_list,[passthrough],in0.klj5s2]
+  [out0.mac_prdcts.chg_pgm_nm,[passthrough],in0.klaevn]
+  [out0.mac_prdcts.mac_ndc_labeler_id,[passthrough],in0.klvqc2]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mac_prdcts.src_env_sk,'mac_prdcts.src_env_sk',1,0]
+     [out0.mac_prdcts.chg_dt_ref,'mac_prdcts.chg_dt_ref',1,0]
+     [out0.mac_prdcts.add_dt,'mac_prdcts.add_dt',1,0]
+     [out0.mac_prdcts.mac_ndc_prod_cd,'mac_prdcts.mac_ndc_prod_cd',1,0]
+     [out0.mac_prdcts.ndc11,'mac_prdcts.ndc11',1,0]
+     [out0.mac_prdcts.mac_ndc_pkg_cd,'mac_prdcts.mac_ndc_pkg_cd',1,0]
+     [out0.mac_prdcts.mac_gppc,'mac_prdcts.mac_gppc',1,0]
+     [out0.mac_prdcts.chg_tm,'mac_prdcts.chg_tm',1,0]
+     [out0.mac_prdcts.mac_list_prod_sk,'mac_prdcts.mac_list_prod_sk',1,0]
+     [out0.mac_prdcts.chg_user_nm,'mac_prdcts.chg_user_nm',1,0]
+     [out0.mac_prdcts.car_carrier_id,'mac_prdcts.car_carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.mac_prdcts.chg_dt,'mac_prdcts.chg_dt',1,0]
+     [out0.mac_prdcts.mac_genric_nm,'mac_prdcts.mac_genric_nm',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.mac_prdcts.mac_gpi,'mac_prdcts.mac_gpi',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mac_prdcts.mac_list,'mac_prdcts.mac_list',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.mac_prdcts.chg_pgm_nm,'mac_prdcts.chg_pgm_nm',1,0]
+     [out0.mac_prdcts.mac_ndc_labeler_id,'mac_prdcts.mac_ndc_labeler_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.klaevn,'klaevn',1,1]
+     [in0.klbmdt,'klbmdt',5,2]
+     [in0.klc2dt,'klc2dt',1,1]
+     [in0.kladvn,'kladvn',1,1]
+     [in0.klabtm,'klabtm',1,1]
+     [in0.klvoc2,'klvoc2',1,1]
+     [in0.klvqc2,'klvqc2',2,2]
+     [in0.klvnc2,'klvnc2',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.klaacd,'klaacd',1,1]
+     [in0.klvrc2,'klvrc2',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.klj5s2,'klj5s2',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.klvpc2,'klvpc2',1,1]
+     [in0.klvsc2,'klvsc2',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) mac_prdcts_mac_list_prod_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) mac_prdcts_car_carrier_id = fail_if_error(in0.klaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mac_prdcts_mac_list = fail_if_error(in0.klj5s2);
+let string("\x01",charset="iso-8859-15", maximum_length=14) mac_prdcts_mac_gpi = fail_if_error(in0.klvnc2);
+let string("\x01",charset="iso-8859-15", maximum_length=8) mac_prdcts_mac_gppc = fail_if_error(in0.klvoc2);
+let string("\x01",charset="iso-8859-15", maximum_length=5) mac_prdcts_mac_ndc_labeler_id = fail_if_error(in0.klvqc2);
+let string("\x01",charset="iso-8859-15", maximum_length=4) mac_prdcts_mac_ndc_prod_cd = fail_if_error(in0.klvrc2);
+let string("\x01",charset="iso-8859-15", maximum_length=2) mac_prdcts_mac_ndc_pkg_cd = fail_if_error(in0.klvsc2);
+let string("\x01",charset="iso-8859-15", maximum_length=11) mac_prdcts_ndc11 = fail_if_error(string_concat(str1=in0.klvqc2 , str2= in0.klvrc2, str3= in0.klvsc2));
+let string("\x01",charset="iso-8859-15", maximum_length=60) mac_prdcts_mac_genric_nm = fail_if_error(in0.klvpc2);
+let date("YYYYMMDD")("\x01") mac_prdcts_add_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) mac_prdcts_chg_user_nm = fail_if_error(in0.kladvn);
+let date("YYYYMMDD")("\x01") mac_prdcts_chg_dt;
+let decimal("\x01",0) mac_prdcts_chg_dt_ref = fail_if_error((if (sql_and((string_length(string_lrtrim(in0.klbmdt)) member [vector 8]),is_valid(((date("YYYYMMDD"))string_lrtrim(in0.klbmdt)))))
+   in0.klbmdt
+ else
+   ((decimal(""))(in0.klbmdt+19000000))));
+let datetime("HH24:MI:SS.NNNNNN")("\x01") mac_prdcts_chg_tm;
+let string("\x01",charset="iso-8859-15", maximum_length=10) mac_prdcts_chg_pgm_nm = fail_if_error(in0.klaevn);
+let decimal("\x01",0) mac_prdcts_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+mac_prdcts_add_dt=fail_if_error(date_check(in0.klc2dt));
+
+/*   Default value   */
+mac_prdcts_chg_tm=fail_if_error(time_check(in0.klabtm));
+
+/*   Default value   */
+mac_prdcts_chg_dt=fail_if_error(date_check(in0.klbmdt));
+
+  out0.mac_prdcts.mac_list_prod_sk::mac_prdcts_mac_list_prod_sk;
+  out0.mac_prdcts.car_carrier_id::mac_prdcts_car_carrier_id;
+  out0.mac_prdcts.mac_list::mac_prdcts_mac_list;
+  out0.mac_prdcts.mac_gpi::mac_prdcts_mac_gpi;
+  out0.mac_prdcts.mac_gppc::mac_prdcts_mac_gppc;
+  out0.mac_prdcts.mac_ndc_labeler_id::mac_prdcts_mac_ndc_labeler_id;
+  out0.mac_prdcts.mac_ndc_prod_cd::mac_prdcts_mac_ndc_prod_cd;
+  out0.mac_prdcts.mac_ndc_pkg_cd::mac_prdcts_mac_ndc_pkg_cd;
+  out0.mac_prdcts.ndc11::mac_prdcts_ndc11;
+  out0.mac_prdcts.mac_genric_nm::mac_prdcts_mac_genric_nm;
+  out0.mac_prdcts.add_dt::mac_prdcts_add_dt;
+  out0.mac_prdcts.chg_user_nm::mac_prdcts_chg_user_nm;
+  out0.mac_prdcts.chg_dt::mac_prdcts_chg_dt;
+  out0.mac_prdcts.chg_dt_ref::mac_prdcts_chg_dt_ref;
+  out0.mac_prdcts.chg_tm::mac_prdcts_chg_tm;
+  out0.mac_prdcts.chg_pgm_nm::mac_prdcts_chg_pgm_nm;
+  out0.mac_prdcts.src_env_sk::mac_prdcts_src_env_sk;
+  out0.*::in0.*;
+
+end;

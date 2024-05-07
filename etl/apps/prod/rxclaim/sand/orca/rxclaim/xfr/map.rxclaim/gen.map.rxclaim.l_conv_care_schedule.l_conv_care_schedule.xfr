@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a7abf55_d43f_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cca_schd.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cca_schd.schedule_type,[passthrough],in0.schedule_type]
+  [out0.cca_schd.cpt_cd,[passthrough],in0.cpt_code]
+  [out0.cca_schd.ntwk_prov,[passthrough],in0.network_provider]
+  [out0.cca_schd.cca_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cca_schd.src_env_sk,'cca_schd.src_env_sk',1,0]
+     [out0.cca_schd.schedule_type,'cca_schd.schedule_type',1,0]
+     [out0.cca_schd.cpt_cd,'cca_schd.cpt_cd',1,0]
+     [out0.cca_schd.ntwk_prov,'cca_schd.ntwk_prov',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cca_schd.cca_sk,'cca_schd.cca_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.cpt_code,'cpt_code',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.schedule_type,'schedule_type',1,1]
+     [in0.network_provider,'network_provider',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cca_schd_cca_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) cca_schd_cpt_cd = fail_if_error(in0.cpt_code);
+let string("\x01",charset="iso-8859-15", maximum_length=50) cca_schd_schedule_type = fail_if_error(in0.schedule_type);
+let string("\x01",charset="iso-8859-15", maximum_length=50) cca_schd_ntwk_prov = fail_if_error(in0.network_provider);
+let decimal("\x01",0) cca_schd_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.cca_schd.cca_sk::cca_schd_cca_sk;
+  out0.cca_schd.cpt_cd::cca_schd_cpt_cd;
+  out0.cca_schd.schedule_type::cca_schd_schedule_type;
+  out0.cca_schd.ntwk_prov::cca_schd_ntwk_prov;
+  out0.cca_schd.src_env_sk::cca_schd_src_env_sk;
+  out0.*::in0.*;
+
+end;

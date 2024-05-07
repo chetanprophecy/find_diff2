@@ -1,0 +1,25 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_common.d_member_eligibility
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_member
+JOIN_TYPE||||Inner Join with ICFF Lookup
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{carrier_id;account_id;employer_group_id;mbr_id}
+DO_CLEAN||||1
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+NON_DRIVER_1_OUTPUT_FIELDS||||carrier_id,account_id,employer_group_id,mbr_id,mbr_sex,mbr_dt_of_brth,mbr_relshp_cd,mbr_sk
+TARGET_NAME||||ids_common.d_mem_elig_d_mbr
+DRIVER_FILE_TYPE||||Clean
+NON_DRIVER_2_SOURCE_NAME||||ids_common.d_group_eligibility
+ENABLE_JOIN_LEVEL_2||||True
+NON_DRIVER_2_FILTER_EXPR||||(!is_null(gel_status) && !is_null(gel_eff_dt) && !is_null(gel_thru_dt)) \r\n&& gel_status == 'A' \r\n&& (gel_eff_dt <= $"NON_DRIVER_2_END_DATE" && gel_thru_dt >= $"NON_DRIVER_2_START_DATE")
+JOIN_LEVEL_2_KEY||||{cag_sk}
+JOIN_LEVEL_2_TYPE||||Inner Join
+JOIN_LEVEL_2_XFR||||out::join(in0, in1)=\r\nbegin\r\n  /*pln_cd and pln_eff_dt is pulled on the first priority from d_member_eligibility and from d_group eligibility on the second priority*/\r\n  out.pln_cd :: if(!is_null(in0.pln_cd) && !is_blank(string_lrtrim(in0.pln_cd))) string_lrtrim(in0.pln_cd)\r\n                else string_lrtrim(in1.pln_cd); \r\n  out.pln_eff_dt :: if(!is_null(in0.plan_eff_dt) && !is_blank(in0.plan_eff_dt)) in0.plan_eff_dt\r\n                else in1.pln_eff_dt;\r\n  out.* :1: in0.*;\r\n  out.* :2: in1.*;\r\nend;
+NON_DRIVER_2_DEDUP_ON_JOIN_KEY||||True
+DRIVER_EXTRA_SORT_KEY||||{dxf_hk_part2;seq_nbr}
+RUN_ID||||0
+DRIVER_DEDUP_ON_JOIN_KEY||||True
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\n  out.mbr_sk :: in.dxf_sk;\r\n  out.* :: in.*;\r\nend
+NON_DRIVER_2_EXTRA_SORT_KEY||||{gel_seq_nbr}
+OVERRIDE_JOIN_KEY||||{carrier_id;account_id;employer_group_id;mbr_id}
+DRIVER_XFR|c|||let date('YYYYMMDD') driver_start_date = "${DRIVER_START_DATE}";\r\nlet date('YYYYMMDD') driver_end_date = "${DRIVER_END_DATE}";\r\n\r\nout :: reformat(in) =\r\nbegin\r\n  out.month_start_dt :: driver_start_date;\r\n  out.month_end_dt :: driver_end_date;\r\n  out.* :: in.*;\r\nend;

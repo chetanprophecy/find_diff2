@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This job will send intermediate status of CPP jobs" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="212FA860-B68A-E375-9A2C-230FB9673730" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="CPP Intermediate Job Status" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PLAN}/cpp_cc_stat.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments>
+      <argument isExpandable="false" value="-CC_SYSTEM"/>
+      <argument isExpandable="false" value="CLINICAL2"/>
+    </arguments>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint mode="DAILY" startDate="2017-09-13Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="03:00:00"/>
+        <singleTimepoint startTime="15:00:00"/>
+      </startTimes>
+    </timeConstraint>
+  </constraintSet>
+
+</jobDefinition>

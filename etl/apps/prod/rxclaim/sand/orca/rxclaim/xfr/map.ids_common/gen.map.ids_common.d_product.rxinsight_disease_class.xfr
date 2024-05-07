@@ -1,0 +1,65 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rx_dis_cls.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rx_dis_cls.gpi_4,[passthrough],in0.drg_class_gpi_04_cd]
+  [out0.rx_dis_cls.id,[transform],]
+  [out0.rx_dis_cls.disease_state_desc,[passthrough],in0.dise_cat_nm]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rx_dis_cls.dxf_hk_part2,'rx_dis_cls.dxf_hk_part2',1,0]
+     [out0.rx_dis_cls.dxf_hk_part1,'rx_dis_cls.dxf_hk_part1',1,0]
+     [out0.rx_dis_cls.src_env_sk,'rx_dis_cls.src_env_sk',1,0]
+     [out0.rx_dis_cls.gpi_4,'rx_dis_cls.gpi_4',1,0]
+     [out0.rx_dis_cls.id,'rx_dis_cls.id',1,0]
+     [out0.rx_dis_cls.dxf_sk,'rx_dis_cls.dxf_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rx_dis_cls.disease_state_desc,'rx_dis_cls.disease_state_desc',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.dise_cat_nm,'dise_cat_nm',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.drg_class_gpi_04_cd,'drg_class_gpi_04_cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) rx_dis_cls_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) rx_dis_cls_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) rx_dis_cls_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) rx_dis_cls_id = -1;
+let string("\x01", maximum_length=4) rx_dis_cls_gpi_4 = fail_if_error(in0.drg_class_gpi_04_cd);
+let string("\x01", maximum_length=100) rx_dis_cls_disease_state_desc = fail_if_error(in0.dise_cat_nm);
+let decimal("\x01",0) rx_dis_cls_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rx_dis_cls.dxf_hk_part1::rx_dis_cls_dxf_hk_part1;
+  out0.rx_dis_cls.dxf_hk_part2::rx_dis_cls_dxf_hk_part2;
+  out0.rx_dis_cls.dxf_sk::rx_dis_cls_dxf_sk;
+  out0.rx_dis_cls.id::rx_dis_cls_id;
+  out0.rx_dis_cls.gpi_4::rx_dis_cls_gpi_4;
+  out0.rx_dis_cls.disease_state_desc::rx_dis_cls_disease_state_desc;
+  out0.rx_dis_cls.src_env_sk::rx_dis_cls_src_env_sk;
+  out0.*::in0.*;
+
+end;

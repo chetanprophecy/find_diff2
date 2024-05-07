@@ -1,0 +1,16 @@
+record
+  decimal("\x01",0) pln_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pgl_gpi_list_nm = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pgt_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") pgt_thru_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pgt_status = NULL("") /*CHAR(1)*/;
+  record
+        string("\x01",charset="iso-8859-15", maximum_length=10) pgl_gpi_list_nm = allocate_with_nulls() /*VARCHAR(10)*/;
+        date("YYYYMMDD")("\x01") pgt_from_dt = allocate_with_nulls() /*DATE*/;
+        date("YYYYMMDD")("\x01") pgt_thru_dt = allocate_with_nulls() /*DATE*/;
+  end[int] vec_d_pgt_plan_gpi_list_p90 = allocate_with_nulls();
+  
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end

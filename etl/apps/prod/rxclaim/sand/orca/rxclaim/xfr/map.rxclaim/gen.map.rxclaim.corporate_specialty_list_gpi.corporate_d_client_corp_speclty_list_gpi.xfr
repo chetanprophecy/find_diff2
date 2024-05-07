@@ -1,0 +1,88 @@
+/*   Do not edit. Generated file - BRE 4.1.3.1;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_corporate_specialty_list_gpi_to_the_corporate_d_client_corp_speclty_list_gpi_ILM_documentation(in)=
+begin
+
+out0.cli_sp_gpi.rxc_gpi_list_nm::depends_on(
+         in.speclty_list_nm
+         );
+
+
+out0.cli_sp_gpi.gpi_id::depends_on(
+         in.gpi_id
+         );
+
+
+out0.cli_sp_gpi.speclty_list_nm::depends_on(
+         in.speclty_list_nm
+         );
+
+
+out0.cli_sp_gpi.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.cli_sp_gpi.gpi_nm::depends_on(
+         in.gpi_nm
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_corporate_specialty_list_gpi_to_the_corporate_d_client_corp_speclty_list_gpi_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.cli_sp_gpi.rxc_gpi_list_nm,'cli_sp_gpi.rxc_gpi_list_nm',1,0]
+     [out0.cli_sp_gpi.gpi_id,'cli_sp_gpi.gpi_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cli_sp_gpi.speclty_list_nm,'cli_sp_gpi.speclty_list_nm',1,0]
+     [out0.cli_sp_gpi.client_corp_speclty_list_gpi_sk,'cli_sp_gpi.client_corp_speclty_list_gpi_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cli_sp_gpi.src_env_sk,'cli_sp_gpi.src_env_sk',1,0]
+     [out0.cli_sp_gpi.gpi_nm,'cli_sp_gpi.gpi_nm',1,0]
+     [out0.cli_sp_gpi.speclty_list_type_id,'cli_sp_gpi.speclty_list_type_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi_id,'gpi_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.gpi_nm,'gpi_nm',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.speclty_list_nm,'speclty_list_nm',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cli_sp_gpi_client_corp_speclty_list_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cli_sp_gpi_speclty_list_type_id = "CORPORATE";
+let string("\x01",charset="iso-8859-15", maximum_length=50) cli_sp_gpi_speclty_list_nm = fail_if_error(string_lrtrim(in0.speclty_list_nm));
+let string("\x01",charset="iso-8859-15", maximum_length=30) cli_sp_gpi_rxc_gpi_list_nm = fail_if_error(string_lrtrim(in0.speclty_list_nm));
+let string("\x01",charset="iso-8859-15", maximum_length=14) cli_sp_gpi_gpi_id = fail_if_error(string_lrtrim(in0.gpi_id));
+let string("\x01",charset="iso-8859-15", maximum_length=100) cli_sp_gpi_gpi_nm = fail_if_error(in0.gpi_nm);
+let decimal("\x01",0) cli_sp_gpi_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.cli_sp_gpi.client_corp_speclty_list_gpi_sk::cli_sp_gpi_client_corp_speclty_list_gpi_sk;
+  out0.cli_sp_gpi.speclty_list_type_id::cli_sp_gpi_speclty_list_type_id;
+  out0.cli_sp_gpi.speclty_list_nm::cli_sp_gpi_speclty_list_nm;
+  out0.cli_sp_gpi.rxc_gpi_list_nm::cli_sp_gpi_rxc_gpi_list_nm;
+  out0.cli_sp_gpi.gpi_id::cli_sp_gpi_gpi_id;
+  out0.cli_sp_gpi.gpi_nm::cli_sp_gpi_gpi_nm;
+  out0.cli_sp_gpi.src_env_sk::cli_sp_gpi_src_env_sk;
+  out0.*::in0.*;
+end;

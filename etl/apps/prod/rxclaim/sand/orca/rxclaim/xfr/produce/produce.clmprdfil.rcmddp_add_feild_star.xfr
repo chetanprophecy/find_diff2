@@ -1,0 +1,7 @@
+out::reformat(in)=
+begin
+out.*::in.*;
+ out.phr_npi_no :: if (string_lrtrim(in.asn5ia)=='01') string_lrtrim(string_filter(re_replace(in.asythe, "[[:cntrl:]]",""), "0123456789")) else lookup("d_pharmacy",string_lrtrim(string_filter(re_replace(in.asythe, "[[:cntrl:]]",""), "0123456789"))).phr_npi_no;
+ out.prod_directory_dt_sk :: lookup("d_cms_stars_calendar_submission",in.dxf_src_sys_id,(date("YYYYMMDD"))(string(""))(decimal(""))in.asbbda).prod_directory_dt_sk;
+ out.cms_proxy_ndc_id :: lookup("lkp_d_cms_prxy_ndc_rxcui_prod_id",(lookup("d_cms_prxy_ndc_rxcui",string_lrtrim(in.asric4),(date("YYYYMMDD"))(string(""))(decimal(""))in.asbbda).rxcui),(date("YYYYMMDD"))(string(""))(decimal(""))in.asbbda).prod_id;
+end;

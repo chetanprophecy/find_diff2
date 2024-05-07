@@ -1,0 +1,258 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59aeaec3_1853_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rec_detail.cms_rspns_mn,[transform],in0.dxf_src_file_name,
+     in0.ndc]
+  [out0.rec_summary.comp_price_accuracy_scr,[transform],]
+  [out0.rec_summary.price_accuracy_scr,[transform],]
+  [out0.rec_detail.pde_ingrd_cost,[transform],in0.pde_data.ingredient_cost,
+     in0.ndc]
+  [out0.rec_detail.cal_pde_tot_cost,[transform],in0.calculated_values.total_cost.pde,
+     in0.ndc]
+  [out0.rec_summary.sure_up_ndc_cnt,[passthrough],in0.ndc]
+  [out0.rec_detail.mpf_floor_price,[transform],in0.plan_finder_data.floor_price,
+     in0.ndc]
+  [out0.rec_detail.bi_week_period,[transform],in0.plan_finder_data.biweekly_posting_period,
+     in0.ndc]
+  [out0.rec_summary.matching_claim_pde_cost,[transform],in0.pharmacy_number]
+  [out0.rec_summary.cal_tot_pde_cost,[transform],in0.calculated_values.total_cost.pde,
+     in0.ndc]
+  [out0.rec_detail.pde_dispng_fee,[transform],in0.pde_data.dispensing_fee,
+     in0.ndc]
+  [out0.rec_detail.rspns_file_ind,[transform],in0.dxf_src_file_name]
+  [out0.rec_detail.cal_gene_ind,[transform],in0.calculated_values.brand_or_generic_status,
+     in0.ndc]
+  [out0.rec_summary.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rec_detail.phr_id,[transform],in0.pharmacy_number]
+  [out0.rec_detail.rspns_detail_sk,[transform],]
+  [out0.rec_summary.cal_tol_mpf_cost,[transform],in0.calculated_values.total_cost.pf,
+     in0.ndc]
+  [out0.rec_detail.mpf_dispng_brnd,[transform],in0.plan_finder_data.dispensing_fee.brand,
+     in0.ndc]
+  [out0.rec_detail.pde_days_of_supply,[transform],in0.pde_data.days_supply,
+     in0.ndc]
+  [out0.rec_summary.rspns_file_ind,[transform],in0.dxf_src_file_name,
+     in0.ndc]
+  [out0.rec_detail.cal_diff_tot_cost,[transform],in0.calculated_values.amout_that_pde_higher_than_pf,
+     in0.ndc]
+  [out0.rec_detail.pde_qty_dispng,[transform],in0.pde_data.quantity_dispensed,
+     in0.ndc]
+  [out0.rec_detail.mpf_dispng_gene,[transform],in0.plan_finder_data.dispensing_fee.generic,
+     in0.ndc]
+  [out0.rec_detail.cms_rspns_style_ind,[passthrough],in0.cms_rspns_style_ind]
+  [out0.rec_summary.matching_claim_ndc_cnt,[transform],in0.pharmacy_number]
+  [out0.rec_summary.pde_mpf_diff_amt,[transform],]
+  [out0.rec_detail.prod_id,[transform],in0.ndc]
+  [out0.rec_summary.cms_rspns_style_ind,[passthrough],in0.cms_rspns_style_ind]
+  [out0.rec_detail.cal_mpf_tot_cost,[transform],in0.calculated_values.total_cost.pf,
+     in0.ndc]
+  [out0.rec_summary.cms_rspns_mn,[transform],in0.dxf_src_file_name,
+     in0.ndc]
+  [out0.rec_detail.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rec_summary.rspns_summary_sk,[transform],]
+  [out0.rec_summary.accuracy_idx,[transform],]
+  [out0.rec_detail.pde_filled_dt,[transform],in0.pde_data.dos,
+     in0.ndc]
+  [out0.rec_detail.mpf_unit_cost,[transform],in0.plan_finder_data.unit_cost,
+     in0.ndc]
+  [out0.rec_detail.contract_id,[transform],in0.dxf_src_file_name]
+  [out0.rec_summary.contract_id,[transform],in0.dxf_src_file_name,
+     in0.ndc]
+  [out0.rec_summary.claim_percentage_scr,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rec_detail.cms_rspns_mn,'rec_detail.cms_rspns_mn',1,0]
+     [out0.rec_summary.comp_price_accuracy_scr,'rec_summary.comp_price_accuracy_scr',1,0]
+     [out0.rec_summary.price_accuracy_scr,'rec_summary.price_accuracy_scr',1,0]
+     [out0.rec_detail.pde_ingrd_cost,'rec_detail.pde_ingrd_cost',1,0]
+     [out0.rec_detail.cal_pde_tot_cost,'rec_detail.cal_pde_tot_cost',1,0]
+     [out0.rec_summary.sure_up_ndc_cnt,'rec_summary.sure_up_ndc_cnt',1,0]
+     [out0.rec_detail.mpf_floor_price,'rec_detail.mpf_floor_price',1,0]
+     [out0.rec_detail.bi_week_period,'rec_detail.bi_week_period',1,1]
+     [out0.rec_summary.matching_claim_pde_cost,'rec_summary.matching_claim_pde_cost',1,1]
+     [out0.rec_summary.cal_tot_pde_cost,'rec_summary.cal_tot_pde_cost',1,0]
+     [out0.rec_detail.pde_dispng_fee,'rec_detail.pde_dispng_fee',1,0]
+     [out0.rec_detail.rspns_file_ind,'rec_detail.rspns_file_ind',1,0]
+     [out0.rec_detail.cal_gene_ind,'rec_detail.cal_gene_ind',1,0]
+     [out0.rec_summary.src_env_sk,'rec_summary.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.rec_detail.phr_id,'rec_detail.phr_id',1,0]
+     [out0.rec_detail.rspns_detail_sk,'rec_detail.rspns_detail_sk',1,0]
+     [out0.rec_summary.cal_tol_mpf_cost,'rec_summary.cal_tol_mpf_cost',1,0]
+     [out0.rec_detail.mpf_dispng_brnd,'rec_detail.mpf_dispng_brnd',1,0]
+     [out0.rec_detail.pde_days_of_supply,'rec_detail.pde_days_of_supply',1,0]
+     [out0.rec_summary.rspns_file_ind,'rec_summary.rspns_file_ind',1,0]
+     [out0.rec_detail.cal_diff_tot_cost,'rec_detail.cal_diff_tot_cost',1,0]
+     [out0.rec_detail.pde_qty_dispng,'rec_detail.pde_qty_dispng',1,0]
+     [out0.rec_detail.mpf_dispng_gene,'rec_detail.mpf_dispng_gene',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rec_detail.cms_rspns_style_ind,'rec_detail.cms_rspns_style_ind',1,0]
+     [out0.rec_summary.matching_claim_ndc_cnt,'rec_summary.matching_claim_ndc_cnt',1,1]
+     [out0.rec_summary.pde_mpf_diff_amt,'rec_summary.pde_mpf_diff_amt',1,0]
+     [out0.rec_detail.prod_id,'rec_detail.prod_id',1,0]
+     [out0.rec_summary.cms_rspns_style_ind,'rec_summary.cms_rspns_style_ind',1,0]
+     [out0.rec_detail.cal_mpf_tot_cost,'rec_detail.cal_mpf_tot_cost',1,0]
+     [out0.rec_summary.cms_rspns_mn,'rec_summary.cms_rspns_mn',1,0]
+     [out0.rec_detail.src_env_sk,'rec_detail.src_env_sk',1,0]
+     [out0.rec_summary.rspns_summary_sk,'rec_summary.rspns_summary_sk',1,0]
+     [out0.rec_summary.accuracy_idx,'rec_summary.accuracy_idx',1,0]
+     [out0.rec_detail.pde_filled_dt,'rec_detail.pde_filled_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rec_detail.mpf_unit_cost,'rec_detail.mpf_unit_cost',1,0]
+     [out0.rec_detail.contract_id,'rec_detail.contract_id',1,0]
+     [out0.rec_summary.contract_id,'rec_summary.contract_id',1,0]
+     [out0.rec_summary.claim_percentage_scr,'rec_summary.claim_percentage_scr',1,0]
+  ]
+  impacts:
+  [
+     [in0.plan_finder_data.dispensing_fee.brand,'brand',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',17,7]
+     [in0.plan_finder_data.floor_price,'floor_price',1,1]
+     [in0.pde_data.quantity_dispensed,'quantity_dispensed',1,1]
+     [in0.plan_finder_data.biweekly_posting_period,'biweekly_posting_period',1,2]
+     [in0.plan_finder_data.unit_cost,'unit_cost',1,1]
+     [in0.calculated_values.brand_or_generic_status,'brand_or_generic_status',1,1]
+     [in0.pde_data.ingredient_cost,'ingredient_cost',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',3,3]
+     [in0.cms_rspns_style_ind,'cms_rspns_style_ind',2,2]
+     [in0.calculated_values.total_cost.pf,'pf',2,2]
+     [in0.ndc,'ndc',69,24]
+     [in0.pde_data.days_supply,'days_supply',1,1]
+     [in0.pharmacy_number,'pharmacy_number',2,4]
+     [in0.plan_finder_data.dispensing_fee.generic,'generic',1,1]
+     [in0.pde_data.dispensing_fee,'dispensing_fee',1,1]
+     [in0.calculated_values.amout_that_pde_higher_than_pf,'amout_that_pde_higher_than_pf',1,1]
+     [in0.calculated_values.total_cost.pde,'pde',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.pde_data.dos,'dos',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) rec_detail_rspns_detail_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) rec_detail_contract_id = fail_if_error(string_substring(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1],0,5));
+let string("\x01",charset="iso-8859-15", maximum_length=20) rec_detail_prod_id = fail_if_error(string_lrtrim(in0.ndc));
+let string("\x01",charset="iso-8859-15", maximum_length=15) rec_detail_phr_id = fail_if_error(string_lrtrim(in0.pharmacy_number));
+let date("YYYYMMDD")("\x01") rec_detail_pde_filled_dt = fail_if_error((if (sql_or(sql_or((in0.ndc!="PDE Cost of Matching Claims"),(in0.ndc!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((date("MM/DD/YYYY"))string_lrtrim(in0.pde_data.dos))));
+let decimal("\x01".2, maximum_length=11, sign_reserved) rec_detail_pde_ingrd_cost = fail_if_error((if (sql_or(sql_or((in0.ndc!="PDE Cost of Matching Claims"),(in0.ndc!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.pde_data.ingredient_cost))));
+let decimal("\x01".2, maximum_length=11, sign_reserved) rec_detail_pde_dispng_fee = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.pde_data.dispensing_fee))));
+let decimal("\x01".3, maximum_length=11, sign_reserved) rec_detail_pde_qty_dispng = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.pde_data.quantity_dispensed))));
+let decimal("\x01",0) rec_detail_pde_days_of_supply = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.pde_data.days_supply))));
+let string("\x01",charset="iso-8859-15", maximum_length=21) rec_detail_bi_week_period;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_detail_mpf_unit_cost = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.plan_finder_data.unit_cost))));
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_detail_mpf_dispng_brnd = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.plan_finder_data.dispensing_fee.brand))));
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_detail_mpf_dispng_gene = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.plan_finder_data.dispensing_fee.generic))));
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_detail_mpf_floor_price = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.plan_finder_data.floor_price))));
+let string("\x01",charset="iso-8859-15", maximum_length=1) rec_detail_cal_gene_ind = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   string_lrtrim(in0.calculated_values.brand_or_generic_status)));
+let decimal("\x01".2, maximum_length=17, sign_reserved) rec_detail_cal_pde_tot_cost = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.calculated_values.total_cost.pde))));
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_detail_cal_mpf_tot_cost = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.calculated_values.total_cost.pf))));
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_detail_cal_diff_tot_cost = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_lrtrim(in0.calculated_values.amout_that_pde_higher_than_pf))));
+let decimal("\x01",0) rec_detail_cms_rspns_mn = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_substring(string_split(string_split(in0.dxf_src_file_name,"/")[(length_of(string_split(in0.dxf_src_file_name,"/"))-1)],"_")[(length_of(string_split(string_split(in0.dxf_src_file_name,"/")[(length_of(string_split(in0.dxf_src_file_name,"/"))-1)],"_"))-1)],0,6))));
+let string("\x01",charset="iso-8859-15", maximum_length=3) rec_detail_rspns_file_ind = fail_if_error(if (string_like(string_substring(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1],16,8) , "%Accuracy%") == 1) "ACC" else  "DSP");
+let decimal("\x01",0) rec_detail_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rec_detail_cms_rspns_style_ind = fail_if_error(in0.cms_rspns_style_ind);
+let decimal("\x01",0) rec_summary_rspns_summary_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) rec_summary_contract_id = fail_if_error(if (string_lrtrim(in0.ndc) == "PDE Cost of Matching Claims" ) "xxxx1" else if  (string_lrtrim(in0.ndc) =="Number of Matching Claims" ) "xxxx2" else if (string_lrtrim(in0.ndc) == "") "xxxx3" else  string_substring(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1],0,5));
+let decimal("\x01",0) rec_summary_matching_claim_ndc_cnt;
+let decimal("\x01".2, maximum_length=17, sign_reserved) rec_summary_matching_claim_pde_cost;
+let decimal("\x01",0) rec_summary_sure_up_ndc_cnt = fail_if_error(in0.ndc);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rec_summary_cal_tot_pde_cost = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="Number of Matching Claims"),(string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))first_defined(string_lrtrim(in0.calculated_values.total_cost.pde),((decimal("\x01"))0)))));
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_summary_cal_tol_mpf_cost = fail_if_error((if (sql_or(sql_or((in0.ndc!="Number of Matching Claims"),(in0.ndc!="PDE Cost of Matching Claims")),(in0.ndc!="")))
+   ((decimal("x01"))first_defined(string_lrtrim(in0.calculated_values.total_cost.pf),((decimal("\x01"))0)))));
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_summary_pde_mpf_diff_amt = 0;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_summary_price_accuracy_scr = 0;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_summary_claim_percentage_scr = 0;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_summary_comp_price_accuracy_scr = 0;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_summary_accuracy_idx = 0;
+let decimal("\x01",0) rec_summary_cms_rspns_mn = fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   ((decimal("x01"))string_substring(string_split(string_split(in0.dxf_src_file_name,"/")[(length_of(string_split(in0.dxf_src_file_name,"/"))-1)],"_")[(length_of(string_split(string_split(in0.dxf_src_file_name,"/")[(length_of(string_split(in0.dxf_src_file_name,"/"))-1)],"_"))-1)],0,6))));
+let string("\x01",charset="iso-8859-15", maximum_length=3) rec_summary_rspns_file_ind = fail_if_error((if (sql_or((in0.ndc!="PDE Cost of Matching Claims"),(in0.ndc!="Number of Matching Claims")))
+   (if ((string_like(string_substring(string_split(in0.dxf_src_file_name,"/")[(length_of(string_split(in0.dxf_src_file_name,"/"))-1)],16,8),"%Accuracy%")==1))
+      "ACC"
+    else
+      "DSP")));
+let decimal("\x01",0) rec_summary_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rec_summary_cms_rspns_style_ind = fail_if_error(in0.cms_rspns_style_ind);
+let unicode decimal('') v_pharmacy_number = fail_if_error(first_defined(string_lrtrim(in0.pharmacy_number),(decimal("\x01")) 0));
+let unicode string(int) v_bi_weekly_period = fail_if_error(first_defined((string("\x01"))string_lrtrim(in0.plan_finder_data.biweekly_posting_period),(string("\x01")) ""));
+
+
+
+/*   Default value   */
+rec_summary_matching_claim_ndc_cnt=fail_if_error(v_pharmacy_number);
+
+/*   Default value   */
+rec_summary_matching_claim_pde_cost=fail_if_error(v_pharmacy_number);
+
+/*   Default value   */
+rec_detail_bi_week_period=fail_if_error((if (sql_or(sql_or((string_lrtrim(in0.ndc)!="PDE Cost of Matching Claims"),(string_lrtrim(in0.ndc)!="Number of Matching Claims")),(string_lrtrim(in0.ndc)!="")))
+   re_replace(string_lrtrim(v_bi_weekly_period)," ","")));
+
+  out0.rec_detail.rspns_detail_sk::rec_detail_rspns_detail_sk;
+  out0.rec_detail.contract_id::rec_detail_contract_id;
+  out0.rec_detail.prod_id::rec_detail_prod_id;
+  out0.rec_detail.phr_id::rec_detail_phr_id;
+  out0.rec_detail.pde_filled_dt::rec_detail_pde_filled_dt;
+  out0.rec_detail.pde_ingrd_cost::rec_detail_pde_ingrd_cost;
+  out0.rec_detail.pde_dispng_fee::rec_detail_pde_dispng_fee;
+  out0.rec_detail.pde_qty_dispng::rec_detail_pde_qty_dispng;
+  out0.rec_detail.pde_days_of_supply::rec_detail_pde_days_of_supply;
+  out0.rec_detail.bi_week_period::rec_detail_bi_week_period;
+  out0.rec_detail.mpf_unit_cost::rec_detail_mpf_unit_cost;
+  out0.rec_detail.mpf_dispng_brnd::rec_detail_mpf_dispng_brnd;
+  out0.rec_detail.mpf_dispng_gene::rec_detail_mpf_dispng_gene;
+  out0.rec_detail.mpf_floor_price::rec_detail_mpf_floor_price;
+  out0.rec_detail.cal_gene_ind::rec_detail_cal_gene_ind;
+  out0.rec_detail.cal_pde_tot_cost::rec_detail_cal_pde_tot_cost;
+  out0.rec_detail.cal_mpf_tot_cost::rec_detail_cal_mpf_tot_cost;
+  out0.rec_detail.cal_diff_tot_cost::rec_detail_cal_diff_tot_cost;
+  out0.rec_detail.cms_rspns_mn::rec_detail_cms_rspns_mn;
+  out0.rec_detail.rspns_file_ind::rec_detail_rspns_file_ind;
+  out0.rec_detail.src_env_sk::rec_detail_src_env_sk;
+  out0.rec_detail.cms_rspns_style_ind::rec_detail_cms_rspns_style_ind;
+  out0.rec_summary.rspns_summary_sk::rec_summary_rspns_summary_sk;
+  out0.rec_summary.contract_id::rec_summary_contract_id;
+  out0.rec_summary.matching_claim_ndc_cnt::rec_summary_matching_claim_ndc_cnt;
+  out0.rec_summary.matching_claim_pde_cost::rec_summary_matching_claim_pde_cost;
+  out0.rec_summary.sure_up_ndc_cnt::rec_summary_sure_up_ndc_cnt;
+  out0.rec_summary.cal_tot_pde_cost::rec_summary_cal_tot_pde_cost;
+  out0.rec_summary.cal_tol_mpf_cost::rec_summary_cal_tol_mpf_cost;
+  out0.rec_summary.pde_mpf_diff_amt::rec_summary_pde_mpf_diff_amt;
+  out0.rec_summary.price_accuracy_scr::rec_summary_price_accuracy_scr;
+  out0.rec_summary.claim_percentage_scr::rec_summary_claim_percentage_scr;
+  out0.rec_summary.comp_price_accuracy_scr::rec_summary_comp_price_accuracy_scr;
+  out0.rec_summary.accuracy_idx::rec_summary_accuracy_idx;
+  out0.rec_summary.cms_rspns_mn::rec_summary_cms_rspns_mn;
+  out0.rec_summary.rspns_file_ind::rec_summary_rspns_file_ind;
+  out0.rec_summary.src_env_sk::rec_summary_src_env_sk;
+  out0.rec_summary.cms_rspns_style_ind::rec_summary_cms_rspns_style_ind;
+  out0.*::in0.*;
+
+end;

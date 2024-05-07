@@ -1,0 +1,20 @@
+type temporary_type =
+record
+  string("\x01") rev_ind;
+end;
+  
+temp :: initialize(in) =
+begin
+  temp.rev_ind :: "";
+end;
+
+out :: scan(temp, in) =
+begin
+  out.rev_ind :: if(temp.rev_ind == "Y" || in.claim_stat_id == "X") "Y" else "N";
+end;
+
+out :: finalize(temp, in) =
+begin
+  out.* :: in.*;
+  out.reversal_ind :: temp.rev_ind;
+end;

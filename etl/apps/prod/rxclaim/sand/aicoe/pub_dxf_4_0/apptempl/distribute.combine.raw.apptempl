@@ -1,0 +1,451 @@
+<AppConfTempl name="Combine Raw (Distribution)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all">/Projects/orca/distribution</ProjectRPath>
+  <TemplateExpressionPackage>include "/~$PUB_DXF_XFR/ace_format.xfr";
+  include "~$PUB_DXF_XFR/event/raw_event_registration.xfr";</TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="combine" prototype_path="${AI_PSET}/distribute.combine.raw.interim.pset" save_pset="false">
+        <PdlExpression name="AI_PSET" expression="$AI_PSET"/>
+        <FlowData name="MAPPING_INPUT" source_port="/FBE_Record_Drop_for_DM/out" dest_port="/RFMT_Column_Selection_Rules/in"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="PUB_DATAHUB_DML" expression="$PUB_DATAHUB_DML"/>
+        <FlowData name="FILTER_INPUT" source_port="Data_Suppression_Outbound/out0"  dest_port="FBE_Record_Drop_for_DM/in"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="error" type="string"/>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_object" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+      </ListVariable>
+      <ListVariable name="registrations" type="compound">
+        <Variable name="source_name" type="string"/>
+        <Variable name="target_system" type="string"/>
+        <Variable name="target_entity" type="string"/>
+        <Variable name="target_type" type="string"/>
+        <Variable name="channel_id" type="integer"/>
+        <Variable name="combine_strategy" type="string"/>
+        <Variable name="frequency" type="string"/>
+        <Variable name="sequence" type="integer"/>
+        <Variable name="target_layout" type="string"/>
+        <Variable name="publish_server_type" type="string"/>
+        <Variable name="target_is_compressed" type="string"/>
+      </ListVariable>
+      <Variable name="lookup_problem" type="string"/>
+      <Variable name="mapping_rules" type="ruleset"/>
+      <Variable name="registration_error" type="string"/>
+      <Variable name="source_name" type="string"/>
+      <Variable name="target_name" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <SharedFile name="catalog" path="" auto_lock="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check Configuration Name">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in,".")) not member [vector 4] or string_split_no_empty(built_in,".")[1] != "raw" or !starts_with(built_in, "combine."))
+        "Configuration should be named as follows:\n" +
+        "&lt;i&gt;combine.raw.target_system.target_entity&lt;/i&gt;\n" +
+        "Close and recreate configuration"
+      else if(re_replace(string_split_no_empty(built_in,".")[2], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from datamart name\n" +
+        "Close and recreate configuration"
+      else if(re_replace(string_split_no_empty(built_in,".")[3], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from table name\n" +
+        "Close and recreate configuration"
+      else
+        ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">1</SourceValue>
+      <TargetValue reference="proj.combine" property="save_pset"/>
+      <Condition is_expression="true">vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/combine.raw." + proj.combine.SOURCE_SYSTEM + "/combine.raw." + proj.combine.SOURCE_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.combine" property="relative_path"/>
+      <Condition is_expression="true">vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(vars.registrations) == 0)
+"Source " + proj.combine.SOURCE_NAME + " not registered. Please try again after registraion." 
+else  ""</SourceValue>
+      <TargetValue reference="vars.registration_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let long[int] is_valid_vec = vars.lookups.eme_object.is_valid;
+        let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+        let string(int)[int] name_vec =  vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int) lookup_problem = "";
+        for ( let long i, i &lt; length_of(is_valid_vec) and lookup_problem == "" ) begin
+          if ( not is_valid_vec[i] )
+            lookup_problem = printf("Lookup #%d: Please select a valid dataset", i+1);
+          else if ( not ends_with(dml_vec[i], ".dml") )
+            lookup_problem = printf("Lookup #%d: Invalid DML: %s.  Please select a valid dataset.", i+1, dml_vec[i]);
+          else if ( is_blank(name_vec[i]) )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup name.", i+1);
+          else if ( is_blank(key_vec[i]) )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup key.", i+1);
+        end
+        result :: lookup_problem;
+      end</SourceValue>
+      <TargetValue reference="vars.lookup_problem"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" + "combine.file." + proj.combine.SOURCE_SYSTEM + "/" +  built_in + ".cat"</SourceValue>
+      <TargetValue reference="proj.combine.AB_CATALOG"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let string(int)[int] name_vec = vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int)[int] file_vec = vars.lookups.eme_object.parameterized_rpath;
+        let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+        result :: string_join(
+          for ( let long i, i &lt; length_of(name_vec) ) :
+            printf("%s,%s,/~%s,/~%s\n", name_vec[i],
+              key_vec[i],
+              re_replace(file_vec[i], "[{}]", ""), 
+              re_replace( dml_vec[i], "[{}]", "")),
+          "");
+        end</SourceValue>
+      <TargetValue reference="catalog"/>
+      <Condition is_expression="true">vars.lookup_problem == "" and catalog.path != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog"/>
+      <TargetValue reference="proj.combine.ACE_CATALOG_CONTENTS"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_object" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin        
+        let string(int) cat = proj.combine.ACE_CATALOG_CONTENTS.resolved_value;
+        let cat_vec = string_split_no_empty(cat, "\n");
+        result :: for ( let c in cat_vec ) :
+          string_replace_first(string_split(c, ",")[2], // The data directory is the 3rd field in the catalog.
+            "/~", "");  // Strip off the /~ we added when writing the catalog.
+      end</SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path" resizes_list="false"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.mapping_rules" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.MAPPING_INPUT" property="record_format"/>
+      <TargetValue reference="vars.mapping_rules" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.LOAD_READY_FILE_DML"/>
+      <TargetValue reference="vars.mapping_rules" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.mapping_rules" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="vars.mapping_rules" property="package_catalog_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine"/>
+      <TargetValue reference="vars.mapping_rules" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.MAPPING_INPUT"/>
+      <TargetValue reference="vars.mapping_rules" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_rules"/>
+      <TargetValue reference="proj.combine.MAPPING_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.source_name"/>
+      <TargetValue reference="proj.combine.SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_registration_details_for_source_name(proj.combine.SOURCE_NAME)</SourceValue>
+      <TargetValue reference="vars.registrations"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.combine"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.error == "" and vars.registration_error == ""  and vars.lookup_problem == ""</Enabled>
+        <ErrorMessage>You must save this configuration before running it. The run button will be disabled in the following cases:
+        1. Appconf naming errors are found.
+        2. Target has not been registered.
+        3. Lookup has not been configured properly.</ErrorMessage>
+        <Description is_expression="true">if(not (vars.error == "" and vars.registration_error == ""  and vars.lookup_problem == ""))
+        "You must save this configuration before running it. The run button will be disabled in the following cases:\n
+        1. Appconf naming errors are found.\n
+        2. Target has not been registered.\n
+        3. Lookup has not been configured properly." else "Combine files to create load ready file for publish."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Source Information</Label>
+          <UIElements>
+            <Popup>
+              <Label>Pick Source</Label>
+              <Title>Pick Source...</Title>
+              <UIElements>
+                <OrderedList>
+                  <Choices is_expression="true">for(let dml in directory_listing(proj.combine.PUB_DATAHUB_DML + "/raw/clean." + string_split(built_in, ".")[2], "clean.*.*.dml")) : string_split(dml, ".")[1] + "." + string_split(dml, ".")[2]</Choices>
+                  <Label>Ordered List</Label>
+                  <SourceTargetValue reference="vars.source_name"/>
+                </OrderedList>
+              </UIElements>
+              <Style>dataset</Style>
+            </Popup>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Source System:&lt;/b&gt; " + proj.combine.SOURCE_SYSTEM</Label>
+              <Style>inner</Style>
+              <Visible is_expression="true">vars.source_name != ""</Visible>
+            </Box>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Source Entity:&lt;/b&gt; " + proj.combine.SOURCE_ENTITY</Label>
+              <Style>inner</Style>
+              <Visible is_expression="true">vars.source_name != ""</Visible>
+              <UIElements/>
+            </Box>
+          </UIElements>
+          <Style>dataset</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Registration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.registration_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error != "" and vars.source_name != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Lookups</Label>
+              <Title/>
+              <UIElements>
+                <EmeBrowser>
+                  <Eme reference="eme"/>
+                  <Label>Select lookup files</Label>
+                  <SourceTargetValue reference="vars.lookups.eme_object"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <Taxonomies is_expression="true">get_lookup_vec(proj.combine.ACE_LOOKUP_PROJECT_LIST)</Taxonomies>
+                </EmeBrowser>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) or is_blank(lkp.key)</Expanded>
+                  <Style>inner</Style>
+                  <Label is_expression="true">if ( is_blank(lkp.lookup_name) ) "** Please Enter a Name **" else lkp.lookup_name</Label>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                    "\n\nLookup Name:\n" + lkp.lookup_name +
+                    "\n\nSource Dataset:\n" + ds_name(lkp.eme_object.name) +
+                    (if ( is_blank(lkp.key) ) "" else
+                      "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                  <UIElements>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <Popup>
+                      <Style>key</Style>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_object.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_object.name)</Title>
+                      <UIElements>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                          <ContextPset reference="proj.combine"/>
+                          <RecordFormat reference="lkp.eme_object" property="record_format"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <SourceTargetValue reference="lkp.key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>key</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Lookup Configuration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_problem"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Filter/Transform</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Filter Expression</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Data</Label>
+                  <SourceTargetValue reference="proj.combine.FILTER_EXPRESSION"/>
+                  <Style>reduction</Style>
+                  <RecordFormat is_expression="true">join_types("record\n string(1) event_indicator; //Flag that would differentiate the records. I-Insert | U-Update | D- Delete\n end", proj.combine.RAW_DML)</RecordFormat>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+            <BusinessRulesPopup>
+              <Label>Edit Mappings</Label>
+              <SourceTargetValue reference="vars.mapping_rules"/>
+              <Title/>
+              <Style>mapping</Style>
+            </BusinessRulesPopup>
+            <CheckBox>
+              <Label>Apply Defaulting Rules</Label>
+              <TrueValue>True</TrueValue>
+              <FalseValue>False</FalseValue>
+              <Description>Defaulting rules are applied as per the xfr "idw_audit_default_rules.file.xfr". This is private object. Please provide and xfr in this private object as per your requirement.</Description>
+              <SourceTargetValue reference="proj.combine.DO_DEFAULTING"/>
+            </CheckBox>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Key Operations</Label>
+          <UIElements>
+            <Popup>
+              <Label>Partitioning Key (Optional)</Label>
+              <Title>Partitioning Key (Optional)...</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat is_expression="true">join_types("record\n string(1) event_indicator; //Flag that would differentiate the records. I-Insert | U-Update | D- Delete\n end", proj.combine.RAW_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.combine.PARTITION_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <Popup>
+              <Label>Sort Key (Optional)</Label>
+              <Title>Sort Key (Optional)...</Title>
+              <Description>By default, sort and partition key are the same.</Description>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat is_expression="true">join_types("record\n string(1) event_indicator; //Flag that would differentiate the records. I-Insert | U-Update | D- Delete\n end", proj.combine.RAW_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.combine.SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <Popup>
+              <Label>Dedup Key (Optional)</Label>
+              <Title>Dedup Key (Optional)...</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat is_expression="true">join_types("record\n string(1) event_indicator; //Flag that would differentiate the records. I-Insert | U-Update | D- Delete\n end", proj.combine.RAW_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.combine.DEDUP_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+          </UIElements>
+          <Style>key</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Combine</Label>
+          <Style>executable</Style>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Note: Please save before executing</Label>
+              <SourceValue reference="proj.combine"/>
+            </ExecuteButton>
+          </UIElements>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Combine File Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine.PROJECT_DIR + "/" + proj.combine.relative_path + "&lt;/b&gt;"</Label>
+          <Width>900</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.combine.contents</Label>
+          <Width>900</Width>
+          <MaxHeight>800</MaxHeight>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

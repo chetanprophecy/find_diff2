@@ -1,0 +1,29 @@
+type temporary_type =
+record
+  date("YYYYMMDD")("\x01") end_dt = NULL("");
+  date("YYYYMMDD")("\x01") prev_end_dt = NULL("");
+end;
+
+
+temp :: initialize(in) =
+begin
+  temp.end_dt :: (date("YYYYMMDD"))"19000102";
+  temp.prev_end_dt :: (date("YYYYMMDD"))"19000101";
+end;
+
+out :: scan(temp, in) =
+begin
+out.end_dt ::((date("YYYYMMDD"))(string(""))(decimal(""))(19000000 + in.ajp9ce));
+out.prev_end_dt :: temp.end_dt;
+end;
+
+out :: finalize(temp, in) =
+begin
+out.end_dt :: temp.prev_end_dt-1;
+out.*::in.*;
+end;
+
+out :: output_select(final) =
+begin
+  out :: final.end_dt != (date("YYYYMMDD"))"19000101";
+end;

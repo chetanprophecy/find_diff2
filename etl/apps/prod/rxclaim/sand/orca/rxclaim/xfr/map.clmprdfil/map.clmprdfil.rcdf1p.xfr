@@ -1,0 +1,13 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.description :: in.bgc7t3;
+  out.rxclaim_dosage_form:: in.bgfvc4;
+  out.rxt_src_envrt_id :: (decimal(""))in.src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

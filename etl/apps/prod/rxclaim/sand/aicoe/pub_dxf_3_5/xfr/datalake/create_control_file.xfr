@@ -1,0 +1,27 @@
+out :: rollup(in) =
+begin
+let decimal("") t_count=sum(in.record_count);
+
+  out.source_name                  ::  string_concat ("SourceName=",$"SOURCE_CODE");
+  out.database_type                ::  string_concat ("DatabaseType=",$"DATABASE_TYPE");
+  out.source_schema_name           ::  string_concat ("SourceSchemaName=",$[string_representation(string_upcase(TARGET_SYSTEM))]);
+  out.entity_name                  ::  string_concat ("EntityName=",$[string_representation(string_upcase(SOURCE))]);
+  out.record_count                 ::  string_concat ("RecordCount=",t_count);
+  out.extract_date                 ::  string_concat ("ExtractDate=",(datetime("YYYY-MM-DD"))(datetime("YYYYMMDDHH24MISS"))$"RUN_TIMESTAMP");
+  out.extract_time                 ::  string_concat ("ExtractTime=",(datetime("HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))$"RUN_TIMESTAMP");
+  out.file_timestamp               ::  string_concat ("FileTimeStamp=",(datetime("HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))$"RUN_TIMESTAMP");
+  out.extract_datetime             ::  string_concat ("ExtractDateTime=",(datetime("YYYY-MM-DD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))$"RUN_TIMESTAMP");
+  out.etl_landing_directory        ::  string_concat ("ETLLandingDirectory=",$"ETL_LANDING_DIRECTORY");
+  out.file_load_type               ::  string_concat ("FileLoadType=",$"FILE_LOAD_TYPE");
+  out.etl_app_user_id              ::  string_concat ("ETLAppUserId=",$"ETL_APP_USER_ID");
+  out.extract_status               ::  string_concat ("ExtractStatus=","SUCCESS");
+  out.source_timezone              ::  string_concat ("SourceTimeZone=","CDT");
+  out.effective_date               ::  string_concat ("EffectiveDate=",(datetime("YYYY-MM-DD"))(datetime("YYYYMMDDHH24MISS"))$"RUN_TIMESTAMP");
+  out.data_file_extension          ::  string_concat ("DataFileExtension=",$"DATA_FILE_EXTENSION");
+  out.additional_files_extensions  ::  string_concat ("AdditionalFilesExtensions=",$"ADDITIONAL_FILES_EXTENSIONS");
+  out.file_format_type             ::  string_concat ("FileFormatType=",$"FILE_FORMAT_TYPE");
+  out.etl_process                  ::  string_concat ("ETLProcess=",$"ETL_PROCESS");
+  out.frequency                    ::  string_concat ("Frequency=",$"LOAD_FREQUENCY");
+  out.record_delimiter             ::  string_concat ("RecordDelimiter=","'\\n'");
+  out.field_delimiter              ::  string_concat ("FieldDelimiter=","'\\x01'");
+end;

@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rcdrop.dur_rsp_cd_cntr,[passthrough],in0.arjjnb]
+  [out0.rcdrop.claim_seq_nbr,[passthrough],in0.aroinb]
+  [out0.rcdrop.claim_nbr,[passthrough],in0.arp2nb]
+  [out0.rcdrop.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rcdrop.dur_prior_auth_num,[passthrough],in0.ardpvg]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rcdrop.dur_rsp_cd_cntr,'rcdrop.dur_rsp_cd_cntr',1,0]
+     [out0.rcdrop.claim_seq_nbr,'rcdrop.claim_seq_nbr',1,0]
+     [out0.rcdrop.claim_nbr,'rcdrop.claim_nbr',1,0]
+     [out0.rcdrop.src_env_sk,'rcdrop.src_env_sk',1,0]
+     [out0.rcdrop.dur_prior_auth_num,'rcdrop.dur_prior_auth_num',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.arjjnb,'arjjnb',1,1]
+     [in0.aroinb,'aroinb',1,1]
+     [in0.arp2nb,'arp2nb',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ardpvg,'ardpvg',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01") rcdrop_claim_nbr = fail_if_error(in0.arp2nb);
+let decimal("\x01") rcdrop_claim_seq_nbr = fail_if_error(1000-in0.aroinb);
+let decimal("\x01") rcdrop_dur_rsp_cd_cntr = fail_if_error(in0.arjjnb);
+let string("\x01", maximum_length=11) rcdrop_dur_prior_auth_num = fail_if_error(in0.ardpvg);
+let decimal("\x01",0) rcdrop_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rcdrop.claim_nbr::rcdrop_claim_nbr;
+  out0.rcdrop.claim_seq_nbr::rcdrop_claim_seq_nbr;
+  out0.rcdrop.dur_rsp_cd_cntr::rcdrop_dur_rsp_cd_cntr;
+  out0.rcdrop.dur_prior_auth_num::rcdrop_dur_prior_auth_num;
+  out0.rcdrop.src_env_sk::rcdrop_src_env_sk;
+  out0.*::in0.*;
+
+end;

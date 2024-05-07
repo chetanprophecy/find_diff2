@@ -1,0 +1,73 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_dmc_di.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.orx_dmc_di.med_cond_diag_xref_sk,[transform],]
+  [out0.orx_dmc_di.icd9_to_med_cond_flg,[passthrough],in0.imxkie]
+  [out0.orx_dmc_di.med_cond_cd,[transform],in0.imurhj]
+  [out0.orx_dmc_di.icm_stat_cd,[passthrough],in0.imxlie]
+  [out0.orx_dmc_di.med_cond_to_icd9_flg,[passthrough],in0.imxjie]
+  [out0.orx_dmc_di.icd9_cd_ext,[passthrough],in0.imuvhj]
+  [out0.orx_dmc_di.icd9_cd_int,[transform],in0.imuuhj]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_dmc_di.src_env_sk,'orx_dmc_di.src_env_sk',1,0]
+     [out0.orx_dmc_di.med_cond_diag_xref_sk,'orx_dmc_di.med_cond_diag_xref_sk',1,0]
+     [out0.orx_dmc_di.icd9_to_med_cond_flg,'orx_dmc_di.icd9_to_med_cond_flg',1,0]
+     [out0.orx_dmc_di.med_cond_cd,'orx_dmc_di.med_cond_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.orx_dmc_di.icm_stat_cd,'orx_dmc_di.icm_stat_cd',1,0]
+     [out0.orx_dmc_di.med_cond_to_icd9_flg,'orx_dmc_di.med_cond_to_icd9_flg',1,0]
+     [out0.orx_dmc_di.icd9_cd_ext,'orx_dmc_di.icd9_cd_ext',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.orx_dmc_di.icd9_cd_int,'orx_dmc_di.icd9_cd_int',1,0]
+  ]
+  impacts:
+  [
+     [in0.imuuhj,'imuuhj',1,1]
+     [in0.imxkie,'imxkie',1,1]
+     [in0.imxlie,'imxlie',1,1]
+     [in0.imxjie,'imxjie',1,1]
+     [in0.imuvhj,'imuvhj',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.imurhj,'imurhj',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) orx_dmc_di_med_cond_diag_xref_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=7) orx_dmc_di_med_cond_cd = fail_if_error(string_lrtrim(in0.imurhj));
+let string("\x01",charset="iso-8859-15", maximum_length=20) orx_dmc_di_icd9_cd_int = fail_if_error(string_lrtrim(in0.imuuhj));
+let string("\x01",charset="iso-8859-15", maximum_length=20) orx_dmc_di_icd9_cd_ext = fail_if_error(in0.imuvhj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_dmc_di_med_cond_to_icd9_flg = fail_if_error(in0.imxjie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_dmc_di_icd9_to_med_cond_flg = fail_if_error(in0.imxkie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_dmc_di_icm_stat_cd = fail_if_error(in0.imxlie);
+let decimal("\x01",0) orx_dmc_di_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.orx_dmc_di.med_cond_diag_xref_sk::orx_dmc_di_med_cond_diag_xref_sk;
+  out0.orx_dmc_di.med_cond_cd::orx_dmc_di_med_cond_cd;
+  out0.orx_dmc_di.icd9_cd_int::orx_dmc_di_icd9_cd_int;
+  out0.orx_dmc_di.icd9_cd_ext::orx_dmc_di_icd9_cd_ext;
+  out0.orx_dmc_di.med_cond_to_icd9_flg::orx_dmc_di_med_cond_to_icd9_flg;
+  out0.orx_dmc_di.icd9_to_med_cond_flg::orx_dmc_di_icd9_to_med_cond_flg;
+  out0.orx_dmc_di.icm_stat_cd::orx_dmc_di_icm_stat_cd;
+  out0.orx_dmc_di.src_env_sk::orx_dmc_di_src_env_sk;
+  out0.*::in0.*;
+
+end;

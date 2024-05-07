@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/claim_stat_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/30  Gaurav Mirje            Initial version, create lookup functions for claim_stat process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_claim_stat_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_claim_stat.dat';
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type claim_stat_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  claim_status_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {claim_stat.claim_stat_id};     
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let claim_stat_lkup_t GLKUP_CLAIM_STAT = allocate_with_nulls();
+
+claim_stat_lkup_t out :: load_claim_stat_lkup() inline =
+begin
+  if (GLKUP_CLAIM_STAT.id == lookup_not_loaded())
+    GLKUP_CLAIM_STAT = lookup_load(this_partition_path(get_claim_stat_lkup_path()));
+  
+  out :: GLKUP_CLAIM_STAT;
+end;
+
+claim_stat_t out :: get_claim_stat(claim_stat_id) inline =
+begin
+  let claim_stat_lkup_t lkup = load_claim_stat_lkup();
+  out :: lookup(lkup, claim_stat_id).claim_stat;
+end;

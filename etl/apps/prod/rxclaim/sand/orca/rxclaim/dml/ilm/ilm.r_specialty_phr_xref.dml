@@ -1,0 +1,31 @@
+type logical_ids_rxclaim_r_specialty_phr_xref_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) specialty_phr_xref_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) phr_nm = NULL("");
+  date("YYYYMMDD")("\x01") inactive_date = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_store_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=55) phr_addr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=55) phr_addr2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) phr_city = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_state = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) phr_zip = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=55) phr_group = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) phr_type = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_r_specialty_phr_xref_t phr_xref  /*@ BizName:'phr xref' */;
+end;

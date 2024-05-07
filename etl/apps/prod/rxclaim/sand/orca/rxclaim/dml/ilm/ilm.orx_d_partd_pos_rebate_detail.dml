@@ -1,0 +1,76 @@
+type logical_ids_rxclaim_d_partd_pos_rebate_detail_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) partd_pos_rebate_dtl_sk = NULL("");
+  decimal("\x01",0) rebate_tbl_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) rebate_tbl_id = NULL("");
+  decimal("\x01",0) prod_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) ndc_lblr_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) ndc_prod_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) ndc_pkg_cd = NULL("");
+  decimal("\x01",0) dxp_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) stat_id = NULL("");
+  date("YYYYMMDD")("\x01") dxp_from_dt = NULL("");
+  date("YYYYMMDD")("\x01") dxp_thru_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) ndc_lblr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) dxp_typ_id = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_non_lics_pp_rate = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_lics_pp_rate = NULL("");
+  date("YYYYMMDD")("\x01") dxp_non_lics_bgn_dt = NULL("");
+  date("YYYYMMDD")("\x01") dxp_lics_bgn_dt = NULL("");
+  date("YYYYMMDD")("\x01") dxp_non_lics_bl_dt = NULL("");
+  date("YYYYMMDD")("\x01") dxp_lics_bl_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) dxp_non_lics_cur_ref_dt_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) dxp_lics_cur_ref_dt_typ = NULL("");
+  decimal("\x01".4, maximum_length=13, sign_reserved) dxp_non_lics_bl_dte_prc = NULL("");
+  decimal("\x01".4, maximum_length=13, sign_reserved) dxp_lics_bl_dte_prc = NULL("");
+  decimal("\x01".6, maximum_length=15, sign_reserved) dxp_non_lics_base_rate = NULL("");
+  decimal("\x01".6, maximum_length=15, sign_reserved) dxp_lics_base_rate = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_non_lics_max_rebate = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_lics_max_rebate = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_non_lics_percnt_ret = NULL("");
+  decimal("\x01".6, maximum_length=9, sign_reserved) dxp_lics_percnt_ret = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) dxp_admin_fee = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_product_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d prd tbl: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("") /*VARCHAR(20) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+end;
+type nk_ids_common_d_product_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("") /*VARCHAR(20) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+end;
+
+type opt_nk_ids_rxclaim_d_partd_pos_rebate_table_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d rbt tbl: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) rebate_tbl_id = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+type nk_ids_rxclaim_d_partd_pos_rebate_table_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) rebate_tbl_id = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_partd_pos_rebate_detail_t d_pos_dtl  /*@ BizName:'d pos dtl' */;
+  opt_nk_ids_common_d_product_t d_prd_tbl  /*@ BizName:'d prd tbl' */;
+  opt_nk_ids_rxclaim_d_partd_pos_rebate_table_t d_rbt_tbl  /*@ BizName:'d rbt tbl' */;
+end;

@@ -1,0 +1,17 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_rxclaim.a_fnl_mm_l_perd_type
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.d_dt_l_dymc_perd_l_perd_typ
+JOIN_TYPE|l|||Inner Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{perd_start_dt_sk}
+TARGET_NAME||||ids_rxclaim.a_fnl_member_month
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+NON_DRIVER_1_OUTPUT_FIELDS||||dt_sk,dxf_sk,perd_start_dt_sk,perd_type_nbr,perd_start_dt,perd_end_dt
+DO_CLEAN||||1
+OVERRIDE_JOIN_KEY||||{dt_sk}
+DRIVER_FILE_TYPE||||Clean
+NON_DRIVER_1_FILE_TYPE||||Clean
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+JOIN_XFR||||out::join(in0, in1)=\r\nbegin\r\n  let date("YYYYMMDD") p_st_dt = in1.perd_start_dt;\r\n  let date("YYYYMMDD") p_end_dt = in1.perd_end_dt;\r\n  \r\n  out.month_cnt_no :1: if(in1.perd_type_nbr == 2) \r\n                                decimal_round(date_difference_months((date("YYYYMMDD"))string_concat((string(""))(date("YYYYMM"))p_end_dt, (decimal(""))date_month_end(date_month(p_end_dt),date_year(p_end_dt))), p_st_dt), 0)\r\n                       else\r\n                                decimal_round(date_difference_months((date("YYYYMMDD"))string_concat((string(""))(date("YYYYMM"))p_st_dt, (decimal(""))date_month_end(date_month(p_st_dt),date_year(p_st_dt))), p_end_dt), 0);\r\n  out.perd_type_sk :1: in1.dxf_sk;                                \r\n  out.* :1: in0.*;\r\n  out.* :2: in1.*;\r\nend;
+ADDITIONAL_FIELDS_DML||||record\r\n  decimal("\\x01",0) in1_perd_start_dt_sk = NULL("") /*BIGINT*/;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.in1_perd_start_dt_sk :: in.perd_start_dt_sk;\r\nout.* :: in.*;\r\nend

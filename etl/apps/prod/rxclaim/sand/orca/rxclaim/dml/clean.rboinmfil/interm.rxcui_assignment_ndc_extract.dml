@@ -1,0 +1,37 @@
+record
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string("\x01", maximum_length=5) contract_no = NULL("");
+  string(unsigned integer(1),maximum_length=11)  proxy_ndc /*CHAR(11) NOT NULL*/; //RCND2P
+  string(unsigned integer(1),maximum_length=11)  altr_ndc /*CHAR(11) NOT NULL*/;
+  little endian integer(4)  rxcui /*INTEGER NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  msc /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  partd_ind /*CHAR(1) NOT NULL*/;
+  date("YYYY-MM-DD")  eff_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")  term_dt /*DATE NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  rxcui_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) unit_cost_amt = NULL("") /*DECIMAL(13,5)*/;
+  string("\x01", maximum_length=10) afq7hb = NULL("");
+string("\x01", maximum_length=5) afq8hb = NULL("");
+string("\x01", maximum_length=30) aftwig = NULL("");
+string("\x01", maximum_length=25) aetvig = NULL("");//from rcnd1p
+string("\x01", maximum_length=10) awx9vg= NULL(""); //from rccpdp
+string("\x01", maximum_length=30)  rxt_src_envrt_nm = NULL("");
+  decimal("\x01") claim_count=0;
+  integer(4) alter_ndc_count=0;
+  integer(4) alter_ndc_claim_count_sum=0;
+  integer(4) proxy_ndc_count=0;
+  integer(4) proxy_ndc_claim_count_sum=0;
+  decimal("\x01".11) claim_qty_percent=0;
+  decimal("\x01".11) claim_qty_cuml_percentage=0;
+  decimal("\x01".11) weight_mean_all_awp=0;
+  decimal("\x01".11) threshold_price=0;
+  decimal("\x01".11) threshold_price_percent=0;
+  decimal("\x01".11) weighted_std_dev=0;
+  string(1) threshold_price_ind= NULL("");
+  decimal("\x01".11) first_rec_price=0;
+  decimal("\x01".11) second_rec_price=0;
+  decimal("\x01".11) all_awp_ceil=0;
+  decimal("\x01".11) final_price=0;
+  string("\n") newline='\n';
+end

@@ -1,0 +1,106 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8) dxf_src_rec_cnt = 0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dxf_src_file_name = ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string(unsigned integer(1),maximum_length=14) ahnehc /*CHAR(14) NOT NULL  */ /*@
+BizName:"RCDC6P: DC5 Drug Cost Comp Sched"
+ BizComment:"The Comparison Schedule defines to which Drug Cost Schedule the claim is directed to obtain the various ingredient costs when the current Sequence is satisfied."
+@*/;
+  little endian integer(2) ahaihs /*DECIMAL(3) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Sequence"
+ BizComment:"The Sequence is the user-input number defining the order in which all Sequences are examined.  It is a three-byte numeric field supporting values 1 through 999.  In Add mode version of this screen, the Sequence is input capable, is required and must be unique within the Drug Cost Comparison Schedule Table."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahh5h9 /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Drug Cost Source"
+ BizComment:"Indicates the Source of Product Cost."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahh6h9 /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Drug Cost Type"
+ BizComment:"Indicates the Type of Product Cost."
+@*/;
+  string(unsigned integer(1),maximum_length=9) ahnnhc /*CHAR(9) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Carrier ID"
+ BizComment:"Carriers are the insurance companies that provide prescription benefits to members.  In RxCLAIM, carriers are the highest level in a four-tiered system (Carrier > Account > Group > Member) allowing for flexibility in defining parameter for a group of people.  For a MAC List, the Carrier is the owner of that list."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahh7h9 /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 MAC List"
+ BizComment:"A MAC List contains groups of products that are typically available generically from a wide variety of manufacturers.  Since they are available from several manufacturers, these products may have a wide range of ingredient costs.  In an effort to reduce the amount the client pays on these products, a ceiling cost is attached. This ceiling cost is referred to as a proprietary maximum allowable cost (MAC)."
+@*/;
+  string(unsigned integer(1),maximum_length=1) aho2h9 /*CHAR(1) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 State Source"
+ BizComment:""
+@*/;
+  decimal("".2, sign_reserved) ahc8hv /*DECIMAL(5,2) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Drug Cost Percent"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1) ahizh9 /*CHAR(1) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Availability Rule"
+ BizComment:"The Availability Rule is used to control the use of the Drug Cost Comparison Schedule by the availability or unavailability of the specified Drug Cost. :P. Allowed values are: :P. 1 = By-Pass if Available :PC. When the Rule is set to '1' and the specified Drug Cost is available, then the entire Schedule is by-passed and RxCLAIM returns to the Drug Cost Schedule to retrieve the subsequent sequence on that Schedule. :P. 2 = Use if No Cost Available :PC. When the Rule is set to '2' and no previous drug cost has been found this sequence is applied. :P. 3 = By-pass if available or 0 :PC. If the specified drug cost is available or 0, then the entire DCCS is bypassed.  Instead, the system returns to the DCS and retrieves the subsequent sequence on that DCS. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1) ahhuh9 /*CHAR(1) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 NDC-Based MAC"
+ BizComment:"When the MAC List is populated, the NDC-Based field is used to specify that in addition that the cost be available on the MAC List identified, that it be available at the NDC-level within that MAC List.  Allowed values are:   = blank Y = Yes"
+@*/;
+  string(unsigned integer(1),maximum_length=2) ahhxh9 /*CHAR(2) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Fee Field"
+ BizComment:"The Fee defines which Fee field within the Price Table Detail screen should be referenced to add to the Calculated Drug Cost prior to performing the comparison defined in the Comparison Type field.  Allowed values are: 01 = Fee 1: The amount input in the Fee 1 field of the Price      Table Detail screen is referenced to obtain an amount to      add to the Calculated Drug Cost prior to performing the      comparison.  If that Sequence is selected, then Fee 1      becomes the Calculated Fee on the claim. 02 = Fee 2: The amount input in the Fee 2 field of the Price      Table Detail screen is referenced to obtain an amount to      add to the Calculated Drug Cost prior to performing the      comparison.  If that Sequence is selected, then Fee 2      becomes the Calculated Fee on the claim. 03 = Fee 3: The amount input in the Fee 3 field of the Price      Table Detail screen is referenced to obtain an amount to      add to the Calculated Drug Cost prior to performing the      comparison.  If that Sequence is selected, then Fee 3      becomes the Calculated Fee on the claim. 04 = Fee Schedule: The amount derived from the Fee Schedule input      on the Price Table Detail screen is added to the Calculated      Drug Cost prior to performing the comparison.  If that      Sequence is selected, then the amount determined from the      Fee Schedule becomes the Calculated Fee on the claim. 05 = Submitted > 0 Else Fee 1: If the submitted fee is greater      than 0, then it is added to the Calculated Drug Cost prior      to performing the comparison, and if that Sequence is      selected, then the Submitted Fee becomes the Calculated Fee      on the claim.  If the submitted fee is equal to 0, then the      amount input in the Fee 1 field of the Price Table Detail      screen is referenced to obtain an amount to add to the      Calculated Drug Cost prior to performing the comparison,      and if that Sequence is selected, then Fee 1 becomes the      Calculated Fee on the claim."
+@*/;
+  decimal("".2, sign_reserved) ahskhy /*DECIMAL(5,2) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Drug Cost Rate Amount"
+ BizComment:"Rate Amount reimburses the pharmacy the specified dollar amount in addition to the specified percent reimbursement."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahe4hi /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Fee Schedule Name"
+ BizComment:"Determines the dispensing fee for the claim if the corresponding Drug Cost is selected after drug cost comparisons are performed."
+@*/;
+  little endian integer(2) aht4ht /*DECIMAL(2) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 Step Nbr in Fee Sched"
+ BizComment:"The maximum step referenced in determining the dispensing fee."
+@*/;
+  string(unsigned integer(1),maximum_length=1) ahtnaj /*CHAR(1) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 State Pricing"
+ BizComment:"Indicates if system should use State Pricing Table Rate (RCSPDP) to adjudicate claim."
+@*/;
+  string(unsigned integer(1),maximum_length=1) ahn9ak /*CHAR(1) NOT NULL  */ /*@
+BizName:"RCDC6P: DC6 340B Qualifier Flag"
+ BizComment:"When this flag is set, the claim validated for if it qualifies for 340B pricing using plan 340B set up and MAC list is searched for the submitted NDC. If 340B qualified, this sequence number is used in drug cost comparison; otherwise this sequence will be skipped in the comparison. :P. Allowed values are: :PC. ' ' = Blank :PC. 'Y' = Yes :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahdehp /*CHAR(10) NOT NULL*/;
+  decimal("".2, sign_reserved) ahzjqu /*DECIMAL(5,2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2) ahslar /*CHAR(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10) ahqdvg /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10) ahakvn /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  little endian integer(4) ahc2dt /*DECIMAL(7) NOT NULL  */ /*@
+BizName:"RCDC6P: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  little endian integer(4) ahadtm /*DECIMAL(6) NOT NULL  */ /*@
+BizName:"RCDC6P: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahalvn /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahadvn /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4) ahbmdt /*DECIMAL(7) NOT NULL  */ /*@
+BizName:"RCDC6P: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4) ahabtm /*DECIMAL(6) NOT NULL  */ /*@
+BizName:"RCDC6P: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10) ahaevn /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCDC6P: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

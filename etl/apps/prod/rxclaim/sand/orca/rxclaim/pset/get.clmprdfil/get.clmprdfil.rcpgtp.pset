@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcpgtp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpgtp                  k2aecd,k2akdt,k2amar,k2odcd,k2c7n3,k2shdt,k2sidt,k2huck,k2mli1,k2m4hs,k2psib,k2i6aq,k2i7aq,k2i8aq,k2i9aq,k2jaaq,k2hncf,k2cwva,k2jbaq,k2izvd,k2kyar,k2kzar,k2lhar,k2ljar,k2liar,k2lkar,k2a3as,k2a4as,k2edbs,k2akvn,k2c2dt,k2adtm,k2alvn,k2advn,k2bmdt,k2abtm,k2aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]
+WHERE_CLAUSE||||$["WHERE k2bmdt between " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) ]

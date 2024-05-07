@@ -1,0 +1,30 @@
+/*Function combining one record from each input to produce one record on the output.*/
+out::fuse(in0,in1)=
+begin
+  let string(int)[int] files = if (is_defined(in0)) re_split_no_empty(in0, '\n') else [vector];
+  let   record
+    string(int) path;
+    string(int) filename;
+    datetime('YYYY-MM-DD HH24:MI') last_modified;
+    decimal('') file_size;
+  end[int] filenames = allocate();
+  
+  for (let i, i < length_of(files))
+  begin
+    let string(int)[int] matches = re_get_matches(files[i], '([[:digit:]]{2}-[[:digit:]]{2}-[[:digit:]]{2}[[:space:]]+[[:digit:]]{2}:[[:digit:]]{2}[AP]M)[[:space:]]+([[:digit:]]+)[[:space:]]+(.*)');
+    let decimal('') file_size = (decimal(''))matches[2];
+    let string('') filename = matches[3];
+    let string(int)[int] last_modified_matches = re_get_matches(matches[1], '([[:digit:]]{2})-([[:digit:]]{2})-([[:digit:]]{2})[[:space:]]+([[:digit:]]{2}):([[:digit:]]{2})([AP]M)');
+    let long last_modified_month = (decimal(''))last_modified_matches[1];
+    let long last_modified_day = (decimal(''))last_modified_matches[2];
+    let long last_modified_year = (decimal(''))last_modified_matches[3] + 2000;
+    let long last_modified_hour = (decimal(''))last_modified_matches[4] + if (last_modified_matches[6] == 'PM' and last_modified_matches[4] != '12') 12 else if (last_modified_matches[6] == 'AM' and last_modified_matches[4] == '12') -12 else 0;
+    let long last_modified_minute = (decimal(''))last_modified_matches[5];
+    let datetime('YYYY-MM-DD HH24:MI') last_modified = encode_datetime(last_modified_year, last_modified_month, last_modified_day, last_modified_hour, last_modified_minute);
+
+    if (is_defined(last_modified) and is_defined(file_size) and is_defined(filename))
+      filenames = vector_append(filenames, [record path in1.file_name, filename filename, file_size file_size, last_modified last_modified]);
+  end
+  
+  out.filenames :: filenames;
+end;

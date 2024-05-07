@@ -1,0 +1,22 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.rxs_rxclaim_nbr :: in.aop2nb;
+  out.tcd_claim_seq_nbr :: in.aooinb;
+  out.sbm_dur_pps_code_cntr :: in.aor5n2;
+  out.sbm_reason_for_srvcde :: in.aolast;
+  out.sbm_prof_service_code :: in.aolbst;
+  out.sbm_result_of_service_code :: in.aolcst;
+  out.sbm_level_of_effort :: in.aoi1cj;
+  out.sbm_co_agent_id :: in.aor7c4;
+  out.sbm_co_agent_id_qual :: in.aoi2cj;
+  out.date_submitted :: in.datesbm;
+  out.claim_status :: in.claimsts;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcmddp_enrich.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcmddp_enrich.dml
+USE_ROLLUP||||False
+OUTPUT_FILE_LOCATION||||$[AI_MFS+"/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcmddp_enrich."+string_substring(RUN_ID,1,11)+"999"+".dat.gz"]
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcmddp_enrich.dml
+USE_SORT||||True
+USE_SCAN||||True
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rcmddp_flg_set_star_rfmt.xfr
+SCAN_XFR||||$AI_XFR/produce/produce.rcmddp_flg_set_star_scan.xfr
+USE_DEDUP||||True
+SORT_KEY||||{dxf_hk_part1}
+EXTRA_SORT_KEY||||{dxf_hk_part2}
+LOOKUP_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_rxclaim/one/f_mpd_pde_recent.dat.gz
+LOOKUP_FILE_DML||||$PUB_DATAHUB_DML/nk/ids_rxclaim/ids_rxclaim.f_mpd_pde_recent.dml

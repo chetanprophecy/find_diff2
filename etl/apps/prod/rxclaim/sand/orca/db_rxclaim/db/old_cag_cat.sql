@@ -1,0 +1,1 @@
+select carrier_id as old_carrier_id, account_id as old_account_id, employer_group_id as old_employer_group_id,mb_first_nm as old_mb_first_nm,mb_last_nm as old_mb_last_nm,mbr_sex as old_mbr_sex,mbr_dt_of_brth as old_mbr_dt_of_brth from orx_idw_dm_prd..d_member where ( src_env_sk = 490) and carrier_id in ('UHC0006XX') and employer_group_id like '%' and account_id like '%'

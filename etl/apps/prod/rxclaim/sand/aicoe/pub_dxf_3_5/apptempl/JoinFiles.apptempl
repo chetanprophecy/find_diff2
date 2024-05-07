@@ -1,0 +1,1566 @@
+<AppConfTempl name="Join Files (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath template_project="false" client_projects="all">/Projects/orca/rxclaim</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "/~$PUB_DB_XFR/file_list.xfr";
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "get.") )
+    "This application configuration must be named: get.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "get.<i>source_system</i>.<i>file_identifier</i>,\n" +
+    "where <i>source_system</i> and <i>file_identifier</i>\n" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="get" prototype_path="${AI_PSET}/get.join.files.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_FILE_TYPE_LIST" expression="$AI_FILE_TYPE_LIST"/>
+        <FlowData name="DRIVER_INPUT_DML" source_port="/Driver_Processing/Driver_Remove_duplicates_from_IDS_File/out0" dest_port="/Driver_Processing/RFMT_Transform_Driver/in"/>
+        <FlowData name="NON_DRIVER_1_INPUT_DML" source_port="/Non_Driver_1_Processing/Non_Driver_1_Remove_duplicates_from_IDS_File/out0" dest_port="/Non_Driver_1_Processing/RFMT_Transform_Non_Driver_1/in"/>
+        <FlowData name="NON_DRIVER_2_INPUT_DML" source_port="/Non_Driver_2_Processing/Non_Driver_2_Remove_duplicates_from_IDS_File/out0" dest_port="/Non_Driver_2_Processing/RFMT_Transform_Non_Driver_2/in"/>
+        <FlowData name="NON_DRIVER_3_INPUT_DML" source_port="/Non_Driver_3_Processing/Non_Driver_3_Remove_duplicates_from_IDS_File/out0" dest_port="/Non_Driver_3_Processing/RFMT_Transform_Non_Driver_3/in"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="join_key" type="string"/>
+      <Variable name="override_join_key" type="string"/>
+      <Variable name="join_level_2_key" type="string"/>
+      <Variable name="override_join_level_2_key" type="string"/>
+      <Variable name="join_level_3_key" type="string"/>
+      <Variable name="override_join_level_3_key" type="string"/>
+      <Variable name="lkp_flds" type="string"/>
+      <Variable name="errors" type="string"/>
+      <Variable name="source_name" type="string"/>
+      <Variable name="target_name" type="string"/>
+      <Variable name="source_logical_name" type="string"/>
+      <ListVariable name="driver_file_list" type="string"/>
+      <ListVariable name="nondriver_1_file_list" type="string"/>
+      <ListVariable name="nondriver_2_file_list" type="string"/>
+      <ListVariable name="nondriver_3_file_list" type="string"/>
+      <Variable name="driver_first_file_nm" type="string"/>
+      <Variable name="nondriver_1_first_file_nm" type="string"/>
+      <Variable name="nondriver_2_first_file_nm" type="string"/>
+      <Variable name="nondriver_3_first_file_nm" type="string"/>
+      <Variable name="driver_mapping_ruleset" type="ruleset"/>
+      <Variable name="non_driver_1_mapping_ruleset" type="ruleset"/>
+      <Variable name="non_driver_2_mapping_ruleset" type="ruleset"/>
+      <Variable name="non_driver_3_mapping_ruleset" type="ruleset"/>
+    </Variables>
+    <SharedFile name="clean_dml_file" path="" auto_lock="false"/>
+    <SharedFile name="source_dml_file" path="" auto_lock="false"/>
+    <SharedFile name="lookup_dml_file" path="" auto_lock="false"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Chk Appconf Name Error">
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment name="Driver Source Name">
+      <SourceValue reference="vars.source_name"/>
+      <TargetValue reference="proj.get.DRIVER_SOURCE_NAME"/>
+    </Assignment>
+    <Assignment name="Driver Source Logical Name">
+      <SourceValue is_expression="true">if(is_blank(vars.source_logical_name)) 
+  string_split(vars.source_name, ".")[0]
+else
+  vars.source_logical_name</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_SOURCE_LOGICAL_NAME"/>
+    </Assignment>
+    <Assignment name="Target Name">
+      <SourceValue is_expression="true">if(vars.target_name == "") 
+  re_replace(built_in, "^get[.]", "")
+else
+  vars.target_name</SourceValue>
+      <TargetValue reference="proj.get.TARGET_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.JOIN_KEY</SourceValue>
+      <TargetValue reference="vars.join_key"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.get.OVERRIDE_JOIN_KEY == '{}') proj.get.JOIN_KEY
+else proj.get.OVERRIDE_JOIN_KEY</SourceValue>
+      <TargetValue reference="vars.override_join_key"/>
+    </Assignment>
+    <Assignment name="Driver Join Key">
+      <SourceValue is_expression="true">if (vars.join_key == "")
+"{}" 
+else
+vars.join_key</SourceValue>
+      <TargetValue reference="proj.get.JOIN_KEY"/>
+    </Assignment>
+    <Assignment name="Non Driver Join Key">
+      <SourceValue is_expression="true">if(vars.override_join_key == "" &amp;&amp; vars.join_key == "")
+"{}"
+else if (vars.override_join_key == "" &amp;&amp; vars.join_key != "")
+vars.join_key
+else
+vars.override_join_key</SourceValue>
+      <TargetValue reference="proj.get.OVERRIDE_JOIN_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.JOIN_LEVEL_2_KEY</SourceValue>
+      <TargetValue reference="vars.join_level_2_key"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.get.OVERRIDE_JOIN_LEVEL_2_KEY == '{}') proj.get.JOIN_LEVEL_2_KEY
+else proj.get.OVERRIDE_JOIN_LEVEL_2_KEY</SourceValue>
+      <TargetValue reference="vars.override_join_level_2_key"/>
+    </Assignment>
+    <Assignment name="Driver Join Key">
+      <SourceValue is_expression="true">if (vars.join_level_2_key == "")
+"{}" 
+else
+vars.join_level_2_key</SourceValue>
+      <TargetValue reference="proj.get.JOIN_LEVEL_2_KEY"/>
+    </Assignment>
+    <Assignment name="Non Driver Join Key">
+      <SourceValue is_expression="true">if(vars.override_join_level_2_key == "" &amp;&amp; vars.join_level_2_key == "")
+"{}"
+else if (vars.override_join_level_2_key == "" &amp;&amp; vars.join_level_2_key != "")
+vars.join_level_2_key
+else
+vars.override_join_level_2_key</SourceValue>
+      <TargetValue reference="proj.get.OVERRIDE_JOIN_LEVEL_2_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.JOIN_LEVEL_3_KEY</SourceValue>
+      <TargetValue reference="vars.join_level_3_key"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.get.OVERRIDE_JOIN_LEVEL_3_KEY == '{}') proj.get.JOIN_LEVEL_3_KEY
+else proj.get.OVERRIDE_JOIN_LEVEL_3_KEY</SourceValue>
+      <TargetValue reference="vars.override_join_level_3_key"/>
+    </Assignment>
+    <Assignment name="Driver Join Key">
+      <SourceValue is_expression="true">if (vars.join_level_3_key == "")
+"{}" 
+else
+vars.join_level_3_key</SourceValue>
+      <TargetValue reference="proj.get.JOIN_LEVEL_3_KEY"/>
+    </Assignment>
+    <Assignment name="Non Driver Join Key">
+      <SourceValue is_expression="true">if(vars.override_join_level_3_key == "" &amp;&amp; vars.join_level_3_key == "")
+"{}"
+else if (vars.override_join_level_3_key == "" &amp;&amp; vars.join_level_3_key != "")
+vars.join_level_3_key
+else
+vars.override_join_level_3_key</SourceValue>
+      <TargetValue reference="proj.get.OVERRIDE_JOIN_LEVEL_3_KEY"/>
+    </Assignment>
+    <Assignment name="Generated Pset Name">
+      <SourceValue is_expression="true">"pset/get." + string_split(re_replace(built_in, "^get[.]", ""), ".")[0] + "/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.get" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.CLEAN_DML_FILE</SourceValue>
+      <TargetValue reference="clean_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.CLEAN_DML</SourceValue>
+      <TargetValue reference="clean_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.SOURCE_DML_FILE</SourceValue>
+      <TargetValue reference="source_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.SOURCE_DML</SourceValue>
+      <TargetValue reference="source_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.LOOKUP_DML_FILE</SourceValue>
+      <TargetValue reference="lookup_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.LOOKUP_DML</SourceValue>
+      <TargetValue reference="lookup_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"{" + re_replace(vars.lkp_flds, ",", ";") + "}"</SourceValue>
+      <TargetValue reference="proj.get.LOOKUP_FIELDS_KEY"/>
+    </Assignment>
+    <Assignment name="Driver Files List">
+      <SourceValue reference="proj.get.DRIVER_FILES_VEC"/>
+      <TargetValue reference="vars.driver_file_list"/>
+    </Assignment>
+    <Assignment name="Non Driver 1 Files List">
+      <SourceValue reference="proj.get.NON_DRIVER_1_FILES_VEC"/>
+      <TargetValue reference="vars.nondriver_1_file_list"/>
+    </Assignment>
+    <Assignment name="Non Driver 2 Files List">
+      <SourceValue reference="proj.get.NON_DRIVER_2_FILES_VEC"/>
+      <TargetValue reference="vars.nondriver_2_file_list"/>
+    </Assignment>
+    <Assignment name="Non Driver 3 Files List">
+      <SourceValue reference="proj.get.NON_DRIVER_3_FILES_VEC"/>
+      <TargetValue reference="vars.nondriver_3_file_list"/>
+    </Assignment>
+    <Assignment name="Driver First File nm">
+      <SourceValue is_expression="true">vars.driver_file_list[0]</SourceValue>
+      <TargetValue reference="vars.driver_first_file_nm"/>
+    </Assignment>
+    <Assignment name="Non Driver First 1 File Nm">
+      <SourceValue is_expression="true">vars.nondriver_1_file_list[0]</SourceValue>
+      <TargetValue reference="vars.nondriver_1_first_file_nm"/>
+    </Assignment>
+    <Assignment name="Non Driver 2 First File Nm">
+      <SourceValue is_expression="true">vars.nondriver_2_file_list[0]</SourceValue>
+      <TargetValue reference="vars.nondriver_2_first_file_nm"/>
+    </Assignment>
+    <Assignment name="Non Driver 3 First File Nm">
+      <SourceValue is_expression="true">vars.nondriver_3_file_list[0]</SourceValue>
+      <TargetValue reference="vars.nondriver_3_first_file_nm"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Driver Start Date"</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_START_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_START_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.DRIVER_START_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.DRIVER_START_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_START_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Driver End Date"</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_END_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_END_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.DRIVER_END_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.DRIVER_END_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.DRIVER_END_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 1 Start Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_START_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_START_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_1_START_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_1_START_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_START_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 1 End Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_END_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_END_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_1_END_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_1_END_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_1_END_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 2 Start Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_START_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_START_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_2_START_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_2_START_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_START_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 2 End Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_END_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_END_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_2_END_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_2_END_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_2_END_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 3 Start Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_START_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_START_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_3_START_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_3_START_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_START_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Non Driver 3 End Date"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_END_DATE" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_END_DATE" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.get.NON_DRIVER_3_END_DATE)) (date("YYYY-MM-DD"))(date("YYYYMMDD"))proj.get.NON_DRIVER_3_END_DATE else ""</SourceValue>
+      <TargetValue reference="proj.get.NON_DRIVER_3_END_DATE" property="business_test_value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.DRIVER_INPUT_DML" property="record_format"/>
+      <TargetValue reference="vars.driver_mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.DRIVER_OUTPUT_DML"/>
+      <TargetValue reference="vars.driver_mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.get.DRIVER_START_DATE", "proj.get.DRIVER_END_DATE"]</SourceValue>
+      <TargetValue reference="vars.driver_mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get"/>
+      <TargetValue reference="vars.driver_mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.DRIVER_INPUT_DML"/>
+      <TargetValue reference="vars.driver_mapping_ruleset" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.driver_mapping_ruleset"/>
+      <TargetValue reference="proj.get.DRIVER_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_1_INPUT_DML" property="record_format"/>
+      <TargetValue reference="vars.non_driver_1_mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_1_OUTPUT_DML"/>
+      <TargetValue reference="vars.non_driver_1_mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.get.NON_DRIVER_1_START_DATE", "proj.get.NON_DRIVER_1_END_DATE"]</SourceValue>
+      <TargetValue reference="vars.non_driver_1_mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get"/>
+      <TargetValue reference="vars.non_driver_1_mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_1_INPUT_DML"/>
+      <TargetValue reference="vars.non_driver_1_mapping_ruleset" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.non_driver_1_mapping_ruleset"/>
+      <TargetValue reference="proj.get.NON_DRIVER_1_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_2_INPUT_DML" property="record_format"/>
+      <TargetValue reference="vars.non_driver_2_mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_2_OUTPUT_DML"/>
+      <TargetValue reference="vars.non_driver_2_mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.get.NON_DRIVER_2_START_DATE", "proj.get.NON_DRIVER_2_END_DATE"]</SourceValue>
+      <TargetValue reference="vars.non_driver_2_mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get"/>
+      <TargetValue reference="vars.non_driver_2_mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_2_INPUT_DML"/>
+      <TargetValue reference="vars.non_driver_2_mapping_ruleset" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.non_driver_2_mapping_ruleset"/>
+      <TargetValue reference="proj.get.NON_DRIVER_2_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_3_INPUT_DML" property="record_format"/>
+      <TargetValue reference="vars.non_driver_3_mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_3_OUTPUT_DML"/>
+      <TargetValue reference="vars.non_driver_3_mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.get.NON_DRIVER_3_START_DATE", "proj.get.NON_DRIVER_3_END_DATE"]</SourceValue>
+      <TargetValue reference="vars.non_driver_3_mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get"/>
+      <TargetValue reference="vars.non_driver_3_mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.NON_DRIVER_3_INPUT_DML"/>
+      <TargetValue reference="vars.non_driver_3_mapping_ruleset" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.non_driver_3_mapping_ruleset"/>
+      <TargetValue reference="proj.get.NON_DRIVER_3_XFR"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.get"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.errors == ""
+&amp;&amp; proj.get.DRIVER_SOURCE_NAME != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_SOURCE_NAME != "" 
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; proj.get.NON_DRIVER_2_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; proj.get.NON_DRIVER_3_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; string_index(proj.get.DRIVER_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; string_index(proj.get.NON_DRIVER_1_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; string_index(proj.get.NON_DRIVER_2_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; string_index(proj.get.NON_DRIVER_3_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; proj.get.DRIVER_SOURCE_LOGICAL_NAME != ""
+&amp;&amp; proj.get.DRIVER_FILE_TYPE != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_FILE_TYPE != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; proj.get.JOIN_TYPE not member [vector "", "Please Select"]
+&amp;&amp; proj.get.JOIN_KEY != "" 
+&amp;&amp; proj.get.OVERRIDE_JOIN_KEY != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; proj.get.JOIN_LEVEL_2_TYPE not member [vector "", "Please Select"]) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; proj.get.JOIN_LEVEL_2_KEY != "" ) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_2_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; proj.get.JOIN_LEVEL_3_TYPE not member [vector "", "Please Select"]) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; proj.get.JOIN_LEVEL_3_KEY != "" ) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_3_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"])
+&amp;&amp; (proj.get.DO_SOURCE == "1" or proj.get.DO_CLEAN == "1" or proj.get.DO_LOOKUP == "1"
+or (proj.get.DRIVER_FILE_TYPE == "Split" &amp;&amp; proj.get.DRIVER_OVERWRITE_SPLIT == "1") 
+or (proj.get.NON_DRIVER_1_FILE_TYPE == "Split" &amp;&amp; proj.get.NON_DRIVER_1_OVERWRITE_SPLIT == "1")
+or ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE == "Split" &amp;&amp; proj.get.NON_DRIVER_2_OVERWRITE_SPLIT == "1") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+or ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE == "Split" &amp;&amp; proj.get.NON_DRIVER_3_OVERWRITE_SPLIT == "1") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0']))</Enabled>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;&lt;font color='#ff0000'&gt;" + vars.errors + "&lt;/font&gt;&lt;/b&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Source File(s) Setup</Label>
+          <UIElements>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Driver Setup ... &lt;/font&gt;"</Label>
+              <UIElements>
+                <Popup>
+                  <Label>Driver Properties setup...</Label>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Driver File ILM Name (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.DRIVER_ILM_NAME"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Driver File Source Name (E.g., ids_common.d_date, ids_rxclaim.l_dynamic_period, etc.)</Label>
+                      <SourceTargetValue reference="vars.source_name"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Driver Source Logical Name (E.g., orca_rxclaim, orca_rebates, etc.)</Label>
+                      <SourceTargetValue reference="vars.source_logical_name"/>
+                    </TextInput>
+                    <ComboBox>
+                      <Choices is_expression="true">begin
+let string("")[int] skip_type_vec = [vector "DA_IDS"];
+let string("")[int] all_types_vec = get_available_file_types(proj.get.AI_FILE_TYPE_LIST);
+result :: vector_difference(all_types_vec, skip_type_vec);
+end</Choices>
+                      <Label>Driver File Type</Label>
+                      <SourceTargetValue reference="proj.get.DRIVER_FILE_TYPE"/>
+                      <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                    </ComboBox>
+                    <Popup>
+                      <Label>Optional: Driver Pre Dedup Filter Expression</Label>
+                      <Title>Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Driver Pre Dedup Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.DRIVER_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.DRIVER_PRE_DEDUP_FILTER"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Pick Driver Output Fields</Label>
+                      <Title>Pick river Output Fields</Title>
+                      <UIElements>
+                        <FieldPicker>
+                          <IsKey>false</IsKey>
+                          <Label is_expression="true">"Driver DML File Name - \"" + proj.get.DRIVER_DML_FILE_NAME + "\"\n\nSelect Required Output Fields"</Label>
+                          <RecordFormat is_expression="true">read_type(proj.get.DRIVER_DML_FILE_NAME)</RecordFormat>
+                          <SourceTargetValue reference="proj.get.DRIVER_OUTPUT_FIELDS"/>
+                        </FieldPicker>
+                      </UIElements>
+                      <Style>recordFormat</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Driver Filter Expression</Label>
+                      <Title>Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Driver Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.DRIVER_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.DRIVER_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <BusinessRulesPopup>
+                      <Label>Edit Driver Mapping Rules (Optional)</Label>
+                      <SourceTargetValue reference="vars.driver_mapping_ruleset"/>
+                      <Title/>
+                      <Style>mapping</Style>
+                    </BusinessRulesPopup>
+                  </UIElements>
+                  <Style>dataset</Style>
+                </Popup>
+                <Popup>
+                  <Visible is_expression="true">proj.get.DRIVER_FILE_TYPE != ""</Visible>
+                  <Label is_expression="true">"View Driver " + proj.get.DRIVER_FILE_TYPE + " File..."</Label>
+                  <Style>validation</Style>
+                  <Title>View Output File</Title>
+                  <UIElements>
+                    <ViewData>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.get.DRIVER_DML_FILE_NAME))</RecordFormat>
+                      <SourceValue is_expression="true">vars.driver_first_file_nm</SourceValue>
+                      <SourceIsCompressed is_expression="true">proj.get.DRIVER_IS_COMPRESSED</SourceIsCompressed>
+                    </ViewData>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Non Driver 1 Setup ... &lt;/font&gt;"</Label>
+              <UIElements>
+                <Popup>
+                  <Label>Non-Driver 1 Properties setup...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Non-Driver 1 File ILM Name (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_1_ILM_NAME"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Non-Driver 1 File Source Name (E.g., ids_common.d_date, ids_rxclaim.l_dynamic_period, etc.)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_1_SOURCE_NAME"/>
+                    </TextInput>
+                    <ComboBox>
+                      <Choices is_expression="true">begin
+let string("")[int] all_types_vec = get_available_file_types(proj.get.AI_FILE_TYPE_LIST);
+result :: all_types_vec;
+end</Choices>
+                      <Label>Non-Driver 1 File Type</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_1_FILE_TYPE"/>
+                      <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                    </ComboBox>
+                    <Popup>
+                      <Label>Optional: Non-Driver 1 Pre Dedup Filter Expression</Label>
+                      <Title>Non-Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver 1 Pre Dedup Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_1_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_1_PRE_DEDUP_FILTER"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Pick Non-Driver 1 1Output Fields</Label>
+                      <Title>Pick Non-Driver Output Fields</Title>
+                      <UIElements>
+                        <FieldPicker>
+                          <IsKey>false</IsKey>
+                          <Label is_expression="true">"Non Driver 1 DML File Name - \"" + proj.get.NON_DRIVER_1_DML_FILE_NAME + "\"\n\nSelect Required Output Fields"</Label>
+                          <RecordFormat is_expression="true">read_type(proj.get.NON_DRIVER_1_DML_FILE_NAME)</RecordFormat>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_1_OUTPUT_FIELDS"/>
+                        </FieldPicker>
+                      </UIElements>
+                      <Style>recordFormat</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Non-Driver 1 Filter Expression</Label>
+                      <Title>Non-Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver 1 Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_1_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_1_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <BusinessRulesPopup>
+                      <Label>Edit Non Driver 1 Mapping Rules (Optional)</Label>
+                      <Title/>
+                      <SourceTargetValue reference="vars.non_driver_1_mapping_ruleset"/>
+                      <Style>mapping</Style>
+                    </BusinessRulesPopup>
+                  </UIElements>
+                </Popup>
+                <Popup>
+                  <Visible is_expression="true">proj.get.NON_DRIVER_1_FILE_TYPE != ""</Visible>
+                  <Label is_expression="true">"View Non Driver " + proj.get.NON_DRIVER_1_FILE_TYPE + " File..."</Label>
+                  <Style>validation</Style>
+                  <Title>View Output File</Title>
+                  <UIElements>
+                    <ViewData>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.get.NON_DRIVER_1_DML_FILE_NAME))</RecordFormat>
+                      <SourceValue is_expression="true">vars.nondriver_1_first_file_nm</SourceValue>
+                      <SourceIsCompressed is_expression="true">proj.get.NON_DRIVER_1_IS_COMPRESSED</SourceIsCompressed>
+                    </ViewData>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <Button>
+                  <Label>Add join input...</Label>
+                  <OnClick is_expression="true">begin
+                    set_metadata_value("proj.get.ENABLE_JOIN_LEVEL_2", "1");
+                    set_appconf_modified();
+                    result :: 1;
+                    end</OnClick>
+                  <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_2 member [vector "0", "False"]</Visible>
+                </Button>
+                <Button>
+                  <OnClick is_expression="true">begin
+                    set_metadata_value("proj.get.ENABLE_JOIN_LEVEL_2", "0");
+                    set_appconf_modified();
+                    result :: 1;
+                    end</OnClick>
+                  <Label>Remove join input...</Label>
+                  <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_2 not member [vector "0", "False"]</Visible>
+                </Button>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>Add/Remove join input...</Label>
+              <Description>Output of the first join will be used as the driving input for the second join.</Description>
+              <HorizontalAlignment>center</HorizontalAlignment>
+              <VerticalAlignment>middle</VerticalAlignment>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"]</Visible>
+            </HorizontalLayoutContainer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Non Driver 2 Setup ... &lt;/font&gt;"</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;font color='#ff0000'&gt;Note: output of the first join will be used as the driving input for the second join.&lt;/font&gt;"</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>Non-Driver 2 Properties setup...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Non-Driver 2 File ILM Name (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_2_ILM_NAME"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Non-Driver 2 File Source Name (E.g., ids_common.d_date, ids_rxclaim.l_dynamic_period, etc.)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_2_SOURCE_NAME"/>
+                    </TextInput>
+                    <ComboBox>
+                      <Choices is_expression="true">begin
+let string("")[int] all_types_vec = get_available_file_types(proj.get.AI_FILE_TYPE_LIST);
+result :: all_types_vec;
+end</Choices>
+                      <Label>Non-Driver 2 File Type</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_2_FILE_TYPE"/>
+                      <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                    </ComboBox>
+                    <Popup>
+                      <Label>Optional: Non-Driver 2 Pre Dedup Filter Expression</Label>
+                      <Title>Non-Driver 2 Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter 2 Pre Dedup Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_2_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_2_PRE_DEDUP_FILTER"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Pick Non-Driver 2 Output Fields</Label>
+                      <Title>Pick Non-Driver 2 Output Fields</Title>
+                      <UIElements>
+                        <FieldPicker>
+                          <IsKey>false</IsKey>
+                          <Label is_expression="true">"Non Driver 2 DML File Name - \"" + proj.get.NON_DRIVER_2_DML_FILE_NAME + "\"\n\nSelect Required Output Fields"</Label>
+                          <RecordFormat is_expression="true">read_type(proj.get.NON_DRIVER_2_DML_FILE_NAME)</RecordFormat>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_2_OUTPUT_FIELDS"/>
+                        </FieldPicker>
+                      </UIElements>
+                      <Style>recordFormat</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Non-Driver 2 Filter Expression</Label>
+                      <Title>Non-Driver 2 Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter 2 Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_2_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_2_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <BusinessRulesPopup>
+                      <Label>Edit Non Driver 2 Mapping Rules (Optional)</Label>
+                      <Title/>
+                      <SourceTargetValue reference="vars.non_driver_2_mapping_ruleset"/>
+                      <Style>mapping</Style>
+                    </BusinessRulesPopup>
+                  </UIElements>
+                </Popup>
+                <Popup>
+                  <Visible is_expression="true">proj.get.NON_DRIVER_2_FILE_TYPE != ""</Visible>
+                  <Label is_expression="true">"View Non Driver 2 " + proj.get.NON_DRIVER_2_FILE_TYPE + " File..."</Label>
+                  <Style>validation</Style>
+                  <Title>View Output File</Title>
+                  <UIElements>
+                    <ViewData>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.get.NON_DRIVER_2_DML_FILE_NAME))</RecordFormat>
+                      <SourceValue is_expression="true">vars.nondriver_2_first_file_nm</SourceValue>
+                      <SourceIsCompressed is_expression="true">proj.get.NON_DRIVER_2_IS_COMPRESSED</SourceIsCompressed>
+                    </ViewData>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"]</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <Button>
+                  <Label>Add join input...</Label>
+                  <OnClick is_expression="true">begin
+                    set_metadata_value("proj.get.ENABLE_JOIN_LEVEL_3", "1");
+                    set_appconf_modified();
+                    result :: 1;
+                    end</OnClick>
+                  <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_3 member [vector "0", "False"]</Visible>
+                </Button>
+                <Button>
+                  <Label>Remove join input...</Label>
+                  <OnClick is_expression="true">begin
+                    set_metadata_value("proj.get.ENABLE_JOIN_LEVEL_3", "0");
+                    set_appconf_modified();
+                    result :: 1;
+                    end</OnClick>
+                  <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_3 not member [vector "0", "False"]</Visible>
+                </Button>
+              </UIElements>
+              <Style>inner</Style>
+              <Label>Add/Remove join input...</Label>
+              <Description>Output of the second join will be used as the driving input for the third join.</Description>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_2 member [vector "1", "True"]</Visible>
+              <HorizontalAlignment>center</HorizontalAlignment>
+              <VerticalAlignment>middle</VerticalAlignment>
+            </HorizontalLayoutContainer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Non Driver 3 Setup ... &lt;/font&gt;"</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;font color='#ff0000'&gt;Note: output of the second join will be used as the driving input for the third join.&lt;/font&gt;"</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>Non-Driver 3 Properties setup...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Non-Driver 3 File ILM Name (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_3_ILM_NAME"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Non-Driver 3 File Source Name (E.g., ids_common.d_date, ids_rxclaim.l_dynamic_period, etc.)</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_3_SOURCE_NAME"/>
+                    </TextInput>
+                    <ComboBox>
+                      <Choices is_expression="true">begin
+let string("")[int] all_types_vec = get_available_file_types(proj.get.AI_FILE_TYPE_LIST);
+result :: all_types_vec;
+end</Choices>
+                      <Label>Non-Driver 3 File Type</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_3_FILE_TYPE"/>
+                      <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                    </ComboBox>
+                    <Popup>
+                      <Label>Optional: Non-Driver 3 Pre Dedup Filter Expression</Label>
+                      <Title>Non-Driver 3 Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter 3 Pre Dedup Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_3_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_3_PRE_DEDUP_FILTER"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Pick Non-Driver 3 Output Fields</Label>
+                      <Title>Pick Non-Driver 3 Output Fields</Title>
+                      <UIElements>
+                        <FieldPicker>
+                          <IsKey>false</IsKey>
+                          <Label is_expression="true">"Non Driver 3 DML File Name - \"" + proj.get.NON_DRIVER_3_DML_FILE_NAME + "\"\n\nSelect Required Output Fields"</Label>
+                          <RecordFormat is_expression="true">read_type(proj.get.NON_DRIVER_3_DML_FILE_NAME)</RecordFormat>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_3_OUTPUT_FIELDS"/>
+                        </FieldPicker>
+                      </UIElements>
+                      <Style>recordFormat</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Optional: Non-Driver 3 Filter Expression</Label>
+                      <Title>Non-Driver 3 Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter 3 Expression Editor</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_3_INPUT_DML" property="record_format"/>
+                          <SourceTargetValue reference="proj.get.NON_DRIVER_3_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <BusinessRulesPopup>
+                      <Label>Edit Non Driver 3 Mapping Rules (Optional)</Label>
+                      <Title/>
+                      <SourceTargetValue reference="vars.non_driver_3_mapping_ruleset"/>
+                      <Style>mapping</Style>
+                    </BusinessRulesPopup>
+                  </UIElements>
+                </Popup>
+                <Popup>
+                  <Visible is_expression="true">proj.get.NON_DRIVER_3_FILE_TYPE != ""</Visible>
+                  <Label is_expression="true">"View Non Driver 3 " + proj.get.NON_DRIVER_3_FILE_TYPE + " File..."</Label>
+                  <Style>validation</Style>
+                  <Title>View Output File</Title>
+                  <UIElements>
+                    <ViewData>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.get.NON_DRIVER_3_DML_FILE_NAME))</RecordFormat>
+                      <SourceValue is_expression="true">vars.nondriver_3_first_file_nm</SourceValue>
+                      <SourceIsCompressed is_expression="true">proj.get.NON_DRIVER_3_IS_COMPRESSED</SourceIsCompressed>
+                    </ViewData>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_3 member [vector "1", "True"]</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt; Modify Target Name ... &lt;/font&gt;"</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"Target Name : " + if(is_blank(vars.target_name)) re_replace(built_in, "^get[.]", "") else vars.target_name</Label>
+                  <ReadOnly>true</ReadOnly>
+                </TextLabel>
+                <Popup>
+                  <Label>Edit Target Name ...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Target Name</Label>
+                      <Width>100%</Width>
+                      <SourceTargetValue reference="vars.target_name"/>
+                    </TextInput>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt; Add Additional Fields and Mapping if required... &lt;/font&gt;"</Label>
+              <UIElements>
+                <Popup>
+                  <Label>Additional Fields DML (Optional)</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextArea>
+                      <Label>Additional Fields DML (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.ADDITIONAL_FIELDS_DML"/>
+                    </TextArea>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Join Mappings</Label>
+          <UIElements>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Join Setup...&lt;/font&gt;"</Label>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>Inner Join</ConstantValue>
+                    <ConstantValue>Full Outer Join</ConstantValue>
+                    <ConstantValue>Left Outer Join</ConstantValue>
+                    <ConstantValue>Minus</ConstantValue>
+                    <ConstantValue>Cartesian Product</ConstantValue>
+                    <ConstantValue>Regex Join</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF Lookup</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF Lookup</ConstantValue>
+                  </Choices>
+                  <Label>Pick Join Type</Label>
+                  <SourceTargetValue reference="proj.get.JOIN_TYPE"/>
+                  <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                </ComboBox>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <TextLabel>
+                  <Label is_expression="true">"Join KEY : " + proj.get.JOIN_KEY + "\nOverride Join KEY : " + proj.get.OVERRIDE_JOIN_KEY + "\n"</Label>
+                  <ReadOnly>true</ReadOnly>
+                </TextLabel>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Join Key</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Join Key</Label>
+                          <RecordFormat reference="proj.get.DRIVER_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.join_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Join Key</Label>
+                      <SourceTargetValue reference="proj.get.DRIVER_DEDUP_ON_JOIN_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.JOIN_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Override Join Key (Optional)</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Override Join Key</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_1_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.override_join_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Override Join Key</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_1_DEDUP_ON_JOIN_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.OVERRIDE_JOIN_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <Popup>
+                  <Label>Override Join XFR &amp; Filter Records (Optional)</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextArea>
+                      <Label>Join Mapping Logic (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.JOIN_XFR.cases.sandbox"/>
+                    </TextArea>
+                    <Popup>
+                      <Label>Optional: Non-Driver Filter Expression</Label>
+                      <Title>Non-Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.JOIN_OUTPUT_DML"/>
+                          <SourceTargetValue reference="proj.get.OUTPUT_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Popup>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <RadioButtons>
+                      <Choices>
+                        <ConstantValue>Pick Latest Matching Record</ConstantValue>
+                        <ConstantValue>Pick All Matching Records</ConstantValue>
+                      </Choices>
+                      <Label>Choose one Below:</Label>
+                      <SourceTargetValue reference="proj.get.PICK_LATEST_REC_ICFF"/>
+                    </RadioButtons>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_TYPE member [vector "Left Outer Join with ICFF Lookup", "Inner Join with ICFF Lookup"]</Visible>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Join Level 2 Setup...&lt;/font&gt;"</Label>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>Inner Join</ConstantValue>
+                    <ConstantValue>Full Outer Join</ConstantValue>
+                    <ConstantValue>Left Outer Join</ConstantValue>
+                    <ConstantValue>Minus</ConstantValue>
+                    <ConstantValue>Cartesian Product</ConstantValue>
+                    <ConstantValue>Regex Join</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF Lookup</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF Lookup</ConstantValue>
+                  </Choices>
+                  <Label>Pick Join Level 2 Type</Label>
+                  <SourceTargetValue reference="proj.get.JOIN_LEVEL_2_TYPE"/>
+                  <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                </ComboBox>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <TextLabel>
+                  <Label is_expression="true">"Join Level 2 KEY : " + proj.get.JOIN_LEVEL_2_KEY + "\nOverride Join Level 2 KEY : " + proj.get.OVERRIDE_JOIN_LEVEL_2_KEY + "\n"</Label>
+                  <ReadOnly>true</ReadOnly>
+                </TextLabel>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Join Level 2 Key</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Join Key</Label>
+                          <RecordFormat reference="proj.get.JOIN_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.join_level_2_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Join Level 2 Key</Label>
+                      <SourceTargetValue reference="proj.get.DRIVER_DEDUP_ON_JOIN_LEVEL_2_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.JOIN_LEVEL_2_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_2_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Override Join Level 2 Key (Optional)</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Override Join Key</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_2_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.override_join_level_2_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Override Join Level 2 Key</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_2_DEDUP_ON_JOIN_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.OVERRIDE_JOIN_LEVEL_2_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_2_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <Popup>
+                  <Label>Override Join XFR &amp; Filter Records for Join Level 2 (Optional)</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextArea>
+                      <Label>Join Mapping Logic (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.JOIN_LEVEL_2_XFR.cases.sandbox"/>
+                    </TextArea>
+                    <Popup>
+                      <Label>Optional: Non-Driver Filter Expression</Label>
+                      <Title>Non-Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.JOIN_LEVEL_2_OUTPUT_DML"/>
+                          <SourceTargetValue reference="proj.get.OUTPUT_LEVEL_2_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Popup>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <RadioButtons>
+                      <Choices>
+                        <ConstantValue>Pick Latest Matching Record</ConstantValue>
+                        <ConstantValue>Pick All Matching Records</ConstantValue>
+                      </Choices>
+                      <Label>Choose one below :</Label>
+                      <SourceTargetValue reference="proj.get.PICK_LATEST_REC_ICFF_LEVEL2"/>
+                    </RadioButtons>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_2_TYPE member [vector "Left Outer Join with ICFF Lookup", "Inner Join with ICFF Lookup"]</Visible>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_2 member [vector '1', 'True']</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;font color='#0000ff'&gt;Join Level 3 Setup...&lt;/font&gt;"</Label>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>Inner Join</ConstantValue>
+                    <ConstantValue>Full Outer Join</ConstantValue>
+                    <ConstantValue>Left Outer Join</ConstantValue>
+                    <ConstantValue>Minus</ConstantValue>
+                    <ConstantValue>Cartesian Product</ConstantValue>
+                    <ConstantValue>Regex Join</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF</ConstantValue>
+                    <ConstantValue>Left Outer Join with ICFF Lookup</ConstantValue>
+                    <ConstantValue>Inner Join with ICFF Lookup</ConstantValue>
+                  </Choices>
+                  <Label>Pick Join Level 3 Type</Label>
+                  <SourceTargetValue reference="proj.get.JOIN_LEVEL_3_TYPE"/>
+                  <BlankValueDisplayName>"Please Select"</BlankValueDisplayName>
+                </ComboBox>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <TextLabel>
+                  <Label is_expression="true">"Join Level 3 KEY : " + proj.get.JOIN_LEVEL_3_KEY + "\nOverride Join Level 3 KEY : " + proj.get.OVERRIDE_JOIN_LEVEL_3_KEY + "\n"</Label>
+                  <ReadOnly>true</ReadOnly>
+                </TextLabel>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Join Level 3 Key</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Join Key</Label>
+                          <RecordFormat reference="proj.get.JOIN_LEVEL_2_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.join_level_3_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Join Level 3 Key</Label>
+                      <SourceTargetValue reference="proj.get.DRIVER_DEDUP_ON_JOIN_LEVEL_3_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.JOIN_LEVEL_3_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_3_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <Popup>
+                      <Label>Edit Override Join Level 3 Key (Optional)</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Override Join Key</Label>
+                          <RecordFormat reference="proj.get.NON_DRIVER_3_OUTPUT_DML"/>
+                          <SourceTargetValue reference="vars.override_join_level_3_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <CheckBox>
+                      <Label>Dedup on Override Join Level 3 Key</Label>
+                      <SourceTargetValue reference="proj.get.NON_DRIVER_3_DEDUP_ON_JOIN_KEY"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Visible is_expression="true">proj.get.OVERRIDE_JOIN_LEVEL_3_KEY != "{}"</Visible>
+                    </CheckBox>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_3_TYPE != ""</Visible>
+                </HorizontalLayoutContainer>
+                <Popup>
+                  <Label>Override Join XFR &amp; Filter Records for Join Level 3 (Optional)</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextArea>
+                      <Label>Join Mapping Logic (Optional)</Label>
+                      <SourceTargetValue reference="proj.get.JOIN_LEVEL_3_XFR.cases.sandbox"/>
+                    </TextArea>
+                    <Popup>
+                      <Label>Optional: Non-Driver Filter Expression</Label>
+                      <Title>Non-Driver Filter Expression</Title>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Non-Driver Filter Expression Editor</Label>
+                          <RecordFormat reference="proj.get.JOIN_LEVEL_3_OUTPUT_DML"/>
+                          <SourceTargetValue reference="proj.get.OUTPUT_LEVEL_3_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Popup>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <RadioButtons>
+                      <Choices>
+                        <ConstantValue>Pick Latest Matching Record</ConstantValue>
+                        <ConstantValue>Pick All Matching Records</ConstantValue>
+                      </Choices>
+                      <Label>Choose one below:</Label>
+                      <SourceTargetValue reference="proj.get.PICK_LATEST_REC_ICFF_LEVEL3"/>
+                    </RadioButtons>
+                  </UIElements>
+                  <Visible is_expression="true">proj.get.JOIN_LEVEL_3_TYPE member [vector "Left Outer Join with ICFF Lookup", "Inner Join with ICFF Lookup"]</Visible>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">proj.get.ENABLE_JOIN_LEVEL_3 member [vector '1', 'True']</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label>Fail for Zero Output Records</Label>
+              <SourceTargetValue reference="proj.get.AUDIT_ZERO_OUTPUT_CHECK"/>
+            </CheckBox>
+          </UIElements>
+          <Style>enrichJoin</Style>
+          <Visible is_expression="true">proj.get.DRIVER_SOURCE_NAME != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_SOURCE_NAME != "" 
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; string_index(proj.get.DRIVER_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; string_index(proj.get.NON_DRIVER_1_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_2_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_3_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; proj.get.DRIVER_SOURCE_LOGICAL_NAME != ""
+&amp;&amp; proj.get.DRIVER_FILE_TYPE != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_FILE_TYPE != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Style>recval</Style>
+          <Label>Output</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Produce a Source File for Cleansing</Label>
+              <SourceTargetValue reference="proj.get.DO_SOURCE"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Clean File</Label>
+              <SourceTargetValue reference="proj.get.DO_CLEAN"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Lookup</Label>
+              <SourceTargetValue reference="proj.get.DO_LOOKUP"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <TextLabel>
+              <Visible is_expression="true">(decimal(""))proj.get.DO_SOURCE + (decimal(""))proj.get.DO_CLEAN + (decimal(""))proj.get.DO_LOOKUP != 1</Visible>
+              <Label is_expression="true">"&lt;b&gt; &lt;font color='#FF0000'&gt;Note: Typically, only one of these should be selected.&lt;/font&gt;&lt;/b&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Visible is_expression="true">vars.errors == "" &amp;&amp;
+          proj.get.DRIVER_SOURCE_NAME != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_SOURCE_NAME != "" 
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; string_index(proj.get.DRIVER_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; string_index(proj.get.NON_DRIVER_1_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_2_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_3_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; proj.get.DRIVER_SOURCE_LOGICAL_NAME != ""
+&amp;&amp; proj.get.DRIVER_FILE_TYPE != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_FILE_TYPE != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; proj.get.JOIN_TYPE not member [vector "", "Please Select"]
+&amp;&amp; proj.get.JOIN_KEY != "" 
+&amp;&amp; proj.get.OVERRIDE_JOIN_KEY != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.JOIN_LEVEL_2_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.JOIN_LEVEL_3_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_2_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_3_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])</Visible>
+        </Box>
+        <Box>
+          <Label>Lookup Fields and Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Lookup Fields (Optional):&lt;/b&gt;\n" + proj.get.LOOKUP_FIELDS_KEY + "\n" +
+"&lt;b&gt;Lookup Key:&lt;/b&gt;\n" + proj.get.LOOKUP_KEY</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit lookup fields(Optional)...</Label>
+              <Title/>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Lookup Fields Picker</Label>
+                  <RecordFormat reference="proj.get.GET_DML_PLUS_HEADER"/>
+                  <SourceTargetValue reference="vars.lkp_flds"/>
+                </FieldPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Edit lookup key...</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Key</Label>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">(decimal(""))proj.get.DO_LOOKUP</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Run Get</ButtonLabel>
+              <SourceValue reference="proj.get"/>
+            </ExecuteButton>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_SOURCE</Visible>
+              <Label>View Source File...</Label>
+              <Style>validation</Style>
+              <Title>View Source File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.SOURCE_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.SOURCE_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.SOURCE_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_CLEAN</Visible>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Output File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.CLEAN_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.CLEAN_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.CLEAN_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_LOOKUP</Visible>
+              <Label>View Lookup File...</Label>
+              <Style>validation</Style>
+              <Title>View Lookup File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.LOOKUP_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.LOOKUP_FILE_URL</SourceValue>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DRIVER_OVERWRITE_SPLIT == "1" || proj.get.NON_DRIVER_1_OVERWRITE_SPLIT == "1"</Visible>
+              <Label>View Split File...</Label>
+              <Style>validation</Style>
+              <Title>View Split File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.SPLIT_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.SPLIT_FILE_URL</SourceValue>
+                </ViewData>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Visible is_expression="true">vars.errors == ""
+&amp;&amp; proj.get.DRIVER_SOURCE_NAME != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_SOURCE_NAME != "" 
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_SOURCE_NAME != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; string_index(proj.get.DRIVER_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; string_index(proj.get.NON_DRIVER_1_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_2_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; string_index(proj.get.NON_DRIVER_3_SOURCE_NAME, "{SYSTEM}.{SOURCE}") == 0) or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; proj.get.DRIVER_SOURCE_LOGICAL_NAME != ""
+&amp;&amp; proj.get.DRIVER_FILE_TYPE != "" 
+&amp;&amp; proj.get.NON_DRIVER_1_FILE_TYPE != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; proj.get.JOIN_TYPE not member [vector "", "Please Select"]
+&amp;&amp; proj.get.JOIN_KEY != "" 
+&amp;&amp; proj.get.OVERRIDE_JOIN_KEY != ""
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.JOIN_LEVEL_2_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.JOIN_LEVEL_3_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_2_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+&amp;&amp; ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.OVERRIDE_JOIN_LEVEL_3_KEY != "") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0'])
+&amp;&amp; (proj.get.DO_SOURCE == "1" or proj.get.DO_CLEAN == "1" or proj.get.DO_LOOKUP == "1"
+or (proj.get.DRIVER_FILE_TYPE == "Split" &amp;&amp; proj.get.DRIVER_OVERWRITE_SPLIT == "1") 
+or ((proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_2_FILE_TYPE == "Split" &amp;&amp; proj.get.NON_DRIVER_2_OVERWRITE_SPLIT == "1") or proj.get.ENABLE_JOIN_LEVEL_2 member [vector 'False', '0'])
+or ((proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'True', '1'] &amp;&amp; proj.get.NON_DRIVER_3_FILE_TYPE == "Split" &amp;&amp; proj.get.NON_DRIVER_3_OVERWRITE_SPLIT == "1") or proj.get.ENABLE_JOIN_LEVEL_3 member [vector 'False', '0']))</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Visible is_expression="true">vars.errors == ""</Visible>
+      <Label>Get PSET</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"GET PSET Name - " + $PROJECT_DIR + "/pset/get." + string_split(re_replace(built_in, "^get[.]", ""), ".")[0] + "/" + built_in + ".pset\n\n" 
++ read_file($PROJECT_DIR + "/pset/get." + string_split(re_replace(built_in, "^get[.]", ""), ".")[0] + "/" + built_in + ".pset")</Label>
+          <Width>100%</Width>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_SOURCE != "0" and file_information(proj.get.SOURCE_DML_FILE).found</Visible>
+      <Label>Source DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.SOURCE_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.get.SOURCE_DML</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>100%</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_CLEAN != "0" and file_information(proj.get.CLEAN_DML_FILE).found</Visible>
+      <Label>Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.CLEAN_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.get.CLEAN_DML</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>100%</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_LOOKUP != "0" and file_information(proj.get.LOOKUP_DML_FILE).found</Visible>
+      <Label>Lookup DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.LOOKUP_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.get.LOOKUP_DML</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>100%</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">(proj.get.DRIVER_OVERWRITE_SPLIT == "1" || proj.get.NON_DRIVER_1_OVERWRITE_SPLIT == "1") and file_information(proj.get.SPLIT_DML_FILE).found</Visible>
+      <Label>SPLIT DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.SPLIT_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_type(proj.get.SPLIT_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>100%</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

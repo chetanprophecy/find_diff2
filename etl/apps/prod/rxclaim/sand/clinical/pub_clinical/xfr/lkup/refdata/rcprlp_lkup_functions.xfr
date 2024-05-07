@@ -1,0 +1,46 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/rcprlp_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/22  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_rcprlp_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/rcprlp.dat';
+end;
+
+/*******************************/
+/* RCMSIP Lookup (natural key) */
+/*******************************/
+
+type rcprlp_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  rcprlp_hash_lkup_t      RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {rcprlp.phr_id; rcprlp.phr_relshp_seq_no};
+end;
+
+let rcprlp_lkup_t GLKUP_RCPRLP = allocate_with_nulls();
+
+rcprlp_lkup_t out :: load_rcprlp_lkup() inline =
+begin
+  if (GLKUP_RCPRLP.id == lookup_not_loaded())
+    GLKUP_RCPRLP = lookup_load(this_partition_path(get_rcprlp_lkup_path()));
+  
+  out :: GLKUP_RCPRLP;
+end;
+
+rcprlp_t out :: get_rcprlp(phr_id, phr_relshp_seq_no) inline =
+begin
+  let rcprlp_lkup_t lkup = load_rcprlp_lkup();
+  out :: lookup(lkup, phr_id, phr_relshp_seq_no).rcprlp;
+end;

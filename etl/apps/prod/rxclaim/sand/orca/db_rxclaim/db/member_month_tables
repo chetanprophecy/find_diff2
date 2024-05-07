@@ -1,0 +1,11 @@
+create table MB_030_A_FNL_MEMBER_MONTH as select * from ORX_IDW_DM_PRD.ADMIN.A_FNL_MEMBER_MONTH
+where CAG_SK in (select distinct CAG_SK from ORX_IDW_DM_PRD.ADMIN.D_CAG where CARRIER_ID in ('CTR002X')) distribute on (cag_sk);
+
+create table MB_030_A_CAG_MEMBER_MONTH as select * from ORX_IDW_DM_PRD.ADMIN.A_CAG_MEMBER_MONTH
+where CAG_SK in (select distinct CAG_SK from ORX_IDW_DM_PRD.ADMIN.D_CAG where CARRIER_ID in ('CTR002X')) distribute on Random;
+
+
+create table MB_030_L_CUSTOM_MEMBER_ELIGIBILITY as Select * from ORX_IDW_DM_PRD.ADMIN.L_CUSTOM_MEMBER_ELIGIBILITY distribute on Random;
+
+create table MB_030_D_CAG as Select * from ORX_IDW_DM_PRD.ADMIN.D_CAG where CARRIER_ID in ('CTR002X') distribute on (cag_sk);
+

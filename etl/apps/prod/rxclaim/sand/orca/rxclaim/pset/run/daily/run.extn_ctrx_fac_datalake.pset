@@ -1,0 +1,5 @@
+!prototype|P|||$AI_PLAN/run/run.all.plan
+RUN_GROUP||||extn_ctrx_fac.generated_datalake
+RUN_ID_FILE||||$[begin\r\nlet string("") v_run_group=string_split(RUN_GROUP,".")[0];\r\nresult :: PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase(v_run_group) + "."+ AI_PHASE + ".run_id.dat" ;\r\nend ]
+RUN_ID||||$[string_filter_out(read_file(PUB_DATAHUB_SERIAL + "/run_id/rxclaim.run_id.ctrx_fac.generated_datalake.dat"),"\\n\\r")]
+RUN_GROUP_DATALAKE||||$[string_split(RUN_GROUP,".")[0]]

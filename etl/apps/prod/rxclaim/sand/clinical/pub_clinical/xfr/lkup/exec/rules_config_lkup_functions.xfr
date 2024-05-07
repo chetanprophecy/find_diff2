@@ -1,0 +1,41 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/rules_config_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/15  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_LOOKUP  parameter;
+constant cli_date_t    BIZ_DT                      parameter;
+
+cli_string_t out :: get_rules_config_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_SERIAL_LOOKUP + '/' + cli_string(BIZ_DT) + '/rules_config.dat';
+end;
+
+/************************************************/
+/* Rules Config Lookup - Constant and Functions */
+/************************************************/
+
+let rules_config_lkup_t GLKUP_RULES_CONFIG = allocate_with_nulls();
+
+rules_config_lkup_t out :: load_rules_config_lkup() inline =
+begin
+  if (GLKUP_RULES_CONFIG.id == lookup_not_loaded())
+    GLKUP_RULES_CONFIG = lookup_load(get_rules_config_lkup_path());
+  
+  out :: GLKUP_RULES_CONFIG;
+end;
+
+rules_config_t out :: get_rules_config(cli_date_t biz_dt, cli_app_config_nm_t app_config_nm) inline =
+begin
+  let lkup = load_rules_config_lkup();
+  out :: lookup(lkup, biz_dt, app_config_nm);
+end;

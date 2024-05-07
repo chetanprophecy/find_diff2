@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.mpd_act_log.mdh_file_id,[passthrough],in0.mipwih]
+  [out0.mpd_act_log.pdp_pbp_id,[passthrough],in0.mivyhc]
+  [out0.mpd_act_log.mdi_action_cd_notes,[passthrough],in0.mibuir]
+  [out0.mpd_act_log.mdi_action_cd,[passthrough],in0.mib9hn]
+  [out0.mpd_act_log.pdp_contract_id,[passthrough],in0.mivwhc]
+  [out0.mpd_act_log.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.mpd_act_log.mdd_seq_nbr,[passthrough],in0.mif0hs]
+  [out0.mpd_act_log.mdd_action_log_key,[transform],]
+  [out0.mpd_act_log.mdi_action_log_seq,[passthrough],in0.micdal]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mpd_act_log.mdh_file_id,'mpd_act_log.mdh_file_id',1,0]
+     [out0.mpd_act_log.pdp_pbp_id,'mpd_act_log.pdp_pbp_id',1,0]
+     [out0.mpd_act_log.mdi_action_cd_notes,'mpd_act_log.mdi_action_cd_notes',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.mpd_act_log.mdi_action_cd,'mpd_act_log.mdi_action_cd',1,0]
+     [out0.mpd_act_log.pdp_contract_id,'mpd_act_log.pdp_contract_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mpd_act_log.src_env_sk,'mpd_act_log.src_env_sk',1,0]
+     [out0.mpd_act_log.mdd_seq_nbr,'mpd_act_log.mdd_seq_nbr',1,0]
+     [out0.mpd_act_log.mdd_action_log_key,'mpd_act_log.mdd_action_log_key',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.mpd_act_log.mdi_action_log_seq,'mpd_act_log.mdi_action_log_seq',1,0]
+  ]
+  impacts:
+  [
+     [in0.mivwhc,'mivwhc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.mibuir,'mibuir',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.micdal,'micdal',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.mivyhc,'mivyhc',1,1]
+     [in0.mib9hn,'mib9hn',1,1]
+     [in0.mipwih,'mipwih',1,1]
+     [in0.mif0hs,'mif0hs',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) mpd_act_log_mdd_action_log_key = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) mpd_act_log_mdh_file_id = fail_if_error(in0.mipwih);
+let string("\x01",charset="iso-8859-15", maximum_length=5) mpd_act_log_pdp_contract_id = fail_if_error(in0.mivwhc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) mpd_act_log_pdp_pbp_id = fail_if_error(in0.mivyhc);
+let decimal("\x01",0, maximum_length=8, sign_reserved) mpd_act_log_mdd_seq_nbr = fail_if_error(in0.mif0hs);
+let decimal("\x01",0, maximum_length=8, sign_reserved) mpd_act_log_mdi_action_log_seq = fail_if_error(in0.micdal);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mpd_act_log_mdi_action_cd = fail_if_error(in0.mib9hn);
+let string("\x01",charset="iso-8859-15", maximum_length=200) mpd_act_log_mdi_action_cd_notes = fail_if_error(in0.mibuir);
+let decimal("\x01",0) mpd_act_log_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.mpd_act_log.mdd_action_log_key::mpd_act_log_mdd_action_log_key;
+  out0.mpd_act_log.mdh_file_id::mpd_act_log_mdh_file_id;
+  out0.mpd_act_log.pdp_contract_id::mpd_act_log_pdp_contract_id;
+  out0.mpd_act_log.pdp_pbp_id::mpd_act_log_pdp_pbp_id;
+  out0.mpd_act_log.mdd_seq_nbr::mpd_act_log_mdd_seq_nbr;
+  out0.mpd_act_log.mdi_action_log_seq::mpd_act_log_mdi_action_log_seq;
+  out0.mpd_act_log.mdi_action_cd::mpd_act_log_mdi_action_cd;
+  out0.mpd_act_log.mdi_action_cd_notes::mpd_act_log_mdi_action_cd_notes;
+  out0.mpd_act_log.src_env_sk::mpd_act_log_src_env_sk;
+  out0.*::in0.*;
+
+end;

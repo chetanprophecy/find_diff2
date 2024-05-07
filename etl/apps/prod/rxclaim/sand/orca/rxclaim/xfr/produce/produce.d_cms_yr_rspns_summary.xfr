@@ -1,0 +1,55 @@
+type temporary_type =
+record
+decimal("\x01".2, maximum_length=11, sign_reserved) d; //sure_up_ndc_cnt
+decimal("\x01".5, maximum_length=17, sign_reserved) e; //cal_tol_pde_cost
+decimal("\x01".5, maximum_length=17, sign_reserved) ea; //cal_tol_mpf_cost
+decimal("\x01",0) t_matching_claim_ndc_cnt;
+//decimal("\x01".2, maximum_length=17, sign_reserved) t_matching_claim_pde_cost;
+decimal("x01")t_matching_claim_pde_cost;
+end;
+                
+temp :: initialize(in) =
+begin
+temp.d :: 0;
+temp.e :: 0;
+temp.ea :: 0.00;
+temp.t_matching_claim_ndc_cnt :: 0;
+temp.t_matching_claim_pde_cost :: 0;
+end;                
+
+out :: rollup(temp, in) =
+begin
+let decimal(1) detail_flag = if (in.contract_id == "xxxx1" or in.contract_id == 'xxxx2' or in.contract_id == 'xxxx3') 0 else 1;
+out.e :: if (detail_flag) (temp.e + (decimal("x01"))string_lrtrim(in.cal_tot_pde_cost)) else temp.e;
+out.d :: if (detail_flag) (temp.d +1) else temp.d;
+out.ea :: if (detail_flag) (temp.ea + (in.cal_tol_mpf_cost)) else temp.ea;
+out.t_matching_claim_ndc_cnt :: if (in.contract_id == "xxxx2") (decimal("x01"))in.matching_claim_ndc_cnt else temp.t_matching_claim_ndc_cnt;
+out.t_matching_claim_pde_cost :: if (in.contract_id == "xxxx1")  (decimal("x01"))first_defined(string_lrtrim(in.matching_claim_pde_cost),(decimal("\x01")) 0) else temp.t_matching_claim_pde_cost; //(decimal("\x01"))12345; 
+
+
+end;
+
+out :: finalize(temp, in) =
+begin
+let decimal("\x01".2, maximum_length=17, sign_reserved) v_f = if (in.rspns_file_ind == "ACC")temp.e - temp.ea else temp.ea - temp.e; //pde_mpf_diff_amt
+let decimal("\x01".4, maximum_length=11, sign_reserved) v_g =  (2 - ((temp.e + temp.t_matching_claim_pde_cost + v_f)/(temp.e + temp.t_matching_claim_pde_cost))) * 100; //price_accuracy_scr
+let decimal("\x01".4, maximum_length=11, sign_reserved) v_h = (1 - ((temp.d)/(temp.d + temp.t_matching_claim_ndc_cnt))) * 100; //claim_percentage_scr
+let decimal("\x01".4, maximum_length=11, sign_reserved) v_i = decimal_round((0.5 * v_g) + (0.5 * v_h),0); //comp_price_accuracy_scr
+let decimal("\x01".4, maximum_length=11, sign_reserved) v_j = (temp.e + temp.t_matching_claim_pde_cost + v_f)/(temp.e +temp.t_matching_claim_pde_cost); //accuracy_idx
+
+out.matching_claim_ndc_cnt ::  temp.t_matching_claim_ndc_cnt;
+out.matching_claim_pde_cost ::  temp.t_matching_claim_pde_cost;
+out.sure_up_ndc_cnt :: temp.d;
+out.cal_tot_pde_cost :: temp.e;
+out.cal_tol_mpf_cost :: temp.ea;
+out.pde_mpf_diff_amt :: v_f;
+out.price_accuracy_scr ::  v_g;
+out.claim_percentage_scr :: v_h;
+out.comp_price_accuracy_scr :: v_i;
+out.accuracy_idx :: v_j;
+out.cms_rspns_mn :: (decimal ("x01"))string_substring(string_split(string_split(in.dxf_src_file_name, "/")[length_of(string_split(in.dxf_src_file_name, "/")) - 1], "_")[length_of(string_split(string_split(in.dxf_src_file_name, "/")[length_of(string_split(in.dxf_src_file_name, "/")) - 1], "_")) - 1],0,6);
+out.rspns_file_ind :: in.rspns_file_ind ; 
+out.src_env_sk :: in.dxf_src_sys_id;
+out.contract_id :: string_substring(string_split(in.dxf_src_file_name, "/")[length_of(string_split(in.dxf_src_file_name, "/")) - 1],0,5);
+out.* :: in.*;
+end;

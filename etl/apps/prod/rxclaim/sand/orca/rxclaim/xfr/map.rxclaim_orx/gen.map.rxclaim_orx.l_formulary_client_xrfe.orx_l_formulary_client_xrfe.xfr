@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5f806630_dc48_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_clnt_xrfe.client_acss_cd,[transform],in0.client_acss_cd]
+  [out0.l_clnt_xrfe.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_clnt_xrfe.client_desc,[passthrough],in0.cidesc]
+  [out0.l_clnt_xrfe.client_id,[passthrough],in0.clientid]
+  [out0.l_clnt_xrfe.client_xrfe_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_clnt_xrfe.client_acss_cd,'l_clnt_xrfe.client_acss_cd',1,0]
+     [out0.l_clnt_xrfe.src_env_sk,'l_clnt_xrfe.src_env_sk',1,0]
+     [out0.l_clnt_xrfe.client_desc,'l_clnt_xrfe.client_desc',1,0]
+     [out0.l_clnt_xrfe.client_id,'l_clnt_xrfe.client_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_clnt_xrfe.client_xrfe_sk,'l_clnt_xrfe.client_xrfe_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.cidesc,'cidesc',1,1]
+     [in0.clientid,'clientid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.client_acss_cd,'client_acss_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_clnt_xrfe_client_xrfe_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=7) l_clnt_xrfe_client_id = fail_if_error(in0.clientid);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_clnt_xrfe_client_desc = fail_if_error(in0.cidesc);
+let decimal("\x01",0) l_clnt_xrfe_client_acss_cd = fail_if_error(if(in0.client_acss_cd=='Y') 1 else 0);
+let decimal("\x01",0) l_clnt_xrfe_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_clnt_xrfe.client_xrfe_sk::l_clnt_xrfe_client_xrfe_sk;
+  out0.l_clnt_xrfe.client_id::l_clnt_xrfe_client_id;
+  out0.l_clnt_xrfe.client_desc::l_clnt_xrfe_client_desc;
+  out0.l_clnt_xrfe.client_acss_cd::l_clnt_xrfe_client_acss_cd;
+  out0.l_clnt_xrfe.src_env_sk::l_clnt_xrfe_src_env_sk;
+  out0.*::in0.*;
+
+end;

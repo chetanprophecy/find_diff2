@@ -1,0 +1,20 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_gender_gender_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_gender_gender_cd = fail_if_error(in0.gender_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=25) l_gender_gender_desc = fail_if_error(in0.gender_desc);
+let decimal("\x01",0) l_gender_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_gender.gender_sk::l_gender_gender_sk;
+  out0.l_gender.gender_cd::l_gender_gender_cd;
+  out0.l_gender.gender_desc::l_gender_gender_desc;
+  out0.l_gender.src_env_sk::l_gender_src_env_sk;
+  out0.*::in0.*;
+
+end;

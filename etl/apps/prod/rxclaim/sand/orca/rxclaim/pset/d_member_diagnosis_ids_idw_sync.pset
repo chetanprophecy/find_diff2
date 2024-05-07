@@ -1,0 +1,14 @@
+!prototype|P|||$AI_MP/util/d_member_diagnosis_ids_idw_sync.mp
+TABLE_NAME||||d_member_diagnosis
+FLTR_EXPR||||1
+WHERE_CLAUSE||||1=1
+JOIN_KEY||||$[\r\nbegin\r\nresult :: if(TABLE_NAME=="l_src_env") string_join(record_info_item(remove_fields(read_file(DB_RXCLAIM_DML + "/rxclaim/rxclaim." + TABLE_NAME + ".dml"), [vector "insert_ts", "update_ts", "insert_uid", "update_uid", "newline"]), "name"), "; ")\r\nelse if (TABLE_NAME=="d_member_diagnosis") string_join(record_info_item(remove_fields(read_file(DB_RXCLAIM_DML + "/rxclaim/rxclaim." + TABLE_NAME + ".dml"), [vector "spclty_prod_corp_ind", "spclty_prod_corp_nm","fdb_hicl_seq_no", "fdb_hic3_seq_no", "fdb_hic3_cd","insert_ts", "update_ts", "insert_uid", "update_uid", "run_id", "rec_stat_cd", "newline" ]), "name"), "; ")\r\nelse string_join(record_info_item(remove_fields(read_file(DB_RXCLAIM_DML + "/rxclaim/rxclaim." + TABLE_NAME + ".dml"), [vector "insert_ts", "update_ts", "insert_uid", "update_uid", "run_id", "rec_stat_cd", "newline" ]), "name"), "; ");\r\nend\r\n]
+INCIDENT_NO||||history_loads
+IDS_ARCH_FILE||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/one/updated_${TABLE_NAME}.archive.dat.gz
+IDS_ARCH_FILE_INDEX||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/one/updated_${TABLE_NAME}.archive.idx
+ICFF_FILE||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/one/updated_${TABLE_NAME}.dat.gz
+ICFF_INDEX_FILE||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/one/updated_${TABLE_NAME}.idx
+XREF_KEY_ICFF_FILE||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/xref/updated_xref.${TABLE_NAME}.dat.gz
+XREF_KEY_INDEX_FILE||||$PUB_DATAHUB_MFS_LOOKUP/ids/$SUBJECT_AREA/xref/updated_xref.${TABLE_NAME}.idx
+OUTPUT_FILE||||$AI_SERIAL/${TABLE_NAME}_table_data.dat.gz
+TARGET_NK_DML||||${PUB_DATAHUB_DML}/nk/${SUBJECT_AREA}/${SUBJECT_AREA}.${TABLE_NAME}.dml

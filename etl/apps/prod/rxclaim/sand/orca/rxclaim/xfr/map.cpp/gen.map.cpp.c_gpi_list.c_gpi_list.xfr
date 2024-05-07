@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58109fc0_172f_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_gpi_list.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_gpi_list.src_env_sk,[transform],]
+  [out0.c_gpi_list.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_gpi_list.gpi_list_id,[passthrough],in0.gpi_list_id]
+  [out0.c_gpi_list.stts,[passthrough],in0.stts]
+  [out0.c_gpi_list.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_gpi_list.gpi_list_type,[passthrough],in0.gpi_list_type]
+  [out0.c_gpi_list.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_gpi_list.cpp_gpi_list_sk,[transform],]
+  [out0.c_gpi_list.gpi_list_version,[passthrough],in0.gpi_list_version]
+  [out0.c_gpi_list.gpi_list_descr,[passthrough],in0.gpi_list_descr]
+  [out0.c_gpi_list.gpi_list_name,[passthrough],in0.gpi_list_name]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_gpi_list.cpp_updated_by,'c_gpi_list.cpp_updated_by',1,0]
+     [out0.c_gpi_list.src_env_sk,'c_gpi_list.src_env_sk',1,0]
+     [out0.c_gpi_list.cpp_create_ts,'c_gpi_list.cpp_create_ts',1,0]
+     [out0.c_gpi_list.gpi_list_id,'c_gpi_list.gpi_list_id',1,0]
+     [out0.c_gpi_list.stts,'c_gpi_list.stts',1,0]
+     [out0.c_gpi_list.cpp_created_by,'c_gpi_list.cpp_created_by',1,0]
+     [out0.c_gpi_list.gpi_list_type,'c_gpi_list.gpi_list_type',1,0]
+     [out0.c_gpi_list.cpp_update_ts,'c_gpi_list.cpp_update_ts',1,0]
+     [out0.c_gpi_list.cpp_gpi_list_sk,'c_gpi_list.cpp_gpi_list_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_gpi_list.gpi_list_version,'c_gpi_list.gpi_list_version',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_gpi_list.gpi_list_descr,'c_gpi_list.gpi_list_descr',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_gpi_list.gpi_list_name,'c_gpi_list.gpi_list_name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.gpi_list_name,'gpi_list_name',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.gpi_list_descr,'gpi_list_descr',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.gpi_list_id,'gpi_list_id',1,1]
+     [in0.gpi_list_type,'gpi_list_type',1,1]
+     [in0.gpi_list_version,'gpi_list_version',1,1]
+     [in0.stts,'stts',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_gpi_list_cpp_gpi_list_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_gpi_list_gpi_list_id = fail_if_error(in0.gpi_list_id);
+let decimal("\x01",0) c_gpi_list_gpi_list_version = fail_if_error(in0.gpi_list_version);
+let utf8 string("\x01", maximum_length=200) c_gpi_list_gpi_list_name = fail_if_error(in0.gpi_list_name);
+let utf8 string("\x01", maximum_length=8192) c_gpi_list_gpi_list_descr = fail_if_error(in0.gpi_list_descr);
+let utf8 string("\x01", maximum_length=80) c_gpi_list_gpi_list_type = fail_if_error(in0.gpi_list_type);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_list_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_gpi_list_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_list_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_gpi_list_cpp_created_by = fail_if_error(in0.created_by);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_gpi_list_stts = fail_if_error(in0.stts);
+let decimal("\x01",0) c_gpi_list_src_env_sk = 710;
+
+
+
+  out0.c_gpi_list.cpp_gpi_list_sk::c_gpi_list_cpp_gpi_list_sk;
+  out0.c_gpi_list.gpi_list_id::c_gpi_list_gpi_list_id;
+  out0.c_gpi_list.gpi_list_version::c_gpi_list_gpi_list_version;
+  out0.c_gpi_list.gpi_list_name::c_gpi_list_gpi_list_name;
+  out0.c_gpi_list.gpi_list_descr::c_gpi_list_gpi_list_descr;
+  out0.c_gpi_list.gpi_list_type::c_gpi_list_gpi_list_type;
+  out0.c_gpi_list.cpp_update_ts::c_gpi_list_cpp_update_ts;
+  out0.c_gpi_list.cpp_updated_by::c_gpi_list_cpp_updated_by;
+  out0.c_gpi_list.cpp_create_ts::c_gpi_list_cpp_create_ts;
+  out0.c_gpi_list.cpp_created_by::c_gpi_list_cpp_created_by;
+  out0.c_gpi_list.stts::c_gpi_list_stts;
+  out0.c_gpi_list.src_env_sk::c_gpi_list_src_env_sk;
+  out0.*::in0.*;
+
+end;

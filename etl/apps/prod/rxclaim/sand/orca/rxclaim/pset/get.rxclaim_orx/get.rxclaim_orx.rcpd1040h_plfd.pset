@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil_bk1.rcpd1040h_plfd
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpd1040h               cmspstdte,planyear,pdpcarrier,pdpaccount,pdpgroup,pdpplan,pdpplaneff,contractid,pbpid,ndcid,gpinum,pdpdate,pfrecord,pffileid,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil_bk1', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ " where substr(rcpd1040h.pffileid,8,3) >="  + (string("\\x01")) (date("JJJ")) (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME + " and substr(rcpd1040h.pffileid,8,3) <" +  (string("\\x01")) (date("JJJ")) (date("YYYYMMDD")) (date("YYYYMMDD"))(datetime("YYYY-MM-DD HH24:MI:SS"))  END_CHANGES_TIME + " and rcpd1040h.cmspstdte >=" + (string("\\x01")) (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS"))  START_CHANGES_TIME] OPTIMIZE FOR ALL ROWS
+RUN_ID||||20180816010101
+SQL||||SELECT rcpd1040h.cmspstdte\n     , rcpd1040h.planyear\n     , rcpd1040h.pdpcarrier\n     , rcpd1040h.pdpaccount\n     , rcpd1040h.pdpgroup\n     , rcpd1040h.pdpplan\n     , rcpd1040h.pdpplaneff\n     , rcpd1040h.contractid\n     , rcpd1040h.pbpid\n     , rcpd1040h.ndcid\n     , rcpd1040h.gpinum\n     , rcpd1040h.pdpdate\n     , rcpd1040h.pfrecord\n     , rcpd1040h.pffileid\n  FROM clmprdfil.rcpd1040h  rcpd1040h\n   $[ " where rcpd1040h.cmspstdte in (select min(rcpd1040h.cmspstdte) from clmprdfil.rcpd1040h rcpd1040h where cmspstdte >="  + (string("\\x01")) (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS"))  END_CHANGES_TIME + ")"] OPTIMIZE FOR ALL ROWS
+ENABLE_DEFAULT_RULES||||True

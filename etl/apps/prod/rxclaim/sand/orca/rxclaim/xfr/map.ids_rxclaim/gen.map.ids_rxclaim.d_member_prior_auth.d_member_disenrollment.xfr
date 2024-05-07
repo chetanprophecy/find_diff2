@@ -1,0 +1,712 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_12_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_prescriber_alias   */
+out0::bzt_12_6c54cc0a_592e7be5_7f05_1(in0,in1,in2,in3)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_prescriber_alias",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_8_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_mbr_pa_gpi   */
+out0::bzt_8_6c54cc0a_592e7be5_7f05_1(in0,in1,in2,in3,in4)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mpa_gpi_sk = NULL("");
+  string("\x01", maximum_length=18) mbr_id = NULL("");
+  string("\x01", maximum_length=9) carrier_id = NULL("");
+  string("\x01", maximum_length=15) account_id = NULL(""), group_id = NULL("");
+  string("\x01", maximum_length=11) mpa_prior_auth_nbr = NULL("");
+  date("YYYYMMDD")("\x01") pno_curr_dt_eff = NULL(""), pno_curr_dt_term = NULL("");
+  string("\x01", maximum_length=1) pno_curr_drug_st = NULL("");
+  date("YYYYMMDD")("\x01") pno_prev_dt_eff = NULL(""), pno_prev_dt_term = NULL("");
+  string("\x01", maximum_length=1) pno_prev_drug_st = NULL("");
+  string("\x01", maximum_length=10) pno_pgm_nm = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_qty_min = NULL(""), pno_qty_max = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_days_supp_min = NULL(""), pno_days_supp_max = NULL("");
+  string("\x01", maximum_length=1) pno_qty_comp_max = NULL(""), pno_period_qty_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_qty_days = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_qty_max = NULL("");
+  string("\x01", maximum_length=1) pno_period_ds_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_ds_days = NULL(""), pno_ds_period_ds_max = NULL("");
+  string("\x01", maximum_length=1) pno_period_qty_comp_max = NULL(""), pno_period_fills_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_fills_days = NULL(""), pno_period_fills_max = NULL(""), pno_refill_limit_max_nbr = NULL(""), pno_refill_exp_after_days = NULL("");
+  string("\x01", maximum_length=1) pno_amt_due_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_amt_due_days = NULL("");
+  decimal("\x01".2, maximum_length=12, sign_reserved) pno_amt_due_max = NULL("");
+  string("\x01", maximum_length=1) pno_amt_due_basis = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_patient_age_min = NULL(""), pno_patient_age_max = NULL("");
+  decimal("\x01".6, maximum_length=13, sign_reserved) pno_daily_dose_min = NULL(""), pno_daily_dose_max = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) pno_maint_dosing_day_max = NULL(""), pno_acute_dosing_day_max = NULL("");
+  string("\x01", maximum_length=1) pno_pkg_size_comp_cde = NULL(""), pno_otc_override = NULL(""), pno_unit_dose = NULL(""), pno_fda_therapeutic_equiv = NULL(""), pno_route_of_admin = NULL(""), pno_mntence_drug_sts = NULL(""), pno_brand_edit = NULL(""), pno_sex_exclusion = NULL("");
+  string("\x01", maximum_length=6) slt_specialty_list_code = NULL(""), dgl_diag_lst = NULL(""), md_ntwrk_id = NULL(""), phm_phr_ntwrk_id = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) phn_seq_nbr = NULL("");
+  string("\x01", maximum_length=1) pno_family_coverage = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_dpndnt_age_min = NULL(""), pno_dpndnt_age_max = NULL("");
+  string("\x01", maximum_length=5) pno_pref_prd_ndc_labler = NULL("");
+  string("\x01", maximum_length=4) pno_pref_prd_ndc_prod = NULL("");
+  string("\x01", maximum_length=2) pno_pref_prd_ndc_pkg = NULL("");
+  string("\x01", maximum_length=14) pgo_formulatory_alt_gpi = NULL("");
+  string("\x01", maximum_length=10) pno_msg_cde = NULL("");
+  string("\x01", maximum_length=1) pno_msg_type = NULL(""), mgo_specl_list_qlfr = NULL(""), mgo_md_ntwrk_qlfr = NULL(""), mgo_prior_auth_exp_msg = NULL(""), mgo_nbr_fills_remain_msg = NULL("");
+  string("\x01", maximum_length=15) prf_prescriber_id = NULL("");
+  string("\x01", maximum_length=2) prq_prescriber_id_qlfr = NULL("");
+  string("\x01", maximum_length=3) prf_prescriber_id_state = NULL("");
+  string("\x01", maximum_length=1) pno_prescriber_override = NULL(""), pno_phr_ntwrk_qual = NULL("");
+  string("\x01", maximum_length=12) pha_phr_id = NULL("");
+  string("\x01", maximum_length=1) pno_phr_override = NULL("");
+  date("YYYYMMDD")("\x01") pno_ptd_frm = NULL("");
+  string("\x01", maximum_length=1) pno_dly_dose_qlfr = NULL(""), pno_diag_lst_qual = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_lmt_days_o_r = NULL("");
+  string("\x01", maximum_length=2) pno_refill_cde_o_r = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_dys_supp_fill_lmt = NULL("");
+  decimal("\x01",0, maximum_length=3, sign_reserved) pno_fills_in_hx_fill_lmt = NULL("");
+  string("\x01", maximum_length=1) pgo_md_ntwrk_drug_sts = NULL(""), pno_fill_override_multi_s = NULL(""), pno_fill_override_prod = NULL(""), pno_othr_fam_mbr_cov_sts = NULL(""), pgo_cont_ther_prtcl_lvl = NULL("");
+  string("\x01", maximum_length=20) cts_cont_ther_sched_id = NULL("");
+  string("\x01", maximum_length=13) dtt_drug_sts_tbl_id = NULL("");
+  string("\x01", maximum_length=1) pno_patient_age_override = NULL(""), pgo_qty_qlfr = NULL(""), pno_period_psq_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_psq_dys = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_psq_max = NULL("");
+  string("\x01", maximum_length=6) snh_super_ntwrk_id = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) snh_seq_nbr = NULL("");
+  string("\x01", maximum_length=1) pno_super_ntwrk_qual = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_fills_max_qty = NULL("");
+  string("\x01", maximum_length=1) pno_therap_class = NULL("");
+  string("\x01", maximum_length=10) isc_incentive_sched_id = NULL("");
+  string("\x01", maximum_length=6) rtx_taxonomy_lst_id = NULL("");
+  string("\x01", maximum_length=1) mgo_taxonomy_lst_qual = NULL(""), mgo_taxonomy_lst_drug_sts = NULL(""), mgo_ptd_src = NULL("");
+  date("YYYYMMDD")("\x01") mgo_ptd_eff_frm = NULL("");
+  string("\x01", maximum_length=10) mgo_wrkr_comp_state_lst = NULL(""), add_username = NULL("");
+  date("YYYYMMDD")("\x01") add_dt = NULL("");
+  decimal("\x01") add_time = NULL("");
+  string("\x01", maximum_length=10) add_pgm_nm = NULL(""), chg_usrname = NULL("");
+  date("YYYYMMDD")("\x01") chg_dt = NULL("");
+  decimal("\x01") chg_time = NULL("");
+  string("\x01", maximum_length=10) chg_pgm_name = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_mbr_pa_gpi",in0,in1,in2,in3,in4));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_7_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_member   */
+out0::bzt_7_6c54cc0a_592e7be5_7f05_1(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mbr_sk = NULL(""), cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) clt_id = NULL("");
+  decimal("\x01",0) mast_prsn_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_fam_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_alt_ins_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) mbr_alt_ins_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_alt_ins_mbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) mbr_ssn_nbr = NULL("");
+  date("YYYYMMDD")("\x01") mbr_dt_of_brth = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_hic_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) mb_first_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) mb_last_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mb_mid_init_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_prsn_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_relshp_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) mbr_rdr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_sex = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) mbr_city_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) mbr_zip = NULL("");
+  date("YYYYMMDD")("\x01") mbr_mcre_covrg_from_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) mbr_addr1 = NULL(""), mbr_addr2 = NULL(""), mbr_addr3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) mbr_zip2 = NULL(""), mbr_zip4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) mbr_cntry = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) mbr_phone = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=80) mbr_eml_addr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_mcre_covrg_typ = NULL(""), mbr_fam_typ_cd = NULL(""), mbr_fam_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=18) mbr_dur_keyvar = NULL("");
+  date("YYYYMMDD")("\x01") mbr_ben_reset_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_lang_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_dur_prcs_flag = NULL("");
+  decimal("\x01",0) mbr_mltpl_brth_cd = NULL("");
+  date("YYYYMMDD")("\x01") mbr_orig_eff_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_typ = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_member",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_9_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_mbr_pa_ndc   */
+out0::bzt_9_6c54cc0a_592e7be5_7f05_1(in0,in1,in2,in3,in4)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mpa_ndc_sk = NULL("");
+  string("\x01", maximum_length=18) mbr_id = NULL("");
+  string("\x01", maximum_length=9) carrier_id = NULL("");
+  string("\x01", maximum_length=15) account_id = NULL(""), group_id = NULL("");
+  string("\x01", maximum_length=11) mpa_prior_auth_nbr = NULL("");
+  date("YYYYMMDD")("\x01") pno_curr_dt_eff = NULL(""), pno_curr_dt_term = NULL("");
+  string("\x01", maximum_length=1) pno_curr_drug_st = NULL("");
+  date("YYYYMMDD")("\x01") pno_prev_dt_eff = NULL(""), pno_prev_dt_term = NULL("");
+  string("\x01", maximum_length=1) pno_prev_drug_st = NULL("");
+  string("\x01", maximum_length=10) pno_pgm_nm = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_qty_min = NULL(""), pno_qty_max = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_days_supp_min = NULL(""), pno_days_supp_max = NULL("");
+  string("\x01", maximum_length=1) pno_qty_comp_max = NULL(""), pno_period_qty_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_qty_days = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_qty_max = NULL("");
+  string("\x01", maximum_length=1) pno_period_ds_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_ds_days = NULL(""), pno_ds_period_ds_max = NULL("");
+  string("\x01", maximum_length=1) pno_period_qty_comp_max = NULL(""), pno_period_fills_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_fills_days = NULL(""), pno_period_fills_max = NULL(""), pno_refill_limit_max_nbr = NULL(""), pno_refill_exp_after_days = NULL("");
+  string("\x01", maximum_length=1) pno_amt_due_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_amt_due_days = NULL("");
+  decimal("\x01".2, maximum_length=12, sign_reserved) pno_amt_due_max = NULL("");
+  string("\x01", maximum_length=1) pno_amt_due_basis = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_patient_age_min = NULL(""), pno_patient_age_max = NULL("");
+  decimal("\x01".6, maximum_length=13, sign_reserved) pno_daily_dose_min = NULL(""), pno_daily_dose_max = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) pno_acute_dosing_day_max = NULL(""), pno_maint_dosing_day_max = NULL("");
+  string("\x01", maximum_length=1) pno_pkg_size_comp_cde = NULL(""), pno_otc_override = NULL(""), pno_unit_dose = NULL(""), pno_fda_therapeutic_equiv = NULL(""), pno_route_of_admin = NULL(""), pno_mntence_drug_sts = NULL(""), pno_brand_edit = NULL(""), pno_sex_exclusion = NULL("");
+  string("\x01", maximum_length=6) slt_specialty_list_code = NULL(""), dgl_diag_lst = NULL(""), md_ntwrk_id = NULL(""), phm_phr_ntwrk_id = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) phn_seq_nbr = NULL("");
+  string("\x01", maximum_length=1) pno_family_coverage = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_dpndnt_age_min = NULL(""), pno_dpndnt_age_max = NULL("");
+  string("\x01", maximum_length=5) pno_pref_prd_ndc_labler = NULL("");
+  string("\x01", maximum_length=4) pno_pref_prd_ndc_prod = NULL("");
+  string("\x01", maximum_length=2) pno_pref_prd_ndc_pkg = NULL("");
+  string("\x01", maximum_length=5) pno_form_altndc_labeler = NULL("");
+  string("\x01", maximum_length=4) pno_form_altndc_product = NULL("");
+  string("\x01", maximum_length=2) pno_form_altndc_pkg = NULL("");
+  string("\x01", maximum_length=10) pno_msg_cde = NULL("");
+  string("\x01", maximum_length=1) pno_msg_type = NULL(""), mgo_prior_auth_exp_msg = NULL(""), mgo_nbr_fills_remain_msg = NULL(""), pno_md_ntwrk_qlfr = NULL("");
+  string("\x01", maximum_length=15) prf_prescriber_id = NULL("");
+  string("\x01", maximum_length=2) prq_prescriber_id_qlfr = NULL("");
+  string("\x01", maximum_length=3) prf_prescriber_id_state = NULL("");
+  string("\x01", maximum_length=1) pno_prescriber_override = NULL(""), pno_phr_ntwrk_qual = NULL("");
+  string("\x01", maximum_length=12) pha_phr_id = NULL("");
+  string("\x01", maximum_length=1) pno_phr_override = NULL("");
+  date("YYYYMMDD")("\x01") pno_ptd_frm = NULL("");
+  string("\x01", maximum_length=1) pno_dly_dose_qlfr = NULL(""), pno_diag_lst_qual = NULL(""), mno_specl_lst_qlfr = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_lmt_days_o_r = NULL("");
+  string("\x01", maximum_length=2) pno_refill_cde_o_r = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_dys_supp_fill_lmt = NULL("");
+  decimal("\x01",0, maximum_length=3, sign_reserved) pno_fills_in_hx_fill_lmt = NULL("");
+  string("\x01", maximum_length=1) pno_md_drug_sts = NULL(""), pno_fill_override_multi_s = NULL(""), pno_fill_override_prod = NULL(""), pno_othr_fam_mbr_cov_sts = NULL(""), pgo_cont_ther_prtcl_lvl = NULL("");
+  string("\x01", maximum_length=20) cts_cont_ther_sched_id = NULL("");
+  string("\x01", maximum_length=1) pno_patient_age_override = NULL(""), pno_fda_non_approval = NULL(""), pno_period_psq_typ = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) pno_period_psq_dys = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_psq_max = NULL("");
+  string("\x01", maximum_length=6) snh_super_ntwrk_id = NULL("");
+  decimal("\x01",0, maximum_length=6, sign_reserved) snh_seq_nbr = NULL("");
+  string("\x01", maximum_length=1) pno_super_ntwrk_qual = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) pno_period_fills_max_qty = NULL("");
+  string("\x01", maximum_length=1) pno_therap_class = NULL("");
+  string("\x01", maximum_length=10) isc_incentive_sched_id = NULL("");
+  string("\x01", maximum_length=6) rtx_taxonomy_lst_id = NULL("");
+  string("\x01", maximum_length=1) mgo_taxonomy_lst_qual = NULL(""), mgo_taxonomy_lst_drug_sts = NULL(""), mno_ptd_src = NULL("");
+  date("YYYYMMDD")("\x01") mno_ptd_eff_frm = NULL("");
+  string("\x01", maximum_length=10) mno_wrkr_comp_state_lst = NULL(""), add_username = NULL("");
+  date("YYYYMMDD")("\x01") add_dt = NULL("");
+  decimal("\x01") add_time = NULL("");
+  string("\x01", maximum_length=10) add_pgm_nm = NULL(""), chg_usrname = NULL("");
+  date("YYYYMMDD")("\x01") chg_dt = NULL("");
+  decimal("\x01") chg_time = NULL("");
+  string("\x01", maximum_length=10) chg_pgm_name = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_mbr_pa_ndc",in0,in1,in2,in3,in4));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_10_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_mbr_eligibility   */
+out0::bzt_10_6c54cc0a_592e7be5_7f05_1(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mbr_eligty_sk = NULL(""), cag_sk = NULL(""), mbr_sk = NULL(""), seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mel_stat_cd = NULL("");
+  date("YYYYMMDD")("\x01") mel_eff_dt = NULL(""), mel_thru_dt = NULL(""), plan_eff_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_mbr_eligibility",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_11_6c54cc0a_592e7be5_7f05_1
+    BizHidden:true
+@*/
+/*   lookup lkp_d_prescriber   */
+out0::bzt_11_6c54cc0a_592e7be5_7f05_1(in0)=
+begin
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=25) pbr_first_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pbr_mid_init_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) pbr_last_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_d_prescriber",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_592e7be5_7f05_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_mbr_disenl.sex,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mbr_sex']
+  [out0.d_mbr_disenl.proc_mod_3,[transform],]
+  [out0.d_mbr_disenl.sa_type,[transform],in0.mpa_type_cd]
+  [out0.d_mbr_disenl.race,[transform],]
+  [out0.d_mbr_disenl.epsdt_ind,[transform],]
+  [out0.d_mbr_disenl.aamnt,[transform],]
+  [out0.d_mbr_disenl.proc_code,[transform],in0.mpa_prod_id]
+  [out0.d_mbr_disenl.sa_num,[transform],in0.prior_auth_nbr]
+  [out0.d_mbr_disenl.srvc_prov_num,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     in0.prior_auth_nbr,
+     in0.mbr_id,
+     in0.mpa_type_cd,
+     'lookup("lkp_d_mbr_pa_ndc").prf_prescriber_id',
+     'lookup("lkp_d_mbr_pa_gpi").prf_prescriber_id']
+  [out0.d_mbr_disenl.recip_last_nm,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mb_last_nm']
+  [out0.d_mbr_disenl.recip,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mbr_fam_id']
+  [out0.d_mbr_disenl.mco_bnft_beg_date,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_mbr_eligibility").mel_eff_dt']
+  [out0.d_mbr_disenl.sa_src_system_id,[transform],]
+  [out0.d_mbr_disenl.aunit,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     in0.prior_auth_nbr,
+     in0.mbr_id,
+     in0.mpa_type_cd,
+     'lookup("lkp_d_mbr_pa_gpi").pno_period_qty_max',
+     'lookup("lkp_d_mbr_pa_ndc").pno_period_qty_max']
+  [out0.d_mbr_disenl.au_from_date,[transform],in0.mpa_eff_dt]
+  [out0.d_mbr_disenl.mel_thru_dt,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_mbr_eligibility").mel_thru_dt']
+  [out0.d_mbr_disenl.au_thru_date,[transform],in0.mpa_thru_dt]
+  [out0.d_mbr_disenl.mp_auth_type,[transform],]
+  [out0.d_mbr_disenl.uunit,[transform],]
+  [out0.d_mbr_disenl.plan_nbr,[transform],]
+  [out0.d_mbr_disenl.fips,[transform],]
+  [out0.d_mbr_disenl.proc_mod_1,[transform],]
+  [out0.d_mbr_disenl.program,[transform],]
+  [out0.d_mbr_disenl.proc_mod_2,[transform],]
+  [out0.d_mbr_disenl.recip_first_nm,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mb_first_nm']
+  [out0.d_mbr_disenl.proc_mod_4,[transform],]
+  [out0.d_mbr_disenl.mbr_disenroll_sk,[transform],]
+  [out0.d_mbr_disenl.sa_freq_days_sup,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     in0.prior_auth_nbr,
+     in0.mbr_id,
+     in0.mpa_type_cd,
+     'lookup("lkp_d_mbr_pa_ndc").pno_period_fills_max_qty',
+     'lookup("lkp_d_mbr_pa_gpi").pno_period_fills_max_qty']
+  [out0.d_mbr_disenl.waiver,[transform],]
+  [out0.d_mbr_disenl.run_date,[transform],]
+  [out0.d_mbr_disenl.s_p_name,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.src_env_sk,
+     in0.carrier_id,
+     in0.prior_auth_nbr,
+     in0.mbr_id,
+     in0.mpa_type_cd,
+     'lookup("lkp_d_mbr_pa_gpi").prf_prescriber_id_state',
+     'lookup("lkp_d_mbr_pa_gpi").prq_prescriber_id_qlfr',
+     'lookup("lkp_d_prescriber_alias").phy_pbr_key',
+     'lookup("lkp_d_prescriber").pbr_first_nm',
+     'lookup("lkp_d_prescriber").pbr_last_nm',
+     'lookup("lkp_d_mbr_pa_ndc").prf_prescriber_id',
+     'lookup("lkp_d_mbr_pa_gpi").prf_prescriber_id',
+     'lookup("lkp_d_mbr_pa_ndc").prf_prescriber_id_state',
+     'lookup("lkp_d_mbr_pa_ndc").prq_prescriber_id_qlfr']
+  [out0.d_mbr_disenl.recip_middle_nm,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mb_mid_init_nm']
+  [out0.d_mbr_disenl.source_code,[transform],]
+  [out0.d_mbr_disenl.birth,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_member").mbr_dt_of_brth']
+  [out0.d_mbr_disenl.svce_center,[transform],]
+  [out0.d_mbr_disenl.mel_stat_cd,[transform],in0.mbr_id,
+     in0.employer_group_id,
+     in0.account_id,
+     in0.carrier_id,
+     'lookup("lkp_d_mbr_eligibility").mel_stat_cd']
+  [out0.d_mbr_disenl.rec_type,[transform],]
+  [out0.d_mbr_disenl.prim_diag,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     in0.prior_auth_nbr,
+     in0.mbr_id,
+     in0.mpa_type_cd,
+     'lookup("lkp_d_mbr_pa_ndc").dgl_diag_lst',
+     'lookup("lkp_d_mbr_pa_gpi").dgl_diag_lst']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_mbr_disenl.dxf_hk_part1,'d_mbr_disenl.dxf_hk_part1',1,0]
+     [out0.d_mbr_disenl.dxf_hk_part2,'d_mbr_disenl.dxf_hk_part2',1,0]
+     [out0.d_mbr_disenl.sex,'d_mbr_disenl.sex',1,0]
+     [out0.d_mbr_disenl.proc_mod_3,'d_mbr_disenl.proc_mod_3',1,0]
+     [out0.d_mbr_disenl.sa_type,'d_mbr_disenl.sa_type',1,0]
+     [out0.d_mbr_disenl.race,'d_mbr_disenl.race',1,0]
+     [out0.d_mbr_disenl.epsdt_ind,'d_mbr_disenl.epsdt_ind',1,0]
+     [out0.d_mbr_disenl.aamnt,'d_mbr_disenl.aamnt',1,0]
+     [out0.d_mbr_disenl.proc_code,'d_mbr_disenl.proc_code',1,0]
+     [out0.d_mbr_disenl.dxf_sk,'d_mbr_disenl.dxf_sk',1,0]
+     [out0.d_mbr_disenl.sa_num,'d_mbr_disenl.sa_num',1,0]
+     [out0.d_mbr_disenl.srvc_prov_num,'d_mbr_disenl.srvc_prov_num',1,0]
+     [out0.d_mbr_disenl.recip_last_nm,'d_mbr_disenl.recip_last_nm',1,0]
+     [out0.d_mbr_disenl.recip,'d_mbr_disenl.recip',1,0]
+     [out0.d_mbr_disenl.mco_bnft_beg_date,'d_mbr_disenl.mco_bnft_beg_date',1,0]
+     [out0.d_mbr_disenl.sa_src_system_id,'d_mbr_disenl.sa_src_system_id',1,0]
+     [out0.d_mbr_disenl.aunit,'d_mbr_disenl.aunit',1,0]
+     [out0.d_mbr_disenl.au_from_date,'d_mbr_disenl.au_from_date',1,0]
+     [out0.d_mbr_disenl.mel_thru_dt,'d_mbr_disenl.mel_thru_dt',1,0]
+     [out0.d_mbr_disenl.au_thru_date,'d_mbr_disenl.au_thru_date',1,0]
+     [out0.d_mbr_disenl.mp_auth_type,'d_mbr_disenl.mp_auth_type',1,0]
+     [out0.d_mbr_disenl.uunit,'d_mbr_disenl.uunit',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_mbr_disenl.plan_nbr,'d_mbr_disenl.plan_nbr',1,0]
+     [out0.d_mbr_disenl.fips,'d_mbr_disenl.fips',1,0]
+     [out0.d_mbr_disenl.proc_mod_1,'d_mbr_disenl.proc_mod_1',1,0]
+     [out0.d_mbr_disenl.program,'d_mbr_disenl.program',1,0]
+     [out0.d_mbr_disenl.proc_mod_2,'d_mbr_disenl.proc_mod_2',1,0]
+     [out0.d_mbr_disenl.recip_first_nm,'d_mbr_disenl.recip_first_nm',1,0]
+     [out0.d_mbr_disenl.proc_mod_4,'d_mbr_disenl.proc_mod_4',1,0]
+     [out0.d_mbr_disenl.mbr_disenroll_sk,'d_mbr_disenl.mbr_disenroll_sk',1,0]
+     [out0.d_mbr_disenl.src_env_sk,'d_mbr_disenl.src_env_sk',1,0]
+     [out0.d_mbr_disenl.sa_freq_days_sup,'d_mbr_disenl.sa_freq_days_sup',1,0]
+     [out0.d_mbr_disenl.waiver,'d_mbr_disenl.waiver',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mbr_disenl.run_date,'d_mbr_disenl.run_date',1,0]
+     [out0.d_mbr_disenl.s_p_name,'d_mbr_disenl.s_p_name',1,3]
+     [out0.d_mbr_disenl.recip_middle_nm,'d_mbr_disenl.recip_middle_nm',1,0]
+     [out0.d_mbr_disenl.source_code,'d_mbr_disenl.source_code',1,0]
+     [out0.d_mbr_disenl.birth,'d_mbr_disenl.birth',1,0]
+     [out0.d_mbr_disenl.svce_center,'d_mbr_disenl.svce_center',1,0]
+     [out0.d_mbr_disenl.mel_stat_cd,'d_mbr_disenl.mel_stat_cd',1,0]
+     [out0.d_mbr_disenl.rec_type,'d_mbr_disenl.rec_type',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_mbr_disenl.prim_diag,'d_mbr_disenl.prim_diag',1,0]
+  ]
+  impacts:
+  [
+     ['lookup("lkp_d_prescriber").pbr_first_nm','pbr_first_nm',1,1]
+     ['lookup("lkp_d_mbr_pa_gpi").pno_period_qty_max','pno_period_qty_max',1,1]
+     ['lookup("lkp_d_mbr_pa_ndc").prf_prescriber_id','prf_prescriber_id',2,3]
+     ['lookup("lkp_d_mbr_pa_gpi").dgl_diag_lst','dgl_diag_lst',1,1]
+     ['lookup("lkp_d_member").mb_first_nm','mb_first_nm',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     ['lookup("lkp_d_mbr_pa_gpi").pno_period_fills_max_qty','pno_period_fills_max_qty',1,1]
+     [in0.mpa_type_cd,'mpa_type_cd',20,9]
+     ['lookup("lkp_d_mbr_pa_gpi").prq_prescriber_id_qlfr','prq_prescriber_id_qlfr',1,2]
+     [in0.account_id,'account_id',27,17]
+     [in0.employer_group_id,'employer_group_id',25,17]
+     ['lookup("lkp_d_prescriber").pbr_last_nm','pbr_last_nm',1,1]
+     [in0.carrier_id,'carrier_id',27,17]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.mbr_id,'mbr_id',27,17]
+     ['lookup("lkp_d_mbr_pa_ndc").prf_prescriber_id_state','prf_prescriber_id_state',1,2]
+     [in0.mpa_thru_dt,'mpa_thru_dt',1,1]
+     ['lookup("lkp_d_mbr_pa_gpi").prf_prescriber_id_state','prf_prescriber_id_state',1,2]
+     ['lookup("lkp_d_prescriber_alias").phy_pbr_key','phy_pbr_key',2,1]
+     ['lookup("lkp_d_mbr_eligibility").mel_thru_dt','mel_thru_dt',1,1]
+     ['lookup("lkp_d_member").mbr_sex','mbr_sex',1,1]
+     [in0.prior_auth_nbr,'prior_auth_nbr',15,9]
+     [in0.mpa_eff_dt,'mpa_eff_dt',1,1]
+     ['lookup("lkp_d_mbr_pa_ndc").prq_prescriber_id_qlfr','prq_prescriber_id_qlfr',1,2]
+     ['lookup("lkp_d_member").mbr_dt_of_brth','mbr_dt_of_brth',1,1]
+     ['lookup("lkp_d_member").mbr_fam_id','mbr_fam_id',1,1]
+     [in0.mpa_prod_id,'mpa_prod_id',1,1]
+     ['lookup("lkp_d_mbr_eligibility").mel_eff_dt','mel_eff_dt',1,1]
+     ['lookup("lkp_d_mbr_pa_ndc").pno_period_fills_max_qty','pno_period_fills_max_qty',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',4,2]
+     ['lookup("lkp_d_mbr_eligibility").mel_stat_cd','mel_stat_cd',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     ['lookup("lkp_d_mbr_pa_ndc").dgl_diag_lst','dgl_diag_lst',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("lkp_d_member").mb_last_nm','mb_last_nm',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("lkp_d_mbr_pa_ndc").pno_period_qty_max','pno_period_qty_max',1,1]
+     ['lookup("lkp_d_mbr_pa_gpi").prf_prescriber_id','prf_prescriber_id',2,3]
+     ['lookup("lkp_d_member").mb_mid_init_nm','mb_mid_init_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) d_mbr_disenl_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) d_mbr_disenl_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) d_mbr_disenl_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) d_mbr_disenl_mbr_disenroll_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_mbr_disenl_svce_center = "1018";
+let date("MMDDYYYY")("\x01") d_mbr_disenl_run_date = fail_if_error((date("MMDDYYYY")) now1());
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_plan_nbr = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_rec_type = "S";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_source_code = "M";
+let date("MMDDYYYY")("\x01") d_mbr_disenl_mco_bnft_beg_date;
+let date("MMDDYYYY")("\x01") d_mbr_disenl_mel_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mbr_disenl_mel_stat_cd;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_recip;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_recip_last_nm;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_recip_first_nm;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_recip_middle_nm;
+let date("MMDDYYYY")("\x01") d_mbr_disenl_birth;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_sex;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_race = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_fips = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_program = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_waiver = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_sa_type = fail_if_error(first_defined(in0.mpa_type_cd," "));
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_srvc_prov_num;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_s_p_name;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_prim_diag;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_proc_code = fail_if_error(first_defined(in0.mpa_prod_id," "));
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_proc_mod_1 = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_proc_mod_2 = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_proc_mod_3 = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_proc_mod_4 = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_sa_num = fail_if_error(first_defined(in0.prior_auth_nbr," "));
+let date("MMDDYYYY")("\x01") d_mbr_disenl_au_from_date = fail_if_error(first_defined((date("MMDDYYYY"))in0.mpa_eff_dt,"01011900"));
+let date("MMDDYYYY")("\x01") d_mbr_disenl_au_thru_date = fail_if_error(first_defined((date("MMDDYYYY"))in0.mpa_thru_dt,"12312039"));
+let decimal("\x01") d_mbr_disenl_aunit;
+let decimal("\x01".2) d_mbr_disenl_aamnt = 00000000000000.00;
+let decimal("\x01") d_mbr_disenl_uunit = 000000;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_mp_auth_type = "D";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_sa_freq_days_sup;
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_sa_src_system_id = " ";
+let string("\x01",charset="iso-8859-15") d_mbr_disenl_epsdt_ind = "N";
+let decimal("\x01",0) d_mbr_disenl_src_env_sk = fail_if_error(in0.src_env_sk);
+let unicode string(int) v_pbr_id;
+let unicode string(int) v_pbr_id_qlfr;
+let unicode string(int) v_pbr_id_st_cd;
+
+
+
+/*   Default value   */
+d_mbr_disenl_sex=fail_if_error(first_defined(bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mbr_sex," "));
+
+/*   Default value   */
+d_mbr_disenl_srvc_prov_num=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id," ")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id," ")));
+
+/*   Default value   */
+d_mbr_disenl_recip_last_nm=fail_if_error(first_defined(bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mb_last_nm," "));
+
+/*   Default value   */
+d_mbr_disenl_recip=fail_if_error(first_defined(bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mbr_fam_id," "));
+
+/*   Default value   */
+v_pbr_id_st_cd=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id_state," ")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id_state," ")));
+
+/*   Default value   */
+d_mbr_disenl_mco_bnft_beg_date=fail_if_error(first_defined((date("MMDDYYYY"))bzt_10_6c54cc0a_592e7be5_7f05_1(in0.carrier_id, in0.account_id ,in0.employer_group_id ,in0.mbr_id).mel_eff_dt,"01011900"));
+
+/*   Default value   */
+d_mbr_disenl_aunit=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).pno_period_qty_max,"000000")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).pno_period_qty_max,"000000")));
+
+/*   Default value   */
+d_mbr_disenl_mel_thru_dt=fail_if_error(first_defined((date("MMDDYYYY"))bzt_10_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mel_thru_dt,"01011900"));
+
+/*   Default value   */
+v_pbr_id=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id," ")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prf_prescriber_id," ")));
+
+/*   Default value   */
+d_mbr_disenl_recip_first_nm=fail_if_error(first_defined(bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mb_first_nm," "));
+
+/*   Default value   */
+d_mbr_disenl_sa_freq_days_sup=fail_if_error(if(in0.mpa_type_cd member  [vector  'G','2','4']) first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id, in0.carrier_id, in0.account_id, in0.employer_group_id, in0.prior_auth_nbr).pno_period_fills_max_qty,"00") else first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id, in0.carrier_id, in0.account_id, in0.employer_group_id, in0.prior_auth_nbr).pno_period_fills_max_qty,"00"));
+
+/*   Default value   */
+d_mbr_disenl_recip_middle_nm=fail_if_error(first_defined(bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mb_mid_init_nm, " "));
+
+/*   Default value   */
+d_mbr_disenl_birth=fail_if_error(first_defined((date("MMDDYYYY"))bzt_7_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mbr_dt_of_brth,"01011900"));
+
+/*   Default value   */
+d_mbr_disenl_mel_stat_cd=fail_if_error(first_defined(bzt_10_6c54cc0a_592e7be5_7f05_1(in0.carrier_id,in0.account_id,in0.employer_group_id,in0.mbr_id).mel_stat_cd," "));
+
+/*   Default value   */
+v_pbr_id_qlfr=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prq_prescriber_id_qlfr," ")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).prq_prescriber_id_qlfr," ")));
+
+/*   Default value   */
+d_mbr_disenl_s_p_name=fail_if_error(string_concat(first_defined(bzt_11_6c54cc0a_592e7be5_7f05_1(bzt_12_6c54cc0a_592e7be5_7f05_1(v_pbr_id, v_pbr_id_qlfr, v_pbr_id_st_cd, in0.src_env_sk).phy_pbr_key).pbr_first_nm,"")," ",first_defined(bzt_11_6c54cc0a_592e7be5_7f05_1(bzt_12_6c54cc0a_592e7be5_7f05_1(v_pbr_id, v_pbr_id_qlfr, v_pbr_id_st_cd, in0.src_env_sk).phy_pbr_key).pbr_last_nm,"")));
+
+/*   Default value   */
+d_mbr_disenl_prim_diag=fail_if_error((if (sql_or(sql_or((in0.mpa_type_cd=='G'),(in0.mpa_type_cd=='2')),(in0.mpa_type_cd=='4')))
+   first_defined(bzt_8_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).dgl_diag_lst," ")
+ else
+   first_defined(bzt_9_6c54cc0a_592e7be5_7f05_1(in0.mbr_id,in0.carrier_id,in0.account_id,in0.employer_group_id,in0.prior_auth_nbr).dgl_diag_lst," ")));
+
+  out0.d_mbr_disenl.dxf_hk_part1::d_mbr_disenl_dxf_hk_part1;
+  out0.d_mbr_disenl.dxf_hk_part2::d_mbr_disenl_dxf_hk_part2;
+  out0.d_mbr_disenl.dxf_sk::d_mbr_disenl_dxf_sk;
+  out0.d_mbr_disenl.mbr_disenroll_sk::d_mbr_disenl_mbr_disenroll_sk;
+  out0.d_mbr_disenl.svce_center::d_mbr_disenl_svce_center;
+  out0.d_mbr_disenl.run_date::d_mbr_disenl_run_date;
+  out0.d_mbr_disenl.plan_nbr::d_mbr_disenl_plan_nbr;
+  out0.d_mbr_disenl.rec_type::d_mbr_disenl_rec_type;
+  out0.d_mbr_disenl.source_code::d_mbr_disenl_source_code;
+  out0.d_mbr_disenl.mco_bnft_beg_date::d_mbr_disenl_mco_bnft_beg_date;
+  out0.d_mbr_disenl.mel_thru_dt::d_mbr_disenl_mel_thru_dt;
+  out0.d_mbr_disenl.mel_stat_cd::d_mbr_disenl_mel_stat_cd;
+  out0.d_mbr_disenl.recip::d_mbr_disenl_recip;
+  out0.d_mbr_disenl.recip_last_nm::d_mbr_disenl_recip_last_nm;
+  out0.d_mbr_disenl.recip_first_nm::d_mbr_disenl_recip_first_nm;
+  out0.d_mbr_disenl.recip_middle_nm::d_mbr_disenl_recip_middle_nm;
+  out0.d_mbr_disenl.birth::d_mbr_disenl_birth;
+  out0.d_mbr_disenl.sex::d_mbr_disenl_sex;
+  out0.d_mbr_disenl.race::d_mbr_disenl_race;
+  out0.d_mbr_disenl.fips::d_mbr_disenl_fips;
+  out0.d_mbr_disenl.program::d_mbr_disenl_program;
+  out0.d_mbr_disenl.waiver::d_mbr_disenl_waiver;
+  out0.d_mbr_disenl.sa_type::d_mbr_disenl_sa_type;
+  out0.d_mbr_disenl.srvc_prov_num::d_mbr_disenl_srvc_prov_num;
+  out0.d_mbr_disenl.s_p_name::d_mbr_disenl_s_p_name;
+  out0.d_mbr_disenl.prim_diag::d_mbr_disenl_prim_diag;
+  out0.d_mbr_disenl.proc_code::d_mbr_disenl_proc_code;
+  out0.d_mbr_disenl.proc_mod_1::d_mbr_disenl_proc_mod_1;
+  out0.d_mbr_disenl.proc_mod_2::d_mbr_disenl_proc_mod_2;
+  out0.d_mbr_disenl.proc_mod_3::d_mbr_disenl_proc_mod_3;
+  out0.d_mbr_disenl.proc_mod_4::d_mbr_disenl_proc_mod_4;
+  out0.d_mbr_disenl.sa_num::d_mbr_disenl_sa_num;
+  out0.d_mbr_disenl.au_from_date::d_mbr_disenl_au_from_date;
+  out0.d_mbr_disenl.au_thru_date::d_mbr_disenl_au_thru_date;
+  out0.d_mbr_disenl.aunit::d_mbr_disenl_aunit;
+  out0.d_mbr_disenl.aamnt::d_mbr_disenl_aamnt;
+  out0.d_mbr_disenl.uunit::d_mbr_disenl_uunit;
+  out0.d_mbr_disenl.mp_auth_type::d_mbr_disenl_mp_auth_type;
+  out0.d_mbr_disenl.sa_freq_days_sup::d_mbr_disenl_sa_freq_days_sup;
+  out0.d_mbr_disenl.sa_src_system_id::d_mbr_disenl_sa_src_system_id;
+  out0.d_mbr_disenl.epsdt_ind::d_mbr_disenl_epsdt_ind;
+  out0.d_mbr_disenl.src_env_sk::d_mbr_disenl_src_env_sk;
+  out0.*::in0.*;
+
+end;

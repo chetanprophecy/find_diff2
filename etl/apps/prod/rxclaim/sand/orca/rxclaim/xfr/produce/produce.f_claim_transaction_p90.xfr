@@ -1,0 +1,833 @@
+/*
+Description : Transformation logic developed to derive Program Type and Program Indicator for Preferred90 and CVS90 Programs
+Developer: gsonar|Girish Sonar|Initial Draft
+           rshengul|Rishiraj Shengule|Code refactoring to optimize performance.
+
+*/
+
+//Start-Lookup type definations - all are using aggregated lookups from produce.f_claim_transaction_p90.cat catalog
+
+type d_plan_maintenance_d_nd2_ndc_list_p90_type=
+record 
+    string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_id =NULL/*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1) pmn_gpi_list_sts = NULL /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10) pmn_ndc_list_id = NULL /*VARCHAR(10)*/;
+    date("YYYYMMDD")("\x01") pmn_from_dt =NULL /*DATE*/;
+    date("YYYYMMDD")("\x01") pmn_thru_dt = NULL /*DATE*/;
+    string("\x01",charset="iso-8859-15", maximum_length=5) nd2_ndc_lblr_cd = NULL /*VARCHAR(5)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=4) nd2_ndc_prod_cd = NULL /*VARCHAR(4)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2) nd2_ndc_pkg_cd = NULL /*VARCHAR(2)*/;
+    date("YYYYMMDD")("\x01") nd2_from_dt = NULL /*DATE*/;
+    date("YYYYMMDD")("\x01") nd2_thru_dt = NULL/*DATE*/;
+end;
+
+
+//Start-Types for basic plans
+type d_plan_gpi_list_p90=
+record
+  string("\x01",charset="iso-8859-15", maximum_length=18)  pgo_generic_product_id =allocate_with_nulls() /*VARCHAR(18)*/;
+  date("YYYYMMDD")("\x01")  pno_current_dte_effective = allocate_with_nulls() /*DATE*/;
+  date("YYYYMMDD")("\x01")  pno_current_dte_termed = allocate_with_nulls() /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pgo_multi_source_cd = allocate_with_nulls()/*CHAR(1)*/;
+end;
+
+type d_plan_ndc_option_p90=
+record  
+  string("\x01",charset="iso-8859-15", maximum_length=5) ndc_labeler_cd = allocate_with_nulls() /*VARCHAR(5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) ndc_prod_cd = allocate_with_nulls() /*VARCHAR(4)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) ndc_pkg_cd = allocate_with_nulls() /*VARCHAR(2)*/;
+  date("YYYYMMDD")("\x01") curr_eff_dt = allocate_with_nulls() /*DATE*/;
+  date("YYYYMMDD")("\x01") curr_thru_dt = allocate_with_nulls() /*DATE*/;
+end;
+
+type d_gp2_gpi_list_p90=
+record
+  string("\x01",charset="iso-8859-15", maximum_length=14) gp2_gpi_nbr = NULL("") /*VARCHAR(14)*/;
+  date("YYYYMMDD")("\x01") gp2_gpi_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") gp2_gpi_thru_dt = NULL("") /*DATE*/;
+end;
+
+type d_nd2_ndc_list_p90=
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) nd1_ndc_list_nm = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5) nd2_ndc_lblr_cd = NULL("") /*VARCHAR(5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) nd2_ndc_prod_cd = NULL("") /*VARCHAR(4)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) nd2_ndc_pkg_cd = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) nd2_lbl_nm = NULL("") /*VARCHAR(30)*/;
+  date("YYYYMMDD")("\x01") nd2_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") nd2_thru_dt = NULL("") /*DATE*/;
+  
+end;
+//End-Types for basic plans
+
+//Start - Types for Preferred90 plans
+type d_pgt_plan_gpi_list_p90=
+record  
+  string("\x01",charset="iso-8859-15", maximum_length=10) pgl_gpi_list_nm = allocate_with_nulls() /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pgt_from_dt = allocate_with_nulls() /*DATE*/;
+  date("YYYYMMDD")("\x01") pgt_thru_dt = allocate_with_nulls() /*DATE*/;
+end;
+
+type d_pnt_plan_ndc_list_p90=
+record
+   string("\x01",charset="iso-8859-15", maximum_length=10) pnt_ndc_list_nm_10 =allocate_with_nulls() /*VARCHAR(10)*/;
+   string("\x01",charset="iso-8859-15", maximum_length=6) pnl_ndc_list_nm_6 = NULL("") /*VARCHAR(6)*/;
+   date("YYYYMMDD")("\x01") pnt_from_dt = allocate_with_nulls()/*DATE*/;
+   date("YYYYMMDD")("\x01") pnt_thru_dt = allocate_with_nulls() /*DATE*/;
+end;
+
+type d_plan_maintenance_p90=
+record 
+ string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_id = allocate_with_nulls() /*VARCHAR(10)*/;
+ string("\x01",charset="iso-8859-15", maximum_length=1)  pmn_gpi_list_sts = allocate_with_nulls() /*CHAR(1)*/;
+ string("\x01",charset="iso-8859-15", maximum_length=10) pmn_ndc_list_id = allocate_with_nulls() /*VARCHAR(10)*/;
+ string("\x01",charset="iso-8859-15", maximum_length=1) pmn_ndc_list_sts = allocate_with_nulls() /*CHAR(1)*/;
+ date("YYYYMMDD")("\x01") pmn_from_dt = allocate_with_nulls() /*DATE*/;
+ date("YYYYMMDD")("\x01") pmn_thru_dt = allocate_with_nulls() /*DATE*/;
+end;
+
+type d_pln_frmlry_pgm_gpi_list = 
+record
+   string("\x01",charset="iso-8859-15", maximum_length=10) fpg_gpi_list_nm = NULL("") /*VARCHAR(10)*/;
+   date("YYYYMMDD")("\x01") fpg_from_dt = NULL("") /*DATE*/;
+   date("YYYYMMDD")("\x01") fpg_thru_dt = NULL("") /*DATE*/;      
+end;
+
+type d_pln_frmlry_pgm_ndc_list=
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) pfn_ndc_list_nm = NULL("") /*VARCHAR(10)*/;  
+   date("YYYYMMDD")("\x01") pfn_from_dt = NULL("") /*DATE*/;
+   date("YYYYMMDD")("\x01") pfn_thru_dt = NULL("") /*DATE*/;
+end;
+//End - Types for Preferred90 plans
+
+//End-Lookup type definations
+
+//Lookup type declarations
+
+let d_plan_maintenance_d_nd2_ndc_list_p90_type[int] v_d_plan_maintenance_d_nd2_ndc_list_p90=allocate_with_nulls();
+let d_plan_gpi_list_p90[int] v_d_plan_gpi_list_p90=allocate_with_nulls();
+let d_plan_gpi_list_p90[int] v_d_plan_gpi_list=allocate_with_nulls();
+let d_plan_ndc_option_p90[int] v_d_plan_ndc_option_p90=allocate_with_nulls();
+let d_gp2_gpi_list_p90[int] v_d_gp2_gpi_list_p90=allocate_with_nulls();
+let d_nd2_ndc_list_p90[int] v_d_nd2_ndc_list_p90=allocate_with_nulls();
+let d_pgt_plan_gpi_list_p90[int] v_d_pgt_plan_gpi_list_p90=allocate_with_nulls();
+let d_pgt_plan_gpi_list_p90[int] v_d_pgt_plan_gpi_list=allocate_with_nulls();
+let d_pnt_plan_ndc_list_p90[int] v_d_pnt_plan_ndc_list_p90=allocate_with_nulls();
+let d_plan_maintenance_p90[int] v_d_plan_maintenance_p90=allocate_with_nulls();
+let d_pln_frmlry_pgm_gpi_list[int] v_d_pln_frmlry_pgm_gpi_list=allocate_with_nulls();
+let d_pln_frmlry_pgm_ndc_list[int] v_d_pln_frmlry_pgm_ndc_list=allocate_with_nulls();
+
+
+let string("\x01",charset="iso-8859-15", maximum_length=20)v_productid="";
+let string("\x01",charset="iso-8859-15", maximum_length=1) v_f_clm_multi_source_cd = "" /*CHAR(1)*/;
+let string("\x01",charset="iso-8859-15", maximum_length=6) v_phr_ntwrk_id = "" /*VARCHAR(6)*/;
+let string("\x01",charset="iso-8859-15", maximum_length=6) v_phr_super_ntwrk_id = "" /*VARCHAR(6)*/;
+let string("\x01",maximum_length=10) v_riirhf="";
+let string("\x01",charset="iso-8859-15", maximum_length=14) v_gpi_no = ""; //MSS Fix requirement
+
+//Flags
+let integer(1) v_gpi_plan_match_flg=0;
+let integer(1) v_ndc_plan_match_flg=0;
+let integer(1) v_maint_gpi_plan_match_flg=0;
+let integer(1) v_maint_ndc_plan_match_flg=0;
+let integer(1) v_gpi_match_flg = 0;
+let integer(1) v_plan_gpi_match_flg = 0;
+let integer(1) v_pln_frmlry_gpi_match = 0;
+let integer(1) v_pln_frmlry_ndc_match = 0;
+
+
+
+//Final flags
+
+let string(1) v_day_90_prog_type="";
+let string(1) v_day_90_retail_prog_ind="";
+
+
+out::reformat(in)=
+begin
+
+
+
+
+v_day_90_prog_type="N";
+v_day_90_retail_prog_ind="N";
+
+v_gpi_plan_match_flg=0;
+v_ndc_plan_match_flg=0;
+v_maint_gpi_plan_match_flg=0;
+v_maint_ndc_plan_match_flg=0;
+
+
+//start- Extracting MULTISRCCD for corresponding FSK using fixed value as per static lookup table l_brand_generic_indicator present in IDW
+
+switch(in.gnrc_mdspn_ind_sk)
+case 1 :
+        v_f_clm_multi_source_cd="M";
+case 2 :
+        v_f_clm_multi_source_cd="N";
+case 3 :
+        v_f_clm_multi_source_cd="O";
+case 4 :
+        v_f_clm_multi_source_cd="Y";
+case 12 :
+        v_f_clm_multi_source_cd="Z";
+case 14 :
+        v_f_clm_multi_source_cd="X";        
+end;
+//start- Extracting MULTISRCCD for corresponding FSK using fixed value as per static lookup table l_brand_generic_indicator present in IDW
+v_productid=first_defined(string_lrtrim(lookup("d_product_p90",in.prod_sk).prod_id),"");
+v_phr_ntwrk_id=first_defined(string_lrtrim(lookup("d_pharmacy_network_p90",in.ntwk_sk).phr_ntwrk_id),"");
+v_phr_super_ntwrk_id=first_defined(string_lrtrim(lookup("d_pharmacy_super_network_p90",in.super_ntwk_sk).phr_super_ntwrk_id),"");
+
+v_day_90_retail_prog_ind=if(v_phr_super_ntwrk_id=="ORXS90")"W" else if (v_phr_super_ntwrk_id=="ORXC90")"C" else "N";
+//Outermost If
+if(in.src_env_sk==490)
+begin
+v_gpi_no = first_defined(lookup("d_product_adjud_p90",in.prod_adjud_sk).gpi_no,"");
+
+
+if(in.days_sply>83 or in.days_sply<-83)
+begin
+
+//v_day_90_retail_prog_ind
+
+
+//start - Calculate v_plan_gpi_list_nm_match_flg, v_gpi_match_lvl,v_gpi_filldt_range_chk_flg,v_pln_gpi_multi_src_cd_match_flg
+v_gpi_plan_match_flg=lookup_match("d_pgt_plan_gpi_list_p90",in.final_pln_sk);
+if(v_gpi_plan_match_flg)
+begin
+v_d_pgt_plan_gpi_list=lookup("d_pgt_plan_gpi_list_p90",in.final_pln_sk).vec_d_pgt_plan_gpi_list_p90;
+
+        for(let int i,i<length_of(v_d_pgt_plan_gpi_list))
+        begin
+                if(in.filled_dt >= v_d_pgt_plan_gpi_list[i].pgt_from_dt and in.filled_dt <= v_d_pgt_plan_gpi_list[i].pgt_thru_dt)
+                begin
+                      v_plan_gpi_match_flg = lookup_match("d_plan_gpi_list_p90",v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm )  ;
+                      if(v_plan_gpi_match_flg)
+                      begin
+                        v_d_plan_gpi_list = lookup("d_plan_gpi_list_p90",v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm).vec_d_plan_gpi_list_p90;
+                        for(let int k,k<length_of(v_d_plan_gpi_list))
+                        begin
+                               
+                               if((string_substring(v_productid,1,18)==v_d_plan_gpi_list[k].pgo_generic_product_id or 
+                                string_substring(v_productid,1,14)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,14) or 
+                                string_substring(v_productid,1,12)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,12) or 
+                                string_substring(v_productid,1,10)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,10) or 
+                                string_substring(v_productid,1,8)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,8) or 
+                                string_substring(v_productid,1,6)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,6) or 
+                                string_substring(v_productid,1,4)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,4) or 
+                                string_substring(v_productid,1,2)==string_substring(v_d_plan_gpi_list[k].pgo_generic_product_id,1,2)) and 
+                               (in.filled_dt>=v_d_plan_gpi_list[k].pno_current_dte_effective and in.filled_dt<=v_d_plan_gpi_list[k].pno_current_dte_termed))
+                               begin
+                                       if(v_d_plan_gpi_list[k].pgo_multi_source_cd==v_f_clm_multi_source_cd or 
+                                          (v_d_plan_gpi_list[k].pgo_multi_source_cd == "*" and v_f_clm_multi_source_cd member [vector "M","N","O","Y"]) or
+                                           (v_d_plan_gpi_list[k].pgo_multi_source_cd=="B" and v_f_clm_multi_source_cd member [vector "M","N","O"]))
+                                         begin
+                                              if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"])
+                                                begin
+                                                        if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXMSS")) v_day_90_prog_type="S";
+                                                        else if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXMSP")) v_day_90_prog_type="P";
+                                                        else if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXMSMS")) v_day_90_prog_type="M";
+                                                end;
+                                                else if(v_phr_super_ntwrk_id=="ORXS90")
+                                                begin
+                                                        if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXS9S")) v_day_90_prog_type="A";
+                                                        else if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXS9P")) v_day_90_prog_type="B";
+                                                        
+                                                end;
+                                                else if(v_phr_super_ntwrk_id=="ORXC90")
+                                                begin
+                                                        if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXC9S")) v_day_90_prog_type="E";
+                                                        else if(starts_with(v_d_pgt_plan_gpi_list[i].pgl_gpi_list_nm,"UXC9P")) v_day_90_prog_type="F";
+                                                        
+                                                end;  
+                                         end
+                               end 
+                        end    
+                      end;
+                end;
+        end;
+end;
+
+//Start - Calculate v_plan_ndc_list_nm_match_flg,v_ndc_match_lvl,v_ndc_filldt_range_chk_flg
+
+if(v_day_90_prog_type=="N")
+begin
+v_ndc_plan_match_flg=lookup_match("d_pnt_plan_ndc_list_p90",in.final_pln_sk);
+        if(v_ndc_plan_match_flg)
+        begin
+        v_d_pnt_plan_ndc_list_p90=lookup("d_pnt_plan_ndc_list_p90",in.final_pln_sk).vec_d_pnt_plan_ndc_list_p90;
+                for(let int j,j<length_of(v_d_pnt_plan_ndc_list_p90))
+                begin
+                        if(in.filled_dt>=v_d_pnt_plan_ndc_list_p90[j].pnt_from_dt and in.filled_dt<=v_d_pnt_plan_ndc_list_p90[j].pnt_thru_dt)
+                        begin
+                               if(lookup_match("d_plan_ndc_option_p90",v_d_pnt_plan_ndc_list_p90[j].pnl_ndc_list_nm_6))
+                               begin
+                                        v_d_plan_ndc_option_p90 = first_defined(lookup("d_plan_ndc_option_p90",v_d_pnt_plan_ndc_list_p90[j].pnl_ndc_list_nm_6).vec_d_plna_ndc_option_p90,[vector]);
+                                        for(let int k,k<length_of(v_d_plan_ndc_option_p90))
+                                        begin
+                                              if((string_substring(v_productid,1,11)==string_concat(v_d_plan_ndc_option_p90[k].ndc_labeler_cd, v_d_plan_ndc_option_p90[k].ndc_prod_cd,v_d_plan_ndc_option_p90[k].ndc_pkg_cd ) or 
+                                                 string_substring(v_productid,1,9)==string_concat(v_d_plan_ndc_option_p90[k].ndc_labeler_cd,v_d_plan_ndc_option_p90[k].ndc_prod_cd) or
+                                                 string_substring(v_productid,1,5)==v_d_plan_ndc_option_p90[k].ndc_labeler_cd )and 
+                                                (in.filled_dt>=v_d_plan_ndc_option_p90[k].curr_eff_dt and 
+                                                in.filled_dt<=v_d_plan_ndc_option_p90[k].curr_thru_dt ))
+                                                begin
+                                                
+                                                        if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"])
+                                                        begin
+                                                                if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXMSS")) v_day_90_prog_type="S";
+                                                                else if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXMSP")) v_day_90_prog_type="P";
+                                                                else if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXMSMS")) v_day_90_prog_type="M";
+                                                        end;
+                                
+                                                        else if(v_phr_super_ntwrk_id=="ORXS90")
+                                                        begin
+                                                                if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXS9S")) v_day_90_prog_type="A";
+                                                                else if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXS9P")) v_day_90_prog_type="B";
+                                                        end;
+                                        
+                                                        else if(v_phr_super_ntwrk_id=="ORXC90")
+                                                        begin
+                                                                if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXC9S")) v_day_90_prog_type="E";
+                                                                else if(starts_with(v_d_pnt_plan_ndc_list_p90[j].pnt_ndc_list_nm_10,"UXC9P")) v_day_90_prog_type="F";
+                                                        end;
+                                                end
+                                        end
+                                end
+                          
+                        end
+                    
+                end
+       
+        end
+end;
+//End - Calculate v_plan_ndc_list_nm_match_flg,v_ndc_match_lvl,v_ndc_filldt_range_chk_flg
+
+//Start - Calculate v_drug_list_pattern_check_for_saver_3
+if(v_day_90_prog_type == "N")
+begin
+        if(first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg,"")=="Y")
+        begin
+              v_maint_gpi_plan_match_flg=lookup_match("d_plan_maintenance_p90",in.final_pln_sk);
+              if(v_maint_gpi_plan_match_flg)
+              begin
+                  v_d_plan_maintenance_p90 = lookup("d_plan_maintenance_p90",in.final_pln_sk).vec_d_plan_maintenance_p90;
+                  for(let int k,k<length_of(v_d_plan_maintenance_p90))
+                  begin
+                        if(in.filled_dt >= v_d_plan_maintenance_p90[k].pmn_from_dt and in.filled_dt <=v_d_plan_maintenance_p90[k].pmn_thru_dt )
+                        begin
+                              v_gpi_match_flg = lookup_match("d_gp2_gpi_list_p90",v_d_plan_maintenance_p90[k].gpi_list_id);
+                              if(v_gpi_match_flg)
+                              begin
+                                       v_d_gp2_gpi_list_p90 = lookup("d_gp2_gpi_list_p90",v_d_plan_maintenance_p90[k].gpi_list_id).vec_gp2_gpi_list_p90;
+                                       for(let int g,g<length_of(v_d_gp2_gpi_list_p90))
+                                       begin
+                                               if((string_substring(v_productid,1,14)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or
+                                                  string_substring(v_productid,1,12)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or       
+                                                  string_substring(v_productid,1,10)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or 
+                                                  string_substring(v_productid,1,8)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or 
+                                                  string_substring(v_productid,1,6)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or 
+                                                  string_substring(v_productid,1,4)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr or 
+                                                  string_substring(v_productid,1,2)==v_d_gp2_gpi_list_p90[g].gp2_gpi_nbr) 
+                                                  and (in.filled_dt >= v_d_gp2_gpi_list_p90[g].gp2_gpi_from_dt and in.filled_dt <= v_d_gp2_gpi_list_p90[g].gp2_gpi_thru_dt))
+                                               begin
+                                                     if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"])
+                                                     begin
+                                                             if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXMSS")) v_day_90_prog_type="S";
+                                                             else if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXMSP")) v_day_90_prog_type="P";
+                                                             else if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXMSMS")) v_day_90_prog_type="M";
+                                                     end;
+                                                     else if(v_phr_super_ntwrk_id=="ORXS90")
+                                                     begin
+                                                             if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXS9S")) v_day_90_prog_type="A";
+                                                             else if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXS9P")) v_day_90_prog_type="B";
+                                                     
+                                                     end;  
+                                                     else if(v_phr_super_ntwrk_id=="ORXC90")
+                                                     begin
+                                                          if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXC9S")) v_day_90_prog_type="E";
+                                                          else if(starts_with(v_d_plan_maintenance_p90[k].gpi_list_id,"UXC9P")) v_day_90_prog_type="F";
+                                                          
+                                                     end; 
+                                               end 
+                                       end
+                              end
+                        end
+                  end
+              end 
+        end
+end
+
+//End - Calculate v_drug_list_pattern_check_for_saver_3
+
+//Start - Calculate v_drug_list_pattern_check_for_saver_4
+
+
+
+if(v_day_90_prog_type=="N")
+begin
+        if(first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg,"")=="Y")
+        begin
+        v_maint_ndc_plan_match_flg=lookup_match("d_plan_maintenance_d_nd2_ndc_list_p90",in.final_pln_sk);
+                if(v_maint_ndc_plan_match_flg)
+                begin
+                v_d_plan_maintenance_d_nd2_ndc_list_p90=lookup("d_plan_maintenance_d_nd2_ndc_list_p90",in.final_pln_sk).vec_d_plan_maintenance_d_nd2_ndc_list_p90;
+                        for(let int m,m<length_of(v_d_plan_maintenance_d_nd2_ndc_list_p90))
+                        begin
+                                if(in.filled_dt>=v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_from_dt and in.filled_dt<=v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_thru_dt and 
+                                  (if(string_substring(v_productid,1,11)==first_defined(string_concat(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_lblr_cd,v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_prod_cd,v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_pkg_cd),"") or
+                                    string_substring(v_productid,1,9)==first_defined(string_concat(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_lblr_cd,v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_prod_cd),"") or
+                                    string_substring(v_productid,1,5)==first_defined(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_ndc_lblr_cd,""))1 else 0) and 
+                                    in.filled_dt>=v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_from_dt and in.filled_dt<=v_d_plan_maintenance_d_nd2_ndc_list_p90[m].nd2_thru_dt
+                                   )
+                                   begin
+                                        if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"])
+                                        begin
+                                             if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXMSS")) v_day_90_prog_type="S";
+                                             else if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXMSP")) v_day_90_prog_type="P";
+                                             else if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXMSMS")) v_day_90_prog_type="M";
+                                        end;   
+                                        else if(v_phr_super_ntwrk_id=="ORXS90")
+                                        begin
+                                               if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXS9S")) v_day_90_prog_type="A";
+                                               else if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXS9P")) v_day_90_prog_type="B";
+                                              
+                                        end;
+                                          
+                                        else if(v_phr_super_ntwrk_id=="ORXC90")
+                                        begin
+                                                if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXC9S")) v_day_90_prog_type="E";
+                                                else if(starts_with(v_d_plan_maintenance_d_nd2_ndc_list_p90[m].pmn_ndc_list_id,"UXC9P")) v_day_90_prog_type="F";
+                                               
+                                        end;
+                                   end;
+                                    
+                        end;
+                end;
+        
+        end;
+end;
+//End - Calculate v_drug_list_pattern_check_for_saver_4
+//Start for non basic program check for MSS 
+if(v_day_90_prog_type == "N")
+begin
+        if(first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg, " ") == "Y")
+        begin
+               if(lookup_match("d_frmlry_pgm_gpi_list_p90",in.final_pln_sk))
+               begin
+                     v_d_pln_frmlry_pgm_gpi_list = lookup("d_frmlry_pgm_gpi_list_p90",in.final_pln_sk).vec_d_pln_frmlry_pgm_gpi;
+                     for(let int i,i<length_of(v_d_pln_frmlry_pgm_gpi_list))
+                     begin
+                          if(in.filled_dt >= v_d_pln_frmlry_pgm_gpi_list[i].fpg_from_dt and in.filled_dt <= v_d_pln_frmlry_pgm_gpi_list[i].fpg_thru_dt )
+                          begin
+                                        if(lookup_match("d_gp2_gpi_list_p90",v_d_pln_frmlry_pgm_gpi_list[i].fpg_gpi_list_nm))
+                                        begin
+                                                v_d_gp2_gpi_list_p90 = lookup("d_gp2_gpi_list_p90",v_d_pln_frmlry_pgm_gpi_list[i].fpg_gpi_list_nm).vec_gp2_gpi_list_p90;
+                                                for(let int j,j<length_of(v_d_gp2_gpi_list_p90))
+                                                begin
+                                                        if((string_substring(v_gpi_no,1,12) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,12) or 
+                                                           string_substring(v_gpi_no,1,10) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,10) or
+                                                           string_substring(v_gpi_no,1,8) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,8)  or
+                                                           string_substring(v_gpi_no,1,6) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,6)  or
+                                                           string_substring(v_gpi_no,1,4) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,4)  or
+                                                           string_substring(v_gpi_no,1,2) == string_substring(v_d_gp2_gpi_list_p90[j].gp2_gpi_nbr,1,2) ) and
+                                                           (in.filled_dt >= v_d_gp2_gpi_list_p90[j].gp2_gpi_from_dt and in.filled_dt <= v_d_gp2_gpi_list_p90[j].gp2_gpi_thru_dt)
+                                                        )
+                                                        begin
+                                                             if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"] )
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_gpi_list[i].fpg_gpi_list_nm,"UXMSS")) 
+                                                                        v_day_90_prog_type="S";
+                                                                else
+                                                                        v_day_90_prog_type="N";   
+                                                             end;
+                                                             else if(v_phr_super_ntwrk_id=="ORXS90")
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_gpi_list[i].fpg_gpi_list_nm,"UXS9S")) 
+                                                                        v_day_90_prog_type="A";
+                                                                else
+                                                                       v_day_90_prog_type="N";  
+                                                             end
+                                                             else if(v_phr_super_ntwrk_id=="ORXC90")
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_gpi_list[i].fpg_gpi_list_nm,"UXC9S"))
+                                                                        v_day_90_prog_type="E";
+                                                                else
+                                                                        v_day_90_prog_type="N" ;
+                                                             end
+                                                        end
+                                                end
+                                        end
+                          end
+                     end
+               end
+        end
+
+end
+if(v_day_90_prog_type == "N")
+begin
+        if(first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg, " ") == "Y")
+        begin
+               if(lookup_match("d_frmlry_pgm_ndc_list_p90",in.final_pln_sk))
+               begin
+                     v_d_pln_frmlry_pgm_ndc_list = lookup("d_frmlry_pgm_ndc_list_p90",in.final_pln_sk).vec_d_plan_frmlry_pgm_ndc;
+                     for(let int i,i<length_of(v_d_pln_frmlry_pgm_ndc_list))
+                     begin
+                          if(in.filled_dt >= v_d_pln_frmlry_pgm_ndc_list[i].pfn_from_dt and in.filled_dt <= v_d_pln_frmlry_pgm_ndc_list[i].pfn_thru_dt )
+                          begin
+                                        if(lookup_match("d_nd2_ndc_list_p90",v_d_pln_frmlry_pgm_ndc_list[i].pfn_ndc_list_nm))
+                                        begin
+                                                v_d_nd2_ndc_list_p90 = lookup("d_nd2_ndc_list_p90",v_d_pln_frmlry_pgm_ndc_list[i].pfn_ndc_list_nm).vec_d_nd2_ndc_list_p90;
+                                                for(let int j,j<length_of(v_d_nd2_ndc_list_p90))
+                                                begin
+                                                        if((string_substring(v_productid,1,11)==first_defined(string_concat(v_d_nd2_ndc_list_p90[j].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[j].nd2_ndc_prod_cd,v_d_nd2_ndc_list_p90[j].nd2_ndc_pkg_cd),"") or
+                                                           string_substring(v_productid,1,9)==first_defined(string_concat(v_d_nd2_ndc_list_p90[j].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[j].nd2_ndc_prod_cd),"") or
+                                                           string_substring(v_productid,1,5)==first_defined(v_d_nd2_ndc_list_p90[j].nd2_ndc_lblr_cd,"")) and
+                                                           (in.filled_dt >= v_d_nd2_ndc_list_p90[j].nd2_from_dt and in.filled_dt <= v_d_nd2_ndc_list_p90[j].nd2_thru_dt)
+                                                           )
+                                                        begin
+                                                             if(v_phr_ntwrk_id member [vector "RXSMS","BRIOVA"] )
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_ndc_list[i].pfn_ndc_list_nm,"UXMSS")) 
+                                                                        v_day_90_prog_type="S";
+                                                                else
+                                                                        v_day_90_prog_type="N";   
+                                                             end;
+                                                             else if(v_phr_super_ntwrk_id=="ORXS90")
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_ndc_list[i].pfn_ndc_list_nm,"UXS9S")) 
+                                                                        v_day_90_prog_type="A";
+                                                                else
+                                                                       v_day_90_prog_type="N";  
+                                                             end
+                                                             else if(v_phr_super_ntwrk_id=="ORXC90")
+                                                             begin
+                                                                if(starts_with(v_d_pln_frmlry_pgm_ndc_list[i].pfn_ndc_list_nm,"UXC9S"))
+                                                                        v_day_90_prog_type="E";
+                                                                else
+                                                                        v_day_90_prog_type="N" ;
+                                                             end
+                                                        end
+                                                end
+                                        end
+                          end
+                     end
+               end
+        end
+
+end
+//End non-basic program check for MSS
+//Start-basic program check
+if(v_day_90_prog_type=="N")
+begin
+        //Select 90 Basic -GPI
+        if(v_phr_super_ntwrk_id=="ORXS90" and lookup_match("d_plan_gpi_list_p90","UXS9P1"))
+        begin
+        v_d_plan_gpi_list_p90=lookup("d_plan_gpi_list_p90","UXS9P1").vec_d_plan_gpi_list_p90;
+                for(let int n,n<length_of(v_d_plan_gpi_list_p90))
+                begin
+                if(in.filled_dt>=v_d_plan_gpi_list_p90[n].pno_current_dte_effective and in.filled_dt<=v_d_plan_gpi_list_p90[n].pno_current_dte_termed and 
+                (if(starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,14)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,12)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,10)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,8)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,6)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,4)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,2))
+                    )1 else 0
+                 ) and 
+                 (first_defined(if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd==v_f_clm_multi_source_cd)1 else 
+                  if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd=="*" and v_f_clm_multi_source_cd member [vector "M","N","O","Y"])1 else 
+                  if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd=="B" and v_f_clm_multi_source_cd member [vector "M","N","O"]) 1 else 0,0)
+                 ))
+                   begin
+                     v_day_90_prog_type="D";
+                   end;
+                    
+                    
+                end;
+        end else        
+        //CVS90 Basic -GPI
+        if(v_phr_super_ntwrk_id=="ORXC90" and lookup_match("d_plan_gpi_list_p90","UXC9P1"))
+        begin
+        v_d_plan_gpi_list_p90=lookup("d_plan_gpi_list_p90","UXC9P1").vec_d_plan_gpi_list_p90;
+                for(let int n,n<length_of(v_d_plan_gpi_list_p90))
+                begin
+                if(in.filled_dt>=v_d_plan_gpi_list_p90[n].pno_current_dte_effective and in.filled_dt<=v_d_plan_gpi_list_p90[n].pno_current_dte_termed and 
+                (if(starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,14)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,12)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,10)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,8)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,6)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,4)) or
+                    starts_with(v_d_plan_gpi_list_p90[n].pgo_generic_product_id,string_substring(v_productid,1,2))
+                    )1 else 0
+                 ) and 
+                 (first_defined(if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd==v_f_clm_multi_source_cd)1 else 
+                  if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd=="*" and v_f_clm_multi_source_cd member [vector "M","N","O","Y"])1 else 
+                  if(v_d_plan_gpi_list_p90[n].pgo_multi_source_cd=="B" and v_f_clm_multi_source_cd member [vector "M","N","O"]) 1 else 0,0)
+                 ))
+                   begin
+                      v_day_90_prog_type="G";
+                   end;
+
+                end;
+        end;
+        
+end;
+
+//Start-2
+if(v_day_90_prog_type=="N")
+begin
+        //Select 90 Basic -NDC Option
+        if(v_phr_super_ntwrk_id=="ORXS90" and lookup_match("d_plan_ndc_option_p90","UXS9P1"))
+        begin
+        v_d_plan_ndc_option_p90=lookup("d_plan_ndc_option_p90","UXS9P1").vec_d_plna_ndc_option_p90;
+                for(let int p,p<length_of(v_d_plan_ndc_option_p90))
+                begin
+                if(in.filled_dt>=v_d_plan_ndc_option_p90[p].curr_eff_dt and in.filled_dt<=v_d_plan_ndc_option_p90[p].curr_thru_dt and 
+                (if(string_substring(v_productid,1,11)==string_concat(v_d_plan_ndc_option_p90[p].ndc_labeler_cd,v_d_plan_ndc_option_p90[p].ndc_prod_cd,v_d_plan_ndc_option_p90[p].ndc_pkg_cd) or
+                    string_substring(v_productid,1,9)==string_concat(v_d_plan_ndc_option_p90[p].ndc_labeler_cd,v_d_plan_ndc_option_p90[p].ndc_prod_cd) or
+                    string_substring(v_productid,1,5)==v_d_plan_ndc_option_p90[p].ndc_labeler_cd)1 else 0)
+                 ) 
+                  begin
+                      v_day_90_prog_type="D";
+                  end;
+                   
+                end;
+        
+        end else
+        //CVS90 Basic -NDC Option
+        if(v_phr_super_ntwrk_id=="ORXC90" and lookup_match("d_plan_ndc_option_p90","UXC9P1"))
+        begin
+        v_d_plan_ndc_option_p90=lookup("d_plan_ndc_option_p90","UXC9P1").vec_d_plna_ndc_option_p90;
+                for(let int p,p<length_of(v_d_plan_ndc_option_p90))
+                begin
+                if(in.filled_dt>=v_d_plan_ndc_option_p90[p].curr_eff_dt and in.filled_dt<=v_d_plan_ndc_option_p90[p].curr_thru_dt and 
+                (if(string_substring(v_productid,1,11)==string_concat(v_d_plan_ndc_option_p90[p].ndc_labeler_cd,v_d_plan_ndc_option_p90[p].ndc_prod_cd,v_d_plan_ndc_option_p90[p].ndc_pkg_cd) or
+                    string_substring(v_productid,1,9)==string_concat(v_d_plan_ndc_option_p90[p].ndc_labeler_cd,v_d_plan_ndc_option_p90[p].ndc_prod_cd) or
+                    string_substring(v_productid,1,5)==v_d_plan_ndc_option_p90[p].ndc_labeler_cd)1 else 0)
+                 ) 
+                  begin
+                      v_day_90_prog_type="G";
+                  end;
+                   
+                end;
+        end;
+
+end;
+
+
+//End-2
+
+
+//Start -3
+if(v_day_90_prog_type=="N")
+begin
+//Select 90 Basic -GPI Maintenance
+if(v_phr_super_ntwrk_id=="ORXS90" and lookup_match("d_gp2_gpi_list_p90","UXS9P1"))
+begin
+v_d_gp2_gpi_list_p90=lookup("d_gp2_gpi_list_p90","UXS9P1").vec_gp2_gpi_list_p90;
+        for(let int q,q<length_of(v_d_gp2_gpi_list_p90))
+        begin
+        if(in.filled_dt>=v_d_gp2_gpi_list_p90[q].gp2_gpi_from_dt and in.filled_dt<=v_d_gp2_gpi_list_p90[q].gp2_gpi_thru_dt and 
+        (if(starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,14)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,12)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,10)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,8)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,6)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,4)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,2))
+                    )1 else 0)
+          
+          )
+           begin
+                v_day_90_prog_type="D";
+           end;
+        end;
+
+end else
+//CVS90 Basic -GPI Maintenance
+if(v_phr_super_ntwrk_id=="ORXC90" and lookup_match("d_gp2_gpi_list_p90","UXC9P1"))
+begin
+v_d_gp2_gpi_list_p90=lookup("d_gp2_gpi_list_p90","UXC9P1").vec_gp2_gpi_list_p90;
+        //for(let int q,q<length_of(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr)) -- ranu
+        for(let int q,q<length_of(v_d_gp2_gpi_list_p90))
+        begin
+        if(in.filled_dt>=v_d_gp2_gpi_list_p90[q].gp2_gpi_from_dt and in.filled_dt<=v_d_gp2_gpi_list_p90[q].gp2_gpi_thru_dt and 
+        (if(starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,14)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,12)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,10)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,8)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,6)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,4)) or
+                    starts_with(first_defined(v_d_gp2_gpi_list_p90[q].gp2_gpi_nbr,""),string_substring(v_productid,1,2))
+                    )1 else 0)
+          
+          )
+           begin
+                v_day_90_prog_type="G";
+           end;
+        end;
+end;
+
+
+end;
+//End - 3
+
+//Start -4
+if(v_day_90_prog_type=="N")
+begin
+//Select 90 Basic -NDC Maintenance
+if(v_phr_super_ntwrk_id=="ORXS90" and lookup_match("d_nd2_ndc_list_p90","UXS9P1"))
+begin
+v_d_nd2_ndc_list_p90=lookup("d_nd2_ndc_list_p90","UXS9P1").vec_d_nd2_ndc_list_p90;
+        for(let int r, r<length_of(v_d_nd2_ndc_list_p90))
+        begin
+        if(in.filled_dt>=v_d_nd2_ndc_list_p90[r].nd2_from_dt and in.filled_dt<=v_d_nd2_ndc_list_p90[r].nd2_thru_dt and
+         (if(string_substring(v_productid,1,11)==first_defined(string_concat(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_prod_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_pkg_cd),"") or
+                    string_substring(v_productid,1,9)==first_defined(string_concat(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_prod_cd),"") or
+                    string_substring(v_productid,1,5)==first_defined(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,""))1 else 0)
+          )
+           begin
+                v_day_90_prog_type="D";
+           end;
+           
+        end;
+end else
+//CVS90 Basic -NDC Maintenance
+if(v_phr_super_ntwrk_id=="ORXC90" and lookup_match("d_nd2_ndc_list_p90","UXC9P1"))
+begin
+v_d_nd2_ndc_list_p90=lookup("d_nd2_ndc_list_p90","UXC9P1").vec_d_nd2_ndc_list_p90;
+        for(let int r, r<length_of(v_d_nd2_ndc_list_p90))
+        begin
+        if(in.filled_dt>=v_d_nd2_ndc_list_p90[r].nd2_from_dt and in.filled_dt<=v_d_nd2_ndc_list_p90[r].nd2_thru_dt and
+
+         (if(string_substring(v_productid,1,11)==first_defined(string_concat(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_prod_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_pkg_cd),"") or
+                    string_substring(v_productid,1,9)==first_defined(string_concat(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,v_d_nd2_ndc_list_p90[r].nd2_ndc_prod_cd),"") or
+                    string_substring(v_productid,1,5)==first_defined(v_d_nd2_ndc_list_p90[r].nd2_ndc_lblr_cd,""))1 else 0)
+          )
+           begin
+                v_day_90_prog_type="G";
+           end;
+           
+        end;
+end;
+
+end;
+//End - 4
+
+
+
+//End-basic program check
+
+if(v_day_90_prog_type=="N")
+begin
+//Start Preferred 90
+if(first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg,"")=="Y")
+begin
+
+if(lookup_match("d_pgt_plan_gpi_list_p90",in.final_pln_sk) and lookup_match("d_pnt_plan_ndc_list_p90",in.final_pln_sk) and lookup_match("d_plan_maintenance_p90",in.final_pln_sk))
+begin
+v_d_pgt_plan_gpi_list_p90=lookup("d_pgt_plan_gpi_list_p90",in.final_pln_sk).vec_d_pgt_plan_gpi_list_p90;
+v_d_pnt_plan_ndc_list_p90=lookup("d_pnt_plan_ndc_list_p90",in.final_pln_sk).vec_d_pnt_plan_ndc_list_p90;
+v_d_plan_maintenance_p90=lookup("d_plan_maintenance_p90",in.final_pln_sk).vec_d_plan_maintenance_p90;
+for(let int s,s<length_of(v_d_pgt_plan_gpi_list_p90))
+begin
+        if(!starts_with(first_defined(v_d_pgt_plan_gpi_list_p90[s].pgl_gpi_list_nm,""),"UXMSMS"))
+        begin
+                for(let int t,t<length_of(v_d_pnt_plan_ndc_list_p90))
+                begin
+                        if(!starts_with(first_defined(v_d_pnt_plan_ndc_list_p90[t].pnt_ndc_list_nm_10,""),"UXMSMS"))
+                        begin
+                                for(let int u,u<length_of(v_d_plan_maintenance_p90))
+                                begin
+                                        if((!starts_with(first_defined(v_d_plan_maintenance_p90[u].gpi_list_id,""),"UXMSMS") and v_d_plan_maintenance_p90[u].pmn_gpi_list_sts=="I" ) and 
+                                        (!starts_with(v_d_plan_maintenance_p90[u].pmn_ndc_list_id,"UXMSMS") and v_d_plan_maintenance_p90[u].pmn_ndc_list_sts=="I"))
+                                        begin
+                                        v_day_90_prog_type="H";
+                                        end;
+        
+                                end;
+                        
+                        end;
+                
+                end;
+        
+        end;
+end;
+end;
+
+end;//d_plan flag check end
+
+if(v_day_90_prog_type=="N")
+begin
+        if(lookup_match("d_pgt_plan_gpi_list_p90",in.final_pln_sk))
+        begin
+        v_d_pgt_plan_gpi_list_p90=lookup("d_pgt_plan_gpi_list_p90",in.final_pln_sk).vec_d_pgt_plan_gpi_list_p90;
+                for(let int s=0,s<length_of(v_d_pgt_plan_gpi_list_p90))
+                begin
+                        if(starts_with(first_defined(v_d_pgt_plan_gpi_list_p90[s].pgl_gpi_list_nm,""),"UXMSMS") and in.filled_dt>=first_defined(v_d_pgt_plan_gpi_list_p90[s].pgt_from_dt,"") 
+                           and in.filled_dt<=first_defined(v_d_pgt_plan_gpi_list_p90[s].pgt_thru_dt,""))
+                           begin
+                           v_day_90_prog_type="I";
+                           end;
+                end;
+                
+        end else if(lookup_match("d_pnt_plan_ndc_list_p90",in.final_pln_sk))
+        begin
+        v_d_pnt_plan_ndc_list_p90=lookup("d_pnt_plan_ndc_list_p90",in.final_pln_sk).vec_d_pnt_plan_ndc_list_p90;
+                for(let int t=0,t<length_of(v_d_pnt_plan_ndc_list_p90))
+                begin
+                        if(starts_with(first_defined(v_d_pnt_plan_ndc_list_p90[t].pnt_ndc_list_nm_10,""),"UXMSMS") and in.filled_dt>=first_defined(v_d_pnt_plan_ndc_list_p90[t].pnt_from_dt,"")
+                           and in.filled_dt<=first_defined(v_d_pnt_plan_ndc_list_p90[t].pnt_thru_dt,""))
+                           begin
+                           v_day_90_prog_type="I";
+                           end;
+                end;
+
+        end else if(lookup_match("d_plan_maintenance_d_nd2_ndc_list_p90",in.final_pln_sk) and first_defined(lookup("d_plan_p90",in.final_pln_sk).pln_verf_maint_flg,"")=="Y")
+        begin
+        v_d_plan_maintenance_d_nd2_ndc_list_p90=lookup("d_plan_maintenance_d_nd2_ndc_list_p90",in.final_pln_sk).vec_d_plan_maintenance_d_nd2_ndc_list_p90;
+                for(let int u=0, u<length_of(v_d_plan_maintenance_d_nd2_ndc_list_p90))
+                begin
+                        if((starts_with(first_defined(v_d_plan_maintenance_d_nd2_ndc_list_p90[u].gpi_list_id,""),"UXMSMS") and first_defined(v_d_plan_maintenance_d_nd2_ndc_list_p90[u].pmn_gpi_list_sts,"")=="I" and 
+                           in.filled_dt>=v_d_plan_maintenance_d_nd2_ndc_list_p90[u].pmn_from_dt and in.filled_dt<=v_d_plan_maintenance_d_nd2_ndc_list_p90[u].pmn_thru_dt) or
+                           (starts_with(first_defined(v_d_plan_maintenance_d_nd2_ndc_list_p90[u].pmn_ndc_list_id,""),"UXMSMS") and first_defined(v_d_plan_maintenance_d_nd2_ndc_list_p90[u].pmn_gpi_list_sts,"")=="I" 
+                           and in.filled_dt>=v_d_plan_maintenance_d_nd2_ndc_list_p90[u].nd2_from_dt and in.filled_dt<=v_d_plan_maintenance_d_nd2_ndc_list_p90[u].nd2_thru_dt) )
+                           begin
+                           v_day_90_prog_type="I";
+                           end;
+                        
+                
+                end;
+
+
+        end;
+
+
+end;
+
+
+
+end;//End Preferred 90
+
+end;//days supply
+
+//end Src_env_check 1
+//end else if(in.day_90_prog_type not member [vector "S","P","M","A","B"]) -- ranu 06/11/2017
+
+end else v_day_90_prog_type=in.day_90_prog_type;//carryon existing prog_type value for book1 and L-Ctrx
+//src_env check 2 end
+
+
+
+out.ev_prod_id::v_productid;
+//Final Flags
+out.ev_day_90_prog_type::v_day_90_prog_type;
+out.ev_day_90_retail_prog_ind::v_day_90_retail_prog_ind;
+out.*::in.*;
+
+end;
+

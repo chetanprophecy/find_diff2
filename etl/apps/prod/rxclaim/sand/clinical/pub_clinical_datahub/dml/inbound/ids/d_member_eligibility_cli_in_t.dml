@@ -1,0 +1,43 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_member_eligibility_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_member_eligibility_cli_in_t =
+record
+  //decimal("\x01",0)                                       mbr_eligty_sk        = NULL("") /*BIGINT*/;
+  //decimal("\x01",0)                                       cag_sk               = NULL("") /*BIGINT*/;
+  //decimal("\x01",0)                                       mbr_sk               = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4)    legacy_src_env_id               /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   carrier_id           = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)   account_id           = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   employer_group_id    = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)   mbr_id               = NULL("") /*VARCHAR(18)*/;
+  decimal("\x01",0)                                         seq_nbr              = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)    mel_stat_cd          = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01")                                  mel_eff_dt           = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")                                  mel_thru_dt          = NULL("") /*DATE*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved)        copay_brnd_amt       = NULL("") /*DECIMAL(5,2)*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved)        copay_gen_amt        = NULL("") /*DECIMAL(5,2)*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved)        copay3_amt           = NULL("") /*DECIMAL(5,2)*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved)        copay4_amt           = NULL("") /*DECIMAL(5,2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)    clt_prod_cd          = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)    clt_rdr_cd           = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)   pln_cd               = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01")                                  plan_eff_dt          = NULL("") /*DATE*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)       spnd_dwn_amt         = NULL("") /*DECIMAL(9,2)*/;
+  //decimal("\x01",0)                                       src_env_sk           = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")                      ids_create_dttm      = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")                      ids_updt_dttm        = NULL("");
+  string("\x01",maximum_length=2)                           ids_rec_stat_cd      = NULL("");
+  string(1)                                                 newline              =  "\n";
+end;
+
+type d_member_eligibility_cli_in_vec_t = d_member_eligibility_cli_in_t[int];
+
+metadata type = d_member_eligibility_cli_in_t;

@@ -1,0 +1,85 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/prescriber_id_qlfr_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_prescriber_id_qlfr_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_pbr_id_qlfr.dat';
+end;
+
+/***********************************************************/
+/* Prescriber ID Qualifier by Code Lookup (ID natural key) */
+/***********************************************************/
+
+type prescriber_id_qlfr_by_cd_lkup_t =
+record
+  lookup_identifier_type          id             = -1; 
+  prescriber_id_qlfr_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                      key()          = {prescriber_id_qlfr.prescriber_id_qlfr_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let prescriber_id_qlfr_by_cd_lkup_t GLKUP_PRESCRIBER_ID_QLFR_BY_CD = allocate_with_nulls();
+
+prescriber_id_qlfr_by_cd_lkup_t out :: load_prescriber_id_qlfr_by_cd_lkup() inline =
+begin
+  if (GLKUP_PRESCRIBER_ID_QLFR_BY_CD.id == lookup_not_loaded())
+    GLKUP_PRESCRIBER_ID_QLFR_BY_CD = lookup_load(this_partition_path(get_prescriber_id_qlfr_lkup_path()));
+  
+  out :: GLKUP_PRESCRIBER_ID_QLFR_BY_CD;
+end;
+
+prescriber_id_qlfr_t out :: get_prescriber_id_qlfr_by_cd(prescriber_id_qlfr_cd) inline =
+begin
+  let prescriber_id_qlfr_by_cd_lkup_t lkup = load_prescriber_id_qlfr_by_cd_lkup();
+  out :: lookup(lkup, prescriber_id_qlfr_cd).prescriber_id_qlfr;
+end;
+
+/***************************************************/
+/* Prescriber ID Qualifier Lookup (ID natural key) */
+/***************************************************/
+
+type prescriber_id_qlfr_lkup_t =
+record
+  lookup_identifier_type          id             = -1; 
+  prescriber_id_qlfr_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                      key()          = {prescriber_id_qlfr.prescriber_id_qlfr_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let prescriber_id_qlfr_lkup_t GLKUP_PRESCRIBER_ID_QLFR = allocate_with_nulls();
+
+prescriber_id_qlfr_lkup_t out :: load_prescriber_id_qlfr_lkup() inline =
+begin
+  if (GLKUP_PRESCRIBER_ID_QLFR.id == lookup_not_loaded())
+    GLKUP_PRESCRIBER_ID_QLFR = lookup_load(this_partition_path(get_prescriber_id_qlfr_lkup_path()));
+  
+  out :: GLKUP_PRESCRIBER_ID_QLFR;
+end;
+
+prescriber_id_qlfr_t out :: get_prescriber_id_qlfr(prescriber_id_qlfr_id) inline =
+begin
+  let prescriber_id_qlfr_lkup_t lkup = load_prescriber_id_qlfr_lkup();
+  out :: lookup(lkup, prescriber_id_qlfr_id).prescriber_id_qlfr;
+end;

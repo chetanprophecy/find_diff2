@@ -1,0 +1,35 @@
+include "~ab_home/include/log-event-type.dml";
+
+type output_t = record
+  string('') ftp_path;
+  string('') ftp_filename;
+  date('YYYY-MM-DD') start_date;
+  date('YYYY-MM-DD') end_date;
+  datetime('yyyy-mm-dd hh24:mi') last_modified;
+  decimal('') file_size;
+end;
+
+let date($DATE_LOGIC_FORMAT) data_start_date = $DECIMAL_START_DATE;
+let date($DATE_LOGIC_FORMAT) data_end_date = $DECIMAL_END_DATE;
+
+out::reformat(in)=
+begin
+    let date($DATE_LOGIC_FORMAT) start_date=data_start_date;
+  let date($DATE_LOGIC_FORMAT) end_date=data_end_date;
+ 
+  let output_t [int] filenames = allocate();
+
+  
+  for (let file in in.filenames)
+  begin
+      
+	if (  start_date <= (date($DATE_LOGIC_FORMAT))re_get_match(file.filename, "\\d{8}") and end_date >= (date($DATE_LOGIC_FORMAT))re_get_match(file.filename, "\\d{8}") )
+        
+ filenames = vector_append(filenames, [record ftp_path file.path, ftp_filename  file.filename, start_date (date('YYYY-MM-DD'))(date($DATE_LOGIC_FORMAT))start_date, end_date (date('YYYY-MM-DD'))(date($DATE_LOGIC_FORMAT))end_date, last_modified file.last_modified, file_size file.file_size]);
+  
+  end;
+    
+  write_to_log('filenames', string_join(for (let file in filenames): file.ftp_filename,';'));
+  
+  out.filenames :: filenames;
+end;

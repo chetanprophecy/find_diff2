@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5ec22052_d4fc_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_prd_sts_rl.rec_displ_ind,[passthrough],in0.alibak]
+  [out0.l_prd_sts_rl.prod_status_rule_tbl_id_sk,[transform],]
+  [out0.l_prd_sts_rl.prod_status_rule_tbl_id,[passthrough],in0.alaxhi]
+  [out0.l_prd_sts_rl.prod_status_rule_tbl_desc,[passthrough],in0.alaiin]
+  [out0.l_prd_sts_rl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_prd_sts_rl.rec_displ_ind,'l_prd_sts_rl.rec_displ_ind',1,0]
+     [out0.l_prd_sts_rl.prod_status_rule_tbl_id_sk,'l_prd_sts_rl.prod_status_rule_tbl_id_sk',1,0]
+     [out0.l_prd_sts_rl.prod_status_rule_tbl_id,'l_prd_sts_rl.prod_status_rule_tbl_id',1,0]
+     [out0.l_prd_sts_rl.prod_status_rule_tbl_desc,'l_prd_sts_rl.prod_status_rule_tbl_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_prd_sts_rl.src_env_sk,'l_prd_sts_rl.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.alibak,'alibak',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.alaxhi,'alaxhi',1,1]
+     [in0.alaiin,'alaiin',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_prd_sts_rl_prod_status_rule_tbl_id_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=13) l_prd_sts_rl_prod_status_rule_tbl_id = fail_if_error(in0.alaxhi);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_prd_sts_rl_prod_status_rule_tbl_desc = fail_if_error(in0.alaiin);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_prd_sts_rl_rec_displ_ind = fail_if_error(in0.alibak);
+let decimal("\x01",0) l_prd_sts_rl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_prd_sts_rl.prod_status_rule_tbl_id_sk::l_prd_sts_rl_prod_status_rule_tbl_id_sk;
+  out0.l_prd_sts_rl.prod_status_rule_tbl_id::l_prd_sts_rl_prod_status_rule_tbl_id;
+  out0.l_prd_sts_rl.prod_status_rule_tbl_desc::l_prd_sts_rl_prod_status_rule_tbl_desc;
+  out0.l_prd_sts_rl.rec_displ_ind::l_prd_sts_rl_rec_displ_ind;
+  out0.l_prd_sts_rl.src_env_sk::l_prd_sts_rl_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,54 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.contract_pbp_sk,[passthrough],in0.dxf_sk]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.contract_no,'contract_no',1,0]
+     [out0.pdp_from_dt,'pdp_from_dt',1,0]
+     [out0.employer_group_id,'employer_group_id',1,0]
+     [out0.carrier_id,'carrier_id',1,0]
+     [out0.contract_pbp_sk,'contract_pbp_sk',1,0]
+     [out0.src_env_sk,'src_env_sk',1,0]
+     [out0.pdp_status_cd,'pdp_status_cd',1,0]
+     [out0.segment_id,'segment_id',1,0]
+     [out0.sequence_no,'sequence_no',1,0]
+     [out0.account_id,'account_id',1,0]
+     [out0.pdp_thru_dt,'pdp_thru_dt',1,0]
+     [out0.pbp_id,'pbp_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.pdp_status_cd,'pdp_status_cd',1,1]
+     [in0.contract_no,'contract_no',1,1]
+     [in0.account_id,'account_id',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.segment_id,'segment_id',1,1]
+     [in0.pdp_from_dt,'pdp_from_dt',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.employer_group_id,'employer_group_id',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.sequence_no,'sequence_no',1,1]
+     [in0.pdp_thru_dt,'pdp_thru_dt',1,1]
+     [in0.pbp_id,'pbp_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) contract_pbp_sk = fail_if_error(in0.dxf_sk);
+
+
+
+  out0.contract_pbp_sk::contract_pbp_sk;
+  out0.*::in0.*;
+
+end;

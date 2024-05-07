@@ -1,0 +1,79 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+/***********Common hash function used across orca projects ************/
+out :: get_hash(rec,key_cols) =
+begin
+  out :: (hash_key_type)  reinterpret(hash_value(rec,key_cols,"murmur" ));
+end; 
+
+/*****End*************************************************************/
+
+
+/************************************
+  DML Utility Functions
+ ************************************/
+
+
+out :: get_field_list_from_dml(dml, subrecord="")=
+begin
+  let fields = record_info(dml);
+  let string("")[] fields_list = [vector];
+  for(let field in fields)
+  begin
+    if(field.form == "record")
+      fields_list = vector_concat(fields_list, get_field_list_from_dml(field.dml_type, field.name));
+    else
+      fields_list = vector_append(fields_list, (not is_blank(subrecord)? subrecord + ".": "") + field.name);
+  end
+  out :: fields_list;
+end;
+
+
+
+
+
+/************************************
+  File System Utility Functions
+ ************************************/
+
+
+string("")[] out :: list_all_files_in_dir(dir)=
+begin
+  let string("")[] files_vec = [vector];
+  for(let file in directory_listing(dir))
+  begin
+    let info = file_information(dir + "/" + file);
+    if(info.file_type member [vector "FILE", "MFIL"])
+      files_vec = vector_append(files_vec, file);
+  end
+  out :: files_vec;
+end;
+
+
+file_details_type[] out :: get_file_details(dir, pattern, level = 1)=
+begin
+  let file_details_type[] results = [vector];
+  if(file_information(dir).file_type member [vector "DIR ", "MDIR"])
+  begin
+    if(level == 1)
+      for(let entry in directory_listing(dir, pattern))
+      begin
+        let info = file_information(dir + "/" + entry);
+        if(string_filter_out(entry, ".") != "" and info.file_type member [vector "FILE", "MFIL"])
+          results = vector_append(results, [record directory dir, file_name entry, file_info info]);
+      end
+    else
+      for(let entry in directory_listing(dir))
+      begin
+        if(string_filter_out(entry, ".") != "" and file_information(dir + "/" + entry).file_type member [vector "DIR ", "MDIR"])
+          results = vector_concat(results, get_file_details(dir + (not ends_with(dir, "/")? "/": "") + entry, pattern, level - 1));
+      end
+  end
+  
+  out :: results;
+end;
+
+string("")[] out :: list_files_by_pattern(dir, pattern, level = 1)=
+begin
+  out :: for(let details in  get_file_details(dir, pattern, level)): details.directory + "/" + details.file_name;
+end;

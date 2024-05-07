@@ -1,0 +1,65 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/icd9_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/22  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_icd9_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/icd9.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/icd9.dat' );
+end;
+
+cli_string_t out :: get_icd9_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*********************************************/
+/* Source Environment Lookup (ids surrogate key) */
+/*********************************************/
+
+type icd9_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  icd9_hash_lkup_t        RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {rcicdp.icd9_cd_int};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let icd9_lkup_t GLKUP_ICD9 = allocate_with_nulls();
+
+icd9_lkup_t out :: load_icd9_lkup() inline =
+begin
+  if (GLKUP_ICD9.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_icd9_lkup_path();
+    let indx_path  = get_icd9_indx_path(lkup_path, 'icd9');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_ICD9 = if (indx_found) lookup_load(lkup_path, indx_path)
+                 else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_ICD9;
+end;
+
+icd9_t out :: get_icd9(icd9_cd_int) inline =
+begin
+  let icd9_lkup_t lkup = load_icd9_lkup();
+  out :: lookup(lkup, icd9_cd_int).rcicdp;
+end;

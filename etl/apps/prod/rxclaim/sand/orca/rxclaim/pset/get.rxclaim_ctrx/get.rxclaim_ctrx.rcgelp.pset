@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcgelp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcgelp                  g3aacd,g3accd,g3adcd,g3c0n1,g3bws2,g3cmda,g3cnda,g3l3pr,g3l4pr,g3l5pr,g3l6pr,g3gqp4,g3grp4,g3gsp4,g3gtp4,g3pgc2,g3aecd,g3akdt,g3c2dt,g3advn,g3bmdt,g3abtm,g3aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcgelp')]
+WHERE_CLAUSE||||$[if (DAILY_FLAG != "Y")  if (CARRIER_ID_MIN == "*")    "WHERE RCGELP.G3BMDT  between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+    " OPTIMIZE FOR ALL ROWS"  else    "WHERE RCGELP.G3AACD between '" + CARRIER_ID_MIN + "' AND '" + CARRIER_ID_MAX + "'  and RCGELP.G3BMDT  between " +     string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+    " OPTIMIZE FOR ALL ROWS"else  if (START_CHANGES_TIME != '')    "WHERE RCGELP.G3BMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +    " AND RCGELP.G3BMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"  else    "WHERE RCGELP.G3BMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +    " AND RCGELP.G3BMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"]
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1
+ENABLE_DEFAULT_RULES||||True

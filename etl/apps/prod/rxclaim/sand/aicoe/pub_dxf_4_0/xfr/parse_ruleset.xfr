@@ -1,0 +1,103 @@
+// Look for <prefix>%[<kind>|<bzname>|<src>]<suffix> or <prefix>%[<kind>|<bzname>|<parent>|<src>]<suffix> 
+// with capturing groups around <prefix>, %[...], <bzname>, <parent>|, and <suffix>.
+constant string("") markup_regexp = "^(.*)(%\\[[A-Z]x?\\|([^]|\n]+)(\\|([^]|\n]+\\|)?[^]|\n]+)?\\])(.*)$";
+
+constant string("") output_name = "Output"; // The BizName of the output flow.
+constant string("") input_name = "Input 1"; // The BizName of the input flow.
+
+
+out :: expect(field_name, value, expected) =
+begin
+  if ( (is_null(expected) != is_null(value)) or (is_defined(value) and value != expected) )
+    force_error(printf("Unexpected %s: %s", field_name, first_defined(value, "NULL")));
+  out :: value;
+end;
+
+out :: expect_0(field_name, value) =
+begin
+  out :: expect(field_name, (decimal(""))value, 0);
+end;
+
+out :: expect_1(field_name, value) =
+begin
+  out :: expect(field_name, (decimal(""))value, 1);
+end;
+
+out :: expect_output(field_name, value) =
+begin
+  out :: expect(field_name, value, output_name);
+end;
+
+out :: expect_input_1(field_name, value) =
+begin
+  out :: expect(field_name, value, input_name);
+end;
+
+
+/* Return a readable name for the BRE Variable Type. */
+out :: format_vartyp(decimal("") vartyp) =
+begin
+  out :: switch(first_defined(vartyp, 0))
+    case 1: "Number";
+    case 0: "String";
+    case 2: "Date";
+    case 3: "DateTime";
+    case 4: "Boolean";
+    default: force_error("Unexpected Var Type: " + (string(""))vartyp);
+  end;
+end;
+
+
+/* Assemble a %[...] markup tag out of its parts. */
+out :: make_markup(kind, var_name, port_name) =
+begin
+  out :: "%[" + kind + "|" + var_name + "|" + port_name + "]";
+end;
+
+
+/* Strip the %[...] markup out of a rule expression. */
+out :: clean_expr(expr) =
+begin
+  let utf8 string(int) clean_expr = first_defined(expr, "");
+  let utf8 string(int) new_expr = "";
+
+  // Replace each markup tag with its name, until there are no more to replace.
+  while ( clean_expr != new_expr ) begin
+    new_expr = clean_expr;
+    clean_expr = re_match_replace(new_expr, markup_regexp, "$1{$3}$6");
+    if ( clean_expr == "" )
+      clean_expr = new_expr;
+  end
+  //clean_expr = string_replace(string_replace(clean_expr, "{: ", "{"), "|:", ":");
+  if ( re_index(clean_expr, "%\\[.*\\|.*\\]") )
+    force_error("Unrecognized markup: " + clean_expr);
+
+  out :: clean_expr;
+end;
+
+
+/* Return a vector with a unique list of all the %[...] markup tags in a rule expression. */
+out :: get_markup_vec(expr) =
+begin
+  let utf8 string(int) clean_expr = first_defined(expr, "");
+  let utf8 string(int) new_expr = "";
+  let utf8 string(int) markup = "";
+  let utf8 string(int)[int] markup_vec = [vector];
+
+  // Replace each markup tag with nothing, until there are no more to replace.  Also, keep a list of what is found.
+  while ( clean_expr != new_expr ) begin
+    new_expr = clean_expr;
+    clean_expr = re_match_replace(new_expr, markup_regexp, "$1 $6");
+    if ( clean_expr == "" )
+      clean_expr = new_expr;
+    else begin
+      markup = re_match_replace(new_expr, markup_regexp, "$2");
+      if ( starts_with(markup, "%[O|") and not ends_with(markup, "|Output]") )
+        markup = re_replace(markup, "\\]$", "|Output]");
+      if ( not starts_with(markup, "%[P|") ) // Do not look for parameter markup.
+        markup_vec = vector_append(markup_vec, markup);
+    end
+  end
+
+  out :: vector_sort_dedup_first(markup_vec);
+end;

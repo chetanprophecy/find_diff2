@@ -1,0 +1,22 @@
+$[
+begin
+let decimal(3) counter = "1";
+let reformat_xfr = make_transform("reformat", [vector make_arg("in")],[vector  make_arg("out")]);
+
+reformat_xfr = add_rules(reformat_xfr,[vector make_rule("out.*", "in.*")]);
+
+for(let ev in record_info(EXPANDED_IDS_DML))
+begin
+if(ev.form == "record")
+begin
+reformat_xfr = add_rules(reformat_xfr,[vector make_rule("out.*", string_concat("in.",ev.name,".*"),counter)]);
+counter=counter+1;
+end
+end
+
+
+
+result :: reformat_xfr;
+
+end
+]

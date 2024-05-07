@@ -1,0 +1,94 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_cag_adj.client_seg_cd,[transform],in0.clntsgmnt]
+  [out0.d_cag_adj.src_env_sk,[transform],]
+  [out0.d_cag_adj.cag_adjud_sk,[transform],]
+  [out0.d_cag_adj.carrier_id,[transform],in0.carrierid]
+  [out0.d_cag_adj.client_id,[transform],]
+  [out0.d_cag_adj.client_rgn_cd,[transform],in0.clntregion]
+  [out0.d_cag_adj.account_id,[transform],in0.accountid]
+  [out0.d_cag_adj.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.claimsts]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_cag_adj.client_seg_cd,'d_cag_adj.client_seg_cd',1,0]
+     [out0.d_cag_adj.src_env_sk,'d_cag_adj.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_cag_adj.cag_adjud_sk,'d_cag_adj.cag_adjud_sk',1,0]
+     [out0.d_cag_adj.carrier_id,'d_cag_adj.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_cag_adj.client_id,'d_cag_adj.client_id',1,0]
+     [out0.d_cag_adj.client_rgn_cd,'d_cag_adj.client_rgn_cd',1,0]
+     [out0.d_cag_adj.account_id,'d_cag_adj.account_id',1,0]
+     [out0.d_cag_adj.employer_group_id,'d_cag_adj.employer_group_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.clntsgmnt,'clntsgmnt',1,1]
+     [in0.accountid,'accountid',1,1]
+     [in0.groupnbr,'groupnbr',1,1]
+     [in0.carrierid,'carrierid',1,1]
+     [in0.groupid,'groupid',2,1]
+     [in0.claimsts,'claimsts',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.clntregion,'clntregion',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_cag_adj_cag_adjud_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_adj_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_adj_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_cag_adj_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cag_adj_client_id = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_adj_client_rgn_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_cag_adj_client_seg_cd;
+let decimal("\x01",0) d_cag_adj_src_env_sk = -1;
+
+
+
+/*   Default value   */
+d_cag_adj_client_seg_cd=fail_if_error(str_nk(in0.clntsgmnt));
+
+/*   Default value   */
+d_cag_adj_carrier_id=fail_if_error(str_nk(in0.carrierid));
+
+/*   Default value   */
+d_cag_adj_client_rgn_cd=fail_if_error(str_nk(in0.clntregion));
+
+/*   Default value   */
+d_cag_adj_account_id=fail_if_error(str_nk(in0.accountid));
+
+/*   Default value   */
+d_cag_adj_employer_group_id=fail_if_error(str_nk((if (sql_and((string_lrtrim(in0.claimsts)!="R"),is_blank(string_lrtrim(in0.groupid))))
+   in0.groupnbr
+ else
+   in0.groupid)));
+
+  out0.d_cag_adj.cag_adjud_sk::d_cag_adj_cag_adjud_sk;
+  out0.d_cag_adj.carrier_id::d_cag_adj_carrier_id;
+  out0.d_cag_adj.account_id::d_cag_adj_account_id;
+  out0.d_cag_adj.employer_group_id::d_cag_adj_employer_group_id;
+  out0.d_cag_adj.client_id::d_cag_adj_client_id;
+  out0.d_cag_adj.client_rgn_cd::d_cag_adj_client_rgn_cd;
+  out0.d_cag_adj.client_seg_cd::d_cag_adj_client_seg_cd;
+  out0.d_cag_adj.src_env_sk::d_cag_adj_src_env_sk;
+  out0.*::in0.*;
+
+end;

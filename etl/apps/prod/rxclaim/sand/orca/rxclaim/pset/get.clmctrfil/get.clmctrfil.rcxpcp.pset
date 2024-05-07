@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmctrfil.rcxpcp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmctrfil     rcxpcp
+SOURCE_DB_LIST||||clmctrfil  $DB_SXCA5_CLMCTRFIL_SCHEMA  $DB_SXCA5_DML    odbc  DB_SXCA5        $DB_SXCA5_DB/odbc.db_sxca5.dbc
+DO_CLEAN||||1
+DO_SOURCE||||0
+SQL||||$[string_concat("select b.DQS8CD,b.DQS7CD, b.DQS6CD,b.DQS5CD,a.* from ",DB_SXCA5_CLMCTRFIL_SCHEMA,".rcxpcp a inner join ",DB_SXCA5_CLMCTRFIL_SCHEMA,".RCTCDP  b on a.QUS5BU = b.DQP2NB and a.QUS6BU = b.DQOINB",  \r\nif (START_CHANGES_TIME != '') \r\n            string_concat(" WHERE to_char(a.quswcg,'YY-MM-DD') >= '" , (string(''))(datetime('YY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME, "' AND to_char(a.quswcg,'YY-MM-DD') <= '" , (string(''))(date('YY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME , "' OPTIMIZE FOR ALL ROWS")\r\nelse \r\n    string_concat(" WHERE to_char(a.quswcg,'YY-MM-DD') >= '" , (string(''))(datetime('YY-MM-DD'))((datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME-1) ,"' AND to_char(a.quswcg,'YY-MM-DD') <= '" , (string(''))(date('YY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME , "' OPTIMIZE FOR ALL ROWS"))\r\n]

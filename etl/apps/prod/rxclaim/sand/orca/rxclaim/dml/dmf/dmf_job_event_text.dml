@@ -1,0 +1,25 @@
+// Usage: include "/~$PUB_DMF_DML/dmf_job_event_text.dml";
+
+
+type dmf_job_event_text_t =
+record
+  decimal("\n") dmf_src_dataset_id;
+  decimal("\n") dmf_src_rec_cnt;
+  string("\n") dmf_src_file_name = "";
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") dataset_start_dttm;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") dataset_end_dttm;
+  string("\n") file_path = ""; /*@ BizName:'File Path' BizComment:'Relative to the incoming directory.' @*/
+  decimal("\n") file_size = ""; /*@ BizName:'File Size' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") file_modified_dttm = -1; /*@ BizName:'File Modify Date/Time' BizComment:'Taken from the modify time in the filesystem.  This is useful for tracking arrival times.' @*/
+  string("") as_event_text() = string_concat(
+    dmf_src_dataset_id, "\n",
+    dmf_src_rec_cnt, "\n",
+    dmf_src_file_name, "\n",
+    dataset_start_dttm, "\n",
+    dataset_end_dttm, "\n",
+    file_path, "\n",
+    file_size, "\n",
+    file_modified_dttm, "\n");
+end;
+
+metadata type = dmf_job_event_text_t;

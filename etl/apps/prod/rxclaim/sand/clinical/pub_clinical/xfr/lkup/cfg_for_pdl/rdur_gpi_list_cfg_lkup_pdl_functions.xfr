@@ -1,0 +1,44 @@
+out::get_all_gpi_list_1(in_mthd_rule_extract_file_url)=
+begin
+
+let int i;
+let int j;
+
+let string("") mthd_file= read_file(in_mthd_rule_extract_file_url);
+let string("")[int] mthd_file_vec=string_split_no_empty(mthd_file,"~");
+
+let string("")[int][int] mthd_file_vec_1;
+let string("")[int] gpi_list_1;
+
+mthd_file_vec_1 = for(i, i<length_of(mthd_file_vec)):string_split(mthd_file_vec[i],"\x01");
+
+gpi_list_1 = for(j, j<length_of(mthd_file_vec_1)): string_concat(mthd_file_vec_1[j][4]," ",mthd_file_vec_1[j][5]);
+
+out :: vector_sort_dedup_first(gpi_list_1);
+
+end;
+
+
+out::get_all_gpi_list_2(in_mthd_rule_extract_file_url)=
+begin
+
+let int i;
+let int j;
+let int k;
+
+let string("") mthd_file= read_file(in_mthd_rule_extract_file_url);
+let string("")[int] mthd_file_vec=string_split_no_empty(mthd_file,"~");
+
+let string("")[int][int] mthd_file_vec_1;
+let string("")[int] gpi_list_2_full;
+let string("")[int] gpi_list_2;
+
+mthd_file_vec_1 = for(i, i<length_of(mthd_file_vec)):string_split(mthd_file_vec[i],"\x01");
+
+gpi_list_2_full = for(j, j<length_of(mthd_file_vec_1)): string_concat(mthd_file_vec_1[j][6]," ",mthd_file_vec_1[j][7]);
+
+gpi_list_2 = for(k, k<length_of(gpi_list_2_full)): if(!is_blank(gpi_list_2_full[k])) gpi_list_2_full[k];
+
+out :: vector_sort_dedup_first(gpi_list_2);
+
+end;

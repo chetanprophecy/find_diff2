@@ -1,0 +1,11 @@
+/*Reformat operation*/
+let string("") project_path=$"PROJECT_DIR";
+let int i=length_of(string_split($"PROJECT_DIR",'/'));
+let string("") app_nm=string_upcase(string_split($"PROJECT_DIR",'/')[i-1]);
+out::reformat(in)=
+begin
+  out.start_dttm :: if(!is_valid(in.start_dttm)) "1990-01-01 00:00:00" else in.start_dttm ;
+   out.end_dttm:: if(!is_valid(in.end_dttm)) "1990-01-01 00:00:00" else in.end_dttm;
+   out.app_name :: app_nm;
+  out.* :: in.*;
+end;

@@ -1,0 +1,216 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/const/program_const.xfr
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/24  Paul Thompson           Initial version
+ *  2016/10/28  Paul Thompson           Added constants for Config Type Codes
+ *  2016/11/21  Paul Thompson           Changed EMTM-CATG -> EMTM-IDENT
+ *  2017/07/27  Pratiksha Choure        Updated template name for CDM-MED, CDM-MPR and Utilization
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_XFR/cli_dml_defs.xfr";
+
+/*********************/
+/* Config Type Codes */
+/*********************/
+
+constant cli_config_type_cd_t  CONFIG_TYPE_CD_IDNTFN = 'IDENTIFICATION';
+constant cli_config_type_cd_t  CONFIG_TYPE_CD_EVAL   = 'EVALUATION';
+
+/**********************/
+/* Program Type Codes */
+/**********************/
+
+// Program Type Codes - MTM Identification and EMTM Categorization
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_MTM_IDNTFN                = 'MTM-IDENT';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_EMTM_CATG                 = 'EMTM-IDENT';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_RISK_SCORING              = 'RISK-SCORING';  // This is not really a real program
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_DISEASE_IDNTFN            = 'DISEASE-IDENT'; // This is not really a real program
+
+// Program Type Codes - Intervention Identification
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_ADH_PDC                   = 'ADH-PROP-DAYS-COVR';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_CTRL_RATIO            = 'GIC-CTRL-RATIO';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_MISS_MED              = 'GIC-MISS-MED';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_MISS_MED_DOSE_PER_DAY = 'GIC-MISS-MED-DOSE-PER-DAY';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_MISS_MED_FRACTURE     = 'GIC-MISS-MED-FRAC';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_MISS_MED_SABA         = 'GIC-MISS-MED-SABA';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_MISS_MED_TRIPTAN      = 'GIC-MISS-MED-TRIP';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_GIC_OVERUTIL              = 'GIC-OVERUTIL';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_CONS_DAYS_SPLY       = 'SFTY-CONS-DAYS-SPLY';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_CUML_DAYS_SPLY       = 'SFTY-CUML-DAYS-SPLY';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_DOSE_PER_DAY         = 'SFTY-DOSE-PER-DAY';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_DRUG_AGE             = 'SFTY-DRUG-AGE';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_DRUG_DISEASE         = 'SFTY-DRUG-DISEASE';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_DRUG_DRUG            = 'SFTY-DRUG-DRUG';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_SFTY_DUPL_THRP            = 'SFTY-DUPL-THRP';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_CDM_AVG_DAILY_DOSE        = 'CDM-AVG-DAILY-DOSE';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_CDM_MED                   = 'CDM-MED';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_CDM_MPR                   = 'CDM-MPR';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_CDM_THRP_CLASS_OVERLAP    = 'CDM-THRP-CLASS-OVERLAP';
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_CDM_UTIL                  = 'CDM-UTIL';
+
+// Program Type Codes - Unknown!!
+constant cli_program_type_cd_t  PROGRAM_TYPE_CD_UNKNOWN                   = 'UNKNOWN';
+
+/******************/
+/* Template Names */
+/******************/
+
+// Program Type Codes - MTM Identification and EMTM Categorization and Risk Scoring and Disease Identification
+constant cli_string_t  APP_TEMPL_NM_MTM_IDNTFN                = 'MTM Identification';
+constant cli_string_t  APP_TEMPL_NM_EMTM_CATG                 = 'eMTM Risk Categorization';
+constant cli_string_t  APP_TEMPL_NM_RISK_SCORING              = 'Risk Scoring';
+constant cli_string_t  APP_TEMPL_NM_DISEASE_IDNTFN            = 'Disease Identification';
+
+// Program Type Codes - Intervention Identification
+constant cli_string_t  APP_TEMPL_NM_ADH_PDC                   = 'Proportion of Days Covered (PDC)';
+constant cli_string_t  APP_TEMPL_NM_GIC_CTRL_RATIO            = 'GIC Controller Ratio';
+constant cli_string_t  APP_TEMPL_NM_GIC_MISS_MED              = 'GIC Missing Med';
+constant cli_string_t  APP_TEMPL_NM_GIC_MISS_MED_DOSE_PER_DAY = 'GIC Missing Med Dose Per Day';
+constant cli_string_t  APP_TEMPL_NM_GIC_MISS_MED_FRACTURE     = 'GIC Missing Med Fracture';
+constant cli_string_t  APP_TEMPL_NM_GIC_MISS_MED_SABA         = 'GIC Missing Med SABA';
+constant cli_string_t  APP_TEMPL_NM_GIC_MISS_MED_TRIPTAN      = 'GIC Missing Med Triptan';
+constant cli_string_t  APP_TEMPL_NM_GIC_OVERUTIL              = 'GIC Overutilization';
+constant cli_string_t  APP_TEMPL_NM_SFTY_CONS_DAYS_SPLY       = 'Consecutive Days Supply';
+constant cli_string_t  APP_TEMPL_NM_SFTY_CUML_DAYS_SPLY       = 'Cumulative Days Supply';
+constant cli_string_t  APP_TEMPL_NM_SFTY_DOSE_PER_DAY         = 'Dose Per Day';
+constant cli_string_t  APP_TEMPL_NM_SFTY_DRUG_AGE             = 'Drug-Age Interaction';
+constant cli_string_t  APP_TEMPL_NM_SFTY_DRUG_DISEASE         = 'Drug-Disease Interaction';
+constant cli_string_t  APP_TEMPL_NM_SFTY_DRUG_DRUG            = 'Drug-Drug Interaction';
+constant cli_string_t  APP_TEMPL_NM_SFTY_DUPL_THRP            = 'Duplicate Therapy';
+constant cli_string_t  APP_TEMPL_NM_CDM_AVG_DAILY_DOSE        = 'Average Daily Dose';
+constant cli_string_t  APP_TEMPL_NM_CDM_MED                   = 'CDM MED';      //'Morphine Equivalent Dose'
+constant cli_string_t  APP_TEMPL_NM_CDM_MPR                   = 'Medication Possession Ratio';
+constant cli_string_t  APP_TEMPL_NM_CDM_THRP_CLASS_OVERLAP    = 'Therapeutic Class Overlap';
+constant cli_string_t  APP_TEMPL_NM_CDM_UTIL                  = 'Utilization';
+
+/*********************************/
+/* Template Name to Program Type */
+/*********************************/
+
+cli_program_type_cd_t out :: get_program_type_cd_by_app_templ_nm(cli_string_t app_templ_nm) inline =
+begin
+  let cli_string_t app_templ_nm_clean = app_templ_nm;
+  
+  app_templ_nm_clean = basename  (app_templ_nm_clean);
+  app_templ_nm_clean = re_replace(app_templ_nm_clean, '\\.apptempl', '');
+  
+  out :: switch (app_templ_nm_clean)
+           // Program Type Codes - MTM Identification and EMTM Categorization and Risk Scoring and Disease Identification
+           case APP_TEMPL_NM_MTM_IDNTFN                : PROGRAM_TYPE_CD_MTM_IDNTFN;
+           case APP_TEMPL_NM_EMTM_CATG                 : PROGRAM_TYPE_CD_EMTM_CATG;
+           case APP_TEMPL_NM_RISK_SCORING              : PROGRAM_TYPE_CD_RISK_SCORING;
+           case APP_TEMPL_NM_DISEASE_IDNTFN            : PROGRAM_TYPE_CD_DISEASE_IDNTFN;
+
+           // Program Type Codes - Intervention Identification
+           case APP_TEMPL_NM_ADH_PDC                   : PROGRAM_TYPE_CD_ADH_PDC;
+           case APP_TEMPL_NM_GIC_CTRL_RATIO            : PROGRAM_TYPE_CD_GIC_CTRL_RATIO;
+           case APP_TEMPL_NM_GIC_MISS_MED              : PROGRAM_TYPE_CD_GIC_MISS_MED;
+           case APP_TEMPL_NM_GIC_MISS_MED_DOSE_PER_DAY : PROGRAM_TYPE_CD_GIC_MISS_MED_DOSE_PER_DAY;
+           case APP_TEMPL_NM_GIC_MISS_MED_FRACTURE     : PROGRAM_TYPE_CD_GIC_MISS_MED_FRACTURE;
+           case APP_TEMPL_NM_GIC_MISS_MED_SABA         : PROGRAM_TYPE_CD_GIC_MISS_MED_SABA;
+           case APP_TEMPL_NM_GIC_MISS_MED_TRIPTAN      : PROGRAM_TYPE_CD_GIC_MISS_MED_TRIPTAN;
+           case APP_TEMPL_NM_GIC_OVERUTIL              : PROGRAM_TYPE_CD_GIC_OVERUTIL;
+           case APP_TEMPL_NM_SFTY_CONS_DAYS_SPLY       : PROGRAM_TYPE_CD_SFTY_CONS_DAYS_SPLY;
+           case APP_TEMPL_NM_SFTY_CUML_DAYS_SPLY       : PROGRAM_TYPE_CD_SFTY_CUML_DAYS_SPLY;
+           case APP_TEMPL_NM_SFTY_DOSE_PER_DAY         : PROGRAM_TYPE_CD_SFTY_DOSE_PER_DAY;
+           case APP_TEMPL_NM_SFTY_DRUG_AGE             : PROGRAM_TYPE_CD_SFTY_DRUG_AGE;
+           case APP_TEMPL_NM_SFTY_DRUG_DISEASE         : PROGRAM_TYPE_CD_SFTY_DRUG_DISEASE;
+           case APP_TEMPL_NM_SFTY_DRUG_DRUG            : PROGRAM_TYPE_CD_SFTY_DRUG_DRUG;
+           case APP_TEMPL_NM_SFTY_DUPL_THRP            : PROGRAM_TYPE_CD_SFTY_DUPL_THRP;
+           case APP_TEMPL_NM_CDM_AVG_DAILY_DOSE        : PROGRAM_TYPE_CD_CDM_AVG_DAILY_DOSE;
+           case APP_TEMPL_NM_CDM_MED                   : PROGRAM_TYPE_CD_CDM_MED;
+           case APP_TEMPL_NM_CDM_MPR                   : PROGRAM_TYPE_CD_CDM_MPR;
+           case APP_TEMPL_NM_CDM_THRP_CLASS_OVERLAP    : PROGRAM_TYPE_CD_CDM_THRP_CLASS_OVERLAP;
+           case APP_TEMPL_NM_CDM_UTIL                  : PROGRAM_TYPE_CD_CDM_UTIL;
+           
+           // Whu-oh!
+           default : PROGRAM_TYPE_CD_UNKNOWN;
+         end;
+end;
+
+/****************************/
+/* Rules Config ID Prefixes */
+/****************************/
+
+constant cli_string_t RULES_CONFIG_ID_PREFIX_MTM     = 'MTM';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_EMTM    = 'EMTM';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_RISK    = 'RISK';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_DIS     = 'DIS';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_ADH     = 'ADH';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_GIC     = 'GIC';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_SFTY    = 'SFTY';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_CDM     = 'CDM';
+constant cli_string_t RULES_CONFIG_ID_PREFIX_UNKNOWN = 'UNK';
+
+cli_string_t out :: get_rules_config_id_prefix_by_program_type_cd(cli_program_type_cd_t program_type_cd) inline =
+begin
+  out :: switch (program_type_cd)
+           // Program Type Codes - MTM Identification and EMTM Categorization and Risk Scoring and Disease Identification
+           case PROGRAM_TYPE_CD_MTM_IDNTFN     : RULES_CONFIG_ID_PREFIX_MTM;
+           case PROGRAM_TYPE_CD_EMTM_CATG      : RULES_CONFIG_ID_PREFIX_EMTM;
+           case PROGRAM_TYPE_CD_RISK_SCORING   : RULES_CONFIG_ID_PREFIX_RISK;
+           case PROGRAM_TYPE_CD_DISEASE_IDNTFN : RULES_CONFIG_ID_PREFIX_DIS;
+           
+           // Program Type Codes - Intervention Identification
+           case PROGRAM_TYPE_CD_ADH_PDC : RULES_CONFIG_ID_PREFIX_ADH;
+           
+           case PROGRAM_TYPE_CD_GIC_CTRL_RATIO
+              , PROGRAM_TYPE_CD_GIC_MISS_MED
+              , PROGRAM_TYPE_CD_GIC_MISS_MED_DOSE_PER_DAY
+              , PROGRAM_TYPE_CD_GIC_MISS_MED_FRACTURE
+              , PROGRAM_TYPE_CD_GIC_MISS_MED_SABA
+              , PROGRAM_TYPE_CD_GIC_MISS_MED_TRIPTAN
+              , PROGRAM_TYPE_CD_GIC_OVERUTIL : RULES_CONFIG_ID_PREFIX_GIC;
+           
+           case PROGRAM_TYPE_CD_SFTY_CONS_DAYS_SPLY
+              , PROGRAM_TYPE_CD_SFTY_CUML_DAYS_SPLY
+              , PROGRAM_TYPE_CD_SFTY_DOSE_PER_DAY
+              , PROGRAM_TYPE_CD_SFTY_DRUG_AGE
+              , PROGRAM_TYPE_CD_SFTY_DRUG_DISEASE
+              , PROGRAM_TYPE_CD_SFTY_DRUG_DRUG
+              , PROGRAM_TYPE_CD_SFTY_DUPL_THRP : RULES_CONFIG_ID_PREFIX_SFTY;
+           
+           case PROGRAM_TYPE_CD_CDM_AVG_DAILY_DOSE
+              , PROGRAM_TYPE_CD_CDM_MED
+              , PROGRAM_TYPE_CD_CDM_MPR
+              , PROGRAM_TYPE_CD_CDM_THRP_CLASS_OVERLAP
+              , PROGRAM_TYPE_CD_CDM_UTIL : RULES_CONFIG_ID_PREFIX_CDM;
+           
+           // Whu-oh!
+           default : RULES_CONFIG_ID_PREFIX_UNKNOWN;
+         end;
+end;
+
+/***********************/
+/* Template Parameters */
+/***********************/
+
+constant cli_string_t[int] PARAM_TYPE_CD_IGNORE_VEC =
+ [ vector 'about_cmpndcntrl'
+        , 'about_cmpndcontrol'
+        , 'about_demo'
+        , 'about_v1'
+        , 'AboutCmpdCtrl'
+        , 'AcuteInpatient_CmpndCntrl'
+        , 'default_client_id'
+        , 'default_CLT_ID'
+        , 'default_date'
+        , 'default_file_type'
+        , 'DrugProxy_MultipleDrug_CmpndCntrl'
+        , 'DrugProxy_SingleDrug_CmpndCntrl'
+        , 'EmergencyDept_CmpndCntrl'
+        , 'IdentificationDMLExpanded'
+        , 'input_pharma_dml'
+        , 'Input_Pharma_Dml'
+        , 'Input_Pharma_File'
+        , 'NonLab_Encntr_Procedure_CmpndCntrl'
+        , 'OfficeVisit_Obs_CmpndCntrl'
+        , 'Outpatient_obs_2Dispensing_CmpndCntrl'
+        , 'Outpatient_obs_4Dispensing_CmpndCntrl'
+        , 'Outpatient_Observation_CmpndCntrl'
+        , 'PharmacyClaimsDMLExpanded' ];

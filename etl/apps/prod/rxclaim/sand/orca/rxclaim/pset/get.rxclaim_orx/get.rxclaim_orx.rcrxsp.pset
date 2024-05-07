@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil_bk1.rcrxsp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcrxsp                  dnp2nb,dngicj,dns3cd,dngkcj,dnienb,dnc3dt,dnifnb,dnt3c4,dnkust,dnihnb,dniinb,dnijnb,dniknb,dnq5n2,dnq8n2,dnq9n2,dnpsnb,dnptnb,dnbicd,dnsfip,dnyhhk,dnodod,dnkuhl,newline\nclmprdfil_bk1 rcmddp                  newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil_bk1', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_LOOKUP||||0
+DO_SOURCE||||0
+LOOKUP_FIELDS||||dnp2nb,dngicj,dns3cd,dngkcj,dnienb,dnc3dt,dnifnb,dnt3c4,dnkust,dnihnb,dniinb,dnijnb,dniknb,dnq5n2,dnq8n2,dnq9n2,dnpsnb,dnptnb,dnbicd,dnsfip,dnyhhk,dnodod,dnkuhl,newline
+LOOKUP_KEY||||{dnp2nb}
+WHERE_CLAUSE||||$[ \n "WHERE RCRXSP.DNP2NB = RCMDDP.ASP2NB AND RCMDDP.ASBMDT >= " + \n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND RCMDDP.ASBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)\n  ] OPTIMIZE FOR ALL ROWS
+DO_CLEAN||||1

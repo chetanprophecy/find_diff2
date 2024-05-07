@@ -1,0 +1,20 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH||||$AI_MFS/clean.ids_common/clean.ids_common.d_member_rtm.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_common/clean.ids_common.d_member_rtm.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.d_member.ids_rxclaim.w_demographics.${RUN_ID}.dat.gz
+READ_MULTI_ICFF||||N
+READ_MULTI_ICFF_START_DATE||||
+SORT_KEY||||{dxf_hk_part1}
+DEDUP_KEY||||{dxf_hk_part1;dxf_hk_part2}
+USE_NORM||||True
+NORM_XFR||||$AI_XFR/produce/produce.d_member_demographics_nrmlz.xfr
+LOOKUP_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.reduced.dat.gz
+LOOKUP_FILE_DML||||$PUB_DATAHUB_DML/ids_common/ids_common.d_mmd_member_eligibility.reduced.dml
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.w_demographics.dml
+AB_CATALOG|$|||$AI_CAT/produce/produce.d_member_demographics.cat
+FILTER_EXPR||||$[  \r\nbegin\r\nlet date("YYYYMMDD") curr_dt = now1();\r\nlet string(int) mbr_name_filter  = " !(lookup_match('exclusion_member_name',mb_last_nm) or lookup_match('exclusion_member_name',mb_first_nm) or string_index(first_defined(mb_first_nm,'') ,'DO NOT') or string_index(first_defined(mb_last_nm,''),'DO NOT'))";\r\nlet string(int) cag_filter = "(ids_rec_stat_cd=='1' and  all_defined( mbr_addr1,mbr_city_nm,mbr_st_cd ) and '-' not member [ vector mbr_addr1,mbr_city_nm,mbr_st_cd] ) and ! (first_defined  ( lookup('d_cag_lkp_cag',carrier_id,NULL,NULL), lookup('d_cag_lkp_cag',carrier_id,account_id,NULL), lookup('d_cag_lkp_cag',carrier_id,account_id,employer_group_id) , [record  exclusion_flag 'N' like_flag 'N']).exclusion_flag=='Y') " ;\r\nlet string(int) mbr_elig_filter = "lookup_match('d_mmd_member_eligibility',carrier_id,account_id,employer_group_id,mbr_id)";\r\n\r\nresult ::   mbr_name_filter + " and " + cag_filter + " and " + mbr_elig_filter;\r\nend;\r\n]
+NORM_FILE_DML|$|||$OUTPUT_FILE_DML
+USE_SORT||||True
+EXTRA_SORT_KEY||||{dxf_hk_part2;update_date descending;update_time descending }
+USE_DEDUP||||True
+analysis_level|Pl|||ignore_sql_errors

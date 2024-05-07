@@ -1,0 +1,119 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58185ec6_1e02_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prtptg_pdr.targeted_provider_stts,[passthrough],in0.targeted_provider_stts]
+  [out0.c_prtptg_pdr.targeted_flag,[passthrough],in0.targeted_flag]
+  [out0.c_prtptg_pdr.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_prtptg_pdr.cpp_partcptng_provider_sk,[transform],]
+  [out0.c_prtptg_pdr.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_prtptg_pdr.src_env_sk,[transform],]
+  [out0.c_prtptg_pdr.initial_fulfillment_flag,[passthrough],in0.initial_fulfillment_flag]
+  [out0.c_prtptg_pdr.vendor_id,[passthrough],in0.vendor_id]
+  [out0.c_prtptg_pdr.excl_reason_cd_descr,[passthrough],in0.excl_reason_cd_descr]
+  [out0.c_prtptg_pdr.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_prtptg_pdr.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_prtptg_pdr.provider_id,[passthrough],in0.provider_id]
+  [out0.c_prtptg_pdr.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_prtptg_pdr.initial_fulfillment_method,[passthrough],in0.initial_fulfillment_method]
+  [out0.c_prtptg_pdr.excl_reason_cd,[passthrough],in0.excl_reason_cd]
+  [out0.c_prtptg_pdr.case_id,[passthrough],in0.case_identifer]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prtptg_pdr.targeted_provider_stts,'c_prtptg_pdr.targeted_provider_stts',1,0]
+     [out0.c_prtptg_pdr.targeted_flag,'c_prtptg_pdr.targeted_flag',1,0]
+     [out0.c_prtptg_pdr.cpp_updated_by,'c_prtptg_pdr.cpp_updated_by',1,0]
+     [out0.c_prtptg_pdr.cpp_partcptng_provider_sk,'c_prtptg_pdr.cpp_partcptng_provider_sk',1,0]
+     [out0.c_prtptg_pdr.cpp_created_by,'c_prtptg_pdr.cpp_created_by',1,0]
+     [out0.c_prtptg_pdr.src_env_sk,'c_prtptg_pdr.src_env_sk',1,0]
+     [out0.c_prtptg_pdr.initial_fulfillment_flag,'c_prtptg_pdr.initial_fulfillment_flag',1,0]
+     [out0.c_prtptg_pdr.vendor_id,'c_prtptg_pdr.vendor_id',1,0]
+     [out0.c_prtptg_pdr.excl_reason_cd_descr,'c_prtptg_pdr.excl_reason_cd_descr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_prtptg_pdr.cpp_provider_sk,'c_prtptg_pdr.cpp_provider_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_prtptg_pdr.cpp_create_ts,'c_prtptg_pdr.cpp_create_ts',1,0]
+     [out0.c_prtptg_pdr.provider_id,'c_prtptg_pdr.provider_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_prtptg_pdr.cpp_update_ts,'c_prtptg_pdr.cpp_update_ts',1,0]
+     [out0.c_prtptg_pdr.initial_fulfillment_method,'c_prtptg_pdr.initial_fulfillment_method',1,0]
+     [out0.c_prtptg_pdr.excl_reason_cd,'c_prtptg_pdr.excl_reason_cd',1,0]
+     [out0.c_prtptg_pdr.case_id,'c_prtptg_pdr.case_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.initial_fulfillment_flag,'initial_fulfillment_flag',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.case_identifer,'case_identifer',1,1]
+     [in0.initial_fulfillment_method,'initial_fulfillment_method',1,1]
+     [in0.targeted_flag,'targeted_flag',1,1]
+     [in0.excl_reason_cd_descr,'excl_reason_cd_descr',1,1]
+     [in0.targeted_provider_stts,'targeted_provider_stts',1,1]
+     [in0.vendor_id,'vendor_id',1,1]
+     [in0.excl_reason_cd,'excl_reason_cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prtptg_pdr_cpp_partcptng_provider_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_prtptg_pdr_case_id = fail_if_error(in0.case_identifer);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prtptg_pdr_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) c_prtptg_pdr_cpp_provider_sk;
+let utf8 string("\x01", maximum_length=100) c_prtptg_pdr_vendor_id = fail_if_error(in0.vendor_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prtptg_pdr_targeted_flag = fail_if_error(in0.targeted_flag);
+let utf8 string("\x01", maximum_length=200) c_prtptg_pdr_targeted_provider_stts = fail_if_error(in0.targeted_provider_stts);
+let decimal("\x01",0) c_prtptg_pdr_excl_reason_cd = fail_if_error(in0.excl_reason_cd);
+let utf8 string("\x01", maximum_length=200) c_prtptg_pdr_excl_reason_cd_descr = fail_if_error(in0.excl_reason_cd_descr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prtptg_pdr_initial_fulfillment_flag = fail_if_error(in0.initial_fulfillment_flag);
+let utf8 string("\x01", maximum_length=80) c_prtptg_pdr_initial_fulfillment_method = fail_if_error(in0.initial_fulfillment_method);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prtptg_pdr_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_prtptg_pdr_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prtptg_pdr_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prtptg_pdr_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_prtptg_pdr_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_prtptg_pdr_cpp_provider_sk=fail_if_error(first_defined(lookup("c_provider",in0.provider_id).dxf_sk,-1));
+
+  out0.c_prtptg_pdr.cpp_partcptng_provider_sk::c_prtptg_pdr_cpp_partcptng_provider_sk;
+  out0.c_prtptg_pdr.case_id::c_prtptg_pdr_case_id;
+  out0.c_prtptg_pdr.provider_id::c_prtptg_pdr_provider_id;
+  out0.c_prtptg_pdr.cpp_provider_sk::c_prtptg_pdr_cpp_provider_sk;
+  out0.c_prtptg_pdr.vendor_id::c_prtptg_pdr_vendor_id;
+  out0.c_prtptg_pdr.targeted_flag::c_prtptg_pdr_targeted_flag;
+  out0.c_prtptg_pdr.targeted_provider_stts::c_prtptg_pdr_targeted_provider_stts;
+  out0.c_prtptg_pdr.excl_reason_cd::c_prtptg_pdr_excl_reason_cd;
+  out0.c_prtptg_pdr.excl_reason_cd_descr::c_prtptg_pdr_excl_reason_cd_descr;
+  out0.c_prtptg_pdr.initial_fulfillment_flag::c_prtptg_pdr_initial_fulfillment_flag;
+  out0.c_prtptg_pdr.initial_fulfillment_method::c_prtptg_pdr_initial_fulfillment_method;
+  out0.c_prtptg_pdr.cpp_update_ts::c_prtptg_pdr_cpp_update_ts;
+  out0.c_prtptg_pdr.cpp_updated_by::c_prtptg_pdr_cpp_updated_by;
+  out0.c_prtptg_pdr.cpp_create_ts::c_prtptg_pdr_cpp_create_ts;
+  out0.c_prtptg_pdr.cpp_created_by::c_prtptg_pdr_cpp_created_by;
+  out0.c_prtptg_pdr.src_env_sk::c_prtptg_pdr_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,105 @@
+include "/~$PUB_DB_XFR/db_list.xfr";
+
+type publish_info_t =
+record
+  string(long) target_system;
+  string(long) local_mfs;
+  string(long) local_serial;
+  string(long) remote_mfs;
+  string(long) remote_serial;
+  string(long) dml_directory;
+end;
+
+type publish_info_vec_t = publish_info_t[long];
+
+type publish_info_extended_t =
+record
+  string(long) target_name;
+  string(long) target_url;
+  string(long) target_file;
+  string(long) target_cntrl_file;
+  string(long) target_dml;
+end;
+
+out :: get_publish_info_vec(publish_list) = 
+begin
+  out :: for(let line in get_line_vec(publish_list)) 
+                        : [record target_system line.word_vec[0]
+                                  local_mfs line.word_vec[1]
+                                  local_serial line.word_vec[2]
+                                  remote_mfs first_defined(null_if_error(line.word_vec[3]), "")
+                                  remote_serial first_defined(null_if_error(line.word_vec[4]), "")
+                                  dml_directory line.word_vec[5]];
+end
+
+out :: get_publish_info(publish_info_vec, target_name, target_file_name, publish_server_type, target_layout, do_write_multi_csvs) = 
+begin
+  let string("") target_system = string_split(target_name, ".")[0];
+  let string("") tr_fl_nm = "";
+  let decimal("") publish_index = vector_search(publish_info_vec, [record target_system target_system local_mfs "" local_serial "" remote_mfs "" remote_serial "" dml_directory ""], {target_system});
+  let publish_info_extended_t publish_info = allocate_with_defaults();
+  let cntl_file_name = re_replace(re_replace(target_file_name, ".dat$", ".cntl"), ".dat.gz$", ".cntl");
+  switch(target_layout)  
+    case "mfs" :
+      begin
+        
+        switch(publish_server_type)
+          case "remote" :
+          begin
+            tr_fl_nm = if(do_write_multi_csvs == 1) "'" + publish_info_vec[publish_index].remote_mfs + "/' + " + target_file_name else publish_info_vec[publish_index].remote_mfs + "/" + target_file_name;
+            publish_info = [record target_name target_name
+                                target_url publish_info_vec[publish_index].remote_mfs
+                                target_file tr_fl_nm
+                                target_cntrl_file publish_info_vec[publish_index].remote_serial + "/" + cntl_file_name
+                                target_dml publish_info_vec[publish_index].dml_directory + "/" + target_name + ".dml"];
+          end
+          case "localhost" :
+          begin
+            tr_fl_nm = if(do_write_multi_csvs == 1) "'" + publish_info_vec[publish_index].local_mfs + "/' + " + target_file_name else publish_info_vec[publish_index].local_mfs + "/" + target_file_name;
+            publish_info = [record target_name target_name
+                                target_url publish_info_vec[publish_index].local_mfs
+                                target_file tr_fl_nm
+                                target_cntrl_file publish_info_vec[publish_index].local_serial + "/" + cntl_file_name
+                                target_dml publish_info_vec[publish_index].dml_directory + "/" + target_name + ".dml" ];
+          end
+        end;
+      end
+    case "serial"  : 
+      begin
+        switch(publish_server_type)
+          case "remote" :
+          begin
+            tr_fl_nm = if(do_write_multi_csvs == 1) "'" + publish_info_vec[publish_index].remote_serial + "/' + " + target_file_name else publish_info_vec[publish_index].remote_serial + "/" + target_file_name;
+            publish_info = [record target_name target_name
+                                target_url publish_info_vec[publish_index].remote_serial
+                                target_file tr_fl_nm 
+                                target_cntrl_file publish_info_vec[publish_index].remote_serial + "/" + cntl_file_name
+                                target_dml publish_info_vec[publish_index].dml_directory + "/" + target_name + ".dml" ];
+          end
+          case "localhost" :
+          begin
+            tr_fl_nm = if(do_write_multi_csvs == 1) "'" + publish_info_vec[publish_index].local_serial + "/' + " + target_file_name else publish_info_vec[publish_index].local_serial + "/" + target_file_name;
+            publish_info = [record target_name target_name
+                                target_url publish_info_vec[publish_index].local_serial
+                                target_file tr_fl_nm
+                                target_cntrl_file publish_info_vec[publish_index].local_serial + "/" + cntl_file_name
+                                target_dml publish_info_vec[publish_index].dml_directory + "/" + target_name + ".dml" ];
+          end
+        end;
+      end
+  end;
+  out :: publish_info;
+end
+
+out :: get_publish_dml(publish_info_vec, target_name) = 
+begin
+  let string("") target_system = string_split(target_name, ".")[0];
+  let decimal("") publish_index = vector_search(publish_info_vec, [record target_system target_system local_mfs "" local_serial "" remote_mfs "" remote_serial "" dml_directory ""], {target_system});
+  out :: publish_info_vec[publish_index].dml_directory + "/" + target_name + ".dml";
+end
+
+out :: get_publish_dml_dir(publish_info_vec, target_system) = 
+begin
+  let decimal("") publish_index = vector_search(publish_info_vec, [record target_system target_system local_mfs "" local_serial "" remote_mfs "" remote_serial "" dml_directory ""], {target_system});
+  out :: publish_info_vec[publish_index].dml_directory;
+end

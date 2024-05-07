@@ -1,0 +1,34 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.mdh_file_id                :: in.aqpwih;
+  out.mdh_submitter_id           :: in.aqp3ih;
+  out.mdh_file_from_date         :: if(string_substring((string(""))(decimal(""))in.aqo1hg,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.aqo1hg) else (date("YYYYMMDD")) '99991231';
+  out.mdh_file_thru_date         :: if(string_substring((string(""))(decimal(""))in.aqo2hg,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.aqo2hg) else (date("YYYYMMDD")) '99991231';
+  out.mdh_number_of_bhd_records  :: in.aqfths;
+  out.mdh_number_of_det_records  :: in.aqfuhs;
+  out.mdh_det_records_accepted   :: in.aqfvhs;
+  out.mdh_det_records_infrmtnal  :: in.aqadht;
+  out.mdh_det_records_rejected   :: in.aqfwhs;
+  out.mdh_date_file_transmitted  :: in.aqo3hg;
+  out.mdh_file_type              :: in.aqveh9;
+  out.mdh_client_list_name       :: in.aqf1hf;
+  out.mdh_pde_version            :: in.aqeyai;
+  out.mdh_ddps_system_date       :: if(first_defined(in.aqnfce,-1)==0) (date("YYYYMMDD")) '99991231' else (datetime("YYYYMMDD"))(string(""))(decimal("")) in.aqnfce;
+  out.mdh_ddps_system_time       :: if(first_defined(in.aqbqtz,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.aqbqtz)==4)'00' else if(string_length((string(""))(decimal(""))in.aqbqtz)==5)'0' else '',(string(""))(decimal("")) in.aqbqtz);
+  out.add_user_name              :: in.aqakvn;
+  out.add_date                   :: if(string_substring((string(""))(decimal(""))in.aqc2dt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.aqc2dt) else (date("YYYYMMDD")) '99991231';
+  out.add_time                   :: if(first_defined(in.aqadtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.aqadtm)==4)'00' else if(string_length((string(""))(decimal(""))in.aqadtm)==5)'0' else '',(string(""))(decimal("")) in.aqadtm);
+  out.add_program_name           :: in.aqalvn;
+  out.chg_user_name              :: in.aqadvn;
+  out.chg_date                   :: if(string_substring((string(""))(decimal(""))in.aqbmdt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.aqbmdt) else (date("YYYYMMDD")) '99991231';
+  out.chg_time                   :: if(first_defined(in.aqabtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.aqabtm)==4)'00' else if(string_length((string(""))(decimal(""))in.aqabtm)==5)'0' else '',(string(""))(decimal("")) in.aqabtm);
+  out.chg_program_name           :: in.aqaevn;
+  out.rxt_src_envrt_id           :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm           :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm            :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid             :: 'app_orca_rxclaim';
+  out.rxt_create_run_id          :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd            :: '';
+  out.*                          :: in.*;
+end;

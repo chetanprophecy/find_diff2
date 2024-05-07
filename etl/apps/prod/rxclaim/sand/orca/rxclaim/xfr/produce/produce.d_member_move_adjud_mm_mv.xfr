@@ -1,0 +1,30 @@
+
+
+type cagm = record
+  decimal("\x01",0) mbr_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0) cag_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0) curr_mbr_sk /*BIGINT NOT NULL*/;
+  decimal("\x01",0) curr_cag_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) curr_carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) curr_account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) curr_employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) curr_mbr_id = NULL("") /*VARCHAR(20)*/;
+ end;
+ 
+out :: reformat(in0) = 
+ begin
+ 
+ let cagm in_cagm=lookup("d_mm_lkp",in0.mbr_sk);
+ 
+  out.* :: in0.*;
+  out.curr_mbr_sk :1: if(!is_null(in_cagm.curr_mbr_sk)) in_cagm.curr_mbr_sk else in0.curr_mbr_sk;
+  out.curr_cag_sk :1: if(!is_null(in_cagm.curr_cag_sk)) in_cagm.curr_cag_sk else in0.curr_cag_sk;
+  out.curr_carrier_id :1: if(!is_null(in_cagm.curr_carrier_id)) in_cagm.curr_carrier_id else in0.curr_carrier_id;
+  out.curr_account_id :1: if(!is_null(in_cagm.curr_account_id)) in_cagm.curr_account_id else in0.curr_account_id;
+  out.curr_employer_group_id :1: if(!is_null(in_cagm.curr_employer_group_id)) in_cagm.curr_employer_group_id else in0.curr_employer_group_id; 
+  out.curr_mbr_id :1: if(!is_null(in_cagm.curr_mbr_id)) in_cagm.curr_mbr_id else in0.curr_mbr_id;
+end;

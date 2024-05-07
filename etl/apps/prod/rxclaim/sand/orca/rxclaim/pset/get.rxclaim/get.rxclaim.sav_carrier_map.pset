@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.csv.interim.pset
+TARGET_NAME||||rxclaim.sav_carrier_map
+RFMT_TRANSFORM||||/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\nout0::Untitled_Ruleset_documentation(in)=\nbegin\n\nout0.sav_carrier_id::depends_on(\n         in.sav_carrier_id\n         );\n\n\nout0.carrier_id::depends_on(\n         in.carrier_id\n         );\n\n\nout0.sav_group_id::depends_on(\n         in.sav_group_id\n         );\n\n\nout0.sav_account_id::depends_on(\n         in.sav_account_id\n         );\n\nout0.*::in.*;\nend;\n\n/*@\ndependency_analysis_function:Untitled_Ruleset_documentation\nmetrics:\n{\n  dependencies:\n  [\n     [out0.sav_carrier_id,'sav_carrier_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.sav_group_id,'sav_group_id',1,0]\n     [out0.sav_account_id,'sav_account_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.sav_carrier_id,'sav_carrier_id',1,1]\n     [in0.carrier_id,'carrier_id',1,1]\n     [in0.sav_account_id,'sav_account_id',1,1]\n     [in0.sav_group_id,'sav_group_id',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string(",") carrier_id = fail_if_error(string_lrtrim(in0.carrier_id));\nlet string(",") sav_carrier_id = fail_if_error(string_lrtrim(in0.sav_carrier_id));\nlet string(",") sav_account_id = fail_if_error(string_lrtrim(in0.sav_account_id));\nlet string("\\n") sav_group_id = fail_if_error(string_lrtrim(in0.sav_group_id));\n\n\n\n  out0.carrier_id::carrier_id;\n  out0.sav_carrier_id::sav_carrier_id;\n  out0.sav_account_id::sav_account_id;\n  out0.sav_group_id::sav_group_id;\n  out0.*::in0.*;\nend;\n
+LOOKUP_FIELDS_KEY||||{}
+INPUT_FILE_PATTERN||||sav_carrier_map.????????.csv
+DO_CLEAN||||1
+DO_LOOKUP||||0
+LOOKUP_KEY||||{carrier_id; account_id; employer_group_id}
+SOURCE_FILE_CLEAN_FLAG|$|||True

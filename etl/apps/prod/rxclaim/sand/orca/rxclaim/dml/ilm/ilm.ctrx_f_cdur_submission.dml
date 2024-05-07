@@ -1,0 +1,165 @@
+type logical_ids_rxclaim_f_cdur_submission_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cag_sk = NULL("");
+  decimal("\x01",0) phr_sk = NULL("");
+  decimal("\x01",0) prod_sk = NULL("");
+  decimal("\x01",0) mbr_sk = NULL("");
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) sbm_yr = NULL("");
+  decimal("\x01",0) sbm_mn = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL("");
+  decimal("\x01",0) sbm_dt_sk = NULL("");
+  decimal("\x01",0) filled_dt_sk = NULL("");
+  decimal("\x01",0) rej_cd1_sk = NULL("");
+  decimal("\x01",0) rej_cd2_sk = NULL("");
+  decimal("\x01",0) rej_cd3_sk = NULL("");
+  decimal("\x01",0) dur_sbm_cd_cntr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) dur_sbm_srvc_cd_rsn = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) dur_sbm_prof_srvc_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) dur_sbm_srvc_cd_rslt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) dur_sbm_srvc_loe = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) dur_sbm_coagent_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) dur_sbm_coagent_qlfr = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_ingred_cost_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_dispensing_fee = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_sales_tax_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_patient_pay_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_due_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clr_ingred_cost_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clr_dispensing_fee = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clr_sales_tax_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clr_patient_pay_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clr_due_amt = NULL("");
+  decimal("\x01",0) days_of_supply = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) drug_quantity = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) recent_flag = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) avg_drug_cost = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) tot_savings_amt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_cag_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d cag: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+type nk_ids_common_d_cag_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d sbm dt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type opt_nk_ids_common_d_member_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d mbr: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+type nk_ids_common_d_member_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+
+type opt_nk_ids_common_d_pharmacy_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d phr: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("") /*VARCHAR(12)*/;
+end;
+type nk_ids_common_d_pharmacy_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("") /*VARCHAR(12)*/;
+end;
+
+type opt_nk_ids_common_d_prescriber_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d pbr: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+type nk_ids_common_d_prescriber_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+
+type opt_nk_ids_common_d_product_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d product: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+end;
+type nk_ids_common_d_product_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_reject_code_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l rej cd1: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=3) rej_cd = NULL("") /*VARCHAR(3)*/;
+end;
+type nk_ids_rxclaim_l_reject_code_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=3) rej_cd = NULL("") /*VARCHAR(3)*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_f_cdur_submission_t cdur_subm  /*@ BizName:'cdur subm' */;
+  opt_nk_ids_common_d_cag_t d_cag  /*@ BizName:'d cag' */;
+  opt_nk_ids_common_d_date_t d_fld_dt  /*@ BizName:'d fld dt' */;
+  opt_nk_ids_common_d_member_t d_mbr  /*@ BizName:'d mbr' */;
+  opt_nk_ids_common_d_prescriber_t d_pbr  /*@ BizName:'d pbr' */;
+  opt_nk_ids_common_d_pharmacy_t d_phr  /*@ BizName:'d phr' */;
+  opt_nk_ids_common_d_product_t d_product  /*@ BizName:'d product' */;
+  opt_nk_ids_common_d_date_t d_sbm_dt  /*@ BizName:'d sbm dt' */;
+  opt_nk_ids_rxclaim_l_reject_code_t l_rej_cd1  /*@ BizName:'l rej cd1' */;
+  opt_nk_ids_rxclaim_l_reject_code_t l_rej_cd2  /*@ BizName:'l rej cd2' */;
+  opt_nk_ids_rxclaim_l_reject_code_t l_rej_cd3  /*@ BizName:'l rej cd3' */;
+end;

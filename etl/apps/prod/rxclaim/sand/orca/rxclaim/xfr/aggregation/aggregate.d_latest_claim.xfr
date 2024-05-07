@@ -1,0 +1,305 @@
+type d_latest_claim_type = $[expand_type(read_file(OUTPUT_FILE_DML))];
+ 
+let d_latest_claim_type lookup_rec = allocate_with_defaults();
+ 
+let lookup_identifier_type lookup_id = lookup_not_loaded();
+ 
+let d_latest_claim_type final_output_rec = allocate_with_defaults();
+let decimal("") match_count = 0;
+let string("")[int] paid_claim_seq_nbr_vec = [vector];
+let string("")[int] rev_claim_seq_nbr_vec = [vector];
+let string("")[int] rej_claim_seq_nbr_vec = [vector];
+ 
+let string("") paid_claim_seq_nbr_lst = "";
+let string("") rev_claim_seq_nbr_lst = "";
+let string("") rej_claim_seq_nbr_lst = "";
+ 
+let decimal("\x01",0) lt_nr_claim_seq_nbr = allocate_with_defaults();
+let string("\x01",charset="iso-8859-15", maximum_length=1) lt_nr_claim_stat_id = allocate_with_defaults();
+let date("YYYYMMDD")("\x01") lt_nr_claim_sbm_dt = allocate_with_defaults();
+let date("YYYYMMDD")("\x01") lt_nr_claim_filled_dt = allocate_with_defaults();
+let decimal("\x01",0) lt_claim_seq_nbr = allocate_with_defaults();
+let string("\x01",charset="iso-8859-15", maximum_length=1) lt_claim_stat_id = allocate_with_defaults();
+let date("YYYYMMDD")("\x01") lt_claim_sbm_dt = allocate_with_defaults();
+let date("YYYYMMDD")("\x01") lt_claim_filled_dt = allocate_with_defaults();
+ 
+let decimal("") match_flag = 0;
+  
+out :: rollup(in) =
+begin
+ 
+  paid_claim_seq_nbr_vec = [vector];
+  rev_claim_seq_nbr_vec = [vector];
+  rej_claim_seq_nbr_vec = [vector];
+ 
+  paid_claim_seq_nbr_lst = "";
+  rev_claim_seq_nbr_lst = "";
+  rej_claim_seq_nbr_lst = "";
+  
+  lookup_rec = allocate_with_defaults();
+  final_output_rec = allocate_with_defaults();
+  
+  if(lookup_id == lookup_not_loaded())
+    lookup_id =  lookup_load(this_partition_path($'LOOKUP_FILE_PATH'), this_partition_path(string_replace($'LOOKUP_FILE_PATH', ".dat.gz", ".idx")), "IDS ICFF LKP");
+  
+  //if(first_defined(first(in.lt_claim_stat_id, in.lt_claim_stat_id != 'R'), "") == "P") begin
+  lt_nr_claim_seq_nbr = first_defined(first(in.lt_claim_seq_nbr, in.lt_claim_stat_id != 'R'), -1);
+  lt_nr_claim_stat_id = first_defined(first(in.lt_claim_stat_id, in.lt_claim_stat_id != 'R'), allocate_with_defaults());
+  lt_nr_claim_sbm_dt = first_defined(first(in.lt_claim_sbm_dt, in.lt_claim_stat_id != 'R'), allocate_with_defaults());
+  lt_nr_claim_filled_dt = first_defined(first(in.lt_claim_filled_dt, in.lt_claim_stat_id != 'R'), allocate_with_defaults());
+ 
+  lt_claim_seq_nbr = first(in.lt_claim_seq_nbr);
+  lt_claim_stat_id = first(in.lt_claim_stat_id);
+  lt_claim_sbm_dt = first(in.lt_claim_sbm_dt);
+  lt_claim_filled_dt = first(in.lt_claim_filled_dt);
+  
+  final_output_rec.paid_claim_seq_nbr_list = concatenation(in.paid_claim_seq_nbr_list,!is_null(in.paid_claim_seq_nbr_list),",");
+  final_output_rec.rev_claim_seq_nbr_list = concatenation(in.rev_claim_seq_nbr_list,!is_null(in.rev_claim_seq_nbr_list),",");
+  final_output_rec.rej_claim_seq_nbr_list = concatenation(in.rej_claim_seq_nbr_list,!is_null(in.rej_claim_seq_nbr_list),",");
+  final_output_rec.lt_paid_claim_seq_nbr = first(in.lt_paid_claim_seq_nbr, !is_null(in.lt_paid_claim_seq_nbr));
+  final_output_rec.lt_paid_claim_sbm_dt = first(in.lt_paid_claim_sbm_dt, !is_null(in.lt_paid_claim_sbm_dt));
+  final_output_rec.lt_paid_claim_filled_dt = first(in.lt_paid_claim_filled_dt, !is_null(in.lt_paid_claim_filled_dt));
+  final_output_rec.lt_rev_claim_seq_nbr = first(in.lt_rev_claim_seq_nbr, !is_null(in.lt_rev_claim_seq_nbr));
+  final_output_rec.lt_rev_claim_sbm_dt = first(in.lt_rev_claim_sbm_dt, !is_null(in.lt_rev_claim_sbm_dt));
+  final_output_rec.lt_rev_claim_filled_dt = first(in.lt_rev_claim_filled_dt, !is_null(in.lt_rev_claim_filled_dt));
+  final_output_rec.lt_rej_claim_seq_nbr = first(in.lt_rej_claim_seq_nbr, !is_null(in.lt_rej_claim_seq_nbr));
+  final_output_rec.lt_rej_claim_sbm_dt = first(in.lt_rej_claim_sbm_dt, !is_null(in.lt_rej_claim_sbm_dt));
+  final_output_rec.lt_rej_claim_filled_dt = first(in.lt_rev_claim_filled_dt, !is_null(in.lt_rej_claim_filled_dt));
+  
+  match_count = lookup_count(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1); 
+ 
+  if(match_count == 0) begin
+    match_flag = 0;
+    if(lt_nr_claim_stat_id member [vector "P", "C"] and lt_claim_stat_id == "R") begin
+      final_output_rec.lt_claim_seq_nbr = lt_nr_claim_seq_nbr;
+      final_output_rec.lt_claim_stat_id = lt_nr_claim_stat_id;
+      final_output_rec.lt_claim_sbm_dt = lt_nr_claim_sbm_dt;
+      final_output_rec.lt_claim_filled_dt = lt_nr_claim_filled_dt;
+    end
+    else begin
+      final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+      final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+      final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+      final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+    end
+  end
+  
+  if(match_count != 0) begin
+  
+    lookup_rec = lookup_last(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1);
+    
+    if(lookup_rec.dxf_hk_part2 != in.dxf_hk_part2) begin block exact_match  
+      for(let int i = 1, i < match_count) begin
+        lookup_rec = lookup_previous(lookup_id, "IDS ICFF LKP");
+        if(lookup_rec.dxf_hk_part2 == in.dxf_hk_part2) begin
+          match_flag = 1;
+          exit exact_match;
+        end
+        else match_flag = 0;
+      end
+      match_flag = 0;
+    end block exact_match
+    else match_flag = 1;
+    
+    if(match_flag == 0) begin
+      if(lt_nr_claim_stat_id member [vector "P", "C"] and lt_claim_stat_id == "R") begin
+        final_output_rec.lt_claim_seq_nbr = lt_nr_claim_seq_nbr;
+        final_output_rec.lt_claim_stat_id = lt_nr_claim_stat_id;
+        final_output_rec.lt_claim_sbm_dt = lt_nr_claim_sbm_dt;
+        final_output_rec.lt_claim_filled_dt = lt_nr_claim_filled_dt;
+      end
+      else begin
+        final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+        final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+        final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+        final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+      end
+    end
+    
+    if(match_flag == 1) begin
+    
+      if(!is_null(final_output_rec.paid_claim_seq_nbr_list)) begin
+        for(let clm in string_split(final_output_rec.paid_claim_seq_nbr_list, ",")) begin
+          if(not (first_defined(lookup_rec.paid_claim_seq_nbr_list, "") == clm || 
+             string_like(first_defined(lookup_rec.paid_claim_seq_nbr_list, ""), "%," + clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.paid_claim_seq_nbr_list, ""), clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.paid_claim_seq_nbr_list, ""), "%," + clm) == 1))
+          paid_claim_seq_nbr_vec = vector_append(paid_claim_seq_nbr_vec, clm); 
+        end
+      end
+      
+      paid_claim_seq_nbr_lst = if(is_null(lookup_rec.paid_claim_seq_nbr_list) || is_blank(lookup_rec.paid_claim_seq_nbr_list)) string_join(paid_claim_seq_nbr_vec, ",")
+                               else if(length_of(paid_claim_seq_nbr_vec) == 0) lookup_rec.paid_claim_seq_nbr_list
+                               else string_concat(string_join(paid_claim_seq_nbr_vec, ","), ",", lookup_rec.paid_claim_seq_nbr_list);
+      final_output_rec.paid_claim_seq_nbr_list = paid_claim_seq_nbr_lst;//if(string_length(string_filter(paid_claim_seq_nbr_lst, ",")) > 9) string_substring(paid_claim_seq_nbr_lst, 1, string_rindex(paid_claim_seq_nbr_lst, ',')-1) else paid_claim_seq_nbr_lst;
+      
+      if(!is_null(final_output_rec.rev_claim_seq_nbr_list)) begin
+        for(let clm in string_split(final_output_rec.rev_claim_seq_nbr_list, ",")) begin 
+          if(not (first_defined(lookup_rec.rev_claim_seq_nbr_list, "") == clm ||
+             string_like(first_defined(lookup_rec.rev_claim_seq_nbr_list, ""), "%," + clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.rev_claim_seq_nbr_list, ""), clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.rev_claim_seq_nbr_list, ""), "%," + clm) == 1))
+          rev_claim_seq_nbr_vec = vector_append(rev_claim_seq_nbr_vec, clm); 
+        end; 
+      end
+      
+      rev_claim_seq_nbr_lst = if(is_null(lookup_rec.rev_claim_seq_nbr_list) || is_blank(lookup_rec.rev_claim_seq_nbr_list)) string_join(rev_claim_seq_nbr_vec, ",")
+                              else if(length_of(rev_claim_seq_nbr_vec) == 0) lookup_rec.rev_claim_seq_nbr_list
+                              else string_concat(string_join(rev_claim_seq_nbr_vec, ","), ",", lookup_rec.rev_claim_seq_nbr_list);
+      final_output_rec.rev_claim_seq_nbr_list = rev_claim_seq_nbr_lst;//if(string_length(string_filter(rev_claim_seq_nbr_lst, ",")) > 9) string_substring(rev_claim_seq_nbr_lst, 1, string_rindex(rev_claim_seq_nbr_lst, ',')-1) else rev_claim_seq_nbr_lst;
+      
+      if(!is_null(final_output_rec.rej_claim_seq_nbr_list)) begin
+        for(let clm in string_split(final_output_rec.rej_claim_seq_nbr_list, ",")) begin
+          if(not (first_defined(lookup_rec.rej_claim_seq_nbr_list, "") == clm || 
+             string_like(first_defined(lookup_rec.rej_claim_seq_nbr_list, ""), "%," + clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.rej_claim_seq_nbr_list, ""), clm + ",%") == 1 || 
+             string_like(first_defined(lookup_rec.rej_claim_seq_nbr_list, ""), "%," + clm) == 1))
+          rej_claim_seq_nbr_vec = vector_append(rej_claim_seq_nbr_vec, clm);
+        end
+      end
+      
+      rej_claim_seq_nbr_lst = if(is_null(lookup_rec.rej_claim_seq_nbr_list) || is_blank(lookup_rec.rej_claim_seq_nbr_list)) string_join(rej_claim_seq_nbr_vec, ",")
+                              else if(length_of(rej_claim_seq_nbr_vec) == 0) lookup_rec.rej_claim_seq_nbr_list
+                              else string_concat(string_join(rej_claim_seq_nbr_vec, ","), ",", lookup_rec.rej_claim_seq_nbr_list);
+      final_output_rec.rej_claim_seq_nbr_list = rej_claim_seq_nbr_lst;//if(string_length(string_filter(rej_claim_seq_nbr_lst, ",")) > 9) string_substring(rej_claim_seq_nbr_lst, 1, string_rindex(rej_claim_seq_nbr_lst, ',')-1) else rej_claim_seq_nbr_lst;
+      
+      if(first_defined(lookup_rec.lt_paid_claim_seq_nbr, -1) > first_defined(final_output_rec.lt_paid_claim_seq_nbr, -1)) begin
+        final_output_rec.lt_paid_claim_seq_nbr = lookup_rec.lt_paid_claim_seq_nbr;
+        final_output_rec.lt_paid_claim_sbm_dt = lookup_rec.lt_paid_claim_sbm_dt;
+        final_output_rec.lt_paid_claim_filled_dt = lookup_rec.lt_paid_claim_filled_dt;
+      end
+      
+      if(first_defined(lookup_rec.lt_rev_claim_seq_nbr, -1) > first_defined(final_output_rec.lt_rev_claim_seq_nbr, -1)) begin
+        final_output_rec.lt_rev_claim_seq_nbr = lookup_rec.lt_rev_claim_seq_nbr;
+        final_output_rec.lt_rev_claim_sbm_dt = lookup_rec.lt_rev_claim_sbm_dt;
+        final_output_rec.lt_rev_claim_filled_dt = lookup_rec.lt_rev_claim_filled_dt;
+      end
+      
+      if(first_defined(lookup_rec.lt_rej_claim_seq_nbr, -1) > first_defined(final_output_rec.lt_rej_claim_seq_nbr, -1)) begin
+        final_output_rec.lt_rej_claim_seq_nbr = lookup_rec.lt_rej_claim_seq_nbr;
+        final_output_rec.lt_rej_claim_sbm_dt = lookup_rec.lt_rej_claim_sbm_dt;
+        final_output_rec.lt_rej_claim_filled_dt = lookup_rec.lt_rej_claim_filled_dt;
+      end
+      
+      if(lookup_rec.lt_claim_seq_nbr > lt_claim_seq_nbr) begin          /* If history.claim_seq_nbr > delta.claim_seq_nbr */
+        if(lt_claim_seq_nbr == first_defined(final_output_rec.lt_paid_claim_seq_nbr, -1) && /* If delta.claim is an outstanding paid claim, mark delta.claim as recent */
+           lookup_rec.lt_claim_stat_id == 'R' &&
+           not (rev_claim_seq_nbr_lst == (string(""))(decimal(""))lt_claim_seq_nbr || 
+                string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))lt_claim_seq_nbr + ",%") == 1 || 
+                string_like(rev_claim_seq_nbr_lst, (string(""))(decimal(""))lt_claim_seq_nbr + ",%") == 1 || 
+                string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))lt_claim_seq_nbr) == 1)
+          ) begin
+          final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+        end
+        else begin /* If delta.claim is not an outstanding paid claim, mark history.claim as recent */
+          final_output_rec.lt_claim_seq_nbr = lookup_rec.lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lookup_rec.lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lookup_rec.lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lookup_rec.lt_claim_filled_dt;
+        end
+      end
+      else if(lookup_rec.lt_claim_seq_nbr == lt_claim_seq_nbr && lookup_rec.lt_claim_stat_id != lt_claim_stat_id) begin  /* If history.claim_seq_nbr == delta.claim_seq_nbr, but history.claim_stat_id != delta.claim_stat_id */
+        if(first_defined(lookup_rec.lt_claim_stat_id, "") member [vector 'P', 'C'] && lt_claim_stat_id member [vector 'X', 'Z'] && first_defined(final_output_rec.lt_rej_claim_seq_nbr, -1) < lt_claim_seq_nbr) begin                   /* If history.claim is a paid claim and delta.claim is a reversed claim and there is no rejected claim which was received after the reversed claim, then mark delta.claim as recent. */
+          final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+        end 
+        else if(first_defined(lookup_rec.lt_claim_stat_id, "") member [vector 'P', 'C'] && lt_claim_stat_id member [vector 'X', 'Z'] && first_defined(final_output_rec.lt_rej_claim_seq_nbr, -1) > lt_claim_seq_nbr) begin              /* If history.claim is a paid claim and delta.claim is a reversed claim, but there is a rejected claim which was received after the reversed claim, then mark rejected as recent. */
+          final_output_rec.lt_claim_seq_nbr = lookup_rec.lt_rej_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = "R";
+          final_output_rec.lt_claim_sbm_dt = lookup_rec.lt_rej_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lookup_rec.lt_rej_claim_filled_dt;
+        end
+        else begin                      /* If all of the above conditions are false, mark history.claim as recent. */
+          final_output_rec.lt_claim_seq_nbr = lookup_rec.lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lookup_rec.lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lookup_rec.lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lookup_rec.lt_claim_filled_dt;
+        end
+      end
+      else if(lookup_rec.lt_claim_seq_nbr == lt_claim_seq_nbr && lookup_rec.lt_claim_stat_id == lt_claim_stat_id) begin         /* If history.claim_seq_nbr == delta.claim_seq_nbr, and history.claim_stat_id == delta.claim_stat_id, mark delta.claim as recent. */
+          final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+      end
+      else if(lookup_rec.lt_claim_seq_nbr < lt_claim_seq_nbr && first_defined(lookup_rec.lt_claim_stat_id, "") member [vector 'P', 'C'] && lt_claim_stat_id == 'R') begin
+        /*If history.claim_seq_nbr < delta.claim_seq_nbr and history.claim is a paid claim and delta.claim is a rejected claim */
+        if(lookup_rec.lt_claim_seq_nbr < first_defined(final_output_rec.lt_paid_claim_seq_nbr, -1)) begin         /* If history.claim_seq_nbr < latest_paid_claim_seq_nbr */
+          if(rev_claim_seq_nbr_lst == (string(""))(decimal(""))final_output_rec.lt_paid_claim_seq_nbr ||                /* If the latest_paid_claim is not an oustanding paid claim */
+           string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))final_output_rec.lt_paid_claim_seq_nbr + ",%") == 1 || 
+           string_like(rev_claim_seq_nbr_lst, (string(""))(decimal(""))final_output_rec.lt_paid_claim_seq_nbr + ",%") == 1 || 
+           string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))final_output_rec.lt_paid_claim_seq_nbr) == 1) begin          /* If delta.nr_claim is not an outstanding claim then mark delta.claim as recent */
+            final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+            final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+            final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+            final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+          end
+          else begin
+            final_output_rec.lt_claim_seq_nbr = final_output_rec.lt_paid_claim_seq_nbr;
+            final_output_rec.lt_claim_stat_id = "P";
+            final_output_rec.lt_claim_sbm_dt = final_output_rec.lt_paid_claim_sbm_dt;
+            final_output_rec.lt_claim_filled_dt = final_output_rec.lt_paid_claim_filled_dt;
+          end
+        end
+        else if(rev_claim_seq_nbr_lst == (string(""))(decimal(""))lookup_rec.lt_claim_seq_nbr || 
+           string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))lookup_rec.lt_claim_seq_nbr + ",%") == 1 || 
+           string_like(rev_claim_seq_nbr_lst, (string(""))(decimal(""))lookup_rec.lt_claim_seq_nbr + ",%") == 1 || 
+           string_like(rev_claim_seq_nbr_lst, "%," + (string(""))(decimal(""))lookup_rec.lt_claim_seq_nbr) == 1) begin          /* If history.claim_seq_nbr >= latest_paid_claim_seq_nbr, check if history.claim is an outstanding paid claim. If no, mark delta.claim as recent. */
+          final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+        end
+        else begin              /* If history.claim_seq_nbr >= latest_paid_claim_seq_nbr, check if history.claim is an outstanding paid claim. If yes, mark delta.claim as recent. */
+          final_output_rec.lt_claim_seq_nbr = lookup_rec.lt_claim_seq_nbr;
+          final_output_rec.lt_claim_stat_id = lookup_rec.lt_claim_stat_id;
+          final_output_rec.lt_claim_sbm_dt = lookup_rec.lt_claim_sbm_dt;
+          final_output_rec.lt_claim_filled_dt = lookup_rec.lt_claim_filled_dt;
+        end
+      end
+      else begin
+        final_output_rec.lt_claim_seq_nbr = lt_claim_seq_nbr;
+        final_output_rec.lt_claim_stat_id = lt_claim_stat_id;
+        final_output_rec.lt_claim_sbm_dt = lt_claim_sbm_dt;
+        final_output_rec.lt_claim_filled_dt = lt_claim_filled_dt;
+      end
+          
+    end
+    
+  end
+  
+  final_output_rec.is_equal = in.is_equal;
+  final_output_rec.drop_record = in.drop_record;
+  final_output_rec.matching__eff_dt = in.matching__eff_dt;
+  final_output_rec.dxf_src_dataset_id = in.dxf_src_dataset_id;
+  final_output_rec.dxf_src_rec_cnt = in.dxf_src_rec_cnt;
+  final_output_rec.dxf_src_file_name = in.dxf_src_file_name;
+  final_output_rec.dxf_hk_part1 = in.dxf_hk_part1;
+  final_output_rec.dxf_hk_part2 = in.dxf_hk_part2;
+  final_output_rec.dxf_sk = in.dxf_sk;
+  final_output_rec.claim_nbr = in.claim_nbr;
+  final_output_rec.cag_sk = in.cag_sk;
+  final_output_rec.mbr_sk = in.mbr_sk;
+  final_output_rec.mbr_adjud_sk = in.mbr_adjud_sk;
+  final_output_rec.phr_sk = in.phr_sk;
+  final_output_rec.pbr_sk = in.pbr_sk;
+  final_output_rec.prod_sk = in.prod_sk;
+  final_output_rec.clt_id = in.clt_id;
+  final_output_rec.carrier_id = in.carrier_id;
+  final_output_rec.account_id = in.account_id;
+  final_output_rec.employer_group_id = in.employer_group_id;
+  final_output_rec.mbr_id = in.mbr_id;
+  final_output_rec.src_env_sk = in.src_env_sk;
+  final_output_rec.ostd_paid_claim_seq_nbr = first_without_error((for(let clm in string_split(first_defined(final_output_rec.paid_claim_seq_nbr_list, ""), ",")) : 
+        if(not (first_defined(final_output_rec.rev_claim_seq_nbr_list, "") == clm || 
+           string_like(first_defined(final_output_rec.rev_claim_seq_nbr_list, ""), "%," + clm + ",%") == 1 || 
+           string_like(first_defined(final_output_rec.rev_claim_seq_nbr_list, ""), clm + ",%") == 1 || 
+           string_like(first_defined(final_output_rec.rev_claim_seq_nbr_list, ""), "%," + clm) == 1)) clm)[0], NULL);
+ 
+  out.* :: final_output_rec.*;
+end;

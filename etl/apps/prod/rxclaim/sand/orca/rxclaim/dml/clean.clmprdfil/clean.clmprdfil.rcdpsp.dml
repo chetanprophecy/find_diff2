@@ -1,0 +1,44 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  aop2nb /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCDPSP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  little endian integer(2)  aooinb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCDPSP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  little endian integer(2)  aor5n2 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm DUR/PPS Code Cntr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  aolast /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Reason for SrvCde"
+ BizComment:"Represents the suggested source code that should be generated and sent back to the pharmacy when DUR detects a conflict. :P. Valid values are: :P. DD = Drug-drug interactions :PC. DI = Drug incompatibility :PC. LD = Low dose alert :PC. HD = High dose alert :PC. ER = Overuse precaution :PC. LR = Underuse precaution :PC. MN = Insufficient duration alert :PC. MX = Excessive duration alert :PC. DA = Drug-allergy alert :PC. PR = Prior adverse drug reaction :PC. DC = Inferred drug disease precaution :PC. PA = Drug age precaution :PC. MC = Drug (actual) disease precaution :PC. PG = Drug pregnancy alert :PC. SX = Drug gender alert :PC. TD = Therapeutic duplication :PC. ID = Ingredient duplication :PC. OH = Alcohol precaution :PC. DS = Tobacco use precaution :PC. DF = Drug food interaction :PC. DL = Drug-lab conflict :PC. CH = Call help desk :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  aolbst /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Prof Service Code"
+ BizComment:"Pharmacist interaction when a conflict code has been identified. :P. Valid values are: :P. Blank = Not specified :PC. 00    = No interface :PC. M0    = MD interface :PC. P0    = Patient interaction :PC. R0    = Pharmacist reviewed :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  aolcst /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Result of Srv Cde"
+ BizComment:"Action taken by the pharmacist. :P. Valid values are: :P. 00 = Not specified :PC. 1A = Filled as is, false positive :PC. 1B = Filled prescription as is :PC. 1C = Filled, with different dose :PC. 1D = Filled, with different directions :PC. 1E = Filled, with different drug :PC. 1F = Filled, with different quantity :PC. 1G = Filled, with prescriber approval :PC. 2A = Prescription not filled :PC. 2B = Not filled, directions clarified :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  aoi1cj /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Level of Effort"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=2)  aoi2cj /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Co-Agent ID Qual"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=20)  aor7c4 /*CHAR(20) NOT NULL */ /*@
+BizName:"RCDPSP: DPS Sbm Co-Agent ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  claimsts /*CHAR(1) NOT NULL*/;
+end
+

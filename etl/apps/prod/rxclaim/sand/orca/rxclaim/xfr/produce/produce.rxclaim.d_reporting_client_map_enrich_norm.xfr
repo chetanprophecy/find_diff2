@@ -1,0 +1,32 @@
+/* This function is optional. */
+/*Number of records to output.  Either this function or finished() must be defined.*/
+
+let $[read_file(LOOKUP_FILE_DML)] d_cag_lkp_type=allocate_with_defaults();  
+out::length(in)=
+begin
+out :: first_defined(lookup_count("d_cag",string_lrtrim(in.carrier_id)),0);
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+d_cag_lkp_type=lookup_nth("d_cag",index);
+out.cag_carrier_id ::string_lrtrim(in.carrier_id);
+out.cag_account_id :: first_defined(d_cag_lkp_type.account_id,'-');
+out.cag_employer_group_id:: first_defined(d_cag_lkp_type.employer_group_id,'-');
+out.cag_sk:: d_cag_lkp_type.dxf_sk;
+out.*::in.*;
+end;
+
+/*out::finalize(in)=
+begin
+out.*::in.*;
+end;
+
+out::output_select(out)=
+begin
+out:: if (out.cag_account_id == "*") 1 
+else if (out.cag_account_id == out.account_id and out.cag_employer_group_id == "*") 1 
+else if (out.cag_account_id == out.account_id and out.cag_employer_group_id == out.employer_group_id) 1 
+else 0 ;
+end;*/

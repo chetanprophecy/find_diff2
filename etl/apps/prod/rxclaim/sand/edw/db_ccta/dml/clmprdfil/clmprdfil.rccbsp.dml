@@ -1,0 +1,28 @@
+record
+  decimal("\x01",0, maximum_length=16, sign_reserved) qnp2nb /*DECIMAL(15) NOT NULL*/ /*@
+BizName:"RCCBSP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qnoinb /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCBSP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qnven2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCBSP: COB Seq Nbr"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qnfqpp /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCBSP: CBS Seq Nbr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) qnujoc /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCBSP: CBS Sbm OthrPyrBenStgQual"
+ BizComment:"Blank = Not Specified   01 = Deductible - The amount of covered expenses        that must be incurred and paid by the insured        before benefits become payable by the insurer.   02 = Initial Benefit - The first monthly benefit, or the first        monthly benefit following any break in participation.   03 = Coverage Gap (donut hole) - Commonly referred        to as the "donut hole." Amount paid for Medicare        prescription drug coverage, with a PDP or an MAPD,        after the initial coverage limit and until the        total out of your pocket paid for covered        prescription drugs reaches a certain amount.   04 = Catastrophic Coverage - Once a total maximum is        reached, the insured pays a small amount for a        drug claim until the end of the calendar year.   50 = Not paid under Part D, paid under Part C benefit        (for MA-PD plan) - This qualifer applies to MA-PD plans        where the claim is submitted under the Part D BIN/PCN        The claim is NOT paid by the Part D plan benefit        The claim IS paid for by Part C benefit (MA portion of        the MA-PD)        When the qualifier value of 50 is used, the Benefit        Stage Amount should be populated with the total amount        (total of 505-F5 Patient Pay Amount, 509-F9 Total        Amount Paid, and 566-J5 Other Payer Amount Recognized)        of the claim   60 = Not paid under Part D, paid as or under a supplemental        benefit only - This qualifier applies to co-administered        plans, where the claim is submitted under the part D        BIN/PCN and where one pharmacy response is provided        This qualifier also applies to Primary claims        submitted under the Part D BIN/PCN when a supplemental        benefit is provided (drugs covered outside of the        allowable Part D benefit)        The claim is NOT paid by the Part D plan benefit        but is paid under the supplemental benefit.        When the qualifier value of 6  is used, the Benefit        Stage Count is 1 and no other benfit stage qualifier        should be used.        The field 394-MV Benefit Stage Amount should be        populated with the total amount (total of 505-F5        Patient Pay, 509-F9 Total Amount Paid, and 566-J5        Other Payer Amount Recognized) of the claim   70 = Part D drug not paid by Part D plan benefit, paid by        the beneficiary under plan-sponsored negotiated pricing        This qualifier applies to a plan sponsor that offers        negotiated pricing to the beneficiary when the Part D        drug is not covered by the plan(e.g. non-formulary,        quantity limit, etc.)        When the qualifier value of 70 is used, the Benefit Stage        Count is 1 and no other benefit stage qualifier should        be used.        The field 394-MV Benefit Stage Amount should be populated        with the total amount (total of 505-F5 Patient Pay Amount        5 9-F9 Total Amount Paid, and 566-J5 Other Payer Amount        Recognized) of the claim.   80 = Non-Part D drug not paid by Part D plan benefit, paid        by the beneficiary under plan-sponsored negotiated        pricing        This qualifier applies to a plan sponsor that offers        negotiated pricing to the beneficiary when the Part D        drug is not covered under Part D law (i.e. excluded        drugs).        When the qualifier value of 80 is used, the Benefit        Stage Count is 1 and no other benefit stage qualifier        should be used.        The field 394-MV Benefit Stage Amount should be        populated with the total amount (total of 505-F5        Patient Pay Amount, 509-F9 Total Amount Paid, and        566-J5 Other Payer Amount Recognized) of the claim."
+@*/;
+  decimal("\x01".2, maximum_length=10, sign_reserved) qnqfhz /*DECIMAL(8,2) NOT NULL*/ /*@
+BizName:"RCCBSP: CBS Sbm OthrPyrBenStgAmt"
+ BizComment:""
+@*/;
+  string(1) newline = "\n";
+end
+

@@ -1,0 +1,74 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_dmbr_elgt_mbr_eligty_adjud_sk = -1;
+let decimal("\x01",0) c_dmbr_elgt_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_dmbr_elgt_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_dmbr_elgt_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_dmbr_elgt_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=18) c_dmbr_elgt_mbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=6) c_dmbr_elgt_clt_prod_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=6) c_dmbr_elgt_clt_rdr_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_dmbr_elgt_pln_cd;
+let decimal("\x01",0) c_dmbr_elgt_src_env_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_cag_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_employer_group_id;
+
+
+
+/*   Default value   */
+c_dmbr_elgt_employer_group_id=fail_if_error(str_nk((if (sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.groupid)=='')))
+   in0.groupnbr
+ else
+   in0.groupid)));
+
+/*   Default value   */
+ctrx_d_cag_employer_group_id=fail_if_error(str_nk(in0.groupid));
+
+/*   Default value   */
+c_dmbr_elgt_mbr_id=fail_if_error(str_nk((if (sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.memberid)=='')))
+   in0.cardholder
+ else
+   in0.memberid)));
+
+/*   Default value   */
+c_dmbr_elgt_pln_cd=fail_if_error(str_nk(in0.mbrplan));
+
+/*   Default value   */
+c_dmbr_elgt_carrier_id=fail_if_error(str_nk(in0.carrierid));
+
+/*   Default value   */
+c_dmbr_elgt_clt_prod_cd=fail_if_error(str_nk(in0.mbrprodcde));
+
+/*   Default value   */
+ctrx_d_cag_account_id=fail_if_error(str_nk(in0.accountid));
+
+/*   Default value   */
+c_dmbr_elgt_clt_rdr_cd=fail_if_error(str_nk(in0.mbrridercd));
+
+/*   Default value   */
+c_dmbr_elgt_account_id=fail_if_error(str_nk(in0.accountid));
+
+/*   Default value   */
+ctrx_d_cag_carrier_id=fail_if_error(str_nk(in0.carrierid));
+
+  out0.c_dmbr_elgt.mbr_eligty_adjud_sk::c_dmbr_elgt_mbr_eligty_adjud_sk;
+  out0.c_dmbr_elgt.cag_sk::c_dmbr_elgt_cag_sk;
+  out0.c_dmbr_elgt.carrier_id::c_dmbr_elgt_carrier_id;
+  out0.c_dmbr_elgt.account_id::c_dmbr_elgt_account_id;
+  out0.c_dmbr_elgt.employer_group_id::c_dmbr_elgt_employer_group_id;
+  out0.c_dmbr_elgt.mbr_id::c_dmbr_elgt_mbr_id;
+  out0.c_dmbr_elgt.clt_prod_cd::c_dmbr_elgt_clt_prod_cd;
+  out0.c_dmbr_elgt.clt_rdr_cd::c_dmbr_elgt_clt_rdr_cd;
+  out0.c_dmbr_elgt.pln_cd::c_dmbr_elgt_pln_cd;
+  out0.c_dmbr_elgt.src_env_sk::c_dmbr_elgt_src_env_sk;
+  out0.ctrx_d_cag.carrier_id::ctrx_d_cag_carrier_id;
+  out0.ctrx_d_cag.account_id::ctrx_d_cag_account_id;
+  out0.ctrx_d_cag.employer_group_id::ctrx_d_cag_employer_group_id;
+  out0.*::in0.*;
+
+end;

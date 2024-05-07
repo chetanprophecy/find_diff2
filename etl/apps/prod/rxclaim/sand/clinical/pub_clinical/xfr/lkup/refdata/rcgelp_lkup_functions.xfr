@@ -1,0 +1,154 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/member_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/12/21  Mohd Shadab             Initial version
+
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_date_t BIZ_DT parameter;
+constant cli_string_t  PUB_CLINICAL_MFS     parameter;
+
+/*cli_string_t out :: get_grp_elig_lkup_path() inline =
+begin
+  out  :: this_partition_path(PUB_CLINICAL_MFS +'/grp_elig_icff.lkp.gz');
+end;
+
+cli_string_t out :: get_grp_elig_indx_path() inline =
+begin
+  out :: this_partition_path( PUB_CLINICAL_MFS +'/grp_elig_icff.idx');
+end;*/
+
+/*****************/
+/* group Elig Lookup */
+/*****************/
+type grp_elig_sec_addr_t=
+record
+hash_key_t                ntrl_key_hash;
+hash_key_t                cag_hash;
+/*cli_carrier_id_t          carrier_id                  /*VARCHAR(30) NOT NULL*/
+/*cli_carrier_acct_id_t     account_id                  /*VARCHAR(40) NOT NULL*/
+/*cli_employer_group_id_t   employer_group_id           /*VARCHAR(30) NOT NULL*/
+bc_lookup_address_type addr;
+end;
+
+type grp_elig_da_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  grp_elig_hash_lkup_t   RecordFormat()           = allocate_with_nulls(); 
+ 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 0; 
+  int                    load_once()              = 1; 
+  
+  int                    direct_addressed()       = 1; 
+end;
+
+type grp_elig_cag_seq_nbr_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  grp_elig_sec_addr_t            RecordFormat()   = allocate_with_nulls(); 
+  string('')             key()                    = {ntrl_key_hash}; 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 0; 
+  int                    load_once()              = 1; 
+  //int                    only_last_key_instance() = 1; 
+  int                    direct_addressed()       = 0; 
+end;
+
+type grp_elig_cag_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  grp_elig_sec_addr_t            RecordFormat()   = allocate_with_nulls(); 
+  string('')             key()                    = {cag_hash}; 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 0; 
+  int                    load_once()              = 1; 
+  //int                    only_last_key_instance() = 1; 
+  int                    direct_addressed()       = 0; 
+end;
+
+//define global variable to hold lookup template 
+
+let grp_elig_da_lukp_t            G_LKUP_GRP_ELIG               =allocate();
+let grp_elig_cag_seq_nbr_lukp_t  G_LKUP_GRP_ELIG_CAG_SEQ_NBR  =allocate();
+let grp_elig_cag_lukp_t          G_LKUP_GRP_ELIG_CAG          =allocate();
+
+//load function to load grp data file 
+grp_elig_da_lukp_t out :: load_grp_elig_da_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/grp_elig_icff.lkp.gz");
+end;
+
+
+//load function to load secondery file of grp direct address file having ntrl key hash as a key
+grp_elig_cag_seq_nbr_lukp_t out :: load_grp_elig_cag_seq_nbr_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/grp_elig_icff_ntrl_key_hash_addr_lkp.gz",this_partition_path($PUB_CLINICAL_MFS)+"/grp_elig_icff_ntrl_key_hash_addr_lkp.idx");
+end;
+
+grp_elig_cag_lukp_t out :: load_grp_elig_cag_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/grp_elig_icff_cag_addr.lkp.gz",this_partition_path($PUB_CLINICAL_MFS)+"/grp_elig_icff_cag_addr.lkp.idx");
+end;
+
+
+
+
+
+grp_elig_hash_lkup_t out :: get_grp_elig(ntrl_key_hash) inline =
+begin
+  //fetch ptnt_id for this cag
+  
+  let bc_lookup_address_type addr=allocate_with_defaults();
+ 
+  
+  if(lookup_not_loaded()==G_LKUP_GRP_ELIG.id)              G_LKUP_GRP_ELIG             =load_grp_elig_da_lukp();
+  if(lookup_not_loaded()==G_LKUP_GRP_ELIG_CAG_SEQ_NBR.id) G_LKUP_GRP_ELIG_CAG_SEQ_NBR=load_grp_elig_cag_seq_nbr_lukp();
+  
+  
+  addr=lookup(G_LKUP_GRP_ELIG_CAG_SEQ_NBR,ntrl_key_hash).addr;
+ 
+  out:: lookup_last(G_LKUP_GRP_ELIG,addr);
+end;
+
+
+
+
+
+
+type  grp_elig_vec_t = grp_elig_hash_lkup_t[];
+
+grp_elig_vec_t out :: get_grp_elig_vec(hash_key_t cag_hash) inline =
+begin
+  let bc_lookup_address_type addr=allocate_with_defaults();
+  let grp_elig_hash_lkup_t     grp_elig=allocate();
+  let grp_elig_vec_t grp_elig_vec=[vector];
+  
+  if(lookup_not_loaded()==G_LKUP_GRP_ELIG.id)              G_LKUP_GRP_ELIG             =load_grp_elig_da_lukp();
+  if(lookup_not_loaded()==G_LKUP_GRP_ELIG_CAG.id)         G_LKUP_GRP_ELIG_CAG        =load_grp_elig_cag_lukp();
+  
+  
+  addr=lookup(G_LKUP_GRP_ELIG_CAG,cag_hash).addr;
+  grp_elig= lookup(G_LKUP_GRP_ELIG, addr);
+  
+  
+  while ( is_defined(grp_elig) && (grp_elig.rcgelp.gel_thru_dt >= date_add_months(BIZ_DT,-6)) )
+  begin
+    grp_elig_vec = vector_append(grp_elig_vec, grp_elig);
+    grp_elig     = lookup_next(G_LKUP_GRP_ELIG);
+  end;
+  
+  out:: vector_sort_dedup_first(grp_elig_vec, {rcgelp.gel_status;rcgelp.gel_seq_nbr});
+
+  //out:: lookup_last(G_LKUP_GRP_ELIG,addr);
+end;

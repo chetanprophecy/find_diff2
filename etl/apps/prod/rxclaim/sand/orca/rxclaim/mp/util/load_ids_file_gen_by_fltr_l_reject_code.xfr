@@ -1,0 +1,9 @@
+/*Reformat operation*/
+			out::reformat(in)=
+			begin
+			out.ids_updt_uid::if(lookup_match_local("APR_099_L_REJECT_DUP_CHK",in.dxf_sk)) 'INC18720089' else in.ids_updt_uid;
+			out.ids_updt_dttm::if(lookup_match_local("APR_099_L_REJECT_DUP_CHK",in.dxf_sk)) (datetime("YYYYMMDDHH24MISS")) now() else in.ids_updt_dttm;
+			out.dxf_sk::if(lookup_match_local("APR_099_L_REJECT_DUP_CHK",in.dxf_sk)) lookup_local("APR_099_L_REJECT_DUP_CHK",in.dxf_sk).min_sk else in.dxf_sk;
+			out.rej_cd_sk::if(lookup_match_local("APR_099_L_REJECT_DUP_CHK",in.dxf_sk)) -1 else in.rej_cd_sk;
+			out.*::in.*;
+			end;

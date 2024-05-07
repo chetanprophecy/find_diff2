@@ -1,0 +1,8 @@
+!prototype|P|||$AI_PLAN/run/run.all.plan
+RUN_GROUP||||pcb_orx
+RUN_PLAN||||$AI_PLAN/run/run.all.orx_pcbfac.plan
+RUN_ID||||$[if(file_information(PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase("orx_fac") + "."+ AI_PHASE + ".run_id.dat").found) re_replace(read_file(PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase("orx_fac") + "."+ AI_PHASE + ".run_id.dat"), "\\\\n", "") else (string("")) (datetime("YYYYMMDDHH24MI")) now() + "04"; ]
+DATA_FILE_COMPRESS_FLAG||||1
+LOCAL_TRIGGER_FILE_DIRECTORY||||$[ AI_SERIAL_PENDING + "/plan_trigger/pcb/" ]
+IS_BACKFILL_RUN||||N
+RUN_ID_FILE||||$[PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase("orx_fac") + "."+ AI_PHASE + ".run_id.dat" ]

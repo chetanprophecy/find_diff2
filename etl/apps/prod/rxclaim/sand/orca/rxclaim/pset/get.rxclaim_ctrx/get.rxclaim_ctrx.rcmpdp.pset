@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcmpdp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmpdp                  a4abcd,a4aacd,a4accd,a4adcd,a4mmcd,a4can2,a4uut2,a4advn,a4bmdt,a4abtm,a4aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcmpdp')]
+WHERE_CLAUSE||||$[\n "WHERE A4BMDT >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n " AND A4BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)\n ] OPTIMIZE FOR ALL ROWS
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1
+ENABLE_DEFAULT_RULES||||True

@@ -1,0 +1,40 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_carrier_acct_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_carrier_acct_cli_in_t =
+record
+  //decimal("\x01",0)   carrier_acct_sk = NULL("") /*BIGINT*/;
+  //decimal("\x01",0)   carrier_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) legacy_src_env_id /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)   account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   carrier_nm = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   account_nm = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   acct_client_type_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   acct_client_type_desc = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   acct_product_type_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   acct_product_type_desc = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   acct_product_line_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   acct_product_line_desc = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   rec_sts = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   hm_dlvry_only_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   hm_dlvry_stat_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   rebates_only_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   rebates_stat_ind = NULL("") /*CHAR(1)*/;
+  //decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type d_carrier_acct_cli_in_vec_t = d_carrier_acct_cli_in_t[int];
+
+metadata type = d_carrier_acct_cli_in_t;
+

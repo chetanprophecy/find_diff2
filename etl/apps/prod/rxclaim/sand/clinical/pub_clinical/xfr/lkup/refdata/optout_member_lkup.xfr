@@ -1,0 +1,129 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/optout_member_lkup.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/11  Sarani Bhattacharya     Initial version, create lookup functions to know if a member has opt out for a product. 
+ *  
+ ******************************************************************************************************************************************/
+ 
+include "~$PUB_CLINICAL_DML/cli_cfg_types/optout_hist_cfg_t.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+
+ 
+ 
+ 
+constant cli_string_t  PUB_CLINICAL_MFS_LOOKUP               parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_TEMP                 parameter;
+constant cli_date_t    BIZ_DT                                parameter;
+constant cli_string_t  PUB_CLINICAL_BIN                      parameter;
+
+cli_string_t out :: optout_lkp_path() inline =  
+begin
+
+  out :: this_partition_path(PUB_CLINICAL_MFS_LOOKUP) + '/' + cli_string(BIZ_DT) + '/optout_hist_lkp.dat';
+end;
+
+type optout_product_by_cagm_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  optout_lkp_t                             RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {carrier_id; acct_id; emplyr_group_id ;member_id};
+ end;
+ 
+ let optout_product_by_cagm_lkup_t OPTOUT_PRODUCT_BY_CAGM = allocate_with_nulls();
+ 
+ optout_product_by_cagm_lkup_t out :: load_cpp_optout_product_by_cagm_lkup() inline =
+begin
+  if (OPTOUT_PRODUCT_BY_CAGM.id == lookup_not_loaded())
+    OPTOUT_PRODUCT_BY_CAGM = lookup_load(optout_lkp_path());
+  
+  out :: OPTOUT_PRODUCT_BY_CAGM;
+end;
+ 
+optout_lkp_t out :: get_optout_product(carrier_id,carrier_acct_id,employer_group_id,member_id) inline =
+begin
+  let lkup = load_cpp_optout_product_by_cagm_lkup();
+  out :: lookup(lkup,carrier_id,carrier_acct_id,employer_group_id,member_id);
+end;
+
+/******************* Load CPP Opt-out Config ************************/
+
+/*
+cli_string_t out :: optout_cfg_lkp_path() inline =
+begin
+  let cli_string_t lkp_path;
+  
+  if ( this_partition() == -1 )
+  lkp_path = PUB_CLINICAL_BIN + '/config/optout_product_type.dat';
+  else
+  lkp_path = this_partition_path(PUB_CLINICAL_MFS_TEMP) + '/optout_product_type.dat';
+  
+  out :: lkp_path;
+end;
+*/
+cli_string_t out :: optout_cfg_lkp_path() inline =
+begin
+
+  out :1: if (number_of_partitions() == 1) PUB_CLINICAL_BIN + '/config/optout_product_type.dat';
+  out  :: this_partition_path( PUB_CLINICAL_MFS_TEMP    + '/optout_product_type.dat' );
+end;
+
+
+  
+  
+type optout_cfg_t =
+record
+string(",")       product_type;
+string("\n")      optout_type;
+end;
+
+type optout_product_cfg_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  optout_cfg_t                             RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {product_type;optout_type};
+ end;
+ 
+ 
+let optout_product_cfg_lkup_t OPTOUT_PRODUCT_CONFIG = allocate_with_nulls();
+
+ optout_product_cfg_lkup_t out :: load_cpp_optout_product_confg_lkup() inline =
+begin
+  if (OPTOUT_PRODUCT_CONFIG.id == lookup_not_loaded())
+    OPTOUT_PRODUCT_CONFIG = lookup_load(optout_cfg_lkp_path());
+  
+  out :: OPTOUT_PRODUCT_CONFIG;
+end;
+
+
+int out :: match_cpp_optout_prod_and_optout_type(product_type,optout_type) inline =
+begin
+  let lkup = load_cpp_optout_product_confg_lkup();
+  out :: lookup_match(lkup,product_type,optout_type);
+end;
+
+type optout_product_typ_cfg_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  optout_cfg_t                             RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {product_type};
+ end;
+ 
+let optout_product_typ_cfg_lkup_t OPTOUT_PRODUCT_TYP_CONFIG = allocate_with_nulls();
+
+ optout_product_typ_cfg_lkup_t out :: load_cpp_optout_product_typ_confg_lkup() inline =
+begin
+  if (OPTOUT_PRODUCT_TYP_CONFIG.id == lookup_not_loaded())
+    OPTOUT_PRODUCT_TYP_CONFIG = lookup_load(optout_cfg_lkp_path());
+  
+  out :: OPTOUT_PRODUCT_TYP_CONFIG;
+end;
+
+int out :: match_cpp_optout_prod_type(product_type) inline =
+begin
+  let lkup = load_cpp_optout_product_typ_confg_lkup();
+  out :: lookup_match(lkup,product_type);
+end;

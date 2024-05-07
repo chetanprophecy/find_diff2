@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS_PROGRAM" description="This job will run to create multiple client carrier lists for different products with parallel or non dependent executions. For example we create &#xD;seperate list for diabetes and prospective analysis clients." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="B51E80C1-838E-44DA-C040-1FD007A48C93" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Init - Create Client Carrier List" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments_program" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_MP/enri_create_client_carrier_list.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-11-03Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

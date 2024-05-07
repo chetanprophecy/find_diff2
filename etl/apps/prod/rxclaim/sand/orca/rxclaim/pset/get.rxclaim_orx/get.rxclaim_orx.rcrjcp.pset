@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcrjcp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcrjcp                  dyp2nb,dyoinb,dyq3n2,dys8st,dys9st,dyt1st,dyt2st,dyt3st,dyt4st,dyt5st,dyt6st,dyt7st,dyt8st,newline\nclmprdfil_bk1 rctcdp                  newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcrjcp") + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rctcdp")]
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE RCRJCP.DYP2NB = RCTCDP.DQP2NB and \nRCRJCP.DYOINB = RCTCDP.DQOINB and rctcdp.dqc4dt >= " + \n     (((string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) + \n    " AND rctcdp.dqc4dt <= " + ((string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS')) END_CHANGES_TIME) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+DO_CLEAN||||1
+DO_SOURCE||||0

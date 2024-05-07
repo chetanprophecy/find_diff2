@@ -1,0 +1,25 @@
+// Usage: include "/~$PUB_DMF_DML/dmf_process_log.dml";
+
+type dmf_process_log_t =
+record
+  little endian integer(8) dmf_src_dataset_id; /*@ BizName:'DMF Source Dataset ID' BizComment:'Used as the process log surrogate key' @*/
+  string(unsigned integer(1)) run_id; /*@ BizName:'Run ID of the Job' @*/
+  string(unsigned integer(1)) task_name; /*@ BizName:'Task Name' BizComment:'Typically the PSet name.' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") task_start_dttm; /*@ BizName:'Task Start Date/Time' BizComment:'Will be the minimum when running in parallel.' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") task_end_dttm; /*@ BizName:'Task End Date/Time' BizComment:'Will be the maximum when running in parallel.' @*/
+  string(unsigned integer(1)) type_of_input; /*@ BizName:'Type of Input' BizComment:'One of: file, table, ftp' @*/
+  string(unsigned integer(1)) dataset_name; /*@ BizName:'Dataset Name' @*/
+  little endian integer(8) dmf_src_rec_cnt; /*@ BizName:'DMF Source Record Count' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") dataset_start_dttm; /*@ BizName:'Dataset Start Date/Time' BizComment:'Will be the minimum when running in parallel.' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") dataset_min_end_dttm; /*@ BizName:'Dataset Minimum End Date/Time' BizComment:'Min and Max can differ when running in parallel.' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") dataset_max_end_dttm; /*@ BizName:'Dataset Maximum End Date/Time' BizComment:'Min and Max can differ when running in parallel.' @*/
+  string(unsigned integer(1)) file_path = NULL(""); /*@ BizName:'File Path' BizComment:'Relative to the incoming directory.' @*/
+  little endian integer(8) file_size = NULL(-1); /*@ BizName:'File Size' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") file_modified_dttm = NULL(""); /*@ BizName:'File Modified Date/Time' BizComment:'Taken from the modified time in the filesystem.  This is useful for tracking arrival times.' @*/
+  string(unsigned integer(1)) ftp_file_path = NULL(""); /*@ BizName:'FTP File Path' @*/
+  little endian integer(8) ftp_file_size = NULL(-1); /*@ BizName:'FTP File Size' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") ftp_file_modified_dttm = NULL(""); /*@ BizName:'FTP File Modified Date/Time' @*/
+  string(little endian integer(2), maximum_length=16000) sql_script = NULL(""); /*@ BizName:'SQL Script' @*/
+end;
+
+metadata type = dmf_process_log_t;

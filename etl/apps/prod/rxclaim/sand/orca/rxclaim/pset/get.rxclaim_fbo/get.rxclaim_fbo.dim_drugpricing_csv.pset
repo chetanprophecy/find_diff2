@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.csv.interim.pset
+TARGET_NAME||||rxclaim_fbo.dim_drugpricing_csv
+RFMT_TRANSFORM||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.packageprice,[transform],in0.packageprice]\n  [out0.costtypecode,[transform],in0.costtypecode]\n  [out0.unitprice,[transform],in0.unitprice]\n  [out0.effectivedate,[transform],in0.effectivedate]\n  [out0.costtypecodesub,[transform],in0.costtypecodesub]\n  [out0.productid,[transform],in0.productid]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.packageprice,'packageprice',1,0]\n     [out0.costtypecode,'costtypecode',1,0]\n     [out0.unitprice,'unitprice',1,0]\n     [out0.effectivedate,'effectivedate',1,0]\n     [out0.costtypecodesub,'costtypecodesub',1,0]\n     [out0.productid,'productid',1,0]\n  ]\n  impacts:\n  [\n     [in0.costtypecodesub,'costtypecodesub',1,1]\n     [in0.costtypecode,'costtypecode',1,1]\n     [in0.packageprice,'packageprice',1,1]\n     [in0.unitprice,'unitprice',1,1]\n     [in0.effectivedate,'effectivedate',1,1]\n     [in0.productid,'productid',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string ("\\t") productid = fail_if_error(string_replace(string_lrtrim(in0.productid),"'",""));\nlet string ("\\t") costtypecodesub = fail_if_error(string_lrtrim(in0.costtypecodesub));\nlet string ("\\t") costtypecode = fail_if_error(string_lrtrim(in0.costtypecode));\nlet string ("\\t") packageprice = fail_if_error(string_lrtrim(in0.packageprice));\nlet string ("\\t") unitprice = fail_if_error(string_lrtrim(in0.unitprice));\nlet string ("\\n") effectivedate = fail_if_error(string_lrtrim(in0.effectivedate));\n\n\n\n  out0.productid::productid;\n  out0.costtypecodesub::costtypecodesub;\n  out0.costtypecode::costtypecode;\n  out0.packageprice::packageprice;\n  out0.unitprice::unitprice;\n  out0.effectivedate::effectivedate;\n  out0.*::in0.*;\n\nend;\n
+LOOKUP_FIELDS_KEY||||{}
+SOURCE_FILE_CLEAN_FLAG|$|||True
+INPUT_FILE_PATTERN||||Dim_DrugPricing_*.csv
+DO_LOOKUP||||0
+DO_SOURCE||||0
+DO_CLEAN||||1
+FIELD_SEPARATOR|$|||'\\t'

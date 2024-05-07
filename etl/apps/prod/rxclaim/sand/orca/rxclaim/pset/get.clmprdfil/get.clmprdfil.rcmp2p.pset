@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcmp2p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmp2p                  ababcd,abaacd,abaccd,abadcd,abavcd,abh5hs,abc2i1,abqohg,abqphg,abgrcd,abelnb,abdfhc,abdhhc,abdehc,abdghc,abcqhc,abweh8,abwfh8,abakvn,abc2dt,abadtm,abalvn,abadvn,abbmdt,ababtm,abaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rcmp2p.abaacd IS NOT NULL AND rcmp2p.abaacd NOT IN ("+ $CARRIER_EXCL +") AND rcmp2p.abbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \r\n    " AND rcmp2p.abbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rcmp2p.abaacd IS NOT NULL AND rcmp2p.abaacd NOT IN ("+ $CARRIER_EXCL +") AND rcmp2p.abbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \r\n    " AND rcmp2p.abbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

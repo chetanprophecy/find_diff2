@@ -1,0 +1,43 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/err/cli_err_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/29  Paul Thompson           Initial version
+ *  2017/01/08  Mohd Shadab             added code to handle NULL while concatenation 
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+cli_err_t out :: create_carrier_not_found_err(carrier_id) inline =
+begin
+  out.err_cd  :: 'RI-CARR-NOT-FOUND';
+  out.err_msg :: 'Carrier not found [' + carrier_id + ']';
+end;
+
+cli_err_t out :: create_carrier_acct_not_found_err(carrier_id, carrier_acct_id) inline =
+begin
+  out.err_cd  :: 'RI-CARR-ACCT-NOT-FOUND';
+  out.err_msg :: 'Carrier Account not found [' + first_defined(carrier_id,'NULL') + ', ' + first_defined(carrier_acct_id,'NULL') + ']';
+end;
+
+cli_err_t out :: pharmacy_not_found_err(pharmacy_alias_id) inline =
+begin
+  out.err_cd  :: 'RI-PHARMA-NOT-FOUND';
+  out.err_msg :: 'Pharmacy ID not found [' + pharmacy_alias_id + ']';
+end;
+
+
+cli_err_t out :: drug_product_not_found_err(product_id) inline =
+begin
+  out.err_cd  :: 'RI-DRUG-PROD-NOT-FOUND';
+  out.err_msg :: 'Drug Prod ID not found [' + product_id + ']';
+end;
+
+cli_err_t out :: prescriber_npi_or_dea_not_found_err(npi,dea) inline = 
+begin
+  out.err_cd  :: 'RI-PSBR-NPI-DEA-NOT-FOUND';
+  out.err_msg :: 'Prescriber Npi Dea not found [' + first_defined(npi,'NULL') +',' + first_defined(dea,'') +']';
+end;

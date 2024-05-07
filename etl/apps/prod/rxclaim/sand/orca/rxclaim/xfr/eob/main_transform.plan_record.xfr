@@ -1,0 +1,79 @@
+/*Reformat operation*/
+out::reformat(in)=
+begin
+  
+  // Lookup used in plan records
+
+  let lkp_d_product_lkp          = lookup("d_product_lkp",in.fmpd_prod_sk) ;
+  let lkp_l_eob_profile          = lookup("l_eob_profile_lkp",string_lrtrim(in.mbr.carrier_id),string_lrtrim(in.mbr.account_id),string_lrtrim(in.mbr.group_id));  
+  
+  let lkp_d_contract_pbp_ext_lkp = if(is_defined(in.fmpd_contract_pbp_sk))lookup("d_contract_pbp_extn_lkp",in.fmpd_contract_pbp_sk)
+                                     else lookup("d_contract_pbp_extn_madp_lkp",string_lrtrim(in.mbr.carrier_id),string_lrtrim(in.mbr.account_id),string_lrtrim(in.mbr.group_id));
+  
+  
+  //Variables used in Plan record
+  /*
+   let v_mpx1                    = if (string_index(sss,'¦') > 0)
+			            string_index(mpx3ih,'¦');
+			           else
+			            string_index(mpx3ih,'|');
+                             
+   let v_mpx2                    = if (string_index(mpx3ih,'¦') > 0)
+			           string_substring(mpx3ih, string_index(mpx3ih,'¦')+1,
+                                   math_abs(string_index(string_substring(mpx3ih, string_index(mpx3ih,'¦')+1, length(mpx3ih)),'¦')));
+			          else
+			           string_substring(mpx3ih, string_index(mpx3ih,'|')+1,
+                                   math_abs(string_index(string_substring(mpx3ih, string_index(mpx3ih,'¦')+1, length(mpx3ih)),'|')));
+                                 
+   let v_mpx3                    = if (string_index(mpx3ih,'¦') > 0)
+		                   string_substring(mpx3ih, string_index(mpx3ih,'¦')+(string_index
+                                   (string_substring(mpx3ih, string_index(mpx3ih,'¦')+1, length(mpx3ih)),'¦'),'¦')+1,length(mpx3ih));
+			          else 
+			           string_substring(mpx3ih, string_index(mpx3ih,'|')+(string_index
+                                   (string_substring(mpx3ih, string_index(mpx3ih,'|')+1, length(mpx3ih)),'|'),'|')+1,length(mpx3ih));
+  */
+   out.carrier_id::string_lrtrim(in.mbr.carrier_id);
+   out.mbr_id::string_lrtrim(in.mbr.member_id);
+   out.dmem_mbr_sk                                                         :: in.dmem_mbr_sk;
+   out.filename                                                            :: in.filename;                                                         //PD01
+   out.print_file.record_identifier                                        :: "PD";                                                                
+//   out.print_file.plan.*                                                   :: "";                                                                  
+   out.print_file.plan.carrier_id                                          :: in.mbr.carrier_id;                                                   //PD02
+   out.print_file.plan.account_id                                          :: in.mbr.account_id;                                                   //PD03
+   out.print_file.plan.group_id                                            :: in.mbr.group_id;                                                     //PD04
+   out.print_file.plan.eob_plan_name                                       :: first_defined(lkp_l_eob_profile.eob_plan_nm,"");                   //PD05                                                
+   out.print_file.plan.catastrophic_coverage_threshold_4050                :: first_defined(math_abs((decimal(""))(string(""))lkp_d_contract_pbp_ext_lkp.pdp_thrshld_ctstr_cvg),"");  //PD06   
+   out.print_file.plan.catastrophic_copayment_coinsurance_amounts_value_1  :: first_defined(lkp_d_contract_pbp_ext_lkp.pdp_copay_coinsur_val1,""); //PD07 
+   out.print_file.plan.catastrophic_copayment_coinsurance_amounts_value_2  :: first_defined(lkp_d_contract_pbp_ext_lkp.pdp_copay_coinsur_val2,""); //PD08 
+   out.print_file.plan.catastrophic_copayment_coinsurance_amounts_value_3  :: first_defined(lkp_d_contract_pbp_ext_lkp.pdp_copay_coinsur_val3,""); //PD09 
+   out.print_file.plan.customer_service_toll_free_number                   :: first_defined(string_lrtrim(lkp_l_eob_profile.cust_svc_phone_num),"");              //PD10
+   out.print_file.plan.customer_service_ttytdd                             :: first_defined(string_lrtrim(lkp_l_eob_profile.tty_tdd),"");                         //PD11
+   out.print_file.plan.website                                             :: first_defined(lkp_d_contract_pbp_ext_lkp.pdp_website_addr,"");       //PD12
+//   out.print_file.plan.customer_service_hours_of_operation                 :: first_defined(lkp_l_eob_profile.hours_oper,"");                      //PD13
+   out.print_file.plan.customer_service_hours_of_operation                 :: if(in.mbr.language_indicator=="SPA")first_defined(lkp_l_eob_profile.spanish_hours_oper,"") else first_defined(lkp_l_eob_profile.hours_oper,""); //PD13
+   out.print_file.plan.mail_service_toll_free_number                       :: first_defined(string_lrtrim(lkp_l_eob_profile.ms_phone_num),"");                    //PD14
+   out.print_file.plan.mail_service_ttytdd                                 :: first_defined(lkp_l_eob_profile.ms_tty_tdd,"");                      //PD15 
+   out.print_file.plan.mail_service_hours_of_operation                     :: first_defined(lkp_l_eob_profile.ms_hours_oper,"");                   //PD16
+   out.print_file.plan.duncan_logo_id                                      :: first_defined(lkp_l_eob_profile.logo_cd,"");                        //PD17 
+//   out.print_file.plan.duncan_logo_id                                      :: "";
+   out.print_file.plan.return_address_line_1                               :: first_defined(lkp_l_eob_profile.return_addr1,"");                    //PD18
+   out.print_file.plan.return_address_city                                 :: first_defined(lkp_l_eob_profile.return_city,"");                     //PD19
+   out.print_file.plan.return_address_state                                :: first_defined(lkp_l_eob_profile.return_st,"");                    //PD20
+   out.print_file.plan.return_address_zip                                  :: first_defined(string_substring(lkp_l_eob_profile.return_zip_cd,1,5),"");//PD21
+   out.print_file.plan.return_address_zip_4                                :: first_defined(string_substring(lkp_l_eob_profile.return_zip_cd,7,4),"");//PD22
+   out.print_file.plan.coverage_in_the_gap_indicator                       :: first_defined(lkp_l_eob_profile.covrg_in_gap,"");                 //PD23  
+   out.print_file.plan.medicare_plan_type_                                 :: first_defined(lkp_d_contract_pbp_ext_lkp.pdp_med_pln_type,"");       //PD24
+   out.print_file.plan.contract_id                                         :: first_defined(lkp_d_contract_pbp_ext_lkp.contract_no,"");            //PD25
+   out.print_file.plan.pbp_id                                              :: first_defined(lkp_d_contract_pbp_ext_lkp.pbp_id,"");                 //PD26
+   out.print_file.plan.message_code                                        :: "";                                                                  //PD27
+   out.print_file.plan.plan_type                                           :: first_defined(lkp_l_eob_profile.plan_typ_cd,"");                       //PD28
+   out.print_file.plan.return_address_line_2                               :: first_defined(lkp_l_eob_profile.return_addr2,"");                    //PD29
+   out.print_file.plan.deductible_amount                                   :: first_defined((string(""))math_abs((decimal(""))lkp_l_eob_profile.split_tier_annual_amt),"0");    //PD30
+   out.print_file.plan.split_tier_indicator                                :: first_defined(lkp_l_eob_profile.split_tier_ind,"") ;                 //PD31
+//   out.print_file.plan.suppress_section_2_indicator                        :: first_defined(lkp_l_eob_profile.covrg_gap_suppress_ind,"0") ;      //PD32 
+   out.print_file.plan.suppress_section_2_indicator                        :: if((is_defined(in.mbr.member_subsidy_level_indicator) && in.mbr.member_subsidy_level_indicator member[vector "G3","3"]) or (is_defined(in.v_md_mmd_copay_category) && in.v_md_mmd_copay_category=="3"))"1" else if(is_defined(lkp_l_eob_profile.covrg_gap_suppress_ind) && lkp_l_eob_profile.covrg_gap_suppress_ind==1)"1" else "0";  //PD32
+   out.print_file.plan.troop_amount                                        :: first_defined(in.fclm_troop_amt,"");                                              //PD33
+   out.print_file.plan.segment_id                                          :: first_defined(string_substring(lkp_d_contract_pbp_ext_lkp.pdp_segment_id,1,3),""); //PD34
+   out.print_file.plan.filler_for_13_bytes                                 :: "";                                                                               //PD35
+   
+ end;

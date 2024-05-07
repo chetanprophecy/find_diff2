@@ -1,0 +1,71 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/mmd_mbr_elig_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/11  Santosh Nalmas          Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/enum_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_date_t BIZ_DT parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_TEMP     parameter;
+
+/*cli_string_t out :: get_mbr_elig_lkup_path() inline =
+begin
+  out  :: this_partition_path(PUB_CLINICAL_MFS +'/mbr_elig_icff.lkp.gz');
+end;
+
+cli_string_t out :: get_mbr_elig_indx_path() inline =
+begin
+  out :: this_partition_path( PUB_CLINICAL_MFS +'/mbr_elig_icff.idx');
+end;*/
+
+/*****************/
+/* MMD Member Elig Lookup */
+/*****************/
+
+
+
+type mmd_mbr_elig_cagm_lukp_t =
+record 
+  lookup_identifier_type id                                      = -1; 
+  mmd_mbr_elig_t                        RecordFormat()           = allocate_with_nulls(); 
+  string('')                            key()                    = {cagm_hash}; 
+  int                                   keep_on_disk()           = 1; 
+  int                                   block_compressed()       = 1; 
+  int                                   cache()                  = 0; 
+  int                                   load_once()              = 1; 
+  int                                   only_last_key_instance() = 0; 
+  int                                   direct_addressed()       = 0; 
+end;
+
+//define global variable to hold lookup template 
+
+let mmd_mbr_elig_cagm_lukp_t          G_LKUP_MMD_MBR_ELIG_CAGM          =allocate();
+
+//load function to load mbr data file 
+mmd_mbr_elig_cagm_lukp_t out :: load_mmd_mbr_elig_cagm_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path(PUB_CLINICAL_MFS_TEMP) + "/" + cli_string(BIZ_DT) + "/mmd_mbr_elig_latest_contract_icff.lkp.gz",this_partition_path(PUB_CLINICAL_MFS_TEMP) + "/" + cli_string(BIZ_DT) + "/mmd_mbr_elig_latest_contract_icff.lkp.idx");
+end;
+
+
+
+
+
+mmd_mbr_elig_t out :: get_mmd_mbr_elig(cagm_hash) inline =
+begin
+  //fetch ptnt_id for this cagm
+  
+  let bc_lookup_address_type addr=allocate_with_defaults();
+ 
+ 
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG_CAGM.id)     G_LKUP_MMD_MBR_ELIG_CAGM    =load_mmd_mbr_elig_cagm_lukp();
+ 
+  out:: lookup_last(G_LKUP_MMD_MBR_ELIG_CAGM,cagm_hash);
+end;

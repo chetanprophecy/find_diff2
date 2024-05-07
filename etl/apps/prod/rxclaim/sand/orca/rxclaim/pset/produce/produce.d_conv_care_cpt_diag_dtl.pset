@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim/clean.rxclaim.d_conv_care_cpt_diag_dtl.$RUN_ID.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.d_conv_care_cpt_diag_dtl.dml
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.d_conv_care_cpt_diag_dtl_enrich.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.rxclaim/clean.rxclaim.d_conv_care_cpt_diag_dtl_enrich.$RUN_ID.dat.gz
+USE_NORM||||True
+NORM_XFR||||$AI_XFR/produce/produce.d_conv_care_cpt_diag_dtl_norm.xfr
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+SORT_KEY||||{cpt_code;schedule;service_name;diagnosis_code;diagnosis_dependant;dx_tab}
+USE_DEDUP||||True

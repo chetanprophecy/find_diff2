@@ -1,0 +1,14 @@
+for lines in `cat $1`
+do
+m_cp //apsrp7996/${lines} ${lines}
+ec=`echo $?`
+new_host_size=$(m_ls -l ${lines} | awk '{print $5}'| sed 's/,//g')
+old_host_size=$(m_ls -l //apsrp7996${lines} | awk '{print $5}'| sed 's/,//g')
+if [ $new_host_size -ne $old_host_size ] || [ $ec -ne 0 ]
+then
+echo $lines >> $AI_SERIAL_TEMP/${1}_copy_file_failed.dat
+echo "`date`,$lines,$new_host_size,$old_host_size,$ec,Failed"
+else
+echo "`date`,$lines,$new_host_size,$old_host_size,$ec,Success"
+fi
+done

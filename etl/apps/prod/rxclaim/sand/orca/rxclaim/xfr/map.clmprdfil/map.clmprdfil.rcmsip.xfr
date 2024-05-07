@@ -1,0 +1,43 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+let string("") v_var1 = if(string_length((string(""))(decimal(""))in.l4hphg)==6) string_concat("0",string_substring((string(""))(decimal(""))in.l4hphg,1,6)) else string_substring((string(""))(decimal(""))in.l4hphg,1,7);
+let string ("") v_var2 = if(string_lrtrim(string_substring((string(""))(decimal(""))in.l4hphg,1,1))=='1') 
+                                string_concat("20",string_substring((string(""))(decimal(""))in.l4hphg,2,2),"-",string_substring((string(""))(decimal(""))in.l4hphg,4,2),"-",string_substring((string(""))(decimal(""))in.l4hphg,6,2)) 
+                                else string_concat("19",string_substring((string(""))(decimal(""))in.l4hphg,2,2),"-",string_substring((string(""))(decimal(""))in.l4hphg,4,2),"-",string_substring((string(""))(decimal(""))in.l4hphg,6,2));
+let string("") v_msi_from_date_dte = string_concat(v_var2," ","00:00:00");
+
+let string("") v_var4 = if(string_length((string(""))(decimal(""))in.l4hqhg)==6) string_concat("0",string_substring((string(""))(decimal(""))in.l4hqhg,1,6)) else string_substring((string(""))(decimal(""))in.l4hqhg,1,7);
+let string ("") v_var5 = if(string_lrtrim(string_substring((string(""))(decimal(""))in.l4hqhg,1,1))=='1') 
+                                string_concat("20",string_substring((string(""))(decimal(""))in.l4hqhg,2,2),"-",string_substring((string(""))(decimal(""))in.l4hqhg,4,2),"-",string_substring((string(""))(decimal(""))in.l4hqhg,6,2)) 
+                                else string_concat("19",string_substring((string(""))(decimal(""))in.l4hqhg,2,2),"-",string_substring((string(""))(decimal(""))in.l4hqhg,4,2),"-",string_substring((string(""))(decimal(""))in.l4hqhg,6,2));
+let string("") v_msi_thru_date_dte = string_concat(v_var5," ","00:00:00");
+
+  out.member_id                  :: in.l4abcd;
+  out.carrier_id                 :: in.l4aacd;
+  out.account_id                 :: in.l4accd;
+  out.group_id                   :: in.l4adcd;
+  out.msi_seq_number             :: in.l4rlhr;
+  out.msi_status                 :: in.l4k4h8;
+  out.msi_from_date_int          :: in.l4hphg;
+  out.msi_from_date_dte          :: v_msi_from_date_dte;
+  out.msi_thru_date_int          :: in.l4hqhg;
+  out.msi_thru_date_dte          :: v_msi_thru_date_dte;
+  out.msi_supplemental_id_type   :: in.l4k3h8;
+  out.msi_supplemental_id        :: in.l4w0hb;
+  out.msi_text                   :: in.l4w1ig;
+  out.source_add_username        :: in.l4akvn;
+  out.source_add_date            :: in.l4c2dt;
+  out.source_add_time            :: in.l4adtm;
+  out.source_add_program_name    :: in.l4alvn;
+  out.source_chg_username        :: in.l4advn;
+  out.source_chg_date            :: in.l4bmdt;
+  out.source_chg_time            :: in.l4abtm;
+  out.source_chg_program_name    :: in.l4aevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

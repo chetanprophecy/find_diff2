@@ -1,0 +1,33 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.rxs_rxclaim_nbr             :: in.asp2nb;
+  out.tcd_claim_seq_nbr_999s_comp :: 1000-in.asoinb;
+  out.mdh_file_id                 :: in.mipwih;
+  out.pdp_contract_id             :: in.mivwhc;
+  out.pdp_pbp_id                  :: in.mivyhc;
+  out.mdd_sequence_number         :: in.mif0hs;
+  out.mdi_action_log_seq          :: in.micdal;
+  out.mdi_action_code             :: in.mib9hn;
+  out.mdi_action_code_notes       :: in.mibuir;
+  out.add_user_name               :: in.miakvn;
+  out.add_date                    :: if(string_substring((string(""))(decimal("")) in.mic2dt,1,1)=='1') (date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mic2dt) else (date("YYYY-MM-DD")) '9999-12-31';
+  out.add_time                    :: if(is_null(in.miadtm)) (datetime("HH24MISS"))'000000' else (datetime("HH24MISS")) string_concat(if(string_length((string(""))(decimal(""))in.miadtm)==5)'0' else '',(string(""))(decimal("")) in.miadtm);
+  out.add_program_name            :: in.mialvn;
+/*  out.rxtrack_add_user_name       :: in.Job Name;
+  out.rxtrack_add_date            :: in.CurrentDate();
+  out.rxtrack_add_time            :: in.CurrentTime();
+  out.rxtrack_add_program_name    :: in.Job Name;
+  out.rxtrack_chg_user_name       :: in.Job Name;
+  out.rxtrack_chg_date            :: in.CurrentDate();
+  out.rxtrack_chg_time            :: in.CurrentTime();
+  out.rxtrack_chg_program_name    :: in.Job Name;*/
+  out.rxt_src_envrt_id 		  :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm 		  :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm 		  :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid 		  :: 'app_orca_rxclaim';
+  out.rxt_create_run_id 	  :: (decimal(""))${RUN_TIMESTAMP};
+  out.rxt_rec_stat_cd 		  :: '';
+  out.* 			  :: in.*;
+end;
+

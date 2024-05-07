@@ -1,0 +1,76 @@
+/* Do Not Edit.  This file is generated automatically by combining
+ * "$PUB_DXF_DML/split_header.type2.dml", "$AI_DML/dxf_header.dml", any "$ADDITIONAL_FIELDS_DML",
+ * and "/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.d_group_accumulator_schedule.dml".
+ * Changing the target DML and re-running "$AI_PSET/setup.ilm/setup.ilm.orx_d_group_accumulator_schedule.pset" will update this file.
+ */
+
+type opt_nk_ids_common_d_cag_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_carrier_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_d_deductible_schedule_control_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) ded_sched_nm = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0) src_env_sk = NULL /*BIGINT NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_date_t =
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type split_ids_rxclaim_d_group_accumulator_schedule_t =
+record
+  decimal(1) is_equal = 0;
+  decimal(1) drop_record = 0;
+  datetime("YYYY-MM-DD HH24:MI:SS") matching__eff_dt = NULL("");
+  little endian integer(8)  dxf_src_dataset_id =  0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8)  dxf_src_rec_cnt =  0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2)  dxf_src_sys_id =  0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1))  dxf_src_file_name =  ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  unsigned integer(8)    dxf_hk_part1 =    0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)    dxf_hk_part2 =    0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)    dxf_sk =    0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)     group_accum_sched_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     carrier_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)     account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     group_sched_id = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0)     gas_seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)     gas_status = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)     gas_eff_dt_sk = NULL("") /*BIGINT*/;
+  date("YYYYMMDD")("\x01")     gas_eff_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     gas_thru_dt_sk = NULL("") /*BIGINT*/;
+  date("YYYYMMDD")("\x01")     gas_thru_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     ded_sched_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     ded_sched_nm = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     opp_sched_nm = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     ben_sched_nm = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     lftm_ben_max_sched = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     ded_accum_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     opp_accum_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     ben_accum_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     lif_accum_cd = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0)     src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+metadata type =
+record
+  split_ids_rxclaim_d_group_accumulator_schedule_t d_grp_acc_sc;
+  opt_nk_ids_common_d_cag_t d_cag;
+  opt_nk_ids_common_d_carrier_t d_carrier;
+  opt_nk_ids_rxclaim_d_deductible_schedule_control_t d_deductible_schedule_control;
+  opt_nk_ids_common_d_date_t d_date;
+  opt_nk_ids_common_d_date_t d_dt;
+  string(1)   newline = "\n";
+end;

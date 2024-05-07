@@ -1,0 +1,116 @@
+// Usage: include "/~$PUB_DMF_XFR/pset.xfr";
+// This file is used in PDL via AB_DML_DEFS.
+
+// Tests:
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'get_load_pset("foo.bar")')
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'read_pset("/~$AI_DML/../pset/map.pset")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g')
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'get_param_value(read_pset("/~$AI_DML/../pset/map.pset"), "AB_DML_DEFS")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g')
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'read_pset("/~$AI_DML/../pset/map.pset")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g')
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'get_nk("tucs.name")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g')
+// (. ./ab* .; AB_INCLUDE_FILES=$PUB_DMF_XFR/pset.xfr m_eval 'get_sk("tucs.name")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g')
+include "/~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+/* Given a fully qualified Table Name, returns the PSet Name for a Load pset.
+Returns NULL if the file is not found. */
+out :: get_load_pset(table_name) =
+begin
+  let table = string_downcase(table_name);
+  let system = re_replace(table, "[.].*", "");
+  out :: "/~$AI_DML/../pset/" +  // We'd rather use AI_PSET, but it is not exported by default.
+    "load." + system + "/" +
+    "load." + table + ".pset";
+end;
+
+
+/* Given a PSet File, returns the PSet Info from reading it.
+Returns NULL if the file is not found. */
+out :: read_pset(pset_file) =
+begin
+  out :: null_if_error(pset_info(read_file(pset_file)));
+end;
+
+
+/* Returns the value of the given Parameter from a PSet Info.
+Returns "" if the the parameter is not found. */
+out :: get_param_value(pset_info, param_name) =
+begin
+  let value_vec = for ( let p in pset_info.parameters ) :
+    if ( p.name == param_name )
+      p.value;
+  out :1: if ( length_of(value_vec) > 0 )
+    value_vec[0];
+  out :: "";
+end;
+
+
+/* Returns the Natural Key (in {key1;key2;...} form) for a given fully qualified Table Name.
+Returns "" if the key is not found. */
+out :: get_nk(table_name) =
+begin
+  let pset_info = read_pset(get_load_pset(table_name));
+  out :1: if ( is_defined(pset_info) )
+    get_param_value(pset_info, "NATURAL_KEY");
+  out :: "";
+end;
+
+
+/* Returns the Primary Surrogate Key (as a plain field name) for a given fully qualified Table Name.
+Returns "" if the key is not found. */
+out :: get_sk(table_name) =
+begin
+  let pset_info = read_pset(get_load_pset(table_name));
+  out :1: if ( is_defined(pset_info) )
+    re_replace(
+      get_param_value(pset_info, "SURROGATE_KEY"),
+      "[{} ]", "");
+  out :: "";
+end;
+
+
+/* Returns the Natural Key (in {key1;key2;...} form) for a given fully qualified Table Name from ids file.
+Returns "" if the key is not found. */
+out :: get_nk_ids(table_name) =
+begin
+  let clean_param = re_replace(read_file("/~$PUB_DXF_META/ids_table_properties.dat"), "(?m-s)[ \t]*#.*", ""); // Remove comments.
+  let line_vec = re_split_no_empty(clean_param, "\r*\n");
+  out :1: string_join(for ( let line in line_vec ) : if ( string_split(line, "|")[0] == table_name ) string_split(line, "|")[4], "");
+  out :: "";
+end;
+
+
+/* Returns the Surrogate Key (in {key1;key2;...} form) for a given fully qualified Table Name from ids file.
+Returns "" if the key is not found. */
+out :: get_sk_ids(table_name) =
+begin
+  /*let clean_param = re_replace(read_file("/~$PUB_DXF_META/ids_table_properties.dat"), "(?m-s)[ \t]*#.*", ""); // Remove comments.
+  let line_vec = re_split_no_empty(clean_param, "\r*\n");
+  out :1: re_replace(string_join(for ( let line in line_vec ) : if ( string_split(line, "|")[0] == table_name ) string_split(line, "|")[3], ""), "[{} ]", "");
+  out :: "";*/
+  out :1: get_ids_table_pk(table_name);
+  out :: "";
+/*
+let sandbox_name = string_split_no_empty(this_pset_dir, "/")[length_of(string_split_no_empty(this_pset_dir, "/")) - 2];
+let distribution_pset_dir = string_replace(this_pset_dir, sandbox_name, "distribution");
+let string("") pset = "";
+let decimal("") xfr_index = -1;
+let string("") xfr = "";
+let parameter_info_type[int] parameters = [vector];
+let string("") local_name = "";
+let string("") psk = "";
+
+pset = distribution_pset_dir + "/combine." + sandbox_name + "/combine." + sandbox_name + "." + string_split(table_name, ".")[1] + ".pset";
+
+if(file_information(pset).found) begin
+parameters = pset_info(read_file(pset)).parameters;
+xfr_index = vector_search(parameters, [record name "MAPPING_XFR" value "" interpretation "pdl" value_in_file 0 interpret_file_contents 0 overridable 1], {name});
+xfr = parameters[xfr_index].value;
+for(let local in transform_info(xfr).locals) local_name = if(local.init == "fail_if_error(in0.dxf_sk)") local.name else local_name;
+for(let rule in transform_info(xfr).rules) psk = if(rule.rhs == local_name) string_split(rule.lhs, ".")[1] else psk;
+if(psk == "") force_error("ERROR: No mapping found for dxf sk in distribute combine pset of the table " + table_name);
+end
+else force_error("ERROR: Distribute combine pset not found...");
+
+out :1: psk;
+out :: "";
+*/
+end;

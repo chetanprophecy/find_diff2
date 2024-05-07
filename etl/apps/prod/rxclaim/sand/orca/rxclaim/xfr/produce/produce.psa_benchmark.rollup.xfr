@@ -1,0 +1,26 @@
+out::rollup(in)=
+begin
+  let decimal(",") v_sum_total_ingredient_cost = sum(in.ingredient_cost);
+  let decimal(",") v_sum_total_rx_count = sum(in.rx_count);
+  let decimal(",") v_min_avg_pmpm = min(in.average_pmpm);
+  let decimal(",") v_sum_day_supply = sum(in.day_supply);
+   
+  out.request_id :: in.request_id;
+  out.client_id :: in.ent_client_id;
+  out.total_ingredient_cost :: v_sum_total_ingredient_cost;
+  out.total_rxs :: v_sum_total_rx_count ;
+  out.ingredient_cost_pmpm :: v_sum_total_ingredient_cost/v_min_avg_pmpm;
+  out.days_supply_pmpm :: v_sum_day_supply/v_min_avg_pmpm;
+  out.ingredient_cost_per_day :: v_sum_total_ingredient_cost/v_sum_day_supply;
+  out.generic_dispensing_rate:: first_defined(sum(in.rx_count,in.gnrc_mdspn_ind member[vector 'Y','X']),0)/v_sum_total_rx_count;
+  out.mail_percent :: first_defined(sum(in.rx_count,in.mail_retail_flg != 'M' and in.spclty_prod_corp_ind != 'Y'),0)/v_sum_total_rx_count;
+  out.retail_90_percent :: first_defined(sum(in.rx_count,in.mail_retail_flg != 'M' and in.spclty_prod_corp_ind != 'Y' and in.day_supply >= 84),0)/v_sum_total_rx_count;
+  out.percent_specialty_ingredient_cost :: first_defined(sum(in.ingredient_cost, in.spclty_prod_corp_ind == 'Y'),0)/sum(in.ingredient_cost);
+  out.membership_count :: min(in.membership_count);
+  out.month_count :: min(in.month_count);
+  out.average_pmpm :: min(in.average_pmpm);
+  out.end_date :: min(in.end_date);
+  out.start_date :: min(in.start_date);
+  out.* :: in.*;
+ 
+end;

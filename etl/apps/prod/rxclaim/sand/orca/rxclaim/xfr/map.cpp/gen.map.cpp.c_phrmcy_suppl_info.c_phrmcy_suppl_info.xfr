@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59e5d803_20aa_6 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.phr_spl_info.src_env_sk,[transform],]
+  [out0.phr_spl_info.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.phr_spl_info.cpp_created_by,[passthrough],in0.created_by]
+  [out0.phr_spl_info.cpp_phrmcy_suppl_info_sk,[transform],]
+  [out0.phr_spl_info.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.phr_spl_info.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.phr_spl_info.cpp_phrmcy_sk,[transform],in0.phrmcy_id,
+     'lookup("c_phrmcy").dxf_sk']
+  [out0.phr_spl_info.phrmcy_suppl_exp_dt,[passthrough],in0.phrmcy_suppl_exp_dt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phr_spl_info.src_env_sk,'phr_spl_info.src_env_sk',1,0]
+     [out0.phr_spl_info.cpp_updated_by,'phr_spl_info.cpp_updated_by',1,0]
+     [out0.phr_spl_info.phrmcy_suppl_type,'phr_spl_info.phrmcy_suppl_type',1,0]
+     [out0.phr_spl_info.cpp_created_by,'phr_spl_info.cpp_created_by',1,0]
+     [out0.phr_spl_info.cpp_phrmcy_suppl_info_sk,'phr_spl_info.cpp_phrmcy_suppl_info_sk',1,0]
+     [out0.phr_spl_info.phrmcy_st_cd,'phr_spl_info.phrmcy_st_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.phr_spl_info.cpp_create_ts,'phr_spl_info.cpp_create_ts',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.phr_spl_info.cpp_update_ts,'phr_spl_info.cpp_update_ts',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phr_spl_info.cpp_phrmcy_sk,'phr_spl_info.cpp_phrmcy_sk',1,0]
+     [out0.phr_spl_info.phrmcy_id,'phr_spl_info.phrmcy_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.phr_spl_info.phrmcy_suppl_exp_dt,'phr_spl_info.phrmcy_suppl_exp_dt',1,0]
+     [out0.phr_spl_info.phrmcy_suppl_id,'phr_spl_info.phrmcy_suppl_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.phrmcy_st_cd,'phrmcy_st_cd',1,1]
+     [in0.phrmcy_suppl_exp_dt,'phrmcy_suppl_exp_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.phrmcy_suppl_id,'phrmcy_suppl_id',1,1]
+     [in0.phrmcy_suppl_type,'phrmcy_suppl_type',1,1]
+     [in0.phrmcy_id,'phrmcy_id',2,2]
+     ['lookup("c_phrmcy").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) phr_spl_info_cpp_phrmcy_suppl_info_sk = -1;
+let utf8 string("\x01", maximum_length=80) phr_spl_info_phrmcy_suppl_type = fail_if_error(in0.phrmcy_suppl_type);
+let utf8 string("\x01", maximum_length=80) phr_spl_info_phrmcy_suppl_id = fail_if_error(in0.phrmcy_suppl_id);
+let utf8 string("\x01", maximum_length=48) phr_spl_info_phrmcy_id = fail_if_error(in0.phrmcy_id);
+let decimal("\x01",0) phr_spl_info_cpp_phrmcy_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=2) phr_spl_info_phrmcy_st_cd = fail_if_error(in0.phrmcy_st_cd);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") phr_spl_info_phrmcy_suppl_exp_dt = fail_if_error(in0.phrmcy_suppl_exp_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") phr_spl_info_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) phr_spl_info_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") phr_spl_info_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) phr_spl_info_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) phr_spl_info_src_env_sk = 710;
+
+
+
+/*   Default value   */
+phr_spl_info_cpp_phrmcy_sk=fail_if_error(first_defined(lookup("c_phrmcy",in0.phrmcy_id).dxf_sk,-1));
+
+  out0.phr_spl_info.cpp_phrmcy_suppl_info_sk::phr_spl_info_cpp_phrmcy_suppl_info_sk;
+  out0.phr_spl_info.phrmcy_suppl_type::phr_spl_info_phrmcy_suppl_type;
+  out0.phr_spl_info.phrmcy_suppl_id::phr_spl_info_phrmcy_suppl_id;
+  out0.phr_spl_info.phrmcy_id::phr_spl_info_phrmcy_id;
+  out0.phr_spl_info.cpp_phrmcy_sk::phr_spl_info_cpp_phrmcy_sk;
+  out0.phr_spl_info.phrmcy_st_cd::phr_spl_info_phrmcy_st_cd;
+  out0.phr_spl_info.phrmcy_suppl_exp_dt::phr_spl_info_phrmcy_suppl_exp_dt;
+  out0.phr_spl_info.cpp_update_ts::phr_spl_info_cpp_update_ts;
+  out0.phr_spl_info.cpp_updated_by::phr_spl_info_cpp_updated_by;
+  out0.phr_spl_info.cpp_create_ts::phr_spl_info_cpp_create_ts;
+  out0.phr_spl_info.cpp_created_by::phr_spl_info_cpp_created_by;
+  out0.phr_spl_info.src_env_sk::phr_spl_info_src_env_sk;
+  out0.*::in0.*;
+
+end;

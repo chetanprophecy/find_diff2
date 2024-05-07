@@ -1,0 +1,18 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+  out.dcc_conflict_code ::in.extval;
+  out.dcc_conflict_description ::in.cndtxt;
+  out.dic_intervention_code ::in.extval;
+  out.dic_intervention_descript::in.cndtxt;
+  out.doc_outcome_code ::in.extval;
+  out.doc_outcome_description ::in.cndtxt;
+end;
+

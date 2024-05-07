@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5af0175c_451d_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_ogm_fdbk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_ogm_fdbk.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_ogm_fdbk.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_ogm_fdbk.ogm_disposition,[passthrough],in0.ogm_disposition]
+  [out0.c_ogm_fdbk.ogm_response_dt,[passthrough],in0.ogm_response_dt]
+  [out0.c_ogm_fdbk.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_ogm_fdbk.consuming_app_id,[passthrough],in0.consuming_app_id]
+  [out0.c_ogm_fdbk.src_sys_opp_id,[passthrough],in0.src_sys_opp_id]
+  [out0.c_ogm_fdbk.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_ogm_fdbk.rxtp_opp_id,[passthrough],in0.rxtp_opp_id]
+  [out0.c_ogm_fdbk.cpp_ogm_feedback_sk,[transform],]
+  [out0.c_ogm_fdbk.ogm_disposition_reason_cd,[passthrough],in0.ogm_disposition_reason_cd]
+  [out0.c_ogm_fdbk.ogm_disposition_descr,[passthrough],in0.ogm_disposition_descr]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_ogm_fdbk.src_env_sk,'c_ogm_fdbk.src_env_sk',1,0]
+     [out0.c_ogm_fdbk.cpp_create_ts,'c_ogm_fdbk.cpp_create_ts',1,0]
+     [out0.c_ogm_fdbk.cpp_updated_by,'c_ogm_fdbk.cpp_updated_by',1,0]
+     [out0.c_ogm_fdbk.ogm_disposition,'c_ogm_fdbk.ogm_disposition',1,0]
+     [out0.c_ogm_fdbk.ogm_response_dt,'c_ogm_fdbk.ogm_response_dt',1,0]
+     [out0.c_ogm_fdbk.cpp_update_ts,'c_ogm_fdbk.cpp_update_ts',1,0]
+     [out0.c_ogm_fdbk.consuming_app_id,'c_ogm_fdbk.consuming_app_id',1,0]
+     [out0.c_ogm_fdbk.src_sys_opp_id,'c_ogm_fdbk.src_sys_opp_id',1,0]
+     [out0.c_ogm_fdbk.cpp_created_by,'c_ogm_fdbk.cpp_created_by',1,0]
+     [out0.c_ogm_fdbk.rxtp_opp_id,'c_ogm_fdbk.rxtp_opp_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_ogm_fdbk.cpp_ogm_feedback_sk,'c_ogm_fdbk.cpp_ogm_feedback_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_ogm_fdbk.ogm_disposition_reason_cd,'c_ogm_fdbk.ogm_disposition_reason_cd',1,0]
+     [out0.c_ogm_fdbk.ogm_disposition_descr,'c_ogm_fdbk.ogm_disposition_descr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.ogm_disposition_descr,'ogm_disposition_descr',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.ogm_response_dt,'ogm_response_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ogm_disposition_reason_cd,'ogm_disposition_reason_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ogm_disposition,'ogm_disposition',1,1]
+     [in0.src_sys_opp_id,'src_sys_opp_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.rxtp_opp_id,'rxtp_opp_id',1,1]
+     [in0.consuming_app_id,'consuming_app_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_ogm_fdbk_cpp_ogm_feedback_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_ogm_fdbk_rxtp_opp_id = fail_if_error(in0.rxtp_opp_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_ogm_fdbk_ogm_response_dt = fail_if_error(in0.ogm_response_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_ogm_fdbk_src_sys_opp_id = fail_if_error(in0.src_sys_opp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_ogm_fdbk_consuming_app_id = fail_if_error(in0.consuming_app_id);
+let utf8 string("\x01", maximum_length=400) c_ogm_fdbk_ogm_disposition = fail_if_error(in0.ogm_disposition);
+let utf8 string("\x01", maximum_length=80) c_ogm_fdbk_ogm_disposition_reason_cd = fail_if_error(in0.ogm_disposition_reason_cd);
+let utf8 string("\x01", maximum_length=1024) c_ogm_fdbk_ogm_disposition_descr = fail_if_error(in0.ogm_disposition_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_ogm_fdbk_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_ogm_fdbk_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_ogm_fdbk_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_ogm_fdbk_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_ogm_fdbk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_ogm_fdbk.cpp_ogm_feedback_sk::c_ogm_fdbk_cpp_ogm_feedback_sk;
+  out0.c_ogm_fdbk.rxtp_opp_id::c_ogm_fdbk_rxtp_opp_id;
+  out0.c_ogm_fdbk.ogm_response_dt::c_ogm_fdbk_ogm_response_dt;
+  out0.c_ogm_fdbk.src_sys_opp_id::c_ogm_fdbk_src_sys_opp_id;
+  out0.c_ogm_fdbk.consuming_app_id::c_ogm_fdbk_consuming_app_id;
+  out0.c_ogm_fdbk.ogm_disposition::c_ogm_fdbk_ogm_disposition;
+  out0.c_ogm_fdbk.ogm_disposition_reason_cd::c_ogm_fdbk_ogm_disposition_reason_cd;
+  out0.c_ogm_fdbk.ogm_disposition_descr::c_ogm_fdbk_ogm_disposition_descr;
+  out0.c_ogm_fdbk.cpp_update_ts::c_ogm_fdbk_cpp_update_ts;
+  out0.c_ogm_fdbk.cpp_updated_by::c_ogm_fdbk_cpp_updated_by;
+  out0.c_ogm_fdbk.cpp_create_ts::c_ogm_fdbk_cpp_create_ts;
+  out0.c_ogm_fdbk.cpp_created_by::c_ogm_fdbk_cpp_created_by;
+  out0.c_ogm_fdbk.src_env_sk::c_ogm_fdbk_src_env_sk;
+  out0.*::in0.*;
+
+end;

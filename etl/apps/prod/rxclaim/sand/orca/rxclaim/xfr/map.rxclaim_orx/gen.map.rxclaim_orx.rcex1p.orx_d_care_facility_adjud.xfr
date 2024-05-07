@@ -1,0 +1,33 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_cr_fc_adj_care_fac_adjud_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cr_fc_adj_care_fac_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_cr_fc_adj_care_fac_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cr_fc_adj_clt_id = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cr_fc_adj_carrier_id;
+let decimal("\x01",0) d_cr_fc_adj_src_env_sk = -1;
+
+
+
+/*   Default value   */
+d_cr_fc_adj_care_fac_nm=fail_if_error(str_nk(in0.carefacnam));
+
+/*   Default value   */
+d_cr_fc_adj_care_fac_id=fail_if_error(str_nk(in0.carefacid));
+
+/*   Default value   */
+d_cr_fc_adj_carrier_id=fail_if_error(str_nk(in0.carrierid));
+
+  out0.d_cr_fc_adj.care_fac_adjud_sk::d_cr_fc_adj_care_fac_adjud_sk;
+  out0.d_cr_fc_adj.care_fac_id::d_cr_fc_adj_care_fac_id;
+  out0.d_cr_fc_adj.care_fac_nm::d_cr_fc_adj_care_fac_nm;
+  out0.d_cr_fc_adj.clt_id::d_cr_fc_adj_clt_id;
+  out0.d_cr_fc_adj.carrier_id::d_cr_fc_adj_carrier_id;
+  out0.d_cr_fc_adj.src_env_sk::d_cr_fc_adj_src_env_sk;
+  out0.*::in0.*;
+
+end;

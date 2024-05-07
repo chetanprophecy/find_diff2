@@ -1,0 +1,84 @@
+record
+  string("\x01", maximum_length=10) c9aecd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFTEP: Plan Code"
+ BizComment:"Code used to identify a specific plan.  This code combined with a plan effective date uniquely identifies the plan in the RxCLAIM system."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c9akdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFTEP: Plan Eff Date"
+ BizComment:"The date plan/benefit became effective.  Claims submitted prior to this date will not be accepted."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c9vxht /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Seq Nbr"
+ BizComment:"Indicates the order in which the rules should be referenced when multiple rules exist.  Duplication of sequence numbers is allowed. If two rules are assigned the same sequence number, then the lists are sorted by MSC, then FTE, then PSC, etc."
+@*/;
+  string("\x01", maximum_length=1) c9pvic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Multi-Source Code"
+ BizComment:"Select the resolved Multi-Source Code of the product to be used as criteria for the set overrides. :LINES. M-Multi-Source Brand N-Brand-Name Only O-Original Brand Product Y-Generic Product :ELINES."
+@*/;
+  string("\x01", maximum_length=3) c9pwic /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE FDA Thera Equival Cde"
+ BizComment:"Specify a resolved FDA Therapeutic Equivalency Code of the product to be used as criteria for the set overrides."
+@*/;
+  string("\x01", maximum_length=1) c9pxic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Prod Selection Code"
+ BizComment:"Select the resolved Product Selection Code of the submitted claim to be used as criteria for the set overrides. *-All 0-No PSC 1-Physician PSC 2-Patient PSC 3-Pharmacy PSC 4-No Generic Available 5-Brand Dispensed Generic 6-Override 7-Substitution not allowed 8-Substitution allowed 9-Other"
+@*/;
+  string("\x01", maximum_length=1) c9pyic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Generic Availability"
+ BizComment:"Determine if the system should check the submitted product's GPI for generics that may be available with a matching FDA Therapeutic Equivalency Code."
+@*/;
+  string("\x01", maximum_length=3) c9pzic /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Generic FTE Rule"
+ BizComment:"Specify a resolved FDA Therapeutic Equivalency Code that is required to be found in the search of an available generic product under the resolved GPI of the claim to be used as criteria for the set overrides.  For example, at least one generic product with AB* rating must be found under the GPI in order for the overrides to apply."
+@*/;
+  string("\x01", maximum_length=1) c9p9ic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Record Status"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c9p0ic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Drug Status Ovr"
+ BizComment:"Select the Drug Status to be applied to claims that meet all the criteria of the record. :LINES. a-Plan Default b-Non-Form(Skp OOP No Accm) c-Diag Cde Mismatch,Nxt Lst e-NFrm(NoDed/Ben;Apply OOP) f-Form(NoDed/Ben;Apply OOP) g-Form(NoOOP;apply Ded/Ben) h-Override-List/PA Dtls  2 p-1 Pd Non-Frm;Pref Product x-O Non-Form w/msg; Form y-Y Form; Non-Form w/Msg z-Y Form; Non-Form Reject A-1 Form;Pd Non-Form w/ MSG B-No Prescrptn Drug Benefit C-Paid Non-Formulary w/ Msg D-15 Form;Pd Non-Form w/MSG E-1 Form;Non-Form Reject F-Formulary G-Paid Non-Formulary w/oMsg H-Formulary Captured I-15 Form;Non-Form Reject J-1 F;Non-F(NoDed/BenAccum) K-Formulary (SkipDed/BenMax) L-Non-Form (SkipDed/BenMax) M-Message N-Non-Formulary Reject O-Override P- Prior Authorization Q-F:Don't use GPI Price Dtl R-Reject S-Formulary (NoDed/BenAccum) T-Non-Form (NoDed/BenAccum) U-5 Formulary; Prior Auth V-05 Paid Non-Form; Reject X-Preferred Product Y-Diag Cde Mismatch, Bypass Z-Formulary Alternative 3-Override-Use List/PA Dtls 4-G NF:Don't Use Price Dtl 5-Formulary 5 6-Formulary 6 7-Non-Formulary Captured 8-Non-Preferred Form Reject 9-Y Pd NFw/oMSG; Pd NFw/MSG :ELINES."
+@*/;
+  string("\x01", maximum_length=1) c9p1ic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Generic Indicator"
+ BizComment:"Define a value to override the Generic Indicator field value if all criteria of the record are met for reporting purposes. :LINES. *BLANK - Blank M - Multi-Source Not Generic N - Single-Source Not Generic O - Original, Generics Avail X - Price as N, Report as Y Y - Generic Z - O/R Gen Ind; Price as 'N' :ELINES."
+@*/;
+  string("\x01", maximum_length=1) c9p2ic /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFTEP: FTE Bypass Mbr Penalty Ov"
+ BizComment:"Select whether to apply or bypass member penalty setup within pricing if all criteria of the record are met. :P. N-No, apply available member penalty :PC. Y-Yes, do not apply available member penalty :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=10) c9akvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFTEP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c9c2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFTEP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) c9adtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFTEP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) c9alvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFTEP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) c9advn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFTEP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c9bmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFTEP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) c9abtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFTEP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) c9aevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFTEP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

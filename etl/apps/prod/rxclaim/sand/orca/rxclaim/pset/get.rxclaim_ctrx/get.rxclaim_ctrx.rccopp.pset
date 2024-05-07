@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rccopp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rccopp                  \nclmprdext     rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccopp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex1p')]
+SQL||||select rccopp.nap2nb,\nrccopp.naoinb,\nrccopp.naven2,\nrccopp.nafspp,\nrccopp.naunoc,\nrccopp.naqghz,\nrcex1p.carrierid,\nrcex1p.accountid,\nrcex1p.groupid,\nrcex1p.groupnbr,\nrcex1p.memberid,\nrcex1p.cardholder,\nrcex1p.claimsts,\nrcex1p.datesbm,\nrcex1p.dtefilled\nFROM clmprdfil.rccopp  rccopp,\n    clmprdext.rcex1p rcex1p\nWHERE rcex1p.RXCLAIMNBR = rccopp.nap2nb AND rcex1p.CLMSEQNBR = rccopp.naoinb
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_PUBLISH_CLEAN_FILE||||0
+RUN_ID||||0
+EVENT_LOG_DIR||||$[\r\nPUB_DATAHUB_SERIAL + "/event_log/raw/";\r\n]
+DO_LOOKUP||||0
+SOURCE_DB_INFO_VEC||||$[begin\r\n//This PDL block was added by msing114 on 07/2017 to make progress on book1 & book2 project . However this process will be refined later to use more generic way of getting layout.\r\nresult ::  if ((string_index(SOURCE_SYSTEM_OVERRIDE,"rxclaim_orx") || string_index(SOURCE_SYSTEM_OVERRIDE,"_bk1") || string_index(SOURCE_SYSTEM_OVERRIDE,"bk2"))  && !is_blank(ABLOCAL_EXPR) and !is_null(ABLOCAL_EXPR))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS_ADHOC)\r\n           else if (string_index(SOURCE_SYSTEM_OVERRIDE,"rxclaim_orx") || string_index(SOURCE_SYSTEM_OVERRIDE,"_bk1") || string_index(SOURCE_SYSTEM_OVERRIDE,"bk2"))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS)           \r\n        else \r\n                get_db_info_vec(SOURCE_DB_LIST,AI_SERIAL, AI_MFS) ;\r\n                \r\nend\r\n ]
+ENABLE_DEFAULT_RULES||||True

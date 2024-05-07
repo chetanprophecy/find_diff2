@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcphdp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcphdp                  aseycd,asfsnb,asavcd,asfonb,aso2cd,asaacd,asfhst,asgpdt,asgqdt,asikc3,asejhb,asaecd,asakdt,aselhb,asekhb,asghhi,asr8hj,asywhq,asyxhq,asclvd,ascivd,ascjvd,asckvd,aschvd,ascgvd,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcphdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||\n$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcphdp.asbmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcphdp.asbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcphdp.asbmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcphdp.asbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SQL||||select\nrcphdp.aseycd,\nrcphdp.asfsnb,\nrcphdp.asavcd,\nrcphdp.asfonb,\nrcphdp.aso2cd,\nrcphdp.asaacd,\nrcphdp.asfhst,\nrcphdp.asgpdt,\nrcphdp.asgqdt,\nrcphdp.asikc3,\nrcphdp.asejhb,\nrcphdp.asaecd,\nrcphdp.asakdt,\nrcphdp.aselhb,\nrcphdp.asekhb,\nrcphdp.asghhi,\nrcphdp.asr8hj,\nrcphdp.asywhq,\nrcphdp.asyxhq,\nrcphdp.asclvd,\nrcphdp.ascivd,\nrcphdp.ascjvd,\nrcphdp.asckvd,\nrcphdp.aschvd,\nrcphdp.ascgvd,\nrcphdp.asakvn,\nrcphdp.asc2dt,\nrcphdp.asadtm,\nrcphdp.asalvn,\nrcphdp.asadvn,\nrcphdp.asbmdt,\nrcphdp.asabtm,\nrcphdp.asaevn,\nrcpscp.qlgocd\nfrom clmprdfil_bk1.rcphdp rcphdp left join\nclmprdfil_bk1.rcpscp rcpscp on \nrcphdp.asikc3=rcpscp.qlgocd

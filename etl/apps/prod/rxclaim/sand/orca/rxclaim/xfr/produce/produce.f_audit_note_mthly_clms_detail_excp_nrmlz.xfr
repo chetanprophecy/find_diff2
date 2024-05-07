@@ -1,0 +1,26 @@
+out::length(in) =
+begin
+out::2 ;
+end
+
+out::normalize(in,index) =
+begin
+out.claim_nbr:: if(index == 0 ) in.claim_nbr else in.adjust_claim_nbr ;
+out.flag :: if(index == 0) 
+			      if(is_null(in.claim_stat_id))
+				   "Y"
+				   else 
+                   "N"
+           else if (index == 1)
+              if(is_defined(in.adjust_claim_nbr) and is_null(in.adjust_claim_nbr))
+				 "Y"
+				 else 
+				 "N"  ;
+end				 
+				
+
+out::output_select(out)=
+begin
+out:: out.flag != "N" ;
+end				
+				 

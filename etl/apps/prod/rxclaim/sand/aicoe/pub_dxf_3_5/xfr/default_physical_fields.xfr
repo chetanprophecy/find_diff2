@@ -1,0 +1,33 @@
+constant datetime("YYYY-MM-DD HH24:MI:SS") current_time = now1();
+constant int v_ids_rec_stat_cd=if($"INPUT_FILE_DRIVING_MASK" =="split") 1 else 3 ;
+constant string("") uid = if(v_ids_rec_stat_cd == 1) ($"ETL_APP_ID") else "ph_" + string_substring($"ILM_NAME", 1, 17);
+let int v_flag=0;
+
+
+/* Sets the bookkeeping and other "physical" fields. */
+out :: reformat(in) =
+begin
+v_flag=in.flag;
+
+        out.ids_create_run_id :: if(v_flag == 1) $RUN_ID else in.ids_create_run_id ;
+        out.ids_updt_run_id :: if(v_flag == 2 || v_flag == 1) $RUN_ID else in.ids_updt_run_id ;
+        out.ids_create_uid :: if(v_flag == 1) uid else in.ids_create_uid ;
+        out.ids_updt_uid :: if(v_flag == 2 || v_flag == 1) uid else in.ids_updt_uid ;
+        out.ids_create_dttm :: if(v_flag == 1) current_time else in.ids_create_dttm ;
+        out.ids_updt_dttm :: if(v_flag == 2 || v_flag == 1) current_time else in.ids_updt_dttm ; 
+           out.(*, starts_with(form, "date") and
+                  name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :1: current_time;
+          out.(*, form == "string" and
+                  re_index(name, "(user|uid)") and
+                  name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :2: uid;
+          out.(*, name == "ids_run_id") :3: $RUN_ID;
+          out.(*, name == "ids_rec_stat_cd") :4: (decimal("")) v_ids_rec_stat_cd ; // 1: Active, 2: Inactive (Logically Deleted), 3: Placeholder, 4: Unknown/Dummy (-1 SK)
+          //out.(*, name == "ids_placeholder_cd") :5: "N";  // Not a Placeholder
+          out.(*, name == "ids_src_envrt_id") :6: 0;
+          out.(*, name == "ids_updt_run_id") :8: $RUN_ID;
+          out.(*, name == "ids_create_run_id") :9: $RUN_ID;
+          /*out.(*, form member [vector "decimal", "integer", "float"] and 
+                        re_index(name, "_hash") ) :13: 0;*/
+          out.* :: in.*;
+          out.newline :: "\n";
+end;

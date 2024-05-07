@@ -1,0 +1,45 @@
+type logical_ids_rxclaim_l_eob_profile_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) group_id = NULL("");
+  decimal("\x01",0) cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) logo_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) logo_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) eob_plan_nm = NULL("");
+  decimal("\x01",0) cust_svc_phone_num = NULL("");
+  decimal("\x01",0) tty_tdd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) hours_oper = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) return_addr1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) return_addr2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) return_city = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) return_st = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) return_zip_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) plan_typ_cd = NULL("");
+  decimal("\x01",0) ms_phone_num = NULL("");
+  decimal("\x01",0) ms_tty_tdd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) ms_hours_oper = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) covrg_in_gap = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) src_cd = NULL("");
+  decimal("\x01",0) expired_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) spanish_hours_oper = NULL("");
+  decimal("\x01",0) split_tier_ind = NULL("");
+  decimal("\x01".2, maximum_length=14, sign_reserved) split_tier_annual_amt = NULL("");
+  decimal("\x01",0) covrg_gap_suppress_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) expr1 = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01",0) plan_yr = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_l_eob_profile_t l_eob_profil  /*@ BizName:'l eob profil' */;
+end;

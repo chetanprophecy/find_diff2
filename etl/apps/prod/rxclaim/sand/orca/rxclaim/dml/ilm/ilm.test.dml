@@ -1,0 +1,105 @@
+type logical_rxtcombo_rtdccp__rtdccp_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=2) npoycd;
+  string("\x01",charset="iso-8859-15", maximum_length=30) npkatx;
+  decimal("\x01",0, maximum_length=8, sign_reserved) npc2dt;
+  string("\x01",charset="iso-8859-15", maximum_length=10) npadvn;
+  decimal("\x01",0, maximum_length=8, sign_reserved) npbmdt;
+  decimal("\x01",0, maximum_length=7, sign_reserved) npabtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) npaevn;
+  string("\x01",charset="iso-8859-15", maximum_length=20) source_environment;
+  string("\x01",charset="iso-8859-15", maximum_length=2) record_load_reason;
+  string("\x01",charset="iso-8859-15", maximum_length=2) record_update_reason;
+  string("\x01",charset="iso-8859-15", maximum_length=25) record_load_crm_ref_id;
+  string("\x01",charset="iso-8859-15", maximum_length=25) record_update_crm_ref_id;
+end;
+
+type logical_rxtcombo_rtmdxp__rtmdxp_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=18) aoabcd;
+  string("\x01",charset="iso-8859-15", maximum_length=9) aoaacd;
+  string("\x01",charset="iso-8859-15", maximum_length=15) aoaccd;
+  string("\x01",charset="iso-8859-15", maximum_length=15) aoadcd;
+  string("\x01",charset="iso-8859-15", maximum_length=2) aosjaq;
+  string("\x01",charset="iso-8859-15", maximum_length=1) aoskaq;
+  string("\x01",charset="iso-8859-15", maximum_length=20) aorvhn;
+  decimal("\x01") aohhal;
+  decimal("\x01") aoegce;
+  decimal("\x01") aoehce;
+  string("\x01",charset="iso-8859-15", maximum_length=1) aof6aj;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoakvn;
+  decimal("\x01") aoc2dt;
+  decimal("\x01") aoadtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoalvn;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoadvn;
+  decimal("\x01") aobmdt;
+  decimal("\x01") aoabtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoaevn;
+end;
+
+
+
+// Optional Logical Types
+// Used in the Normalize in the Shred.
+type opt_logical_rxtcombo_rtdccp_t =
+record
+  decimal(1) drop_record = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=2) npoycd;
+  string("\x01",charset="iso-8859-15", maximum_length=30) npkatx;
+  decimal("\x01",0, maximum_length=8, sign_reserved) npc2dt;
+  string("\x01",charset="iso-8859-15", maximum_length=10) npadvn;
+  decimal("\x01",0, maximum_length=8, sign_reserved) npbmdt;
+  decimal("\x01",0, maximum_length=7, sign_reserved) npabtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) npaevn;
+  string("\x01",charset="iso-8859-15", maximum_length=20) source_environment;
+  string("\x01",charset="iso-8859-15", maximum_length=2) record_load_reason;
+  string("\x01",charset="iso-8859-15", maximum_length=2) record_update_reason;
+  string("\x01",charset="iso-8859-15", maximum_length=25) record_load_crm_ref_id;
+  string("\x01",charset="iso-8859-15", maximum_length=25) record_update_crm_ref_id;
+end;
+
+type opt_logical_rxtcombo_rtmdxp_t =
+record
+  decimal(1) drop_record = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=18) aoabcd;
+  string("\x01",charset="iso-8859-15", maximum_length=9) aoaacd;
+  string("\x01",charset="iso-8859-15", maximum_length=15) aoaccd;
+  string("\x01",charset="iso-8859-15", maximum_length=15) aoadcd;
+  string("\x01",charset="iso-8859-15", maximum_length=2) aosjaq;
+  string("\x01",charset="iso-8859-15", maximum_length=1) aoskaq;
+  string("\x01",charset="iso-8859-15", maximum_length=20) aorvhn;
+  decimal("\x01") aohhal;
+  decimal("\x01") aoegce;
+  decimal("\x01") aoehce;
+  string("\x01",charset="iso-8859-15", maximum_length=1) aof6aj;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoakvn;
+  decimal("\x01") aoc2dt;
+  decimal("\x01") aoadtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoalvn;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoadvn;
+  decimal("\x01") aobmdt;
+  decimal("\x01") aoabtm;
+  string("\x01",charset="iso-8859-15", maximum_length=10) aoaevn;
+end;
+
+
+type opt_nk_rxtcombo_dim_age_band_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'test: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+end;
+type nk_rxtcombo_dim_age_band_t =  // Used in shreds
+record
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_rxtcombo_rtmdxp__rtmdxp_t rtmdxp  /*@ BizName:'rtmdxp' */;
+  logical_rxtcombo_rtdccp__rtdccp_t rtdccp  /*@ BizName:'rtdccp' */;
+  opt_nk_rxtcombo_dim_age_band_t test  /*@ BizName:'test' */;
+end;

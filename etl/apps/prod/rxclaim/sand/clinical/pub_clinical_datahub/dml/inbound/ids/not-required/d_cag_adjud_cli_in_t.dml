@@ -1,0 +1,30 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_cag_adjud_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_cag_adjud_cli_in_t =
+record
+  decimal("\x01",0)   cag_adjud_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)   cag_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)   account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=15)   employer_group_id = NULL("") /*VARCHAR(15)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   client_id = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   client_rgn_cd = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)   client_seg_cd = NULL("") /*VARCHAR(3)*/;
+  decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type d_cag_adjud_cli_in_vec_t = d_cag_adjud_cli_in_t[int];
+
+metadata type = d_cag_adjud_cli_in_t;
+

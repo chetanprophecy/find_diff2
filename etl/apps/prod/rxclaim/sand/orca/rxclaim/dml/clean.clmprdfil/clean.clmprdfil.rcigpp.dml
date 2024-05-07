@@ -1,0 +1,82 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=14)  igu6hj /*CHAR(14) NOT NULL */ /*@
+BizName:"RCIGPP: IGP GPI Product ID"
+ BizComment:":LINES.The Generic Product Identifier defines pharmaceutically equivalent drug products.  Products having the same 14-character GPI are identical with respect to the following: :ELINES. :P. :LINES.Ingredient(s) Dosage form Route of Administration Strength or Concentration :ELINES. :P. :LINES.The GPI does not consider the presence of inactive ingredients :ELINES. :P. :LINES.Only drug products identified with identical 14-character GPIs that are not Partial GPIs are pharmaceutically equivalent products. A Partial GPI refers to a general description of the product based on the MDDB product line Therapeutic Classification System (TCS) and implies that drug products having this GPI may not be pharmaceutically equivalent.:ELINES. :P."
+@*/;
+  string(unsigned integer(1),maximum_length=7)  igu9hj /*CHAR(7) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Med Cond Restriction"
+ BizComment:":LINES.The Medical Condition Restriction Code identifies any existing medical or patient condition that restricts the treatment of the specified drug.  Patients should not be administered the specified drug to treat a particular medical condition unless they qualify as being part of the restricted population specified by this code. The Medical Condition Restriction Code identifies a medical condition found in the Medical Conditions Master Database. :ELINES. :P. :LINES.The following codes in the Medical Conditions Master File are reserved for some general cases applicable to this field: :ELINES. :P. :LINES.0000000-None Restriction not associated with indication:ELINES. :P. :LINES.9999998-Not Yet Available Medi-Span has not supplied indication information for this GPI :ELINES. :P. :LINES.9999999-Not Applicable No indications are associated with this GPI :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=7)  igvahj /*CHAR(7) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Indicated Med Cond Cd"
+ BizComment:":LINES.The Indicated Medical Condition Code identifies the medical condition for which the drug is used.  This field identifies a medical condition found in the Medical Conditions Master Database. :ELINES. :P. :LINES.The following codes in the Medical Conditions Master File are reserved for some general cases applicable to this field: :ELINES. :P. :LINES.9999998-Not Yet Available Medi-Span has not supplied indication information for this GPI :ELINES. :P. :LINES.9999999-Not Applicable No indications are associated with this GPI :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=7)  igvbhj /*CHAR(7) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Microorganism Code"
+ BizComment:":LINES.Sometimes drugs are used to treat a medical condition based on which microorganism is causing the medical condition.  The Microorganism Code identifies the microorganism that causes the condition being treated.  This field identifies a medical condition (microorganism) found in the Medical Conditions Master Database. :ELINES. :P. :LINES.The following codes in the Medical Conditions Master File are reserved for some general cases applicable to this field: :ELINES. :P. :LINES.0000000-None Restriction not associated with indication :ELINES. :P. :LINES.9999998-Not Yet Available Medi-Span has not supplied indication information for this GPI :ELINES. :P. :LINES.9999999-Not Applicable No indications are associated with this GPI :ELINES. :P."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  igx6ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Role of Therapy Code"
+ BizComment:"The Role of Therapy Code specifies the duration or use of a particular drug in managing a particular medical condition. Since drugs can be used differently, the coded values reflect possible combinations. The following are the current values for this field: 01-Maintenance Use Only Drug is expected to be used long-term or indefinitely 02-Short-term Use Only Drug is only indicated for short-term use or for a specified duration 03-Short-term or Maintenance Drug can be indicated for both short-term and maintenance use 98-Not Yet Available Medi-Span has not supplied indication information for this GPI 99-Not Applicable No indications are associated with this GPI"
+@*/;
+  string(unsigned integer(1),maximum_length=2)  igx7ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Outcome Code"
+ BizComment:":LINES.The Outcome Code indicates the expected results from treating the medical condition with the indicated drug.  Since treatments sometimes provide multiple results, the coded values reflect possible combinations. :ELINES. :P. :LINES.The following are the current values for this field: :ELINES. :P. :LINES.01-Curative Drug is expected to result in a patient's full recovery from the medical condition :ELINES. :P. :LINES.02-Preventative Drug is used to prevent a medical condition from occurring :ELINES. :P. :LINES.03-Diagnostic/Procedural Drug is used to make a clinical diagnosis of a particular medical condition or plays a role in a medical procedure :ELINES. :P. :LINES.05-Treatment Drug is used to manage the pathologic course of a particular medical condition, not necessarily resulting in a cure and can be used to control the severity or alleviate the symptoms of a medical condition :ELINES. :P. :LINES.06-Curative & Preventative Drug may be used to completely resolve or prevent a medical condition :ELINES. :P. :LINES.07-Treatment & Preventative Drug may be used or prevent a particular medical condition :ELINES. :P. :LINES.98-Not Yet Available Medi-Span has not supplied indication information for this GPI :ELINES. :P. :LINES.99-Not Applicable No indications are associated with this GPI :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  igx8ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Treatment Rank Code"
+ BizComment:"The Treatment Rank Code identifies the rank of a specific drug in treating a particular medical condition. The following are the current values for this field: 01-First Line Therapy Drug is well recognized as the primary choice for treatment of the particular medical condition 02-Second Line Therapy Drug is recognized as a secondary choice for treatment of the particular medical condition 03-Adjunct Drug is used in conjunction with other therapy (in a subordinate role) and cannot be used alone to treat a particular medical condition 04-Alternate Drug does not fall into any of the above categories but is an available option for treating a particular medical condition 98-Not Yet Available Medi-Span has not supplied indication information for this GPI 99-Not Applicable No indications are associated with this GPI"
+@*/;
+  string(unsigned integer(1),maximum_length=2)  igx9ie /*CHAR(2) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Acceptance Level"
+ BizComment:"The Acceptance Level indicates whether the FDA has approved the indication for the drug or to what degree other sources have accepted the indication. The following are the current values for this field: 01-FDA Approved Uses approved by the FDA and reported by the manufacturer package insert 02-Generally Accepted Uses not approved by the FDA but identified as a use by official compendia (USP DI and AHFS) 03-Limited Evidence Uses not approved by the FDA but identified as a use supported by limited evidence by official compendia or primary medical literature 04-Investigational Uses not approved by the FDA currently but under consideration 98-Not Yet Available Medi-Span has not supplied indication information for this GPI 99-Not Applicable No indications are associated with this GPI"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  igyaie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Proxy Code"
+ BizComment:":LINES.The Proxy Code indicates the likelihood that the patient is is taking a drug to manage a particular indication. :ELINES. :P. :LINES.The following are the current values for this field: :ELINES. :P. :LINES.1-Certain The indication is considered to be the primary indication for the drug :ELINES. :P. :LINES.2-Somewhat Certain The indication is considered to be a secondary indication for the drug :ELINES. :P. :LINES.3-Uncertain The indication is not considered to be a primary or secondary indication for the drug:ELINES. :P. :LINES.8-Not Yet Available Medi-Span has not yet populated this data  :ELINES. :P. :LINES.9-Not Applicable Not applicable :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  igybie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Proxy Only"
+ BizComment:":LINES.The Proxy Only field indicates that the record should only be used to create a proxy medical condition profile.  Proxy Only records are provided only to support proxy applications and are not valid indications.  Additionally, the fields within these records do not contain applicable data. :ELINES. :P. :LINES.The following are the current values for this field: :ELINES. :P. :LINES.0-No This record is not for proxy only :ELINES. :P. :LINES.1-Yes This record is for proxy only :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  igycie /*CHAR(1) NOT NULL */ /*@
+BizName:"RCIGPP: IGP Status"
+ BizComment:":LINES.Status of displayed record: :ELINES. :P. :LINES.A - Active I - Inactive :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  igakvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCIGPP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  little endian integer(4)  igc2dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCIGPP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  little endian integer(4)  igadtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCIGPP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  igalvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCIGPP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  igadvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCIGPP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  igbmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCIGPP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  igabtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCIGPP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  igaevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCIGPP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

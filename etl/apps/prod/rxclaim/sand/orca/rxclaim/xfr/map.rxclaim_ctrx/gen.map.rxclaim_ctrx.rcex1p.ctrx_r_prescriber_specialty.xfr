@@ -1,0 +1,108 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_582c4f56_5811_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCRIBER_ALIAS_NO_STATE   */
+out0::bzt_3_6c54cc0a_582c4f56_5811_0(in0,in1,in2)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCRIBER_ALIAS_NO_STATE",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_2_6c54cc0a_582c4f56_5811_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCRIBER_ALIAS   */
+out0::bzt_2_6c54cc0a_582c4f56_5811_0(in0,in1,in2,in3)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCRIBER_ALIAS",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.r_prs_spl.r_pbr_spclty_sk,[transform],]
+  [out0.r_prs_spl.pbr_sk,[transform],in0.prescridql,
+     in0.rxt_src_envrt_id,
+     in0.prsstate,
+     in0.prescriber,
+     'lookup("LKP: D_PRESCRIBER_ALIAS_NO_STATE").pbr_sk',
+     'lookup("LKP: D_PRESCRIBER_ALIAS").pbr_sk']
+  [out0.r_prs_spl.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.pres_sp.pbr_spclty_cd,[transform],in0.presspccde]
+  [out0.r_prs_spl.pbr_spclty_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.r_prs_spl.r_pbr_spclty_sk,'r_prs_spl.r_pbr_spclty_sk',1,0]
+     [out0.r_prs_spl.pbr_sk,'r_prs_spl.pbr_sk',1,0]
+     [out0.r_prs_spl.src_env_sk,'r_prs_spl.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.pres_sp.pbr_spclty_cd,'pres_sp.pbr_spclty_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.r_prs_spl.pbr_spclty_sk,'r_prs_spl.pbr_spclty_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.prescridql,'prescridql',2,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("LKP: D_PRESCRIBER_ALIAS_NO_STATE").pbr_sk','pbr_sk',1,1]
+     ['lookup("LKP: D_PRESCRIBER_ALIAS").pbr_sk','pbr_sk',1,1]
+     [in0.prsstate,'prsstate',1,1]
+     [in0.prescriber,'prescriber',2,1]
+     [in0.presspccde,'presspccde',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',3,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) r_prs_spl_r_pbr_spclty_sk = -1;
+let decimal("\x01",0) r_prs_spl_pbr_spclty_sk = 0;
+let decimal("\x01",0) r_prs_spl_pbr_sk;
+let decimal("\x01",0) r_prs_spl_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=6) pres_sp_pbr_spclty_cd = fail_if_error(string_lrtrim(in0.presspccde));
+
+
+
+/*   Default value   */
+r_prs_spl_pbr_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_582c4f56_5811_0(string_lrtrim(in0.prescriber), string_lrtrim(in0.prescridql), string_lrtrim(in0.prsstate), in0.rxt_src_envrt_id).pbr_sk, bzt_3_6c54cc0a_582c4f56_5811_0(string_lrtrim(in0.prescriber), string_lrtrim(in0.prescridql), in0.rxt_src_envrt_id).pbr_sk, -1));
+
+  out0.r_prs_spl.r_pbr_spclty_sk::r_prs_spl_r_pbr_spclty_sk;
+  out0.r_prs_spl.pbr_spclty_sk::r_prs_spl_pbr_spclty_sk;
+  out0.r_prs_spl.pbr_sk::r_prs_spl_pbr_sk;
+  out0.r_prs_spl.src_env_sk::r_prs_spl_src_env_sk;
+  out0.pres_sp.pbr_spclty_cd::pres_sp_pbr_spclty_cd;
+  out0.*::in0.*;
+
+end;

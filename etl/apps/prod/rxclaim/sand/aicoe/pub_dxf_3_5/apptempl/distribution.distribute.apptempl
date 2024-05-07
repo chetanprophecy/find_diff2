@@ -1,0 +1,775 @@
+<AppConfTempl name="zz[DEPRECATED] Distribute (Distribution)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+  include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+out :: get_mart_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  if(length_of(words) == 4 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[1];  
+  if(length_of(words) == 5 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  if(length_of(words) == 6 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  out :: answer;
+end;
+
+out :: get_table_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 4 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[2];  
+  if(length_of(words) == 5 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 6 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  out :: answer;
+end;
+
+out :: get_ids_source_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 4 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[3];  
+  out :: answer;
+end;
+
+out :: get_ilm_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 5 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[4];  
+  if(length_of(words) == 6 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[4];  
+  out :: answer;
+end;
+
+out :: get_variation(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 6 and words[0] == "distribute" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[5];  
+  out :: answer;
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="rules" type="ruleset"/>
+      <Variable name="error" type="string"/>
+      <Variable name="target_nk" type="string"/>
+      <Variable name="target_nk_suggested" type="string"/>
+      <ListVariable name="target_db_project" type="string"/>
+      <Variable name="v_target_db_project" type="string"/>
+      <Variable name="combine_nk" type="string"/>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_object" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+      </ListVariable>
+      <Variable name="lookup_problem" type="string"/>
+      <Variable name="registration_error" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <Project name="proj">
+      <Pset name="distribute" prototype_path="${AI_PSET}/distribute.combine.interim.pset" save_pset="false">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <FlowData name="FILTER_INPUT" source_port="/Concatenate/out" dest_port="/FBE_Record_Drop_for_DM/in"/>
+        <FlowData name="bre_input_flow" source_port="/Apply_Default_IDW_Rules/out0" dest_port="/RFMT_Column_Selection_Rules/in"/>
+        <PdlExpression name="project_rpath" expression="$AI_RPATH/$AI_REL_LOC"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML  "/>
+      </Pset>
+      <Pset name="load_netezza" prototype_path="${AI_PSET}/distribute.load.netezza.interim.pset" save_pset="false">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_TARGET_DB_LIST" expression="$AI_TARGET_DB_LIST"/>
+      </Pset>
+    </Project>
+    <SharedFile name="catalog" path="" auto_lock="true"/>
+    <SharedFile name="load_read_file_dml" path="" auto_lock="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check Configuration Name">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in.configuration_name,".")) not member [vector 3,4,5,6])
+  "Configuration should be named like &lt;i&gt;distribute.datamartname.tablename&lt;/i&gt; or &lt;i&gt;distribute.datamartname.tablename.ids_src_nm&lt;/i&gt;\n" +
+  "or &lt;i&gt;distribute.datamartname.tablename.ilm.ilm_name.variation&lt;/i&gt;" + 
+  "Close and recreate configuration"
+else if(string_split_no_empty(built_in.configuration_name,".")[0] != "distribute")
+  "Configuration should be named like &lt;i&gt;distribute.datamartname.table&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[1], "[A-Za-z0-9_]", "") != "" )
+  "Please remove invalid characters from datamart name\n" +
+  "Close and recreate configuration"
+else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[2], "[A-Za-z0-9_]", "") != "" )
+  "Please remove invalid characters from table name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 4 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != ""))
+  "Please remove invalid characters from ids_source_name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 4 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm")
+  "Configuration name is expected to contain ilm name. Variation may or may not be specified.\n" +
+  "Expected Format: &lt;/i&gt;distribute.datamart.target.ilm.ilm_name.variation&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 5 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "")
+  "Please remove invalid characters from ilm name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 6 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "")
+  "Please remove invalid characters from variation\n" +
+  "Close and recreate configuration"
+else
+  ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.distribute.TABLE_NAME == proj.distribute.IDS_SOURCE_NAME &amp;&amp; proj.distribute.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine." + proj.distribute.DATA_MART_NAME + "/combine." + proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + ".pset"    
+      else if(proj.distribute.TABLE_NAME != proj.distribute.IDS_SOURCE_NAME &amp;&amp; proj.distribute.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine." + proj.distribute.DATA_MART_NAME + "/combine." + proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + "." + proj.distribute.IDS_SOURCE_NAME + ".pset"
+      else if(proj.distribute.DO_PROCESS_ILM_EVENTS == "1" &amp;&amp; proj.distribute.VARIATION != "")
+        "pset/combine." + proj.distribute.DATA_MART_NAME + "/combine." + proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + "." + proj.distribute.ILM_NAME + "." + proj.distribute.VARIATION + ".pset"
+      else
+        "pset/combine." + proj.distribute.DATA_MART_NAME + "/combine." + proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + "." + proj.distribute.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.distribute" property="relative_path"/>
+      <Condition is_expression="true">vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.load_netezza.TABLE_NAME == proj.load_netezza.IDS_SOURCE_NAME &amp;&amp; proj.load_netezza.DO_PROCESS_ILM_EVENTS == "0")
+"pset/load.netezza." + proj.load_netezza.DATA_MART_NAME + "/load.netezza." + proj.load_netezza.DATA_MART_NAME + "." + proj.load_netezza.TABLE_NAME + ".pset"
+else if(proj.load_netezza.TABLE_NAME != proj.load_netezza.IDS_SOURCE_NAME &amp;&amp; proj.load_netezza.DO_PROCESS_ILM_EVENTS == "0")
+"pset/load.netezza." + proj.load_netezza.DATA_MART_NAME + "/load.netezza." + proj.load_netezza.DATA_MART_NAME + "." + proj.load_netezza.TABLE_NAME + "." + proj.load_netezza.IDS_SOURCE_NAME + ".pset"
+else if(proj.load_netezza.DO_PROCESS_ILM_EVENTS == "1" &amp;&amp; proj.load_netezza.VARIATION != "")
+"pset/load.netezza." + proj.load_netezza.DATA_MART_NAME + "/load.netezza." + proj.load_netezza.DATA_MART_NAME + "." + proj.load_netezza.TABLE_NAME + "." + proj.load_netezza.ILM_NAME + "." + proj.load_netezza.VARIATION + ".pset"
+else 
+"pset/load.netezza." + proj.load_netezza.DATA_MART_NAME + "/load.netezza." + proj.load_netezza.DATA_MART_NAME + "." + proj.load_netezza.TABLE_NAME + "." + proj.load_netezza.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.load_netezza" property="relative_path"/>
+      <Condition is_expression="true">vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.distribute.REGISTRATION_DETAILS_VEC == "[vector]")
+"Target " + proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + " not registered. Please try again after registraion." 
+else  ""</SourceValue>
+      <TargetValue reference="vars.registration_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_mart_name(built_in)</SourceValue>
+      <TargetValue reference="proj.distribute.DATA_MART_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_table_name(built_in)</SourceValue>
+      <TargetValue reference="proj.distribute.TABLE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_source_name(built_in)</SourceValue>
+      <TargetValue reference="proj.distribute.IDS_SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[3], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.distribute.DO_PROCESS_ILM_EVENTS"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ilm_name(built_in)</SourceValue>
+      <TargetValue reference="proj.distribute.ILM_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_variation(built_in)</SourceValue>
+      <TargetValue reference="proj.distribute.VARIATION"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[3], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.load_netezza.DO_PROCESS_ILM_EVENTS"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ilm_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_netezza.ILM_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_variation(built_in)</SourceValue>
+      <TargetValue reference="proj.load_netezza.VARIATION"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_mart_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_netezza.DATA_MART_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_table_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_netezza.TABLE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_source_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_netezza.IDS_SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("\x01") ids_key = get_ids_table_nk(proj.distribute.IDS_TABLE_NAME);
+  let long keys_found_in_target = 1;
+  let target_fields = record_info_item(proj.distribute.TARGET_DML, "name");
+
+  for(let field in key_info(ids_key))
+    if(field.field_name not member target_fields)
+      keys_found_in_target = 0;
+
+  result :: if(keys_found_in_target) ids_key else "";
+end</SourceValue>
+      <TargetValue reference="vars.target_nk_suggested"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(is_defined(vars.target_nk) &amp;&amp; !is_blank(vars.target_nk)) vars.target_nk else vars.target_nk_suggested</SourceValue>
+      <TargetValue reference="proj.load_netezza.NATURAL_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" + "distribute." + proj.distribute.DATA_MART_NAME + "/" +  built_in + ".cat"</SourceValue>
+      <TargetValue reference="proj.distribute.AB_CATALOG"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let long[int] is_valid_vec = vars.lookups.eme_object.is_valid;
+  let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+  let string(int)[int] name_vec =  vars.lookups.lookup_name;
+  let string(int)[int] key_vec = vars.lookups.key;
+  let string(int) lookup_problem = "";
+  for ( let long i, i &lt; length_of(is_valid_vec) and lookup_problem == "" ) begin
+    if ( not is_valid_vec[i] )
+      lookup_problem = printf("Lookup #%d: Please select a valid dataset", i+1);
+    else if ( not ends_with(dml_vec[i], ".dml") )
+      lookup_problem = printf("Lookup #%d: Invalid DML: %s.  Please select a valid dataset.", i+1, dml_vec[i]);
+    else if ( is_blank(name_vec[i]) )
+      lookup_problem = printf("Lookup #%d: Please provide a lookup name.", i+1);
+    else if ( is_blank(key_vec[i]) )
+      lookup_problem = printf("Lookup #%d: Please provide a lookup key.", i+1);
+    end
+  result :: lookup_problem;
+end</SourceValue>
+      <TargetValue reference="vars.lookup_problem"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_object" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string(int)[int] name_vec = vars.lookups.lookup_name;
+  let string(int)[int] key_vec = vars.lookups.key;
+  let string(int)[int] file_vec = vars.lookups.eme_object.parameterized_rpath;
+  let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+  result :: string_join(
+          for ( let long i, i &lt; length_of(name_vec) ) :
+            printf("%s,%s,/~%s,/~%s\n", name_vec[i],
+              key_vec[i],
+              re_replace(file_vec[i], "[{}]", ""), 
+              re_replace( dml_vec[i], "[{}]", "")),
+          "");
+end</SourceValue>
+      <TargetValue reference="catalog"/>
+      <Condition is_expression="true">vars.lookup_problem == "" and catalog.path != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog"/>
+      <TargetValue reference="proj.distribute.ACE_CATALOG_CONTENTS"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin        
+        let string(int) cat = proj.distribute.ACE_CATALOG_CONTENTS.resolved_value;
+        let cat_vec = string_split_no_empty(cat, "\n");
+        result :: for ( let c in cat_vec ) :
+          string_replace_first(string_split(c, ",")[2], // The data directory is the 3rd field in the catalog.
+            "/~", "");  // Strip off the /~ we added when writing the catalog.
+      end</SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path" resizes_list="false"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.bre_input_flow" property="record_format"/>
+      <TargetValue reference="vars.rules" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.LOAD_READY_FILE_DML"/>
+      <TargetValue reference="vars.rules" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.rules" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="vars.rules" property="package_catalog_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.rules" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.bre_input_flow"/>
+      <TargetValue reference="vars.rules" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute"/>
+      <TargetValue reference="vars.rules" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.project_rpath"/>
+      <TargetValue reference="vars.rules" property="project_rpath"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.rules"/>
+      <TargetValue reference="proj.distribute.MAPPING_XFR" property="constant_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let line in re_split_no_empty(proj.load_netezza.AI_TARGET_DB_LIST, "[\r\n]+")) : 
+  if(re_split_no_empty(line, "[ \t]+")[3] == string_downcase(proj.distribute.LOADER_TYPE)) re_split_no_empty(line, "[ \t]+")[4])</SourceValue>
+      <TargetValue reference="vars.target_db_project"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.v_target_db_project"/>
+      <TargetValue reference="proj.load_netezza.TGT_DB_PROJECT"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$" + vars.v_target_db_project + "_DML/" + proj.distribute.DATA_MART_NAME + "/" +proj.distribute.DATA_MART_NAME + "." + proj.distribute.TABLE_NAME + ".dml"</SourceValue>
+      <TargetValue reference="proj.distribute.TARGET_DML"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.distribute.LOAD_READY_FILE_DML</SourceValue>
+      <TargetValue reference="load_read_file_dml" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_lrtrim(proj.distribute.AI_DML) + "/" + proj.distribute.DATA_MART_NAME + "/netezza/load_ready." + proj.distribute.TABLE_NAME + ".dml"</SourceValue>
+      <TargetValue reference="load_read_file_dml" property="path"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label reference="vars.error"/>
+          <UIElements/>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>Delta</ConstantValue>
+                <ConstantValue>Full</ConstantValue>
+              </Choices>
+              <Label>Target Dataset Type</Label>
+              <SourceTargetValue reference="proj.distribute.TARGET_DATASET_TYPE"/>
+              <Visible is_expression="true">proj.distribute.DO_PROCESS_ILM_EVENTS == "0"</Visible>
+            </RadioButtons>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>10</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Data Mart:</b> " + proj.distribute.DATA_MART_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Table:</b> " + proj.distribute.TABLE_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>IDS/Event Information</Label>
+          <UIElements>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"To change any event to target mappings, use the \"register\" configuration for " + proj.distribute.DATA_MART_NAME</Label>
+            </TextLabel>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Channel ID:</b> " + proj.distribute.CHANNEL_ID]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>IDS Table:</b> " + proj.distribute.IDS_TABLE_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <ComboBox>
+              <Choices/>
+              <Label>IDS Table</Label>
+              <SourceTargetValue reference=""/>
+              <Visible>false</Visible>
+            </ComboBox>
+            <TextLabel>
+              <Label is_expression="true">vars.error</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Registration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.registration_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Lookups</Label>
+              <Title/>
+              <UIElements>
+                <EmeBrowser>
+                  <Eme reference="eme"/>
+                  <Label>Select lookup files</Label>
+                  <SourceTargetValue reference="vars.lookups.eme_object"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <Taxonomies is_expression="true">get_lookup_vec(proj.distribute.ACE_LOOKUP_PROJECT_LIST)</Taxonomies>
+                </EmeBrowser>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) or is_blank(lkp.key)</Expanded>
+                  <Style>dataset</Style>
+                  <Label is_expression="true">if ( is_blank(lkp.lookup_name) ) "** Please Enter a Name **" else lkp.lookup_name</Label>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                    "\n\nLookup Name:\n" + lkp.lookup_name +
+                    "\n\nSource Dataset:\n" + ds_name(lkp.eme_object.name) +
+                    (if ( is_blank(lkp.key) ) "" else
+                      "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                  <UIElements>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <Popup>
+                      <Style>key</Style>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_object.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_object.name)</Title>
+                      <UIElements>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                          <ContextPset reference="proj.distribute"/>
+                          <RecordFormat reference="lkp.eme_object" property="record_format"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <SourceTargetValue reference="lkp.key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>key</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Lookup Configuration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_problem"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Row and Column Filters</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Filter Records</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Edit filter expression</Label>
+                  <RecordFormat reference="proj.distribute.FILTER_INPUT" property="record_format"/>
+                  <SourceTargetValue reference="proj.distribute.FILTER_EXPRESSION"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+            <BusinessRulesPopup>
+              <Label>Optional: Edit Mappings</Label>
+              <SourceTargetValue reference="vars.rules"/>
+              <Title/>
+              <Style/>
+            </BusinessRulesPopup>
+            <CheckBox>
+              <Label>Apply Defaulting Rules</Label>
+              <TrueValue>True</TrueValue>
+              <FalseValue>False</FalseValue>
+              <SourceTargetValue reference="proj.distribute.DO_DEFAULTING"/>
+            </CheckBox>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Combine Natural Key</Label>
+          <UIElements>
+            <Popup>
+              <Label>Mandatory: Select Natural Keys</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Natural Keys</Label>
+                  <RecordFormat reference="proj.distribute.IDS_DML"/>
+                  <SourceTargetValue reference="proj.distribute.NATURAL_KEYS"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+              <Visible is_expression="true">proj.distribute.DO_PROCESS_ILM_EVENTS == "1"</Visible>
+              <Description>"Natural Kyes are set to '{}' by default while processing ILM events.
+                Providing natural keys is necessary in this case."</Description>
+            </Popup>
+            <Popup>
+              <Label>Optional: Select Extra key for Dedup Sort</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Extra Dedup Key</Label>
+                  <RecordFormat reference="proj.distribute.IDS_DML"/>
+                  <SourceTargetValue reference="proj.distribute.EXTRA_DEDUP_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Exta Dedup Sort Key:&lt;/b&gt;\n" + proj.distribute.EXTRA_DEDUP_SORT_KEY</Label>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff4500'&gt;Note: If there is a date field in above NATURAL_KEYS, we should be dropping it in the DEDUP_KEYS. By default the DEDUP_KEYS are same as the NATURAL_KEYS&lt;/font&gt;"</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Optional: Set Dedup Key</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Choose Dedup Keys</Label>
+                  <RecordFormat reference="proj.distribute.TARGET_DML"/>
+                  <SourceTargetValue reference="proj.distribute.DEDUP_KEYS"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" and string_downcase(proj.distribute.LOADER_TYPE) member [vector "netezza"] /* append to this vector as we build more types of loaders */</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices reference="vars.target_db_project"/>
+              <Label>Select DB Project</Label>
+              <SourceTargetValue reference="vars.v_target_db_project"/>
+              <BlankValueDisplayName>&lt;Select project&gt;</BlankValueDisplayName>
+              <Visible is_expression="true">string_downcase(proj.distribute.LOADER_TYPE) member [vector "netezza"]</Visible>
+            </ComboBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label is_expression="true">"&lt;font color='#ff4949'&gt;&lt;b&gt;Truncate and Load for table:&lt;/b&gt;&lt;/font&gt;" + " " + string_upcase(proj.load_netezza.TABLE_NAME)</Label>
+              <SourceTargetValue reference="proj.load_netezza.TRUNCATE_AND_LOAD"/>
+              <Visible is_expression="true">string_downcase(proj.distribute.LOADER_TYPE) member [vector "netezza"]</Visible>
+            </CheckBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == "" and vars.lookup_problem == "" and vars.registration_error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Target Natural Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#008800'&gt;Suggested Key: " + vars.target_nk_suggested + "&lt;/font&gt;"</Label>
+              <Visible is_expression="true">not is_blank(vars.target_nk_suggested) and vars.target_nk != vars.target_nk_suggested and proj.distribute.DO_PROCESS_ILM_EVENTS == "N"</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Natural Key:&lt;/b&gt;\n" + vars.target_nk</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit natural key...</Label>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Natural Key</Label>
+                  <RecordFormat reference="proj.distribute.TARGET_DML"/>
+                  <SourceTargetValue reference="vars.target_nk"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <TextLabel>
+              <Label>&lt;font color='#ff4500'&gt;Note: NATURAL_KEYS on the Target Table may not always be same as NK suggested&lt;/font&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" and string_downcase(proj.distribute.LOADER_TYPE) member [vector "netezza"] /* append to this vector as we build more types of loaders */</Visible>
+        </Box>
+        <Box>
+          <Label>Target Netezza Distribution Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Distribution Key:&lt;/b&gt;\n" + proj.load_netezza.NZ_DISTRIBUTION_KEY</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit distribution key...</Label>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Distribution Key</Label>
+                  <RecordFormat reference="proj.distribute.TARGET_DML"/>
+                  <SourceTargetValue reference="proj.load_netezza.NZ_DISTRIBUTION_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <TextLabel>
+              <Label>&lt;font color='#ff4500'&gt;Note: Only specify a distribution key if it is NOT part of the natural key&lt;/font&gt;</Label>
+              <Visible is_expression="true">proj.load_netezza.VALIDATE_NZ_DISTRIBUTION_KEY != "1"</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" and string_downcase(proj.distribute.LOADER_TYPE) member [vector "netezza"] /* append to this vector as we build more types of loaders */</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Combine</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>&lt;font color='#ee7600'&gt;&lt;b&gt;Always Run Combine first&lt;/b&gt;&lt;/font&gt;</Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Remember: Save before you run</Label>
+              <SourceValue reference="proj.distribute"/>
+            </ExecuteButton>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>View Load Ready File</Label>
+              <Title/>
+              <UIElements>
+                <ViewData>
+                  <Label is_expression="true">string_substring(proj.load_netezza.LR_FILE_NAME, string_rindex(proj.load_netezza.LR_FILE_NAME, "/") +1, 999)</Label>
+                  <RecordFormat reference="proj.load_netezza.LOAD_READY_DML"/>
+                  <SourceValue reference="proj.load_netezza.LR_FILE_NAME"/>
+                </ViewData>
+              </UIElements>
+              <Style>validation</Style>
+            </Popup>
+          </UIElements>
+          <Style>executable</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Load</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Remember: Save before you run</Label>
+              <SourceValue reference="proj.load_netezza"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>executable</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" and proj.distribute.LOADER_TYPE == "Netezza"</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Distribute Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + proj.distribute.PROJECT_DIR + "/" + proj.distribute.relative_path + "</b>"]]></Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.distribute.PROJECT_DIR + "/" + proj.distribute.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.distribute.LOADER_TYPE == "Netezza"</Visible>
+      <Label>Netezza Load Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.load_netezza.PROJECT_DIR + "/" + proj.load_netezza.relative_path + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.load_netezza.PROJECT_DIR + "/" + proj.load_netezza.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.distribute.LOADER_TYPE == "Netezza"</Visible>
+      <Label>Netezza Load Ready DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + load_read_file_dml.path + "</b>"]]></Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.distribute.LOAD_READY_FILE_DML</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

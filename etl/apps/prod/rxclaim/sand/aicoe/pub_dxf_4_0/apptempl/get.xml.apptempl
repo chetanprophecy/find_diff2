@@ -1,0 +1,425 @@
+<AppConfTempl name="Get from XML (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "get.") )
+    "This application configuration must be named: get.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "get.<i>source_system</i>.<i>file_identifier</i>,\n" +
+    "where <i>source_system</i> and <i>file_identifier</i>\n" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+
+out :: highlight_matching_files(path, matching_files)=
+begin
+  let string("\x01")[] file_list = directory_listing(path);
+  file_list = for(let file in file_list): if(file not member [vector ".", ".."] and not starts_with(file, ".")) file;
+  file_list = for(let file in file_list): if(file member matching_files) "<b><font color='#00ff00'>" + file + "</font></b>" else file;
+
+  out :: string_join(file_list, "\n");
+end;
+
+out :: get_file_list_with_matches(path, pattern)=
+begin
+  out :: highlight_matching_files(path, directory_listing(path, pattern));
+end;]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="get" prototype_path="$AI_PSET/get.xml.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <Variable name="mapping_ruleset" type="ruleset"/>
+      <Variable name="source_system" type="string"/>
+      <Variable name="get_dml_present" type="boolean"/>
+      <ListVariable name="matching_files" type="string"/>
+      <Variable name="lkp_flds" type="string"/>
+    </Variables>
+    <SharedFile name="get_dml_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="clean_dml_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="source_dml_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="lookup_dml_file" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split_no_empty(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="vars.source_system"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/get." + vars.source_system + "/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.get" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and vars.source_system != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.PROJECT_DIR + "/dml/get." + proj.get.TARGET_SYSTEM + "/get." + proj.get.TARGET_LOWER + ".dml"</SourceValue>
+      <TargetValue reference="get_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="get_dml_file"/>
+      <TargetValue reference="vars.mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="get_dml_file"/>
+      <TargetValue reference="vars.mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_ruleset"/>
+      <TargetValue reference="proj.get.RFMT_TRANSFORM"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">length_of(get_dml_file.contents) &gt; 0</SourceValue>
+      <TargetValue reference="vars.get_dml_present"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^get[.]", "")</SourceValue>
+      <TargetValue reference="proj.get.TARGET_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">directory_listing(proj.get.INPUT_FILE_PATH, proj.get.INPUT_FILE_PATTERN)</SourceValue>
+      <TargetValue reference="vars.matching_files"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.CLEAN_DML_FILE</SourceValue>
+      <TargetValue reference="clean_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.CLEAN_DML</SourceValue>
+      <TargetValue reference="clean_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.SOURCE_DML_FILE</SourceValue>
+      <TargetValue reference="source_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.SOURCE_DML</SourceValue>
+      <TargetValue reference="source_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.LOOKUP_DML_FILE</SourceValue>
+      <TargetValue reference="lookup_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.get.LOOKUP_DML</SourceValue>
+      <TargetValue reference="lookup_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"{" + re_replace(vars.lkp_flds, ",", ";") + "}"</SourceValue>
+      <TargetValue reference="proj.get.LOOKUP_FIELDS_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.get.RUN_ID"]</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Run ID"</SourceValue>
+      <TargetValue reference="proj.get.RUN_ID" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"number"</SourceValue>
+      <TargetValue reference="proj.get.RUN_ID" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.RUN_ID"/>
+      <TargetValue reference="proj.get.RUN_ID" property="business_test_value"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.get"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true"><![CDATA[ vars.errors != "" ]]></Visible>
+          <Style>mainSource</Style>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA[ "<b>" + vars.errors + "</b>" ]]></Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Input File Pattern</Label>
+          <UIElements>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;File Pattern:&lt;/b&gt;\n" + proj.get.INPUT_FILE_PATTERN</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit pattern...</Label>
+              <Title/>
+              <UIElements>
+                <TextInput>
+                  <Label>Edit the pattern</Label>
+                  <SourceTargetValue reference="proj.get.INPUT_FILE_PATTERN"/>
+                </TextInput>
+                <TextLabel>
+                  <Label>&lt;font color='#ff9900'&gt;&lt;b&gt;Warning: Your file pattern does not end in ".xml" or ".XML". Make sure this is what you want.&lt;/b&gt;&lt;/font&gt;</Label>
+                  <Visible is_expression="true">not is_blank(proj.get.INPUT_FILE_PATTERN) and
+            not ends_with(proj.get.INPUT_FILE_PATTERN, "*") and
+            not ends_with(string_upcase(proj.get.INPUT_FILE_PATTERN), ".CSV")</Visible>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"File listing: (The entries in green are the ones that match the entered pattern)"</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">highlight_matching_files(proj.get.INPUT_FILE_PATH, vars.matching_files)</Label>
+                </TextLabel>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>Define Input Record Format</Label>
+              <Title/>
+              <UIElements>
+                <RecordFormat>
+                  <Label>Input Record Format</Label>
+                  <SourceTargetValue reference="get_dml_file"/>
+                  <CanModifyBusinessAttributes>none</CanModifyBusinessAttributes>
+                  <CanRemoveFields>True</CanRemoveFields>
+                  <CanReorderFields>True</CanReorderFields>
+                  <ShowSampleDataArea>False</ShowSampleDataArea>
+                  <SourceIsCompressed>False</SourceIsCompressed>
+                  <CanModifyFields>True</CanModifyFields>
+                  <CanDiscover>true</CanDiscover>
+                  <CanCreate>true</CanCreate>
+                  <Style>mapping</Style>
+                  <!--<CanEnterDMLMode>True</CanEnterDMLMode>-->
+                  <AssociatedSharedFile reference="get_dml_file"/>
+                  <SampleDataPath is_expression="true">proj.get.INPUT_FILE_PATH + "/" + vars.matching_files[0]</SampleDataPath>
+                </RecordFormat>
+              </UIElements>
+              <Style>mainSource</Style>
+            </Popup>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Filter Records</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Filter Expression:&lt;/b&gt;\n" + proj.get.FILTER_EXPR</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit filter expression...</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Expression</Label>
+                  <RecordFormat reference="get_dml_file"/>
+                  <SourceTargetValue reference="proj.get.FILTER_EXPR"/>
+                </ExpressionEditor>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible reference="vars.get_dml_present"/>
+        </Box>
+        <Box>
+          <Label>Transform</Label>
+          <UIElements>
+            <BusinessRulesPopup>
+              <Label>Edit transformation rules...</Label>
+              <SourceTargetValue reference="vars.mapping_ruleset"/>
+              <Title/>
+            </BusinessRulesPopup>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible reference="vars.get_dml_present"/>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and vars.get_dml_present</Visible>
+          <Style>recval</Style>
+          <Label>Output</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Produce a Source File for Cleansing</Label>
+              <SourceTargetValue reference="proj.get.DO_SOURCE"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Clean File</Label>
+              <SourceTargetValue reference="proj.get.DO_CLEAN"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Lookup</Label>
+              <SourceTargetValue reference="proj.get.DO_LOOKUP"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <TextLabel>
+              <Visible is_expression="true">(decimal(""))proj.get.DO_SOURCE + (decimal(""))proj.get.DO_CLEAN + (decimal(""))proj.get.DO_LOOKUP != 1</Visible>
+              <Label is_expression="true">bold("Note: Typically, only one of these should be selected.")</Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+        <Box>
+          <Label>Lookup Fields and Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Lookup Fields (Optional):&lt;/b&gt;\n" + proj.get.LOOKUP_FIELDS_KEY + "\n" +
+"&lt;b&gt;Lookup Key:&lt;/b&gt;\n" + proj.get.LOOKUP_KEY</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit lookup fields(Optional)...</Label>
+              <Title/>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Lookup Fields Picker</Label>
+                  <RecordFormat reference="get_dml_file"/>
+                  <SourceTargetValue reference="vars.lkp_flds"/>
+                </FieldPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Edit lookup key...</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Key</Label>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">(decimal(""))proj.get.DO_LOOKUP and vars.get_dml_present</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.get_dml_present</Visible>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Run Get</ButtonLabel>
+              <SourceValue reference="proj.get"/>
+            </ExecuteButton>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_CLEAN</Visible>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Output File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.CLEAN_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.CLEAN_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.CLEAN_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_LOOKUP</Visible>
+              <Label>View Lookup File...</Label>
+              <Style>validation</Style>
+              <Title>View Lookup File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.LOOKUP_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.LOOKUP_FILE_URL</SourceValue>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_SOURCE</Visible>
+              <Label>View Source File...</Label>
+              <Style>validation</Style>
+              <Title>View Source File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.SOURCE_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.SOURCE_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.SOURCE_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+          </UIElements>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Get PSET</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.PROJECT_DIR + "/" + proj.get.relative_path + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.get.PROJECT_DIR + "/" + proj.get.relative_path)</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Get DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.GET_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.get.GET_DML</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Output DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.OUTPUT_DML_FILE + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.get.OUTPUT_DML</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

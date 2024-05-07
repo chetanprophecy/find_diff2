@@ -1,0 +1,54 @@
+out::rollup(in)=
+begin
+let v_reporting_month                   = if(  is_defined(in.mbr_rec.fmpd_sbm_dt) &&  (date("YYYYMM"))in.mbr_rec.fmpd_sbm_dt == (date("YYYYMM"))$'RUN_MONTH' )  1 else 0;
+let v_max_claim_nbr_rec                 =         max(in ,1 ,{mbr_rec.fmpd_claim_nbr});     
+let string("")  fmpd_drg_cov_stat_cd    = first_defined( in.mbr_rec.fmpd_drg_cov_stat_cd,"");
+
+let lkp_d_plan_drug_sts_rec             = lookup("d_plan_drug_status_lkp",in.mbr_rec.fclm_pln_drg_stat_sk);
+let string("") drug_status              = first_defined( lkp_d_plan_drug_sts_rec.pln_drg_stat_cd ,"");
+let lkp_d_contract_pbp_rec              = lookup("d_contract_pbp_lkp", in.mbr_rec.fmpd_contract_pbp_sk);
+
+let lkp_bonus_drug_list_rec             = if(string_lrtrim(in.mbr_rec.dmem_carrier_id) member [vector "MPDOVA","PDPIND"] ) //Group Retiree Logic
+                                                first_defined( lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,in.mbr_rec.dmem_account_id, in.mbr_rec.dmem_employer_group_id, drug_status ),
+                                                               lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status))
+                                                else          lookup("LKP : Bonus Drug List", in.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status) ;
+
+
+                                                
+let decimal("") v_contract_pbp_sk       = max( first_defined( in.mbr_rec.fmpd_contract_pbp_sk , -1));
+ 
+let v_bonus_drug_flag                   = if(! is_null(lkp_bonus_drug_list_rec)) "Y" else "N"; //used for CD01
+                                                      
+
+let string("") plan_has_ded_flag        = if ( "D" member  accumulation ( lookup("l_benefit_phase",in.mbr_rec.fmpd_begin_benefit_phase_sk).benefit_phase_cd)  ) "Y" else "N"; 
+
+let decimal("|") v_drg_spnd_amt_ytd     =  sum( if(fmpd_drg_cov_stat_cd member [vector "C","G","W"] )
+                                                     first_defined(in.mbr_rec.fmpd_drg_spnd_amt,0)
+                                                 else 0)
+                                           + first_defined(in.madp_rec.madp_mad_adjtmnt_amt_s,0)
+                                           + first_defined(in.madp_rec.yr_mad_adjtmnt_amt_s,0);
+                                                  
+let decimal("|") v_troop_ytd        =  sum (if( first_defined(fmpd_drg_cov_stat_cd,"") member [vector "C","G","W"] and  v_bonus_drug_flag=="N" )
+                                                first_defined(in.mbr_rec.fmpd_phr_patient_pay_amt,0)          + 
+                                                first_defined(in.mbr_rec.fmpd_lics_amt,0)                     + 
+                                                math_abs(first_defined(in.mbr_rec.fmpd_gap_brnd_disc_amt,0)) 
+                                                else 0 ) 
+                                        +      first_defined(in.madp_rec.madp_mad_adjtmnt_amt_t,0) 
+                                        +      first_defined(in.madp_rec.yr_mad_adjtmnt_amt_t,0);
+
+out.v_troop_ytd                 ::v_troop_ytd;
+out.plan_has_ded_flag           :: plan_has_ded_flag;
+out.v_md_mmd_copay_category     :: if(in.is_only_madp_rec =="1" ) 
+                                        first_defined(in.madp_rec.dmmd_mmd_copay_category,"0") 
+                                   else
+                                        first_defined(last(in.mbr_rec.fmpd_copay_catgry_cd,v_reporting_month),in.madp_rec.dmmd_mmd_copay_category,"0");
+out.v_drg_spnd_amt_ytd          :: ( v_drg_spnd_amt_ytd);
+out.v_contract_pbp_sk           :: v_contract_pbp_sk;
+out.dmem_mbr_sk                 :: in.mbr_rec.dmem_mbr_sk;
+out.dmem_mbr_id                 :: in.mbr_rec.dmem_mbr_id;
+out.dmem_carrier_id             :: in.mbr_rec.dmem_carrier_id;
+out.account_id                  :: v_max_claim_nbr_rec.mbr_rec.dmem_account_id;                                   //MD03
+out.group_id                    :: v_max_claim_nbr_rec.mbr_rec.dmem_employer_group_id;                            //MD04
+
+
+end;

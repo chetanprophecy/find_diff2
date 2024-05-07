@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcmpop
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmpop                  aeabcd,aeaacd,aeaccd,aeadcd,aelghb,aexch6,aexeh6,aeh8hs,aec5i1,aequhg,aeqvhg,aegrcd,aeelnb,aegocd,aecvhc,aed1hb,aedwhb,aedbc1,aedhcj,aedccj,aeakvn,aec2dt,aeadtm,aealvn,aeadvn,aebmdt,aeabtm,aeaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcmpop")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE RCMPOP.AEBMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND RCMPOP.AEBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE RCMPOP.AEBMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND RCMPOP.AEBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n\n\n
+ENABLE_DEFAULT_RULES||||True

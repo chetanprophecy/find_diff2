@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcgelp_rcmelp_cag_actv_flg_lkp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcgelp                  \nclmprdfil     rcmelp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcgelp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcmelp')]
+DO_LOOKUP||||1
+DO_SOURCE||||0
+SQL||||$[" WITH GRP_ELIG_ACTIVE AS (\nselect distinct g3aacd,g3accd,g3adcd from clmprdfil.rcgelp\nwhere\nG3BWS2 = 'A' \nand G3CMDA <= " + string_lrtrim(((decimal(""))(string(""))(date("YYYYMMDD"))datetime_add((datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME,days=-1,hours=2) -\n19000000)) + " \nand G3CNDA >= " + string_lrtrim(((decimal(""))(string(""))(date("YYYYMMDD"))datetime_add((datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME,days=-1,hours=2) -\n19000000)) + ") ,\n\nMBR_ELIG_ACTIVE AS \n(select distinct flaacd,flaccd,fladcd from clmprdfil.rcmelp \nwhere \nFLB9S2 = 'A'\nand FLCPDA <= " + string_lrtrim(((decimal(""))(string(""))(date("YYYYMMDD"))datetime_add((datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME,days=-1,hours=2) -\n19000000)) + "\nand FLCQDA >= " + string_lrtrim(((decimal(""))(string(""))(date("YYYYMMDD"))datetime_add((datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME,days=-1,hours=2) -\n19000000)) + ")\n\nselect grp_elig.g3aacd CARRIER_ID, grp_elig.g3accd ACCOUNT_ID, grp_elig.g3adcd EMPLOYER_GROUP_ID,  'Y' CAG_ACTV_FLG from GRP_ELIG_ACTIVE grp_elig inner join MBR_ELIG_ACTIVE mbr_elig on \ngrp_elig.g3aacd = mbr_elig.flaacd and\ngrp_elig.g3accd = mbr_elig.flaccd and\ngrp_elig.g3adcd = mbr_elig.fladcd" ]
+LOOKUP_KEY||||{carrier_id; account_id; employer_group_id}

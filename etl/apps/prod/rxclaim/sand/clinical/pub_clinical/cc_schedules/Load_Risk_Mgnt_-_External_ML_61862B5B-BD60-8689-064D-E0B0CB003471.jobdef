@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="LOAD_PROGRAM" description="This job will read full extract file from OEA team and load into C_RISK_SCOR_HIST ,C_RISK_SCOR_TOP_IND_DTL" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="61862B5B-BD60-8689-064D-E0B0CB003471" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Load Risk Mgnt - External ML" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load_program" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/enri_rximl_load_risk_score_mgnt.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="518400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2018-01-31Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="85AA94D0-CC26-5B02-C38F-9CA82E076AE8"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

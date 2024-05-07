@@ -1,0 +1,32 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+out :: reformat(in) = 
+begin
+
+  let hash_key_combine_type dxf_hk = reinterpret_as(hash_key_combine_type, hash_value(in, {claim_nbr;src_env_sk}, "murmur"));  
+  
+  out.dxf_hk_part1 :: dxf_hk.dxf_hk_part1;
+  out.dxf_hk_part2 :: dxf_hk.dxf_hk_part2;
+  out.lt_claim_seq_nbr :: in.claim_seq_nbr;
+  out.lt_claim_stat_id :: in.claim_stat_id;
+  out.lt_claim_sbm_dt :: in.sbm_dt;
+  out.lt_claim_filled_dt :: in.filled_dt;
+  out.ostd_paid_claim_seq_nbr :: if(in.claim_stat_id member [vector 'P', 'C']) in.claim_seq_nbr;
+  out.paid_claim_seq_nbr_list:: if(in.claim_stat_id member [vector 'P', 'C']) in.claim_seq_nbr;
+  out.rev_claim_seq_nbr_list:: if(in.claim_stat_id member [vector 'X', 'Z']) in.claim_seq_nbr;
+  out.rej_claim_seq_nbr_list:: if(in.claim_stat_id == 'R') in.claim_seq_nbr;
+  out.lt_paid_claim_seq_nbr ::  if(in.claim_stat_id member [vector 'P', 'C']) in.claim_seq_nbr;
+  out.lt_paid_claim_sbm_dt ::  if(in.claim_stat_id member [vector 'P', 'C']) in.sbm_dt;
+  out.lt_paid_claim_filled_dt:: if(in.claim_stat_id member [vector 'P', 'C']) in.filled_dt; 
+  out.lt_rev_claim_seq_nbr ::  if(in.claim_stat_id member [vector 'X', 'Z']) in.claim_seq_nbr;
+  out.lt_rev_claim_sbm_dt ::  if(in.claim_stat_id member [vector 'X', 'Z']) in.sbm_dt;
+  out.lt_rev_claim_filled_dt:: if(in.claim_stat_id member [vector 'X', 'Z']) in.filled_dt; 
+  out.lt_rej_claim_seq_nbr ::  if(in.claim_stat_id == 'R') in.claim_seq_nbr;
+  out.lt_rej_claim_sbm_dt ::  if(in.claim_stat_id == 'R') in.sbm_dt;
+  out.lt_rej_claim_filled_dt:: if(in.claim_stat_id == 'R') in.filled_dt;
+  out.carrier_id :: in.d_mbr.carrier_id;
+  out.account_id :: in.d_mbr.account_id;
+  out.employer_group_id :: in.d_mbr.employer_group_id;
+  out.mbr_id :: in.d_mbr.mbr_id;
+  out.* :: in.*;
+end;

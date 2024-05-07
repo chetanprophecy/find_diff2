@@ -1,0 +1,166 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+string("")[] out :: get_all_table_types() = 
+begin
+  out :: [vector "dimension", "reference_static", "reference_dynamic", "fact", "aggregate", "relation_static", "relation_dynamic"];
+end
+
+out :: do_create_placeholder(table) = 
+begin
+  let table_type = get_ids_table_type(table);
+  out :: if(table_type member [vector "reference_static", "fact", "aggregate", "relation_static"]) 0 else 1;
+end
+
+out :: get_ids_dataset_identifier(table) = 
+begin
+  let table_type = get_ids_table_type(table);
+  out :: switch(table_type) 
+          case "fact", "aggregate" : "many";
+          case "dimension", "reference_static", "reference_dynamic", "relation_static", "relation_dynamic"  : "one";
+          default : "Invalid table type!";
+         end;
+end
+
+out :: get_ids_table_properties_file_path()=
+begin
+  let string("\x01") path = $PUB_DXF_META;
+  path = path + "/ids_table_properties.dat";
+  out :: path;
+end;
+
+out :: get_two_step_lookup_file_path()=
+begin
+  out :: $PUB_DXF_META + "/two_step_lookup_list.dat";
+end;
+
+table_properties_type[] out :: get_all_ids_table_properties()=
+begin
+  let string("\x01") contents = read_file(get_ids_table_properties_file_path());
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let table_properties_type[] props = [vector];
+  for(let line in lines)
+  begin
+    if(not is_blank(line) and not starts_with(line, "#"))
+    begin
+      let string("") l = line + "\n";
+      let table_properties_type p = reinterpret(l);
+      props = vector_append(props, p);
+    end
+  end
+  out :: props;
+end;
+
+table_properties_type out :: get_ids_table_properties(table)=
+begin
+  let table_properties_type[] props_all = get_all_ids_table_properties();
+  let props = for(let prop in props_all): if(prop.table_name == table) prop;
+  
+  out :1: if(length_of(props)) props[0];
+  out :: allocate_with_defaults();
+end;
+
+out :: get_ids_table_properties_separated(table)=
+begin
+  out :: reinterpret_as(string("\n"), get_ids_table_properties(table));
+end;
+
+out :: get_ids_table_list()=
+begin
+  let table_properties_type[] props_all = get_all_ids_table_properties();
+  out :: for(let prop in props_all): prop.table_name;
+end;
+
+out :: get_ids_table_list_sorted()=
+begin
+  out :: vector_sort(get_ids_table_list());
+end;
+
+out :: is_two_step_lookup(table) = 
+begin
+  let string("\x01") contents = read_file(get_two_step_lookup_file_path());
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let long return_flag = 0;
+  
+  for(let line in lines)
+    if(not is_blank(line) and not starts_with(line, "#") and line == table)
+      return_flag = 1;
+
+  out :: return_flag;
+end
+
+out :: get_ids_table_type(table)=
+begin
+  out :: get_ids_table_properties(table).table_type;
+end;
+
+out :: get_ids_table_storage_type(table)=
+begin
+  out :: get_ids_table_properties(table).storage_type;
+end;
+
+out :: get_ids_table_pk(table, subrecord_prefix = "")=
+begin
+  let string("\x01") pk = get_ids_table_properties(table).primary_key;
+  if(subrecord_prefix != "")
+    pk = add_prefix_to_key(pk, subrecord_prefix);
+  out :: pk;
+end;
+
+out :: get_ids_table_nk(table, subrecord_prefix = "")=
+begin
+  let string("\x01") nk = get_ids_table_properties(table).natural_key;
+  if(subrecord_prefix != "")
+    nk = add_prefix_to_key(nk, subrecord_prefix);
+  out :: nk;
+end;
+
+out :: get_ids_table_bk(table, subrecord_prefix = "")=
+begin
+  let string("\x01") bk = get_ids_table_properties(table).business_key;
+  if(subrecord_prefix != "")
+    bk = add_prefix_to_key(bk, subrecord_prefix);
+  out :: bk;
+end;
+
+out :: get_ids_table_comment(table)=
+begin
+  out :: get_ids_table_properties(table).comment;
+end;
+
+out :: get_all_by_property_name(property_name)=
+begin
+  let table_properties_type[] props_all = get_all_ids_table_properties();
+  out :: for(let prop in props_all): (string(""))eval(prop, property_name);
+end
+
+out :: add_prefix_to_key(key, prefix)=
+begin
+  let key_fields = key_info(key);
+  for(let i, i < length_of(key_fields))
+    key_fields[i].field_name = prefix + "." + key_fields[i].field_name;
+  out :: make_key(key_fields);
+end;
+
+out :: get_ids_dml_file(table) =
+begin
+  let string("") subject_area = string_split(table, ".")[0];
+  out :: $PUB_DATAHUB_DML + "/" + subject_area + "/" + table + ".dml";
+end;
+
+out :: get_ids_uniq_sub_areas() =
+begin
+let string("") [] v_subject_areas_ids_tbl_props_all=get_ids_table_list();
+let string("") [] v_subject_areas_ids_tbl_props_uniq=allocate_with_defaults();
+let string("") v_subject_area="";
+
+        for (let int i=0, i < length_of(v_subject_areas_ids_tbl_props_all))
+        begin 
+                v_subject_area=string_split(v_subject_areas_ids_tbl_props_all[i],".")[0];
+                if(starts_with(v_subject_area,"ids_"))
+                begin
+                        v_subject_areas_ids_tbl_props_uniq=vector_append(v_subject_areas_ids_tbl_props_uniq,v_subject_area);
+                end
+        end
+
+out :: vector_sort_dedup_first(v_subject_areas_ids_tbl_props_uniq);
+end;

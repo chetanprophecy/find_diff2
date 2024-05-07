@@ -1,0 +1,89 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c0f832c_cce2_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_act_pt.cpp_member_assessment_action_pt_sk,[transform],]
+  [out0.c_mem_act_pt.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_mem_act_pt.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_act_pt.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_act_pt.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_act_pt.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_act_pt.cpp_member_assessment_action_pt_sk,'c_mem_act_pt.cpp_member_assessment_action_pt_sk',1,0]
+     [out0.c_mem_act_pt.src_env_sk,'c_mem_act_pt.src_env_sk',1,0]
+     [out0.c_mem_act_pt.member_assessment_action_pt_id,'c_mem_act_pt.member_assessment_action_pt_id',1,0]
+     [out0.c_mem_act_pt.member_assessment_id,'c_mem_act_pt.member_assessment_id',1,0]
+     [out0.c_mem_act_pt.cpp_updated_by,'c_mem_act_pt.cpp_updated_by',1,0]
+     [out0.c_mem_act_pt.cpp_created_by,'c_mem_act_pt.cpp_created_by',1,0]
+     [out0.c_mem_act_pt.member_action_response,'c_mem_act_pt.member_action_response',1,0]
+     [out0.c_mem_act_pt.cpp_create_ts,'c_mem_act_pt.cpp_create_ts',1,0]
+     [out0.c_mem_act_pt.cpp_update_ts,'c_mem_act_pt.cpp_update_ts',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_act_pt.action_pt_cmmt,'c_mem_act_pt.action_pt_cmmt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_act_pt.assigned_action_pt_num,'c_mem_act_pt.assigned_action_pt_num',1,0]
+     [out0.c_mem_act_pt.sequence_num,'c_mem_act_pt.sequence_num',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.member_action_response,'member_action_response',1,1]
+     [in0.sequence_num,'sequence_num',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.member_assessment_id,'member_assessment_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.member_assessment_action_pt_id,'member_assessment_action_pt_id',1,1]
+     [in0.assigned_action_pt_num,'assigned_action_pt_num',1,1]
+     [in0.action_pt_cmmt,'action_pt_cmmt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_act_pt_cpp_member_assessment_action_pt_sk = -1;
+let decimal("\x01",0) c_mem_act_pt_member_assessment_action_pt_id = fail_if_error(in0.member_assessment_action_pt_id);
+let decimal("\x01",0) c_mem_act_pt_sequence_num = fail_if_error(in0.sequence_num);
+let utf8 string("\x01", maximum_length=60) c_mem_act_pt_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let decimal("\x01",0) c_mem_act_pt_assigned_action_pt_num = fail_if_error(in0.assigned_action_pt_num);
+let utf8 string("\x01", maximum_length=400) c_mem_act_pt_member_action_response = fail_if_error(in0.member_action_response);
+let utf8 string("\x01", maximum_length=16000) c_mem_act_pt_action_pt_cmmt = fail_if_error(in0.action_pt_cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_act_pt_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_act_pt_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_act_pt_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_act_pt_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_act_pt_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_mem_act_pt.cpp_member_assessment_action_pt_sk::c_mem_act_pt_cpp_member_assessment_action_pt_sk;
+  out0.c_mem_act_pt.member_assessment_action_pt_id::c_mem_act_pt_member_assessment_action_pt_id;
+  out0.c_mem_act_pt.sequence_num::c_mem_act_pt_sequence_num;
+  out0.c_mem_act_pt.member_assessment_id::c_mem_act_pt_member_assessment_id;
+  out0.c_mem_act_pt.assigned_action_pt_num::c_mem_act_pt_assigned_action_pt_num;
+  out0.c_mem_act_pt.member_action_response::c_mem_act_pt_member_action_response;
+  out0.c_mem_act_pt.action_pt_cmmt::c_mem_act_pt_action_pt_cmmt;
+  out0.c_mem_act_pt.cpp_update_ts::c_mem_act_pt_cpp_update_ts;
+  out0.c_mem_act_pt.cpp_updated_by::c_mem_act_pt_cpp_updated_by;
+  out0.c_mem_act_pt.cpp_create_ts::c_mem_act_pt_cpp_create_ts;
+  out0.c_mem_act_pt.cpp_created_by::c_mem_act_pt_cpp_created_by;
+  out0.c_mem_act_pt.src_env_sk::c_mem_act_pt_src_env_sk;
+  out0.*::in0.*;
+
+end;

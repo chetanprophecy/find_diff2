@@ -1,0 +1,18 @@
+include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "~$PUB_DXF_XFR/common_functions.xfr";
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+out :: reformat(in) =
+begin
+  let string("\x01",charset="iso-8859-15", maximum_length=30)   carrier_id =in.carrier_id /*VARCHAR(30)*/;
+  let string("\x01",charset="iso-8859-15", maximum_length=40)   account_id = if(in.cag_sk==23203536 and in.src_env_sk==770)first_defined(in.account_id,"-") else in.account_id/*VARCHAR(40)*/;
+  let string("\x01",charset="iso-8859-15", maximum_length=30)   employer_group_id = if(in.cag_sk==23203536 and in.src_env_sk==770)first_defined(in.employer_group_id,"-") else in.employer_group_id /*VARCHAR(30)*/;
+  let string("\x01",charset="iso-8859-15", maximum_length=20)   mbr_id = in.mbr_id /*VARCHAR(20)*/;
+
+   let hash_key_combine_type dxf_hk = reinterpret(get_hash([record carrier_id carrier_id account_id account_id employer_group_id employer_group_id mbr_id mbr_id], '{carrier_id; account_id; employer_group_id; mbr_id}' )) ;
+   out.dxf_hk_part1 :: if(in.cag_sk==23203536 and in.src_env_sk==770)dxf_hk.dxf_hk_part1 else in.dxf_hk_part1;
+   out.dxf_hk_part2 :: if(in.cag_sk==23203536 and in.src_env_sk==770)dxf_hk.dxf_hk_part2 else in.dxf_hk_part2;
+   out.account_id::  account_id;
+   out.employer_group_id:: employer_group_id;
+   out.* :: in.*;
+end;

@@ -1,0 +1,26 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) ctrx_drg_cst_prod_sk = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_drg_cst_prod_id = fail_if_error(first_defined(in0.ndc, "-"));
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_drg_cst_prod_id_qlfr_cd = '03';
+let decimal("\x01".2, maximum_length=11, sign_reserved) ctrx_drg_cst_unit_cost_amt = fail_if_error((decimal("\x01".2))first_defined(in0.costunit, "0"));
+let decimal("\x01",0) ctrx_drg_cst_src_env_sk = 800;
+let string("\x01",charset="iso-8859-15", maximum_length=20) prod_prod_id = fail_if_error(in0.ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=2) prod_prod_id_qlfr_cd = '03';
+
+
+
+  out0.ctrx_drg_cst.prod_sk::ctrx_drg_cst_prod_sk;
+  out0.ctrx_drg_cst.prod_id::ctrx_drg_cst_prod_id;
+  out0.ctrx_drg_cst.prod_id_qlfr_cd::ctrx_drg_cst_prod_id_qlfr_cd;
+  out0.ctrx_drg_cst.unit_cost_amt::ctrx_drg_cst_unit_cost_amt;
+  out0.ctrx_drg_cst.src_env_sk::ctrx_drg_cst_src_env_sk;
+  out0.prod.prod_id::prod_prod_id;
+  out0.prod.prod_id_qlfr_cd::prod_prod_id_qlfr_cd;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,6 @@
+!prototype|P|||$AI_PSET/icff.maintenance.interim.pset
+IDS_PATH||||$PUB_DATAHUB_MFS_LOOKUP
+IDS_DATASET_LIST||||$[\r\nbegin\r\n        let string("") table_list = read_file(AI_META + '/idw_maintenance/idw_icff_maintenance_type1_weekly.txt');\r\n        result :: if(!is_blank(IDS_DATASET_MANUAL)) IDS_DATASET_MANUAL else string_substring(table_list,1,string_length(table_list)-1);\r\nend\r\n]
+SEND_TO||||$[\r\nbegin\r\n      let string("") table_list = read_file(AI_META + '/idw_maintenance/idw_icff_maintenance_mail_list.txt');\r\n      result :: string_substring(table_list,1,string_length(table_list)-1);\r\nend\r\n]
+IDS_SERIAL_PATH||||$PUB_DATAHUB_SERIAL
+APPLICATION||||IDW

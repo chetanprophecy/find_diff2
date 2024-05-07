@@ -1,0 +1,126 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.w_swt_tmster.emp_initial,[transform],in0.mb_last_nm,
+     in0.mb_first_nm]
+  [out0.w_swt_tmster.emp_date_of_birth,[passthrough],in0.mbr_dt_of_brth]
+  [out0.w_swt_tmster.group_num,[transform],]
+  [out0.w_swt_tmster.member_id,[passthrough],in0.mbr_id]
+  [out0.w_swt_tmster.amount_pd,[passthrough],in0.clt_due_amt]
+  [out0.w_swt_tmster.mbr_first_name,[passthrough],in0.mb_first_nm]
+  [out0.w_swt_tmster.mbr_sex,[transform],in0.gender_sk,
+     'lookup("gender_lkp").gender_cd']
+  [out0.w_swt_tmster.accum_cd,[transform],]
+  [out0.w_swt_tmster.transaction_yr,[transform],]
+  [out0.w_swt_tmster.record_type,[transform],]
+  [out0.w_swt_tmster.emp_last_name,[passthrough],in0.mb_last_nm]
+  [out0.w_swt_tmster.mbr_date_of_birth,[passthrough],in0.birth_dt]
+  [out0.w_swt_tmster.id_num,[passthrough],in0.mbr_ssn_nbr]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.w_swt_tmster.src_env_sk,'w_swt_tmster.src_env_sk',1,0]
+     [out0.w_swt_tmster.emp_initial,'w_swt_tmster.emp_initial',1,0]
+     [out0.w_swt_tmster.emp_date_of_birth,'w_swt_tmster.emp_date_of_birth',1,0]
+     [out0.w_swt_tmster.group_num,'w_swt_tmster.group_num',1,0]
+     [out0.w_swt_tmster.member_id,'w_swt_tmster.member_id',1,0]
+     [out0.w_swt_tmster.amount_pd,'w_swt_tmster.amount_pd',1,0]
+     [out0.w_swt_tmster.mbr_first_name,'w_swt_tmster.mbr_first_name',1,0]
+     [out0.w_swt_tmster.mbr_sex,'w_swt_tmster.mbr_sex',1,0]
+     [out0.w_swt_tmster.accum_cd,'w_swt_tmster.accum_cd',1,0]
+     [out0.w_swt_tmster.transaction_yr,'w_swt_tmster.transaction_yr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.w_swt_tmster.record_type,'w_swt_tmster.record_type',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.w_swt_tmster.dxf_hk_part1,'w_swt_tmster.dxf_hk_part1',1,0]
+     [out0.w_swt_tmster.dxf_hk_part2,'w_swt_tmster.dxf_hk_part2',1,0]
+     [out0.w_swt_tmster.relationship_cd,'w_swt_tmster.relationship_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.w_swt_tmster.emp_last_name,'w_swt_tmster.emp_last_name',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.w_swt_tmster.dxf_sk,'w_swt_tmster.dxf_sk',1,0]
+     [out0.w_swt_tmster.mbr_date_of_birth,'w_swt_tmster.mbr_date_of_birth',1,0]
+     [out0.w_swt_tmster.id_num,'w_swt_tmster.id_num',1,0]
+  ]
+  impacts:
+  [
+     [in0.mbr_ssn_nbr,'mbr_ssn_nbr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.mb_first_nm,'mb_first_nm',2,2]
+     ['lookup("relationship_lkp").relationship_cd','relationship_cd',1,1]
+     [in0.mb_last_nm,'mb_last_nm',2,2]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.mbr_id,'mbr_id',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     ['lookup("gender_lkp").gender_cd','gender_cd',1,1]
+     [in0.l_relnshp.relationship_cd,'relationship_cd',2,2]
+     [in0.mbr_dt_of_brth,'mbr_dt_of_brth',1,1]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gender_sk,'gender_sk',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.birth_dt,'birth_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) w_swt_tmster_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) w_swt_tmster_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) w_swt_tmster_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_swt_tmster_record_type = 'G';
+let string("\x01",charset="iso-8859-15", maximum_length=8) w_swt_tmster_group_num = 'SWT';
+let string("\x01",charset="iso-8859-15", maximum_length=11) w_swt_tmster_id_num = fail_if_error(in0.mbr_ssn_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=16) w_swt_tmster_emp_last_name = fail_if_error(in0.mb_last_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=2) w_swt_tmster_emp_initial = fail_if_error(string_concat(string_substring(in0.mb_first_nm, 1, 1), string_substring(in0.mb_last_nm, 1, 1)));
+let string("\x01",charset="iso-8859-15", maximum_length=8) w_swt_tmster_emp_date_of_birth = fail_if_error(in0.mbr_dt_of_brth);
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_swt_tmster_relationship_cd = fail_if_error(in0.l_relnshp.relationship_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=16) w_swt_tmster_mbr_first_name = fail_if_error(in0.mb_first_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=8) w_swt_tmster_mbr_date_of_birth = fail_if_error(in0.birth_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_swt_tmster_mbr_sex;
+let string("\x01",charset="iso-8859-15", maximum_length=4) w_swt_tmster_transaction_yr = '9999';
+let string("\x01",charset="iso-8859-15", maximum_length=2) w_swt_tmster_accum_cd = 'MR';
+let string("\x01",charset="iso-8859-15", maximum_length=11) w_swt_tmster_amount_pd = fail_if_error(in0.clt_due_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=20) w_swt_tmster_member_id = fail_if_error(in0.mbr_id);
+let decimal("\x01",0) w_swt_tmster_src_env_sk = fail_if_error(in0.src_env_sk);
+let unicode string(int) w_swt_tmster_reclationship_cd;
+
+
+
+/*   Default value   */
+w_swt_tmster_reclationship_cd=fail_if_error(lookup("relationship_lkp",in0.l_relnshp.relationship_cd).relationship_cd);
+
+/*   Default value   */
+w_swt_tmster_mbr_sex=fail_if_error(lookup("gender_lkp", in0.gender_sk).gender_cd);
+
+  out0.w_swt_tmster.dxf_hk_part1::w_swt_tmster_dxf_hk_part1;
+  out0.w_swt_tmster.dxf_hk_part2::w_swt_tmster_dxf_hk_part2;
+  out0.w_swt_tmster.dxf_sk::w_swt_tmster_dxf_sk;
+  out0.w_swt_tmster.record_type::w_swt_tmster_record_type;
+  out0.w_swt_tmster.group_num::w_swt_tmster_group_num;
+  out0.w_swt_tmster.id_num::w_swt_tmster_id_num;
+  out0.w_swt_tmster.emp_last_name::w_swt_tmster_emp_last_name;
+  out0.w_swt_tmster.emp_initial::w_swt_tmster_emp_initial;
+  out0.w_swt_tmster.emp_date_of_birth::w_swt_tmster_emp_date_of_birth;
+  out0.w_swt_tmster.relationship_cd::w_swt_tmster_relationship_cd;
+  out0.w_swt_tmster.mbr_first_name::w_swt_tmster_mbr_first_name;
+  out0.w_swt_tmster.mbr_date_of_birth::w_swt_tmster_mbr_date_of_birth;
+  out0.w_swt_tmster.mbr_sex::w_swt_tmster_mbr_sex;
+  out0.w_swt_tmster.transaction_yr::w_swt_tmster_transaction_yr;
+  out0.w_swt_tmster.accum_cd::w_swt_tmster_accum_cd;
+  out0.w_swt_tmster.amount_pd::w_swt_tmster_amount_pd;
+  out0.w_swt_tmster.member_id::w_swt_tmster_member_id;
+  out0.w_swt_tmster.src_env_sk::w_swt_tmster_src_env_sk;
+  out0.*::in0.*;
+
+end;

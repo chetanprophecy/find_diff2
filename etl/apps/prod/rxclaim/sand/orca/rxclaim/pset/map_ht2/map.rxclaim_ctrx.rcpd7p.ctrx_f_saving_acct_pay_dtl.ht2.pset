@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/map.ht2.interim.pset
+SOURCE_NAME||||rxclaim_ctrx.rcpd7p
+ILM_NAME||||ctrx_f_saving_acct_pay_dtl
+AB_CATALOG||||$AI_CAT/map.rxclaim_ctrx/map.rxclaim_ctrx.rcpd7p.ctrx_f_saving_acct_pay_dtl.cat
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{claim_nbr}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.claim_nbr,[passthrough],in0.asp2nb]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.claim_nbr,'claim_nbr',1,0]\n  ]\n  impacts:\n  [\n     [in0.asp2nb,'asp2nb',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet decimal("\\x01",0) claim_nbr = fail_if_error(in0.asp2nb);\n\n\n\n  out0.claim_nbr::claim_nbr;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+REDUCED_LOOKUP_RETAIN_FIELDS_LIST||||
+REDUCED_ICFF_IDS_LIST||||ids_rxclaim.f_claim_transaction.c1
+GET_ALL_RECORD_FROM_IDS_LIST||||1|0|0|0|0|0|0|0|0|0
+ACE_CATALOG_CONTENTS|$|||LKP:F_CLAIM_TXN,{claim_nbr; claim_seq_nbr; claim_stat_id; src_env_sk},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rcpd7p.f_claim_transaction.c1.dat,/~$AI_DML/map.rxclaim_ctrx/map.rxclaim_ctrx.rcpd7p.ctrx_f_saving_acct_pay_dtl.reduced_lkp.rxclaim_ctrx.rcpd7p.f_claim_transaction.c1.dml\n
+ADJUSTED_SORT_KEY_EXPR_LIST||||{claim_nbr; claim_seq_nbr; claim_stat_id; src_env_sk; ids_updt_dttm descending}|||||||||
+ADJUSTED_DEDUP_KEY_EXPR_LIST||||{claim_nbr; claim_seq_nbr; claim_stat_id; src_env_sk}|||||||||

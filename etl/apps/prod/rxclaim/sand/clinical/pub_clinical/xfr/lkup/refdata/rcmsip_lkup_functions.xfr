@@ -1,0 +1,50 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/rcmsip_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/20  Ankit Mishra
+ *  2016/11/25  Mohd Shadab             Removed cli from file name and added check to see which file need to be loaded(i.e. serial or mfs)
+ *  2016/12/23  Mohd Shadab             changed the get function for rcmsip the way we use the source ids(data type conversion)
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+constant cli_string_t PUB_CLINICAL_SERIAL_REFDATA parameter;
+
+cli_string_t out :: get_rcmsip_lkup_path() inline =
+begin
+  out :: if(this_partition()!=-1) PUB_CLINICAL_MFS_REFDATA + '/rcmsip.dat' else PUB_CLINICAL_SERIAL_REFDATA + '/rcmsip.dat';
+end;
+
+/****************************/
+/* RCMSIP Lookup (natural key) */
+/****************************/
+
+type rcmsip_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  rcmsip_hash_lkup_t         RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {rcmsip.carrier_id; rcmsip.account_id; rcmsip.employer_group_id;rcmsip.mbr_id};
+  
+end;
+
+let rcmsip_lkup_t GLKUP_SCMSIP = allocate_with_nulls();
+
+rcmsip_lkup_t out :: load_rcmsip_lkup() inline =
+begin
+  if (GLKUP_SCMSIP.id == lookup_not_loaded())
+    GLKUP_SCMSIP = lookup_load(this_partition_path(get_rcmsip_lkup_path()));
+  
+  out :: GLKUP_SCMSIP;
+end;
+
+rcmsip_t out :: get_rcmsip(cli_carrier_id_t carrier_id,cli_carrier_acct_id_t carrier_acct_id,cli_employer_group_id_t employer_group_id,cli_mbr_id_t mbr_id) inline =
+begin
+  let rcmsip_lkup_t lkup = load_rcmsip_lkup();
+  out :: lookup(lkup, carrier_id, carrier_acct_id, employer_group_id,mbr_id).rcmsip;
+end;

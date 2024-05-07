@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This job loads the results of all the interventions and identfication results created by rules processes for MPDOVA CS-245" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="B75AED0B-5BE9-1575-C441-03ADCE85C1BB" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - Loads MPDOVA" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments>
+      <argument isExpandable="false" value="-CLT_ID"/>
+      <argument isExpandable="false" value="CS-245"/>
+      <argument isExpandable="false" value="-KEEP_ORIGINAL_CLAIM_FILE"/>
+      <argument isExpandable="false" value="Y"/>
+    </arguments>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-08-29Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="82FB21D5-D50A-CD69-F11E-034C5EFFE7E7"/>
+      <predecessor jobDefinitionGuid="46566B40-0891-0585-B163-042F2A59F685"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

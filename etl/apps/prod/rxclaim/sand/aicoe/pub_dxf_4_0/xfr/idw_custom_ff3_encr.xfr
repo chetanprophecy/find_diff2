@@ -1,0 +1,19 @@
+include "/~$PUB_DXF_XFR/ff3_idw_encrypt.xfr";
+include "/~$AB_HOME/include/common/translate.xfr";
+include "/~$PUB_DXF_XFR/idw_encr_constants.xfr";
+
+//Encryption funtion using AES-OFB implementation and PKCS7 Padding
+out :: ff3_encrypt_idwdata(num) = 
+begin
+ out :: (ff3.encrypt_preserving_format((num),(void(16)) string_from_hex(FF3_HEX_ENCRYPTION_KEY),FF3_IDW_IV));
+
+// out ::  (utf8 string(int)) string_to_hex(aes_encrypt((void(16)) string_from_hex(HEX_ENCRYPTION_KEY), (utf8 string(int))string_lrtrim(str), 2, 3,(utf8 string(int))IDW_IV));
+end;
+
+//decryption funtion using AES-OFB implementation and PKCS7 Padding
+out :: ff3_decrypt_idwdata(num) = 
+begin
+ out :: (ff3.decrypt_preserving_format((num),(void(16)) string_from_hex(FF3_HEX_ENCRYPTION_KEY),FF3_IDW_IV) );
+
+// out ::  string_from_hex(string_to_hex(aes_decrypt(string_from_hex(HEX_ENCRYPTION_KEY), string_from_hex((utf8 string(int))str), 2, 3,(utf8 string(int))IDW_IV)));
+end;

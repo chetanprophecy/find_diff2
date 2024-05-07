@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim/clean.rxclaim.d_reporting_client_map.$RUN_ID.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.d_reporting_client_map.dml
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.d_reporting_client_map_enrich.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.rxclaim/clean.rxclaim.d_reporting_client_map_enrich.$RUN_ID.dat.gz
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rxclaim.d_reporting_client_map_enrich.xfr
+USE_DEDUP||||False
+AB_CATALOG|$|||$AI_CAT/produce/produce.d_reporting_client_map_enrich.cat
+USE_NORM||||True
+USE_SORT||||False
+NORM_XFR||||$AI_XFR/produce/produce.rxclaim.d_reporting_client_map_enrich_norm.xfr
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+LOOKUP_FILE_DML||||$AI_DML/lookup.ids_common/lookup.ids_common.d_cag.dml
+LOOKUP_FILE_PATH||||$AI_SERIAL_LOOKUP/ids_common/ids_common.d_cag.dat
+POST_FILTER_EXPR||||!string_like(cag_employer_group_id,"ZZZ%")

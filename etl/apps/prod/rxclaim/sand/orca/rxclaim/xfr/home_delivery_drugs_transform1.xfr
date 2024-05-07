@@ -1,0 +1,41 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+let string("") v_SRC_PROD_CODE_QUAL=if(first_defined((decimal(""))in.NDC,-1) >0) '03';
+
+  out.SRC_SYS_ID             :: "003";
+  out.PROD_CODE              :: in.NDC;
+  out.SRC_PROD_CODE_QUAL     :: v_SRC_PROD_CODE_QUAL;
+  out.SRC_PROD_DESC          :: NULL;
+  out.SRC_PROD_MFR           :: NULL;
+  out.SRC_DEA_CLASS_CODE     :: NULL;
+  out.SRC_MULTI_SOURCE_CODE  :: in.GENERIC_INDICATOR_OVERRIDE;
+  out.PROD_CODE_QUAL         :: lookup("RCPIDP_RCPRDP", in.NDC, v_SRC_PROD_CODE_QUAL).s4nqs3;//RTPDT.AADWC5 (Lookup Query 1);
+  out.DRUG_LABEL_NAME        :: in.LABEL_NAME;
+  out.GPI14                  :: in.GPI;
+  out.GPI14_NAME             :: lookup("RCGPIP", in.GPI).sub4t3;//RTGPI.GPJJU1 (Lookup Query 1);
+  out.DOSAGE_FORM            :: in.DOSAGE_FORM;
+  out.STRENGTH               :: lookup("RCPIDP_RCPRDP", in.NDC, v_SRC_PROD_CODE_QUAL).szcpt3;//"";//RTPDT.AAEENC (Lookup Query 1);
+  out.DEA_CLASS_CODE         :: in.DEA_CODE;
+  out.MULTI_SOURCE_CODE      :: in.GENERIC_INDICATOR;
+  out.ROUTE_OF_ADMIN_CODE    :: in.ROUTE_OF_ADMINISTRATION_CODE;
+  out.STORAGE_COND           :: NULL;
+  out.ANDA_FLAG              :: NULL;
+  out.ANDA_OVERRIDE_FLAG     :: NULL;
+  out.BLA_FLAG               :: NULL;
+  out.MEDISPAN_TERM_DT       :: lookup("RCPIDP_RCPRDP", in.NDC, v_SRC_PROD_CODE_QUAL).szn0dt;//"";//RTPDT.AAALIH (Lookup Query 1);
+  out.EXTRACT_DT             :: in.EXTRACT_FILE_DATE;
+  out.EXTRACT_TIME           :: in.EXTRACT_FILE_TIMESTAMP;/*
+  out.RUN_NBR                :: "0";
+  out.SRC_UPDT_DT            :: "0";
+  out.SRC_UPDT_TIME          :: "0";
+  out.LOAD_DT                :: "";//DRUGS.LOAD_DT (Lookup Query 2) format YYYYMMDD;
+  out.LOAD_TIME              :: "";//DRUGS.LOAD_TIME (Lookup Query 2) format HHMMSS;
+  out.REC_PROCESS            :: "";//if DRUGS.LOAD_DT IS NULL or 0  then 'Y' else 'N';
+  out.rxt_src_envrt_nm       :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm        :: $RUN_TIMESTAMP;
+  out.rxt_create_uid         :: 'app_orca_rxclaim';
+  out.rxt_create_run_id      :: (decimal(""))$RUN_TIMESTAMP;
+  out.rxt_rec_stat_cd        :: '';*/
+  out.*                      :: in.*;
+end

@@ -1,0 +1,238 @@
+record
+  string("\x01", maximum_length=13) b8gpcd /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Pricing Table Name"
+ BizComment:"The name of a pricing table.  The pricing table helps support variable copays and reimbursement for formulary versus non-formulary plan drug status.  Each price table calculates five components of a transaction: :PC. 1.  Ingredient cost :PC. 2.  Sales tax :PC. 3.  Dispensing fee :PC. 4.  Copay :PC. 5.  Withhold amount"
+@*/;
+  decimal("\x01",0, maximum_length=6, sign_reserved) b8jnhs /*DECIMAL(5) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Seq Nbr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=25) b8alij /*CHAR(25) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Description"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8f2i1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Status"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) b8rwhg /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF From Date"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) b8rxhg /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Thru Date"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8erst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Sbm Cost vs Sbm Qty"
+ BizComment:"= *No Check C = Test SBM Qty vs SBM Cost"
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8a6pc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Sbm Cost vs Sbm Qty Pct"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8bys3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Sbm Cost vs Sbm QtyAction"
+ BizComment:"I = Inform R = Reject"
+@*/;
+  string("\x01", maximum_length=10) b8x2hn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Source 1"
+ BizComment:"Indicates the Source of Product Cost."
+@*/;
+  string("\x01", maximum_length=10) b8x3hn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Source 2"
+ BizComment:"Indicates the Source of Product Cost."
+@*/;
+  string("\x01", maximum_length=10) b8x4hn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Source 3"
+ BizComment:"Indicates the Source of Product Cost."
+@*/;
+  string("\x01", maximum_length=10) b8xzhn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Type 1"
+ BizComment:"Indicates the Type of Product Cost."
+@*/;
+  string("\x01", maximum_length=10) b8x0hn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Type 2"
+ BizComment:"Indicates the Type of Product Cost."
+@*/;
+  string("\x01", maximum_length=10) b8x1hn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Cost Type 3"
+ BizComment:"Indicates the Type of Product Cost."
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8aapc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Drug Cost Percent 1"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8aipc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Drug Cost Percent 2"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8ajpc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Drug Cost Percent 3"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8esst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Drug Cost Comparison Cde"
+ BizComment:"= *Blank a = DS < 35 C1F1; C2F2 b = 1278 L S|C1;L S|C1|C2 c = NDCMAC C2; 1 L (press F1)     C2 if NDC-based MAC; 1 L S|C1; L S|C1|C2     NOTE:  This cost comparison code is designed to be used with a     price table on which cost code 2 is a MAC list. d = NDCMAC C2;12 L (press F1)     C2 if NDC-based MAC; 12 L S|C1; L S|C1|C2     NOTE:  This cost comparison code is designed to be used with a     price table on which cost code 2 is a MAC list. e = 1278 L CF1|CF2; L CF1|2|3 f = *C2 C1FS; C2F1     If Cost Code 2 is not available, use Cost Code 1 plus the     Fee Schedule.  If Cost Code 2 is available, use Cost Code 2     plus Fee 1. g = *C2 L S|C1; L S|C2 h = *C1*C2*C3 S; *C2*C3 L S|C1; *C1*C2 L S|C3; *C1 C2; *C2 C1; L C1|C2     If no Cost 1 then use Cost 2. If no Cost 2 then use Cost 1.     If no Cost 1 and Cost 2, then use lower of Submitted Cost and     Cost 3. Otherwise, if both Cost 1 and Cost 2 are available then     use the lower of Cost 1 and Cost 2.  If there is a Cost 1 and     Cost 2 and they happen to be exactly the same then the claim     is assigned Cost 2. i = 1278 L C1F1|C2F2; C1F1 j = 1278 L S|C1F1;S|C1F1|C2F2 A = 05 C2 ; C1 B = S C = S if<$50 ; R D = L S | C1 | C2 | C3 E = 1 L S|C1 ; L S|C1|C2|C3 F = L S | C1 G = 1278 L S|C1;L S|C1|C2|C3 H = 0 L C1|C2|C3 ; C1 I = No C2 L C1|C3 ; L C1|C2 J = 178C1;*C2 L C1|C3;L C1|C2 K = S if <= $100; R L = 12 C1 ; L S|C1|C2|C3 M = 1 C1 ; L S|C1|C2|C3 N = 14 C1 ; L S|C1|C2|C3 O = (045 LC1|C2;*C2LC1|C3);C1 P = 045 L C1|C2|C3; C1 Q = 5 FA C3, C2, C1 ; C1 R = 12478 L S|C1;L S|C1|C2|C3 S = 1278 L S|CF1;L S|CF1|2|3 T = 5 L S|C1|C2|C3;L S|C1 U = 35 FA C3, C2, C1 ; C1 V = X;Y:IF_Z>X|Y_A_(PRESS_F1) WHERE X=1278 C1F1       Y=L C1F1|C2F2|C3F3       Z=SC+L(F1|SF)       A=SC+H(F1|SF); X OR Y (BASED PSC) W = C3F3 | C2F2 | C1F1 X = S w/msg if S <= 99% of C1 Y = 1578 S; C1 Z = 2 C2F2; C1F1 0 = No Comparison 1 = 123456 C1; L C1|C2|C3 2 = H C1|C2|C3 3 = L C1 | C2 | C3 4 = Higher of Calc Cost 5 = C2 ; C1 6 = 1 C2 ; C1 7 = 1 C1 ; L C1|C2|C3 8 = L C1F1|C2F2|C3F3 9 = 3456 C2 ; C1 Note:  The available costs means the costs that are defined and        the drug price is found within Cost1, Cost2, and Cost3."
+@*/;
+  string("\x01", maximum_length=13) b8n8hc /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Drug Cost Sched Name"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=8, sign_reserved) b8bqpr /*DECIMAL(6,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Fee 1"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=8, sign_reserved) b8brpr /*DECIMAL(6,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Fee 2"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=8, sign_reserved) b8bspr /*DECIMAL(6,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Fee 3"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8acpc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Fee Percent"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8gqcd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: FSC Fee Schedule Name"
+ BizComment:"The name of the fee schedule used during claim adjudication."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) b8eknb /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPTFP: FSC Step Nbr in Fee Sched"
+ BizComment:"The maximum step used of the indicated fee schedule."
+@*/;
+  string("\x01", maximum_length=1) b8etst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Fee Calculation Cde"
+ BizComment:"1 = Fee 2 = WH Lower of 3 vs Calc 3 = Schedule Factor 4 = 5 F2 ; F1 5 = Cost Basis=8|PSC=5 F2; F1 6 = L S Fee|Calc Fee calculates the fee as the lower of the submitted     dispensing fee and the calculated dispensing fee."
+@*/;
+  decimal("\x01".3, maximum_length=7, sign_reserved) b8dbpr /*DECIMAL(5,3) NOT NULL*/ /*@
+BizName:"RCPTFP: Tax Amount"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=6) b8lvcd /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCPTFP: Tax Schedule"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8hest /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Tax Calc Code"
+ BizComment:"A = Pharm Tax Rate Code Pharm Tax Rate Code reads the tax rate code on the pharmacy's detail record to determine the percent tax rate applied to the claim. B = Client Tax = Pharmacy Tax Use Pharmacy Tax when Calculating Client Tax C = ST%>XT%, R; ST% If submitted Tax % is greater than Tax % on the tax schedule then reject the claim; otherwise use the submitted tax % to calculate tax based on the tax schedule in the Sched field in the Tax section of the Price Table Detail screen. If submitted tax % is blank then the calculated tax amount will be zero. 1 = ST Approve Submitted Tax 2 = CT (%DF) Calculate Using Tax % 3 = L ST|CT (%DF) L S Tax, C Tax (Rx Price) 4 = CT Flat Amount Tax 5 = L ST|CT (%D) L S Tax, C Tax (Rx Cost) 6 = L ST (%DF)|CT (%DF) L S Tax %,Tax %(Rx Price) 7 = X Tax Schedule, no lower of 8 = L ST|CTX Tax Schedule, L S Tx|C Tx 9 = ST(%UC)<=CT(%DF);R Divide the Submitted Tax Amount by the Submitted U&C to determine the submitted calculated tax rate.  This value is compared to the price table amount field.  If the submitted is less than the table, the submitted rate is used, otherwise reject the claim."
+@*/;
+  string("\x01", maximum_length=2) b8v4h8 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPTFP: Tax Basis"
+ BizComment:"01 - Pharmacy calculates the tax based on the state of the pharmacy      submitting the claim. 02 - Submit;Mbr;Pharm calculates the tax based on the member's state      as submitted by the pharmacy.  If the member's state is not      submitted by the pharmacy, then the state from the Member's detail      is used to calculate tax.  If the Member's detail does not have a      state, then the submitting pharmacy's state is used to calculate      the tax. 03 - Group;Reject Calculate tax using State and Zip Code found on the      Group Detail Record.  If no state is found on the Group Detail,      reject the claim for pricing error."
+@*/;
+  string("\x01", maximum_length=1) b8eust /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Price Comparison Code"
+ BizComment:"a = ADF=|> $1.24; CDF:GF b = ADF=|> $2.24; CDF:GF c = ADF=|> $2.49; CDF:GF d = ADF=|> $2.99; CDF:GF e = ADF=|> $3.24; CDF:GF f = ADF=|> $6.00; L CDF|U:GF g = ADF=|> $6.00; CDF:GF h = L CDF|SM:GD i = U=|<$10; CDF:GF j = U=|<$5; CDF:GF k = CDF=|<$10 L $10|U; CDF:GF l = CDF=|<$5 L $5|U; CDF:GF m = L CDF|U:GD n = L CDFT|SDFT|SM|U+UT:GDFT F1 : The Price selected will be the lower of the following:      - Calculated Drug Cost + Fee + Tax      - Submitted Drug Cost + Fee + Tax      - Submitted Amount Due      - Usual and Customary + calculated U&C tax.      The price selected may necessitate the reduction of the      Drug Cost, Fee, or Tax in order for these amounts to add      up to the price selected.  The reduction will occur in the      following sequence:  Tax, Fee, Drug Cost. o = L CDFT|SDFT|SM|U+UT:GTDF F1 : The Price selected will be the lower of the following:      - Calculated Drug Cost + Fee + Tax      - Submitted Drug Cost + Fee + Tax      - Submitted Amount Due      - Usual and Customary + calculated U&C tax.      The price selected may necessitate the reduction of the      Drug Cost, Fee, or Tax in order for these amounts to add      up to the price selected.  The reduction will occur in the      following sequence:  Fee, Drug Cost, Tax. p = L CDFT|SDFT|SM|U:GFDT q = U&C<CDFT R; H CDFT|C2|C3 F1 : If the Submitted Usual & Customary is less than      the Calculated Rx Price, reject the claim;      otherwise take the higher of the Calculated Rx      Price or Cost 2 or Cost 3 (with percentage      applied).  In this case, the price selected may      necessitate the increase of the Drug Cost in      order for this amount to add up to the price      selected. r = U&C < CDFT R; CDFT F1 : If the Submitted Usual & Customary is less than      the Calculated Rx Price, reject the claim;      otherwise price the claim using the Calculated Rx      Price. s = U<CDFT X; H Y F1 : If U&C < CDFT then (CDFT - U&C) to obtain Amount A.      If Amount A <= Fee 1 - Fee 3 then approved DFT      equals U&C (with reduction made in Approved Fee).      If Amount A > Fee 1 - Fee 3 then reject the claim.      If the Submitted Usual & Cusomary is equal to or      greater than the Calculated Rx Price, then the      higher of the Calculated Rx Price or Cost 2 or      Cost 3 (with percentage applied) is selected. In      this case, the price selected may necessitate the      increase of the Drug Cost in order for this amount      to add up to the price selected.  When this Price      Comparison is used, Fee 3 is not cumulative toward      the Calculated Fee. t = L C1F1-C3F3|C2F2-C3F3 F1: Select the Lower of:          (Drug Cost 1 plus Fee 1) minus (Drug Cost 3 plus Fee 3) OR          (Drug Cost 2 plus Fee 2) minus (Drug Cost 3 plus Fee 3)     If no Drug Cost 2:           (Drug Cost 1 plus Fee 1) minus (Drug Cost 3 plus Fee 3)     If no Drug Cost 3, select the lower of:           Drug Cost 1 plus Fee 1 | Drug Cost 2 plus Fee 2     If no Drug Cost 2 or 3:        Drug Cost 1 plus Fee 1 u = L (C1F1|C2F2)-C3F3|U:GF F1: Select the Lower of:          (Drug Cost 1 plus Fee 1) minus (Drug Cost 3 plus Fee 3) OR          (Drug Cost 2 plus Fee 2) minus (Drug Cost 3 plus Fee 3) OR          U&C. If U&C is lowest, Guarantee Fee where Fee is equal to          Fee 1.     If no Drug Cost 2 select the Lower of:           (Drug Cost 1 plus Fee 1) minus (Drug Cost 3 plus Fee 3)OR           U&C. If U&C is lowest, Guarantee Fee where Fee is equal to           Fee 1.     If no Drug Cost 3, select the Lower of:           Drug Cost 1 plus Fee 1 OR           Drug Cost 2 plus Fee 2 OR           U&C. If U&C is lowest, Guarantee Fee where Fee is equal to           Fee 1.     If no Drug Cost 2 or 3, select the Lower of:           Drug Cost 1 plus Fee 1 OR           U&C. If U&C is lowest, Guarantee Fee where Fee is equal to           Fee 1. v = (L CDFT|U)+C2:GF w = L (C1F1|C2F2|UC)-C3F3:GF x = L Oth|CDFT; SPP|CDFT:GDFT (v5.1) or     L OPR|CDFT; SPP|CDFT: GDFT (vD.0) F1:  If Submitted Other Payer Patient Responsibility Amount with      qualifier 06 is found      Then Use      x = L OPR|CDFT; SPP|CDFT: GDFT      If another payer contributes to the payment of a claim, but      that amount is not considered COB, then this Other Payer      Patient Responsibility Amount is submitted in the OPR field      on the transaction submission screen.      If the Other Payer Patient Responsibility Amount is      submitted and the submitted Other Payer Patient      Responsibility Amount claimed qualifier is 06, then take the      lower of the following two values:      1) the submitted Other Payer Patient Responsibility Amount      with qualifier 06 or 2) the calculated drug cost + fee +      tax. If the submitted Other Payer Patient Responsibility      Amount is approved and the DFT are reduced, then the      approved amount is reimbursed (guaranteed) in the following      order: first drug cost, then fee, and lastly the tax. If the      Other Payer Patient Responsibility Amount is submitted and      it is lower than the CDFT, but the qualifier is not 06, then      treat it as if no Other Payer Patient Responsibility Amount      was submitted; instead, follow the logic in the paragraph      below.      If Other Payer Patient Responsibility Amount with qualifier      06 is not found, then look for the submitted other amount      claimed with a qualifier of 99.  If a qualifier of 99 is      found then use      x = L Oth|CDFT; SPP|CDFT: GDFT.      If another payer contributes to the payment of a claim, but      that amount is not considered COB, then the other payer      amount (aka other amount claimed) is submitted in the Oth      field on the transaction submission screens.      If the other payer amount is submitted and the submitted      other amount claimed qualifier is 99, then take the lower of      the following two values: 1) the submitted other amount      claimed (aka other payer amount) with qualifier 99 or 2) the      calculated drug cost + fee + tax. If the submitted other      amount is approved and the DFT are reduced, then the      approved amount is reimbursed (guaranteed) in the following      order: first drug cost, then fee, and lastly the tax. If the      other payer amount is submitted and it is lower than the      CDFT, but the qualifier is not 99, then treat it as if no      other payer amount was submitted; instead, follow the logic      in the paragraph below.      If Both Submitted Other Payer Patient Responsibility Amount      with a qualifier of 06 and submitted other amount claimed      with a qualifier of 99 are found, then use      x = L OPR|CDFT; SPP|CDFT: GDFT.      If another payer contributes to the payment of a claim, but      that amount is not considered COB, then this Other Payer      Patient Responsibility Amount is submitted in the OPR field      on the transaction submission screen.      If the Other Payer Patient Responsibility Amount is      submitted and the submitted Other Payer Patient      Responsibility Amount claimed qualifier is 06, then take the      lower of the following two values: 1) the submitted Other      Payer Patient Responsibility Amount with qualifier 06 or 2)      the calculated drug cost + fee + tax. If the submitted Other      Payer Patient Responsibility Amount is approved and the DFT      are reduced, then the approved amount is reimbursed      (guaranteed) in the following order: first drug cost, then      fee, and lastly the tax. If the Other Payer Patient      Responsibility Amount is submitted and it is lower than the      CDFT, but the qualifier is not 06, then treat it as if no      Other Payer Patient Responsibility Amount was submitted;      instead, follow the logic in the paragraph below.      If there is no submitted other claim amount with a qualifier      of 99 or If there is no submitted Other Payer Patient      Responsibility Amount with qualifier 06, then take the lower      of the following two values: 1) submitted patient pay or 2)      the calculated drug cost + fee + tax. If the submitted      patient pay is blank or $0.00 and there is no submitted      other payer amount or submitted Other Payer Patient      Responsibility Amount, then the approved patient pay is $0      and the approved amount due, the drug cost, the fee, and the      tax are all adjusted to be equal to $0. y = L CDFT|U+UT:GT z = L CDFT|SDFT|SM|U:GTFD A = H CDF|SM|U:GF B = L CDF|SM|U:GF UT=CT C = L CDF|SM|U:GD UT=CT F1 F1 : If the Submitted Amount Due or Usual&Customary is      chosen as the lowest of Calculated Drug + Fee,      Submitted Amt Due and Usual & Customary, and the      fee is submitted on the claim, and Submitted Amount Due/U&C      is greater than Approved Drug Cost, then the fee      will be calculated as Submitted Amount Due minus App Drug      Cost = Fee. If Submitted Amount Due/U&C is NOT greater      than App Drug Cost no fee is calculated/approved      and the Drug Cost is guaranteed.  If a patient      pay is calculated/submitted, the line will balance      by placing the difference between the calculated      Fee and Patient Pay into the Approved Drug Cost.      .      If CDF is chosen as the lower of, or SM/U is      chosen AND amounts are NOT submitted for fee,      then the calculated drug cost and fee are      guaranteed and the line balances by increasing      the drug cost to not allow negative amounts.      .      **NOTE:  Rebill will cause all amounts to be      considered as "submitted" and will cause the      fee/line balancing calculations as mentioned      above.**      .      THOROUGH TESTING IS RECOMMENDED BEFORE      UTILIZING THIS CODE. D = ADF=|>$3.99; CDF:GF E = L CDF|U:GF UT=CT F = L CDF|U:GD UT=CT G = U:GF H = L CDFT|U:GD I = L CDFT|SDFT|SM|U:GDFT J = AM=L CDF|U:GF (R=P) K = L A|B|X|Y F1 : Full Description of Price Comparison Code 'K' is :      L CDFT|SDFT|SM|U+UT      When U&C plus Tax is the lower amount, RxCLAIM populates      the Withhold first, Tax second, and the remainder in the      Drug Cost.  In these situations, there is no Approved      Dispensing fee, and the Drug Cost approved exceeds the      Calculated Drug Cost.  If another amount is approved,      RxCLAIM populates the approved line by populating the      Withhold first, the Drug Cost second (up to the Calculated      Drug Cost), the Dispensing Fee third (up to the Calculated      Dispensing Fee), and the Tax last. L = CDFT (R=P) M = ADF=|> $4.99; CDF:GF N = ADF=|> $3.99; L CDF|U:GF O = ADF=|> $4.99; L CDF|U:GF P = ADF=|> $2.49; L CDF|U:GF Q = ADF=|> $2.89; L CDF|U:GF R = ADF=|> $1.59; L CDF|U:GF S = ADF=|> $2.74; L CDF|U:GF T = ADF=|> $1.49; CDF:GF U = ADF=|> $1.59; CDF:GF V = ADF=|> $2.74; CDF:GF W = ADF=|> $2.24; L CDF|U:GF X = ADF=|> $3.24; L CDF|U:GF Y = ADF=|> $4.50; L CDF|U:GF Z = ADF=|> $0.99; CDF:GF 0 = CDFT 1 = AM > SM & X & Y (PRESS F1) F1 : Full Description of Price Comparison Code '1' is :      CDFT > SM & CD <= SD & SF = $0 THEN AF=SD-CD      IF SF > $0 THEN CD=SD AND AF=SF      IF CD > SD THEN AD=SD AND AF=SF 2 = H CDF|SDF 3 = CF+L CD|SD 4 = CF+L CD|SD (2) 5 = L CDF|SDF|SM:GFTD 6 = SDF 7 = A=S (ALL FIELDS, EXCEPT INCENTIVE/PROFESSIONAL FEE)     Incentive/professional fee is based on DUR/PPS calculation code. 8 = L CDF|U:GF 9 = 1 C1+F1; L CDF|U"
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8eip1 /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Minimum Cost + Fee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) b8q5hu /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF MinCost+Fee Qualifier"
+ BizComment:"Required if Minimum RxPrice field is populated.  Allows the user to specify what fields will be used in the calculation of the minimum prescription price. :P. 01= Ing Cost + Dispensing Fee :PC. 02= Ing Cost + Dispensing Fee, Incentive Fee, and Professional Fee :PC. 03= RxPrice that is applied after all pricing is done :PC. 04= Cost+Fee: before compare - compares the calculated Cost + :PC.               Fee to minimum. :PC. 05= Cost: before compare - compares the calculated cost to :PC.           the minimum. :PC. 06= CFT: before compare - compares the calculated cost + :PC.          fee + tax to the minimum. :PC. 07= CFTI: before compare - compares the calculated cost + :PC.           fee + tax + incentive to the minimum. :LINES. :ELINES."
+@*/;
+  decimal("\x01".2, maximum_length=8, sign_reserved) b8c7pr /*DECIMAL(6,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Withhold Amount"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) b8c8pr /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPTFP: Withhold Percent"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8g7st /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: Withhold Calc Code"
+ BizComment:"1 = Lower of Due vs WH Amt 2 = Lower of Due vs WH % Due 3 = Subtract from Fee 4 = Admin Fee 5 = L U&C | Calc 6 = DFT=<CDFT & =SD|U WH=0;WH F1: If Approved DFT is less than or equal to CDFT and Approved     DFT is equal to Submitted Amount Due (DS) or Submitted     Usual and Customary (U), then Withhold amount equals zero,     otherwise apply the Withhold amount. 7 = L AD|W From Group Copay 3 8 = Add to Amount Due 9 = Sub from Fee if CDFT < U a = Apply if U&C;no withhold.  If Price Type or Cost Type on the     claim is U&C, the withhold amount will be applied to the     claim.  If neither the price type nor the cost type are U&C,     the withhold will not be applied. b = Approved Cost F1: The Withhold Amount is equal to the Approved Cost.     A negative amount due is allowed. c = No if U&C; apply withhold F1: Do not apply if U&C; apply withhold.  If Price Type     on the claim is 'U&C', the withhold amount will not     be applied to the claim.  If the Price Type is not     U&C, the withhold will be applied."
+@*/;
+  string("\x01", maximum_length=9) b8aacd /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCPTFP: CAR Carrier ID"
+ BizComment:"Type the nine character identifier of the owner of the accounts, groups, and members."
+@*/;
+  string("\x01", maximum_length=10) b8j5s2 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: MAC List"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=9) b8cyc6 /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCPTFP: MAC List 2 CAR Carrier ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8ztcj /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: MAC List 2 MAC List"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=9) b8czc6 /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCPTFP: MAC List 3 CAR Carrier ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8zucj /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: MAC List 3 MAC List"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8anab /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Patient Pay Schedule"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8i5hc /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Withhold Schedule"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) b8ymhr /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Withhold Sched Step"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8b4hd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: ADS Schedule ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) b8kwhd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Prof Service Fee Tbl"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) b8zrie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPTFP: PTF Use with Accum Ind"
+ BizComment:"This flag let the system knows if the Amount Due Schedule should be referenced during pricing if Accumulator (e.g., deductible, OOP, etc.) exists on the plan. This flag should be used in conjunction with Amount Due Schedule only. Therefore, it should appear only after Amount Due Schedule is selected and the flag should be defaulted to 'N'."
+@*/;
+  string("\x01", maximum_length=10) b8dfhp /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) b8dghp /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) b8dhhp /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) b8lcaq /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) b8zuvg /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) b8zvvg /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) b8akvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) b8c2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPTFP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) b8adtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPTFP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) b8alvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) b8advn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) b8bmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPTFP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) b8abtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPTFP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) b8aevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPTFP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/prescriber_spclty_lkup_functions.xfr
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_LOOKUP parameter;
+
+cli_string_t out :: get_prescriber_specialty_lkp_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_LOOKUP + '/cli_prescriber_specialty.dat';
+end;
+
+/************************************************/
+/* Therapeutic Class Lookup (ids surrogate key) */
+/************************************************/
+
+type prescriber_specialty_lkup_t =
+record
+  lookup_identifier_type            id             = -1;
+  prescriber_specialty_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                        key()          = {prescriber_specialty.prescriber_spclty_cd};
+
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat";
+end;
+
+let prescriber_specialty_lkup_t GLKUP_PRESCRIBER_SPECIALTY = allocate_with_nulls();
+
+prescriber_specialty_lkup_t out :: load_prescriber_specialty_lkup() inline =
+begin
+  if (GLKUP_PRESCRIBER_SPECIALTY.id == lookup_not_loaded())
+    GLKUP_PRESCRIBER_SPECIALTY = lookup_load(this_partition_path(get_prescriber_specialty_lkp_path()));
+  
+  out :: GLKUP_PRESCRIBER_SPECIALTY;
+end;
+
+prescriber_spclty_t out :: get_prescriber_specialty(prescriber_spclty_cd) inline =
+begin
+  let prescriber_specialty_lkup_t lkup = load_prescriber_specialty_lkup();
+  out :: lookup(lkup, prescriber_spclty_cd).prescriber_specialty;
+end;

@@ -1,0 +1,31 @@
+record
+  little endian integer(2)   dxf_src_sys_id =   0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  unsigned integer(8)     dxf_hk_part1 =     0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)     dxf_hk_part2 =     0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)     dxf_sk =     0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)      cms_stars_calendar_submission_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)      prod_directory_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      cal_start_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      cal_end_dt_sk = NULL("") /*BIGINT*/;
+  date("YYYYMMDD")("\x01")      cal_start_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")      cal_end_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")      prod_directory_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)      src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end prd_dir_dt;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end str_dt;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end end_dt;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_create_run_id =  0;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_updt_run_id =  0;
+  string("\x01", maximum_length=2)  ids_rec_stat_cd = NULL("");
+  string(1)  newline =  '\n';
+end

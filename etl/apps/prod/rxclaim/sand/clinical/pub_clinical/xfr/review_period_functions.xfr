@@ -1,0 +1,147 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/review_period_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/23  Paul Thompson           Initial version
+ *  2016/10/26  Paul Thompson           Renamed from cli_review_period_functions.xfr -> review_period_functions.xfr
+ *  2016/11/15  Paul Thompson           Added function get_disease_param()
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_XFR/datetime_functions.xfr";
+include "~$PUB_CLINICAL_XFR/const/review_period_const.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/exec/rules_config_lkup_functions.xfr";
+
+/*****************************************************/
+/* Review Period Resolution - Maximum Range function */
+/*****************************************************/
+
+review_period_t out :: resolve_review_period_for_max_range(cli_date_t biz_dt, review_period_t[int] review_period_vec) inline =
+begin
+  let review_period_t  review_period;
+  let cli_date_t       min_start_dt;
+  let cli_date_t       max_end_dt;
+  
+  for (review_period in review_period_vec)
+  begin
+    min_start_dt = date_min(min_start_dt, review_period.start_dt);
+    max_end_dt   = date_max(max_end_dt,   review_period.end_dt  );
+  end;
+  
+  out.review_period_nm      :: 'appconf_max_range';
+  out.review_period_type_cd :: REVIEW_PERIOD_TYPE_CD_MAX_RANGE;
+  out.start_dt              :: min_start_dt;
+  out.end_dt                :: max_end_dt;
+  out.biz_dt                :: biz_dt;
+end;
+
+/*********************************************************/
+/* Get Max Review Period for Diseases used by an appconf */
+/*********************************************************/
+
+rules_config_disease_param_t out :: get_disease_param(cli_app_config_nm_t app_config_nm) inline =
+begin
+  let rules_config_t       rules_config = get_rules_config(BIZ_DT, app_config_nm);
+  let rules_config_t       disease_rules_config;
+  
+  let review_period_vec_t  pharma_claim_review_period_vec = [vector];
+  let review_period_vec_t  med_claim_review_period_vec    = [vector];
+  
+  let cli_list_nm_t[int]   gpi_incl_list_vec              = [vector];
+  let cli_list_nm_t[int]   gpi_excl_list_vec              = [vector];
+  let cli_list_nm_t[int]   med_cd_incl_list_vec           = [vector];
+  let cli_list_nm_t[int]   med_cd_excl_list_vec           = [vector];
+  
+  for (let disease_app_config_nm in rules_config.rules_config_param.disease_app_config_nm_vec)
+  begin
+    disease_rules_config = get_rules_config(BIZ_DT, disease_app_config_nm);
+    
+    if (is_defined(disease_rules_config))
+    begin
+      pharma_claim_review_period_vec = vector_concat( pharma_claim_review_period_vec , disease_rules_config.rules_config_param.pharma_claim_review_period_vec );
+      med_claim_review_period_vec    = vector_concat( med_claim_review_period_vec    , disease_rules_config.rules_config_param.med_claim_review_period_vec    );
+      
+      gpi_incl_list_vec    = vector_concat( gpi_incl_list_vec    , disease_rules_config.rules_config_param.gpi_incl_list_vec    );
+      gpi_excl_list_vec    = vector_concat( gpi_excl_list_vec    , disease_rules_config.rules_config_param.gpi_excl_list_vec    );
+      med_cd_incl_list_vec = vector_concat( med_cd_incl_list_vec , disease_rules_config.rules_config_param.med_cd_incl_list_vec );
+      med_cd_excl_list_vec = vector_concat( med_cd_excl_list_vec , disease_rules_config.rules_config_param.med_cd_excl_list_vec );
+    end;
+  end;
+  
+  out.max_pharma_claim_review_period :: resolve_review_period_for_max_range( BIZ_DT, pharma_claim_review_period_vec );
+  out.max_med_claim_review_period    :: resolve_review_period_for_max_range( BIZ_DT, med_claim_review_period_vec    );
+  
+  out.pharma_claim_review_period_vec :: pharma_claim_review_period_vec;
+  out.med_claim_review_period_vec    :: med_claim_review_period_vec;
+  
+  out.gpi_incl_list_vec    :: vector_sort_dedup_first( gpi_incl_list_vec    );
+  out.gpi_excl_list_vec    :: vector_sort_dedup_first( gpi_excl_list_vec    );
+  out.med_cd_incl_list_vec :: vector_sort_dedup_first( med_cd_incl_list_vec );
+  out.med_cd_excl_list_vec :: vector_sort_dedup_first( med_cd_excl_list_vec );
+end;
+
+/***********************************************************/
+/* Review Period Resolution - Review Period Type functions */
+/***********************************************************/
+
+//
+// Lookback Days
+//
+// <add detailed description here>
+// 
+
+review_period_t out :: resolve_review_period_for_lookback_days(cli_date_t biz_dt, review_period_t in) inline =
+begin
+  let cli_date_t     end_dt = datetime_add(biz_dt, -1);
+  let cli_integer_t  lookback_days_count = get_param_integer_value(LOOKBACK_DAYS_COUNT, in.param_vec);
+  
+  if (is_null(lookback_days_count))
+    force_error('Could not get value for Review Period Parameter (' + LOOKBACK_DAYS_COUNT + ')');
+  
+  out.* :: in.*;
+  out.start_dt :: datetime_add(end_dt, -1 * lookback_days_count);
+  out.end_dt   :: end_dt;
+  out.biz_dt   :: biz_dt;
+end;
+
+//
+// Lookback Months
+//
+// <add detailed description here>
+// 
+
+review_period_t out :: resolve_review_period_for_lookback_months(cli_date_t biz_dt, review_period_t in) inline =
+begin
+  let cli_date_t     end_dt = datetime_add(biz_dt, -1);
+  let cli_integer_t  lookback_months_count = get_param_integer_value(LOOKBACK_MONTHS_COUNT, in.param_vec);
+  
+  if (is_null(lookback_months_count))
+    force_error('Could not get value for Review Period Parameter (' + LOOKBACK_MONTHS_COUNT + ')');
+  
+  out.* :: in.*;
+  out.start_dt :: date_add_months(end_dt, -1 * lookback_months_count);
+  out.end_dt   :: end_dt;
+  out.biz_dt   :: biz_dt;
+end;
+
+/**********************************************/
+/* Review Period Resolution - Master function */
+/**********************************************/
+
+review_period_t out :: resolve_review_period(cli_date_t biz_dt, review_period_t in) inline =
+begin
+  out :: switch (in.review_period_type_cd)
+           case REVIEW_PERIOD_TYPE_CD_LOOKBACK_DAYS   : resolve_review_period_for_lookback_days  (biz_dt, in);
+           case REVIEW_PERIOD_TYPE_CD_LOOKBACK_MONTHS : resolve_review_period_for_lookback_months(biz_dt, in);
+           default : force_error('Unsupported Review Period Type Code (' + in.review_period_type_cd + ')');
+         end;
+end;
+
+review_period_t[int] out_vec :: resolve_review_period_vec(cli_date_t biz_dt, review_period_t[int] in_vec) inline =
+begin
+  out_vec :: for (let review_period in in_vec) : resolve_review_period(biz_dt, review_period);
+end;

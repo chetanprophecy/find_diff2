@@ -1,0 +1,114 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a8bd457_d068_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_carrr.carrier_id,[transform],in0.fxtkc3,
+     in0.aowahj]
+  [out0.d_car_con_pb.formulary_id,[passthrough],in0.aog3bs]
+  [out0.d_car_con_pb.carrier_id,[transform],in0.fxtkc3,
+     in0.aowahj]
+  [out0.d_car_con_pb.pbp_id,[passthrough],in0.aoy6hu]
+  [out0.d_car_con_pb.segment_id,[transform],in0.aof8vi]
+  [out0.d_car_con_pb.carrier_contract_pbp_hist_sk,[transform],]
+  [out0.d_car_con_pb.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_car_con_pb.benefit_yr,[passthrough],in0.aoy7hu]
+  [out0.d_car_con_pb.contract_id,[passthrough],in0.aov9hj]
+  [out0.d_car_con_pb.carrier_list,[passthrough],in0.aoibtv]
+  [out0.d_car_con_pb.medicare_plan_type_cd,[passthrough],in0.aowbhj]
+  [out0.d_car_con_pb.cpb_status_cd,[passthrough],in0.aozeie]
+  [out0.d_car_con_pb.cpb_sequence_no,[passthrough],in0.aoy8hu]
+  [out0.d_car_con_pb.carrier_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_carrr.carrier_id,'d_carrr.carrier_id',1,1]
+     [out0.d_car_con_pb.formulary_id,'d_car_con_pb.formulary_id',1,0]
+     [out0.d_car_con_pb.carrier_id,'d_car_con_pb.carrier_id',2,0]
+     [out0.d_car_con_pb.pbp_id,'d_car_con_pb.pbp_id',1,0]
+     [out0.d_car_con_pb.segment_id,'d_car_con_pb.segment_id',1,0]
+     [out0.d_car_con_pb.carrier_contract_pbp_hist_sk,'d_car_con_pb.carrier_contract_pbp_hist_sk',1,0]
+     [out0.d_car_con_pb.src_env_sk,'d_car_con_pb.src_env_sk',1,0]
+     [out0.d_car_con_pb.benefit_yr,'d_car_con_pb.benefit_yr',1,0]
+     [out0.d_car_con_pb.contract_id,'d_car_con_pb.contract_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_car_con_pb.carrier_list,'d_car_con_pb.carrier_list',1,0]
+     [out0.d_car_con_pb.medicare_plan_type_cd,'d_car_con_pb.medicare_plan_type_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_car_con_pb.cpb_status_cd,'d_car_con_pb.cpb_status_cd',1,0]
+     [out0.d_car_con_pb.cpb_sequence_no,'d_car_con_pb.cpb_sequence_no',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_car_con_pb.carrier_sk,'d_car_con_pb.carrier_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.aowahj,'aowahj',2,2]
+     [in0.fxtkc3,'fxtkc3',1,2]
+     [in0.aowbhj,'aowbhj',1,1]
+     [in0.aoy7hu,'aoy7hu',1,1]
+     [in0.aog3bs,'aog3bs',1,1]
+     [in0.aozeie,'aozeie',1,1]
+     [in0.aoy8hu,'aoy8hu',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aov9hj,'aov9hj',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.aoibtv,'aoibtv',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.aof8vi,'aof8vi',3,1]
+     [in0.aoy6hu,'aoy6hu',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_car_con_pb_carrier_contract_pbp_hist_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_car_con_pb_contract_id = fail_if_error(in0.aov9hj);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_car_con_pb_pbp_id = fail_if_error(in0.aoy6hu);
+let decimal("\x01",0) d_car_con_pb_benefit_yr = fail_if_error(in0.aoy7hu);
+let decimal("\x01",0) d_car_con_pb_cpb_sequence_no = fail_if_error(in0.aoy8hu);
+let decimal("\x01",0) d_car_con_pb_carrier_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_car_con_pb_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_car_con_pb_medicare_plan_type_cd = fail_if_error(in0.aowbhj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_car_con_pb_cpb_status_cd = fail_if_error(in0.aozeie);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_car_con_pb_carrier_list = fail_if_error(in0.aoibtv);
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_car_con_pb_formulary_id = fail_if_error(in0.aog3bs);
+let decimal("\x01",0) d_car_con_pb_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_car_con_pb_segment_id = fail_if_error((if (sql_or(is_blank(in0.aof8vi),is_null(in0.aof8vi)))
+   '-'
+ else
+   in0.aof8vi));
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_carrr_carrier_id;
+
+
+
+/*   Default value   */
+d_car_con_pb_carrier_id=fail_if_error(if (str_non_nk(in0.aowahj) == "-") in0.fxtkc3 else str_non_nk(in0.aowahj));
+
+/*   Default value   */
+d_carrr_carrier_id=fail_if_error(d_car_con_pb_carrier_id);
+
+  out0.d_car_con_pb.carrier_contract_pbp_hist_sk::d_car_con_pb_carrier_contract_pbp_hist_sk;
+  out0.d_car_con_pb.contract_id::d_car_con_pb_contract_id;
+  out0.d_car_con_pb.pbp_id::d_car_con_pb_pbp_id;
+  out0.d_car_con_pb.benefit_yr::d_car_con_pb_benefit_yr;
+  out0.d_car_con_pb.cpb_sequence_no::d_car_con_pb_cpb_sequence_no;
+  out0.d_car_con_pb.carrier_sk::d_car_con_pb_carrier_sk;
+  out0.d_car_con_pb.carrier_id::d_car_con_pb_carrier_id;
+  out0.d_car_con_pb.medicare_plan_type_cd::d_car_con_pb_medicare_plan_type_cd;
+  out0.d_car_con_pb.cpb_status_cd::d_car_con_pb_cpb_status_cd;
+  out0.d_car_con_pb.carrier_list::d_car_con_pb_carrier_list;
+  out0.d_car_con_pb.formulary_id::d_car_con_pb_formulary_id;
+  out0.d_car_con_pb.src_env_sk::d_car_con_pb_src_env_sk;
+  out0.d_car_con_pb.segment_id::d_car_con_pb_segment_id;
+  out0.d_carrr.carrier_id::d_carrr_carrier_id;
+  out0.*::in0.*;
+
+end;

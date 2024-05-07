@@ -1,0 +1,16 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_etlrndt.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_etlrndt.dml
+SORT_KEY||||{dxf_hk_part1}
+USE_ROLLUP||||True
+ROLLUP_XFR||||$AI_XFR/aggregation/aggregate.d_latest_claim.xfr
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.d_latest_claim.ids_rxclaim.d_latest_claim.${RUN_ID}.dat.gz
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.d_latest_claim.dml
+MAPPING_XFR|$|||$AI_XFR/rfmt/rfmt.d_latest_claim.xfr
+EXTRA_SORT_KEY||||{dxf_hk_part2; lt_claim_seq_nbr descending; lt_claim_stat_id descending}
+LOOKUP_FILE_PATH||||$[PUB_DATAHUB_MFS_LOOKUP + '/ids/ids_rxclaim/one/d_latest_claim.dat.gz']
+LOOKUP_FILE_DML||||$[PUB_DATAHUB_DML + '/ids_rxclaim/ids_rxclaim.d_latest_claim.dml']
+DO_IDS_ICFF_LOOKUP||||True
+RUN_ID||||20170725000000
+USE_DEDUP||||True
+ROLLUP_KEY||||{dxf_hk_part1;dxf_hk_part2}

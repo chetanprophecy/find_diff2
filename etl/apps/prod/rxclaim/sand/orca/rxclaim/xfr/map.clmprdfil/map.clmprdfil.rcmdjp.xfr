@@ -1,0 +1,25 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+out.mdj_edit_category_rangeid :: if(is_null(in.mjcahn)) "NULL" else in.mjcahn;
+out.mdj_edit_cat_range_min :: if(is_null(in.mjcbhn)) "NULL" else in.mjcbhn;
+out.mdj_edit_cat_range_max :: if(is_null(in.mjcchn)) "NULL" else in.mjcchn;
+out.mdj_edit_category :: if(is_null(in.mjcdhn)) "NULL" else in.mjcdhn;
+out.add_user_name :: if(is_null(in.mjakvn)) "NULL"else in.mjakvn;
+out.add_date :: if(string_substring((string(""))(decimal(""))in.mjc2dt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mjc2dt) else (date("YYYYMMDD")) '99991231';
+out.add_time :: if(first_defined(in.mjadtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.mjadtm)==4)'00' else if(string_length((string(""))(decimal(""))in.mjadtm)==5)'0' else '',(string(""))(decimal("")) in.mjadtm);
+out.add_program_name :: if(is_null(in.mjalvn)) "NULL" else in.mjalvn;
+out.chg_user_name :: if(is_null(in.mjadvn)) "NULL" else in.mjadvn;
+out.chg_date :: if(string_substring((string(""))(decimal(""))in.mjbmdt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mjbmdt) else (date("YYYYMMDD")) '99991231';
+out.chg_time :: if(first_defined(in.mjabtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.mjabtm)==4)'00' else if(string_length((string(""))(decimal(""))in.mjabtm)==5)'0' else '',(string(""))(decimal("")) in.mjabtm);
+out.chg_program_name :: if(is_null(in.mjaevn)) "NULL" else in.mjaevn;
+out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+out.rxt_create_uid :: 'app_orca_rxclaim';
+out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+out.rxt_rec_stat_cd :: '';
+out.* :: in.*;
+end;
+
+

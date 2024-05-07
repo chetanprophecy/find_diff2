@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim/clean.rxclaim.l_norm_ids_l_norm.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.l_norm_ids_l_norm.dml
+SORT_KEY||||{carrier_id;account_id;group_id}
+LOOKUP_KEY||||{carrier_id;account_id;group_id}
+USE_ROLLUP||||True
+MAPPING_XFR||||$AI_XFR/map.rxclaim/map.rxclaim.l_norm_lkp.xfr
+ROLLUP_XFR||||$AI_XFR/aggregation/aggregate.l_norm_lkp.xfr
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.l_norm_3key_lkp.dat
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.rxclaim/lookup.rxclaim.l_norm_3key_lkp.dml
+FILTER_EXPR|$|||!is_null(account_id) and !is_null(group_id)

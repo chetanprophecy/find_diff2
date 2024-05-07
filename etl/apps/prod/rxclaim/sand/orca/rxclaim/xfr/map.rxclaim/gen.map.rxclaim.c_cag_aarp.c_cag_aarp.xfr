@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.c_cag_aarp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_cag_aarp.acct_id,'c_cag_aarp.acct_id',1,0]
+     [out0.c_cag_aarp.rx_acct_nm,'c_cag_aarp.rx_acct_nm',1,0]
+     [out0.c_cag_aarp.emplyr_group_id,'c_cag_aarp.emplyr_group_id',1,0]
+     [out0.c_cag_aarp.mkt_prd_nm,'c_cag_aarp.mkt_prd_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_cag_aarp.src_env_sk,'c_cag_aarp.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_cag_aarp.carrier_id,'c_cag_aarp.carrier_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.mkt_prd_nm,'mkt_prd_nm',1,1]
+     [in0.rx_acct_nm,'rx_acct_nm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.acct_id,'acct_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_cag_aarp_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_cag_aarp_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_cag_aarp_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_cag_aarp_rx_acct_nm = fail_if_error(in0.rx_acct_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_cag_aarp_mkt_prd_nm = fail_if_error(in0.mkt_prd_nm);
+let decimal("\x01",0) c_cag_aarp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_cag_aarp.carrier_id::c_cag_aarp_carrier_id;
+  out0.c_cag_aarp.acct_id::c_cag_aarp_acct_id;
+  out0.c_cag_aarp.emplyr_group_id::c_cag_aarp_emplyr_group_id;
+  out0.c_cag_aarp.rx_acct_nm::c_cag_aarp_rx_acct_nm;
+  out0.c_cag_aarp.mkt_prd_nm::c_cag_aarp_mkt_prd_nm;
+  out0.c_cag_aarp.src_env_sk::c_cag_aarp_src_env_sk;
+  out0.*::in0.*;
+
+end;

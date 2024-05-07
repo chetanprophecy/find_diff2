@@ -1,0 +1,163 @@
+/* The standard hash key data type. Note that the hash algorithm (murmur3, or md5)
+   will return a 16-byte void value. DXF will not use any algorithms that return
+   a bigger value.
+   To fit this hash into a numeric data type, a collection of fields is required
+   because integer supports only upto 8 bytes.
+*/
+type hash_key_type=
+unsigned integer(8)[2];
+
+
+type hash_key_combine_type=
+record 
+unsigned integer(8) dxf_hk_part1=0;
+unsigned integer(8) dxf_hk_part2=0;
+end;
+
+/* A common xref lookup type for all xref lookup file */
+
+type xref_lookup_type=
+record 
+unsigned integer(8) dxf_hk_part1=0;
+unsigned integer(8) dxf_hk_part2=0;
+integer(8) dxf_sk=0;
+end;
+
+type xref_serial_lookup_type=
+record 
+hash_key_combine_type dxf_hk;
+integer(8) dxf_sk=0;
+end;
+
+
+/* DML representation of the pipe-separated properties file. This file will contain
+   the metadata of every IDS table.
+   Currently DXF does not have a process to generate this metadata, so this is to be
+   produced manually.
+*/
+type table_properties_type=
+record
+  string("|") table_name;
+  string("|") table_type;
+  string("|") storage_type;  // ICFF/Regular
+  string("|") primary_key;
+  string("|") natural_key;
+  string("|") business_key;
+  string("\n") comment;
+end;
+
+
+/* This type is used in common_functions.xfr, to represent details of a file. Usually this type
+   would be used in a function to return the details of a list of files.
+   file_name is available as a field of subrecord file_info also, but is included
+   at first level for ease of use.
+*/
+type file_details_type=
+record
+  string("\x01") directory;
+  string("\x01") file_name;
+  file_information_type file_info;
+end;
+
+
+/* The structure of ICFF that is used in fact keying process.
+   Each dimension is stored in IDS as two distinct files - an ICFF with all the dimension
+   fields, and an ICFF for translating the hash of natural key into a universal surrogate
+   key value (HK-UK lookup). This type is for the latter.
+*/
+type dim_hk_uk_lookup_type=
+record
+  hash_key_combine_type dxf_hk;
+  unsigned integer(8) universal_key;
+  unsigned integer(8) effective_date;
+end;
+
+
+/* The lookup template type to be used in fact keying. The HK-UK lookup(s) for the
+   dimension(s) linked to a fact will be loaded dynamically in the fact keying graph.
+
+   IMPORTANT NOTE: If DA is required, it will be imperative that the dimension's eme
+                   dataset is set depending on the name of the dimension. In that case
+                   this type will have to be generated separately at runtime for each
+                   dimension.
+*/
+type hk_uk_lookup_type = record 
+  lookup_identifier_type id = -1; 
+  dim_hk_uk_lookup_type RecordFormat() = allocate();
+  string('') key() = {hash_key}; 
+
+  int keep_on_disk() = 1; 
+  int block_compressed() = 1; 
+  string('') eme_dataset_location() = "";
+end;
+
+/* This record type contains  default IDS audit columns , default value of these columns are set in load.icff.mp graph
+*/
+type ids_audit_type=
+record
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm =NULL("") ;
+  string("\x01", maximum_length=20) ids_create_uid = NULL("") ;
+  decimal("\x01",maximum_length=20) ids_create_run_id = 0 ;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm =NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("") ;
+  decimal("\x01",maximum_length=20) ids_updt_run_id = 0 ;
+  string("\x01",maximum_length=2) ids_rec_stat_cd = NULL("") ;
+end;
+
+
+/* This record type contains  default IDW audit columns , default value of these columns are set in distribut.combine graph
+*/
+type idw_audit_type = 
+record
+  decimal("\x01",0) src_env_sk /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") insert_ts /*TIMESTAMP(6) NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts /*TIMESTAMP(6) NOT NULL*/;
+  string("\x01",maximum_length=20) insert_uid = NULL("") /*VARCHAR(20)*/;
+  string("\x01",maximum_length=20) update_uid = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0) run_id = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rec_stat_cd = NULL("") /*BYTEINT*/;
+end;
+
+
+
+/* This record type contains,  src envrt record type that is used in deciding rank /priority of given source to update a record in IDS
+*/
+
+type ids_src_envrt_lookup_type=
+record
+        decimal("|") src_env_sk ;
+        string("|") legacy_src_env_id;
+        string("|") src_env_nm ;
+        string("|") src_env_desc;
+        string("|") legacy_bus_nm= NULL("");
+        string("|") src_server_name= NULL("");
+        decimal("|") src_env_rnk= NULL("");
+        string("|") master_rec;
+        datetime("YYYYMMDDHH24MISS")("|") insert_ts= NULL("");
+        string(1)  newline =  "\n";
+end;
+
+
+
+/* DML representation of the pipe-separated governance properties file. This file will contain
+   the housekeep/maintenance metadata of every IDS table.
+   Currently DXF does not have a process to generate this metadata, so this is to be
+   produced manually.
+*/
+type governance_properties_type=
+record
+  string("|") table;
+  string("|") type_of_data;
+  string("|") proj_eme_path;  
+  string("|") retention_type;  // Days/Iterations
+  string("|") no_of_days;
+  string("|") no_of_iterations;
+  string("|") frequency;
+  string("|") file_data_retention_period;
+  string("|") file_retention_exception_flag;
+  string("|") data_retention_exception_flag;
+  string("|") excptn_justification;
+  string("|") is_truncate_and_load;
+  string("\n") comments;
+end;

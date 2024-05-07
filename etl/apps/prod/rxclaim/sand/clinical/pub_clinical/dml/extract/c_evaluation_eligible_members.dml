@@ -1,0 +1,29 @@
+/* DML Generated for SQL: SELECT
+M.PATIENT_ID,
+ELIG.STTS_CD,
+M.CARRIER_ID,
+M.ACCT_ID,
+M.EMPLYR_GROUP_ID,
+M.MEMBER_ID,
+ELIG.ELIG_END_DT,
+ELIG.ELIG_START_DT
+FROM PEGA_DATA.C_MEMBER_ELIG ELIG,
+PEGA_DATA.C_MEMBER M
+WHERE M.CARRIER_ID=ELIG.CARRIER_ID
+AND M.ACCT_ID=ELIG.ACCT_ID
+AND M.EMPLYR_GROUP_ID=ELIG.EMPLYR_GROUP_ID
+AND M.MEMBER_ID=ELIG.MEMBER_ID
+AND ELIG.STTS_CD='A'
+ * On: Tue Mar 27 04:29:47 2018
+ */
+record
+  decimal("\x01",0, maximum_length=39) patient_id /*NUMBER(38) NOT NULL*/;
+  utf8 string("\x01", maximum_length=1) stts_cd /*CHAR(1) NOT NULL*/;
+  utf8 string("\x01", maximum_length=30) carrier_id /*VARCHAR2(30) NOT NULL*/;
+  utf8 string("\x01", maximum_length=40) acct_id /*VARCHAR2(40) NOT NULL*/;
+  utf8 string("\x01", maximum_length=30) emplyr_group_id /*VARCHAR2(30) NOT NULL*/;
+  utf8 string("\x01", maximum_length=20) member_id /*VARCHAR2(20) NOT NULL*/;
+  date("YYYYMMDD")("\x01") elig_end_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") elig_start_dt = NULL("") /*DATE*/;
+  string(1) newline = "\n";
+end

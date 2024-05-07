@@ -1,0 +1,161 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58340db4_2438_7 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_period_type.perd_type_nbr,[transform],]
+  [out0.a_cag_mm.client_rdr_sk,[transform],]
+  [out0.a_cag_mm.care_facility_sk,[transform],]
+  [out0.l_care_facility.care_facility_id,[transform],in0.care_fac_id]
+  [out0.a_cag_mm.pln_sk,[passthrough],in0.final_pln_sk]
+  [out0.l_client_product.client_prod_cd,[transform],in0.clt_prod_cd]
+  [out0.a_cag_mm.processing_month_date_value,[passthrough],in0.perd_start_dt]
+  [out0.a_cag_mm.grp_sic_cd,[transform],in0.group_sic]
+  [out0.a_cag_mm.cag_sk,[passthrough],in0.cag_sk]
+  [out0.a_cag_mm.mbr_age,[passthrough],in0.age]
+  [out0.a_cag_mm.age_band_sk,[passthrough],in0.age_band_sk]
+  [out0.a_cag_mm.pln_qlfr_cd_sk,[passthrough],in0.pln_qlfr_cd_sk]
+  [out0.a_cag_mm.utilizing_mbr_cnt_no,[passthrough],in0.mbr_sk]
+  [out0.a_cag_mm.gender_sk,[passthrough],in0.gender_sk]
+  [out0.a_cag_mm.grp_clt_benft_cd,[transform],in0.grp_clt_ben_cd]
+  [out0.d_date.cal_day_dt,[passthrough],in0.perd_start_dt]
+  [out0.a_cag_mm.client_prod_sk,[transform],]
+  [out0.a_cag_mm.perd_start_dt_sk,[transform],]
+  [out0.a_cag_mm.account_benft_cd,[transform],in0.acct_benefit_cd]
+  [out0.a_cag_mm.perd_type_sk,[transform],]
+  [out0.a_cag_mm.relationship_cd_sk,[passthrough],in0.relationship_cd_sk]
+  [out0.a_cag_mm.carrier_id_ovrd_cd,[transform],in0.phr_super_carr_nm]
+  [out0.l_client_rider.client_rdr_cd,[transform],in0.clt_rdr_cd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_period_type.perd_type_nbr,'l_period_type.perd_type_nbr',1,0]
+     [out0.d_plan.src_env_sk,'d_plan.src_env_sk',1,0]
+     [out0.a_cag_mm.client_rdr_sk,'a_cag_mm.client_rdr_sk',1,0]
+     [out0.a_cag_mm.care_facility_sk,'a_cag_mm.care_facility_sk',1,0]
+     [out0.l_plan_qualifier.src_env_sk,'l_plan_qualifier.src_env_sk',1,0]
+     [out0.l_care_facility.care_facility_id,'l_care_facility.care_facility_id',1,0]
+     [out0.a_cag_mm.pln_sk,'a_cag_mm.pln_sk',1,0]
+     [out0.a_cag_mm.src_env_sk,'a_cag_mm.src_env_sk',1,0]
+     [out0.l_client_product.client_prod_cd,'l_client_product.client_prod_cd',1,0]
+     [out0.a_cag_mm.processing_month_date_value,'a_cag_mm.processing_month_date_value',1,0]
+     [out0.a_cag_mm.grp_sic_cd,'a_cag_mm.grp_sic_cd',1,0]
+     [out0.a_cag_mm.cag_sk,'a_cag_mm.cag_sk',1,0]
+     [out0.a_cag_mm.mbr_age,'a_cag_mm.mbr_age',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.a_cag_mm.mbr_dt_of_brth,'a_cag_mm.mbr_dt_of_brth',1,0]
+     [out0.a_cag_mm.age_band_sk,'a_cag_mm.age_band_sk',1,0]
+     [out0.a_cag_mm.pln_qlfr_cd_sk,'a_cag_mm.pln_qlfr_cd_sk',1,0]
+     [out0.a_cag_mm.utilizing_mbr_cnt_no,'a_cag_mm.utilizing_mbr_cnt_no',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.a_cag_mm.gender_sk,'a_cag_mm.gender_sk',1,0]
+     [out0.a_cag_mm.grp_clt_benft_cd,'a_cag_mm.grp_clt_benft_cd',1,0]
+     [out0.d_date.cal_day_dt,'d_date.cal_day_dt',1,0]
+     [out0.a_cag_mm.client_prod_sk,'a_cag_mm.client_prod_sk',1,0]
+     [out0.a_cag_mm.perd_start_dt_sk,'a_cag_mm.perd_start_dt_sk',1,0]
+     [out0.a_cag_mm.account_benft_cd,'a_cag_mm.account_benft_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.a_cag_mm.perd_type_sk,'a_cag_mm.perd_type_sk',1,0]
+     [out0.a_cag_mm.relationship_cd_sk,'a_cag_mm.relationship_cd_sk',1,0]
+     [out0.l_age_band.age,'l_age_band.age',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.a_cag_mm.carrier_id_ovrd_cd,'a_cag_mm.carrier_id_ovrd_cd',1,0]
+     [out0.l_client_rider.client_rdr_cd,'l_client_rider.client_rdr_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.pln_qlfr_cd_sk,'pln_qlfr_cd_sk',1,1]
+     [in0.perd_start_dt,'perd_start_dt',2,2]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.age_band_sk,'age_band_sk',1,1]
+     [in0.relationship_cd_sk,'relationship_cd_sk',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     [in0.group_sic,'group_sic',1,1]
+     [in0.grp_clt_ben_cd,'grp_clt_ben_cd',1,1]
+     [in0.clt_rdr_cd,'clt_rdr_cd',1,1]
+     [in0.phr_super_carr_nm,'phr_super_carr_nm',1,1]
+     [in0.final_pln_sk,'final_pln_sk',1,1]
+     [in0.mbr_dt_of_brth,'mbr_dt_of_brth',1,1]
+     [in0.src_env_sk,'src_env_sk',3,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.care_fac_id,'care_fac_id',1,1]
+     [in0.clt_prod_cd,'clt_prod_cd',1,1]
+     [in0.age,'age',2,2]
+     [in0.gender_sk,'gender_sk',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.acct_benefit_cd,'acct_benefit_cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) a_cag_mm_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) a_cag_mm_perd_type_sk = -1;
+let decimal("\x01",0) a_cag_mm_perd_start_dt_sk = -1;
+let decimal("\x01",0) a_cag_mm_pln_sk = fail_if_error(in0.final_pln_sk);
+let decimal("\x01",0) a_cag_mm_pln_qlfr_cd_sk = fail_if_error(in0.pln_qlfr_cd_sk);
+let decimal("\x01",0) a_cag_mm_client_prod_sk = -1;
+let decimal("\x01",0) a_cag_mm_client_rdr_sk = -1;
+let decimal("\x01",0) a_cag_mm_gender_sk = fail_if_error(in0.gender_sk);
+let decimal("\x01",0) a_cag_mm_mbr_age = fail_if_error(in0.age);
+let decimal("\x01",0) a_cag_mm_age_band_sk = fail_if_error(in0.age_band_sk);
+let decimal("\x01",0) a_cag_mm_relationship_cd_sk = fail_if_error(in0.relationship_cd_sk);
+let decimal("\x01",0) a_cag_mm_care_facility_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_cag_mm_carrier_id_ovrd_cd = fail_if_error(string_lrtrim(in0.phr_super_carr_nm));
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_cag_mm_account_benft_cd = fail_if_error(string_lrtrim(in0.acct_benefit_cd));
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_cag_mm_grp_clt_benft_cd = fail_if_error(string_lrtrim(in0.grp_clt_ben_cd));
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_cag_mm_grp_sic_cd = fail_if_error(string_lrtrim(in0.group_sic));
+let date("YYYYMMDD")("\x01") a_cag_mm_mbr_dt_of_brth = fail_if_error(in0.mbr_dt_of_brth);
+let decimal("\x01",2) a_cag_mm_utilizing_mbr_cnt_no = fail_if_error(in0.mbr_sk);
+let date("YYYYMMDD")("\x01") a_cag_mm_processing_month_date_value = fail_if_error(in0.perd_start_dt);
+let decimal("\x01",0) a_cag_mm_src_env_sk = fail_if_error(in0.src_env_sk);
+let date("YYYYMMDD")("\x01") d_date_cal_day_dt = fail_if_error(in0.perd_start_dt);
+let decimal("\x01",0) d_plan_src_env_sk = fail_if_error(in0.src_env_sk);
+let decimal("\x01",0) l_age_band_age = fail_if_error(in0.age);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_care_facility_care_facility_id = fail_if_error(string_ltrim(in0.care_fac_id));
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_client_product_client_prod_cd = fail_if_error(string_ltrim(in0.clt_prod_cd));
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_client_rider_client_rdr_cd = fail_if_error(string_lrtrim(in0.clt_rdr_cd));
+let decimal("\x01",0) l_period_type_perd_type_nbr = 1;
+let decimal("\x01",0) l_plan_qualifier_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.a_cag_mm.cag_sk::a_cag_mm_cag_sk;
+  out0.a_cag_mm.perd_type_sk::a_cag_mm_perd_type_sk;
+  out0.a_cag_mm.perd_start_dt_sk::a_cag_mm_perd_start_dt_sk;
+  out0.a_cag_mm.pln_sk::a_cag_mm_pln_sk;
+  out0.a_cag_mm.pln_qlfr_cd_sk::a_cag_mm_pln_qlfr_cd_sk;
+  out0.a_cag_mm.client_prod_sk::a_cag_mm_client_prod_sk;
+  out0.a_cag_mm.client_rdr_sk::a_cag_mm_client_rdr_sk;
+  out0.a_cag_mm.gender_sk::a_cag_mm_gender_sk;
+  out0.a_cag_mm.mbr_age::a_cag_mm_mbr_age;
+  out0.a_cag_mm.age_band_sk::a_cag_mm_age_band_sk;
+  out0.a_cag_mm.relationship_cd_sk::a_cag_mm_relationship_cd_sk;
+  out0.a_cag_mm.care_facility_sk::a_cag_mm_care_facility_sk;
+  out0.a_cag_mm.carrier_id_ovrd_cd::a_cag_mm_carrier_id_ovrd_cd;
+  out0.a_cag_mm.account_benft_cd::a_cag_mm_account_benft_cd;
+  out0.a_cag_mm.grp_clt_benft_cd::a_cag_mm_grp_clt_benft_cd;
+  out0.a_cag_mm.grp_sic_cd::a_cag_mm_grp_sic_cd;
+  out0.a_cag_mm.mbr_dt_of_brth::a_cag_mm_mbr_dt_of_brth;
+  out0.a_cag_mm.utilizing_mbr_cnt_no::a_cag_mm_utilizing_mbr_cnt_no;
+  out0.a_cag_mm.processing_month_date_value::a_cag_mm_processing_month_date_value;
+  out0.a_cag_mm.src_env_sk::a_cag_mm_src_env_sk;
+  out0.d_date.cal_day_dt::d_date_cal_day_dt;
+  out0.d_plan.src_env_sk::d_plan_src_env_sk;
+  out0.l_age_band.age::l_age_band_age;
+  out0.l_care_facility.care_facility_id::l_care_facility_care_facility_id;
+  out0.l_client_product.client_prod_cd::l_client_product_client_prod_cd;
+  out0.l_client_rider.client_rdr_cd::l_client_rider_client_rdr_cd;
+  out0.l_period_type.perd_type_nbr::l_period_type_perd_type_nbr;
+  out0.l_plan_qualifier.src_env_sk::l_plan_qualifier_src_env_sk;
+  out0.*::in0.*;
+
+end;

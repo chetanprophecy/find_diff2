@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.ids.interim.pset
+SOURCE_NAME||||ids_common.d_carrier_lkp
+TRANSFORM_XFR||||/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@ BizHidden:true @*/\nconstant decimal('') START_DATE parameter  = allocate_with_defaults();\n\n/*@ BizHidden:true @*/\nconstant decimal('') END_DATE parameter  = allocate_with_defaults();\n\nout0::Untitled_Ruleset_documentation(in)=\nbegin\nout0.*::in.*;\nend;\n\n/*@\ndependency_analysis_function:Untitled_Ruleset_documentation\nmetrics:\n{\n  dependencies:\n  [\n     [out0.dxf_sk,'dxf_sk',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.dxf_hk_part1,'dxf_hk_part1',1,0]\n     [out0.ids_rec_stat_cd,'ids_rec_stat_cd',1,0]\n     [out0.ids_updt_dttm,'ids_updt_dttm',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.file_rec_cntr,'file_rec_cntr',1,0]\n     [out0.src_dataset_id,'src_dataset_id',1,0]\n     [out0.dxf_hk_part2,'dxf_hk_part2',1,0]\n     [out0.filename,'filename',1,0]\n  ]\n  impacts:\n  [\n     [in0.dxf_sk,'dxf_sk',1,1]\n     [in0.ids_updt_dttm,'ids_updt_dttm',1,1]\n     [in0.src_env_sk,'src_env_sk',1,1]\n     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]\n     [in0.file_rec_cntr,'file_rec_cntr',1,1]\n     [in0.filename,'filename',1,1]\n     [in0.carrier_id,'carrier_id',1,1]\n     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]\n     [in0.src_dataset_id,'src_dataset_id',1,1]\n     [in0.ids_rec_stat_cd,'ids_rec_stat_cd',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\nend;\n
+LOOKUP_FIELDS_KEY||||{}
+SUBJECT_AREA||||ids_common.d_carrier
+SOURCE_FILE_PATTERN||||d_carrier.dat.gz
+USER_DEFINED_OUTPUT_FIELDS||||carrier_id,src_env_sk,ids_rec_stat_cd
+DO_CLEAN||||0
+DO_LOOKUP||||1
+LOOKUP_KEY||||
+FILTER_EXPRESSION||||first_defined(ids_rec_stat_cd,'0') == '1'

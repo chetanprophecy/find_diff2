@@ -1,0 +1,615 @@
+<AppConfTempl name="Get from File (Integration)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "get.") )
+    "This application configuration must be named: get.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "get.<i>source_system</i>.<i>file_identifier</i>,\n" +
+    "where <i>source_system</i> and <i>file_identifier</i>\n" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+out :: highlight_matching_files(path, matching_files)=
+begin
+  let string("\x01")[] file_list = vector_concat(directory_listing(path, "*.dat"), directory_listing(path, "*.dat.gz"));
+  file_list = for(let file in file_list): if(file not member [vector ".", ".."] and not starts_with(file, ".")) file;
+  file_list = for(let file in file_list): if(file member matching_files) "<b><font color='#00ff00'>" + file + "</font></b>" else file;
+
+  out :: string_join(file_list, "\n");
+end;
+
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <ListVariable name="sample_file" type="string"/>
+      <Variable name="get_dml_found" type="boolean"/>
+      <Variable name="src_file" type="string"/>
+      <ListVariable name="matching_files" type="string"/>
+      <Variable name="configuration_valid" type="string"/>
+    </Variables>
+    <Project name="proj">
+      <Pset name="get" prototype_path="$AI_PSET/get.file.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_SERIAL_PENDING" expression="$AI_SERIAL_PENDING"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+      </Pset>
+    </Project>
+    <SharedFile name="source_dml_file" display_name="Source DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="clean_dml_file" display_name="Clean DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="lookup_dml_file" display_name="Lookup DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="get_dml_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="default_get_dml_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="public_clean_dml_file" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <!-- Check for errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <!-- Establish the PSet naming convention: -->
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^get[.]", "")</SourceValue>
+      <TargetValue reference="proj.get.SOURCE_NAME"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/get." + proj.get.SOURCE_SYSTEM + "/get." + proj.get.SOURCE_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.get" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_NAME != ""</Condition>
+    </Assignment>
+    <!-- Update the Output DML. -->
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML_FILE"/>
+      <TargetValue reference="source_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML"/>
+      <TargetValue reference="source_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML_FILE"/>
+      <TargetValue reference="clean_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML"/>
+      <TargetValue reference="clean_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML_FILE"/>
+      <TargetValue reference="lookup_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML"/>
+      <TargetValue reference="lookup_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <!-- Get the list of matching source files. -->
+    <Assignment>
+      <SourceValue reference="proj.get.FILE_LIST" list_conversion_format="pdl_vector"/>
+      <TargetValue reference="vars.sample_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">directory_listing(proj.get.INPUT_FILE_PATH, proj.get.INPUT_FILE_PATTERN)</SourceValue>
+      <TargetValue reference="vars.matching_files"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.errors == "" 
+      and length_of(get_dml_file.contents) &gt; 0
+      and ((proj.get.DO_SOURCE == "1" and proj.get.SOURCE_FILE_URL != "") 
+          or (proj.get.DO_CLEAN == "1" and proj.get.CLEAN_FILE_URL != "") 
+          or (proj.get.DO_LOOKUP == "1" and proj.get.LOOKUP_FILE_URL != "")) 
+      ) "TRUE" else "FALSE"</SourceValue>
+      <TargetValue reference="vars.configuration_valid"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.GET_DML_FILE"/>
+      <TargetValue reference="get_dml_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML"/>
+      <TargetValue reference="public_clean_dml_file" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.PUBLIC_CLEAN_DML_FILE"/>
+      <TargetValue reference="public_clean_dml_file" property="path"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+          <Width>400</Width>
+          <Style>mainSource</Style>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#FF0000'&gt;" + vars.errors + "&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Input File Pattern</Label>
+          <UIElements>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;File Pattern:&lt;/b&gt;\n" + proj.get.INPUT_FILE_PATTERN</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit pattern...</Label>
+              <Title>Edit pattern</Title>
+              <UIElements>
+                <TextInput>
+                  <Label>Edit the pattern</Label>
+                  <SourceTargetValue reference="proj.get.INPUT_FILE_PATTERN"/>
+                </TextInput>
+                <TextLabel>
+                  <Label>&lt;font color='#ff9900'&gt;&lt;b&gt;Warning: Your file pattern does not end in ".dat" or ".dat.gz". Make sure this is what you want.&lt;/b&gt;&lt;/font&gt;</Label>
+                  <Visible is_expression="true">not is_blank(proj.get.INPUT_FILE_PATTERN) and
+                not ends_with(proj.get.INPUT_FILE_PATTERN, "*") and
+                not (ends_with(proj.get.INPUT_FILE_PATTERN, ".dat") or ends_with(proj.get.INPUT_FILE_PATTERN, ".dat.gz"))</Visible>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"File listing: (The entries in green are the ones that match the entered pattern)"</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">highlight_matching_files(proj.get.INPUT_FILE_PATH, vars.matching_files)</Label>
+                </TextLabel>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Width/>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#FF0000'&gt;Error: DML not found, please pick the appropriate DML in the below popup.&lt;/font&gt;"</Label>
+              <Visible is_expression="true">length_of(get_dml_file.contents) == 0</Visible>
+            </TextLabel>
+            <Popup>
+              <Label>Browse DML...</Label>
+              <Title>Browse DML</Title>
+              <UIElements>
+                <FileBrowser>
+                  <Label>DML browser</Label>
+                  <SourceTargetValue reference="proj.get.GET_DML_FILE"/>
+                  <BrowsableRoot is_expression="true">proj.get.AI_DML + "/get." + proj.get.SOURCE_SYSTEM</BrowsableRoot>
+                </FileBrowser>
+                <RecordFormat>
+                  <Label>Input Record Format</Label>
+                  <CanModifyBusinessAttributes>none</CanModifyBusinessAttributes>
+                  <ShowSampleDataArea>False</ShowSampleDataArea>
+                  <SourceIsCompressed reference="proj.get.IS_COMPRESSED"/>
+                  <CanDiscover>false</CanDiscover>
+                  <CanCreate>false</CanCreate>
+                  <Style>mapping</Style>
+                  <!--<CanEnterDMLMode>True</CanEnterDMLMode>-->
+                  <CanModifyFields>false</CanModifyFields>
+                  <CanRemoveFields>false</CanRemoveFields>
+                  <CanReorderFields>false</CanReorderFields>
+                  <SampleDataPath is_expression="true">proj.get.INPUT_FILE_PATH + "/" + vars.matching_files[0]</SampleDataPath>
+                  <SourceTargetValue reference="get_dml_file"/>
+                </RecordFormat>
+              </UIElements>
+              <Style>recordFormat</Style>
+            </Popup>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and length_of(get_dml_file.contents) &gt; 0</Visible>
+          <Style>recval</Style>
+          <Label>Output</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Produce a Source File for Cleansing</Label>
+              <SourceTargetValue reference="proj.get.DO_SOURCE"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Clean File</Label>
+              <SourceTargetValue reference="proj.get.DO_CLEAN"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Lookup</Label>
+              <SourceTargetValue reference="proj.get.DO_LOOKUP"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <TextLabel>
+              <Visible is_expression="true">(decimal(""))proj.get.DO_SOURCE + (decimal(""))proj.get.DO_CLEAN + (decimal(""))proj.get.DO_LOOKUP != 1</Visible>
+              <Label is_expression="true">bold("Note: Typically, only one of these should be selected.")</Label>
+            </TextLabel>
+            <VerticalLayoutContainer>
+              <UIElements>
+                <CheckBox>
+                  <Label>Publish Clean File</Label>
+                  <SourceTargetValue reference="proj.get.DO_PUBLISH_CLEAN_FILE"/>
+                  <TrueValue>1</TrueValue>
+                  <FalseValue>0</FalseValue>
+                </CheckBox>
+              </UIElements>
+            </VerticalLayoutContainer>
+          </UIElements>
+        </Box>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and proj.get.DO_LOOKUP != "0"</Visible>
+          <Style>sort</Style>
+          <Label>Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Pick Lookup Fields...</Label>
+              <Style>key</Style>
+              <Description>Choose the fields to include in the lookup.  This lets you reduce the size of the lookup, so only include the fields you need.</Description>
+              <Title>Pick Lookup Fields</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Fields</Label>
+                  <ShowOrderColumn>false</ShowOrderColumn>
+                  <RecordFormat reference="proj.get.GET_DML_PLUS_HEADER"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_FIELDS_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Optional: Set Lookup Key...</Label>
+              <Style>key</Style>
+              <Description>Set the lookup key, which will force sorting and deduplication.  This is especially useful for dated (interval) lookups.  For simple (exact) lookups, this is not needed unless you want sorting.</Description>
+              <Title>Set Lookup Key</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Key</Label>
+                  <ShowOrderColumn>false</ShowOrderColumn>
+                  <ShowSpecialColumn>true</ShowSpecialColumn>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Style>key</Style>
+              <Label>Optional: Set Extra Dedup Sort Key Fields...</Label>
+              <Title>Set Extra Dedup Sort Key Fields</Title>
+              <Description>Set the extra keys (in addition to the lookup key, minus any interval_top field) used to pick the "best" surviving record among duplicates.</Description>
+              <UIElements>
+                <TextLabel>
+                  <Label>These fields should be driven by your business requirements.  You should also consider favoring newer records over older ones and shorter intervals over longer.</Label>
+                </TextLabel>
+                <KeyPicker>
+                  <Label>Extra Dedup Sort Key</Label>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.EXTRA_DEDUP_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>12</Height>
+            </Spacer>
+            <Box>
+              <Visible is_expression="true">proj.get.LOOKUP_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Lookup Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.LOOKUP_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.EXTRA_DEDUP_SORT_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Extra Dedup Sort Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.EXTRA_DEDUP_SORT_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.DEDUP_SORT_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Dedup Sort Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.DEDUP_SORT_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and length_of(get_dml_file.contents) &gt; 0 and (proj.get.SOURCE_FILE_URL != "" or proj.get.CLEAN_FILE_URL != "" or proj.get.LOOKUP_FILE_URL != "")</Visible>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Run Get</ButtonLabel>
+              <SourceValue reference="proj.get"/>
+            </ExecuteButton>
+            <Popup>
+              <Visible is_expression="true">proj.get.SOURCE_FILE_URL != ""</Visible>
+              <Label>View Source File...</Label>
+              <Style>validation</Style>
+              <Title>View Source File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="source_dml_file" property="contents"/>
+                  <SourceIsCompressed/>
+                  <SourceValue reference="proj.get.SOURCE_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.CLEAN_FILE_URL != ""</Visible>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Clean File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="clean_dml_file" property="contents"/>
+                  <SourceIsCompressed/>
+                  <SourceValue reference="proj.get.CLEAN_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.PUBLIC_CLEAN_FILE_URL != ""</Visible>
+              <Label>View Public Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Public Clean File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="public_clean_dml_file" property="contents"/>
+                  <SourceIsCompressed/>
+                  <SourceValue reference="proj.get.PUBLIC_CLEAN_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.LOOKUP_FILE_URL != ""</Visible>
+              <Label>View Lookup File...</Label>
+              <Style>validation</Style>
+              <Title>View Lookup File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="lookup_dml_file" property="contents"/>
+                  <SourceValue reference="proj.get.LOOKUP_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+          </UIElements>
+        </Box>
+      </Column>
+    </Canvas>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.get"/>
+        <Enabled is_expression="true">vars.configuration_valid=="TRUE"</Enabled>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+        <Description is_expression="true">if(vars.configuration_valid == "TRUE") 
+              "Get data from " + proj.get.SOURCE_NAME + " and create a clean/source/lookup file"
+            else "The run button is disabled until the configuration is valid i.e. it must be named correctly and one of the three checkboxes to create clean/source/lookup file should be checked."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Tab>
+      <Label>Get PSet</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.PROJECT_DIR + "/" + proj.get.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">first_without_error(
+            fixed_font(read_file(proj.get.PROJECT_DIR + "/" + proj.get.relative_path)),
+            "No pset is available until the configuration is saved.")</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_SOURCE != "0" and source_dml_file.path != ""</Visible>
+      <Label>Source DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(source_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(source_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_CLEAN != "0" and clean_dml_file.path != ""</Visible>
+      <Label>Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(clean_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(clean_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_LOOKUP != "0" and lookup_dml_file.path != ""</Visible>
+      <Label>Lookup DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(lookup_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(lookup_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">length_of(get_dml_file.contents) &gt; 0</Visible>
+      <Label>Get DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.GET_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(proj.get.GET_DML)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_PUBLISH_CLEAN_FILE != "0" and public_clean_dml_file.path != ""</Visible>
+      <Label>Public Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(public_clean_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(public_clean_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label><![CDATA[<font size="14 pt"><b>How to Name Your Gets</b>
+        
+        Your get should be named: get.<i>system</i>.<i>source_name</i>
+        
+        The name of the file(s) you are fetching (getting) is based on the name of 
+        your "get" application configuration.  The file name has two parts, the 
+        first part describes the source <i>system</i>.  It is important that this is 
+        a known system name.  If you invent a new name, you will get an error when 
+        trying to run your get, because it's system ID will not be known.  The 
+        second part is arbitrary, but there are certain conventions that you should 
+        respect.  Try to use a short, human-readable name that is descriptive.  
+        For example, claim is better than clm, fact_transaction_claim, or tblxyz.
+        If you need multiple words, use underscores (_), not periods (.).
+        
+        Ideally the name should be similar to the name of the incoming source file, 
+        using lowercase letters and underscores to separate words.  If the source 
+        or "feed" has a commonly used name, that is probably the right choice.  
+        If there is no obvious name for a file, think about it from the point of 
+        view of the organization supplying the file.  Do they send multiple files?  
+        What names do they use to tell them apart?
+        
+        <b>What a Get is For</b>
+        
+        Gets exist in order to fetch one or more files and standardize the format 
+        and name of that source for the rest of the DXF system.  They also log 
+        the processing of files and take care of marking files as "processed."  
+        Gets are capable of simplifying the structure of a file, although it is 
+        better to do this in the mappings, if possible.  Finally, the get adds 
+        certain header fields that track the reading of the file, which system 
+        it came from, what the file name was, and what the record number was in 
+        the file.
+        
+        Normally, the result of a get will be a "source" file, which will next be 
+        processed in a clean step.  However, it is possible to skip cleansing and 
+        use the get results as a "clean" file or a lookup.  Think twice about 
+        doing this.  Generally it will be better to validate the data before 
+        using it elsewhere.
+        
+        <b>Handling Variations in Source File Names</b>
+        
+        The first thing to set up in the get is the pattern to use for matching 
+        source files.  The template will examine the directory containing source 
+        files (in a standard directory that is based on the system name) and 
+        make a guess of the patterns that should be used.  The pattern tries 
+        to handle files that have dates in the file name.  If none of the 
+        choices offered seem to make sense, ask your development team to 
+        help.
+        
+        <b>Handling Record Formats</b>
+        
+        The system assumes that all files matching the same pattern will have 
+        the same record format.  If this is not the case, you should fix the 
+        pattern and create another get with another name.  Whenever possible 
+        you should import the record format from an "official" source.  The 
+        system can also guess the record format, and this works best for 
+        delimitted files with header records.
+        
+        Once you have an initial DML (Data Manipulation Language) format 
+        defined, you should review the types of all the fields and make them 
+        as strict as practical.  This will assist with automatic cleansing.  
+        Use the Edit button on the record format editor, and the system will 
+        alert you to problems with the DML or opportunities for improvement.  
+        This will be based on your input data, so if you are using "faked" 
+        data, use your own judgment and decide whether to ignore the advice.
+        
+        <b>Testing the Get</b>
+        
+        Once your have configured the get, save it and run it.  You should 
+        not get any errors and you should review the resulting records via 
+        the "View Source/Clean/Lookup File..." links.  It is important that 
+        you run the get for two reasons.  First, you should test it.  Second, 
+        you need to run it in order to provide data to the next stage in the 
+        process (typically a clean).
+        
+        <b>Publishing Your Work</b>
+        
+        Be sure to publish your working configuration once it is tested.  
+        This makes the work you have done available to others and unlocks the
+        configuration so that other people can work on it too.  Give yourself 
+        a pat on the back if you include a meaniful comment when you publish.  
+        Ideally, you should describe why this source was added.  Comments 
+        that describe "why" are more useful than comments that only describe 
+        "what" was done.
+        </font>
+                  ]]></Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

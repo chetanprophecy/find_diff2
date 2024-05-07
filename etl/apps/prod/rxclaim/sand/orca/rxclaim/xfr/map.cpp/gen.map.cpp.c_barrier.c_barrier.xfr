@@ -1,0 +1,82 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b30f61a_555_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_barrier.src_env_sk,[transform],]
+  [out0.c_barrier.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_barrier.barrier_cd_descr,[passthrough],in0.barrier_descr]
+  [out0.c_barrier.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_barrier.cpp_barrier_sk,[transform],]
+  [out0.c_barrier.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_barrier.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_barrier.src_env_sk,'c_barrier.src_env_sk',1,0]
+     [out0.c_barrier.barrier_id,'c_barrier.barrier_id',1,0]
+     [out0.c_barrier.barrier_talking_point,'c_barrier.barrier_talking_point',1,0]
+     [out0.c_barrier.cpp_updated_by,'c_barrier.cpp_updated_by',1,0]
+     [out0.c_barrier.barrier_cd_descr,'c_barrier.barrier_cd_descr',1,0]
+     [out0.c_barrier.cpp_update_ts,'c_barrier.cpp_update_ts',1,0]
+     [out0.c_barrier.cpp_barrier_sk,'c_barrier.cpp_barrier_sk',1,0]
+     [out0.c_barrier.cpp_create_ts,'c_barrier.cpp_create_ts',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_barrier.cpp_created_by,'c_barrier.cpp_created_by',1,0]
+     [out0.c_barrier.barrier_category,'c_barrier.barrier_category',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.barrier_category,'barrier_category',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.barrier_id,'barrier_id',1,1]
+     [in0.barrier_talking_point,'barrier_talking_point',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.barrier_descr,'barrier_descr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_barrier_cpp_barrier_sk = -1;
+let decimal("\x01",0) c_barrier_barrier_id = fail_if_error(in0.barrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_barrier_barrier_category = fail_if_error(in0.barrier_category);
+let utf8 string("\x01", maximum_length=8192) c_barrier_barrier_cd_descr = fail_if_error(in0.barrier_descr);
+let utf8 string("\x01", maximum_length=8192) c_barrier_barrier_talking_point = fail_if_error(in0.barrier_talking_point);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_barrier_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_barrier_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_barrier_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_barrier_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_barrier_src_env_sk = 710;
+
+
+
+  out0.c_barrier.cpp_barrier_sk::c_barrier_cpp_barrier_sk;
+  out0.c_barrier.barrier_id::c_barrier_barrier_id;
+  out0.c_barrier.barrier_category::c_barrier_barrier_category;
+  out0.c_barrier.barrier_cd_descr::c_barrier_barrier_cd_descr;
+  out0.c_barrier.barrier_talking_point::c_barrier_barrier_talking_point;
+  out0.c_barrier.cpp_update_ts::c_barrier_cpp_update_ts;
+  out0.c_barrier.cpp_updated_by::c_barrier_cpp_updated_by;
+  out0.c_barrier.cpp_create_ts::c_barrier_cpp_create_ts;
+  out0.c_barrier.cpp_created_by::c_barrier_cpp_created_by;
+  out0.c_barrier.src_env_sk::c_barrier_src_env_sk;
+  out0.*::in0.*;
+
+end;

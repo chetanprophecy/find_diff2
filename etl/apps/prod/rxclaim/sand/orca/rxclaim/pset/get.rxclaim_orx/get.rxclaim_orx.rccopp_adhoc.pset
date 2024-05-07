@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rccopp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\ndwxtract_bk1  rcex1p                  \nclmprdfil_bk1 rccopp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rccopp')]
+SQL||||select rccopp.nap2nb,\r\nrccopp.naoinb,\r\nrccopp.naven2,\r\nrccopp.nafspp,\r\nrccopp.naunoc,\r\nrccopp.naqghz,\r\nrcex1p.carrierid,\r\nrcex1p.accountid,\r\nrcex1p.groupid,\r\nrcex1p.groupnbr,\r\nrcex1p.memberid,\r\nrcex1p.cardholder,\r\nrcex1p.claimsts,\r\nrcex1p.datesbm,\r\nrcex1p.dtefilled\r\nFROM clmprdfil.rccopp  rccopp,  clmprdext.rce12111  rcex1p\r\nWHERE rcex1p.RXCLAIMNBR = rccopp.nap2nb AND rcex1p.CLMSEQNBR = rccopp.naoinb
+DO_CLEAN||||1
+DO_SOURCE||||0
+RUN_ID||||0
+SOURCE_DB_INFO_VEC||||$[begin\r\n//This PDL block was added by msing114 on 07/2017 to make progress on book1 & book2 project . However this process will be refined later to use more generic way of getting layout.\r\nresult ::  if ((string_index(SOURCE_SYSTEM_OVERRIDE,"rxclaim_orx") || string_index(SOURCE_SYSTEM_OVERRIDE,"_bk1") || string_index(SOURCE_SYSTEM_OVERRIDE,"bk2"))  && !is_blank(ABLOCAL_EXPR) and !is_null(ABLOCAL_EXPR))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS_ADHOC)\r\n           else if (string_index(SOURCE_SYSTEM_OVERRIDE,"rxclaim_orx") || string_index(SOURCE_SYSTEM_OVERRIDE,"_bk1") || string_index(SOURCE_SYSTEM_OVERRIDE,"bk2"))\r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS)           \r\n        else \r\n                get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS) ;\r\n                \r\nend\r\n ]

@@ -1,0 +1,41 @@
+type logical_ids_common_rcmcfp_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  unsigned integer(8) dxf_sk = 0;
+  string("\x01", maximum_length=18) haabcd = NULL("");
+  string("\x01", maximum_length=9) haaacd = NULL("");
+  string("\x01", maximum_length=15) haaccd = NULL("");
+  string("\x01", maximum_length=15) haadcd = NULL("");
+  decimal("\x01", maximum_length=7) hac4n1 = NULL("");
+  decimal("\x01", maximum_length=9) hacrda = NULL("");
+  decimal("\x01", maximum_length=9) hacsda = NULL("");
+  string("\x01", maximum_length=1) habys2 = NULL("");
+  string("\x01", maximum_length=15) halghb = NULL("");
+  string("\x01", maximum_length=2) haxch6 = NULL("");
+  string("\x01", maximum_length=3) haxeh6 = NULL("");
+  string("\x01", maximum_length=10) hapmc2 = NULL("");
+  string("\x01", maximum_length=6) haapcd = NULL("");
+  string("\x01", maximum_length=10) haaecd = NULL("");
+  decimal("\x01", maximum_length=9) haakdt = NULL("");
+  string("\x01", maximum_length=10) hapnc2 = NULL("");
+  string("\x01", maximum_length=10) haakvn = NULL("");
+  decimal("\x01", maximum_length=9) hac2dt = NULL("");
+  decimal("\x01", maximum_length=8) haadtm = NULL("");
+  string("\x01", maximum_length=10) haalvn = NULL("");
+  string("\x01", maximum_length=10) haadvn = NULL("");
+  decimal("\x01", maximum_length=9) habmdt = NULL("");
+  decimal("\x01", maximum_length=8) haabtm = NULL("");
+  string("\x01", maximum_length=10) haaevn = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_rcmcfp_t ctrx_rcmcfp  /*@ BizName:'ctrx rcmcfp' */;
+end;

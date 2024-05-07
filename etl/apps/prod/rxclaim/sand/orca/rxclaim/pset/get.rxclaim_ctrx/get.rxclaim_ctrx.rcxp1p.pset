@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcxp1p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcxp1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil clmgamfil clminmfil clmnvmfil clmctrfil clmcigfil clmprdfil_a6_nmh clmksrfil clmazmfil clmvahfil clmsdmfil clmomcfil clmtnmfil', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[if (START_CHANGES_TIME != '')             string_concat(" WHERE rcxp1p.chg_date_iso >= '" , (string(''))(date('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME, "' AND rcxp1p.chg_date_iso <= '" , (string(''))(date('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME , "' OPTIMIZE FOR ALL ROWS")else     string_concat(" WHERE rcxp1p.chg_date_iso >= '" , (string(''))(date('YYYY-MM-DD'))((datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME-1) ,"' AND rcxp1p.chg_date_iso <= '" , (string(''))(date('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME , "' OPTIMIZE FOR ALL ROWS")]

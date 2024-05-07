@@ -1,0 +1,320 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5bed3c44_1b40_2
+    BizHidden:true
+@*/
+/*   lookup d_member_lkp_eob   */
+out0::bzt_2_6c54cc0a_5bed3c44_1b40_2(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mbr_sk = NULL(""), cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) clt_id = NULL("");
+  decimal("\x01",0) mast_prsn_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_fam_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_alt_ins_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) mbr_alt_ins_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_alt_ins_mbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) mbr_ssn_nbr = NULL("");
+  date("YYYYMMDD")("\x01") mbr_dt_of_brth = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_hic_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) mb_first_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) mb_last_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mb_mid_init_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_prsn_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_relshp_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) mbr_rdr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_sex = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) mbr_city_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) mbr_zip = NULL("");
+  date("YYYYMMDD")("\x01") mbr_mcre_covrg_from_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) mbr_addr1 = NULL(""), mbr_addr2 = NULL(""), mbr_addr3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) mbr_zip2 = NULL(""), mbr_zip4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) mbr_cntry = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) mbr_phone = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=80) mbr_eml_addr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_mcre_covrg_typ = NULL(""), mbr_fam_typ_cd = NULL(""), mbr_fam_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=18) mbr_dur_keyvar = NULL("");
+  date("YYYYMMDD")("\x01") mbr_ben_reset_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_lang_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_dur_prcs_flag = NULL("");
+  decimal("\x01",0) mbr_mltpl_brth_cd = NULL("");
+  date("YYYYMMDD")("\x01") mbr_orig_eff_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_typ = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_member_lkp_eob",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5bed3c44_1b40_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_rctrpp_eob.trp_dos,[passthrough],in0.aoc2hk]
+  [out0.l_rctrpp_eob.mbr_sk,[transform],in0.aoykhc,
+     in0.aoynhc,
+     in0.aoymhc,
+     in0.aoylhc,
+     'lookup("d_member_lkp_eob").dxf_sk']
+  [out0.l_rctrpp_eob.chg_tm,[passthrough],in0.aoabtm]
+  [out0.l_rctrpp_eob.trp_rx_qualifier,[passthrough],in0.aopgh9]
+  [out0.l_rctrpp_eob.trp_transaction_code,[passthrough],in0.aopeh9]
+  [out0.l_rctrpp_eob.claim_nbr,[passthrough],in0.aop2nb]
+  [out0.l_rctrpp_eob.trp_account,[passthrough],in0.aoymhc]
+  [out0.l_rctrpp_eob.trp_transaction_ref_no,[passthrough],in0.aowxhc]
+  [out0.l_rctrpp_eob.trp_status_qualifier,[passthrough],in0.aopdh9]
+  [out0.l_rctrpp_eob.add_tm,[passthrough],in0.aoadtm]
+  [out0.l_rctrpp_eob.trp_refill,[passthrough],in0.aowphc]
+  [out0.l_rctrpp_eob.trp_rx_number,[passthrough],in0.aowohc]
+  [out0.l_rctrpp_eob.trp_other_payer_paid_amt,[passthrough],in0.aos6al]
+  [out0.l_rctrpp_eob.trp_other_payer_bin,[passthrough],in0.aowshc]
+  [out0.l_rctrpp_eob.trp_product_id,[passthrough],in0.aowqhc]
+  [out0.l_rctrpp_eob.trp_pharmacy_id,[passthrough],in0.aownhc]
+  [out0.l_rctrpp_eob.trp_auto_generated,[transform],]
+  [out0.l_rctrpp_eob.trp_sequence,[transform],in0.aodkhs]
+  [out0.l_rctrpp_eob.trp_member_id,[passthrough],in0.aoykhc]
+  [out0.l_rctrpp_eob.trp_product_qualifier,[passthrough],in0.aopih9]
+  [out0.l_rctrpp_eob.trp_process_control_nbr,[passthrough],in0.aoxzhc]
+  [out0.l_rctrpp_eob.trp_other_payer_grp,[passthrough],in0.aowuhc]
+  [out0.l_rctrpp_eob.claim_seq_nbr,[transform],in0.aooinb]
+  [out0.l_rctrpp_eob.trp_x_reprocessing_seq,[passthrough],in0.aoygal]
+  [out0.l_rctrpp_eob.trp_bin_number,[passthrough],in0.aoxyhc]
+  [out0.l_rctrpp_eob.trp_other_payer_amount,[passthrough],in0.aos4al]
+  [out0.l_rctrpp_eob.trp_software_cert_id,[passthrough],in0.aowwhc]
+  [out0.l_rctrpp_eob.trp_group_no,[passthrough],in0.aox0hc]
+  [out0.l_rctrpp_eob.trp_version_release_no,[passthrough],in0.aophh9]
+  [out0.l_rctrpp_eob.chg_dt,[passthrough],in0.aobmdt]
+  [out0.l_rctrpp_eob.trp_a_reprocessing_seq,[passthrough],in0.aoyfal]
+  [out0.l_rctrpp_eob.trp_status,[passthrough],in0.aopch9]
+  [out0.l_rctrpp_eob.trp_submit_patient_pay,[transform],in0.aodlhs]
+  [out0.l_rctrpp_eob.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_rctrpp_eob.trp_other_payer_pcn,[passthrough],in0.aowthc]
+  [out0.l_rctrpp_eob.add_dt,[passthrough],in0.aoc2dt]
+  [out0.l_rctrpp_eob.trp_update_reason_code,[passthrough],in0.aopjh9]
+  [out0.l_rctrpp_eob.trp_group,[passthrough],in0.aoynhc]
+  [out0.l_rctrpp_eob.trp_carrier,[passthrough],in0.aoylhc]
+  [out0.l_rctrpp_eob.trp_update_amount,[transform],in0.aodmhs]
+  [out0.l_rctrpp_eob.trp_pharmacy_qualifier,[passthrough],in0.aopfh9]
+  [out0.l_rctrpp_eob.trp_other_cardholder_id,[passthrough],in0.aowvhc]
+  [out0.l_rctrpp_eob.trp_other_payer_balance,[passthrough],in0.aos5al]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_rctrpp_eob.trp_dos,'l_rctrpp_eob.trp_dos',1,0]
+     [out0.l_rctrpp_eob.mbr_sk,'l_rctrpp_eob.mbr_sk',1,0]
+     [out0.l_rctrpp_eob.chg_tm,'l_rctrpp_eob.chg_tm',1,0]
+     [out0.l_rctrpp_eob.trp_rx_qualifier,'l_rctrpp_eob.trp_rx_qualifier',1,0]
+     [out0.l_rctrpp_eob.trp_transaction_code,'l_rctrpp_eob.trp_transaction_code',1,0]
+     [out0.l_rctrpp_eob.claim_nbr,'l_rctrpp_eob.claim_nbr',1,0]
+     [out0.l_rctrpp_eob.trp_account,'l_rctrpp_eob.trp_account',1,0]
+     [out0.l_rctrpp_eob.trp_transaction_ref_no,'l_rctrpp_eob.trp_transaction_ref_no',1,0]
+     [out0.l_rctrpp_eob.trp_status_qualifier,'l_rctrpp_eob.trp_status_qualifier',1,0]
+     [out0.l_rctrpp_eob.add_tm,'l_rctrpp_eob.add_tm',1,0]
+     [out0.l_rctrpp_eob.trp_refill,'l_rctrpp_eob.trp_refill',1,0]
+     [out0.l_rctrpp_eob.trp_rx_number,'l_rctrpp_eob.trp_rx_number',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_paid_amt,'l_rctrpp_eob.trp_other_payer_paid_amt',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_bin,'l_rctrpp_eob.trp_other_payer_bin',1,0]
+     [out0.l_rctrpp_eob.trp_product_id,'l_rctrpp_eob.trp_product_id',1,0]
+     [out0.l_rctrpp_eob.trp_pharmacy_id,'l_rctrpp_eob.trp_pharmacy_id',1,0]
+     [out0.l_rctrpp_eob.trp_auto_generated,'l_rctrpp_eob.trp_auto_generated',1,0]
+     [out0.l_rctrpp_eob.trp_sequence,'l_rctrpp_eob.trp_sequence',1,0]
+     [out0.l_rctrpp_eob.trp_member_id,'l_rctrpp_eob.trp_member_id',1,0]
+     [out0.l_rctrpp_eob.trp_product_qualifier,'l_rctrpp_eob.trp_product_qualifier',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_rctrpp_eob.trp_process_control_nbr,'l_rctrpp_eob.trp_process_control_nbr',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_grp,'l_rctrpp_eob.trp_other_payer_grp',1,0]
+     [out0.l_rctrpp_eob.claim_seq_nbr,'l_rctrpp_eob.claim_seq_nbr',1,0]
+     [out0.l_rctrpp_eob.trp_x_reprocessing_seq,'l_rctrpp_eob.trp_x_reprocessing_seq',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_rctrpp_eob.trp_bin_number,'l_rctrpp_eob.trp_bin_number',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_amount,'l_rctrpp_eob.trp_other_payer_amount',1,0]
+     [out0.l_rctrpp_eob.trp_software_cert_id,'l_rctrpp_eob.trp_software_cert_id',1,0]
+     [out0.l_rctrpp_eob.trp_group_no,'l_rctrpp_eob.trp_group_no',1,0]
+     [out0.l_rctrpp_eob.trp_version_release_no,'l_rctrpp_eob.trp_version_release_no',1,0]
+     [out0.l_rctrpp_eob.chg_dt,'l_rctrpp_eob.chg_dt',1,0]
+     [out0.l_rctrpp_eob.trp_a_reprocessing_seq,'l_rctrpp_eob.trp_a_reprocessing_seq',1,0]
+     [out0.l_rctrpp_eob.trp_status,'l_rctrpp_eob.trp_status',1,0]
+     [out0.l_rctrpp_eob.trp_submit_patient_pay,'l_rctrpp_eob.trp_submit_patient_pay',1,0]
+     [out0.l_rctrpp_eob.src_env_sk,'l_rctrpp_eob.src_env_sk',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_pcn,'l_rctrpp_eob.trp_other_payer_pcn',1,0]
+     [out0.l_rctrpp_eob.add_dt,'l_rctrpp_eob.add_dt',1,0]
+     [out0.l_rctrpp_eob.trp_update_reason_code,'l_rctrpp_eob.trp_update_reason_code',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.l_rctrpp_eob.trp_group,'l_rctrpp_eob.trp_group',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_rctrpp_eob.trp_carrier,'l_rctrpp_eob.trp_carrier',1,0]
+     [out0.l_rctrpp_eob.trp_update_amount,'l_rctrpp_eob.trp_update_amount',1,0]
+     [out0.l_rctrpp_eob.trp_pharmacy_qualifier,'l_rctrpp_eob.trp_pharmacy_qualifier',1,0]
+     [out0.l_rctrpp_eob.trp_other_cardholder_id,'l_rctrpp_eob.trp_other_cardholder_id',1,0]
+     [out0.l_rctrpp_eob.trp_other_payer_balance,'l_rctrpp_eob.trp_other_payer_balance',1,0]
+  ]
+  impacts:
+  [
+     [in0.aophh9,'aophh9',1,1]
+     [in0.aowohc,'aowohc',1,1]
+     [in0.aowwhc,'aowwhc',1,1]
+     [in0.aodkhs,'aodkhs',3,1]
+     [in0.aos5al,'aos5al',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.aoc2dt,'aoc2dt',1,1]
+     [in0.aos4al,'aos4al',1,1]
+     [in0.aos6al,'aos6al',1,1]
+     [in0.aox0hc,'aox0hc',1,1]
+     [in0.aowphc,'aowphc',1,1]
+     [in0.aoabtm,'aoabtm',1,1]
+     [in0.aoxyhc,'aoxyhc',1,1]
+     [in0.aoyfal,'aoyfal',1,1]
+     [in0.aownhc,'aownhc',1,1]
+     [in0.aoykhc,'aoykhc',3,3]
+     [in0.aopgh9,'aopgh9',1,1]
+     [in0.aowthc,'aowthc',1,1]
+     [in0.aowuhc,'aowuhc',1,1]
+     [in0.aowxhc,'aowxhc',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     ['lookup("d_member_lkp_eob").dxf_sk','dxf_sk',1,1]
+     [in0.aowvhc,'aowvhc',1,1]
+     [in0.aoylhc,'aoylhc',3,3]
+     [in0.aowqhc,'aowqhc',1,1]
+     [in0.aodmhs,'aodmhs',2,1]
+     [in0.aoc2hk,'aoc2hk',1,1]
+     [in0.aoxzhc,'aoxzhc',1,1]
+     [in0.aoygal,'aoygal',1,1]
+     [in0.aopdh9,'aopdh9',1,1]
+     [in0.aopeh9,'aopeh9',1,1]
+     [in0.aopjh9,'aopjh9',1,1]
+     [in0.aopch9,'aopch9',1,1]
+     [in0.aopih9,'aopih9',1,1]
+     [in0.aowshc,'aowshc',1,1]
+     [in0.aoadtm,'aoadtm',1,1]
+     [in0.aop2nb,'aop2nb',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aoymhc,'aoymhc',3,3]
+     [in0.aodlhs,'aodlhs',2,1]
+     [in0.aobmdt,'aobmdt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.aooinb,'aooinb',3,1]
+     [in0.aoynhc,'aoynhc',3,3]
+     [in0.aopfh9,'aopfh9',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_rctrpp_eob_claim_nbr = fail_if_error(in0.aop2nb);
+let decimal("\x01",0) l_rctrpp_eob_claim_seq_nbr = fail_if_error(if(in0.aooinb <0) in0.aooinb else (1000-in0.aooinb));
+let decimal("\x01",0) l_rctrpp_eob_trp_sequence = fail_if_error(if(in0.aodkhs <0) in0.aodkhs else(1000-in0.aodkhs));
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_rctrpp_eob_trp_status = fail_if_error(in0.aopch9);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_rctrpp_eob_trp_status_qualifier = fail_if_error(in0.aopdh9);
+let string("\x01",charset="iso-8859-15", maximum_length=7) l_rctrpp_eob_trp_bin_number = fail_if_error(in0.aoxyhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_rctrpp_eob_trp_process_control_nbr = fail_if_error(in0.aoxzhc);
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_rctrpp_eob_trp_group_no = fail_if_error(in0.aox0hc);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_rctrpp_eob_trp_version_release_no = fail_if_error(in0.aophh9);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_rctrpp_eob_trp_transaction_code = fail_if_error(in0.aopeh9);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_rctrpp_eob_trp_carrier = fail_if_error(in0.aoylhc);
+let string("\x01",charset="iso-8859-15", maximum_length=16) l_rctrpp_eob_trp_account = fail_if_error(in0.aoymhc);
+let string("\x01",charset="iso-8859-15", maximum_length=16) l_rctrpp_eob_trp_group = fail_if_error(in0.aoynhc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rctrpp_eob_trp_member_id = fail_if_error(in0.aoykhc);
+let decimal("\x01") l_rctrpp_eob_mbr_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_rctrpp_eob_trp_pharmacy_qualifier = fail_if_error(in0.aopfh9);
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_rctrpp_eob_trp_pharmacy_id = fail_if_error(in0.aownhc);
+let decimal("\x01",0) l_rctrpp_eob_trp_dos = fail_if_error(in0.aoc2hk);
+let decimal("\x01",0) l_rctrpp_eob_trp_rx_qualifier = fail_if_error(in0.aopgh9);
+let string("\x01",charset="iso-8859-15", maximum_length=13) l_rctrpp_eob_trp_rx_number = fail_if_error(in0.aowohc);
+let decimal("\x01",0) l_rctrpp_eob_trp_refill = fail_if_error(in0.aowphc);
+let decimal("\x01",0) l_rctrpp_eob_trp_product_qualifier = fail_if_error(in0.aopih9);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rctrpp_eob_trp_product_id = fail_if_error(in0.aowqhc);
+let decimal("\x01".2, maximum_length=13, sign_reserved) l_rctrpp_eob_trp_submit_patient_pay = fail_if_error(if( is_null(in0.aodlhs)) 0 else in0.aodlhs);
+let decimal("\x01".2, maximum_length=13, sign_reserved) l_rctrpp_eob_trp_update_amount = fail_if_error(if( is_null(in0.aodmhs)) 0 else in0.aodmhs);
+let decimal("\x01",0) l_rctrpp_eob_trp_update_reason_code = fail_if_error(in0.aopjh9);
+let string("\x01",charset="iso-8859-15", maximum_length=6) l_rctrpp_eob_trp_other_payer_bin = fail_if_error(in0.aowshc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_rctrpp_eob_trp_other_payer_pcn = fail_if_error(in0.aowthc);
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_rctrpp_eob_trp_other_payer_grp = fail_if_error(in0.aowuhc);
+let decimal("\x01".2, maximum_length=13, sign_reserved) l_rctrpp_eob_trp_other_payer_amount = fail_if_error(in0.aos4al);
+let decimal("\x01".2, maximum_length=13, sign_reserved) l_rctrpp_eob_trp_other_payer_balance = fail_if_error(in0.aos5al);
+let decimal("\x01".2, maximum_length=13, sign_reserved) l_rctrpp_eob_trp_other_payer_paid_amt = fail_if_error(in0.aos6al);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rctrpp_eob_trp_other_cardholder_id = fail_if_error(in0.aowvhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_rctrpp_eob_trp_software_cert_id = fail_if_error(in0.aowwhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_rctrpp_eob_trp_transaction_ref_no = fail_if_error(in0.aowxhc);
+let decimal("\x01",0) l_rctrpp_eob_trp_a_reprocessing_seq = fail_if_error(in0.aoyfal);
+let decimal("\x01",0) l_rctrpp_eob_trp_x_reprocessing_seq = fail_if_error(in0.aoygal);
+let decimal("\x01",0) l_rctrpp_eob_trp_auto_generated = "";
+let decimal("\x01",0) l_rctrpp_eob_add_dt = fail_if_error(in0.aoc2dt);
+let decimal("\x01",0) l_rctrpp_eob_add_tm = fail_if_error(in0.aoadtm);
+let decimal("\x01",0) l_rctrpp_eob_chg_dt = fail_if_error(in0.aobmdt);
+let decimal("\x01",0) l_rctrpp_eob_chg_tm = fail_if_error(in0.aoabtm);
+let decimal("\x01",0) l_rctrpp_eob_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+l_rctrpp_eob_mbr_sk=fail_if_error(bzt_2_6c54cc0a_5bed3c44_1b40_2(in0.aoylhc, in0.aoymhc, in0.aoynhc,in0.aoykhc).dxf_sk);
+
+  out0.l_rctrpp_eob.claim_nbr::l_rctrpp_eob_claim_nbr;
+  out0.l_rctrpp_eob.claim_seq_nbr::l_rctrpp_eob_claim_seq_nbr;
+  out0.l_rctrpp_eob.trp_sequence::l_rctrpp_eob_trp_sequence;
+  out0.l_rctrpp_eob.trp_status::l_rctrpp_eob_trp_status;
+  out0.l_rctrpp_eob.trp_status_qualifier::l_rctrpp_eob_trp_status_qualifier;
+  out0.l_rctrpp_eob.trp_bin_number::l_rctrpp_eob_trp_bin_number;
+  out0.l_rctrpp_eob.trp_process_control_nbr::l_rctrpp_eob_trp_process_control_nbr;
+  out0.l_rctrpp_eob.trp_group_no::l_rctrpp_eob_trp_group_no;
+  out0.l_rctrpp_eob.trp_version_release_no::l_rctrpp_eob_trp_version_release_no;
+  out0.l_rctrpp_eob.trp_transaction_code::l_rctrpp_eob_trp_transaction_code;
+  out0.l_rctrpp_eob.trp_carrier::l_rctrpp_eob_trp_carrier;
+  out0.l_rctrpp_eob.trp_account::l_rctrpp_eob_trp_account;
+  out0.l_rctrpp_eob.trp_group::l_rctrpp_eob_trp_group;
+  out0.l_rctrpp_eob.trp_member_id::l_rctrpp_eob_trp_member_id;
+  out0.l_rctrpp_eob.mbr_sk::l_rctrpp_eob_mbr_sk;
+  out0.l_rctrpp_eob.trp_pharmacy_qualifier::l_rctrpp_eob_trp_pharmacy_qualifier;
+  out0.l_rctrpp_eob.trp_pharmacy_id::l_rctrpp_eob_trp_pharmacy_id;
+  out0.l_rctrpp_eob.trp_dos::l_rctrpp_eob_trp_dos;
+  out0.l_rctrpp_eob.trp_rx_qualifier::l_rctrpp_eob_trp_rx_qualifier;
+  out0.l_rctrpp_eob.trp_rx_number::l_rctrpp_eob_trp_rx_number;
+  out0.l_rctrpp_eob.trp_refill::l_rctrpp_eob_trp_refill;
+  out0.l_rctrpp_eob.trp_product_qualifier::l_rctrpp_eob_trp_product_qualifier;
+  out0.l_rctrpp_eob.trp_product_id::l_rctrpp_eob_trp_product_id;
+  out0.l_rctrpp_eob.trp_submit_patient_pay::l_rctrpp_eob_trp_submit_patient_pay;
+  out0.l_rctrpp_eob.trp_update_amount::l_rctrpp_eob_trp_update_amount;
+  out0.l_rctrpp_eob.trp_update_reason_code::l_rctrpp_eob_trp_update_reason_code;
+  out0.l_rctrpp_eob.trp_other_payer_bin::l_rctrpp_eob_trp_other_payer_bin;
+  out0.l_rctrpp_eob.trp_other_payer_pcn::l_rctrpp_eob_trp_other_payer_pcn;
+  out0.l_rctrpp_eob.trp_other_payer_grp::l_rctrpp_eob_trp_other_payer_grp;
+  out0.l_rctrpp_eob.trp_other_payer_amount::l_rctrpp_eob_trp_other_payer_amount;
+  out0.l_rctrpp_eob.trp_other_payer_balance::l_rctrpp_eob_trp_other_payer_balance;
+  out0.l_rctrpp_eob.trp_other_payer_paid_amt::l_rctrpp_eob_trp_other_payer_paid_amt;
+  out0.l_rctrpp_eob.trp_other_cardholder_id::l_rctrpp_eob_trp_other_cardholder_id;
+  out0.l_rctrpp_eob.trp_software_cert_id::l_rctrpp_eob_trp_software_cert_id;
+  out0.l_rctrpp_eob.trp_transaction_ref_no::l_rctrpp_eob_trp_transaction_ref_no;
+  out0.l_rctrpp_eob.trp_a_reprocessing_seq::l_rctrpp_eob_trp_a_reprocessing_seq;
+  out0.l_rctrpp_eob.trp_x_reprocessing_seq::l_rctrpp_eob_trp_x_reprocessing_seq;
+  out0.l_rctrpp_eob.trp_auto_generated::l_rctrpp_eob_trp_auto_generated;
+  out0.l_rctrpp_eob.add_dt::l_rctrpp_eob_add_dt;
+  out0.l_rctrpp_eob.add_tm::l_rctrpp_eob_add_tm;
+  out0.l_rctrpp_eob.chg_dt::l_rctrpp_eob_chg_dt;
+  out0.l_rctrpp_eob.chg_tm::l_rctrpp_eob_chg_tm;
+  out0.l_rctrpp_eob.src_env_sk::l_rctrpp_eob_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,121 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b3f53cd_d653_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_member_cns.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_member_cns.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_member_cns.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_member_cns.src_env_sk,[transform],]
+  [out0.c_member_cns.cpp_member_consldt_sk,[transform],]
+  [out0.c_member_cns.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_member_cns.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_member_cns.cpp_created_by,'c_member_cns.cpp_created_by',1,0]
+     [out0.c_member_cns.cpp_updated_by,'c_member_cns.cpp_updated_by',1,0]
+     [out0.c_member_cns.cpp_member_sk,'c_member_cns.cpp_member_sk',1,0]
+     [out0.c_member_cns.crrspdnce_id,'c_member_cns.crrspdnce_id',1,0]
+     [out0.c_member_cns.template_name,'c_member_cns.template_name',1,0]
+     [out0.c_member_cns.carrier_id,'c_member_cns.carrier_id',1,0]
+     [out0.c_member_cns.branding_version,'c_member_cns.branding_version',1,0]
+     [out0.c_member_cns.src_env_sk,'c_member_cns.src_env_sk',1,0]
+     [out0.c_member_cns.fulfillment_method,'c_member_cns.fulfillment_method',1,0]
+     [out0.c_member_cns.product_type_cd,'c_member_cns.product_type_cd',1,0]
+     [out0.c_member_cns.emplyr_group_id,'c_member_cns.emplyr_group_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_member_cns.cpp_member_consldt_sk,'c_member_cns.cpp_member_consldt_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_member_cns.cpp_update_ts,'c_member_cns.cpp_update_ts',1,0]
+     [out0.c_member_cns.acct_id,'c_member_cns.acct_id',1,0]
+     [out0.c_member_cns.case_id,'c_member_cns.case_id',1,0]
+     [out0.c_member_cns.cpp_create_ts,'c_member_cns.cpp_create_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_member_cns.process_flag,'c_member_cns.process_flag',1,0]
+     [out0.c_member_cns.member_id,'c_member_cns.member_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.fulfillment_method,'fulfillment_method',1,1]
+     [in0.branding_version,'branding_version',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.process_flag,'process_flag',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.product_type_cd,'product_type_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.template_name,'template_name',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.crrspdnce_id,'crrspdnce_id',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_member_cns_cpp_member_consldt_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_member_cns_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_member_cns_crrspdnce_id = fail_if_error(in0.crrspdnce_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_member_cns_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_member_cns_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_member_cns_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_member_cns_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_member_cns_cpp_member_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_member_cns_branding_version = fail_if_error(in0.branding_version);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_member_cns_product_type_cd = fail_if_error(in0.product_type_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_member_cns_template_name = fail_if_error(in0.template_name);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_member_cns_fulfillment_method = fail_if_error(in0.fulfillment_method);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_member_cns_process_flag = fail_if_error(in0.process_flag);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_cns_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_member_cns_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_cns_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_member_cns_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_member_cns_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_member_cns_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_member_cns.cpp_member_consldt_sk::c_member_cns_cpp_member_consldt_sk;
+  out0.c_member_cns.case_id::c_member_cns_case_id;
+  out0.c_member_cns.crrspdnce_id::c_member_cns_crrspdnce_id;
+  out0.c_member_cns.carrier_id::c_member_cns_carrier_id;
+  out0.c_member_cns.acct_id::c_member_cns_acct_id;
+  out0.c_member_cns.emplyr_group_id::c_member_cns_emplyr_group_id;
+  out0.c_member_cns.member_id::c_member_cns_member_id;
+  out0.c_member_cns.cpp_member_sk::c_member_cns_cpp_member_sk;
+  out0.c_member_cns.branding_version::c_member_cns_branding_version;
+  out0.c_member_cns.product_type_cd::c_member_cns_product_type_cd;
+  out0.c_member_cns.template_name::c_member_cns_template_name;
+  out0.c_member_cns.fulfillment_method::c_member_cns_fulfillment_method;
+  out0.c_member_cns.process_flag::c_member_cns_process_flag;
+  out0.c_member_cns.cpp_update_ts::c_member_cns_cpp_update_ts;
+  out0.c_member_cns.cpp_updated_by::c_member_cns_cpp_updated_by;
+  out0.c_member_cns.cpp_create_ts::c_member_cns_cpp_create_ts;
+  out0.c_member_cns.cpp_created_by::c_member_cns_cpp_created_by;
+  out0.c_member_cns.src_env_sk::c_member_cns_src_env_sk;
+  out0.*::in0.*;
+
+end;

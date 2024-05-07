@@ -1,0 +1,40 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  product_cms_rebate_data_id /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=11)  product_id /*CHAR(11) NOT NULL*/;
+  decimal("\x01",0)  rebate_year_quarter /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  reported_year_quarter /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  record_correction_type_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10)  fda_regist_prod_name /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1)  drug_rebate_category_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  desi_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2)  orange_book_cd /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=3)  drug_unit_type_cd /*CHAR(3) NOT NULL*/;
+  decimal("\x01".3, maximum_length=12, sign_reserved)  units_per_pkg_size /*DECIMAL(10,3) NOT NULL*/;
+  decimal("\x01".6, maximum_length=13, sign_reserved)  unit_rebate_amount /*DECIMAL(11,6) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  fda_approval_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  entered_market_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  prod_termination_dt /*DATE NOT NULL*/;
+  string("\x01", maximum_length=1)  otc_drug_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01".6, maximum_length=13, sign_reserved)  unit_conversion_factor /*DECIMAL(11,6) NOT NULL*/;
+  decimal("\x01",0)  pcrd_load_run_id /*BIGINT NOT NULL*/;
+  string("\x01", maximum_length=15)  contract_type /*VARCHAR(15) NOT NULL*/;
+  string("\x01", maximum_length=1)  clotting_factor_ind /*VARCHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  pediatric_ind /*VARCHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2)  cod_status_cd /*VARCHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=7)  fda_app_no_otc_mono_no /*VARCHAR(7) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  reactivation_dt /*DATE NOT NULL*/;
+  decimal("\x01",0)  termination_dt_id /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  ura_type_cd /*VARCHAR(1) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  term_dt_reported_dt /*DATE NOT NULL*/;
+  string("\x01", maximum_length=1)  line_ext_drug_ind /*VARCHAR(1) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  pcrd_rec_create_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  pcrd_rec_create_userid /*CHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  pcrd_last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  pcrd_last_upd_userid /*CHAR(16) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  newline =  "\n";
+end

@@ -1,0 +1,181 @@
+record
+  decimal("\x01",0, maximum_length=16, sign_reserved) aop2nb /*DECIMAL(15) NOT NULL*/ /*@
+BizName:"RCTRPP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aooinb /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCTRPP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aodkhs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Sequence"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aopch9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Status"
+ BizComment:"A - Accepted R - Rejected X - Reversed S - Duplicate"
+@*/;
+  string("\x01", maximum_length=2) aopdh9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Status Qualifier"
+ BizComment:"B2=An update record may be in an 'X' Status because a B2 was processed against the claim prior to the N1 being reversed. N2=An update record may be in an 'X' Status because an N2 was processed against the update record, and it was deemed a correct reversal order. M2=An update record may be in an 'X' Status because a user manually selected the record with 4=Reverse and it was deemed a correct reversal order. OO=An update record may be in 'X' Status because an M2/N2 was processed on another update record "out-of-order". IT=An update record may be in 'A' or 'X' Status because an N1 was received, but not processed against the claim because the other payer has a Supplemental Type Code that shall not increase or decrease the claim's TrOOP amount (Ignore TrOOP)."
+@*/;
+  string("\x01", maximum_length=6) aoxyhc /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Bin Number"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) aoxzhc /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Process Control Nbr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=15) aox0hc /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Group Number"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aophh9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Version Release Numbr"
+ BizComment:"C1=Version C.1 D0=Version D.0"
+@*/;
+  string("\x01", maximum_length=2) aopeh9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Transaction Code"
+ BizComment:"N1=Info Reporting N3=Info Reporting Rebill M1=a manually submitted N1"
+@*/;
+  string("\x01", maximum_length=9) aoylhc /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Carrier"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=15) aoymhc /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Account"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=15) aoynhc /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Group"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=20) aoykhc /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Member ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aopfh9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Pharmacy Qualifier"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=15) aownhc /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Pharmacy ID"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) aoc2hk /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Date of Service"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aopgh9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Rx/Srv Qualifier"
+ BizComment:"1=Rx Billing 2=Service Billing"
+@*/;
+  string("\x01", maximum_length=12) aowohc /*CHAR(12) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Rx/Srv Number"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aowphc /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Refill"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aopih9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Product Qualifier"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=20) aowqhc /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Product ID"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aodlhs /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Submitted Patient Pay"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aodmhs /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Update Amount"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aopjh9 /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Update Reason Code"
+ BizComment:"01 = Claim C Status - The Update Amount is recorded because the Other Payer is a "non-Qualified" (a.k.a. "not TrOOP-eligible") and it is associated to a Paid Claim Transaction having 'C' a Drug Coverage Status, as defined through a Drug Coverage Status Schedule. 02 = Claim Non-C Status - The Update Amount is set to $0.00 because it is associated to a Paid Claim Transaction having a Drug Coverage Status other than 'C', as defined through a Drug Coverage Status Schedule. 03 = Claim Reject - The Update Amount is set to $0.00 because it is associated to a Rejected Claim Transaction, regardless of that claim's Drug Coverage Status. 04 = Claim Reversed - The Update Amount is set to $0.00 because it is associated to a Reversed Claim Transaction, regardless of that claim's Drug Coverage Status. 05 = N1 Out of Order - The Update Amount is set to $0.00 because it has been determined through the processing of the transaction that it is submitted out-of-order. 06 = Ignore TrOOP - The Amount Update is set to $0.00 because the Other Payer identified in the transaction has been listed as "Qualified", that is one which should not increase or decrease the claim's TrOOP amount. In other words, the Other Payer is "TrOOP-eligible"."
+@*/;
+  string("\x01", maximum_length=6) aowshc /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer Bin"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) aowthc /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer PCN"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=15) aowuhc /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer Grp"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aos4al /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer Amount"
+ BizComment:"This amount is the difference between the current patient pay and the submitted patient pay on the Nx Transaction. :P. If the claim is rejected (TRP Update Reason Code 03) Other Payer is set to 0.00."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aos5al /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer Balance"
+ BizComment:"The current balance owed the other payer."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) aos6al /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Payer Paid Amt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=20) aowvhc /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Other Cardholder ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) aowwhc /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Software Cert ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) aowxhc /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP Transaction Ref Numbr"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aoyfal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP A Reprocessing Seq"
+ BizComment:"PD7 reprocess sequence number that referenced the N transaction."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aoygal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCTRPP: TRP X Reprocessing Seq"
+ BizComment:"PD7 reprocess sequence number that caused the reversal of the N transaction."
+@*/;
+  string("\x01", maximum_length=1) aor8an /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) aoakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) aoc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCTRPP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aoadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCTRPP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) aoalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) aoadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) aobmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCTRPP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aoabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCTRPP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) aoaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCTRPP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

@@ -1,0 +1,38 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  pde_det_resp_key /*DECIMAL(15) NOT NULL*/;
+  integer(1)  pde_resp_record_type_key /*DECIMAL(1) NOT NULL*/;
+  integer(1)  pde_adjustment_deletion_key /*DECIMAL(1) NOT NULL*/;
+  little endian integer(8)  carrier_account_group_key /*DECIMAL(15) NOT NULL*/;
+  little endian integer(8)  rxs_pharmacy_key /*DECIMAL(15) NOT NULL*/;
+  little endian integer(8)  pde_plan_type_key /*DECIMAL(15) NOT NULL*/;
+  integer(1)  compound_code_key /*DECIMAL(1) NOT NULL*/;
+  little endian integer(8)  rxs_final_plan_code_key /*DECIMAL(15) NOT NULL*/;
+  little endian integer(8)  claim_num = NULL /*DECIMAL(17)*/;
+  little endian integer(2)  claim_seq_num = NULL /*DECIMAL(3)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=1)  rxs_claim_status_id = NULL("") /*VARCHAR(1)*/;
+  integer(1)  brand_generic_code_key /*DECIMAL(1) NOT NULL*/;
+  date("YYYYMMDD")  rxs_submitted_date = NULL("") /*DATE*/;
+  little endian integer(8)  pde_submitted_datetime_id = NULL /*DECIMAL(14)*/;
+  little endian integer(8)  pde_processed_datetime_id = NULL /*DECIMAL(16)*/;
+  decimal("".3, sign_reserved)  dispensed_qty /*DECIMAL(10,3) NOT NULL*/;
+  little endian integer(2)  days_of_supply_num = NULL /*DECIMAL(3)*/;
+  little endian integer(4)  mpf_days_of_supply = NULL /*INTEGER*/;
+  decimal("".2, sign_reserved)  clr_ingredient_cost_paid_amt /*DECIMAL(9,2) NOT NULL*/;
+  decimal("".3, sign_reserved)  dispensed_qty_abdup1 /*DECIMAL(10,3) NOT NULL*/;
+  decimal("".2, sign_reserved)  clr_dispensing_fee_paid_amt /*DECIMAL(9,2) NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")  src_insert_ts /*TIMESTAMP(6) NOT NULL*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=5)  rxs_contract_num = NULL("") /*VARCHAR(5)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=3)  rxs_pbp_id = NULL("") /*VARCHAR(3)*/;
+  date("YYYYMMDD")  rxs_filled_date = NULL("") /*DATE*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=9)  carrier_id /*VARCHAR(9) NOT NULL*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=15)  pharmacy_id /*VARCHAR(15) NOT NULL*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10)  pharmacy_npi_id = NULL("") /*VARCHAR(10)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10)  final_plan_code /*VARCHAR(10) NOT NULL*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=20)  ndc_id /*VARCHAR(20) NOT NULL*/;
+  utf8 string(unsigned integer(2), maximum_length=280)  ndc_long_desc = NULL("") /*NVARCHAR(70)*/;
+  little endian integer(8)  rnum = NULL /*BIGINT*/;
+end

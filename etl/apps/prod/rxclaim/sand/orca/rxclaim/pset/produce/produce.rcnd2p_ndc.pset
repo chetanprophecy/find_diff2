@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcnd2p_ndc*.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcnd2p_ndc_orx.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.rcnd2p_ndc.dat
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.rxclaim/lookup.rxclaim.rcnd2p_ndc.dml
+LOOKUP_KEY||||$SORT_KEY
+SORT_KEY||||{dxf_src_sys_id;contract_no;rcnd2p_proxy_ndc;awx9vg;aetvig;afq7hb;afq8hb;aftwig;afo0hr;afo3hr}
+FILTER_EXPR|$|||lookup_match("rccpdp_ndc",dxf_src_sys_id,(string_lrtrim(afq7hb))) and first_defined(lookup("rcpcop_ndc_nca",dxf_src_sys_id,string_concat(afq8hb,afq9hb,afrahb),'*ALL','*ALL').abguh6,lookup("rcpidp_ndc",dxf_src_sys_id,string_concat(afq8hb,afq9hb,afrahb)).s4ozs3,"M") member [vector "M","N","O"] and (date("YYYYMMDD"))string_substring("$RUN_ID",1,8) > (date("YYYYMMDD"))(string(""))(decimal(""))(19000000+afo0hr) and (date("YYYYMMDD"))string_substring("$RUN_ID",1,8) < (date("YYYYMMDD"))(string(""))(decimal(""))(19000000+afo3hr) and dxf_src_sys_id!=490
+AB_CATALOG|$|||$AI_CAT/produce/produce.rcnd2p_ndc.cat
+NORM_XFR||||$AI_XFR/produce/produce.rcnd2p_ndc_nrmlz.xfr
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+USE_NORM||||True
+RUN_ID||||20180411000000
+USE_DEDUP||||True

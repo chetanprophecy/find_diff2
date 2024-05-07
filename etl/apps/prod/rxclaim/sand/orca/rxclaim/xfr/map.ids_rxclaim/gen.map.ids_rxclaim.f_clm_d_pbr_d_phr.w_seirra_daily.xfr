@@ -1,0 +1,590 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_4_6c54cc0a_59240100_6c31_1
+    BizHidden:true
+@*/
+/*   lookup l_prescriber_spl_lkp   */
+out0::bzt_4_6c54cc0a_59240100_6c31_1(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=6) pbr_spclty_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) pbr_spclty_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_prescriber_spl_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_3_6c54cc0a_59240100_6c31_1
+    BizHidden:true
+@*/
+/*   lookup l_compound   */
+out0::bzt_3_6c54cc0a_59240100_6c31_1(in0)=
+begin
+let record
+  decimal("\x01",0) compound_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) compound_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) compound_cd_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_compound",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_59240100_6c31_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.w_seir_dly.compund_code,[transform],in0.compound_sk,
+     'lookup("l_compound").compound_cd_desc']
+  [out0.w_seir_dly.phr_addr1_txt,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_addr1_txt']
+  [out0.w_seir_dly.pbr_id,[transform],in0.pbr_sk,
+     'lookup("d_prescriber").pbr_npi_id']
+  [out0.w_seir_dly.generic_ind,[transform],in0.gnrc_mdspn_ind_sk,
+     'lookup("l_generic_medispan_indicator").gnrc_mdspn_ind']
+  [out0.w_seir_dly.filled_dt,[transform],in0.filled_dt]
+  [out0.w_seir_dly.post_copay,[passthrough],in0.pst_copay_amt]
+  [out0.w_seir_dly.plan_drug_status,[transform],in0.pln_drg_stat_sk,
+     'lookup("d_plan_drug_status").pln_drg_stat_cd']
+  [out0.w_seir_dly.phr_id,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_id']
+  [out0.w_seir_dly.sbm_sales_tax,[passthrough],in0.sbm_sales_tax_paid]
+  [out0.w_seir_dly.drg_manf,[transform],in0.prod_adjud_sk,
+     'lookup("d_product_adjud_reduce").drg_mfrr_nm']
+  [out0.w_seir_dly.pbr_first_nm,[transform],in0.pbr_sk,
+     'lookup("d_prescriber").pbr_first_nm']
+  [out0.w_seir_dly.drg_main_cd,[transform],in0.prod_adjud_sk,
+     'lookup("d_product_adjud_reduce").drg_maint_cd']
+  [out0.w_seir_dly.refill_flag,[transform],in0.refill_nbr]
+  [out0.w_seir_dly.sbm_dt,[transform],in0.sbm_dt]
+  [out0.w_seir_dly.dosage_form,[transform],in0.dsg_frm_sk,
+     'lookup("l_dosage_from_lkp").dsg_frm_nm']
+  [out0.w_seir_dly.realtionship_code,[transform],in0.relationship_cd_sk,
+     'lookup("l_relationship_lkp").relationship_desc']
+  [out0.w_seir_dly.rx_written_dt,[transform],in0.rx_written_dt]
+  [out0.w_seir_dly.sbm_usual_land_cust,[passthrough],in0.sbm_usual_customary_amt]
+  [out0.w_seir_dly.quantity,[passthrough],in0.drg_qty]
+  [out0.w_seir_dly.phr_city_nm,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_city_nm']
+  [out0.w_seir_dly.gpi_ther_clas_nm,[transform],in0.prod_adjud_sk,
+     'lookup("d_product_adjud_reduce").drg_class_gpi_04_cd']
+  [out0.w_seir_dly.sex,[transform],in0.gender_sk,
+     'lookup("l_gender_lkp").gender_desc']
+  [out0.w_seir_dly.days_of_supply,[passthrough],in0.days_sply]
+  [out0.w_seir_dly.phr_nm,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_nm']
+  [out0.w_seir_dly.otc_ind,[transform],in0.drug_rx_otc_ind_sk,
+     'lookup("l_drug_otc_indicator_lkp").drug_rx_otc_ind_desc']
+  [out0.w_seir_dly.mbr_ssn,[transform],in0.mbr_sk,
+     'lookup("d_memeber_lkp").mbr_ssn_nbr']
+  [out0.w_seir_dly.mbr_id,[transform],in0.mbr_sk,
+     'lookup("d_memeber_lkp").mbr_id']
+  [out0.w_seir_dly.app_ingr_cost,[passthrough],in0.app_ingred_cost_paid]
+  [out0.w_seir_dly.sbm_ingr_cost,[passthrough],in0.sbm_ingred_cost_paid]
+  [out0.w_seir_dly.ndc_drug_nm,[transform],in0.prod_sk,
+     'lookup("d_product").drg_ndc_short_nm']
+  [out0.w_seir_dly.client_rider,[transform],in0.mbr_eligty_adjud_sk,
+     'lookup("d_member_eligibility_adjud").clt_rdr_cd']
+  [out0.w_seir_dly.app_amount_paid,[passthrough],in0.app_due_amt]
+  [out0.w_seir_dly.sbm_amount_paid,[passthrough],in0.sbm_due_amt]
+  [out0.w_seir_dly.client_prd_cd,[transform],in0.mbr_eligty_adjud_sk,
+     'lookup("d_member_eligibility_adjud").clt_prod_cd']
+  [out0.w_seir_dly.phr_zip_cd,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_zip_cd']
+  [out0.w_seir_dly.drg_dea_cd,[transform],in0.prod_sk,
+     'lookup("d_product").drg_dea_cd']
+  [out0.w_seir_dly.post_disp_fee,[passthrough],in0.pst_dispensing_fee]
+  [out0.w_seir_dly.mbr_first_nm,[transform],in0.mbr_sk,
+     'lookup("d_memeber_lkp").mb_first_nm']
+  [out0.w_seir_dly.rx_nbr,[passthrough],in0.rx_nbr]
+  [out0.w_seir_dly.carrier,[transform],in0.cag_sk,
+     'lookup("d_cag").carrier_id']
+  [out0.w_seir_dly.pbr_speclty,[transform],in0.pbr_spclty_sk,
+     in0.dxf_sk,
+     'lookup("l_prescriber_spl_lkp").pbr_spclty_desc']
+  [out0.w_seir_dly.phr_state,[transform],in0.phr_state_cd_sk,
+     'lookup("l_state_lkp").state_cd']
+  [out0.w_seir_dly.post_amount_paid,[passthrough],in0.pst_due_amt]
+  [out0.w_seir_dly.pbr_last_nm,[transform],in0.pbr_sk,
+     'lookup("d_prescriber").pbr_last_nm']
+  [out0.w_seir_dly.account,[transform],in0.cag_sk,
+     'lookup("d_cag").account_id']
+  [out0.w_seir_dly.admin_route,[transform],in0.admin_rte_sk,
+     'lookup("l_admin_route_lkp").admin_rte_desc']
+  [out0.w_seir_dly.claim_stat_desc,[transform],in0.claim_stat_id]
+  [out0.w_seir_dly.ndc_nbr,[transform],in0.prod_sk,
+     'lookup("d_product").prod_id']
+  [out0.w_seir_dly.app_cost_typ,[transform],in0.cost_type_cd_sk,
+     'lookup("l_cost_type").cost_type_cd']
+  [out0.w_seir_dly.app_disp_fee,[passthrough],in0.app_dispensing_fee]
+  [out0.w_seir_dly.sbm_disp_fee,[passthrough],in0.sbm_dispensing_fee]
+  [out0.w_seir_dly.mbr_last_nm,[transform],in0.mbr_sk,
+     'lookup("d_memeber_lkp").mb_last_nm']
+  [out0.w_seir_dly.prior_auth_nbr,[passthrough],in0.prior_auth_nbr]
+  [out0.w_seir_dly.post_ingr_cost,[passthrough],in0.pst_ingred_cost_paid]
+  [out0.w_seir_dly.claim_seq_nbr,[passthrough],in0.claim_seq_nbr]
+  [out0.w_seir_dly.claim_nbr,[passthrough],in0.claim_nbr]
+  [out0.w_seir_dly.approved_copay,[passthrough],in0.app_patient_pay_amt]
+  [out0.w_seir_dly.plan_cd,[transform],in0.pln_adjud_sk,
+     'lookup("d_plan_adjud").pln_cd_fnl']
+  [out0.w_seir_dly.rx_ntwk_id,[transform],in0.ntwk_sk,
+     'lookup("d_pharmacy_network").phr_ntwrk_id']
+  [out0.w_seir_dly.gpi_nbr,[transform],in0.gpi_sk,
+     'lookup("d_gpi").gpi_id']
+  [out0.w_seir_dly.ndc_lable_nm,[transform],in0.prod_sk,
+     'lookup("d_product").drg_lbl_nm']
+  [out0.w_seir_dly.group,[transform],in0.cag_sk,
+     'lookup("d_cag").employer_group_id']
+  [out0.w_seir_dly.drop_record,[transform],in0.claim_stat_sk,
+     'lookup("l_claim_status_lkp").claim_stat_grp_id']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.w_seir_dly.compund_code,'w_seir_dly.compund_code',1,0]
+     [out0.w_seir_dly.phr_addr1_txt,'w_seir_dly.phr_addr1_txt',1,0]
+     [out0.w_seir_dly.pbr_id,'w_seir_dly.pbr_id',1,0]
+     [out0.w_seir_dly.generic_ind,'w_seir_dly.generic_ind',1,0]
+     [out0.w_seir_dly.filled_dt,'w_seir_dly.filled_dt',1,0]
+     [out0.w_seir_dly.post_copay,'w_seir_dly.post_copay',1,0]
+     [out0.w_seir_dly.plan_drug_status,'w_seir_dly.plan_drug_status',1,0]
+     [out0.w_seir_dly.phr_id,'w_seir_dly.phr_id',1,0]
+     [out0.w_seir_dly.sbm_sales_tax,'w_seir_dly.sbm_sales_tax',1,0]
+     [out0.w_seir_dly.drg_manf,'w_seir_dly.drg_manf',1,0]
+     [out0.w_seir_dly.pbr_first_nm,'w_seir_dly.pbr_first_nm',1,0]
+     [out0.w_seir_dly.drg_main_cd,'w_seir_dly.drg_main_cd',1,0]
+     [out0.w_seir_dly.refill_flag,'w_seir_dly.refill_flag',1,0]
+     [out0.w_seir_dly.sbm_dt,'w_seir_dly.sbm_dt',1,0]
+     [out0.w_seir_dly.dosage_form,'w_seir_dly.dosage_form',1,0]
+     [out0.w_seir_dly.realtionship_code,'w_seir_dly.realtionship_code',1,0]
+     [out0.w_seir_dly.rx_written_dt,'w_seir_dly.rx_written_dt',1,0]
+     [out0.w_seir_dly.sbm_usual_land_cust,'w_seir_dly.sbm_usual_land_cust',1,0]
+     [out0.w_seir_dly.quantity,'w_seir_dly.quantity',1,0]
+     [out0.w_seir_dly.phr_city_nm,'w_seir_dly.phr_city_nm',1,0]
+     [out0.w_seir_dly.gpi_ther_clas_nm,'w_seir_dly.gpi_ther_clas_nm',1,0]
+     [out0.w_seir_dly.sex,'w_seir_dly.sex',1,0]
+     [out0.w_seir_dly.days_of_supply,'w_seir_dly.days_of_supply',1,0]
+     [out0.w_seir_dly.phr_nm,'w_seir_dly.phr_nm',1,0]
+     [out0.w_seir_dly.otc_ind,'w_seir_dly.otc_ind',1,0]
+     [out0.w_seir_dly.mbr_ssn,'w_seir_dly.mbr_ssn',1,0]
+     [out0.w_seir_dly.mbr_id,'w_seir_dly.mbr_id',1,0]
+     [out0.w_seir_dly.app_ingr_cost,'w_seir_dly.app_ingr_cost',1,0]
+     [out0.w_seir_dly.sbm_ingr_cost,'w_seir_dly.sbm_ingr_cost',1,0]
+     [out0.w_seir_dly.ndc_drug_nm,'w_seir_dly.ndc_drug_nm',1,0]
+     [out0.w_seir_dly.client_rider,'w_seir_dly.client_rider',1,0]
+     [out0.w_seir_dly.app_amount_paid,'w_seir_dly.app_amount_paid',1,0]
+     [out0.w_seir_dly.sbm_amount_paid,'w_seir_dly.sbm_amount_paid',1,0]
+     [out0.w_seir_dly.client_prd_cd,'w_seir_dly.client_prd_cd',1,0]
+     [out0.w_seir_dly.phr_zip_cd,'w_seir_dly.phr_zip_cd',1,0]
+     [out0.w_seir_dly.drg_dea_cd,'w_seir_dly.drg_dea_cd',1,0]
+     [out0.w_seir_dly.post_disp_fee,'w_seir_dly.post_disp_fee',1,0]
+     [out0.w_seir_dly.mbr_first_nm,'w_seir_dly.mbr_first_nm',1,0]
+     [out0.w_seir_dly.rx_nbr,'w_seir_dly.rx_nbr',1,0]
+     [out0.w_seir_dly.carrier,'w_seir_dly.carrier',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.w_seir_dly.pbr_speclty,'w_seir_dly.pbr_speclty',1,0]
+     [out0.w_seir_dly.phr_state,'w_seir_dly.phr_state',1,0]
+     [out0.w_seir_dly.post_amount_paid,'w_seir_dly.post_amount_paid',1,0]
+     [out0.w_seir_dly.pbr_last_nm,'w_seir_dly.pbr_last_nm',1,0]
+     [out0.w_seir_dly.account,'w_seir_dly.account',1,0]
+     [out0.w_seir_dly.admin_route,'w_seir_dly.admin_route',1,0]
+     [out0.w_seir_dly.claim_stat_desc,'w_seir_dly.claim_stat_desc',1,0]
+     [out0.w_seir_dly.dxf_hk_part2,'w_seir_dly.dxf_hk_part2',1,0]
+     [out0.w_seir_dly.ndc_nbr,'w_seir_dly.ndc_nbr',1,0]
+     [out0.w_seir_dly.app_cost_typ,'w_seir_dly.app_cost_typ',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.w_seir_dly.app_disp_fee,'w_seir_dly.app_disp_fee',1,0]
+     [out0.w_seir_dly.sbm_disp_fee,'w_seir_dly.sbm_disp_fee',1,0]
+     [out0.w_seir_dly.dxf_hk_part1,'w_seir_dly.dxf_hk_part1',1,0]
+     [out0.w_seir_dly.src_env_sk,'w_seir_dly.src_env_sk',1,0]
+     [out0.w_seir_dly.mbr_last_nm,'w_seir_dly.mbr_last_nm',1,0]
+     [out0.w_seir_dly.prior_auth_nbr,'w_seir_dly.prior_auth_nbr',1,0]
+     [out0.w_seir_dly.post_ingr_cost,'w_seir_dly.post_ingr_cost',1,0]
+     [out0.w_seir_dly.claim_seq_nbr,'w_seir_dly.claim_seq_nbr',1,0]
+     [out0.w_seir_dly.claim_nbr,'w_seir_dly.claim_nbr',1,0]
+     [out0.w_seir_dly.approved_copay,'w_seir_dly.approved_copay',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.w_seir_dly.plan_cd,'w_seir_dly.plan_cd',1,0]
+     [out0.w_seir_dly.awp_unit_cost,'w_seir_dly.awp_unit_cost',1,0]
+     [out0.w_seir_dly.rx_ntwk_id,'w_seir_dly.rx_ntwk_id',1,0]
+     [out0.w_seir_dly.gpi_nbr,'w_seir_dly.gpi_nbr',1,0]
+     [out0.w_seir_dly.ndc_lable_nm,'w_seir_dly.ndc_lable_nm',1,0]
+     [out0.w_seir_dly.dxf_sk,'w_seir_dly.dxf_sk',1,0]
+     [out0.w_seir_dly.group,'w_seir_dly.group',1,0]
+     [out0.w_seir_dly.drop_record,'w_seir_dly.drop_record',1,0]
+  ]
+  impacts:
+  [
+     [in0.prod_sk,'prod_sk',4,4]
+     ['lookup("l_claim_status_lkp").claim_stat_grp_id','claim_stat_grp_id',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.awp_unit_cost,'awp_unit_cost',1,1]
+     [in0.pst_dispensing_fee,'pst_dispensing_fee',1,1]
+     ['lookup("d_memeber_lkp").mb_first_nm','mb_first_nm',1,1]
+     [in0.days_sply,'days_sply',1,1]
+     [in0.dsg_frm_sk,'dsg_frm_sk',1,1]
+     ['lookup("l_state_lkp").state_cd','state_cd',1,1]
+     [in0.app_dispensing_fee,'app_dispensing_fee',1,1]
+     [in0.pln_adjud_sk,'pln_adjud_sk',1,1]
+     [in0.filled_dt,'filled_dt',1,1]
+     ['lookup("d_pharmacy").phr_id','phr_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     ['lookup("d_product_adjud_reduce").drg_mfrr_nm','drg_mfrr_nm',1,1]
+     ['lookup("l_relationship_lkp").relationship_desc','relationship_desc',1,1]
+     ['lookup("l_gender_lkp").gender_desc','gender_desc',1,1]
+     ['lookup("d_prescriber").pbr_last_nm','pbr_last_nm',1,1]
+     ['lookup("d_plan_adjud").pln_cd_fnl','pln_cd_fnl',1,1]
+     [in0.drg_qty,'drg_qty',1,1]
+     ['lookup("d_cag").employer_group_id','employer_group_id',1,1]
+     [in0.refill_nbr,'refill_nbr',2,1]
+     [in0.sbm_sales_tax_paid,'sbm_sales_tax_paid',1,1]
+     ['lookup("d_pharmacy").phr_zip_cd','phr_zip_cd',1,1]
+     ['lookup("l_admin_route_lkp").admin_rte_desc','admin_rte_desc',1,1]
+     ['lookup("d_product").prod_id','prod_id',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     ['lookup("d_prescriber").pbr_npi_id','pbr_npi_id',1,1]
+     [in0.cag_sk,'cag_sk',3,3]
+     [in0.app_patient_pay_amt,'app_patient_pay_amt',1,1]
+     [in0.sbm_dispensing_fee,'sbm_dispensing_fee',1,1]
+     ['lookup("d_memeber_lkp").mbr_id','mbr_id',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     ['lookup("d_pharmacy").phr_addr1_txt','phr_addr1_txt',1,1]
+     ['lookup("d_pharmacy").phr_nm','phr_nm',1,1]
+     ['lookup("l_drug_otc_indicator_lkp").drug_rx_otc_ind_desc','drug_rx_otc_ind_desc',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     ['lookup("d_cag").carrier_id','carrier_id',1,1]
+     [in0.drug_rx_otc_ind_sk,'drug_rx_otc_ind_sk',1,1]
+     ['lookup("l_compound").compound_cd_desc','compound_cd_desc',1,1]
+     ['lookup("d_gpi").gpi_id','gpi_id',1,1]
+     [in0.mbr_sk,'mbr_sk',4,4]
+     [in0.relationship_cd_sk,'relationship_cd_sk',1,1]
+     ['lookup("d_memeber_lkp").mb_last_nm','mb_last_nm',1,1]
+     ['lookup("d_cag").account_id','account_id',1,1]
+     [in0.pln_drg_stat_sk,'pln_drg_stat_sk',1,1]
+     [in0.cost_type_cd_sk,'cost_type_cd_sk',1,1]
+     [in0.sbm_due_amt,'sbm_due_amt',1,1]
+     [in0.phr_state_cd_sk,'phr_state_cd_sk',1,1]
+     [in0.rx_written_dt,'rx_written_dt',1,1]
+     [in0.prod_adjud_sk,'prod_adjud_sk',3,3]
+     ['lookup("l_dosage_from_lkp").dsg_frm_nm','dsg_frm_nm',1,1]
+     [in0.sbm_ingred_cost_paid,'sbm_ingred_cost_paid',1,1]
+     ['lookup("d_pharmacy").phr_city_nm','phr_city_nm',1,1]
+     [in0.claim_stat_sk,'claim_stat_sk',1,1]
+     [in0.prior_auth_nbr,'prior_auth_nbr',1,1]
+     ['lookup("d_product_adjud_reduce").drg_class_gpi_04_cd','drg_class_gpi_04_cd',1,1]
+     ['lookup("d_member_eligibility_adjud").clt_prod_cd','clt_prod_cd',1,1]
+     ['lookup("l_prescriber_spl_lkp").pbr_spclty_desc','pbr_spclty_desc',1,1]
+     ['lookup("d_pharmacy_network").phr_ntwrk_id','phr_ntwrk_id',1,1]
+     [in0.mbr_eligty_adjud_sk,'mbr_eligty_adjud_sk',2,2]
+     ['lookup("d_member_eligibility_adjud").clt_rdr_cd','clt_rdr_cd',1,1]
+     ['lookup("d_product_adjud_reduce").drg_maint_cd','drg_maint_cd',1,1]
+     ['lookup("d_prescriber").pbr_first_nm','pbr_first_nm',1,1]
+     [in0.pst_copay_amt,'pst_copay_amt',1,1]
+     ['lookup("d_product").drg_lbl_nm','drg_lbl_nm',1,1]
+     [in0.dxf_sk,'dxf_sk',2,2]
+     [in0.admin_rte_sk,'admin_rte_sk',1,1]
+     [in0.app_due_amt,'app_due_amt',1,1]
+     [in0.compound_sk,'compound_sk',2,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.pst_ingred_cost_paid,'pst_ingred_cost_paid',1,1]
+     [in0.gpi_sk,'gpi_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.app_ingred_cost_paid,'app_ingred_cost_paid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pst_due_amt,'pst_due_amt',1,1]
+     [in0.gender_sk,'gender_sk',1,1]
+     [in0.phr_sk,'phr_sk',5,5]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("d_product").drg_dea_cd','drg_dea_cd',1,1]
+     [in0.gnrc_mdspn_ind_sk,'gnrc_mdspn_ind_sk',1,1]
+     [in0.rx_nbr,'rx_nbr',1,1]
+     ['lookup("d_memeber_lkp").mbr_ssn_nbr','mbr_ssn_nbr',1,1]
+     [in0.sbm_usual_customary_amt,'sbm_usual_customary_amt',1,1]
+     [in0.pbr_sk,'pbr_sk',3,3]
+     [in0.ntwk_sk,'ntwk_sk',1,1]
+     ['lookup("l_cost_type").cost_type_cd','cost_type_cd',1,1]
+     ['lookup("d_plan_drug_status").pln_drg_stat_cd','pln_drg_stat_cd',1,1]
+     ['lookup("l_generic_medispan_indicator").gnrc_mdspn_ind','gnrc_mdspn_ind',1,1]
+     ['lookup("d_product").drg_ndc_short_nm','drg_ndc_short_nm',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+     [in0.pbr_spclty_sk,'pbr_spclty_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal(1) w_seir_dly_drop_record;
+let unsigned integer(8) w_seir_dly_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) w_seir_dly_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) w_seir_dly_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=9) w_seir_dly_carrier;
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_seir_dly_account;
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_seir_dly_group;
+let string("\x01",charset="iso-8859-15", maximum_length=19) w_seir_dly_mbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=9) w_seir_dly_mbr_ssn;
+let string("\x01",charset="iso-8859-15", maximum_length=25) w_seir_dly_mbr_first_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=30) w_seir_dly_mbr_last_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=35) w_seir_dly_sex;
+let string("\x01",charset="iso-8859-15", maximum_length=25) w_seir_dly_realtionship_code;
+let date("YYYYMMDD")("\x01") w_seir_dly_filled_dt = fail_if_error((date("MM/DD/YYYY"))in0.filled_dt);
+let date("YYYYMMDD")("\x01") w_seir_dly_sbm_dt = fail_if_error((date("MM/DD/YYYY"))in0.sbm_dt);
+let date("YYYYMMDD")("\x01") w_seir_dly_rx_written_dt = fail_if_error((date("MM/DD/YYYY"))in0.rx_written_dt);
+let decimal("\x01",0) w_seir_dly_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) w_seir_dly_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=50) w_seir_dly_claim_stat_desc = fail_if_error(if (in0.claim_stat_id=='P') 'Payable' else 'Reversed');
+let string("\x01",charset="iso-8859-15", maximum_length=12) w_seir_dly_rx_nbr = fail_if_error(in0.rx_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=12) w_seir_dly_ndc_drug_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=70) w_seir_dly_ndc_lable_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=20) w_seir_dly_ndc_nbr;
+let decimal("\x01",0) w_seir_dly_days_of_supply = fail_if_error(in0.days_sply);
+let decimal("\x01".3, maximum_length=13, sign_reserved) w_seir_dly_quantity = fail_if_error(in0.drg_qty);
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_seir_dly_generic_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=14) w_seir_dly_gpi_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=50) w_seir_dly_compund_code;
+let string("\x01",charset="iso-8859-15", maximum_length=50) w_seir_dly_dosage_form;
+let string("\x01",charset="iso-8859-15", maximum_length=50) w_seir_dly_admin_route;
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_seir_dly_drg_dea_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=50) w_seir_dly_otc_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_seir_dly_refill_flag = fail_if_error(if(!is_null(in0.refill_nbr)) 
+	if(in0.refill_nbr == '0') 
+		'N' 
+	else
+		'Y'	
+else 
+		'N');
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_seir_dly_drg_main_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_seir_dly_phr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=60) w_seir_dly_phr_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=5) w_seir_dly_phr_zip_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=55) w_seir_dly_phr_addr1_txt;
+let string("\x01",charset="iso-8859-15", maximum_length=30) w_seir_dly_phr_city_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=255) w_seir_dly_phr_state;
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_seir_dly_pbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) w_seir_dly_pbr_first_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=30) w_seir_dly_pbr_last_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=30) w_seir_dly_pbr_speclty;
+let string("\x01",charset="iso-8859-15", maximum_length=6) w_seir_dly_rx_ntwk_id;
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_seir_dly_plan_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=11) w_seir_dly_prior_auth_nbr = fail_if_error(in0.prior_auth_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=6) w_seir_dly_client_prd_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=6) w_seir_dly_client_rider;
+let string("\x01",charset="iso-8859-15", maximum_length=1) w_seir_dly_plan_drug_status;
+let decimal("\x01".8, maximum_length=26, sign_reserved) w_seir_dly_awp_unit_cost = fail_if_error(in0.awp_unit_cost);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_seir_dly_app_cost_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_seir_dly_drg_manf;
+let string("\x01",charset="iso-8859-15", maximum_length=4) w_seir_dly_gpi_ther_clas_nm;
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_sbm_ingr_cost = fail_if_error(in0.sbm_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_sbm_sales_tax = fail_if_error(in0.sbm_sales_tax_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_sbm_disp_fee = fail_if_error(in0.sbm_dispensing_fee);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_sbm_amount_paid = fail_if_error(in0.sbm_due_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_sbm_usual_land_cust = fail_if_error(in0.sbm_usual_customary_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_post_ingr_cost = fail_if_error(in0.pst_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_post_disp_fee = fail_if_error(in0.pst_dispensing_fee);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_approved_copay = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_post_amount_paid = fail_if_error(in0.pst_due_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_post_copay = fail_if_error(in0.pst_copay_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_app_amount_paid = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_app_ingr_cost = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) w_seir_dly_app_disp_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01",0) w_seir_dly_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+w_seir_dly_compund_code=fail_if_error(bzt_3_6c54cc0a_59240100_6c31_1(in0.compound_sk).compound_cd_desc);
+
+/*   Default value   */
+w_seir_dly_phr_addr1_txt=fail_if_error(lookup("d_pharmacy",in0.phr_sk).phr_addr1_txt);
+
+/*   Default value   */
+w_seir_dly_pbr_id=fail_if_error(lookup("d_prescriber",in0.pbr_sk).pbr_npi_id);
+
+/*   Default value   */
+w_seir_dly_generic_ind=fail_if_error(lookup("l_generic_medispan_indicator",in0.gnrc_mdspn_ind_sk).gnrc_mdspn_ind);
+
+/*   Default value   */
+w_seir_dly_plan_drug_status=fail_if_error(lookup("d_plan_drug_status",in0.pln_drg_stat_sk).pln_drg_stat_cd);
+
+/*   Default value   */
+w_seir_dly_phr_id=fail_if_error(lookup("d_pharmacy",in0.phr_sk).phr_id);
+
+/*   Default value   */
+w_seir_dly_drg_manf=fail_if_error(lookup("d_product_adjud_reduce",in0.prod_adjud_sk).drg_mfrr_nm);
+
+/*   Default value   */
+w_seir_dly_pbr_first_nm=fail_if_error(lookup("d_prescriber",in0.pbr_sk).pbr_first_nm);
+
+/*   Default value   */
+w_seir_dly_drg_main_cd=fail_if_error(lookup("d_product_adjud_reduce",in0.prod_adjud_sk).drg_maint_cd);
+
+/*   Default value   */
+w_seir_dly_dosage_form=fail_if_error(lookup("l_dosage_from_lkp",in0.dsg_frm_sk).dsg_frm_nm);
+
+/*   Default value   */
+w_seir_dly_realtionship_code=fail_if_error(lookup("l_relationship_lkp",in0.relationship_cd_sk).relationship_desc);
+
+/*   Default value   */
+w_seir_dly_phr_city_nm=fail_if_error(lookup("d_pharmacy",in0.phr_sk).phr_city_nm);
+
+/*   Default value   */
+w_seir_dly_gpi_ther_clas_nm=fail_if_error(lookup("d_product_adjud_reduce",in0.prod_adjud_sk).drg_class_gpi_04_cd);
+
+/*   Default value   */
+w_seir_dly_sex=fail_if_error(lookup("l_gender_lkp", in0.gender_sk).gender_desc);
+
+/*   Default value   */
+w_seir_dly_phr_nm=fail_if_error(lookup("d_pharmacy",in0.phr_sk).phr_nm);
+
+/*   Default value   */
+w_seir_dly_otc_ind=fail_if_error(lookup("l_drug_otc_indicator_lkp",in0.drug_rx_otc_ind_sk).drug_rx_otc_ind_desc);
+
+/*   Default value   */
+w_seir_dly_mbr_ssn=fail_if_error(string_lrtrim(lookup("d_memeber_lkp",in0.mbr_sk).mbr_ssn_nbr));
+
+/*   Default value   */
+w_seir_dly_mbr_id=fail_if_error(lookup("d_memeber_lkp",in0.mbr_sk).mbr_id);
+
+/*   Default value   */
+w_seir_dly_ndc_drug_nm=fail_if_error(lookup("d_product",in0.prod_sk).drg_ndc_short_nm);
+
+/*   Default value   */
+w_seir_dly_client_rider=fail_if_error(lookup("d_member_eligibility_adjud",in0.mbr_eligty_adjud_sk).clt_rdr_cd);
+
+/*   Default value   */
+w_seir_dly_client_prd_cd=fail_if_error(lookup("d_member_eligibility_adjud",in0.mbr_eligty_adjud_sk).clt_prod_cd);
+
+/*   Default value   */
+w_seir_dly_phr_zip_cd=fail_if_error(lookup("d_pharmacy",in0.phr_sk).phr_zip_cd);
+
+/*   Default value   */
+w_seir_dly_drg_dea_cd=fail_if_error(lookup("d_product",in0.prod_sk).drg_dea_cd);
+
+/*   Default value   */
+w_seir_dly_mbr_first_nm=fail_if_error(lookup("d_memeber_lkp",in0.mbr_sk).mb_first_nm);
+
+/*   Default value   */
+w_seir_dly_carrier=fail_if_error(lookup("d_cag",in0.cag_sk).carrier_id);
+
+/*   Default value   */
+w_seir_dly_pbr_speclty=fail_if_error(bzt_4_6c54cc0a_59240100_6c31_1(in0.pbr_spclty_sk).pbr_spclty_desc);
+
+/*   Default value   */
+w_seir_dly_phr_state=fail_if_error(lookup("l_state_lkp",in0.phr_state_cd_sk).state_cd);
+
+/*   Default value   */
+w_seir_dly_pbr_last_nm=fail_if_error(lookup("d_prescriber",in0.pbr_sk).pbr_last_nm);
+
+/*   Default value   */
+w_seir_dly_account=fail_if_error(lookup("d_cag",in0.cag_sk).account_id);
+
+/*   Default value   */
+w_seir_dly_admin_route=fail_if_error(lookup("l_admin_route_lkp",in0.admin_rte_sk).admin_rte_desc);
+
+/*   Default value   */
+w_seir_dly_ndc_nbr=fail_if_error(lookup("d_product",in0.prod_sk).prod_id);
+
+/*   Default value   */
+w_seir_dly_app_cost_typ=fail_if_error(lookup("l_cost_type",in0.cost_type_cd_sk).cost_type_cd);
+
+/*   Default value   */
+w_seir_dly_mbr_last_nm=fail_if_error(lookup("d_memeber_lkp",in0.mbr_sk).mb_last_nm);
+
+/*   Default value   */
+w_seir_dly_plan_cd=fail_if_error(lookup("d_plan_adjud",in0.pln_adjud_sk).pln_cd_fnl);
+
+/*   Default value   */
+w_seir_dly_rx_ntwk_id=fail_if_error(lookup("d_pharmacy_network",in0.ntwk_sk).phr_ntwrk_id);
+
+/*   Default value   */
+w_seir_dly_gpi_nbr=fail_if_error(lookup("d_gpi", in0.gpi_sk).gpi_id);
+
+/*   Default value   */
+w_seir_dly_ndc_lable_nm=fail_if_error(lookup("d_product",in0.prod_sk).drg_lbl_nm);
+
+/*   Default value   */
+w_seir_dly_group=fail_if_error(lookup("d_cag",in0.cag_sk).employer_group_id);
+
+/*   Default value   */
+w_seir_dly_drop_record=fail_if_error(if(first_defined(lookup("l_claim_status_lkp",in0.claim_stat_sk).claim_stat_grp_id,"") == 'N') 0 else 2);
+
+  out0.w_seir_dly.drop_record::w_seir_dly_drop_record;
+  out0.w_seir_dly.dxf_hk_part1::w_seir_dly_dxf_hk_part1;
+  out0.w_seir_dly.dxf_hk_part2::w_seir_dly_dxf_hk_part2;
+  out0.w_seir_dly.dxf_sk::w_seir_dly_dxf_sk;
+  out0.w_seir_dly.carrier::w_seir_dly_carrier;
+  out0.w_seir_dly.account::w_seir_dly_account;
+  out0.w_seir_dly.group::w_seir_dly_group;
+  out0.w_seir_dly.mbr_id::w_seir_dly_mbr_id;
+  out0.w_seir_dly.mbr_ssn::w_seir_dly_mbr_ssn;
+  out0.w_seir_dly.mbr_first_nm::w_seir_dly_mbr_first_nm;
+  out0.w_seir_dly.mbr_last_nm::w_seir_dly_mbr_last_nm;
+  out0.w_seir_dly.sex::w_seir_dly_sex;
+  out0.w_seir_dly.realtionship_code::w_seir_dly_realtionship_code;
+  out0.w_seir_dly.filled_dt::w_seir_dly_filled_dt;
+  out0.w_seir_dly.sbm_dt::w_seir_dly_sbm_dt;
+  out0.w_seir_dly.rx_written_dt::w_seir_dly_rx_written_dt;
+  out0.w_seir_dly.claim_nbr::w_seir_dly_claim_nbr;
+  out0.w_seir_dly.claim_seq_nbr::w_seir_dly_claim_seq_nbr;
+  out0.w_seir_dly.claim_stat_desc::w_seir_dly_claim_stat_desc;
+  out0.w_seir_dly.rx_nbr::w_seir_dly_rx_nbr;
+  out0.w_seir_dly.ndc_drug_nm::w_seir_dly_ndc_drug_nm;
+  out0.w_seir_dly.ndc_lable_nm::w_seir_dly_ndc_lable_nm;
+  out0.w_seir_dly.ndc_nbr::w_seir_dly_ndc_nbr;
+  out0.w_seir_dly.days_of_supply::w_seir_dly_days_of_supply;
+  out0.w_seir_dly.quantity::w_seir_dly_quantity;
+  out0.w_seir_dly.generic_ind::w_seir_dly_generic_ind;
+  out0.w_seir_dly.gpi_nbr::w_seir_dly_gpi_nbr;
+  out0.w_seir_dly.compund_code::w_seir_dly_compund_code;
+  out0.w_seir_dly.dosage_form::w_seir_dly_dosage_form;
+  out0.w_seir_dly.admin_route::w_seir_dly_admin_route;
+  out0.w_seir_dly.drg_dea_cd::w_seir_dly_drg_dea_cd;
+  out0.w_seir_dly.otc_ind::w_seir_dly_otc_ind;
+  out0.w_seir_dly.refill_flag::w_seir_dly_refill_flag;
+  out0.w_seir_dly.drg_main_cd::w_seir_dly_drg_main_cd;
+  out0.w_seir_dly.phr_id::w_seir_dly_phr_id;
+  out0.w_seir_dly.phr_nm::w_seir_dly_phr_nm;
+  out0.w_seir_dly.phr_zip_cd::w_seir_dly_phr_zip_cd;
+  out0.w_seir_dly.phr_addr1_txt::w_seir_dly_phr_addr1_txt;
+  out0.w_seir_dly.phr_city_nm::w_seir_dly_phr_city_nm;
+  out0.w_seir_dly.phr_state::w_seir_dly_phr_state;
+  out0.w_seir_dly.pbr_id::w_seir_dly_pbr_id;
+  out0.w_seir_dly.pbr_first_nm::w_seir_dly_pbr_first_nm;
+  out0.w_seir_dly.pbr_last_nm::w_seir_dly_pbr_last_nm;
+  out0.w_seir_dly.pbr_speclty::w_seir_dly_pbr_speclty;
+  out0.w_seir_dly.rx_ntwk_id::w_seir_dly_rx_ntwk_id;
+  out0.w_seir_dly.plan_cd::w_seir_dly_plan_cd;
+  out0.w_seir_dly.prior_auth_nbr::w_seir_dly_prior_auth_nbr;
+  out0.w_seir_dly.client_prd_cd::w_seir_dly_client_prd_cd;
+  out0.w_seir_dly.client_rider::w_seir_dly_client_rider;
+  out0.w_seir_dly.plan_drug_status::w_seir_dly_plan_drug_status;
+  out0.w_seir_dly.awp_unit_cost::w_seir_dly_awp_unit_cost;
+  out0.w_seir_dly.app_cost_typ::w_seir_dly_app_cost_typ;
+  out0.w_seir_dly.drg_manf::w_seir_dly_drg_manf;
+  out0.w_seir_dly.gpi_ther_clas_nm::w_seir_dly_gpi_ther_clas_nm;
+  out0.w_seir_dly.sbm_ingr_cost::w_seir_dly_sbm_ingr_cost;
+  out0.w_seir_dly.sbm_sales_tax::w_seir_dly_sbm_sales_tax;
+  out0.w_seir_dly.sbm_disp_fee::w_seir_dly_sbm_disp_fee;
+  out0.w_seir_dly.sbm_amount_paid::w_seir_dly_sbm_amount_paid;
+  out0.w_seir_dly.sbm_usual_land_cust::w_seir_dly_sbm_usual_land_cust;
+  out0.w_seir_dly.post_ingr_cost::w_seir_dly_post_ingr_cost;
+  out0.w_seir_dly.post_disp_fee::w_seir_dly_post_disp_fee;
+  out0.w_seir_dly.approved_copay::w_seir_dly_approved_copay;
+  out0.w_seir_dly.post_amount_paid::w_seir_dly_post_amount_paid;
+  out0.w_seir_dly.post_copay::w_seir_dly_post_copay;
+  out0.w_seir_dly.app_amount_paid::w_seir_dly_app_amount_paid;
+  out0.w_seir_dly.app_ingr_cost::w_seir_dly_app_ingr_cost;
+  out0.w_seir_dly.app_disp_fee::w_seir_dly_app_disp_fee;
+  out0.w_seir_dly.src_env_sk::w_seir_dly_src_env_sk;
+  out0.*::in0.*;
+
+end;

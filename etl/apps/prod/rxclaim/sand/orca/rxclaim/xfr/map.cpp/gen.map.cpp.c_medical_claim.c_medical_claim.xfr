@@ -1,0 +1,152 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_582d5140_4fba_7 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_med_claim.cpp_medical_claim_sk,[transform],]
+  [out0.c_med_claim.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_med_claim.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_med_claim.dt_of_service,[passthrough],in0.dt_of_service]
+  [out0.c_med_claim.src_env_sk,[transform],]
+  [out0.c_med_claim.srvc_end_dt,[passthrough],in0.srvc_end_dt]
+  [out0.c_med_claim.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_med_claim.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_med_claim.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_med_claim.client_claim_line_num,'c_med_claim.client_claim_line_num',1,0]
+     [out0.c_med_claim.client_sequence_num,'c_med_claim.client_sequence_num',1,0]
+     [out0.c_med_claim.carrier_claim_received_dt,'c_med_claim.carrier_claim_received_dt',1,0]
+     [out0.c_med_claim.cpp_medical_claim_sk,'c_med_claim.cpp_medical_claim_sk',1,0]
+     [out0.c_med_claim.client_div,'c_med_claim.client_div',1,0]
+     [out0.c_med_claim.cpp_create_ts,'c_med_claim.cpp_create_ts',1,0]
+     [out0.c_med_claim.admission_dt,'c_med_claim.admission_dt',1,0]
+     [out0.c_med_claim.client_uniq_claim_id,'c_med_claim.client_uniq_claim_id',1,0]
+     [out0.c_med_claim.src_sys_id,'c_med_claim.src_sys_id',1,0]
+     [out0.c_med_claim.cpp_update_ts,'c_med_claim.cpp_update_ts',1,0]
+     [out0.c_med_claim.place_of_service_cd,'c_med_claim.place_of_service_cd',1,0]
+     [out0.c_med_claim.dt_of_service,'c_med_claim.dt_of_service',1,0]
+     [out0.c_med_claim.src_env_sk,'c_med_claim.src_env_sk',1,0]
+     [out0.c_med_claim.provider_id,'c_med_claim.provider_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_med_claim.client_claim_num,'c_med_claim.client_claim_num',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_med_claim.patient_id,'c_med_claim.patient_id',1,0]
+     [out0.c_med_claim.medical_claim_id,'c_med_claim.medical_claim_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_med_claim.srvc_end_dt,'c_med_claim.srvc_end_dt',1,0]
+     [out0.c_med_claim.cpp_created_by,'c_med_claim.cpp_created_by',1,0]
+     [out0.c_med_claim.cpp_provider_sk,'c_med_claim.cpp_provider_sk',1,0]
+     [out0.c_med_claim.discharge_stts,'c_med_claim.discharge_stts',1,0]
+     [out0.c_med_claim.member_id,'c_med_claim.member_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_med_claim.cpp_updated_by,'c_med_claim.cpp_updated_by',1,0]
+     [out0.c_med_claim.npi_num,'c_med_claim.npi_num',1,0]
+     [out0.c_med_claim.discharge_dt,'c_med_claim.discharge_dt',1,0]
+     [out0.c_med_claim.place_of_service_descr,'c_med_claim.place_of_service_descr',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.patient_id,'patient_id',1,1]
+     [in0.member_id,'member_id',1,1]
+     [in0.srvc_end_dt,'srvc_end_dt',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.dt_of_service,'dt_of_service',1,1]
+     [in0.client_sequence_num,'client_sequence_num',1,1]
+     [in0.src_sys_id,'src_sys_id',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.place_of_service_cd,'place_of_service_cd',1,1]
+     [in0.medical_claim_id,'medical_claim_id',1,1]
+     [in0.discharge_dt,'discharge_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.client_div,'client_div',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.discharge_stts,'discharge_stts',1,1]
+     [in0.place_of_service_descr,'place_of_service_descr',1,1]
+     [in0.client_claim_line_num,'client_claim_line_num',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.admission_dt,'admission_dt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.carrier_claim_received_dt,'carrier_claim_received_dt',1,1]
+     [in0.client_claim_num,'client_claim_num',1,1]
+     [in0.npi_num,'npi_num',1,1]
+     [in0.client_uniq_claim_id,'client_uniq_claim_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_med_claim_cpp_medical_claim_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_med_claim_medical_claim_id = fail_if_error(in0.medical_claim_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_med_claim_patient_id = fail_if_error(in0.patient_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_med_claim_src_sys_id = fail_if_error(in0.src_sys_id);
+let decimal("\x01",0) c_med_claim_client_sequence_num = fail_if_error(in0.client_sequence_num);
+let date("YYYYMMDD")("\x01") c_med_claim_dt_of_service = fail_if_error(in0.dt_of_service);
+let utf8 string("\x01", maximum_length=100) c_med_claim_place_of_service_cd = fail_if_error(in0.place_of_service_cd);
+let utf8 string("\x01", maximum_length=200) c_med_claim_place_of_service_descr = fail_if_error(in0.place_of_service_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_claim_admission_dt = fail_if_error(in0.admission_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_claim_discharge_dt = fail_if_error(in0.discharge_dt);
+let utf8 string("\x01", maximum_length=100) c_med_claim_discharge_stts = fail_if_error(in0.discharge_stts);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_med_claim_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) c_med_claim_cpp_provider_sk;
+let utf8 string("\x01", maximum_length=60) c_med_claim_npi_num = fail_if_error(in0.npi_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_claim_carrier_claim_received_dt = fail_if_error(in0.carrier_claim_received_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_claim_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_med_claim_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_claim_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_med_claim_cpp_created_by = fail_if_error(in0.created_by);
+let utf8 string("\x01", maximum_length=480) c_med_claim_client_claim_num = fail_if_error(in0.client_claim_num);
+let utf8 string("\x01", maximum_length=320) c_med_claim_client_claim_line_num = fail_if_error(in0.client_claim_line_num);
+let utf8 string("\x01", maximum_length=240) c_med_claim_client_uniq_claim_id = fail_if_error(in0.client_uniq_claim_id);
+let utf8 string("\x01", maximum_length=80) c_med_claim_member_id = fail_if_error(in0.member_id);
+let utf8 string("\x01", maximum_length=1020) c_med_claim_client_div = fail_if_error(in0.client_div);
+let date("YYYYMMDD")("\x01") c_med_claim_srvc_end_dt = fail_if_error(in0.srvc_end_dt);
+let decimal("\x01",0) c_med_claim_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_med_claim_cpp_provider_sk=fail_if_error(first_defined(lookup("c_provider",in0.provider_id).dxf_sk,-1));
+
+  out0.c_med_claim.cpp_medical_claim_sk::c_med_claim_cpp_medical_claim_sk;
+  out0.c_med_claim.medical_claim_id::c_med_claim_medical_claim_id;
+  out0.c_med_claim.patient_id::c_med_claim_patient_id;
+  out0.c_med_claim.src_sys_id::c_med_claim_src_sys_id;
+  out0.c_med_claim.client_sequence_num::c_med_claim_client_sequence_num;
+  out0.c_med_claim.dt_of_service::c_med_claim_dt_of_service;
+  out0.c_med_claim.place_of_service_cd::c_med_claim_place_of_service_cd;
+  out0.c_med_claim.place_of_service_descr::c_med_claim_place_of_service_descr;
+  out0.c_med_claim.admission_dt::c_med_claim_admission_dt;
+  out0.c_med_claim.discharge_dt::c_med_claim_discharge_dt;
+  out0.c_med_claim.discharge_stts::c_med_claim_discharge_stts;
+  out0.c_med_claim.provider_id::c_med_claim_provider_id;
+  out0.c_med_claim.cpp_provider_sk::c_med_claim_cpp_provider_sk;
+  out0.c_med_claim.npi_num::c_med_claim_npi_num;
+  out0.c_med_claim.carrier_claim_received_dt::c_med_claim_carrier_claim_received_dt;
+  out0.c_med_claim.cpp_update_ts::c_med_claim_cpp_update_ts;
+  out0.c_med_claim.cpp_updated_by::c_med_claim_cpp_updated_by;
+  out0.c_med_claim.cpp_create_ts::c_med_claim_cpp_create_ts;
+  out0.c_med_claim.cpp_created_by::c_med_claim_cpp_created_by;
+  out0.c_med_claim.client_claim_num::c_med_claim_client_claim_num;
+  out0.c_med_claim.client_claim_line_num::c_med_claim_client_claim_line_num;
+  out0.c_med_claim.client_uniq_claim_id::c_med_claim_client_uniq_claim_id;
+  out0.c_med_claim.member_id::c_med_claim_member_id;
+  out0.c_med_claim.client_div::c_med_claim_client_div;
+  out0.c_med_claim.srvc_end_dt::c_med_claim_srvc_end_dt;
+  out0.c_med_claim.src_env_sk::c_med_claim_src_env_sk;
+  out0.*::in0.*;
+
+end;

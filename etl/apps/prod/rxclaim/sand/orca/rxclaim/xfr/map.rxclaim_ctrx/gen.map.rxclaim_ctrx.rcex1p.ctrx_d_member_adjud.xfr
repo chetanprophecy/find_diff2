@@ -1,0 +1,418 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_8_97d014ac_576bdeb4_85ec_0
+    BizHidden:true
+@*/
+/*   lookup l_age_band_lkp   */
+out0::bzt_8_97d014ac_576bdeb4_85ec_0(in0)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  decimal("\x01") age;
+  string("\x01",charset="iso-8859-15") age_band_desc, age_minor_flg, mbr_age_band_cd;
+  string("\n",charset="iso-8859-15") mbr_age_band_desc;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_age_band_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_9_97d014ac_576bdeb4_85ec_0
+    BizHidden:true
+@*/
+/*   lookup d_cag_lkp   */
+out0::bzt_9_97d014ac_576bdeb4_85ec_0(in0,in1,in2)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_cag_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_mem_adj.cag_sk,[transform],]
+  [out0.d_mem_adj.mbr_id,[transform],in0.cardholder,
+     in0.memberid,
+     in0.claimsts]
+  [out0.d_mem_adj.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_mem_adj.mbr_ssn_nbr,[transform],in0.socsecnbr]
+  [out0.d_mem_adj.mbr_calc_age,[transform],in0.dtefilled,
+     in0.mbrbirth,
+     in0.datesbm]
+  [out0.d_cag_mbr.carrier_id,[passthrough],in0.carrierid]
+  [out0.d_mem_adj.mbr_supp_id2,[transform],]
+  [out0.d_mem_adj.mbr_alt_ins_id,[passthrough],in0.mbraltincd]
+  [out0.d_mem_adj.mbr_clsfctn3,[transform],]
+  [out0.d_mem_adj.clt_id,[transform],in0.accountid,
+     in0.claimsts,
+     in0.carrierid,
+     in0.groupid,
+     in0.groupnbr,
+     'lookup("d_cag_lkp").client_id']
+  [out0.d_mem_adj.mbr_fam_ind,[passthrough],in0.mbrfamlind]
+  [out0.d_mem_adj.mbr_supp_id2_typ,[transform],]
+  [out0.d_mem_adj.mast_prsn_id,[transform],]
+  [out0.d_mem_adj.mbr_clsfctn2,[transform],]
+  [out0.d_cag_mbr.employer_group_id,[passthrough],in0.groupid]
+  [out0.d_cag_mbr.account_id,[passthrough],in0.accountid]
+  [out0.d_mem_adj.mbr_relshp_cd,[transform],in0.relationcd,
+     in0.mbrrelcde]
+  [out0.d_mem_adj.mbr_first_nm,[transform],in0.patfrstnme,
+     in0.mbrfstnme,
+     in0.claimsts]
+  [out0.d_mem_adj.mbr_fam_id,[passthrough],in0.mbrfamlyid]
+  [out0.d_mem_adj.mbr_cdhldr,[passthrough],in0.cardholder]
+  [out0.d_mem_adj.mbr_sex,[transform],in0.sexcode,
+     in0.mbrsex,
+     in0.claimsts]
+  [out0.d_mem_adj.mbr_rdr,[passthrough],in0.mbrridercd]
+  [out0.d_mem_adj.mbr_id_encrpd,[transform],in0.cardholder,
+     in0.memberid,
+     in0.claimsts]
+  [out0.d_mem_adj.mbr_alt_ins_ind,[passthrough],in0.mbraltinfl]
+  [out0.d_mem_adj.mbr_adjud_sk,[transform],]
+  [out0.d_mem_adj.mbr_zip,[passthrough],in0.mbrzip]
+  [out0.d_mem_adj.mbr_mid_init_nm,[passthrough],in0.mbrmdinit]
+  [out0.d_mem_adj.mbr_mcre_covrg_typ,[passthrough],in0.mbrmedtype]
+  [out0.d_mem_adj.mbr_clsfctn1,[transform],]
+  [out0.d_mem_adj.carrier_id,[passthrough],in0.carrierid]
+  [out0.d_mem_adj.mbr_age_band,[transform],in0.dtefilled,
+     in0.mbrbirth,
+     in0.datesbm,
+     'lookup("l_age_band_lkp").mbr_age_band_cd']
+  [out0.d_mem_adj.mbr_prsn_cd,[transform],in0.personcde,
+     in0.mbrprsncde,
+     in0.claimsts]
+  [out0.d_mem_adj.mbr_supp_id1_typ,[transform],]
+  [out0.d_mem_adj.mbr_alt_ins_mbr_id,[passthrough],in0.mbraltinid]
+  [out0.d_mem_adj.mbr_last_nm,[transform],in0.patlastnme,
+     in0.mbrlstnme,
+     in0.claimsts]
+  [out0.d_mem_adj.account_id,[passthrough],in0.accountid]
+  [out0.d_mem_adj.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.claimsts]
+  [out0.d_mem_adj.mbr_dt_of_brth,[transform],in0.mbrbirth]
+  [out0.d_mem_adj.mbr_supp_id1,[transform],]
+  [out0.d_mem_adj.mbr_hic_cd,[passthrough],in0.mbrhiccde]
+  [out0.d_mem_adj.mbr_fam_typ_cd,[passthrough],in0.mbrfamltyp]
+  [out0.d_mem_adj.mbr_mcre_covrg_from_dt,[passthrough],in0.mbrmeddte]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_mem_adj.cag_sk,'d_mem_adj.cag_sk',1,0]
+     [out0.d_mem_adj.mbr_id,'d_mem_adj.mbr_id',1,0]
+     [out0.d_mem_adj.src_env_sk,'d_mem_adj.src_env_sk',1,0]
+     [out0.d_mem_adj.mbr_ssn_nbr,'d_mem_adj.mbr_ssn_nbr',1,0]
+     [out0.d_mem_adj.mbr_calc_age,'d_mem_adj.mbr_calc_age',1,11]
+     [out0.d_cag_mbr.carrier_id,'d_cag_mbr.carrier_id',1,0]
+     [out0.d_mem_adj.mbr_supp_id2,'d_mem_adj.mbr_supp_id2',1,0]
+     [out0.d_mem_adj.mbr_alt_ins_id,'d_mem_adj.mbr_alt_ins_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mem_adj.mbr_clsfctn3,'d_mem_adj.mbr_clsfctn3',1,0]
+     [out0.d_mem_adj.clt_id,'d_mem_adj.clt_id',1,0]
+     [out0.d_mem_adj.mbr_fam_ind,'d_mem_adj.mbr_fam_ind',1,0]
+     [out0.d_mem_adj.mbr_supp_id2_typ,'d_mem_adj.mbr_supp_id2_typ',1,0]
+     [out0.d_mem_adj.mast_prsn_id,'d_mem_adj.mast_prsn_id',1,0]
+     [out0.d_mem_adj.mbr_clsfctn2,'d_mem_adj.mbr_clsfctn2',1,0]
+     [out0.d_cag_mbr.employer_group_id,'d_cag_mbr.employer_group_id',1,0]
+     [out0.d_cag_mbr.account_id,'d_cag_mbr.account_id',1,0]
+     [out0.d_mem_adj.mbr_relshp_cd,'d_mem_adj.mbr_relshp_cd',1,0]
+     [out0.d_mem_adj.mbr_first_nm,'d_mem_adj.mbr_first_nm',1,0]
+     [out0.d_mem_adj.mbr_fam_id,'d_mem_adj.mbr_fam_id',1,0]
+     [out0.d_mem_adj.mbr_cdhldr,'d_mem_adj.mbr_cdhldr',1,0]
+     [out0.d_mem_adj.mbr_sex,'d_mem_adj.mbr_sex',5,4]
+     [out0.d_mem_adj.mbr_rdr,'d_mem_adj.mbr_rdr',1,0]
+     [out0.d_mem_adj.mbr_id_encrpd,'d_mem_adj.mbr_id_encrpd',1,0]
+     [out0.d_mem_adj.mbr_alt_ins_ind,'d_mem_adj.mbr_alt_ins_ind',1,0]
+     [out0.d_mem_adj.mbr_adjud_sk,'d_mem_adj.mbr_adjud_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_mem_adj.mbr_zip,'d_mem_adj.mbr_zip',1,0]
+     [out0.d_mem_adj.mbr_mid_init_nm,'d_mem_adj.mbr_mid_init_nm',1,0]
+     [out0.d_mem_adj.mbr_mcre_covrg_typ,'d_mem_adj.mbr_mcre_covrg_typ',1,0]
+     [out0.d_mem_adj.mbr_clsfctn1,'d_mem_adj.mbr_clsfctn1',1,0]
+     [out0.d_mem_adj.carrier_id,'d_mem_adj.carrier_id',1,0]
+     [out0.d_mem_adj.mbr_age_band,'d_mem_adj.mbr_age_band',1,11]
+     [out0.d_mem_adj.mbr_prsn_cd,'d_mem_adj.mbr_prsn_cd',1,0]
+     [out0.d_mem_adj.mbr_supp_id1_typ,'d_mem_adj.mbr_supp_id1_typ',1,0]
+     [out0.d_mem_adj.mbr_alt_ins_mbr_id,'d_mem_adj.mbr_alt_ins_mbr_id',1,0]
+     [out0.d_mem_adj.mbr_last_nm,'d_mem_adj.mbr_last_nm',1,0]
+     [out0.d_mem_adj.account_id,'d_mem_adj.account_id',1,0]
+     [out0.d_mem_adj.employer_group_id,'d_mem_adj.employer_group_id',1,0]
+     [out0.d_mem_adj.mbr_dt_of_brth,'d_mem_adj.mbr_dt_of_brth',3,2]
+     [out0.d_mem_adj.mbr_supp_id1,'d_mem_adj.mbr_supp_id1',1,0]
+     [out0.d_mem_adj.mbr_hic_cd,'d_mem_adj.mbr_hic_cd',1,0]
+     [out0.d_mem_adj.mbr_fam_typ_cd,'d_mem_adj.mbr_fam_typ_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_mem_adj.mbr_mcre_covrg_from_dt,'d_mem_adj.mbr_mcre_covrg_from_dt',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.mbrmdinit,'mbrmdinit',1,1]
+     [in0.cardholder,'cardholder',3,3]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.patfrstnme,'patfrstnme',1,1]
+     [in0.relationcd,'relationcd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.socsecnbr,'socsecnbr',1,1]
+     [in0.patlastnme,'patlastnme',1,1]
+     [in0.mbrmeddte,'mbrmeddte',1,1]
+     [in0.accountid,'accountid',3,3]
+     [in0.dtefilled,'dtefilled',5,7]
+     [in0.mbrmedtype,'mbrmedtype',1,1]
+     [in0.mbrsex,'mbrsex',1,5]
+     ['lookup("d_cag_lkp").client_id','client_id',1,1]
+     [in0.mbrfamlyid,'mbrfamlyid',1,1]
+     [in0.mbraltincd,'mbraltincd',1,1]
+     [in0.datesbm,'datesbm',5,6]
+     [in0.mbrfstnme,'mbrfstnme',2,1]
+     [in0.mbrzip,'mbrzip',1,1]
+     [in0.personcde,'personcde',1,1]
+     [in0.mbrrelcde,'mbrrelcde',2,1]
+     [in0.groupnbr,'groupnbr',2,2]
+     [in0.carrierid,'carrierid',3,3]
+     [in0.mbraltinfl,'mbraltinfl',1,1]
+     [in0.mbraltinid,'mbraltinid',1,1]
+     [in0.groupid,'groupid',5,3]
+     ['lookup("l_age_band_lkp").mbr_age_band_cd','mbr_age_band_cd',1,1]
+     [in0.mbrbirth,'mbrbirth',10,10]
+     [in0.claimsts,'claimsts',8,12]
+     [in0.mbrhiccde,'mbrhiccde',1,1]
+     [in0.mbrridercd,'mbrridercd',1,1]
+     [in0.memberid,'memberid',4,2]
+     [in0.mbrfamlind,'mbrfamlind',1,1]
+     [in0.sexcode,'sexcode',1,5]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.mbrprsncde,'mbrprsncde',2,1]
+     [in0.mbrfamltyp,'mbrfamltyp',1,1]
+     [in0.mbrlstnme,'mbrlstnme',2,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_2 = 0;
+let int bzt_3 = 0;
+let int bzt_4 = 0;
+let int bzt_5 = 0;
+let int bzt_6 = 0;
+let string("\x00") bzt_7;
+let decimal("\x01",0) d_mem_adj_mbr_adjud_sk = -1;
+let decimal("\x01",0) d_mem_adj_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mem_adj_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mem_adj_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mem_adj_employer_group_id = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid));
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_id;
+let decimal("\x01",0) d_mem_adj_mast_prsn_id = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_mem_adj_clt_id;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_alt_ins_ind = fail_if_error(in0.mbraltinfl);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_mem_adj_mbr_alt_ins_id = fail_if_error(in0.mbraltincd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_alt_ins_mbr_id = fail_if_error(in0.mbraltinid);
+let decimal("\x01",0) d_mem_adj_mbr_ssn_nbr = fail_if_error(string_lrtrim(in0.socsecnbr));
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_supp_id1 = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_mem_adj_mbr_supp_id1_typ = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_supp_id2 = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_mem_adj_mbr_supp_id2_typ = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_age_band;
+let decimal("\x01",0) d_mem_adj_mbr_calc_age;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_cdhldr = fail_if_error(in0.cardholder);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_mem_adj_mbr_clsfctn1 = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_mem_adj_mbr_clsfctn2 = "-";
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_clsfctn3 = "-";
+let date("YYYYMMDD")("\x01") d_mem_adj_mbr_dt_of_brth;
+let string("\x01",charset="iso-8859-15", maximum_length=11) d_mem_adj_mbr_hic_cd = fail_if_error(in0.mbrhiccde);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_id_encrpd = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.memberid)==''))?in0.cardholder:in0.memberid));
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_mem_adj_mbr_first_nm = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.mbrfstnme)==''))?in0.patfrstnme:in0.mbrfstnme));
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_mem_adj_mbr_last_nm = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.mbrlstnme)==''))?in0.patlastnme:in0.mbrlstnme));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_mid_init_nm = fail_if_error(in0.mbrmdinit);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_mem_adj_mbr_prsn_cd = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.mbrprsncde)==''))?in0.personcde:in0.mbrprsncde));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_relshp_cd = fail_if_error(if(string_lrtrim(in0.mbrrelcde)== '') in0.relationcd else in0.mbrrelcde);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_mem_adj_mbr_rdr = fail_if_error(in0.mbrridercd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_sex = "U";
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_mem_adj_mbr_zip = fail_if_error(in0.mbrzip);
+let date("YYYYMMDD")("\x01") d_mem_adj_mbr_mcre_covrg_from_dt = fail_if_error(in0.mbrmeddte);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_mcre_covrg_typ = fail_if_error(in0.mbrmedtype);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mem_adj_mbr_fam_id = fail_if_error(in0.mbrfamlyid);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_fam_ind = fail_if_error(in0.mbrfamlind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mem_adj_mbr_fam_typ_cd = fail_if_error(in0.mbrfamltyp);
+let decimal("\x01",0) d_mem_adj_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_mbr_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_mbr_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_mbr_employer_group_id = fail_if_error(in0.groupid);
+let unicode datetime('YYYY-MM-DD HH24:MI:SS.NNNNNN') DteFilledValidation;
+let unicode datetime('YYYY-MM-DD HH24:MI:SS.NNNNNN') DatesbmValue;
+let unicode datetime('YYYY-MM-DD HH24:MI:SS.NNNNNN') mbrbirthValue;
+let unicode decimal('') DteFilledAge;
+
+
+
+/*   Rule:Compute d_mem_adj.mbr_dt_of_brth  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.mbrbirth)) ==8) && ((is_valid(YYYYMMDD(in0.mbrbirth))) ==1)),0))begin
+  bzt_2=1;
+  d_mem_adj_mbr_dt_of_brth=YYYYMMDD(in0.mbrbirth);
+end
+else if(first_defined(fail_if_error(((length_of(in0.mbrbirth) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000 + in0.mbrbirth))) ==1)),0))begin
+  bzt_2=1;
+  d_mem_adj_mbr_dt_of_brth=YYYYMMDD(19000000 + in0.mbrbirth);
+end
+
+/*   Default value   */
+if(!bzt_2)begin
+  d_mem_adj_mbr_dt_of_brth=fail_if_error(YYYYMMDD("19000101"));
+end
+
+/*   Rule:Compute d_mem_adj.mbr_sex  (#2)   */
+bzt_7 = fail_if_error(string_lrtrim(in0.mbrsex));
+if(first_defined(fail_if_error(((string_lrtrim(in0.claimsts)) =="R")),0))begin
+  d_mem_adj_mbr_sex="U";
+end
+else if(first_defined(fail_if_error((bzt_7 =='')),0))begin
+  d_mem_adj_mbr_sex=in0.sexcode;
+end
+else if(first_defined(fail_if_error((bzt_7 =='1')),0))begin
+  d_mem_adj_mbr_sex='M';
+end
+else if(first_defined(fail_if_error((bzt_7 =='2')),0))begin
+  d_mem_adj_mbr_sex='F';
+end
+
+/*   Rule:Compute DteFilledValidation  (#4)   */
+if(first_defined(fail_if_error(((length_of(in0.dtefilled) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.dtefilled))) ==1)),0))begin
+  bzt_4=1;
+  DteFilledValidation=YYYYMMDD(19000000+ in0.dtefilled);
+end
+else if(first_defined(fail_if_error(((length_of(in0.dtefilled)) ==8) && ((is_valid(YYYYMMDD(in0.dtefilled))) ==1)),0))begin
+  bzt_4=1;
+  DteFilledValidation=YYYYMMDD(in0.dtefilled);
+end
+
+/*   Default value   */
+if(!bzt_4)begin
+  DteFilledValidation=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Rule:Compute DatesbmValue  (#5)   */
+if(first_defined(fail_if_error(((length_of(in0.datesbm) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.datesbm))) ==1)),0))begin
+  bzt_5=1;
+  DatesbmValue=YYYYMMDD(19000000+in0.datesbm);
+end
+else if(first_defined(fail_if_error(((length_of(in0.datesbm)) ==8) && ((is_valid(YYYYMMDD(in0.datesbm))) ==1)),0))begin
+  bzt_5=1;
+  DatesbmValue=YYYYMMDD(in0.datesbm);
+end
+
+/*   Default value   */
+if(!bzt_5)begin
+  DatesbmValue=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Rule:Compute mbrbirthValue  (#6)   */
+if(first_defined(fail_if_error(((length_of(in0.mbrbirth) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.mbrbirth))) ==1)),0))begin
+  bzt_6=1;
+  mbrbirthValue=YYYYMMDD(19000000+in0.mbrbirth);
+end
+else if(first_defined(fail_if_error(((length_of(in0.mbrbirth)) ==8) && ((is_valid(YYYYMMDD(in0.mbrbirth))) ==1)),0))begin
+  bzt_6=1;
+  mbrbirthValue=YYYYMMDD(in0.mbrbirth);
+end
+
+/*   Default value   */
+if(!bzt_6)begin
+  mbrbirthValue=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Rule:Compute DteFilledAge  (#3)   */
+if(first_defined(fail_if_error(((DteFilledValidation < YYYYMMDD(today())) ==1)),0))begin
+  bzt_3=1;
+  DteFilledAge=(long)decimal_truncate(date_difference_months(DteFilledValidation,mbrbirthValue)/12,0);
+end
+
+/*   Default value   */
+if(!bzt_3)begin
+  DteFilledAge=fail_if_error((long)decimal_truncate(date_difference_months(DatesbmValue,mbrbirthValue)/12,0));
+end
+
+/*   Default value   */
+d_mem_adj_mbr_age_band=fail_if_error(bzt_8_97d014ac_576bdeb4_85ec_0(DteFilledAge).mbr_age_band_cd);
+
+/*   Default value   */
+d_mem_adj_mbr_calc_age=fail_if_error(DteFilledAge);
+
+/*   Default value   */
+d_mem_adj_mbr_id=fail_if_error(str_nk((if (sql_and((in0.claimsts!="R"),(in0.memberid==" ")))
+   in0.cardholder
+ else
+   in0.memberid)));
+
+/*   Default value   */
+d_mem_adj_clt_id=fail_if_error(bzt_9_97d014ac_576bdeb4_85ec_0(in0.carrierid,in0.accountid,(sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid)).client_id);
+
+  out0.d_mem_adj.mbr_adjud_sk::d_mem_adj_mbr_adjud_sk;
+  out0.d_mem_adj.cag_sk::d_mem_adj_cag_sk;
+  out0.d_mem_adj.carrier_id::d_mem_adj_carrier_id;
+  out0.d_mem_adj.account_id::d_mem_adj_account_id;
+  out0.d_mem_adj.employer_group_id::d_mem_adj_employer_group_id;
+  out0.d_mem_adj.mbr_id::d_mem_adj_mbr_id;
+  out0.d_mem_adj.mast_prsn_id::d_mem_adj_mast_prsn_id;
+  out0.d_mem_adj.clt_id::d_mem_adj_clt_id;
+  out0.d_mem_adj.mbr_alt_ins_ind::d_mem_adj_mbr_alt_ins_ind;
+  out0.d_mem_adj.mbr_alt_ins_id::d_mem_adj_mbr_alt_ins_id;
+  out0.d_mem_adj.mbr_alt_ins_mbr_id::d_mem_adj_mbr_alt_ins_mbr_id;
+  out0.d_mem_adj.mbr_ssn_nbr::d_mem_adj_mbr_ssn_nbr;
+  out0.d_mem_adj.mbr_supp_id1::d_mem_adj_mbr_supp_id1;
+  out0.d_mem_adj.mbr_supp_id1_typ::d_mem_adj_mbr_supp_id1_typ;
+  out0.d_mem_adj.mbr_supp_id2::d_mem_adj_mbr_supp_id2;
+  out0.d_mem_adj.mbr_supp_id2_typ::d_mem_adj_mbr_supp_id2_typ;
+  out0.d_mem_adj.mbr_age_band::d_mem_adj_mbr_age_band;
+  out0.d_mem_adj.mbr_calc_age::d_mem_adj_mbr_calc_age;
+  out0.d_mem_adj.mbr_cdhldr::d_mem_adj_mbr_cdhldr;
+  out0.d_mem_adj.mbr_clsfctn1::d_mem_adj_mbr_clsfctn1;
+  out0.d_mem_adj.mbr_clsfctn2::d_mem_adj_mbr_clsfctn2;
+  out0.d_mem_adj.mbr_clsfctn3::d_mem_adj_mbr_clsfctn3;
+  out0.d_mem_adj.mbr_dt_of_brth::d_mem_adj_mbr_dt_of_brth;
+  out0.d_mem_adj.mbr_hic_cd::d_mem_adj_mbr_hic_cd;
+  out0.d_mem_adj.mbr_id_encrpd::d_mem_adj_mbr_id_encrpd;
+  out0.d_mem_adj.mbr_first_nm::d_mem_adj_mbr_first_nm;
+  out0.d_mem_adj.mbr_last_nm::d_mem_adj_mbr_last_nm;
+  out0.d_mem_adj.mbr_mid_init_nm::d_mem_adj_mbr_mid_init_nm;
+  out0.d_mem_adj.mbr_prsn_cd::d_mem_adj_mbr_prsn_cd;
+  out0.d_mem_adj.mbr_relshp_cd::d_mem_adj_mbr_relshp_cd;
+  out0.d_mem_adj.mbr_rdr::d_mem_adj_mbr_rdr;
+  out0.d_mem_adj.mbr_sex::d_mem_adj_mbr_sex;
+  out0.d_mem_adj.mbr_zip::d_mem_adj_mbr_zip;
+  out0.d_mem_adj.mbr_mcre_covrg_from_dt::d_mem_adj_mbr_mcre_covrg_from_dt;
+  out0.d_mem_adj.mbr_mcre_covrg_typ::d_mem_adj_mbr_mcre_covrg_typ;
+  out0.d_mem_adj.mbr_fam_id::d_mem_adj_mbr_fam_id;
+  out0.d_mem_adj.mbr_fam_ind::d_mem_adj_mbr_fam_ind;
+  out0.d_mem_adj.mbr_fam_typ_cd::d_mem_adj_mbr_fam_typ_cd;
+  out0.d_mem_adj.src_env_sk::d_mem_adj_src_env_sk;
+  out0.d_cag_mbr.carrier_id::d_cag_mbr_carrier_id;
+  out0.d_cag_mbr.account_id::d_cag_mbr_account_id;
+  out0.d_cag_mbr.employer_group_id::d_cag_mbr_employer_group_id;
+  out0.*::in0.*;
+
+end;

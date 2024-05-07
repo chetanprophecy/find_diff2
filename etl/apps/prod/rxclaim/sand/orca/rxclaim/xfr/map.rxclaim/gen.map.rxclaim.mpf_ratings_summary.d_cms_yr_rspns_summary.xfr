@@ -1,0 +1,125 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59b8fdb7_357f_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rec_cms_sum.claim_percentage_scr,[transform],in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims,
+     in0.pf_cost_less_than_pde_cost.number_of_claims]
+  [out0.rec_cms_sum.pde_mpf_diff_amt,[transform],in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost]
+  [out0.rec_cms_sum.sure_up_ndc_cnt,[transform],in0.pf_cost_less_than_pde_cost.number_of_claims]
+  [out0.rec_cms_sum.matching_claim_ndc_cnt,[transform],in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims]
+  [out0.rec_cms_sum.contract_id,[passthrough],in0.contract_id]
+  [out0.rec_cms_sum.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rec_cms_sum.accuracy_idx,[transform],in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost,
+     in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost,
+     in0.pf_cost_less_than_pde_cost.pde_cost]
+  [out0.rec_cms_sum.cal_tot_pde_cost,[transform],in0.pf_cost_less_than_pde_cost.pde_cost]
+  [out0.rec_cms_sum.comp_price_accuracy_scr,[transform],in0.pf_cost_less_than_pde_cost.number_of_claims,
+     in0.pf_cost_less_than_pde_cost.pde_cost,
+     in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost,
+     in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost,
+     in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims]
+  [out0.rec_cms_sum.price_accuracy_scr,[transform],in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost,
+     in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost,
+     in0.pf_cost_less_than_pde_cost.pde_cost]
+  [out0.rec_cms_sum.rspns_summary_sk,[transform],]
+  [out0.rec_cms_sum.rspns_file_ind,[transform],in0.dxf_src_file_name]
+  [out0.rec_cms_sum.cms_rspns_mn,[transform],in0.dxf_src_file_name]
+  [out0.rec_cms_sum.matching_claim_pde_cost,[transform],in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost]
+  [out0.rec_cms_sum.cms_rspns_style_ind,[passthrough],in0.cms_rspns_style_ind]
+  [out0.rec_cms_sum.cal_tol_mpf_cost,[transform],in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost,
+     in0.pf_cost_less_than_pde_cost.pde_cost]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rec_cms_sum.claim_percentage_scr,'rec_cms_sum.claim_percentage_scr',1,0]
+     [out0.rec_cms_sum.pde_mpf_diff_amt,'rec_cms_sum.pde_mpf_diff_amt',1,0]
+     [out0.rec_cms_sum.sure_up_ndc_cnt,'rec_cms_sum.sure_up_ndc_cnt',1,0]
+     [out0.rec_cms_sum.matching_claim_ndc_cnt,'rec_cms_sum.matching_claim_ndc_cnt',1,0]
+     [out0.rec_cms_sum.contract_id,'rec_cms_sum.contract_id',1,0]
+     [out0.rec_cms_sum.src_env_sk,'rec_cms_sum.src_env_sk',1,0]
+     [out0.rec_cms_sum.accuracy_idx,'rec_cms_sum.accuracy_idx',1,0]
+     [out0.rec_cms_sum.cal_tot_pde_cost,'rec_cms_sum.cal_tot_pde_cost',1,0]
+     [out0.rec_cms_sum.comp_price_accuracy_scr,'rec_cms_sum.comp_price_accuracy_scr',1,2]
+     [out0.rec_cms_sum.price_accuracy_scr,'rec_cms_sum.price_accuracy_scr',1,1]
+     [out0.rec_cms_sum.rspns_summary_sk,'rec_cms_sum.rspns_summary_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rec_cms_sum.rspns_file_ind,'rec_cms_sum.rspns_file_ind',1,0]
+     [out0.rec_cms_sum.cms_rspns_mn,'rec_cms_sum.cms_rspns_mn',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rec_cms_sum.matching_claim_pde_cost,'rec_cms_sum.matching_claim_pde_cost',1,0]
+     [out0.rec_cms_sum.cms_rspns_style_ind,'rec_cms_sum.cms_rspns_style_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.rec_cms_sum.cal_tol_mpf_cost,'rec_cms_sum.cal_tol_mpf_cost',1,0]
+  ]
+  impacts:
+  [
+     [in0.pf_cost_less_than_pde_cost.number_of_claims,'number_of_claims',6,5]
+     [in0.pf_cost_less_than_pde_cost.pde_cost,'pde_cost',6,6]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',7,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost,'pde_cost',5,5]
+     [in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost,'difference_between_pde_and_pf_cost',4,6]
+     [in0.contract_id,'contract_id',1,1]
+     [in0.cms_rspns_style_ind,'cms_rspns_style_ind',1,1]
+     [in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims,'number_of_claims',3,4]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) rec_cms_sum_rspns_summary_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) rec_cms_sum_contract_id = fail_if_error(in0.contract_id);
+let decimal("\x01",0) rec_cms_sum_matching_claim_ndc_cnt = fail_if_error((decimal(8))in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rec_cms_sum_matching_claim_pde_cost = fail_if_error((decimal("x01"))string_lrtrim(in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost));
+let decimal("\x01",0) rec_cms_sum_sure_up_ndc_cnt = fail_if_error((decimal("x01"))in0.pf_cost_less_than_pde_cost.number_of_claims);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rec_cms_sum_cal_tot_pde_cost = fail_if_error((decimal("x01"))string_lrtrim(in0.pf_cost_less_than_pde_cost.pde_cost));
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_cms_sum_cal_tol_mpf_cost = fail_if_error((decimal("x01"))in0.pf_cost_less_than_pde_cost.pde_cost + (decimal("x01"))in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost);
+let decimal("\x01".4, maximum_length=17, sign_reserved) rec_cms_sum_pde_mpf_diff_amt = fail_if_error((decimal("x01"))string_lrtrim(in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost));
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_cms_sum_price_accuracy_scr;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_cms_sum_claim_percentage_scr = fail_if_error(((1 - (((decimal("\x01"))in0.pf_cost_less_than_pde_cost.number_of_claims)/((decimal("x01"))in0.pf_cost_less_than_pde_cost.number_of_claims + (decimal("\x01"))in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims))) * 100));
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_cms_sum_comp_price_accuracy_scr;
+let decimal("\x01".4, maximum_length=11, sign_reserved) rec_cms_sum_accuracy_idx = fail_if_error(((decimal("x01"))in0.pf_cost_less_than_pde_cost.pde_cost + (decimal("x01"))in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost + (decimal("x01"))in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost)/((decimal("x01"))in0.pf_cost_less_than_pde_cost.pde_cost + (decimal("\x01"))in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost));
+let decimal("\x01",0) rec_cms_sum_cms_rspns_mn = fail_if_error((decimal("x01"))string_substring(string_split(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1], "_")[length_of(string_split(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1], "_")) - 1],0,6));
+let string("\x01",charset="iso-8859-15", maximum_length=3) rec_cms_sum_rspns_file_ind = fail_if_error(if (string_like(string_substring(string_split(in0.dxf_src_file_name, "/")[length_of(string_split(in0.dxf_src_file_name, "/")) - 1],16,8) , "%Accuracy%") == 1) "ACC" else  "DSP");
+let decimal("\x01",0) rec_cms_sum_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) rec_cms_sum_cms_rspns_style_ind = fail_if_error(in0.cms_rspns_style_ind);
+let unicode decimal('') v_claim_percentage_scr = fail_if_error(((1 - (((decimal("\x01"))in0.pf_cost_less_than_pde_cost.number_of_claims)/((decimal("x01"))in0.pf_cost_less_than_pde_cost.number_of_claims + (decimal("\x01"))in0.pf_cost_greater_than_or_equal_to_pde_cost.number_of_claims))) * 100));
+let unicode decimal('') v_price_accuracy_scr = fail_if_error((2 - ((decimal("x01"))string_lrtrim(in0.pf_cost_less_than_pde_cost.pde_cost) + (decimal("x01"))string_lrtrim(in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost) + (decimal("x01"))string_lrtrim(in0.pf_cost_less_than_pde_cost.difference_between_pde_and_pf_cost))/((decimal("x01"))string_lrtrim(in0.pf_cost_less_than_pde_cost.pde_cost) + (decimal("x01"))string_lrtrim(in0.pf_cost_greater_than_or_equal_to_pde_cost.pde_cost))  ) * 100);
+
+
+
+/*   Default value   */
+rec_cms_sum_price_accuracy_scr=fail_if_error((decimal("x01"))v_price_accuracy_scr);
+
+/*   Default value   */
+rec_cms_sum_comp_price_accuracy_scr=fail_if_error((decimal_round((0.5 * (decimal("x01"))v_price_accuracy_scr )+(0.5 * v_claim_percentage_scr), 0)));
+
+  out0.rec_cms_sum.rspns_summary_sk::rec_cms_sum_rspns_summary_sk;
+  out0.rec_cms_sum.contract_id::rec_cms_sum_contract_id;
+  out0.rec_cms_sum.matching_claim_ndc_cnt::rec_cms_sum_matching_claim_ndc_cnt;
+  out0.rec_cms_sum.matching_claim_pde_cost::rec_cms_sum_matching_claim_pde_cost;
+  out0.rec_cms_sum.sure_up_ndc_cnt::rec_cms_sum_sure_up_ndc_cnt;
+  out0.rec_cms_sum.cal_tot_pde_cost::rec_cms_sum_cal_tot_pde_cost;
+  out0.rec_cms_sum.cal_tol_mpf_cost::rec_cms_sum_cal_tol_mpf_cost;
+  out0.rec_cms_sum.pde_mpf_diff_amt::rec_cms_sum_pde_mpf_diff_amt;
+  out0.rec_cms_sum.price_accuracy_scr::rec_cms_sum_price_accuracy_scr;
+  out0.rec_cms_sum.claim_percentage_scr::rec_cms_sum_claim_percentage_scr;
+  out0.rec_cms_sum.comp_price_accuracy_scr::rec_cms_sum_comp_price_accuracy_scr;
+  out0.rec_cms_sum.accuracy_idx::rec_cms_sum_accuracy_idx;
+  out0.rec_cms_sum.cms_rspns_mn::rec_cms_sum_cms_rspns_mn;
+  out0.rec_cms_sum.rspns_file_ind::rec_cms_sum_rspns_file_ind;
+  out0.rec_cms_sum.src_env_sk::rec_cms_sum_src_env_sk;
+  out0.rec_cms_sum.cms_rspns_style_ind::rec_cms_sum_cms_rspns_style_ind;
+  out0.*::in0.*;
+
+end;

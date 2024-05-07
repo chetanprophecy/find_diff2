@@ -1,0 +1,94 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5811f31e_4aa5_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_product.stts,[passthrough],in0.stts]
+  [out0.c_product.src_env_sk,[transform],]
+  [out0.c_product.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_product.product_name,[passthrough],in0.product_name]
+  [out0.c_product.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_product.product_type_cd,[passthrough],in0.product_type_cd]
+  [out0.c_product.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_product.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_product.cpp_product_sk,[transform],]
+  [out0.c_product.product_descr,[passthrough],in0.product_descr]
+  [out0.c_product.product_id,[passthrough],in0.product_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_product.stts,'c_product.stts',1,0]
+     [out0.c_product.src_env_sk,'c_product.src_env_sk',1,0]
+     [out0.c_product.cpp_updated_by,'c_product.cpp_updated_by',1,0]
+     [out0.c_product.product_name,'c_product.product_name',1,0]
+     [out0.c_product.cpp_update_ts,'c_product.cpp_update_ts',1,0]
+     [out0.c_product.product_type_cd,'c_product.product_type_cd',1,0]
+     [out0.c_product.cpp_create_ts,'c_product.cpp_create_ts',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_product.cpp_created_by,'c_product.cpp_created_by',1,0]
+     [out0.c_product.cpp_product_sk,'c_product.cpp_product_sk',1,0]
+     [out0.c_product.product_sub_type_name,'c_product.product_sub_type_name',1,0]
+     [out0.c_product.product_descr,'c_product.product_descr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_product.product_id,'c_product.product_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.product_name,'product_name',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.product_descr,'product_descr',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.product_type_cd,'product_type_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.product_sub_type_name,'product_sub_type_name',1,1]
+     [in0.stts,'stts',1,1]
+     [in0.product_id,'product_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_product_cpp_product_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_product_product_id = fail_if_error(in0.product_id);
+let utf8 string("\x01", maximum_length=200) c_product_product_name = fail_if_error(in0.product_name);
+let utf8 string("\x01", maximum_length=40) c_product_product_type_cd = fail_if_error(in0.product_type_cd);
+let utf8 string("\x01", maximum_length=1000) c_product_product_descr = fail_if_error(in0.product_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_product_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_product_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_product_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_product_cpp_created_by = fail_if_error(in0.created_by);
+let utf8 string("\x01", maximum_length=200) c_product_product_sub_type_name = fail_if_error(in0.product_sub_type_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_product_stts = fail_if_error(in0.stts);
+let decimal("\x01",0) c_product_src_env_sk = 710;
+
+
+
+  out0.c_product.cpp_product_sk::c_product_cpp_product_sk;
+  out0.c_product.product_id::c_product_product_id;
+  out0.c_product.product_name::c_product_product_name;
+  out0.c_product.product_type_cd::c_product_product_type_cd;
+  out0.c_product.product_descr::c_product_product_descr;
+  out0.c_product.cpp_update_ts::c_product_cpp_update_ts;
+  out0.c_product.cpp_updated_by::c_product_cpp_updated_by;
+  out0.c_product.cpp_create_ts::c_product_cpp_create_ts;
+  out0.c_product.cpp_created_by::c_product_cpp_created_by;
+  out0.c_product.product_sub_type_name::c_product_product_sub_type_name;
+  out0.c_product.stts::c_product_stts;
+  out0.c_product.src_env_sk::c_product_src_env_sk;
+  out0.*::in0.*;
+
+end;

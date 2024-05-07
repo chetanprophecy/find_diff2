@@ -1,0 +1,233 @@
+constant string("")RUN_MONTH parameter;
+
+
+
+type formulary_lkp_rec_type=
+record
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  unsigned integer(8) dxf_hk_part1 = 0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8) dxf_hk_part2 = 0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) formulary_id = NULL("") /*VARCHAR(10) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) drg_nm = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) drg_ndc_id = NULL("") /*VARCHAR(20) NOT NULL*/;
+  date("YYYYMMDD")("\x01") chg_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") effective_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) days_past_for_inclusion = NULL("") /*INTEGER NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) chg_cd = NULL("") /*VARCHAR(10) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) chg_cd_desc = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) chg_reason = NULL("") /*VARCHAR(10) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) chg_reason_desc = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) alt_drg_nm = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) alt_drg_ndc_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) tier_cd = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) formulary_chg_cd_id = NULL("") /*CHAR(2) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) affected_drg_current_tier_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) affected_drg_new_tier_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=60) qty_limit_desc = NULL("") /*VARCHAR(60)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) manufacturer_nm = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) apply_to_new_starts_only = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) affected_gpi = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_updt_run_id = 0;
+  string("\x01",maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end;
+
+
+
+out::calculate_v_cd_bd_formulary_change_code_id(change_reason,change_date,effective_dt,fmpd_sbm_dt,run_month,formulary_chg_cd_id)=
+begin
+let string("")in_period_form_flg;
+let decimal("")v_cycle_prelim;
+let string("")v_period_start_dt;
+let string("")v_year_start_dt;
+let date("YYYYMMDD")year_start_dt= (date("YYYYMMDD"))string_concat(string_substring(run_month,1,4),"0101");
+let date("YYYYMMDD")period_start_dt = (date("YYYYMMDD"))string_concat(run_month,"01");
+let date("YYYYMMDD")period_end_dt= (date("YYYYMMDD"))string_concat(run_month,(string(""))(decimal(""))date_month_end((decimal(""))string_substring(run_month,5,6)));
+let decimal("")v_months_diff_change_period_start;
+let decimal("")v_months_diff_change_effective;
+let string("")in_period_claim_flg;
+let string("") v_eff_dt_out_of_range;
+let date("YYYYMMDD") v_next_year_start_dt;
+
+
+
+v_next_year_start_dt= (date("YYYYMMDD"))string_lrtrim((decimal(""))string_concat(string_substring(run_month,1,4),"0101") + 10000);
+
+v_period_start_dt = if(is_null(change_date))"" else if(is_valid((date("YYYYMMDD"))period_start_dt)) period_start_dt else "";
+
+v_year_start_dt = if(is_null(change_date))"" else if(is_valid((date("YYYYMMDD"))year_start_dt)) year_start_dt else "";
+
+v_months_diff_change_period_start= date_difference_months((date("YYYYMMDD"))change_date,period_start_dt);
+
+v_months_diff_change_effective= date_difference_months((date("YYYYMMDD"))effective_dt,(date("YYYYMMDD"))change_date);
+
+v_cycle_prelim= if(is_null(change_date))"" 
+                else if(v_months_diff_change_period_start>1)"" 
+                else if(v_months_diff_change_effective==0) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            default:"";
+                                                          end
+                                                          
+                else if(v_months_diff_change_effective==1) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            default:"";
+                                                          end
+                                                          
+                else if(v_months_diff_change_effective==2) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            default:"";
+                                                          end
+                                                          
+                                                          
+                else if(v_months_diff_change_effective==3) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            default:"";
+                                                          end
+                 
+                 
+                 else if(v_months_diff_change_effective==4) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            default:"";
+                                                          end
+                                                          
+                                                          
+                  else if(v_months_diff_change_effective==5) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            default:"";
+                                                          end
+                                                          
+                                                          
+                 else if(v_months_diff_change_effective==6) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            case -5:7;
+                                                            default:"";
+                                                          end
+                                                          
+                                                          
+                 else if(v_months_diff_change_effective==7) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            case -5:7;
+                                                            case -6:8;
+                                                            default:"";
+                                                          end
+                                                          
+                                                          
+                                                          
+                 else if(v_months_diff_change_effective==8) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            case -5:7;
+                                                            case -6:8;
+                                                            default:"";
+                                                          end
+                  
+                  
+                 else if(v_months_diff_change_effective==8) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            case -5:7;
+                                                            case -6:8;
+                                                            case -7:9;
+                                                            default:"";
+                                                          end  
+                                                          
+                                                          
+                 else if(v_months_diff_change_effective==9) switch(v_months_diff_change_period_start)
+                                                            case 1:1;
+                                                            case 0:2;
+                                                            case -1:3;
+                                                            case -2:4;
+                                                            case -3:5;
+                                                            case -4:6;
+                                                            case -5:7;
+                                                            case -6:8;
+                                                            case -7:9;
+                                                            case -8:10;
+                                                            default:"";
+                                                          end                                    
+                                                         
+                                                          
+                 else "";
+  
+
+
+in_period_claim_flg= if(string_substring(period_start_dt,5,4)=="0101"  and  (date("YYYYMMDD"))fmpd_sbm_dt <= period_end_dt and (date("YYYYMMDD"))fmpd_sbm_dt >= ((decimal(""))period_start_dt - 8870))"Y" 
+                     else if(string_substring(period_start_dt,5,4)=="0101"  and  (date("YYYYMMDD"))fmpd_sbm_dt <= period_end_dt and (date("YYYYMMDD"))fmpd_sbm_dt >= period_start_dt)"Y"
+                     else "";
+                     
+
+in_period_form_flg= if(string_lrtrim(change_reason) member[vector "AVLGENERIC","REQUIRESPA","QNTYLIMIT","STEPTHERPY","REQPAPTBD","GENBRNDT3"])
+                           if(!is_blank(v_cycle_prelim) and v_cycle_prelim==1)
+                                if(fmpd_sbm_dt <= period_end_dt and fmpd_sbm_dt >= ((decimal(""))date_difference_days((date("YYYYMMDD"))date_add_months((date("YYYYMMDD"))v_period_start_dt,-2),(date("YYYYMMDD"))v_year_start_dt)<0)? year_start_dt:year_start_dt)"Y"
+                                else ""
+                            
+                             
+                           else if(!is_blank(v_cycle_prelim) and v_cycle_prelim member[vector 2,3,4,5,6,7,8,9]) (((date("YYYYMMDD"))fmpd_sbm_dt <= period_end_dt and (date("YYYYMMDD"))fmpd_sbm_dt >= period_start_dt)?"Y":"")
+                                else ""
+                                   
+                     else if(v_months_diff_change_period_start ==1)"Y"  
+                          else "";
+                          
+                          
+v_eff_dt_out_of_range=if(string_lrtrim(change_reason) member [vector "AVLGENERIC","REQUIRESPA","QNTYLIMIT","STEPTHERPY","REQPAPTBD","GENBRNDT3"])
+                                if((date("YYYYMMDD"))effective_dt > v_next_year_start_dt ) "Y" else "N"
+                                
+                           else if(string_lrtrim(change_reason) not member [vector "AVLGENERIC","REQUIRESPA","QNTYLIMIT","STEPTHERPY","REQPAPTBD","GENBRNDT3"])
+                               "N" ;
+
+
+
+                       
+out::if(in_period_form_flg=="Y" and in_period_claim_flg=="Y" and v_eff_dt_out_of_range=="N")formulary_chg_cd_id else "" ;
+
+end;
+
+select_out ::select(in)=
+begin
+let d_product_lkp_rec   = lookup("d_product_lkp", in.fmpd_prod_sk) ;
+let d_contract_pbp_extn_lkp_rec = lookup("d_contract_pbp_extn_lkp",in.fmpd_contract_pbp_sk);
+let formulary_lkp_rec_type formulary_lkp_rec  = if(d_product_lkp_rec.prod_id_qlfr_cd=="03")lookup("l_eob_formulary_lkp",d_contract_pbp_extn_lkp_rec.pdp_frmlry_notice_list,d_product_lkp_rec.prod_id) else allocate_with_defaults() ;
+let string("") v_cd_bd_formulary_change_code_id = calculate_v_cd_bd_formulary_change_code_id(formulary_lkp_rec.chg_reason,formulary_lkp_rec.chg_dt,formulary_lkp_rec.effective_dt,in.fmpd_sbm_dt,RUN_MONTH,formulary_lkp_rec.formulary_chg_cd_id);
+
+select_out :: is_defined(v_cd_bd_formulary_change_code_id) && !is_blank(v_cd_bd_formulary_change_code_id);
+end;

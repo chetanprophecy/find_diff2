@@ -1,0 +1,153 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_1_97d014ac_5759493a_1b2c_0
+    BizHidden:true
+@*/
+/*   lookup prescriber_speciality_lkp   */
+out0::bzt_1_97d014ac_5759493a_1b2c_0(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01", maximum_length=10) nzaqcd;
+  string("\x01", maximum_length=6) nzflcd;
+  string("\x01", maximum_length=5) rxt_src_envrt_id;
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("prescriber_speciality_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prim_phy.pcp_sk,[transform],]
+  [out0.c_prim_phy.pcp_dea_suffix_cd,[passthrough],in0.alaucd]
+  [out0.prim_phy_fk.phy_pbr_key,[passthrough],in0.alaqcd]
+  [out0.c_prim_phy.pcp_state_cd,[passthrough],in0.alb1tx]
+  [out0.c_prim_phy.pcp_last_nm,[passthrough],in0.alsqig]
+  [out0.c_prim_phy.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.c_prim_phy.pcp_specialty_id,[transform],in0.alaqcd,
+     in0.rxt_src_envrt_id,
+     'lookup("prescriber_speciality_lkp").nzflcd']
+  [out0.c_prim_phy.pcp_dea_prefix_cd,[passthrough],in0.albxtx]
+  [out0.c_prim_phy.pcp_dea_cd,[passthrough],in0.alatcd]
+  [out0.c_prim_phy.pcp_zip_cd,[passthrough],in0.alb0tx]
+  [out0.prim_phy_fk.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.c_prim_phy.pcp_id,[passthrough],in0.alaqcd]
+  [out0.c_prim_phy.pcp_address1_txt,[passthrough],in0.albytx]
+  [out0.c_prim_phy.pcp_suite_no,[passthrough],in0.alsuig]
+  [out0.c_prim_phy.pbr_sk,[transform],]
+  [out0.c_prim_phy.pcp_address2_txt,[passthrough],in0.alstig]
+  [out0.c_prim_phy.pcp_city_nm,[passthrough],in0.albztx]
+  [out0.c_prim_phy.pcp_first_nm,[passthrough],in0.alsrig]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prim_phy.pcp_sk,'c_prim_phy.pcp_sk',1,0]
+     [out0.c_prim_phy.pcp_dea_suffix_cd,'c_prim_phy.pcp_dea_suffix_cd',1,0]
+     [out0.prim_phy_fk.phy_pbr_key,'prim_phy_fk.phy_pbr_key',1,0]
+     [out0.c_prim_phy.pcp_state_cd,'c_prim_phy.pcp_state_cd',1,0]
+     [out0.c_prim_phy.pcp_last_nm,'c_prim_phy.pcp_last_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_prim_phy.src_env_sk,'c_prim_phy.src_env_sk',1,0]
+     [out0.c_prim_phy.pcp_specialty_id,'c_prim_phy.pcp_specialty_id',1,0]
+     [out0.c_prim_phy.pcp_dea_prefix_cd,'c_prim_phy.pcp_dea_prefix_cd',1,0]
+     [out0.c_prim_phy.pcp_dea_cd,'c_prim_phy.pcp_dea_cd',1,0]
+     [out0.c_prim_phy.pcp_zip_cd,'c_prim_phy.pcp_zip_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.prim_phy_fk.src_env_sk,'prim_phy_fk.src_env_sk',1,0]
+     [out0.c_prim_phy.pcp_id,'c_prim_phy.pcp_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_prim_phy.pcp_address1_txt,'c_prim_phy.pcp_address1_txt',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_prim_phy.pcp_suite_no,'c_prim_phy.pcp_suite_no',1,0]
+     [out0.c_prim_phy.pbr_sk,'c_prim_phy.pbr_sk',1,0]
+     [out0.c_prim_phy.pcp_address2_txt,'c_prim_phy.pcp_address2_txt',1,0]
+     [out0.c_prim_phy.pcp_city_nm,'c_prim_phy.pcp_city_nm',1,0]
+     [out0.c_prim_phy.pcp_first_nm,'c_prim_phy.pcp_first_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.albytx,'albytx',1,1]
+     [in0.alb0tx,'alb0tx',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.alsqig,'alsqig',1,1]
+     [in0.alatcd,'alatcd',1,1]
+     [in0.alaucd,'alaucd',1,1]
+     [in0.alsrig,'alsrig',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.albztx,'albztx',1,1]
+     [in0.alb1tx,'alb1tx',1,1]
+     [in0.albxtx,'albxtx',1,1]
+     ['lookup("prescriber_speciality_lkp").nzflcd','nzflcd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',4,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.alstig,'alstig',1,1]
+     [in0.alsuig,'alsuig',1,1]
+     [in0.alaqcd,'alaqcd',3,3]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prim_phy_pcp_sk = -1;
+let decimal("\x01",0) c_prim_phy_pbr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prim_phy_pcp_id = fail_if_error(in0.alaqcd);
+let string("\x01",charset="iso-8859-15", maximum_length=25) c_prim_phy_pcp_first_nm = fail_if_error(in0.alsrig);
+let string("\x01",charset="iso-8859-15", maximum_length=35) c_prim_phy_pcp_last_nm = fail_if_error(in0.alsqig);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_prim_phy_pcp_dea_suffix_cd = fail_if_error(in0.alaucd);
+let string("\x01",charset="iso-8859-15", maximum_length=7) c_prim_phy_pcp_dea_cd = fail_if_error(in0.alatcd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_prim_phy_pcp_dea_prefix_cd = fail_if_error(in0.albxtx);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prim_phy_pcp_zip_cd = fail_if_error(in0.alb0tx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_prim_phy_pcp_state_cd = fail_if_error(in0.alb1tx);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_prim_phy_pcp_city_nm = fail_if_error(in0.albztx);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_prim_phy_pcp_suite_no = fail_if_error(in0.alsuig);
+let string("\x01",charset="iso-8859-15", maximum_length=60) c_prim_phy_pcp_address2_txt = fail_if_error(in0.alstig);
+let string("\x01",charset="iso-8859-15", maximum_length=60) c_prim_phy_pcp_address1_txt = fail_if_error(in0.albytx);
+let string("\x01",charset="iso-8859-15", maximum_length=6) c_prim_phy_pcp_specialty_id;
+let decimal("\x01",0) c_prim_phy_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prim_phy_fk_phy_pbr_key = fail_if_error(in0.alaqcd);
+let decimal("\x01",0) prim_phy_fk_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Default value   */
+c_prim_phy_pcp_specialty_id=fail_if_error(bzt_1_97d014ac_5759493a_1b2c_0(in0.alaqcd,in0.rxt_src_envrt_id).nzflcd);
+
+  out0.c_prim_phy.pcp_sk::c_prim_phy_pcp_sk;
+  out0.c_prim_phy.pbr_sk::c_prim_phy_pbr_sk;
+  out0.c_prim_phy.pcp_id::c_prim_phy_pcp_id;
+  out0.c_prim_phy.pcp_first_nm::c_prim_phy_pcp_first_nm;
+  out0.c_prim_phy.pcp_last_nm::c_prim_phy_pcp_last_nm;
+  out0.c_prim_phy.pcp_dea_suffix_cd::c_prim_phy_pcp_dea_suffix_cd;
+  out0.c_prim_phy.pcp_dea_cd::c_prim_phy_pcp_dea_cd;
+  out0.c_prim_phy.pcp_dea_prefix_cd::c_prim_phy_pcp_dea_prefix_cd;
+  out0.c_prim_phy.pcp_zip_cd::c_prim_phy_pcp_zip_cd;
+  out0.c_prim_phy.pcp_state_cd::c_prim_phy_pcp_state_cd;
+  out0.c_prim_phy.pcp_city_nm::c_prim_phy_pcp_city_nm;
+  out0.c_prim_phy.pcp_suite_no::c_prim_phy_pcp_suite_no;
+  out0.c_prim_phy.pcp_address2_txt::c_prim_phy_pcp_address2_txt;
+  out0.c_prim_phy.pcp_address1_txt::c_prim_phy_pcp_address1_txt;
+  out0.c_prim_phy.pcp_specialty_id::c_prim_phy_pcp_specialty_id;
+  out0.c_prim_phy.src_env_sk::c_prim_phy_src_env_sk;
+  out0.prim_phy_fk.phy_pbr_key::prim_phy_fk_phy_pbr_key;
+  out0.prim_phy_fk.src_env_sk::prim_phy_fk_src_env_sk;
+  out0.*::in0.*;
+
+end;

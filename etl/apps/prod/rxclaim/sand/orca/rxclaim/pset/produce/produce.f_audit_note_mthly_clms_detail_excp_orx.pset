@@ -1,0 +1,16 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_SERIAL/get.rxclaim/rxclaim.f_audit_note_mthly_clms_detail_excp_orx.dat
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.f_audit_note_mthly_clms_detail_excp_orx_rfmt.xfr
+USE_SORT||||True
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$[PUB_DATAHUB_MFS_LOOKUP + "/ids/ids_rxclaim/many/f_audit_note_mthly_clms_detail."+ string_substring(RUN_ID,1,8) + ".dat.gz"]
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.f_audit_note_mthly_clms_detail.dml
+OUTPUT_FILE_DML|$|||$AI_DML/get.rxclaim/get.rxclaim.f_audit_note_mthly_clms_detail_excp.dml
+SORT_KEY||||{claim_nbr}
+USE_DEDUP||||True
+FILTER_EXPR|$|||is_null(claim_stat_id) and rxclaim_instance_ind member [vector 480,490]
+DO_IDS_ICFF_LOOKUP||||True
+DEDUP_KEY||||{claim_nbr}

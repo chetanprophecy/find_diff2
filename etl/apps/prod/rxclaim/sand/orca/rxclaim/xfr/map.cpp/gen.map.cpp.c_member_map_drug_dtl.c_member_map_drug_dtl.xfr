@@ -1,0 +1,83 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a5600e7_14a1_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_drg.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_drg.src_env_sk,[transform],]
+  [out0.c_mem_drg.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_drg.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_drg.cpp_member_map_drug_dtl_sk,[transform],]
+  [out0.c_mem_drg.cpp_member_case_decision_hist_sk,[transform],in0.sequence_num,
+     in0.member_case_decision_hist_id,
+     'lookup("C_MEMBER_CASE_DECISION_HIST").dxf_sk']
+  [out0.c_mem_drg.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_drg.member_case_decision_hist_id,'c_mem_drg.member_case_decision_hist_id',1,0]
+     [out0.c_mem_drg.cpp_updated_by,'c_mem_drg.cpp_updated_by',1,0]
+     [out0.c_mem_drg.src_env_sk,'c_mem_drg.src_env_sk',1,0]
+     [out0.c_mem_drg.cpp_update_ts,'c_mem_drg.cpp_update_ts',1,0]
+     [out0.c_mem_drg.cpp_create_ts,'c_mem_drg.cpp_create_ts',1,0]
+     [out0.c_mem_drg.cpp_member_map_drug_dtl_sk,'c_mem_drg.cpp_member_map_drug_dtl_sk',1,0]
+     [out0.c_mem_drg.drug_name,'c_mem_drg.drug_name',1,0]
+     [out0.c_mem_drg.cpp_member_case_decision_hist_sk,'c_mem_drg.cpp_member_case_decision_hist_sk',1,0]
+     [out0.c_mem_drg.cpp_created_by,'c_mem_drg.cpp_created_by',1,0]
+     [out0.c_mem_drg.maximum_daily_dose,'c_mem_drg.maximum_daily_dose',1,0]
+     [out0.c_mem_drg.sequence_num,'c_mem_drg.sequence_num',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.drug_name,'drug_name',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     ['lookup("C_MEMBER_CASE_DECISION_HIST").dxf_sk','dxf_sk',1,1]
+     [in0.member_case_decision_hist_id,'member_case_decision_hist_id',2,2]
+     [in0.maximum_daily_dose,'maximum_daily_dose',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_drg_cpp_member_map_drug_dtl_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_drg_member_case_decision_hist_id = fail_if_error(in0.member_case_decision_hist_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_drg_sequence_num = fail_if_error(in0.sequence_num);
+let decimal("\x01",0) c_mem_drg_cpp_member_case_decision_hist_sk;
+let utf8 string("\x01", maximum_length=1056) c_mem_drg_drug_name = fail_if_error(in0.drug_name);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mem_drg_maximum_daily_dose = fail_if_error(in0.maximum_daily_dose);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_drg_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_drg_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_drg_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_drg_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_drg_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mem_drg_cpp_member_case_decision_hist_sk=fail_if_error(lookup("C_MEMBER_CASE_DECISION_HIST",in0.member_case_decision_hist_id,in0.sequence_num).dxf_sk);
+
+  out0.c_mem_drg.cpp_member_map_drug_dtl_sk::c_mem_drg_cpp_member_map_drug_dtl_sk;
+  out0.c_mem_drg.member_case_decision_hist_id::c_mem_drg_member_case_decision_hist_id;
+  out0.c_mem_drg.sequence_num::c_mem_drg_sequence_num;
+  out0.c_mem_drg.cpp_member_case_decision_hist_sk::c_mem_drg_cpp_member_case_decision_hist_sk;
+  out0.c_mem_drg.drug_name::c_mem_drg_drug_name;
+  out0.c_mem_drg.maximum_daily_dose::c_mem_drg_maximum_daily_dose;
+  out0.c_mem_drg.cpp_update_ts::c_mem_drg_cpp_update_ts;
+  out0.c_mem_drg.cpp_updated_by::c_mem_drg_cpp_updated_by;
+  out0.c_mem_drg.cpp_create_ts::c_mem_drg_cpp_create_ts;
+  out0.c_mem_drg.cpp_created_by::c_mem_drg_cpp_created_by;
+  out0.c_mem_drg.src_env_sk::c_mem_drg_src_env_sk;
+  out0.*::in0.*;
+
+end;

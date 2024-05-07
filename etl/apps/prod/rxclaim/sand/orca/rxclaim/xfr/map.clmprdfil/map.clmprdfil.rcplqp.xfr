@@ -1,0 +1,21 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.plq_plan_qualifier :: in.awcet3;
+  out.plq_plan_description :: in.awcft3;
+  out.add_user_name :: in.awakvn;
+  out.add_date :: in.awc2dt;
+  out.add_time :: in.awadtm;
+  out.add_program_name :: in.awalvn;
+  out.chg_user_name :: in.awadvn;
+  out.chg_date :: in.awbmdt;
+  out.chg_time :: in.awabtm;
+  out.chg_program_name :: in.awaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end

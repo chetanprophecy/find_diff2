@@ -1,0 +1,137 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_eg_mon.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_eg_mon.group_id,[transform],in0.ahadcd]
+  [out0.l_eg_mon.account_id,[transform],in0.ahaccd]
+  [out0.l_eg_mon.mai_thru_dt,[transform],in0.ahmadt]
+  [out0.l_eg_mon.mbr_id,[transform],in0.ahabcd]
+  [out0.l_eg_mon.mai_status,[transform],in0.ahdqs3]
+  [out0.l_eg_mon.carrier_id,[transform],in0.ahaacd]
+  [out0.l_eg_mon.mbr_alt_ins_mbr_id,[transform],in0.ahrkc3]
+  [out0.l_eg_mon.claim_seq_nbr,[transform],in0.ahz9n1]
+  [out0.l_eg_mon.cob_pricing_typ,[transform],in0.ahdyib]
+  [out0.l_eg_mon.mbr_alt_ins_id,[transform],in0.ahrjc3]
+  [out0.l_eg_mon.mbr_alt_ins_ind,[transform],in0.ahdps3]
+  [out0.l_eg_mon.mai_eff_dt,[transform],in0.ahl9dt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_eg_mon.src_env_sk,'l_eg_mon.src_env_sk',1,0]
+     [out0.l_eg_mon.group_id,'l_eg_mon.group_id',1,0]
+     [out0.l_eg_mon.account_id,'l_eg_mon.account_id',1,0]
+     [out0.l_eg_mon.mai_thru_dt,'l_eg_mon.mai_thru_dt',1,0]
+     [out0.l_eg_mon.mbr_id,'l_eg_mon.mbr_id',1,0]
+     [out0.l_eg_mon.mai_status,'l_eg_mon.mai_status',1,0]
+     [out0.l_eg_mon.carrier_id,'l_eg_mon.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.l_eg_mon.mbr_alt_ins_mbr_id,'l_eg_mon.mbr_alt_ins_mbr_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_eg_mon.claim_seq_nbr,'l_eg_mon.claim_seq_nbr',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_eg_mon.cob_pricing_typ,'l_eg_mon.cob_pricing_typ',1,0]
+     [out0.l_eg_mon.mbr_alt_ins_id,'l_eg_mon.mbr_alt_ins_id',1,0]
+     [out0.l_eg_mon.mbr_alt_ins_ind,'l_eg_mon.mbr_alt_ins_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_eg_mon.mai_eff_dt,'l_eg_mon.mai_eff_dt',1,0]
+  ]
+  impacts:
+  [
+     [in0.ahmadt,'ahmadt',3,1]
+     [in0.ahl9dt,'ahl9dt',3,1]
+     [in0.ahdps3,'ahdps3',3,1]
+     [in0.ahdyib,'ahdyib',3,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ahadcd,'ahadcd',3,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ahrjc3,'ahrjc3',3,1]
+     [in0.ahdqs3,'ahdqs3',3,1]
+     [in0.ahz9n1,'ahz9n1',3,1]
+     [in0.ahaccd,'ahaccd',3,1]
+     [in0.ahrkc3,'ahrkc3',3,1]
+     [in0.ahabcd,'ahabcd',3,1]
+     [in0.ahaacd,'ahaacd',3,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_eg_mon_mbr_id = fail_if_error((if (sql_or(is_null(in0.ahabcd),is_blank(in0.ahabcd)))
+   '-'
+ else
+   string_lrtrim(in0.ahabcd)));
+let string("\x01",charset="iso-8859-15", maximum_length=9) l_eg_mon_carrier_id = fail_if_error((if (sql_or(is_null(in0.ahaacd),is_blank(in0.ahaacd)))
+   '-'
+ else
+   string_lrtrim(in0.ahaacd)));
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_eg_mon_account_id = fail_if_error((if (sql_or(is_null(in0.ahaccd),is_blank(in0.ahaccd)))
+   '-'
+ else
+   string_lrtrim(in0.ahaccd)));
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_eg_mon_group_id = fail_if_error((if (sql_or(is_null(in0.ahadcd),is_blank(in0.ahadcd)))
+   '-'
+ else
+   string_lrtrim(in0.ahadcd)));
+let decimal("\x01", maximum_length=5) l_eg_mon_claim_seq_nbr = fail_if_error((if (sql_or(is_null(in0.ahz9n1),is_blank(in0.ahz9n1)))
+   decimal_lpad("0",5)
+ else
+   string_lrtrim(in0.ahz9n1)));
+let decimal("\x01", maximum_length=7) l_eg_mon_mai_eff_dt = fail_if_error((if (sql_or(is_null(in0.ahl9dt),is_blank(in0.ahl9dt)))
+   decimal_lpad("0",7)
+ else
+   string_lrtrim(in0.ahl9dt)));
+let decimal("\x01", maximum_length=7) l_eg_mon_mai_thru_dt = fail_if_error((if (sql_or(is_null(in0.ahmadt),is_blank(in0.ahmadt)))
+   decimal_lpad("0",7)
+ else
+   string_lrtrim(in0.ahmadt)));
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_eg_mon_mai_status = fail_if_error((if (sql_or(is_null(in0.ahdqs3),is_blank(in0.ahdqs3)))
+   '-'
+ else
+   string_lrtrim(in0.ahdqs3)));
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_eg_mon_mbr_alt_ins_ind = fail_if_error((if (sql_or(is_null(in0.ahdps3),is_blank(in0.ahdps3)))
+   '-'
+ else
+   string_lrtrim(in0.ahdps3)));
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_eg_mon_mbr_alt_ins_id = fail_if_error((if (sql_or(is_null(in0.ahrjc3),is_blank(in0.ahrjc3)))
+   '-'
+ else
+   string_lrtrim(in0.ahrjc3)));
+let string("\x01",charset="iso-8859-15", maximum_length=18) l_eg_mon_mbr_alt_ins_mbr_id = fail_if_error((if (sql_or(is_null(in0.ahrkc3),is_blank(in0.ahrkc3)))
+   '-'
+ else
+   string_lrtrim(in0.ahrkc3)));
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_eg_mon_cob_pricing_typ = fail_if_error((if (sql_or(is_null(in0.ahdyib),is_blank(in0.ahdyib)))
+   '-'
+ else
+   string_lrtrim(in0.ahdyib)));
+let decimal("\x01",0) l_eg_mon_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.l_eg_mon.mbr_id::l_eg_mon_mbr_id;
+  out0.l_eg_mon.carrier_id::l_eg_mon_carrier_id;
+  out0.l_eg_mon.account_id::l_eg_mon_account_id;
+  out0.l_eg_mon.group_id::l_eg_mon_group_id;
+  out0.l_eg_mon.claim_seq_nbr::l_eg_mon_claim_seq_nbr;
+  out0.l_eg_mon.mai_eff_dt::l_eg_mon_mai_eff_dt;
+  out0.l_eg_mon.mai_thru_dt::l_eg_mon_mai_thru_dt;
+  out0.l_eg_mon.mai_status::l_eg_mon_mai_status;
+  out0.l_eg_mon.mbr_alt_ins_ind::l_eg_mon_mbr_alt_ins_ind;
+  out0.l_eg_mon.mbr_alt_ins_id::l_eg_mon_mbr_alt_ins_id;
+  out0.l_eg_mon.mbr_alt_ins_mbr_id::l_eg_mon_mbr_alt_ins_mbr_id;
+  out0.l_eg_mon.cob_pricing_typ::l_eg_mon_cob_pricing_typ;
+  out0.l_eg_mon.src_env_sk::l_eg_mon_src_env_sk;
+  out0.*::in0.*;
+
+end;

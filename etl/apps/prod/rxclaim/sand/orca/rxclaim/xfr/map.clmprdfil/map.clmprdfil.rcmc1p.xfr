@@ -1,0 +1,36 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.medical_condition_cde :: in.m1urhj;
+  out.condition_type :: in.m1w2ie;
+  out.classification_only :: in.m1w3ie;
+  out.gender_code :: in.m1w4ie;
+  out.pregnancy_code :: in.m1w5ie;
+  out.lactation_code :: in.m1w6ie;
+  out.from_age :: in.m1ydhu;
+  out.thru_age :: in.m1yehu;
+  out.age_units_code :: in.m1w7ie;
+  out.duration_code :: in.m1w8ie;
+  out.status :: in.m1w9ie;
+  out.add_user_name :: in.m1akvn ;
+  out.add_date ::  if ( in.m1c2dt > 0)
+                      in.m1c2dt + 19000000
+                  else
+                     0 ; 
+  out.add_time :: in.m1adtm;
+  out.add_program_name :: "RTEX1600";
+  out.chg_user_name :: in.m1advn ;
+  out.chg_date :: if ( in.m1bmdt > 0)
+                     in.m1bmdt + 19000000
+                 else
+                    0 ;
+  out.chg_time :: in.m1abtm;
+  out.chg_program_name :: in.m1aevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

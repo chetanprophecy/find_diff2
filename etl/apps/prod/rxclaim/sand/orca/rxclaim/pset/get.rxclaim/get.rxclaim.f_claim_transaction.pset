@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxclaim.f_claim_transaction
+SOURCE_DB_PROJECT||||DB_RXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrxclaim       f_claim_transaction
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+DO_CLEAN||||1
+DO_LOOKUP||||0
+SQL||||$[\r\n"SELECT \r\nf.MBR_SK, \r\nf.CAG_SK, \r\nto_date('" + START_CHANGES_TIME + "', 'YYYYMMDD') as PRD_START_DT,\r\np.PLN_SK,\r\np.PLN_QLFR_CD_SK, \r\nm.CLT_PROD_CD,\r\nm.CLT_RDR_CD,\r\nf.GENDER_SK,\r\nf.AGE_BAND_SK,\r\nf.RELATIONSHIP_CD_SK,\r\nc.CARE_FAC_ID,\r\nh.PHR_SUPER_CARR_NM CARRIER_ID_OVRD_CD,\r\nf.ACCT_BENEFIT_CD,\r\nf.GRP_CLT_BEN_CD,\r\nf.GROUP_SIC, \r\nf.SRC_ENV_SK \r\nFROM F_CLAIM_TRANSACTION f,\r\nD_PLAN p,\r\nD_MEMBER_ELIGIBILITY_ADJUD m,\r\nD_CARE_FACILITY_ADJUD c, \r\nD_PHARMACY_ADJUD h \r\nWHERE f.FINAL_PLN_SK = p.PLN_SK \r\nAND f.MBR_ELIGTY_ADJUD_SK = m.MBR_ELIGTY_ADJUD_SK \r\nAND f.CARE_FAC_ADJUD_SK = c.CARE_FAC_ADJUD_SK \r\nAND f.PHR_ADJUD_SK = h.PHR_ADJUD_SK \r\nAND f.FILLED_DT between to_date('" + START_CHANGES_TIME + "', 'YYYYMMDD') and (to_date('" + END_CHANGES_TIME + "', 'YYYYMMDD'))"\r\n]
+END_CHANGES_TIME||||$[\r\nbegin\r\nresult :: string_concat((datetime("YYYYMM"))(datetime("YYYYMMDD"))START_CHANGES_TIME, (string(""))(decimal(""))date_month_end(date_month((datetime("YYYYMMDD"))START_CHANGES_TIME), date_year((datetime("YYYYMMDD"))START_CHANGES_TIME))) ;\r\nend\r\n]
+START_CHANGES_TIME||||20161001
+DO_SOURCE||||0

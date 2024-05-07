@@ -1,0 +1,34 @@
+/*Reformat operation*/
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+   out.mbr_member_id :: in.ahabcd;
+   out.car_carrier_id :: in.ahaacd;
+   out.acc_account_id :: in.ahaccd;
+   out.grp_group_id :: in.ahadcd;
+   out.mai_seq_nbr :: in.ahz9n1;
+   out.mai_eff_date :: in.ahl9dt;
+   out.mai_thru_date :: in.ahmadt;
+   out.mai_status :: in.ahdqs3;
+   out.mai_alt_insurance_flag :: in.ahdps3;
+   out.mai_alt_insurance_id :: in.ahrjc3;
+   out.mai_alt_insurance_mbr_id :: in.ahrkc3;
+   out.mai_cob_pricing_type :: in.ahdyib;
+   out.mai_type :: in.ahc5am;
+   out.add_user_name :: in.ahakvn;
+   out.add_date :: in.ahc2dt;
+   out.add_time :: in.ahadtm;
+   out.add_program_name :: in.ahalvn;
+   out.chg_user_name :: in.ahadvn;
+   out.chg_date :: in.ahbmdt;
+   out.chg_time :: in.ahabtm;
+   out.chg_program_name::in.ahaevn;
+   out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+   out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+   out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+   out.rxt_create_uid :: 'app_orca_rxclaim';
+   out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+   out.rxt_rec_stat_cd :: '';
+
+end;

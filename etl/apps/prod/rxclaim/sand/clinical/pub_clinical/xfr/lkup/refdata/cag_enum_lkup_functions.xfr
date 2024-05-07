@@ -1,0 +1,43 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/cag_enum_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/07/21  Sarani Bhattacharya     Initial version, create lookup functions for fetching the pbp_id from cag_enum lookup. 
+ *  
+ ******************************************************************************************************************************************/
+ 
+include "~$PUB_CLINICAL_DML/enum_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_MFS            parameter;
+constant cli_date_t    BIZ_DT                      parameter;
+cli_string_t out :: get_pc_cpp_pbpid_path() inline =
+begin
+let cli_string_t lkp_path=string_replace(PUB_CLINICAL_MFS,"pub_clinical","enrichments");
+  out :: this_partition_path(lkp_path) + '/' + cli_string(BIZ_DT) + '/cag_enum_lkp.dat';
+end;
+
+type pc_cpp_pbpid_by_cag_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  cag_enum_t                             RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {cag.carrier_id; cag.carrier_acct_id; cag.employer_group_id};
+ end;
+ 
+ let pc_cpp_pbpid_by_cag_lkup_t GLKUP_CPP_PBPID_BY_CAG = allocate_with_nulls();
+ 
+ pc_cpp_pbpid_by_cag_lkup_t out :: load_pc_cpp_pbpid_by_cag_lkup() inline =
+begin
+  if (GLKUP_CPP_PBPID_BY_CAG.id == lookup_not_loaded())
+    GLKUP_CPP_PBPID_BY_CAG = lookup_load(get_pc_cpp_pbpid_path());
+  
+  out :: GLKUP_CPP_PBPID_BY_CAG;
+end;
+ 
+cag_enum_t out :: get_clt_cfg(carrier_id,carrier_acct_id,employer_group_id) inline =
+begin
+  let lkup = load_pc_cpp_pbpid_by_cag_lkup();
+  out :: lookup(lkup,carrier_id,carrier_acct_id,employer_group_id);
+end;

@@ -1,0 +1,20 @@
+type temporary_type =
+record
+  string("/x01") cndtxt;
+end;
+ 
+temp :: initialize(in) =
+begin
+  temp.cndtxt :: "";
+end;
+ 
+out :: rollup(temp, in) =
+begin
+  out.cndtxt :: if (string_index(temp.cndtxt,in.cndtxt) > 0 ) temp.cndtxt else string_concat(temp.cndtxt,"/", in.cndtxt);
+ end;
+ 
+out :: finalize(temp, in) =
+begin
+  out.cndtxt_new :: string_replace_first(temp.cndtxt,"/","");
+  out.* :: in.*;
+end;

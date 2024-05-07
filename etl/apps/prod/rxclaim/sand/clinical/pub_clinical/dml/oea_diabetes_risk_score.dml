@@ -1,0 +1,90 @@
+
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+//reads the source json file with pipe delimiter
+type oea_src_read =
+record
+   string("|") json_data;
+   string(1) newline = "\n";
+end;
+
+// This dml is used for the output of data prep graph
+
+type topIndicators_element = record
+  cli_string_t name=NULL;
+  cli_string_t value=NULL;
+end;
+type topIndicators_tt =  topIndicators_element[big endian integer(4)];
+
+
+type oea_output_tgt = record
+  hash_key_t        cagm_hash;
+  cli_integer_id_t  ptnt_id=NULL;
+  cli_string_t sourceID=NULL;
+  cli_clt_id_t clientID=NULL;
+  cli_carrier_id_t carrierID=NULL;
+  cli_carrier_acct_id_t accountID=NULL;
+  cli_employer_group_id_t groupID=NULL;
+  cli_string_t memberID=NULL;
+  cli_string_t memberSK=NULL;
+  cli_string_t firstName=NULL;
+  cli_program_id_t program_id=NULL;
+  cli_string_t lastName=NULL;
+  cli_date_t dob=NULL;
+  cli_string_t predictionType=NULL;
+  cli_date_t dateOfPrediction=NULL;
+  cli_string_t drugClass=NULL;
+  cli_string_t therapy=NULL;
+  cli_string_t riskScore=NULL;
+  topIndicators_tt topIndicators;
+end;
+
+// File used for SCOOP process
+type oea_scoop_dml = record
+  hash_key_t        cagm_hash;
+  cli_carrier_id_t carrierID=NULL;
+  cli_carrier_acct_id_t accountID=NULL;
+  cli_employer_group_id_t groupID=NULL;
+  cli_string_t memberID=NULL;
+end;
+
+// File used for lookup in data prep graph
+type oea_carrier_program_link = record
+  utf8 string("\x01", maximum_length=15) client_id /*VARCHAR2(15) NOT NULL*/;
+  utf8 string("\x01", maximum_length=30) carrier_filter = NULL("") /*VARCHAR2(30)*/;
+  utf8 string("\x01", maximum_length=25) program_id /*VARCHAR2(25) NOT NULL*/;
+  string(1) newline = "\n";
+end;
+
+
+// DML to read json file:
+type json_string_t = string(big endian integer(4));
+
+type topIndicators_elem_t = record
+  json_string_t name;
+  json_string_t value;
+end;
+
+type topIndicators_t =  topIndicators_elem_t[big endian integer(4)];
+
+type vector_elem_t = record
+  json_string_t sourceID;
+  json_string_t carrierID;
+  json_string_t accountID;
+  json_string_t groupID;
+  json_string_t memberID;
+  json_string_t memberSK;
+  json_string_t firstName;
+  json_string_t lastName;
+  json_string_t dob;
+  json_string_t predictionType;
+  json_string_t dateOfPrediction;
+  json_string_t drugClass;
+  json_string_t therapy;
+  json_string_t riskScore;
+  topIndicators_t topIndicators;
+end;
+
+type json_top_t =  vector_elem_t;

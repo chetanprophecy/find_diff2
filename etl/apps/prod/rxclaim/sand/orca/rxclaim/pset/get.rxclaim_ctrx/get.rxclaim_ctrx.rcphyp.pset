@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcphyp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcphyp                  alaqcd,alexh7,aleyh7,ale4hg,albxtx,alatcd,alaucd,alpuhb,alsqig,alsrig,alssig,als5ig,alpjhb,alpkhb,alplhb,alpmhb,alashp,alb3tx,albytx,alstig,alsuig,albztx,alb1tx,alb0tx,alpnhb,aladnb,alsvig,aloahr,alswig,alobhr,alsxig,alesce,alg4ce,alg5ce,alg9ho,alaccf,alakvn,alc2dt,aladtm,alalvn,aladvn,albmdt,alabtm,alaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+WHERE_CLAUSE||||$[ if(DAILY_FLAG != "Y")   "WHERE rcphyp.albmdt between " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((date('YYYYMMDD'))START_DATE, days=-31))-19000000) + " and " +    string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+ " OPTIMIZE FOR ALL ROWS " else   if (START_CHANGES_TIME != '')     "WHERE rcphyp.albmdt >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME, days=-31))-19000000) +     " AND rcphyp.albmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"  else     "WHERE rcphyp.albmdt >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME, days=-31))-19000000-1)+     " AND rcphyp.albmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS" ]
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_PUBLISH_CLEAN_FILE||||1

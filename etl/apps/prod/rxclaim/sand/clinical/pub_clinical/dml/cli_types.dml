@@ -1,0 +1,277 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/05/12  Paul Thompson           Initial version
+ *  2016/06/14  Paul Thompson           Added IDS type (ids_sk_t), and a variety of clinical specific types
+ *  2016/06/29  Paul Thompson           Added additional base types for medical claims
+ *  2016/08/30  Mohd Shadab             Extra fields types added for data initialization
+ *  2016/09/05  Majid Mohammed          Added cli types for NAS sources
+ *  2016/09/22  Paul Thompson           Added cli_claim_id_t
+ *  2016/09/30  Paul Thompson           Changed data type for cli_claim_id_t and cli_pharma_claim_nbr_t to cli_decimal_t
+ *  2016/10/21  Sundari Kala            Changed length of cli_first_nm_t, cli_med_proc_type_t and cli_med_proc_mod_t
+ *  2016/10/21  Aravind Sanku           Reverted above change
+ *  2016/11/07  Chinmay Sahoo           Added cli_rx_num_t.
+ *  2016/11/30  Maumita Sengupta        Added cli_mbr_flg_hst_id_t
+ *  2017/01/06  Maumita Sengupta        Added cli_rules_config_param_id_t
+ ******************************************************************************************************************************************/
+
+// Base types
+type cli_string_t                 = utf8 string(int);
+type cli_boolean_t                = integer(1);
+type cli_integer_t                = integer(4);
+type cli_decimal_t                = decimal('|');
+
+// Base date types
+type cli_date_t                   = date('YYYYMMDD');
+type cli_datetime_t               = datetime('YYYYMMDD HH24MISS');
+type cli_datetime_usec_t          = datetime('YYYYMMDD HH24MISS.NNNNNN');
+type cli_year_t                   = decimal(4);
+
+// Write to log base types
+type wtl_string_t                 = utf8 string('|');
+type wtl_boolean_t                = decimal('|', maximum_length = 1);
+type wtl_integer_t                = decimal('|');
+type wtl_decimal_t                = decimal('|');
+type wtl_date_t                   = date('YYYY-MM-DD')('|');
+type wtl_datetime_t               = datetime('YYYY-MM-DD HH24:MI:SS')('|');
+type wtl_datetime_usec_t          = datetime('YYYY-MM-DD HH24:MI:SS.NNNNNN')('|');
+type wtl_year_t                   = decimal('|',maximum_length = 4);
+
+cli_string_t out :: cli_string(in) inline =
+begin
+  out :: in;
+end;
+
+constant cli_boolean_t TRUE  = 1;
+constant cli_boolean_t FALSE = 0;
+
+// IDS types
+type ids_sk_t                     = long;
+type ids_rec_stat_cd_t            = utf8 string(int, maximum_length = 2);
+
+// Clinical Identifier types
+type cli_integer_id_t             = long;
+type cli_integer_id_vec_t         = cli_integer_id_t[int];
+type cli_src_env_id_t             = utf8 string(int, maximum_length = 4);
+type cli_mbr_id_t                 = utf8 string(int, maximum_length = 20);
+type cli_carrier_id_t             = utf8 string(int, maximum_length = 30);
+type cli_carrier_acct_id_t        = utf8 string(int, maximum_length = 40);
+type cli_employer_group_id_t      = utf8 string(int, maximum_length = 30);
+type cli_clt_id_t                 = utf8 string(int, maximum_length = 50);
+type cli_program_id_t             = utf8 string(int, maximum_length = 25);
+type cli_pega_id_t                = utf8 string(int, maximum_length = 15);
+type cli_contract_nbr_t           = utf8 string(int, maximum_length = 5);
+type cli_pbp_id_t                 = utf8 string(int, maximum_length = 3);
+type cli_mbr_flg_hst_id_t         = utf8 string(int, maximum_length = 15);
+type cli_mbr_flg_hst_flg_typ_t    = utf8 string(int, maximum_length = 50);
+
+// Clinical Code types
+type cli_idntfn_cd_t              = utf8 string(int, maximum_length = 10);
+type cli_intvn_cd_t               = utf8 string(int, maximum_length = 10);
+type cli_idntfn_nm_t              = utf8 string(int, maximum_length = 100);
+type cli_intvn_nm_t               = utf8 string(int, maximum_length = 100);
+type cli_intvn_desc_t             = utf8 string(int, maximum_length = 300);
+type cli_evdnce_type_t            = utf8 string(int, maximum_length = 100);
+type cli_evdnce_value_t           = utf8 string(int, maximum_length = 100);
+type cli_ref_type_cd_t            = utf8 string(int, maximum_length = 15);
+type cli_measure_type_cd_t        = utf8 string(int, maximum_length = 25);
+type cli_rule_cd_t                = utf8 string(int, maximum_length = 10);
+type cli_list_type_cd_t           = utf8 string(int, maximum_length = 10);
+type cli_med_cd_t                 = utf8 string(int, maximum_length = 10);
+type cli_med_cd_type_t            = utf8 string(int, maximum_length = 14);
+type cli_review_period_type_cd_t  = utf8 string(int, maximum_length = 15);
+
+// Clinical Numeric types
+type cli_vers_nbr_t               = cli_integer_t;
+
+// Clinical Common types
+type cli_stat_t                   = utf8 string(int, maximum_length = 1);
+type cli_flag_t                   = utf8 string(int, maximum_length = 1);
+type cli_ind_t                    = utf8 string(int, maximum_length = 1);
+type cli_typ_cd_t                 = utf8 string(int, maximum_length = 1);
+type cli_user_t                   = utf8 string(int, maximum_length = 20);
+type cli_list_nm_t                = utf8 string(int, maximum_length = 50);
+
+// Member Demographic types
+type cli_first_nm_t               = utf8 string(int, maximum_length = 25); 
+type cli_mid_init_nm_t            = utf8 string(int, maximum_length = 1);
+type cli_last_nm_t                = utf8 string(int, maximum_length = 35);
+type cli_ssn_t                    = utf8 string(int, maximum_length = 9);
+type cli_hic_cd_t                 = utf8 string(int, maximum_length = 12);
+type cli_sex_t                    = utf8 string(int, maximum_length = 1);
+type cli_prsn_cd_t                = utf8 string(int, maximum_length = 3);
+type cli_relshp_cd_t              = utf8 string(int, maximum_length = 1);
+type cli_city_nm_t                = utf8 string(int, maximum_length = 30);
+type cli_addr_t                   = utf8 string(int, maximum_length = 60);
+type cli_st_cd_t                  = utf8 string(int, maximum_length = 3);
+type cli_zip_t                    = utf8 string(int, maximum_length = 5);
+type cli_zip2_t                   = utf8 string(int, maximum_length = 4);
+type cli_zip4_t                   = utf8 string(int, maximum_length = 2);
+type cli_cntry_t                  = utf8 string(int, maximum_length = 4);
+type cli_residence_cd_t           = utf8 string(int, maximum_length = 2);
+type cli_cust_loc_t               = utf8 string(int, maximum_length = 2);
+type cli_eml_addr_t               = utf8 string(int, maximum_length = 80);
+type cli_lang_cd_t                = utf8 string(int, maximum_length = 3);
+type cli_cntct_eml_txt_t          = utf8 string(int,maximum_length =  80);
+
+// Industry ID types
+type cli_dea_id_t                 = utf8 string(int, maximum_length = 15);
+type cli_npi_id_t                 = utf8 string(int, maximum_length = 10);
+type cli_st_lic_nbr_t             = utf8 string(int, maximum_length = 15);
+type cli_ncpdp_id_t               = utf8 string(int, maximum_length = 12);
+
+// Prescriber types
+type cli_prescriber_alias_id_t    = utf8 string(int, maximum_length = 15);
+type cli_prescriber_qlfr_id_t     = utf8 string(int, maximum_length = 2);
+type cli_prescriber_qlfr_cd_t     = utf8 string(int, maximum_length = 3);
+
+// Pharmacy types
+type cli_pharmacy_alias_id_t      = utf8 string(int, maximum_length = 15);
+type cli_pharmacy_qlfr_cd_t       = utf8 string(int, maximum_length = 2);
+type cli_pharmacy_id_t            = utf8 string(int, maximum_length = 12);
+type cli_rx_num_t                 = utf8 string(int, maximum_length = 12); 
+
+// Drug and Product types
+type cli_gpi_id_t                 = utf8 string(int, maximum_length = 14);
+type cli_ndc_id_t                 = utf8 string(int, maximum_length = 11);
+type cli_product_qlfr_cd_t        = utf8 string(int, maximum_length = 2);
+
+// Plan types
+type cli_plan_cd_t                = utf8 string(int, maximum_length = 20); 
+type cli_plan_type_id             = utf8 string(int, maximum_length = 1);
+type cli_plan_qlfr_cd_t           = utf8 string(int, maximum_length = 10);
+
+// Common Claim types
+type cli_claim_id_t               = cli_decimal_t;
+type cli_claim_id_vec_t           = cli_claim_id_t[int];
+
+// Pharmacy Claim types
+type cli_pharma_claim_nbr_t       = cli_decimal_t;
+type cli_pharma_claim_seq_nbr_t   = integer(4);
+type cli_adjud_amt_t              = decimal(11.2);
+
+// Medical Claim types
+type cli_med_pricing_amt_t        = decimal(10.2);
+type cli_med_signed_pricing_amt_t = decimal(12.2);
+type cli_med_cd_id_t              = cli_string_t;
+type cli_med_cd_id_vec_t          = cli_med_cd_id_t[int];
+
+type cli_med_diag_type_cd_t       = utf8 string(int, maximum_length = 5);
+type cli_med_diag_cd_t            = utf8 string(int, maximum_length = 10);
+type cli_med_diag_icdtp_cd_t      = utf8 string(int, maximum_length = 10);
+
+type cli_med_proc_type_t          = utf8 string(int, maximum_length = 5);
+type cli_med_proc_type_cd_t       = utf8 string(int, maximum_length = 10);
+type cli_med_proc_mod_t           = utf8 string(int, maximum_length = 5);
+
+type cli_hosp_rev_cd_t            = utf8 string(int, maximum_length = 16);
+
+// Risk Score types
+type cli_risk_score_coef_t        = decimal(8.5);
+type cli_intvn_risk_score_t       = decimal(4,0);
+type cli_mbr_risk_score_t         = decimal(6,0);
+
+// Key types
+type hash_key_t                   = void(16);
+
+// Config types
+type cli_config_type_cd_t         = utf8 string(int, maximum_length = 25);
+type cli_product_type_cd_t        = utf8 string(int, maximum_length = 10);
+type cli_program_type_cd_t        = utf8 string(int, maximum_length = 25);
+type cli_job_type_cd_t            = utf8 string(int, maximum_length = 25);
+type cli_job_freq_t               = utf8 string(int, maximum_length = 10);
+type cli_rules_config_id_t        = utf8 string(int, maximum_length = 25);
+type cli_rules_config_param_id_t  = utf8 string(int, maximum_length = 30);
+type cli_app_config_nm_t          = utf8 string(int, maximum_length = 200);
+type cli_config_desc_t            = utf8 string(int, maximum_length = 400);
+
+// Extra fields types added for data initialization
+type cli_mbr_branding_t           = utf8 string(int, maximum_length = 12);
+type cli_provider_branding_t      = utf8 string(int, maximum_length = 256);
+type cli_plan_frst_mntn_t         = utf8 string(int, maximum_length = 100);
+type cli_gpi_list_type_t          = utf8 string(int, maximum_length = 20);
+type cli_gpi_list_descr_t         = utf8 string(int, maximum_length = 2048);
+type cli_automation_type_t        = utf8 string(int, maximum_length = 20);
+
+// Med CPT Codes types
+type cli_proc_cd_t                = utf8 string(int, maximum_length = 20);
+type cli_proc_desc_t              = utf8 string(int, maximum_length = 4000);
+type cli_nf_total_rvn_t           = decimal(12.2)    /* NUMBER(12,2) */;
+type cli_fac_total_rvn_t          = decimal(12.2)    /* NUMBER(12,2) */;
+type cli_proc_sub_catg_desc_t     = utf8 string(int, maximum_length = 600);
+type cli_proc_catg_desc_t         = utf8 string(int, maximum_length = 600);
+    
+// Med CPT Mod Codes types
+type cli_proc_mod_cd_t            = utf8 string(int, maximum_length = 2);
+type cli_proc_mod_desc_t          = utf8 string(int, maximum_length = 1020);
+type cli_proc_mod_name_t          = utf8 string(int, maximum_length = 1020);
+
+// Med SNOMED Codes types
+type cli_snomed_ct_t              = utf8 string(int, maximum_length = 200);
+type cli_snomed_ct_id_t           = utf8 string(int, maximum_length = 20);
+type cli_category_t               = utf8 string(int, maximum_length = 200);
+type cli_medication_t             = utf8 string(int, maximum_length = 200);
+
+// NAS date types types
+type cli_nas_datetime_t           = datetime('MM/DD/YYYY HH24:MI:SS');  
+type cli_nas_date_t               = date("MM/DD/YYYY");
+
+// Store types - Added as part of NPP Phase 1
+type cli_dispr_typ_cd_t           = utf8 string(int, maximum_length = 200);
+type cli_phr_store_no_t           = utf8 string(int, maximum_length = 200);
+type cli_stat_ind_t               = utf8 string(int, maximum_length = 200);
+type cli_fed_lic_no_t             = utf8 string(int, maximum_length = 200);
+type cli_st_lic_no_t              = utf8 string(int, maximum_length = 200);
+type cli_mcd_id_t                 = utf8 string(int, maximum_length = 200);
+type cli_phr_alt_nm               = utf8 string(int, maximum_length = 200);
+
+/********************************/
+/* Name / Value Parameter types */
+/********************************/
+
+type cli_param_type_cd_t = utf8 string(int, maximum_length = 100);
+
+type cli_param_t =
+record
+  cli_param_type_cd_t  type_cd;
+  cli_string_t         value;
+end;
+type cli_param_vec_t = cli_param_t[int];
+
+cli_string_t out :: get_param_string_value(cli_param_type_cd_t param_type_cd, cli_param_vec_t param_vec) inline =
+begin
+  let x = vector_search(param_vec, [record type_cd param_type_cd, value ''], {type_cd});
+  out :: if (x != -1) param_vec[x].value;
+end;
+
+cli_integer_t out :: get_param_integer_value(cli_param_type_cd_t param_type_cd, cli_param_vec_t param_vec) inline =
+begin
+  let cli_string_t   value         = get_param_string_value(param_type_cd, param_vec);
+  let cli_integer_t  integer_value = (decimal('|')) value;
+  
+  out :: integer_value;
+end;
+
+/*********************/
+/* Errors and Status */
+/*********************/
+
+type cli_err_cd_t  = utf8 string(int, maximum_length = 25);
+type cli_err_msg_t = utf8 string(int, maximum_length = 4000);
+
+type cli_err_t =
+record
+  cli_err_cd_t   err_cd;
+  cli_err_msg_t  err_msg;
+end;
+type cli_err_vec_t = cli_err_t[int];
+
+type cli_err_dtl_t =
+record
+  cli_boolean_t  result  = 1;
+  cli_err_vec_t  err_vec = [vector];
+end;

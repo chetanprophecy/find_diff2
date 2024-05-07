@@ -1,0 +1,86 @@
+/* This file is used in PDL via AB_DML_DEFS. */
+type db_info_t =
+record
+  string(long) logical_db_name;
+  string(long) physical_db_name;
+  string(long) dml_directory;
+  string(long) dbms_type;
+  string(long) parameter_prefix = "";
+  string(long) dbc_filename = "";
+  string(long) dbc_file = "";
+  string(long) pset_directory = "";
+  string(long) xfr_directory = "";
+end;
+type db_info_vec_t = db_info_t[long];
+
+type schema_info_t=
+record 
+   string(long) schema_system_name; 
+end; 
+type system_schema_info_t = schema_info_t[long]; 
+
+out :: get_line_vec(param) =
+begin
+  let clean_param = re_replace(param, "(?m-s)[ \t]*#.*", ""); // Remove comments.
+  let line_vec = re_split_no_empty(clean_param, "\r*\n");
+  out :: for ( let line in line_vec ) :
+    [record 
+      word_vec re_split_no_empty(line, "[ \t]+")
+    ];
+end;
+
+out :: get_db_info_vec(db_list) =
+begin
+  out :: for ( let line in get_line_vec(db_list) ) :
+    begin
+      let word_vec = line.word_vec;
+      let logical_db_name = word_vec[0];
+      let physical_db_name = word_vec[1];
+      let dml_directory = word_vec[2];
+      let dbms_type = word_vec[3];
+      let parameter_prefix = first_defined(null_if_error(word_vec[4]), "DB_XXX");
+      let dbc_filename = first_defined(null_if_error(word_vec[5]), dbms_type + "." + logical_db_name + ".dbc");
+      result :: [record
+        logical_db_name   logical_db_name,
+        physical_db_name  physical_db_name,
+        dml_directory     dml_directory,
+        dbms_type         dbms_type,
+        parameter_prefix  parameter_prefix,
+        dbc_filename      dbc_filename,
+        dbc_file          dml_directory + "/../db/" + dbc_filename,
+        pset_directory    dml_directory + "/../pset",
+        xfr_directory     dml_directory + "/../xfr",
+      ];
+    end;
+end;
+
+out :: get_system_info_vec(system_list) =
+begin
+  out :: for ( let line in get_line_vec(system_list) ) :
+    begin
+      let word_vec= line.word_vec; 
+      let system_name = word_vec[0];
+      result :: [record
+       system_name   system_name,
+      ];
+    end;
+end;
+
+out :: get_db_table_alias_replacment_pairs(replacement_list) =
+begin
+  out :: for ( let repl_line in get_line_vec(replacement_list) ) :
+    begin
+      let repl_word_vec = repl_line.word_vec;
+      let replace_this_db_name = repl_word_vec[0];
+      let replace_this_table_name = repl_word_vec[1];
+      let replace_with_db_name = repl_word_vec[2];
+      let replace_with_table_name = repl_word_vec[3];
+      result :: [record
+        replace_this_db_name		replace_this_db_name,
+        replace_this_table_name		replace_this_table_name,
+        replace_with_db_name		replace_with_db_name,
+        replace_with_table_name		replace_with_table_name
+      ];
+    end;
+end;
+

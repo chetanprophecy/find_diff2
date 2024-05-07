@@ -1,0 +1,31 @@
+/* Find records with the same data values and abutting or overlapping effective dates. */
+out :: key_change(in1, in2) =
+begin
+  out :1: ( in1.$END_DATE_FIELD_NAME < datetime_add(in2.$EFFECTIVE_DATE_FIELD_NAME, 0, seconds = -($ADJACENT_INTERVAL_SECONDS)) or  // 1) There is a gap, ...
+            in1.drop_record != in2.drop_record or                                                        // 2) Or Drop Record changed, ...
+            $[ string_join(                                                                              // 3) One of the data fields does not match.
+                vector_concat( // Put the non-NULL tests before the NULLable tests.
+                  for ( let i in record_info(DIFF_DML) ) :
+                    if ( not i.nullable )
+                      printf("in1.%s != in2.%s", i.name, i.name),
+                  for ( let i in record_info(DIFF_DML) ) :
+                    if ( i.nullable )
+                      printf("first_defined(in1.%s != in2.%s, is_null(in1.%s) != is_null(in2.%s))",
+                             i.name, i.name, i.name, i.name)),
+                " or\n            ") ] );
+  out :2: 1;
+end;
+
+
+/* Keep the oldest Eff Date and the latest End Date amongst a group of matching records.
+Because the incoming records have the earliest End Eff Date first, this will keep the longest (last) End Date. 
+Other "physical" fields come from the last (latest) record, except for the Source Sequence Number, if any. */
+out :: rollup(in) =
+begin
+  out.* :: in.*;
+  out.matching__eff_dt :: first(in.matching__eff_dt);
+  $[ string_join(
+      for ( let f in KEEP_FROM_FIRST_VEC ) :
+        "out." + f + " :: first(in." + f + ");",
+      "\n  ") ]
+end;

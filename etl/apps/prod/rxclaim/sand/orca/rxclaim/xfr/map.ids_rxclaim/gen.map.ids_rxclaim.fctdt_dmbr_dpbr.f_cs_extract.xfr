@@ -1,0 +1,434 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_59439e1e_269e_0
+    BizHidden:true
+@*/
+/*   lookup carrier_lkp   */
+out0::bzt_2_6c54cc0a_59439e1e_269e_0(in0)=
+begin
+let record
+  string(',') carrier_id;
+  string('\n') state;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("carrier_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_59439e1e_269e_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.f_cs_ext.processing_week_start_dt,[transform],]
+  [out0.f_cs_ext.prescriber_fn,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_first_nm']
+  [out0.f_cs_ext.mbr_mn,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mb_mid_init_nm']
+  [out0.f_cs_ext.refill_code,[passthrough],in0.refill_nbr]
+  [out0.f_cs_ext.days_supply,[passthrough],in0.adj_rxcount_stnd_days_sply]
+  [out0.f_cs_ext.prescriber_ln,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_last_nm']
+  [out0.f_cs_ext.pharmacy_id,[transform],in0.phr_sk,
+     'lookup("phrmcy_lkp").phr_id']
+  [out0.f_cs_ext.city,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_city_nm']
+  [out0.f_cs_ext.member_language,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_lang_cd']
+  [out0.f_cs_ext.address_2,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_addr2']
+  [out0.f_cs_ext.src_env_sk,[passthrough],in0.src_env_sk]
+  [out0.f_cs_ext.prescriber_specialty_primary,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").txnmy_desc']
+  [out0.f_cs_ext.gpi_therapeutic_group_name2,[transform],in0.drug_sk,
+     'lookup("drug_lkp").drg_grp_desc']
+  [out0.f_cs_ext.drug_quantity,[passthrough],in0.drg_qty]
+  [out0.f_cs_ext.group,[passthrough],in0.orig_carrier_id]
+  [out0.f_cs_ext.mbr_id,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_id']
+  [out0.f_cs_ext.state_id,[transform],in0.orig_carrier_id,
+     'lookup("carrier_lkp").state']
+  [out0.f_cs_ext.claim_seq_nbr,[passthrough],in0.claim_seq_nbr]
+  [out0.f_cs_ext.prescriber_zip,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_zip_cd']
+  [out0.f_cs_ext.prescriber_phone,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_phone1_no']
+  [out0.f_cs_ext.member_age,[passthrough],in0.mbr_age]
+  [out0.f_cs_ext.state,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_st_cd']
+  [out0.f_cs_ext.filled_month,[passthrough],in0.filled_yr_mnth]
+  [out0.f_cs_ext.mbr_ln,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mb_last_nm']
+  [out0.f_cs_ext.npi,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_npi_id']
+  [out0.f_cs_ext.mbr_primary_phone,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_phone']
+  [out0.f_cs_ext.processing_week_end_dt,[transform],]
+  [out0.f_cs_ext.prescriber_address,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_addr_ln1_txt']
+  [out0.f_cs_ext.filled_month_desc,[transform],in0.filled_yr_mnth]
+  [out0.f_cs_ext.member_gender,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_sex']
+  [out0.f_cs_ext.prescriber_state,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_st_cd']
+  [out0.f_cs_ext.gpi_therapeutic_group_name1,[transform],in0.drug_sk,
+     'lookup("drug_lkp").drg_grp_id']
+  [out0.f_cs_ext.pharmacy,[transform],in0.phr_sk,
+     'lookup("phrmcy_lkp").phr_nm']
+  [out0.f_cs_ext.dob,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_dt_of_brth']
+  [out0.f_cs_ext.dxf_sk,[passthrough],in0.dxf_sk]
+  [out0.f_cs_ext.claim_stat_id,[passthrough],in0.claim_stat_id]
+  [out0.f_cs_ext.pharmacy_phone,[transform],in0.phr_sk,
+     'lookup("phrmcy_lkp").phr_phone_no']
+  [out0.f_cs_ext.filled_date,[transform],in0.filled_dt]
+  [out0.f_cs_ext.prescriber_city,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_city_nm']
+  [out0.f_cs_ext.address,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_addr2',
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_addr1']
+  [out0.f_cs_ext.prescriber_fax_extension,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_fax_extn_no']
+  [out0.f_cs_ext.prescriber_fax,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_fax_no']
+  [out0.f_cs_ext.mbr_fn,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mb_first_nm']
+  [out0.f_cs_ext.prescriber_email,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_e_mail_addr_txt']
+  [out0.f_cs_ext.amt_paid,[passthrough],in0.clt_due_amt]
+  [out0.f_cs_ext.member_zip,[transform],in0.mbr_sk,
+     'lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_zip']
+  [out0.f_cs_ext.pharmacy_npi,[transform],in0.phr_sk,
+     'lookup("phrmcy_lkp").phr_npi_no']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_cs_ext.processing_week_start_dt,'f_cs_ext.processing_week_start_dt',1,0]
+     [out0.f_cs_ext.prescriber_fn,'f_cs_ext.prescriber_fn',1,0]
+     [out0.f_cs_ext.mbr_mn,'f_cs_ext.mbr_mn',1,0]
+     [out0.f_cs_ext.dxf_hk_part1,'f_cs_ext.dxf_hk_part1',1,0]
+     [out0.f_cs_ext.refill_code,'f_cs_ext.refill_code',1,0]
+     [out0.f_cs_ext.days_supply,'f_cs_ext.days_supply',1,0]
+     [out0.f_cs_ext.prescriber_ln,'f_cs_ext.prescriber_ln',1,0]
+     [out0.f_cs_ext.pharmacy_id,'f_cs_ext.pharmacy_id',1,0]
+     [out0.f_cs_ext.city,'f_cs_ext.city',1,0]
+     [out0.f_cs_ext.member_language,'f_cs_ext.member_language',1,0]
+     [out0.f_cs_ext.address_2,'f_cs_ext.address_2',1,0]
+     [out0.f_cs_ext.src_env_sk,'f_cs_ext.src_env_sk',1,0]
+     [out0.f_cs_ext.dxf_hk_part2,'f_cs_ext.dxf_hk_part2',1,0]
+     [out0.f_cs_ext.prescriber_specialty_primary,'f_cs_ext.prescriber_specialty_primary',1,0]
+     [out0.f_cs_ext.gpi_therapeutic_group_name2,'f_cs_ext.gpi_therapeutic_group_name2',1,0]
+     [out0.f_cs_ext.drug_quantity,'f_cs_ext.drug_quantity',1,0]
+     [out0.f_cs_ext.group,'f_cs_ext.group',1,0]
+     [out0.f_cs_ext.mbr_id,'f_cs_ext.mbr_id',1,0]
+     [out0.f_cs_ext.state_id,'f_cs_ext.state_id',1,0]
+     [out0.f_cs_ext.claim_seq_nbr,'f_cs_ext.claim_seq_nbr',1,0]
+     [out0.f_cs_ext.prescriber_zip,'f_cs_ext.prescriber_zip',1,0]
+     [out0.f_cs_ext.prescriber_phone,'f_cs_ext.prescriber_phone',1,0]
+     [out0.f_cs_ext.member_age,'f_cs_ext.member_age',1,0]
+     [out0.f_cs_ext.state,'f_cs_ext.state',1,0]
+     [out0.f_cs_ext.filled_month,'f_cs_ext.filled_month',1,0]
+     [out0.f_cs_ext.mbr_ln,'f_cs_ext.mbr_ln',1,0]
+     [out0.f_cs_ext.npi,'f_cs_ext.npi',1,0]
+     [out0.f_cs_ext.mbr_primary_phone,'f_cs_ext.mbr_primary_phone',1,0]
+     [out0.f_cs_ext.processing_week_end_dt,'f_cs_ext.processing_week_end_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_cs_ext.prescriber_address,'f_cs_ext.prescriber_address',1,0]
+     [out0.f_cs_ext.filled_month_desc,'f_cs_ext.filled_month_desc',1,0]
+     [out0.f_cs_ext.member_gender,'f_cs_ext.member_gender',1,0]
+     [out0.f_cs_ext.prescriber_state,'f_cs_ext.prescriber_state',1,0]
+     [out0.f_cs_ext.gpi_therapeutic_group_name1,'f_cs_ext.gpi_therapeutic_group_name1',1,0]
+     [out0.f_cs_ext.pharmacy,'f_cs_ext.pharmacy',1,0]
+     [out0.f_cs_ext.dob,'f_cs_ext.dob',1,0]
+     [out0.f_cs_ext.dxf_sk,'f_cs_ext.dxf_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_cs_ext.claim_stat_id,'f_cs_ext.claim_stat_id',1,0]
+     [out0.f_cs_ext.pharmacy_phone,'f_cs_ext.pharmacy_phone',1,0]
+     [out0.f_cs_ext.filled_date,'f_cs_ext.filled_date',1,0]
+     [out0.f_cs_ext.prescriber_city,'f_cs_ext.prescriber_city',1,0]
+     [out0.f_cs_ext.address,'f_cs_ext.address',1,0]
+     [out0.f_cs_ext.prescriber_fax_extension,'f_cs_ext.prescriber_fax_extension',1,0]
+     [out0.f_cs_ext.prescriber_fax,'f_cs_ext.prescriber_fax',1,0]
+     [out0.f_cs_ext.mbr_fn,'f_cs_ext.mbr_fn',1,0]
+     [out0.f_cs_ext.prescriber_email,'f_cs_ext.prescriber_email',1,0]
+     [out0.f_cs_ext.amt_paid,'f_cs_ext.amt_paid',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_cs_ext.member_zip,'f_cs_ext.member_zip',1,0]
+     [out0.f_cs_ext.pharmacy_npi,'f_cs_ext.pharmacy_npi',1,0]
+  ]
+  impacts:
+  [
+     ['lookup("carrier_lkp").state','state',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_id','mbr_id',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_zip_cd','pbr_zip_cd',4,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_addr2','mbr_addr2',6,2]
+     [in0.filled_dt,'filled_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_addr_ln1_txt','pbr_addr_ln1_txt',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_sex','mbr_sex',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_st_cd','mbr_st_cd',1,1]
+     ['lookup("phrmcy_lkp").phr_phone_no','phr_phone_no',1,1]
+     [in0.drug_sk,'drug_sk',2,2]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     [in0.drg_qty,'drg_qty',1,1]
+     [in0.refill_nbr,'refill_nbr',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mb_mid_init_nm','mb_mid_init_nm',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_npi_id','pbr_npi_id',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_lang_cd','mbr_lang_cd',2,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_phone','mbr_phone',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.filled_yr_mnth,'filled_yr_mnth',2,2]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.adj_rxcount_stnd_days_sply,'adj_rxcount_stnd_days_sply',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_fax_extn_no','pbr_fax_extn_no',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_city_nm','pbr_city_nm',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mb_first_nm','mb_first_nm',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_phone1_no','pbr_phone1_no',1,1]
+     [in0.mbr_sk,'mbr_sk',20,13]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_city_nm','mbr_city_nm',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_last_nm','pbr_last_nm',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_dt_of_brth','mbr_dt_of_brth',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mb_last_nm','mb_last_nm',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").txnmy_desc','txnmy_desc',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_st_cd','pbr_st_cd',1,1]
+     ['lookup("drug_lkp").drg_grp_desc','drg_grp_desc',1,1]
+     ['lookup("drug_lkp").drg_grp_id','drg_grp_id',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_first_nm','pbr_first_nm',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_zip','mbr_zip',1,1]
+     ['lookup("phrmcy_lkp").phr_id','phr_id',1,1]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.phr_sk,'phr_sk',4,4]
+     ['lookup("phrmcy_lkp").phr_npi_no','phr_npi_no',1,1]
+     ['lookup("d_mbr_f_clm_cs_extrt_lkp").mbr_addr1','mbr_addr1',2,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("phrmcy_lkp").phr_nm','phr_nm',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_e_mail_addr_txt','pbr_e_mail_addr_txt',1,1]
+     [in0.mbr_age,'mbr_age',1,1]
+     ['lookup("d_prescriber_f_clm_cs_extrt_lkp").pbr_fax_no','pbr_fax_no',1,1]
+     [in0.pbr_sk,'pbr_sk',15,12]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) f_cs_ext_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) f_cs_ext_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) f_cs_ext_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cs_ext_group = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cs_ext_mbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) f_cs_ext_mbr_fn;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cs_ext_mbr_mn;
+let string("\x01",charset="iso-8859-15", maximum_length=35) f_cs_ext_mbr_ln;
+let string("\x01",charset="iso-8859-15", maximum_length=60) f_cs_ext_address;
+let string("\x01",charset="iso-8859-15", maximum_length=60) f_cs_ext_address_2;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cs_ext_city;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_cs_ext_state;
+let string("\x01",charset="iso-8859-15", maximum_length=5) f_cs_ext_member_zip;
+let string("\x01",charset="iso-8859-15", maximum_length=15) f_cs_ext_mbr_primary_phone;
+let date("YYYY-MM-DD")("\x01") f_cs_ext_dob;
+let decimal("\x01",0) f_cs_ext_member_age = fail_if_error(in0.mbr_age);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cs_ext_member_gender;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cs_ext_member_language;
+let date("YYYY-MM-DD")("\x01") f_cs_ext_filled_date = fail_if_error((date("YYYY-MM-DD"))(date("YYYYMMDD"))in0.filled_dt);
+let decimal("\x01",0) f_cs_ext_filled_month = fail_if_error(in0.filled_yr_mnth);
+let date("MMM-YY")("\x01") f_cs_ext_filled_month_desc = fail_if_error((date("MMM-YY"))(date("YYYYMM"))(string(""))in0.filled_yr_mnth);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cs_ext_refill_code = fail_if_error(in0.refill_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cs_ext_gpi_therapeutic_group_name1;
+let string("\x01",charset="iso-8859-15", maximum_length=50) f_cs_ext_gpi_therapeutic_group_name2;
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cs_ext_npi;
+let string("\x01",charset="iso-8859-15", maximum_length=25) f_cs_ext_prescriber_fn;
+let string("\x01",charset="iso-8859-15", maximum_length=35) f_cs_ext_prescriber_ln;
+let string("\x01",charset="iso-8859-15", maximum_length=55) f_cs_ext_prescriber_address;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cs_ext_prescriber_city;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_cs_ext_prescriber_state;
+let string("\x01",charset="iso-8859-15", maximum_length=15) f_cs_ext_prescriber_zip;
+let decimal("\x01",0) f_cs_ext_prescriber_phone;
+let decimal("\x01",0) f_cs_ext_prescriber_fax;
+let string("\x01",charset="iso-8859-15", maximum_length=4) f_cs_ext_prescriber_fax_extension;
+let string("\x01",charset="iso-8859-15", maximum_length=80) f_cs_ext_prescriber_email;
+let string("\x01",charset="iso-8859-15", maximum_length=400) f_cs_ext_prescriber_specialty_primary;
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_cs_ext_pharmacy_id;
+let string("\x01",charset="iso-8859-15", maximum_length=55) f_cs_ext_pharmacy;
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cs_ext_pharmacy_npi;
+let decimal("\x01",0) f_cs_ext_pharmacy_phone;
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cs_ext_drug_quantity = fail_if_error(in0.drg_qty);
+let decimal("\x01",0) f_cs_ext_days_supply = fail_if_error(in0.adj_rxcount_stnd_days_sply);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cs_ext_amt_paid = fail_if_error(in0.clt_due_amt);
+let decimal("\x01",0) f_cs_ext_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cs_ext_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let date("YYYYMMDD")("\x01") f_cs_ext_processing_week_start_dt = fail_if_error(now());
+let date("YYYYMMDD")("\x01") f_cs_ext_processing_week_end_dt = fail_if_error(now());
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cs_ext_state_id;
+let decimal("\x01",0) f_cs_ext_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+f_cs_ext_prescriber_fn=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_first_nm);
+
+/*   Default value   */
+f_cs_ext_mbr_mn=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mb_mid_init_nm);
+
+/*   Default value   */
+f_cs_ext_prescriber_ln=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_last_nm);
+
+/*   Default value   */
+f_cs_ext_pharmacy_id=fail_if_error(lookup("phrmcy_lkp",in0.phr_sk).phr_id);
+
+/*   Default value   */
+f_cs_ext_city=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_city_nm);
+
+/*   Default value   */
+f_cs_ext_member_language=fail_if_error(if( lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_lang_cd == "ENG" ) "E" else lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_lang_cd);
+
+/*   Default value   */
+f_cs_ext_address_2=fail_if_error((if (sql_or((lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2=="UNKNOWN"),(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2=="unknown")))
+   ""
+ else
+   lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2));
+
+/*   Default value   */
+f_cs_ext_prescriber_specialty_primary=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk).txnmy_desc);
+
+/*   Default value   */
+f_cs_ext_gpi_therapeutic_group_name2=fail_if_error(lookup("drug_lkp",in0.drug_sk).drg_grp_desc);
+
+/*   Default value   */
+f_cs_ext_mbr_id=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_id);
+
+/*   Default value   */
+f_cs_ext_state_id=fail_if_error(first_defined(bzt_2_6c54cc0a_59439e1e_269e_0(in0.orig_carrier_id).state,'STATE'));
+
+/*   Default value   */
+f_cs_ext_prescriber_zip=fail_if_error((sql_and(!is_null(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk).pbr_zip_cd),(string_length(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk).pbr_zip_cd)>5))?string_substring(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk).pbr_zip_cd,0,5):lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk).pbr_zip_cd));
+
+/*   Default value   */
+f_cs_ext_prescriber_phone=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_phone1_no);
+
+/*   Default value   */
+f_cs_ext_state=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_st_cd);
+
+/*   Default value   */
+f_cs_ext_mbr_ln=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mb_last_nm);
+
+/*   Default value   */
+f_cs_ext_npi=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_npi_id);
+
+/*   Default value   */
+f_cs_ext_mbr_primary_phone=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_phone);
+
+/*   Default value   */
+f_cs_ext_prescriber_address=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_addr_ln1_txt);
+
+/*   Default value   */
+f_cs_ext_member_gender=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_sex);
+
+/*   Default value   */
+f_cs_ext_prescriber_state=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_st_cd);
+
+/*   Default value   */
+f_cs_ext_gpi_therapeutic_group_name1=fail_if_error(lookup("drug_lkp",in0.drug_sk).drg_grp_id);
+
+/*   Default value   */
+f_cs_ext_pharmacy=fail_if_error(lookup("phrmcy_lkp",in0.phr_sk).phr_nm);
+
+/*   Default value   */
+f_cs_ext_dob=fail_if_error((date("YYYY-MM-DD")) (date("YYYYMMDD")) lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_dt_of_brth);
+
+/*   Default value   */
+f_cs_ext_pharmacy_phone=fail_if_error(lookup("phrmcy_lkp",in0.phr_sk).phr_phone_no);
+
+/*   Default value   */
+f_cs_ext_prescriber_city=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_city_nm);
+
+/*   Default value   */
+f_cs_ext_address=fail_if_error((if ((lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr1!="C/O"))
+   lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr1
+ else
+   (if (sql_or((lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2!="UNKNOWN"),(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2!="unkown")))
+      lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_addr2
+    else
+      "")));
+
+/*   Default value   */
+f_cs_ext_prescriber_fax_extension=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_fax_extn_no);
+
+/*   Default value   */
+f_cs_ext_prescriber_fax=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_fax_no);
+
+/*   Default value   */
+f_cs_ext_mbr_fn=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mb_first_nm);
+
+/*   Default value   */
+f_cs_ext_prescriber_email=fail_if_error(lookup("d_prescriber_f_clm_cs_extrt_lkp",in0.pbr_sk). pbr_e_mail_addr_txt);
+
+/*   Default value   */
+f_cs_ext_member_zip=fail_if_error(lookup("d_mbr_f_clm_cs_extrt_lkp",in0.mbr_sk).mbr_zip);
+
+/*   Default value   */
+f_cs_ext_pharmacy_npi=fail_if_error(lookup("phrmcy_lkp",in0.phr_sk).phr_npi_no);
+
+  out0.f_cs_ext.dxf_hk_part1::f_cs_ext_dxf_hk_part1;
+  out0.f_cs_ext.dxf_hk_part2::f_cs_ext_dxf_hk_part2;
+  out0.f_cs_ext.dxf_sk::f_cs_ext_dxf_sk;
+  out0.f_cs_ext.group::f_cs_ext_group;
+  out0.f_cs_ext.mbr_id::f_cs_ext_mbr_id;
+  out0.f_cs_ext.mbr_fn::f_cs_ext_mbr_fn;
+  out0.f_cs_ext.mbr_mn::f_cs_ext_mbr_mn;
+  out0.f_cs_ext.mbr_ln::f_cs_ext_mbr_ln;
+  out0.f_cs_ext.address::f_cs_ext_address;
+  out0.f_cs_ext.address_2::f_cs_ext_address_2;
+  out0.f_cs_ext.city::f_cs_ext_city;
+  out0.f_cs_ext.state::f_cs_ext_state;
+  out0.f_cs_ext.member_zip::f_cs_ext_member_zip;
+  out0.f_cs_ext.mbr_primary_phone::f_cs_ext_mbr_primary_phone;
+  out0.f_cs_ext.dob::f_cs_ext_dob;
+  out0.f_cs_ext.member_age::f_cs_ext_member_age;
+  out0.f_cs_ext.member_gender::f_cs_ext_member_gender;
+  out0.f_cs_ext.member_language::f_cs_ext_member_language;
+  out0.f_cs_ext.filled_date::f_cs_ext_filled_date;
+  out0.f_cs_ext.filled_month::f_cs_ext_filled_month;
+  out0.f_cs_ext.filled_month_desc::f_cs_ext_filled_month_desc;
+  out0.f_cs_ext.refill_code::f_cs_ext_refill_code;
+  out0.f_cs_ext.gpi_therapeutic_group_name1::f_cs_ext_gpi_therapeutic_group_name1;
+  out0.f_cs_ext.gpi_therapeutic_group_name2::f_cs_ext_gpi_therapeutic_group_name2;
+  out0.f_cs_ext.npi::f_cs_ext_npi;
+  out0.f_cs_ext.prescriber_fn::f_cs_ext_prescriber_fn;
+  out0.f_cs_ext.prescriber_ln::f_cs_ext_prescriber_ln;
+  out0.f_cs_ext.prescriber_address::f_cs_ext_prescriber_address;
+  out0.f_cs_ext.prescriber_city::f_cs_ext_prescriber_city;
+  out0.f_cs_ext.prescriber_state::f_cs_ext_prescriber_state;
+  out0.f_cs_ext.prescriber_zip::f_cs_ext_prescriber_zip;
+  out0.f_cs_ext.prescriber_phone::f_cs_ext_prescriber_phone;
+  out0.f_cs_ext.prescriber_fax::f_cs_ext_prescriber_fax;
+  out0.f_cs_ext.prescriber_fax_extension::f_cs_ext_prescriber_fax_extension;
+  out0.f_cs_ext.prescriber_email::f_cs_ext_prescriber_email;
+  out0.f_cs_ext.prescriber_specialty_primary::f_cs_ext_prescriber_specialty_primary;
+  out0.f_cs_ext.pharmacy_id::f_cs_ext_pharmacy_id;
+  out0.f_cs_ext.pharmacy::f_cs_ext_pharmacy;
+  out0.f_cs_ext.pharmacy_npi::f_cs_ext_pharmacy_npi;
+  out0.f_cs_ext.pharmacy_phone::f_cs_ext_pharmacy_phone;
+  out0.f_cs_ext.drug_quantity::f_cs_ext_drug_quantity;
+  out0.f_cs_ext.days_supply::f_cs_ext_days_supply;
+  out0.f_cs_ext.amt_paid::f_cs_ext_amt_paid;
+  out0.f_cs_ext.claim_seq_nbr::f_cs_ext_claim_seq_nbr;
+  out0.f_cs_ext.claim_stat_id::f_cs_ext_claim_stat_id;
+  out0.f_cs_ext.processing_week_start_dt::f_cs_ext_processing_week_start_dt;
+  out0.f_cs_ext.processing_week_end_dt::f_cs_ext_processing_week_end_dt;
+  out0.f_cs_ext.state_id::f_cs_ext_state_id;
+  out0.f_cs_ext.src_env_sk::f_cs_ext_src_env_sk;
+  out0.*::in0.*;
+
+end;

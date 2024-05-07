@@ -1,0 +1,25 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.rxs_rxclaim_nbr              :: in.bxp2nb;
+  out.tcd_claim_seq_nbr_999s_comp  :: in.bxoinb;
+  out.mdg_sbm_medigap_id           :: in.bxvjhk;
+  out.mdg_sbm_medicaid_ind         :: in.bxuroc;
+  out.mdg_sbm_prvdraccptasgnmnt    :: in.bxusoc;
+  out.mdg_sbm_part_d_quafdfclty    :: in.bxutoc;
+  out.mdg_sbm_medicaid_id_nbr      :: in.bxvkhk;
+  out.mdg_sbm_medicaidagencynbr    :: in.bxrkip;
+  out.mdg_sbmmedicdsbgtnicn_tc     :: in.bxrlip;
+  out.mdg_sbm_medicaid_paid_amt    :: in.bxqjhz;
+  out.mdg_rsp_medicaid_id_nbr      :: in.bxvlhk;
+  out.mdg_rsp_medicaidagencynbr    :: in.bxrmip;
+  out.mdg_rspmedicdsbgtnicn_tc     :: in.bxrnip;
+  out.rxt_src_envrt_id             :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm             :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm              :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid               :: 'app_orca_rxclaim';
+  out.rxt_create_run_id            :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd              :: '';
+  out.*                            :: in.*;
+end;
+

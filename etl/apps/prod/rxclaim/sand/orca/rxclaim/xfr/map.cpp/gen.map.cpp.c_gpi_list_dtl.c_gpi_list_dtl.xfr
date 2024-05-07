@@ -1,0 +1,272 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58109fc0_172f_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_gpi_ls_dtl.cpp_gpi_list_sk,[transform],in0.gpi_list_id,
+     in0.gpi_list_version,
+     'lookup("c_gpi_list").dxf_sk']
+  [out0.c_gpi_ls_dtl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_gpi_ls_dtl.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_gpi_ls_dtl.src_env_sk,[transform],]
+  [out0.c_gpi_ls_dtl.cpp_gpi_list_dtl_sk,[transform],]
+  [out0.c_gpi_ls_dtl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_gpi_ls_dtl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_gpi_ls_dtl.gpi_list_id,[passthrough],in0.gpi_list_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_gpi_ls_dtl.drug_a_med_thrshld,'c_gpi_ls_dtl.drug_a_med_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.cpp_gpi_list_sk,'c_gpi_ls_dtl.cpp_gpi_list_sk',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_pdc_thrshld,'c_gpi_ls_dtl.drug_b_pdc_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_type_dosage_form,'c_gpi_ls_dtl.drug_b_type_dosage_form',1,0]
+     [out0.c_gpi_ls_dtl.intvn_cd,'c_gpi_ls_dtl.intvn_cd',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_mpr_thrshld,'c_gpi_ls_dtl.drug_a_mpr_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_gpi_name,'c_gpi_ls_dtl.drug_b_gpi_name',1,0]
+     [out0.c_gpi_ls_dtl.cpp_create_ts,'c_gpi_ls_dtl.cpp_create_ts',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_days_supply_thrshld,'c_gpi_ls_dtl.drug_c_days_supply_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.cpp_update_ts,'c_gpi_ls_dtl.cpp_update_ts',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_dose_thrshld,'c_gpi_ls_dtl.drug_c_dose_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_gpi_name,'c_gpi_ls_dtl.drug_a_gpi_name',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_mpr_thrshld,'c_gpi_ls_dtl.drug_b_mpr_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_gpi,'c_gpi_ls_dtl.drug_c_gpi',1,0]
+     [out0.c_gpi_ls_dtl.idntfn_cd,'c_gpi_ls_dtl.idntfn_cd',1,0]
+     [out0.c_gpi_ls_dtl.src_env_sk,'c_gpi_ls_dtl.src_env_sk',1,0]
+     [out0.c_gpi_ls_dtl.eval_term_dt,'c_gpi_ls_dtl.eval_term_dt',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_pdc_thrshld,'c_gpi_ls_dtl.drug_a_pdc_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_type_dosage_form,'c_gpi_ls_dtl.drug_a_type_dosage_form',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_prvcy_drug_flag,'c_gpi_ls_dtl.drug_c_prvcy_drug_flag',1,0]
+     [out0.c_gpi_ls_dtl.cpp_gpi_list_dtl_sk,'c_gpi_ls_dtl.cpp_gpi_list_dtl_sk',1,0]
+     [out0.c_gpi_ls_dtl.thrptc_class,'c_gpi_ls_dtl.thrptc_class',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_package_size,'c_gpi_ls_dtl.drug_c_package_size',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_cnvrsn_factor,'c_gpi_ls_dtl.drug_a_cnvrsn_factor',1,0]
+     [out0.c_gpi_ls_dtl.cpp_updated_by,'c_gpi_ls_dtl.cpp_updated_by',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_cnvrsn_factor,'c_gpi_ls_dtl.drug_b_cnvrsn_factor',1,0]
+     [out0.c_gpi_ls_dtl.cpp_created_by,'c_gpi_ls_dtl.cpp_created_by',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_strength,'c_gpi_ls_dtl.drug_c_strength',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_gpi_ls_dtl.cmmt,'c_gpi_ls_dtl.cmmt',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_package_size,'c_gpi_ls_dtl.drug_b_package_size',1,0]
+     [out0.c_gpi_ls_dtl.lvl,'c_gpi_ls_dtl.lvl',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_prvcy_drug_flag,'c_gpi_ls_dtl.drug_b_prvcy_drug_flag',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_strength,'c_gpi_ls_dtl.drug_a_strength',1,0]
+     [out0.c_gpi_ls_dtl.idntfn_eff_dt,'c_gpi_ls_dtl.idntfn_eff_dt',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_strength,'c_gpi_ls_dtl.drug_b_strength',1,0]
+     [out0.c_gpi_ls_dtl.eval_eff_dt,'c_gpi_ls_dtl.eval_eff_dt',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_prvcy_drug_flag,'c_gpi_ls_dtl.drug_a_prvcy_drug_flag',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_gpi_ls_dtl.thrptc_sub_class,'c_gpi_ls_dtl.thrptc_sub_class',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_cnvrsn_factor,'c_gpi_ls_dtl.drug_c_cnvrsn_factor',1,0]
+     [out0.c_gpi_ls_dtl.idntfn_period,'c_gpi_ls_dtl.idntfn_period',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_package_size,'c_gpi_ls_dtl.drug_a_package_size',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_dose_thrshld,'c_gpi_ls_dtl.drug_b_dose_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_days_supply_thrshld,'c_gpi_ls_dtl.drug_b_days_supply_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_gpi,'c_gpi_ls_dtl.drug_a_gpi',1,0]
+     [out0.c_gpi_ls_dtl.idntfn_term_dt,'c_gpi_ls_dtl.idntfn_term_dt',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_gpi_name,'c_gpi_ls_dtl.drug_c_gpi_name',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_pdc_thrshld,'c_gpi_ls_dtl.drug_c_pdc_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_type_dosage_form,'c_gpi_ls_dtl.drug_c_type_dosage_form',1,0]
+     [out0.c_gpi_ls_dtl.gpi_list_version,'c_gpi_ls_dtl.gpi_list_version',1,0]
+     [out0.c_gpi_ls_dtl.age_thrshld,'c_gpi_ls_dtl.age_thrshld',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_gpi_ls_dtl.drug_b_gpi,'c_gpi_ls_dtl.drug_b_gpi',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_days_supply_thrshld,'c_gpi_ls_dtl.drug_a_days_supply_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.gpi_list_id,'c_gpi_ls_dtl.gpi_list_id',1,0]
+     [out0.c_gpi_ls_dtl.drug_a_dose_thrshld,'c_gpi_ls_dtl.drug_a_dose_thrshld',1,0]
+     [out0.c_gpi_ls_dtl.disease,'c_gpi_ls_dtl.disease',1,0]
+     [out0.c_gpi_ls_dtl.drug_c_mpr_thrshld,'c_gpi_ls_dtl.drug_c_mpr_thrshld',1,0]
+  ]
+  impacts:
+  [
+     [in0.idntfn_period,'idntfn_period',1,1]
+     [in0.drug_c_package_size,'drug_c_package_size',1,1]
+     [in0.age_thrshld,'age_thrshld',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.drug_c_days_supply_thrshld,'drug_c_days_supply_thrshld',1,1]
+     [in0.cmmt,'cmmt',1,1]
+     [in0.drug_a_prvcy_drug_flag,'drug_a_prvcy_drug_flag',1,1]
+     [in0.gpi_list_version,'gpi_list_version',2,2]
+     [in0.eval_eff_dt,'eval_eff_dt',1,1]
+     [in0.drug_b_prvcy_drug_flag,'drug_b_prvcy_drug_flag',1,1]
+     [in0.drug_c_gpi_name,'drug_c_gpi_name',1,1]
+     [in0.drug_c_cnvrsn_factor,'drug_c_cnvrsn_factor',1,1]
+     [in0.drug_b_pdc_thrshld,'drug_b_pdc_thrshld',1,1]
+     [in0.drug_b_mpr_thrshld,'drug_b_mpr_thrshld',1,1]
+     [in0.drug_a_pdc_thrshld,'drug_a_pdc_thrshld',1,1]
+     [in0.idntfn_eff_dt,'idntfn_eff_dt',1,1]
+     [in0.drug_a_mpr_thrshld,'drug_a_mpr_thrshld',1,1]
+     [in0.idntfn_term_dt,'idntfn_term_dt',1,1]
+     ['lookup("c_gpi_list").dxf_sk','dxf_sk',1,1]
+     [in0.drug_a_strength,'drug_a_strength',1,1]
+     [in0.drug_a_dose_thrshld,'drug_a_dose_thrshld',1,1]
+     [in0.drug_b_type_dosage_form,'drug_b_type_dosage_form',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.drug_a_type_dosage_form,'drug_a_type_dosage_form',1,1]
+     [in0.drug_b_strength,'drug_b_strength',1,1]
+     [in0.drug_b_dose_thrshld,'drug_b_dose_thrshld',1,1]
+     [in0.drug_c_gpi,'drug_c_gpi',1,1]
+     [in0.eval_term_dt,'eval_term_dt',1,1]
+     [in0.drug_c_mpr_thrshld,'drug_c_mpr_thrshld',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.drug_c_pdc_thrshld,'drug_c_pdc_thrshld',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.drug_a_med_thrshld,'drug_a_med_thrshld',1,1]
+     [in0.thrptc_sub_class,'thrptc_sub_class',1,1]
+     [in0.gpi_list_id,'gpi_list_id',2,2]
+     [in0.drug_a_gpi,'drug_a_gpi',1,1]
+     [in0.drug_c_type_dosage_form,'drug_c_type_dosage_form',1,1]
+     [in0.drug_b_gpi,'drug_b_gpi',1,1]
+     [in0.drug_c_strength,'drug_c_strength',1,1]
+     [in0.drug_c_dose_thrshld,'drug_c_dose_thrshld',1,1]
+     [in0.drug_b_package_size,'drug_b_package_size',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.lvl,'lvl',1,1]
+     [in0.disease,'disease',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.thrptc_class,'thrptc_class',1,1]
+     [in0.drug_a_package_size,'drug_a_package_size',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.intvn_cd,'intvn_cd',1,1]
+     [in0.idntfn_cd,'idntfn_cd',1,1]
+     [in0.drug_a_cnvrsn_factor,'drug_a_cnvrsn_factor',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.drug_a_gpi_name,'drug_a_gpi_name',1,1]
+     [in0.drug_b_days_supply_thrshld,'drug_b_days_supply_thrshld',1,1]
+     [in0.drug_b_cnvrsn_factor,'drug_b_cnvrsn_factor',1,1]
+     [in0.drug_b_gpi_name,'drug_b_gpi_name',1,1]
+     [in0.drug_c_prvcy_drug_flag,'drug_c_prvcy_drug_flag',1,1]
+     [in0.drug_a_days_supply_thrshld,'drug_a_days_supply_thrshld',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_gpi_ls_dtl_cpp_gpi_list_dtl_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_gpi_ls_dtl_gpi_list_id = fail_if_error(in0.gpi_list_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_gpi_ls_dtl_gpi_list_version = fail_if_error(in0.gpi_list_version);
+let decimal("\x01",0) c_gpi_ls_dtl_cpp_gpi_list_sk;
+let utf8 string("\x01", maximum_length=40) c_gpi_ls_dtl_idntfn_cd = fail_if_error(in0.idntfn_cd);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_idntfn_eff_dt = fail_if_error(in0.idntfn_eff_dt);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_a_gpi = fail_if_error(in0.drug_a_gpi);
+let utf8 string("\x01", maximum_length=280) c_gpi_ls_dtl_drug_a_gpi_name = fail_if_error(in0.drug_a_gpi_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_gpi_ls_dtl_drug_a_prvcy_drug_flag = fail_if_error(in0.drug_a_prvcy_drug_flag);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_a_type_dosage_form = fail_if_error(in0.drug_a_type_dosage_form);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_strength = fail_if_error(in0.drug_a_strength);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_package_size = fail_if_error(in0.drug_a_package_size);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_cnvrsn_factor = fail_if_error(in0.drug_a_cnvrsn_factor);
+let decimal("\x01",0, maximum_length=4, sign_reserved) c_gpi_ls_dtl_drug_a_days_supply_thrshld = fail_if_error(in0.drug_a_days_supply_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_dose_thrshld = fail_if_error(in0.drug_a_dose_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_mpr_thrshld = fail_if_error(in0.drug_a_mpr_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_pdc_thrshld = fail_if_error(in0.drug_a_pdc_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_a_med_thrshld = fail_if_error(in0.drug_a_med_thrshld);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_b_gpi = fail_if_error(in0.drug_b_gpi);
+let utf8 string("\x01", maximum_length=280) c_gpi_ls_dtl_drug_b_gpi_name = fail_if_error(in0.drug_b_gpi_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_gpi_ls_dtl_drug_b_prvcy_drug_flag = fail_if_error(in0.drug_b_prvcy_drug_flag);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_b_type_dosage_form = fail_if_error(in0.drug_b_type_dosage_form);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_strength = fail_if_error(in0.drug_b_strength);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_package_size = fail_if_error(in0.drug_b_package_size);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_cnvrsn_factor = fail_if_error(in0.drug_b_cnvrsn_factor);
+let decimal("\x01",0, maximum_length=4, sign_reserved) c_gpi_ls_dtl_drug_b_days_supply_thrshld = fail_if_error(in0.drug_b_days_supply_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_dose_thrshld = fail_if_error(in0.drug_b_dose_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_mpr_thrshld = fail_if_error(in0.drug_b_mpr_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_b_pdc_thrshld = fail_if_error(in0.drug_b_pdc_thrshld);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_c_gpi = fail_if_error(in0.drug_c_gpi);
+let utf8 string("\x01", maximum_length=280) c_gpi_ls_dtl_drug_c_gpi_name = fail_if_error(in0.drug_c_gpi_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_gpi_ls_dtl_drug_c_prvcy_drug_flag = fail_if_error(in0.drug_c_prvcy_drug_flag);
+let utf8 string("\x01", maximum_length=56) c_gpi_ls_dtl_drug_c_type_dosage_form = fail_if_error(in0.drug_c_type_dosage_form);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_strength = fail_if_error(in0.drug_c_strength);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_package_size = fail_if_error(in0.drug_c_package_size);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_cnvrsn_factor = fail_if_error(in0.drug_c_cnvrsn_factor);
+let decimal("\x01",0, maximum_length=4, sign_reserved) c_gpi_ls_dtl_drug_c_days_supply_thrshld = fail_if_error(in0.drug_c_days_supply_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_dose_thrshld = fail_if_error(in0.drug_c_dose_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_mpr_thrshld = fail_if_error(in0.drug_c_mpr_thrshld);
+let decimal("\x01".5, maximum_length=17, sign_reserved) c_gpi_ls_dtl_drug_c_pdc_thrshld = fail_if_error(in0.drug_c_pdc_thrshld);
+let utf8 string("\x01", maximum_length=40) c_gpi_ls_dtl_intvn_cd = fail_if_error(in0.intvn_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_gpi_ls_dtl_lvl = fail_if_error(in0.lvl);
+let utf8 string("\x01", maximum_length=400) c_gpi_ls_dtl_thrptc_class = fail_if_error(in0.thrptc_class);
+let utf8 string("\x01", maximum_length=400) c_gpi_ls_dtl_thrptc_sub_class = fail_if_error(in0.thrptc_sub_class);
+let utf8 string("\x01", maximum_length=280) c_gpi_ls_dtl_disease = fail_if_error(in0.disease);
+let decimal("\x01",0, maximum_length=4, sign_reserved) c_gpi_ls_dtl_age_thrshld = fail_if_error(in0.age_thrshld);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_gpi_ls_dtl_idntfn_period = fail_if_error(in0.idntfn_period);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_idntfn_term_dt = fail_if_error(in0.idntfn_term_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_eval_eff_dt = fail_if_error(in0.eval_eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_eval_term_dt = fail_if_error(in0.eval_term_dt);
+let utf8 string("\x01", maximum_length=8192) c_gpi_ls_dtl_cmmt = fail_if_error(in0.cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_gpi_ls_dtl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_gpi_ls_dtl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_gpi_ls_dtl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_gpi_ls_dtl_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_gpi_ls_dtl_cpp_gpi_list_sk=fail_if_error(first_defined(lookup("c_gpi_list",in0.gpi_list_version,in0.gpi_list_id).dxf_sk,-1));
+
+  out0.c_gpi_ls_dtl.cpp_gpi_list_dtl_sk::c_gpi_ls_dtl_cpp_gpi_list_dtl_sk;
+  out0.c_gpi_ls_dtl.gpi_list_id::c_gpi_ls_dtl_gpi_list_id;
+  out0.c_gpi_ls_dtl.gpi_list_version::c_gpi_ls_dtl_gpi_list_version;
+  out0.c_gpi_ls_dtl.cpp_gpi_list_sk::c_gpi_ls_dtl_cpp_gpi_list_sk;
+  out0.c_gpi_ls_dtl.idntfn_cd::c_gpi_ls_dtl_idntfn_cd;
+  out0.c_gpi_ls_dtl.idntfn_eff_dt::c_gpi_ls_dtl_idntfn_eff_dt;
+  out0.c_gpi_ls_dtl.drug_a_gpi::c_gpi_ls_dtl_drug_a_gpi;
+  out0.c_gpi_ls_dtl.drug_a_gpi_name::c_gpi_ls_dtl_drug_a_gpi_name;
+  out0.c_gpi_ls_dtl.drug_a_prvcy_drug_flag::c_gpi_ls_dtl_drug_a_prvcy_drug_flag;
+  out0.c_gpi_ls_dtl.drug_a_type_dosage_form::c_gpi_ls_dtl_drug_a_type_dosage_form;
+  out0.c_gpi_ls_dtl.drug_a_strength::c_gpi_ls_dtl_drug_a_strength;
+  out0.c_gpi_ls_dtl.drug_a_package_size::c_gpi_ls_dtl_drug_a_package_size;
+  out0.c_gpi_ls_dtl.drug_a_cnvrsn_factor::c_gpi_ls_dtl_drug_a_cnvrsn_factor;
+  out0.c_gpi_ls_dtl.drug_a_days_supply_thrshld::c_gpi_ls_dtl_drug_a_days_supply_thrshld;
+  out0.c_gpi_ls_dtl.drug_a_dose_thrshld::c_gpi_ls_dtl_drug_a_dose_thrshld;
+  out0.c_gpi_ls_dtl.drug_a_mpr_thrshld::c_gpi_ls_dtl_drug_a_mpr_thrshld;
+  out0.c_gpi_ls_dtl.drug_a_pdc_thrshld::c_gpi_ls_dtl_drug_a_pdc_thrshld;
+  out0.c_gpi_ls_dtl.drug_a_med_thrshld::c_gpi_ls_dtl_drug_a_med_thrshld;
+  out0.c_gpi_ls_dtl.drug_b_gpi::c_gpi_ls_dtl_drug_b_gpi;
+  out0.c_gpi_ls_dtl.drug_b_gpi_name::c_gpi_ls_dtl_drug_b_gpi_name;
+  out0.c_gpi_ls_dtl.drug_b_prvcy_drug_flag::c_gpi_ls_dtl_drug_b_prvcy_drug_flag;
+  out0.c_gpi_ls_dtl.drug_b_type_dosage_form::c_gpi_ls_dtl_drug_b_type_dosage_form;
+  out0.c_gpi_ls_dtl.drug_b_strength::c_gpi_ls_dtl_drug_b_strength;
+  out0.c_gpi_ls_dtl.drug_b_package_size::c_gpi_ls_dtl_drug_b_package_size;
+  out0.c_gpi_ls_dtl.drug_b_cnvrsn_factor::c_gpi_ls_dtl_drug_b_cnvrsn_factor;
+  out0.c_gpi_ls_dtl.drug_b_days_supply_thrshld::c_gpi_ls_dtl_drug_b_days_supply_thrshld;
+  out0.c_gpi_ls_dtl.drug_b_dose_thrshld::c_gpi_ls_dtl_drug_b_dose_thrshld;
+  out0.c_gpi_ls_dtl.drug_b_mpr_thrshld::c_gpi_ls_dtl_drug_b_mpr_thrshld;
+  out0.c_gpi_ls_dtl.drug_b_pdc_thrshld::c_gpi_ls_dtl_drug_b_pdc_thrshld;
+  out0.c_gpi_ls_dtl.drug_c_gpi::c_gpi_ls_dtl_drug_c_gpi;
+  out0.c_gpi_ls_dtl.drug_c_gpi_name::c_gpi_ls_dtl_drug_c_gpi_name;
+  out0.c_gpi_ls_dtl.drug_c_prvcy_drug_flag::c_gpi_ls_dtl_drug_c_prvcy_drug_flag;
+  out0.c_gpi_ls_dtl.drug_c_type_dosage_form::c_gpi_ls_dtl_drug_c_type_dosage_form;
+  out0.c_gpi_ls_dtl.drug_c_strength::c_gpi_ls_dtl_drug_c_strength;
+  out0.c_gpi_ls_dtl.drug_c_package_size::c_gpi_ls_dtl_drug_c_package_size;
+  out0.c_gpi_ls_dtl.drug_c_cnvrsn_factor::c_gpi_ls_dtl_drug_c_cnvrsn_factor;
+  out0.c_gpi_ls_dtl.drug_c_days_supply_thrshld::c_gpi_ls_dtl_drug_c_days_supply_thrshld;
+  out0.c_gpi_ls_dtl.drug_c_dose_thrshld::c_gpi_ls_dtl_drug_c_dose_thrshld;
+  out0.c_gpi_ls_dtl.drug_c_mpr_thrshld::c_gpi_ls_dtl_drug_c_mpr_thrshld;
+  out0.c_gpi_ls_dtl.drug_c_pdc_thrshld::c_gpi_ls_dtl_drug_c_pdc_thrshld;
+  out0.c_gpi_ls_dtl.intvn_cd::c_gpi_ls_dtl_intvn_cd;
+  out0.c_gpi_ls_dtl.lvl::c_gpi_ls_dtl_lvl;
+  out0.c_gpi_ls_dtl.thrptc_class::c_gpi_ls_dtl_thrptc_class;
+  out0.c_gpi_ls_dtl.thrptc_sub_class::c_gpi_ls_dtl_thrptc_sub_class;
+  out0.c_gpi_ls_dtl.disease::c_gpi_ls_dtl_disease;
+  out0.c_gpi_ls_dtl.age_thrshld::c_gpi_ls_dtl_age_thrshld;
+  out0.c_gpi_ls_dtl.idntfn_period::c_gpi_ls_dtl_idntfn_period;
+  out0.c_gpi_ls_dtl.idntfn_term_dt::c_gpi_ls_dtl_idntfn_term_dt;
+  out0.c_gpi_ls_dtl.eval_eff_dt::c_gpi_ls_dtl_eval_eff_dt;
+  out0.c_gpi_ls_dtl.eval_term_dt::c_gpi_ls_dtl_eval_term_dt;
+  out0.c_gpi_ls_dtl.cmmt::c_gpi_ls_dtl_cmmt;
+  out0.c_gpi_ls_dtl.cpp_update_ts::c_gpi_ls_dtl_cpp_update_ts;
+  out0.c_gpi_ls_dtl.cpp_updated_by::c_gpi_ls_dtl_cpp_updated_by;
+  out0.c_gpi_ls_dtl.cpp_create_ts::c_gpi_ls_dtl_cpp_create_ts;
+  out0.c_gpi_ls_dtl.cpp_created_by::c_gpi_ls_dtl_cpp_created_by;
+  out0.c_gpi_ls_dtl.src_env_sk::c_gpi_ls_dtl_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,33 @@
+include "/~$AI_XFR/sys_id.xfr";
+out ::reformat(in)=
+begin
+  out.das_product_id            :: in.d1v1hi;
+  out.das_nda_flag              :: in.d1t8id;
+  out.das_anda_flag             :: in.d1t9id;
+  out.das_bla_flag              :: in.d1uaid;
+  out.das_ref_list_drug_flag    :: in.d1ubid;
+  out.das_fda_thera_eq_codes    :: in.d1xcin;
+  out.das_fda_approval_date     :: in.d1jihk;
+  out.das_fda_prior_1_1_82_appr :: in.d1ucid;
+  out.das_in_medi_span_flag     :: in.d1udid;
+  out.das_medi_span_inactive_dt :: in.d1jjhk;
+  out.das_status                :: in.d1ueid;
+  out.das_delete_date           :: in.d1g2hh;
+  out.das_marketing_category    :: in.d1hwho;
+  out.das_marketing_start_date  :: in.d1jtce;
+  out.das_marketing_end_date    :: in.d1juce;
+  out.add_user_name             :: in.d1akvn;
+  out.add_date                  :: in.d1c2dt;
+  out.add_time                  :: in.d1adtm;
+  out.add_program_name          :: in.d1alvn;
+  out.chg_user_name             :: in.d1advn;
+  out.chg_date                  :: in.d1bmdt;
+  out.chg_time                  :: in.d1abtm;
+  out.chg_program_name          :: in.d1aevn;
+  out.rxt_src_envrt_id          :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm          :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm           :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid            :: 'app_orca_rxclaim';
+  out.rxt_create_run_id         :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd           :: '';
+end;

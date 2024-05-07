@@ -1,0 +1,83 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rx49655p1.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rx49655p1.p1exttim,'rx49655p1.p1exttim',1,0]
+     [out0.rx49655p1.p1carrid,'rx49655p1.p1carrid',1,0]
+     [out0.rx49655p1.p1grpid,'rx49655p1.p1grpid',1,0]
+     [out0.rx49655p1.p1grpeffdt,'rx49655p1.p1grpeffdt',1,0]
+     [out0.rx49655p1.cdc_ts,'rx49655p1.cdc_ts',1,0]
+     [out0.rx49655p1.src_env_sk,'rx49655p1.src_env_sk',1,0]
+     [out0.rx49655p1.p1acctid,'rx49655p1.p1acctid',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rx49655p1.p1situsst,'rx49655p1.p1situsst',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rx49655p1.cdc_flag,'rx49655p1.cdc_flag',1,0]
+     [out0.rx49655p1.p1extdat,'rx49655p1.p1extdat',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.rx49655p1.p1filler,'rx49655p1.p1filler',1,0]
+     [out0.rx49655p1.p1grpthrdt,'rx49655p1.p1grpthrdt',1,0]
+  ]
+  impacts:
+  [
+     [in0.p1acctid,'p1acctid',1,1]
+     [in0.p1carrid,'p1carrid',1,1]
+     [in0.p1grpeffdt,'p1grpeffdt',1,1]
+     [in0.p1grpid,'p1grpid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.p1extdat,'p1extdat',1,1]
+     [in0.p1grpthrdt,'p1grpthrdt',1,1]
+     [in0.p1exttim,'p1exttim',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.cdc_flag,'cdc_flag',1,1]
+     [in0.cdc_ts,'cdc_ts',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.p1situsst,'p1situsst',1,1]
+     [in0.p1filler,'p1filler',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01", maximum_length=1) rx49655p1_cdc_flag = fail_if_error(in0.cdc_flag);
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\x01") rx49655p1_cdc_ts = fail_if_error(in0.cdc_ts);
+let string("\x01", maximum_length=9) rx49655p1_p1carrid = fail_if_error(in0.p1carrid);
+let string("\x01", maximum_length=15) rx49655p1_p1acctid = fail_if_error(in0.p1acctid);
+let string("\x01", maximum_length=15) rx49655p1_p1grpid = fail_if_error(in0.p1grpid);
+let string("\x01", maximum_length=10) rx49655p1_p1grpeffdt = fail_if_error(in0.p1grpeffdt);
+let string("\x01", maximum_length=10) rx49655p1_p1grpthrdt = fail_if_error(in0.p1grpthrdt);
+let string("\x01", maximum_length=2) rx49655p1_p1situsst = fail_if_error(in0.p1situsst);
+let string("\x01", maximum_length=7) rx49655p1_p1extdat = fail_if_error(in0.p1extdat);
+let string("\x01", maximum_length=6) rx49655p1_p1exttim = fail_if_error(in0.p1exttim);
+let string("\x01", maximum_length=50) rx49655p1_p1filler = fail_if_error(in0.p1filler);
+let decimal("\x01",0) rx49655p1_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rx49655p1.cdc_flag::rx49655p1_cdc_flag;
+  out0.rx49655p1.cdc_ts::rx49655p1_cdc_ts;
+  out0.rx49655p1.p1carrid::rx49655p1_p1carrid;
+  out0.rx49655p1.p1acctid::rx49655p1_p1acctid;
+  out0.rx49655p1.p1grpid::rx49655p1_p1grpid;
+  out0.rx49655p1.p1grpeffdt::rx49655p1_p1grpeffdt;
+  out0.rx49655p1.p1grpthrdt::rx49655p1_p1grpthrdt;
+  out0.rx49655p1.p1situsst::rx49655p1_p1situsst;
+  out0.rx49655p1.p1extdat::rx49655p1_p1extdat;
+  out0.rx49655p1.p1exttim::rx49655p1_p1exttim;
+  out0.rx49655p1.p1filler::rx49655p1_p1filler;
+  out0.rx49655p1.src_env_sk::rx49655p1_src_env_sk;
+  out0.*::in0.*;
+
+end;

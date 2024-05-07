@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="EXTRACTS" description="This job is to copy the outbound extract files from new VMs to old VMs in the old path. ( or any other server )." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="10B56523-81DC-06EC-6EC5-70A2670510EC" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="CPP OB Extracts Copy From New VMs" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/extracts" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="ksh" executableType="PROGRAM" workingDirectory="${RUN}">
+    <arguments>
+      <argument isExpandable="false" value="${AI_BIN}/copy_outbound_extract_files_to_prod.ksh"/>
+      <argument isExpandable="false" value="${FILESYSTEM_ROOT}/extracts"/>
+      <argument isExpandable="false" value="${BIZ_DT}"/>
+      <argument isExpandable="false" value="apsrp7996"/>
+      <argument isExpandable="false" value="/etl/data/prod/serial/clinical/pub_clinical_datahub/outbound"/>
+      <argument isExpandable="false" value="CPP-AI-TEAM_DL@ds.uhc.com"/>
+    </arguments>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-05-11Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="34B47F5B-254C-28E8-4E2D-2ED82EB6BF80"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

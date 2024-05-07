@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/map.interim.pset
+SOURCE_NAME||||clmprdfil_bk1.rctrpp
+ILM_NAME||||l_rctrpp_eob
+AB_CATALOG||||$AI_CAT/map.clmprdfil_bk1/map.clmprdfil_bk1.rctrpp.l_rctrpp_eob.cat
+REDUCED_LOOKUP_RETAIN_FIELDS_LIST||||
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{carrier_id; account_id; employer_group_id; mbr_id}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.employer_group_id,[passthrough],in0.aoynhc]\n  [out0.carrier_id,[passthrough],in0.aoylhc]\n  [out0.account_id,[passthrough],in0.aoymhc]\n  [out0.mbr_id,[passthrough],in0.aoykhc]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.employer_group_id,'employer_group_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.account_id,'account_id',1,0]\n     [out0.mbr_id,'mbr_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.aoylhc,'aoylhc',1,1]\n     [in0.aoykhc,'aoykhc',1,1]\n     [in0.aoymhc,'aoymhc',1,1]\n     [in0.aoynhc,'aoynhc',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) carrier_id = fail_if_error(in0.aoylhc);\nlet string("\\x01",charset="iso-8859-15", maximum_length=40) account_id = fail_if_error(in0.aoymhc);\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = fail_if_error(in0.aoynhc);\nlet string("\\x01",charset="iso-8859-15", maximum_length=20) mbr_id = fail_if_error(in0.aoykhc);\n\n\n\n  out0.carrier_id::carrier_id;\n  out0.account_id::account_id;\n  out0.employer_group_id::employer_group_id;\n  out0.mbr_id::mbr_id;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+RUN_ID||||20181121000000
+REDUCED_ICFF_IDS_LIST||||ids_common.d_member
+ACE_CATALOG_CONTENTS|$|||d_member_lkp_eob,{carrier_id; account_id; employer_group_id; mbr_id},/~$AI_SERIAL_LOOKUP/lookup.clmprdfil_bk1/lookup.clmprdfil_bk1.rctrpp.d_member.dat,/~$AI_DML/map.clmprdfil_bk1/map.clmprdfil_bk1.rctrpp.l_rctrpp_eob.reduced_lkp.clmprdfil_bk1.rctrpp.d_member.dml\n
+REDUCED_LOOKUP_SELECT_EXPR||||1
+FILTER_EXPR||||

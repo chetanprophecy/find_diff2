@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcmcfp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmcfp                  haabcd,haaacd,haaccd,haadcd,hac4n1,hacrda,hacsda,habys2,halghb,haxch6,haxeh6,hapmc2,haapcd,haaecd,haakdt,hapnc2,haakvn,hac2dt,haadtm,haalvn,haadvn,habmdt,haabtm,haaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcmcfp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||$[if (START_CHANGES_TIME != '') \n\n    "WHERE RCMCFP.HABMDT >= " + \n\t\n\t string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n\t \n\t" AND RCMCFP.HABMDT <= " +\n\t\n\t string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)+\n\t \n\t" OPTIMIZE FOR ALL ROWS" ]
+ENABLE_DEFAULT_RULES||||True

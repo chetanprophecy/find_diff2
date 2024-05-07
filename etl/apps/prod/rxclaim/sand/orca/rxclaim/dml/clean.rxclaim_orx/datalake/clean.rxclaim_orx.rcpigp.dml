@@ -1,0 +1,27 @@
+//Added extra sign byte and decimal point byte to length for all DECIMAL fields.
+record
+  little endian integer(8) dxf_src_dataset_id = 0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  little endian integer(4) dxf_src_rec_cnt = 0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dxf_src_file_name = ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string("\001", maximum_length=1) cdc_flag = NULL("");
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\001") cdc_ts = NULL("");
+  decimal("\001", maximum_length=11) syiin2 = NULL("");
+  string("\001", maximum_length=1) sycyaq = NULL("");
+  decimal("\001", maximum_length=11) syc1aq = NULL("");
+  string("\001", maximum_length=40) syamiv = NULL("");
+  decimal("\001".5, maximum_length=15) syuuqu = NULL("");
+  string("\001", maximum_length=11) syaniv = NULL("");
+  string("\001", maximum_length=1) syczaq = NULL("");
+  string("\001", maximum_length=1) syc0aq = NULL("");
+  decimal("\001", maximum_length=9) sygocf = NULL("");
+  string("\001", maximum_length=10) syakvn = NULL("");
+  decimal("\001", maximum_length=9) syc2dt = NULL("");
+  decimal("\001", maximum_length=8) syadtm = NULL("");
+  string("\001", maximum_length=10) syalvn = NULL("");
+  string("\001", maximum_length=10) syadvn = NULL("");
+  decimal("\001", maximum_length=9) sybmdt = NULL("");
+  decimal("\001", maximum_length=8) syabtm = NULL("");
+  string("\001", maximum_length=10) syaevn = NULL("");
+  string(1) newline = "\n";
+end

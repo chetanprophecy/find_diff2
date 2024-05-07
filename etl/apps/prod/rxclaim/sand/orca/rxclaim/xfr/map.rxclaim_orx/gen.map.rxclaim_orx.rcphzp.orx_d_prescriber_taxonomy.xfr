@@ -1,0 +1,83 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_pre_tax.htc_seq_no,[passthrough],in0.amv2hu]
+  [out0.d_pre_tax.phz_taxnomy_desc,[passthrough],in0.amsqio]
+  [out0.pbr_sk_fk.phy_pbr_key,[transform],in0.amaqcd]
+  [out0.d_pre_tax.phz_seq_no,[passthrough],in0.amv3hu]
+  [out0.d_pre_tax.htc_taxnomy_cd,[transform],in0.amrlhj]
+  [out0.d_pre_tax.pbr_sk,[transform],]
+  [out0.d_pre_tax.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_pre_tax.phz_rec_stat,[passthrough],in0.amp6ie]
+  [out0.pbr_sk_fk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_pre_tax.pbr_taxonomy_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_pre_tax.htc_seq_no,'d_pre_tax.htc_seq_no',1,0]
+     [out0.d_pre_tax.phz_taxnomy_desc,'d_pre_tax.phz_taxnomy_desc',1,0]
+     [out0.pbr_sk_fk.phy_pbr_key,'pbr_sk_fk.phy_pbr_key',1,0]
+     [out0.d_pre_tax.phz_seq_no,'d_pre_tax.phz_seq_no',1,0]
+     [out0.d_pre_tax.htc_taxnomy_cd,'d_pre_tax.htc_taxnomy_cd',1,0]
+     [out0.d_pre_tax.pbr_sk,'d_pre_tax.pbr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_pre_tax.src_env_sk,'d_pre_tax.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_pre_tax.phz_rec_stat,'d_pre_tax.phz_rec_stat',1,0]
+     [out0.pbr_sk_fk.src_env_sk,'pbr_sk_fk.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_pre_tax.pbr_taxonomy_sk,'d_pre_tax.pbr_taxonomy_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.amp6ie,'amp6ie',1,1]
+     [in0.amv3hu,'amv3hu',1,1]
+     [in0.amrlhj,'amrlhj',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.amaqcd,'amaqcd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',3,3]
+     [in0.amsqio,'amsqio',1,1]
+     [in0.amv2hu,'amv2hu',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) d_pre_tax_pbr_taxonomy_sk = -1;
+let decimal("\x01",0) d_pre_tax_pbr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_pre_tax_htc_taxnomy_cd = fail_if_error(string_lrtrim(in0.amrlhj));
+let decimal("\x01",0, maximum_length=6, sign_reserved) d_pre_tax_htc_seq_no = fail_if_error(in0.amv2hu);
+let decimal("\x01",0, maximum_length=6, sign_reserved) d_pre_tax_phz_seq_no = fail_if_error(in0.amv3hu);
+let string("\x01",charset="iso-8859-15", maximum_length=400) d_pre_tax_phz_taxnomy_desc = fail_if_error(in0.amsqio);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_pre_tax_phz_rec_stat = fail_if_error(in0.amp6ie);
+let decimal("\x01",0) d_pre_tax_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) pbr_sk_fk_phy_pbr_key = fail_if_error(string_lrtrim(in0.amaqcd));
+let decimal("\x01",0) pbr_sk_fk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.d_pre_tax.pbr_taxonomy_sk::d_pre_tax_pbr_taxonomy_sk;
+  out0.d_pre_tax.pbr_sk::d_pre_tax_pbr_sk;
+  out0.d_pre_tax.htc_taxnomy_cd::d_pre_tax_htc_taxnomy_cd;
+  out0.d_pre_tax.htc_seq_no::d_pre_tax_htc_seq_no;
+  out0.d_pre_tax.phz_seq_no::d_pre_tax_phz_seq_no;
+  out0.d_pre_tax.phz_taxnomy_desc::d_pre_tax_phz_taxnomy_desc;
+  out0.d_pre_tax.phz_rec_stat::d_pre_tax_phz_rec_stat;
+  out0.d_pre_tax.src_env_sk::d_pre_tax_src_env_sk;
+  out0.pbr_sk_fk.phy_pbr_key::pbr_sk_fk_phy_pbr_key;
+  out0.pbr_sk_fk.src_env_sk::pbr_sk_fk_src_env_sk;
+  out0.*::in0.*;
+
+end;

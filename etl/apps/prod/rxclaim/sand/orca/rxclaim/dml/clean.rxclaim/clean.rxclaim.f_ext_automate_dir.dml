@@ -1,0 +1,50 @@
+/* DML Generated for SQL: SELECT COALESCE(B.SRC_ENV_SK,A.SRC_ENV_SK,-1) AS SRC_ENV_SK,A.CARRIER_ID,A.ACCOUNT_ID,A.EMPLOYER_GROUP_ID,A.CLAIM_NBR,PROV_ID,A.CLAIM_STAT_ID,A.RX_NBR,FILL_DT,A.SBM_DT,A.FEE_AMT,A.CHECK_NBR,
+A.APP_INGRED_COST_PAID,A.CHECK_DT,A.CHECK_AMT_PAID,A.PAYEE_ID,A.AMT_DESC,
+A.CLAIM_SEQ_NBR, A.FEE_TYPE, A.FEE_SCHED, A.PMT_NBR, A.BATCH_ID, A.APP_DUE_AMT, A.ACT_AMT_PAID, A.CHECK_APP_AMT_DUE,
+CASE WHEN B.SRC_ENV_SK IN (480, 490) THEN B.TOT_PUBLISH_AWP_AMT
+ELSE B.EXTD_AWP_COST END as TOT_PUBLISH_AWP_AMT,
+B.PHR_PRC_TYP,B.BIN_NBR,B.PROCESSOR_CNTRL_NBR,B.GRP_NBR_SUBMD,
+C.PHR_NTWRK_ID AS CHAIN_CODE,
+D.PHR_SUPER_NTWRK_ID as SUPER_NETWORK,
+B.TIER_LEVEL
+FROM F_EXT_AUTOMATE_DIR A
+LEFT OUTER JOIN F_CLAIM_TRANSACTION B ON A.CAG_SK=B.CAG_SK and A.CLAIM_NBR=B.CLAIM_NBR and A.CLAIM_SEQ_NBR=B.CLAIM_SEQ_NBR and A.CLAIM_STAT_ID=B.CLAIM_STAT_ID 
+LEFT OUTER JOIN D_PHARMACY_NETWORK C ON B.NTWK_SK=C.NTWK_SK
+LEFT OUTER JOIN D_PHARMACY_SUPER_NETWORK D on B.SUPER_NTWK_SK=D.SUPER_NTWK_SK
+ * On: Fri Aug 13 22:44:40 2021
+ */
+record
+  little endian integer(8) src_env_sk = NULL /*BIGINT*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=30) carrier_id = NULL /*VARCHAR(30)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=40) account_id = NULL /*VARCHAR(40)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=30) employer_group_id = NULL /*VARCHAR(30)*/;
+  little endian integer(8) claim_nbr = NULL /*BIGINT*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10) prov_id = NULL /*VARCHAR(10)*/;
+  string(1,charset="iso-8859-15") claim_stat_id = NULL /*CHAR(1)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=12) rx_nbr = NULL /*VARCHAR(12)*/;
+  date("YYYYMMDD") fill_dt = NULL /*DATE*/;
+  date("YYYYMMDD") sbm_dt = NULL /*DATE*/;
+  decimal(11.2, sign_reserved) fee_amt = NULL /*DECIMAL(9,2)*/;
+  little endian integer(4) check_nbr = NULL /*INTEGER*/;
+  decimal(17.2, sign_reserved) app_ingred_cost_paid = NULL /*DECIMAL(15,2)*/;
+  date("YYYYMMDD") check_dt = NULL /*DATE*/;
+  decimal(13.3, sign_reserved) check_amt_paid = NULL /*DECIMAL(11,3)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=12) payee_id = NULL /*VARCHAR(12)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=30) amt_desc = NULL /*VARCHAR(30)*/;
+  little endian integer(4) claim_seq_nbr = NULL /*INTEGER*/;
+  string(1,charset="iso-8859-15") fee_type = NULL /*CHAR(1)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10) fee_sched = NULL /*VARCHAR(10)*/;
+  little endian integer(8) pmt_nbr = NULL /*BIGINT*/;
+  little endian integer(8) batch_id = NULL /*BIGINT*/;
+  decimal(17.2, sign_reserved) app_due_amt = NULL /*DECIMAL(15,2)*/;
+  decimal(17.3, sign_reserved) act_amt_paid = NULL /*DECIMAL(15,3)*/;
+  decimal(17.2, sign_reserved) check_app_amt_due = NULL /*DECIMAL(15,2)*/;
+  decimal(26.8, sign_reserved) tot_publish_awp_amt = NULL /*DECIMAL(24,8)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10) phr_prc_typ = NULL /*VARCHAR(10)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=6) bin_nbr = NULL /*VARCHAR(6)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=10) processor_cntrl_nbr = NULL /*VARCHAR(10)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=15) grp_nbr_submd = NULL /*VARCHAR(15)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=6) chain_code = NULL /*VARCHAR(6)*/;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=6) super_network = NULL /*VARCHAR(6)*/;
+  little endian integer(4) tier_level = NULL /*INTEGER*/;
+end

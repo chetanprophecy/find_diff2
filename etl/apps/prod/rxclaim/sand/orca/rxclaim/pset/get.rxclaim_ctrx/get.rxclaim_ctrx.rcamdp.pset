@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcamdp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcamdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcamdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[" WHERE ( rcamdp.icbmdt between " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME -19000000))\n+ " and " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) END_CHANGES_TIME -19000001))\n+ ") "\n]
+SQL||||$[ "SELECT rcamdp.icabcd,\nrcamdp.icaacd,\nrcamdp.icaccd,\nrcamdp.icadcd,\nrcamdp.icbwn3,\nrcamdp.ica4ck,\nrcamdp.icrodt,\nrcamdp.icrpdt,\n'*'||rcamdp.icvst3 icvst3,\nrcamdp.icakvn,\nrcamdp.icc2dt,\nrcamdp.icadtm,\nrcamdp.icalvn,\nrcamdp.icadvn,\nrcamdp.icbmdt,\nrcamdp.icabtm,\nrcamdp.icaevn FROM clmprdfil.rcamdp rcamdp " +\n if (START_CHANGES_TIME != '')\n "WHERE rcamdp.icbmdt >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\n " OPTIMIZE FOR ALL ROWS"\n else\n "WHERE rcamdp.icbmdt >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +\n " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\n " OPTIMIZE FOR ALL ROWS"\n]
+DO_PUBLISH_CLEAN_FILE||||1
+ENABLE_DEFAULT_RULES||||True

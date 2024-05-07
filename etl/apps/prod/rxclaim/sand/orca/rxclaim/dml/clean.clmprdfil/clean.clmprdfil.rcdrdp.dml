@@ -1,0 +1,140 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  d3p2nb /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCDRDP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  little endian integer(2)  d3oinb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCDRDP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  little endian integer(2)  d3jjnb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCDRDP: DRD/PPS Seq Nbr"
+ BizComment:"Sequence number that accommodates multiple DUR conflict codes for a particular transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  d3l7st /*CHAR(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Reason for SrvCde"
+ BizComment:"This is the drug conflict code generated for this DUR event. Represents the suggested source code that should be generated and sent back to the pharmacy when DUR detects a conflict.   Valid values are:  LD = Low dose alert                      HD = High dose alert                      ER = Overuse precaution                      LR = Underuse precaution                      MN = Insufficient duration alert                      MX = Excessive duration alert                      DD = Drug-drug interactions                      DI = Drug incompatibility                      DA = Drug-allergy alert                      PR = Prior adverse drug reaction                      DC = Inferred drug disease precaution                      MC = Drug (actual) disease precaution                      PA = Drug age precaution                      SX = Drug gender alert                      AT = Additive toxicity                      PG = Drug pregnancy alert                      IC = Iatrogenic condition alert                      SE = Side effect alert                      TD = Therapeutic duplication                      ID = Ingredient duplication                      OH = Alcohol precaution                      DS = Tobacco use precaution                      DL = Drug-lab conflict                      DF = Drug food interaction                      CH = Call help desk"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3l1st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Clinical Significance"
+ BizComment:"Indicates how critical a given conflict is.  This field reflects the significance that the originating database has assigned to an interaction. In the event that processors develop a unique database function, it is recommended that the following significance codes be used:   0 = Not Specified   1 = Major   2 = Moderate   3 = Minor The field name has been changed to Clinical Significance."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3l2st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Other Pharmacy Ind"
+ BizComment:"Other Pharmacy Indicator. Indicates the source of the previous prescription that forms the basis for the conflict with the present prescription.   Valid values are:  0 = No value                      1 = Your pharmacy                      2 = Other pharmacy in same chain                      3 = Other pharmacy"
+@*/;
+  little endian integer(4)  d3aeda /*DECIMAL(8) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Prev Date of Fill"
+ BizComment:"Previous date prescription was filled. This applies to an earlier processed transaction that resulted in this DUR event."
+@*/;
+  decimal("".3, sign_reserved)  d3jgnb /*DECIMAL(11,3) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Qty of Prev Fill"
+ BizComment:"Indicates the quantity of the conflicting agent that was previously filled."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3l3st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Database Indicator"
+ BizComment:"Identify the source of the data in constructing the message.   Valid values are:  F = First Databank                      M = Medi-Span                      P = Plan Itself At present, only Medi-Span is available from SXC."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3l8st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Other Prescriber Ind"
+ BizComment:"Other Prescriber Indicator. Compares the prescriber of the current prescription to the presciber of the previously filled conflicting prescription.   Valid values are:  0 = No value                      1 = Same prescriber                      2 = Other prescriber"
+@*/;
+  string(unsigned integer(1),maximum_length=30)  d3lvtx /*CHAR(30) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Free Text"
+ BizComment:"Processor may utilize to transmit information that highlights the conflict with some detail for the pharmacists. Examples:  drug names involved in an interaction;            reported disease contraindication;            information on dosage regimens."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3aeh6 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Response"
+ BizComment:"The DUR Response indicates the presence of a DUR Response on the claim, and if the claim should reject or pay even with the DUR conflict.  Hard Rejects will result in a claim Rejection with Reject Code = 88, and not allow the pharmacist to override the claim, except thru the use of a Prior Authorization. Soft Rejects also result in a Reject 88 situation, but enables the pharmacist to submit selected data to override the claim, in addition to a Prior Authorization permitting this.  Message will return a DUR Response, but not result in rejecting the claim.  Extract will not return the conflict in the response, but it will still extract. Blocked response indicates prevention of returning to the pharmacist more than one DUR Alert with the exact same Reason for Service and DUR Free Text--such duplicate alerts are due to multiple fills of the same product(s) during the screening period."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3afh6 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Override List Ind"
+ BizComment:"The presence of a 'U' (User Override) indicates that the DUR Response reported is due to the use  of a DUR Override List, instead of the response  generated by the base DUR Service. The presence of a 'D' (Regional Disaster Override)  within this field indicates that the DUR Response  reported (Response = M) is due to the use of a Regional Disaster Override instead of the response  generated by the base DUR Service."
+@*/;
+  little endian integer(2)  d3jdhr /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Cmpnd Ingredient nbr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=8)  d3nkcd /*CHAR(8) NOT NULL */ /*@
+BizName:"RCDRDP: DUT Edit Type"
+ BizComment:""
+@*/;
+  little endian integer(8)  d3iqhr /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Conflicting CLAIM"
+ BizComment:""
+@*/;
+  little endian integer(2)  d3irhr /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Conflicting Seq Nbr"
+ BizComment:""
+@*/;
+  little endian integer(2)  d3ithr /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Cnflct Cmpnd Ingred"
+ BizComment:""
+@*/;
+  integer(1)  d3bzik /*DECIMAL(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Documentation Lvl"
+ BizComment:""
+@*/;
+  integer(1)  d3b0ik /*DECIMAL(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Onset"
+ BizComment:""
+@*/;
+  little endian integer(2)  d3ishr /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Dups found"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  d3z5ha /*CHAR(1) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Dups Allowance"
+ BizComment:""
+@*/;
+  little endian integer(2)  d3iohr /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Conflicts Detected"
+ BizComment:""
+@*/;
+  little endian integer(2)  d3iphr /*DECIMAL(2) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Conflicts Returned"
+ BizComment:"The value in this field represents the number of detected DUR conflicts that are intended to be returned to the submitting pharmacy according to the NCPDP Standards Version (51, 32) and recommendations.  Settings in the communications programs, pharmacy switch filters, and pharmacy practice management systems may alter the actual number or DUR alerts that the pharmacist will see."
+@*/;
+  string(unsigned integer(1),maximum_length=100)  d3r2ip /*CHAR(100) NOT NULL */ /*@
+BizName:"RCDRDP: DRD Additional Text"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  d3akvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCDRDP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  little endian integer(4)  d3c2dt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCDRDP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  little endian integer(4)  d3adtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCDRDP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  d3alvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCDRDP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  d3advn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCDRDP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  d3bmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCDRDP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  d3abtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCDRDP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  d3aevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCDRDP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  claimsts /*CHAR(1) NOT NULL*/;
+end
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="DM" description="This is an adhoc job to load d_utm_cpp_rules_xref table." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="5E81F6EF-9C4B-99B7-31C5-09D1A603B100" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Clinical Reporting RDUR D_UTM_CPP_RULES_XREF" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/dm" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PLAN}/run.clinical.adhoc.d_utm_cpp_rules_xref.generated.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="432000" isEnabled="true" isNotification="false"/>
+
+  <expirationEnd durationSec="262800" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint mode="DAILY" startDate="2016-12-14Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="B920A3CE-F76C-A40B-30EF-09A0AF5D844A"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

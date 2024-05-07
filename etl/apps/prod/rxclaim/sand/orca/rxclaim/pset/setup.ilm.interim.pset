@@ -1,0 +1,12 @@
+!prototype|P|||$PUB_DXF_MP/setup.ilm.mp
+analysis_level|Pl|||none
+PRIVATE_DML|n|||$AI_DML
+TARGET_DB_LIST||||# A List of Target Database Information\r\n# More than one line is OK if there are multiple target databases.\r\n\r\n# Logical Schema    Physical Schema      DML Directory        DBMS Type     Param Prefix    DBC File Name\r\nids_rxclaim         ids_rxclaim          $PUB_DATAHUB_DML     file          PUB_DATAHUB     none\r\nids_common          ids_common           $PUB_DATAHUB_DML     file          PUB_DATAHUB     none\r\nids_cpp             ids_cpp              $PUB_DATAHUB_DML     file          PUB_DATAHUB     none
+ILM_NAME||||$[ "" ]
+ILM_TABLE_INFO_VEC|n|||$[ get_ilm_table_info_vec(get_db_info_vec(TARGET_DB_LIST), ILM_TABLE_LIST) ]
+DB_INFO_VEC|n|||$[ get_db_info_vec(TARGET_DB_LIST) ]
+FSK_TABLE_INFO_VEC|n|||$[ get_fsk_table_info_vec(DB_INFO_VEC, FSK_TABLE_LIST) ]
+AB_DML_DEFS|n|||include "/~$PUB_DB_XFR/db_list.xfr";\r\ninclude "/~$PUB_DXF_XFR/ilm.xfr";
+FIX_CAPS_LOOKUP_PATH||||$PUB_DXF_META/lookup.fix_caps.txt
+ILM_DML||||$[ get_ilm_dml(ILM_TABLE_INFO_VEC, FSK_SUBRECORD_INFO_VEC)  // This must be evaluated in the intermediate pset. ]
+SUBJECT_AREA||||rxclaim

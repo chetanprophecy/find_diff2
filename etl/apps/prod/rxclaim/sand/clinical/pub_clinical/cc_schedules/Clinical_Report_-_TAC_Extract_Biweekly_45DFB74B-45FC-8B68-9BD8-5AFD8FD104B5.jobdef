@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="DM" description="This job produce weekly  TAC rdur extract report." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="45DFB74B-45FC-8B68-9BD8-5AFD8FD104B5" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Clinical Report - TAC Extract Biweekly" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/dm" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/tac_extract_xlsx_reports_biweekly.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="432000" isEnabled="true" isNotification="false"/>
+
+  <expirationEnd durationSec="262800" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="tac_extract_biweekly" mode="MONTHLY" startDate="2018-03-06Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="20:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfMonthWeekDay dayOfWeek="FRI" nonOperationalOffset="0" weekOfMonth="SECOND"/>
+        <dayOfMonthWeekDay dayOfWeek="FRI" nonOperationalOffset="0" weekOfMonth="FOURTH"/>
+      </days>
+      <monthsOfYear>
+        <monthOfYear value="JAN"/>
+        <monthOfYear value="FEB"/>
+        <monthOfYear value="MAR"/>
+        <monthOfYear value="APR"/>
+        <monthOfYear value="MAY"/>
+        <monthOfYear value="JUN"/>
+        <monthOfYear value="JUL"/>
+        <monthOfYear value="AUG"/>
+        <monthOfYear value="SEP"/>
+        <monthOfYear value="OCT"/>
+        <monthOfYear value="NOV"/>
+        <monthOfYear value="DEC"/>
+      </monthsOfYear>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="C250B45D-29B8-B083-EDF5-5AF56EA0E791"/>
+      <predecessor jobDefinitionGuid="2B878509-DA55-E2D5-4A70-5AF238F3F0B0"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

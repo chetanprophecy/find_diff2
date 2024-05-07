@@ -1,0 +1,869 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_1_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup d_gpi_carrier_xref   */
+out0::bzt_1_6c54cc0a_580f2a5c_c1c_4(in0,in1)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) speclty_ind = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL(""), ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_gpi_carrier_xref",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.cag_summ.clt_copay_amt,[transform],in0.clt_copay_amt,
+     in0.app_copay_amt,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.drug_summ.sbm_mn_id,[transform],in0.sbm_mn_id]
+  [out0.drug_summ.claim_stat_id,[transform],in0.claim_stat_id]
+  [out0.drug_summ.drug_spend_amt,[transform],in0.clt_dispensing_fee,
+     in0.clt_sales_tax_paid,
+     in0.clt_due_amt]
+  [out0.phar_summ.clt_copay_amt,[transform],in0.clt_copay_amt,
+     in0.app_copay_amt,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.drug_summ.specialty_drug_flg,[transform],in0.gpi_sk,
+     in0.orig_carrier_id,
+     'lookup("d_gpi_lkp").gpi_id',
+     'lookup("d_gpi_carrier_xref").speclty_ind']
+  [out0.drug_summ.clt_copay_amt,[transform],in0.clt_copay_amt,
+     in0.app_copay_amt,
+     in0.filled_dt,
+     in0.orig_carrier_id]
+  [out0.phar_summ.specialty_drug_flg,[transform],in0.gpi_sk,
+     in0.orig_carrier_id,
+     'lookup("d_gpi_lkp").gpi_id',
+     'lookup("d_gpi_carrier_xref").speclty_ind']
+  [out0.phar_summ.drug_spend_amt,[transform],in0.clt_dispensing_fee,
+     in0.clt_sales_tax_paid,
+     in0.clt_due_amt]
+  [out0.phar_summ.claim_stat_id,[transform],in0.claim_stat_id]
+  [out0.cag_summ.claim_stat_id,[transform],in0.claim_stat_id]
+  [out0.cag_summ.specialty_drug_flg,[transform],in0.gpi_sk,
+     in0.orig_carrier_id,
+     'lookup("d_gpi_lkp").gpi_id',
+     'lookup("d_gpi_carrier_xref").speclty_ind']
+  [out0.cag_summ.sbm_mn_id,[transform],in0.sbm_mn_id]
+  [out0.phar_summ.sbm_mn_id,[transform],in0.sbm_mn_id]
+  [out0.cag_summ.drug_spend_amt,[transform],in0.clt_dispensing_fee,
+     in0.clt_sales_tax_paid,
+     in0.clt_due_amt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phar_summ.app_ingred_cost_paid,'phar_summ.app_ingred_cost_paid',1,0]
+     [out0.drug_summ.pst_sales_tax_paid,'drug_summ.pst_sales_tax_paid',1,0]
+     [out0.phar_summ.clt_prof_svc_fee,'phar_summ.clt_prof_svc_fee',1,0]
+     [out0.phar_summ.dxf_sk,'phar_summ.dxf_sk',1,0]
+     [out0.phar_summ.sbm_usual_customary_amt,'phar_summ.sbm_usual_customary_amt',1,0]
+     [out0.cag_summ.tot_troop_amt,'cag_summ.tot_troop_amt',1,0]
+     [out0.drug_summ.cal_dispensing_fee,'drug_summ.cal_dispensing_fee',1,0]
+     [out0.cag_summ.rsp_prof_svc_fee,'cag_summ.rsp_prof_svc_fee',1,0]
+     [out0.cag_summ.sbm_dispensing_fee,'cag_summ.sbm_dispensing_fee',1,0]
+     [out0.phar_summ.ntwk_sk,'phar_summ.ntwk_sk',1,0]
+     [out0.cag_summ.clt_copay_amt,'cag_summ.clt_copay_amt',1,0]
+     [out0.cag_summ.cal_sales_tax_paid,'cag_summ.cal_sales_tax_paid',1,0]
+     [out0.cag_summ.sbm_usual_customary_amt,'cag_summ.sbm_usual_customary_amt',1,0]
+     [out0.drug_summ.rsp_ingred_cost_paid,'drug_summ.rsp_ingred_cost_paid',1,0]
+     [out0.phar_summ.drug_rx_otc_ind_sk,'phar_summ.drug_rx_otc_ind_sk',1,0]
+     [out0.drug_summ.sbm_mn_id,'drug_summ.sbm_mn_id',1,0]
+     [out0.drug_summ.rxsol_formulary_sk,'drug_summ.rxsol_formulary_sk',1,0]
+     [out0.phar_summ.tot_troop_amt,'phar_summ.tot_troop_amt',1,0]
+     [out0.drug_summ.cal_patient_pay_amt,'drug_summ.cal_patient_pay_amt',1,0]
+     [out0.phar_summ.sbm_ingred_cost_paid,'phar_summ.sbm_ingred_cost_paid',1,0]
+     [out0.cag_summ.app_due_amt,'cag_summ.app_due_amt',1,0]
+     [out0.drug_summ.days_of_supply_sk,'drug_summ.days_of_supply_sk',1,0]
+     [out0.cag_summ.rsp_dispensing_fee,'cag_summ.rsp_dispensing_fee',1,0]
+     [out0.cag_summ.sbm_prof_svc_fee,'cag_summ.sbm_prof_svc_fee',1,0]
+     [out0.cag_summ.cost_basis_sk,'cag_summ.cost_basis_sk',1,0]
+     [out0.cag_summ.claim_stat_sk,'cag_summ.claim_stat_sk',1,0]
+     [out0.drug_summ.cal_due_amt,'drug_summ.cal_due_amt',1,0]
+     [out0.cag_summ.sbm_patient_pay_amt,'cag_summ.sbm_patient_pay_amt',1,0]
+     [out0.drug_summ.sbm_dispensing_fee,'drug_summ.sbm_dispensing_fee',1,0]
+     [out0.phar_summ.app_copay_amt,'phar_summ.app_copay_amt',1,0]
+     [out0.cag_summ.pst_copay_amt,'cag_summ.pst_copay_amt',1,0]
+     [out0.cag_summ.app_ingred_cost_paid,'cag_summ.app_ingred_cost_paid',1,0]
+     [out0.cag_summ.drug_maint_cd_sk,'cag_summ.drug_maint_cd_sk',1,0]
+     [out0.drug_summ.app_due_amt,'drug_summ.app_due_amt',1,0]
+     [out0.drug_summ.app_patient_pay_amt,'drug_summ.app_patient_pay_amt',1,0]
+     [out0.phar_summ.claim_stat_sk,'phar_summ.claim_stat_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phar_summ.rsp_dispensing_fee,'phar_summ.rsp_dispensing_fee',1,0]
+     [out0.cag_summ.dxf_sk,'cag_summ.dxf_sk',1,0]
+     [out0.phar_summ.days_sply,'phar_summ.days_sply',1,0]
+     [out0.drug_summ.rsp_copay_amt,'drug_summ.rsp_copay_amt',1,0]
+     [out0.drug_summ.clt_sales_tax_paid,'drug_summ.clt_sales_tax_paid',1,0]
+     [out0.phar_summ.pst_prof_svc_fee,'phar_summ.pst_prof_svc_fee',1,0]
+     [out0.drug_summ.sbm_due_amt,'drug_summ.sbm_due_amt',1,0]
+     [out0.cag_summ.rsp_patient_pay_amt,'cag_summ.rsp_patient_pay_amt',1,0]
+     [out0.phar_summ.cal_ingred_cost_paid,'phar_summ.cal_ingred_cost_paid',1,0]
+     [out0.drug_summ.sbm_patient_pay_amt,'drug_summ.sbm_patient_pay_amt',1,0]
+     [out0.phar_summ.rsp_patient_pay_amt,'phar_summ.rsp_patient_pay_amt',1,0]
+     [out0.phar_summ.rsp_due_amt,'phar_summ.rsp_due_amt',1,0]
+     [out0.phar_summ.gnrc_mdspn_ind_sk,'phar_summ.gnrc_mdspn_ind_sk',1,0]
+     [out0.phar_summ.injectable_ind_sk,'phar_summ.injectable_ind_sk',1,0]
+     [out0.phar_summ.claim_cntr,'phar_summ.claim_cntr',1,0]
+     [out0.phar_summ.mail_srvc_ind_sk,'phar_summ.mail_srvc_ind_sk',1,0]
+     [out0.drug_summ.app_dispensing_fee,'drug_summ.app_dispensing_fee',1,0]
+     [out0.cag_summ.cal_due_amt,'cag_summ.cal_due_amt',1,0]
+     [out0.drug_summ.rsp_prof_svc_fee,'drug_summ.rsp_prof_svc_fee',1,0]
+     [out0.phar_summ.pst_copay_amt,'phar_summ.pst_copay_amt',1,0]
+     [out0.phar_summ.clt_formulary_sk,'phar_summ.clt_formulary_sk',1,0]
+     [out0.cag_summ.clt_prof_svc_fee,'cag_summ.clt_prof_svc_fee',1,0]
+     [out0.cag_summ.rsp_copay_amt,'cag_summ.rsp_copay_amt',1,0]
+     [out0.phar_summ.dxf_hk_part1,'phar_summ.dxf_hk_part1',1,0]
+     [out0.drug_summ.pst_due_amt,'drug_summ.pst_due_amt',1,0]
+     [out0.phar_summ.phr_afflt_sk,'phar_summ.phr_afflt_sk',1,0]
+     [out0.cag_summ.admin_rte_sk,'cag_summ.admin_rte_sk',1,0]
+     [out0.drug_summ.pst_patient_pay_amt,'drug_summ.pst_patient_pay_amt',1,0]
+     [out0.phar_summ.dea_cd_sk,'phar_summ.dea_cd_sk',1,0]
+     [out0.cag_summ.app_sales_tax_paid,'cag_summ.app_sales_tax_paid',1,0]
+     [out0.phar_summ.sbm_prof_svc_fee,'phar_summ.sbm_prof_svc_fee',1,0]
+     [out0.phar_summ.clt_ingred_cost_paid,'phar_summ.clt_ingred_cost_paid',1,0]
+     [out0.phar_summ.app_prof_svc_fee,'phar_summ.app_prof_svc_fee',1,0]
+     [out0.drug_summ.gnrc_ind_sk,'drug_summ.gnrc_ind_sk',1,0]
+     [out0.cag_summ.pst_patient_pay_amt,'cag_summ.pst_patient_pay_amt',1,0]
+     [out0.cag_summ.clt_dispensing_fee,'cag_summ.clt_dispensing_fee',1,0]
+     [out0.drug_summ.claim_stat_id,'drug_summ.claim_stat_id',1,0]
+     [out0.drug_summ.cal_sales_tax_paid,'drug_summ.cal_sales_tax_paid',1,0]
+     [out0.drug_summ.drug_spend_amt,'drug_summ.drug_spend_amt',1,0]
+     [out0.cag_summ.drug_rx_otc_ind_sk,'cag_summ.drug_rx_otc_ind_sk',1,0]
+     [out0.phar_summ.compound_sk,'phar_summ.compound_sk',1,0]
+     [out0.phar_summ.phr_sk,'phar_summ.phr_sk',1,0]
+     [out0.drug_summ.drug_maint_cd_sk,'drug_summ.drug_maint_cd_sk',1,0]
+     [out0.drug_summ.pst_dispensing_fee,'drug_summ.pst_dispensing_fee',1,0]
+     [out0.drug_summ.dmr_ind_sk,'drug_summ.dmr_ind_sk',1,0]
+     [out0.phar_summ.pst_ingred_cost_paid,'phar_summ.pst_ingred_cost_paid',1,0]
+     [out0.drug_summ.app_sales_tax_paid,'drug_summ.app_sales_tax_paid',1,0]
+     [out0.phar_summ.cal_prof_svc_fee,'phar_summ.cal_prof_svc_fee',1,0]
+     [out0.phar_summ.ahfs_cd_sk,'phar_summ.ahfs_cd_sk',1,0]
+     [out0.phar_summ.carrier_acct_sk,'phar_summ.carrier_acct_sk',1,0]
+     [out0.phar_summ.cag_sk,'phar_summ.cag_sk',1,0]
+     [out0.cag_summ.pst_prof_svc_fee,'cag_summ.pst_prof_svc_fee',1,0]
+     [out0.cag_summ.drg_qty,'cag_summ.drg_qty',1,0]
+     [out0.phar_summ.phr_pmt_cntr_sk,'phar_summ.phr_pmt_cntr_sk',1,0]
+     [out0.drug_summ.daw_cd_sk,'drug_summ.daw_cd_sk',1,0]
+     [out0.cag_summ.gnrc_ind_sk,'cag_summ.gnrc_ind_sk',1,0]
+     [out0.drug_summ.dxf_hk_part2,'drug_summ.dxf_hk_part2',1,0]
+     [out0.phar_summ.src_env_sk,'phar_summ.src_env_sk',1,0]
+     [out0.cag_summ.dsg_frm_sk,'cag_summ.dsg_frm_sk',1,0]
+     [out0.drug_summ.clt_dispensing_fee,'drug_summ.clt_dispensing_fee',1,0]
+     [out0.cag_summ.fmly_type_sk,'cag_summ.fmly_type_sk',1,0]
+     [out0.phar_summ.rsp_sales_tax_paid,'phar_summ.rsp_sales_tax_paid',1,0]
+     [out0.phar_summ.clt_copay_amt,'phar_summ.clt_copay_amt',1,0]
+     [out0.drug_summ.specialty_drug_flg,'drug_summ.specialty_drug_flg',1,0]
+     [out0.cag_summ.mail_srvc_ind_sk,'cag_summ.mail_srvc_ind_sk',1,0]
+     [out0.cag_summ.clt_formulary_sk,'cag_summ.clt_formulary_sk',1,0]
+     [out0.drug_summ.clt_due_amt,'drug_summ.clt_due_amt',1,0]
+     [out0.cag_summ.cal_ingred_cost_paid,'cag_summ.cal_ingred_cost_paid',1,0]
+     [out0.drug_summ.clt_patient_pay_amt,'drug_summ.clt_patient_pay_amt',1,0]
+     [out0.drug_summ.carrier_sk,'drug_summ.carrier_sk',1,0]
+     [out0.drug_summ.sbm_sales_tax_paid,'drug_summ.sbm_sales_tax_paid',1,0]
+     [out0.cag_summ.pst_dispensing_fee,'cag_summ.pst_dispensing_fee',1,0]
+     [out0.cag_summ.clt_patient_pay_amt,'cag_summ.clt_patient_pay_amt',1,0]
+     [out0.phar_summ.drg_qty,'phar_summ.drg_qty',1,0]
+     [out0.drug_summ.rsp_sales_tax_paid,'drug_summ.rsp_sales_tax_paid',1,0]
+     [out0.drug_summ.clt_copay_amt,'drug_summ.clt_copay_amt',1,0]
+     [out0.phar_summ.super_ntwk_sk,'phar_summ.super_ntwk_sk',1,0]
+     [out0.cag_summ.rsp_ingred_cost_paid,'cag_summ.rsp_ingred_cost_paid',1,0]
+     [out0.cag_summ.dea_cd_sk,'cag_summ.dea_cd_sk',1,0]
+     [out0.drug_summ.admin_rte_sk,'drug_summ.admin_rte_sk',1,0]
+     [out0.phar_summ.specialty_drug_flg,'phar_summ.specialty_drug_flg',1,0]
+     [out0.cag_summ.compound_sk,'cag_summ.compound_sk',1,0]
+     [out0.phar_summ.clt_patient_pay_amt,'phar_summ.clt_patient_pay_amt',1,0]
+     [out0.phar_summ.carrier_sk,'phar_summ.carrier_sk',1,0]
+     [out0.cag_summ.pst_sales_tax_paid,'cag_summ.pst_sales_tax_paid',1,0]
+     [out0.phar_summ.clt_due_amt,'phar_summ.clt_due_amt',1,0]
+     [out0.cag_summ.dxf_hk_part2,'cag_summ.dxf_hk_part2',1,0]
+     [out0.drug_summ.drg_qty,'drug_summ.drg_qty',1,0]
+     [out0.phar_summ.sbm_sales_tax_paid,'phar_summ.sbm_sales_tax_paid',1,0]
+     [out0.phar_summ.app_sales_tax_paid,'phar_summ.app_sales_tax_paid',1,0]
+     [out0.cag_summ.app_patient_pay_amt,'cag_summ.app_patient_pay_amt',1,0]
+     [out0.cag_summ.cag_sk,'cag_summ.cag_sk',1,0]
+     [out0.drug_summ.pst_ingred_cost_paid,'drug_summ.pst_ingred_cost_paid',1,0]
+     [out0.drug_summ.cag_sk,'drug_summ.cag_sk',1,0]
+     [out0.cag_summ.sbm_ingred_cost_paid,'cag_summ.sbm_ingred_cost_paid',1,0]
+     [out0.drug_summ.carrier_acct_sk,'drug_summ.carrier_acct_sk',1,0]
+     [out0.drug_summ.cal_prof_svc_fee,'drug_summ.cal_prof_svc_fee',1,0]
+     [out0.phar_summ.daw_cd_sk,'phar_summ.daw_cd_sk',1,0]
+     [out0.cag_summ.daw_cd_sk,'cag_summ.daw_cd_sk',1,0]
+     [out0.cag_summ.injectable_ind_sk,'cag_summ.injectable_ind_sk',1,0]
+     [out0.phar_summ.clt_dispensing_fee,'phar_summ.clt_dispensing_fee',1,0]
+     [out0.drug_summ.src_env_sk,'drug_summ.src_env_sk',1,0]
+     [out0.phar_summ.dxf_hk_part2,'phar_summ.dxf_hk_part2',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.drug_summ.app_prof_svc_fee,'drug_summ.app_prof_svc_fee',1,0]
+     [out0.cag_summ.clt_sales_tax_paid,'cag_summ.clt_sales_tax_paid',1,0]
+     [out0.drug_summ.clt_ingred_cost_paid,'drug_summ.clt_ingred_cost_paid',1,0]
+     [out0.drug_summ.dsg_frm_sk,'drug_summ.dsg_frm_sk',1,0]
+     [out0.phar_summ.cal_sales_tax_paid,'phar_summ.cal_sales_tax_paid',1,0]
+     [out0.phar_summ.drug_spend_amt,'phar_summ.drug_spend_amt',1,0]
+     [out0.drug_summ.prod_sk,'drug_summ.prod_sk',1,0]
+     [out0.phar_summ.claim_stat_id,'phar_summ.claim_stat_id',1,0]
+     [out0.phar_summ.gnrc_ind_sk,'phar_summ.gnrc_ind_sk',1,0]
+     [out0.cag_summ.claim_stat_id,'cag_summ.claim_stat_id',1,0]
+     [out0.drug_summ.compound_sk,'drug_summ.compound_sk',1,0]
+     [out0.cag_summ.specialty_drug_flg,'cag_summ.specialty_drug_flg',1,0]
+     [out0.phar_summ.dmr_ind_sk,'phar_summ.dmr_ind_sk',1,0]
+     [out0.cag_summ.app_prof_svc_fee,'cag_summ.app_prof_svc_fee',1,0]
+     [out0.phar_summ.pst_dispensing_fee,'phar_summ.pst_dispensing_fee',1,0]
+     [out0.phar_summ.drug_maint_cd_sk,'phar_summ.drug_maint_cd_sk',1,0]
+     [out0.cag_summ.sbm_due_amt,'cag_summ.sbm_due_amt',1,0]
+     [out0.drug_summ.clt_formulary_sk,'drug_summ.clt_formulary_sk',1,0]
+     [out0.cag_summ.days_sply,'cag_summ.days_sply',1,0]
+     [out0.cag_summ.sbm_mn_id,'cag_summ.sbm_mn_id',1,0]
+     [out0.drug_summ.pst_copay_amt,'drug_summ.pst_copay_amt',1,0]
+     [out0.phar_summ.rsp_prof_svc_fee,'phar_summ.rsp_prof_svc_fee',1,0]
+     [out0.cag_summ.cob_ind_sk,'cag_summ.cob_ind_sk',1,0]
+     [out0.phar_summ.pst_patient_pay_amt,'phar_summ.pst_patient_pay_amt',1,0]
+     [out0.cag_summ.app_dispensing_fee,'cag_summ.app_dispensing_fee',1,0]
+     [out0.cag_summ.rsp_due_amt,'cag_summ.rsp_due_amt',1,0]
+     [out0.cag_summ.gnrc_mdspn_ind_sk,'cag_summ.gnrc_mdspn_ind_sk',1,0]
+     [out0.phar_summ.pst_due_amt,'phar_summ.pst_due_amt',1,0]
+     [out0.drug_summ.dxf_hk_part1,'drug_summ.dxf_hk_part1',1,0]
+     [out0.drug_summ.sbm_prof_svc_fee,'drug_summ.sbm_prof_svc_fee',1,0]
+     [out0.cag_summ.rxsol_formulary_sk,'cag_summ.rxsol_formulary_sk',1,0]
+     [out0.drug_summ.dea_cd_sk,'drug_summ.dea_cd_sk',1,0]
+     [out0.drug_summ.pst_prof_svc_fee,'drug_summ.pst_prof_svc_fee',1,0]
+     [out0.cag_summ.src_env_sk,'cag_summ.src_env_sk',1,0]
+     [out0.phar_summ.rsp_copay_amt,'phar_summ.rsp_copay_amt',1,0]
+     [out0.phar_summ.clt_sales_tax_paid,'phar_summ.clt_sales_tax_paid',1,0]
+     [out0.phar_summ.sbm_patient_pay_amt,'phar_summ.sbm_patient_pay_amt',1,0]
+     [out0.drug_summ.drug_sk,'drug_summ.drug_sk',1,0]
+     [out0.drug_summ.cal_ingred_cost_paid,'drug_summ.cal_ingred_cost_paid',1,0]
+     [out0.phar_summ.sbm_due_amt,'phar_summ.sbm_due_amt',1,0]
+     [out0.cag_summ.dxf_hk_part1,'cag_summ.dxf_hk_part1',1,0]
+     [out0.drug_summ.gpi_sk,'drug_summ.gpi_sk',1,0]
+     [out0.drug_summ.injectable_ind_sk,'drug_summ.injectable_ind_sk',1,0]
+     [out0.drug_summ.rsp_due_amt,'drug_summ.rsp_due_amt',1,0]
+     [out0.drug_summ.gnrc_mdspn_ind_sk,'drug_summ.gnrc_mdspn_ind_sk',1,0]
+     [out0.drug_summ.rsp_patient_pay_amt,'drug_summ.rsp_patient_pay_amt',1,0]
+     [out0.cag_summ.clt_ingred_cost_paid,'cag_summ.clt_ingred_cost_paid',1,0]
+     [out0.phar_summ.app_dispensing_fee,'phar_summ.app_dispensing_fee',1,0]
+     [out0.drug_summ.mail_srvc_ind_sk,'drug_summ.mail_srvc_ind_sk',1,0]
+     [out0.drug_summ.claim_cntr,'drug_summ.claim_cntr',1,0]
+     [out0.cag_summ.cal_patient_pay_amt,'cag_summ.cal_patient_pay_amt',1,0]
+     [out0.drug_summ.app_copay_amt,'drug_summ.app_copay_amt',1,0]
+     [out0.phar_summ.sbm_dispensing_fee,'phar_summ.sbm_dispensing_fee',1,0]
+     [out0.drug_summ.claim_stat_sk,'drug_summ.claim_stat_sk',1,0]
+     [out0.phar_summ.app_patient_pay_amt,'phar_summ.app_patient_pay_amt',1,0]
+     [out0.cag_summ.pst_due_amt,'cag_summ.pst_due_amt',1,0]
+     [out0.phar_summ.app_due_amt,'phar_summ.app_due_amt',1,0]
+     [out0.drug_summ.days_sply,'drug_summ.days_sply',1,0]
+     [out0.cag_summ.carrier_sk,'cag_summ.carrier_sk',1,0]
+     [out0.drug_summ.rsp_dispensing_fee,'drug_summ.rsp_dispensing_fee',1,0]
+     [out0.phar_summ.rsp_ingred_cost_paid,'phar_summ.rsp_ingred_cost_paid',1,0]
+     [out0.cag_summ.pst_ingred_cost_paid,'cag_summ.pst_ingred_cost_paid',1,0]
+     [out0.cag_summ.app_copay_amt,'cag_summ.app_copay_amt',1,0]
+     [out0.cag_summ.cal_dispensing_fee,'cag_summ.cal_dispensing_fee',1,0]
+     [out0.drug_summ.drug_rx_otc_ind_sk,'drug_summ.drug_rx_otc_ind_sk',1,0]
+     [out0.drug_summ.tot_troop_amt,'drug_summ.tot_troop_amt',1,0]
+     [out0.phar_summ.rxsol_formulary_sk,'phar_summ.rxsol_formulary_sk',1,0]
+     [out0.cag_summ.rsp_sales_tax_paid,'cag_summ.rsp_sales_tax_paid',1,0]
+     [out0.cag_summ.dmr_ind_sk,'cag_summ.dmr_ind_sk',1,0]
+     [out0.phar_summ.sbm_mn_id,'phar_summ.sbm_mn_id',1,0]
+     [out0.phar_summ.cal_due_amt,'phar_summ.cal_due_amt',1,0]
+     [out0.cag_summ.claim_cntr,'cag_summ.claim_cntr',1,0]
+     [out0.drug_summ.sbm_ingred_cost_paid,'drug_summ.sbm_ingred_cost_paid',1,0]
+     [out0.phar_summ.cal_patient_pay_amt,'phar_summ.cal_patient_pay_amt',1,0]
+     [out0.drug_summ.clt_prof_svc_fee,'drug_summ.clt_prof_svc_fee',1,0]
+     [out0.drug_summ.dxf_sk,'drug_summ.dxf_sk',1,0]
+     [out0.cag_summ.cal_prof_svc_fee,'cag_summ.cal_prof_svc_fee',1,0]
+     [out0.cag_summ.clt_due_amt,'cag_summ.clt_due_amt',1,0]
+     [out0.phar_summ.pst_sales_tax_paid,'phar_summ.pst_sales_tax_paid',1,0]
+     [out0.drug_summ.app_ingred_cost_paid,'drug_summ.app_ingred_cost_paid',1,0]
+     [out0.drug_summ.sbm_usual_customary_amt,'drug_summ.sbm_usual_customary_amt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.phar_summ.cal_dispensing_fee,'phar_summ.cal_dispensing_fee',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.cag_summ.drug_spend_amt,'cag_summ.drug_spend_amt',1,0]
+     [out0.cag_summ.carrier_acct_sk,'cag_summ.carrier_acct_sk',1,0]
+     [out0.cag_summ.sbm_sales_tax_paid,'cag_summ.sbm_sales_tax_paid',1,0]
+  ]
+  impacts:
+  [
+     [in0.cal_ingred_cost_paid,'cal_ingred_cost_paid',3,3]
+     ['lookup("d_gpi_lkp").gpi_id','gpi_id',3,3]
+     [in0.pst_dispensing_fee,'pst_dispensing_fee',3,3]
+     ['lookup("d_gpi_carrier_xref").speclty_ind','speclty_ind',3,3]
+     [in0.sbm_patient_pay_amt,'sbm_patient_pay_amt',3,3]
+     [in0.app_dispensing_fee,'app_dispensing_fee',3,3]
+     [in0.cob_ind_sk,'cob_ind_sk',1,1]
+     [in0.cal_due_amt,'cal_due_amt',3,3]
+     [in0.daw_cd_sk,'daw_cd_sk',3,3]
+     [in0.clt_patient_pay_amt,'clt_patient_pay_amt',3,3]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.sbm_mn_id,'sbm_mn_id',3,3]
+     [in0.fmly_type_sk,'fmly_type_sk',1,1]
+     [in0.dea_cd_sk,'dea_cd_sk',3,3]
+     [in0.cost_basis_sk,'cost_basis_sk',1,1]
+     [in0.compound_sk,'compound_sk',3,3]
+     [in0.app_due_amt,'app_due_amt',3,3]
+     [in0.gpi_sk,'gpi_sk',2,4]
+     [in0.pst_ingred_cost_paid,'pst_ingred_cost_paid',3,3]
+     [in0.cal_dispensing_fee,'cal_dispensing_fee',3,3]
+     [in0.app_ingred_cost_paid,'app_ingred_cost_paid',3,3]
+     [in0.rxsol_formulary_sk,'rxsol_formulary_sk',3,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rsp_prof_svc_fee,'rsp_prof_svc_fee',3,3]
+     [in0.pst_due_amt,'pst_due_amt',3,3]
+     [in0.ntwk_sk,'ntwk_sk',1,1]
+     [in0.days_of_supply_sk,'days_of_supply_sk',1,1]
+     [in0.rsp_dispensing_fee,'rsp_dispensing_fee',3,3]
+     [in0.days_sply,'days_sply',3,3]
+     [in0.cal_prof_svc_fee,'cal_prof_svc_fee',3,3]
+     [in0.sbm_sales_tax_paid,'sbm_sales_tax_paid',3,3]
+     [in0.mail_srvc_ind_sk,'mail_srvc_ind_sk',3,3]
+     [in0.clt_sales_tax_paid,'clt_sales_tax_paid',6,6]
+     [in0.drug_rx_otc_ind_sk,'drug_rx_otc_ind_sk',3,3]
+     [in0.clt_formulary_sk,'clt_formulary_sk',3,3]
+     [in0.phr_afflt_sk,'phr_afflt_sk',1,1]
+     [in0.clt_copay_amt,'clt_copay_amt',3,3]
+     [in0.dxf_sk,'dxf_sk',3,3]
+     [in0.src_env_sk,'src_env_sk',3,3]
+     [in0.rsp_ingred_cost_paid,'rsp_ingred_cost_paid',3,3]
+     [in0.tot_troop_amt,'tot_troop_amt',3,3]
+     [in0.dxf_hk_part1,'dxf_hk_part1',3,3]
+     [in0.app_prof_svc_fee,'app_prof_svc_fee',3,3]
+     [in0.phr_pmt_cntr_sk,'phr_pmt_cntr_sk',1,1]
+     [in0.pst_prof_svc_fee,'pst_prof_svc_fee',3,3]
+     [in0.drug_maint_cd_sk,'drug_maint_cd_sk',3,3]
+     [in0.rsp_due_amt,'rsp_due_amt',3,3]
+     [in0.dmr_ind_sk,'dmr_ind_sk',3,3]
+     [in0.gnrc_ind_sk,'gnrc_ind_sk',3,3]
+     [in0.dsg_frm_sk,'dsg_frm_sk',2,2]
+     [in0.clt_dispensing_fee,'clt_dispensing_fee',6,6]
+     [in0.orig_carrier_id,'orig_carrier_id',15,6]
+     [in0.drg_qty,'drg_qty',3,3]
+     [in0.pst_patient_pay_amt,'pst_patient_pay_amt',3,3]
+     [in0.carrier_acct_sk,'carrier_acct_sk',3,3]
+     [in0.app_patient_pay_amt,'app_patient_pay_amt',3,3]
+     [in0.sbm_dispensing_fee,'sbm_dispensing_fee',3,3]
+     [in0.dxf_hk_part2,'dxf_hk_part2',3,3]
+     [in0.rsp_sales_tax_paid,'rsp_sales_tax_paid',3,3]
+     [in0.cal_patient_pay_amt,'cal_patient_pay_amt',3,3]
+     [in0.sbm_due_amt,'sbm_due_amt',3,3]
+     [in0.sbm_ingred_cost_paid,'sbm_ingred_cost_paid',3,3]
+     [in0.claim_stat_sk,'claim_stat_sk',3,3]
+     [in0.carrier_sk,'carrier_sk',3,3]
+     [in0.rsp_copay_amt,'rsp_copay_amt',3,3]
+     [in0.clt_due_amt,'clt_due_amt',6,6]
+     [in0.injectable_ind_sk,'injectable_ind_sk',3,3]
+     [in0.clt_ingred_cost_paid,'clt_ingred_cost_paid',3,3]
+     [in0.phr_sk,'phr_sk',1,1]
+     [in0.gnrc_mdspn_ind_sk,'gnrc_mdspn_ind_sk',3,3]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.claim_stat_id,'claim_stat_id',3,3]
+     [in0.filled_dt,'filled_dt',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.drug_sk,'drug_sk',1,1]
+     [in0.rsp_patient_pay_amt,'rsp_patient_pay_amt',3,3]
+     [in0.cag_sk,'cag_sk',3,3]
+     [in0.super_ntwk_sk,'super_ntwk_sk',1,1]
+     [in0.pst_sales_tax_paid,'pst_sales_tax_paid',3,3]
+     [in0.app_sales_tax_paid,'app_sales_tax_paid',3,3]
+     [in0.sbm_prof_svc_fee,'sbm_prof_svc_fee',3,3]
+     [in0.app_copay_amt,'app_copay_amt',6,6]
+     [in0.cal_sales_tax_paid,'cal_sales_tax_paid',3,3]
+     [in0.claim_cntr,'claim_cntr',3,3]
+     [in0.ahfs_cd_sk,'ahfs_cd_sk',1,1]
+     [in0.pst_copay_amt,'pst_copay_amt',3,3]
+     [in0.admin_rte_sk,'admin_rte_sk',2,2]
+     [in0.clt_prof_svc_fee,'clt_prof_svc_fee',3,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.sbm_usual_customary_amt,'sbm_usual_customary_amt',3,3]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) drug_summ_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) drug_summ_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) drug_summ_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) drug_summ_claim_stat_id = fail_if_error(string_lrtrim(in0.claim_stat_id));
+let decimal("\x01",0) drug_summ_carrier_sk = fail_if_error(in0.carrier_sk);
+let decimal("\x01",0) drug_summ_carrier_acct_sk = fail_if_error(in0.carrier_acct_sk);
+let decimal("\x01",0) drug_summ_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) drug_summ_claim_stat_sk = fail_if_error(in0.claim_stat_sk);
+let decimal("\x01",0) drug_summ_sbm_mn_id = fail_if_error(string_lrtrim(in0.sbm_mn_id));
+let decimal("\x01",0) drug_summ_gpi_sk = fail_if_error(in0.gpi_sk);
+let decimal("\x01",0) drug_summ_prod_sk = fail_if_error(in0.prod_sk);
+let decimal("\x01",0) drug_summ_drug_sk = fail_if_error(in0.drug_sk);
+let decimal("\x01",0) drug_summ_gnrc_ind_sk = fail_if_error(in0.gnrc_ind_sk);
+let decimal("\x01",0) drug_summ_gnrc_mdspn_ind_sk = fail_if_error(in0.gnrc_mdspn_ind_sk);
+let decimal("\x01",0) drug_summ_mail_srvc_ind_sk = fail_if_error(in0.mail_srvc_ind_sk);
+let decimal("\x01",0) drug_summ_drug_rx_otc_ind_sk = fail_if_error(in0.drug_rx_otc_ind_sk);
+let decimal("\x01",0) drug_summ_drug_maint_cd_sk = fail_if_error(in0.drug_maint_cd_sk);
+let decimal("\x01",0) drug_summ_daw_cd_sk = fail_if_error(in0.daw_cd_sk);
+let decimal("\x01",0) drug_summ_dea_cd_sk = fail_if_error(in0.dea_cd_sk);
+let decimal("\x01",0) drug_summ_admin_rte_sk = fail_if_error(in0.admin_rte_sk);
+let decimal("\x01",0) drug_summ_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) drug_summ_clt_formulary_sk = fail_if_error(in0.clt_formulary_sk);
+let decimal("\x01",0) drug_summ_dmr_ind_sk = fail_if_error(in0.dmr_ind_sk);
+let decimal("\x01",0) drug_summ_injectable_ind_sk = fail_if_error(in0.injectable_ind_sk);
+let decimal("\x01",0) drug_summ_dsg_frm_sk = fail_if_error(in0.dsg_frm_sk);
+let decimal("\x01",0) drug_summ_days_of_supply_sk = fail_if_error(in0.days_of_supply_sk);
+let decimal("\x01",0) drug_summ_rxsol_formulary_sk = fail_if_error(in0.rxsol_formulary_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) drug_summ_specialty_drug_flg;
+let decimal("\x01",0) drug_summ_claim_cntr = fail_if_error(in0.claim_cntr);
+let decimal("\x01".3, maximum_length=17, sign_reserved) drug_summ_drg_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_drug_spend_amt = fail_if_error(in0.clt_due_amt + in0.clt_sales_tax_paid + in0.clt_dispensing_fee);
+let decimal("\x01",0) drug_summ_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_tot_troop_amt = fail_if_error(in0.tot_troop_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_dispensing_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_sales_tax_paid = fail_if_error(in0.app_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_due_amt = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_copay_amt = fail_if_error(in0.app_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_app_prof_svc_fee = fail_if_error(in0.app_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_ingred_cost_paid = fail_if_error(in0.clt_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_dispensing_fee = fail_if_error(in0.clt_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_sales_tax_paid = fail_if_error(in0.clt_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_patient_pay_amt = fail_if_error(in0.clt_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_copay_amt = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and(sql_or(sql_or((in0.orig_carrier_id=="PSI2560"),(in0.orig_carrier_id=="PSI2565")),(in0.orig_carrier_id=="PSI2570")),(in0.filled_dt<"20050101"))))
+   in0.app_copay_amt
+ else
+   in0.clt_copay_amt));
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_clt_prof_svc_fee = fail_if_error(in0.clt_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_ingred_cost_paid = fail_if_error(in0.sbm_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_dispensing_fee = fail_if_error(in0.sbm_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_sales_tax_paid = fail_if_error(in0.sbm_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_patient_pay_amt = fail_if_error(in0.sbm_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_due_amt = fail_if_error(in0.sbm_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_usual_customary_amt = fail_if_error(in0.sbm_usual_customary_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_sbm_prof_svc_fee = fail_if_error(in0.sbm_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_ingred_cost_paid = fail_if_error(in0.cal_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_dispensing_fee = fail_if_error(in0.cal_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_sales_tax_paid = fail_if_error(in0.cal_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_patient_pay_amt = fail_if_error(in0.cal_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_due_amt = fail_if_error(in0.cal_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_cal_prof_svc_fee = fail_if_error(in0.cal_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_ingred_cost_paid = fail_if_error(in0.pst_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_dispensing_fee = fail_if_error(in0.pst_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_sales_tax_paid = fail_if_error(in0.pst_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_patient_pay_amt = fail_if_error(in0.pst_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_due_amt = fail_if_error(in0.pst_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_copay_amt = fail_if_error(in0.pst_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_pst_prof_svc_fee = fail_if_error(in0.pst_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_ingred_cost_paid = fail_if_error(in0.rsp_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_dispensing_fee = fail_if_error(in0.rsp_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_sales_tax_paid = fail_if_error(in0.rsp_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_patient_pay_amt = fail_if_error(in0.rsp_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_due_amt = fail_if_error(in0.rsp_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_copay_amt = fail_if_error(in0.rsp_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) drug_summ_rsp_prof_svc_fee = fail_if_error(in0.rsp_prof_svc_fee);
+let decimal("\x01",0) drug_summ_src_env_sk = fail_if_error(in0.src_env_sk);
+let unsigned integer(8) cag_summ_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) cag_summ_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) cag_summ_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cag_summ_claim_stat_id = fail_if_error(string_lrtrim(in0.claim_stat_id));
+let decimal("\x01",0) cag_summ_carrier_sk = fail_if_error(in0.carrier_sk);
+let decimal("\x01",0) cag_summ_carrier_acct_sk = fail_if_error(in0.carrier_acct_sk);
+let decimal("\x01",0) cag_summ_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) cag_summ_claim_stat_sk = fail_if_error(in0.claim_stat_sk);
+let decimal("\x01",0) cag_summ_sbm_mn_id = fail_if_error(string_lrtrim(in0.sbm_mn_id));
+let decimal("\x01",0) cag_summ_gnrc_ind_sk = fail_if_error(in0.gnrc_ind_sk);
+let decimal("\x01",0) cag_summ_gnrc_mdspn_ind_sk = fail_if_error(in0.gnrc_mdspn_ind_sk);
+let decimal("\x01",0) cag_summ_mail_srvc_ind_sk = fail_if_error(in0.mail_srvc_ind_sk);
+let decimal("\x01",0) cag_summ_drug_rx_otc_ind_sk = fail_if_error(in0.drug_rx_otc_ind_sk);
+let decimal("\x01",0) cag_summ_drug_maint_cd_sk = fail_if_error(in0.drug_maint_cd_sk);
+let decimal("\x01",0) cag_summ_cob_ind_sk = fail_if_error(in0.cob_ind_sk);
+let decimal("\x01",0) cag_summ_daw_cd_sk = fail_if_error(in0.daw_cd_sk);
+let decimal("\x01",0) cag_summ_dea_cd_sk = fail_if_error(in0.dea_cd_sk);
+let decimal("\x01",0) cag_summ_fmly_type_sk = fail_if_error(in0.fmly_type_sk);
+let decimal("\x01",0) cag_summ_cost_basis_sk = fail_if_error(in0.cost_basis_sk);
+let decimal("\x01",0) cag_summ_admin_rte_sk = fail_if_error(in0.admin_rte_sk);
+let decimal("\x01",0) cag_summ_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) cag_summ_clt_formulary_sk = fail_if_error(in0.clt_formulary_sk);
+let decimal("\x01",0) cag_summ_dmr_ind_sk = fail_if_error(in0.dmr_ind_sk);
+let decimal("\x01",0) cag_summ_injectable_ind_sk = fail_if_error(in0.injectable_ind_sk);
+let decimal("\x01",0) cag_summ_dsg_frm_sk = fail_if_error(in0.dsg_frm_sk);
+let decimal("\x01",0) cag_summ_rxsol_formulary_sk = fail_if_error(in0.rxsol_formulary_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cag_summ_specialty_drug_flg;
+let decimal("\x01",0) cag_summ_claim_cntr = fail_if_error(in0.claim_cntr);
+let decimal("\x01".3, maximum_length=17, sign_reserved) cag_summ_drg_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_drug_spend_amt = fail_if_error(in0.clt_due_amt + in0.clt_sales_tax_paid + in0.clt_dispensing_fee);
+let decimal("\x01",0) cag_summ_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_tot_troop_amt = fail_if_error(in0.tot_troop_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_dispensing_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_sales_tax_paid = fail_if_error(in0.app_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_due_amt = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_copay_amt = fail_if_error(in0.app_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_app_prof_svc_fee = fail_if_error(in0.app_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_ingred_cost_paid = fail_if_error(in0.clt_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_dispensing_fee = fail_if_error(in0.clt_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_sales_tax_paid = fail_if_error(in0.clt_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_patient_pay_amt = fail_if_error(in0.clt_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_copay_amt = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and(sql_or(sql_or((in0.orig_carrier_id=="PSI2560"),(in0.orig_carrier_id=="PSI2565")),(in0.orig_carrier_id=="PSI2570")),(in0.filled_dt<"20050101"))))
+   in0.app_copay_amt
+ else
+   in0.clt_copay_amt));
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_clt_prof_svc_fee = fail_if_error(in0.clt_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_ingred_cost_paid = fail_if_error(in0.sbm_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_dispensing_fee = fail_if_error(in0.sbm_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_sales_tax_paid = fail_if_error(in0.sbm_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_patient_pay_amt = fail_if_error(in0.sbm_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_due_amt = fail_if_error(in0.sbm_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_usual_customary_amt = fail_if_error(in0.sbm_usual_customary_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_sbm_prof_svc_fee = fail_if_error(in0.sbm_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_ingred_cost_paid = fail_if_error(in0.cal_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_dispensing_fee = fail_if_error(in0.cal_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_sales_tax_paid = fail_if_error(in0.cal_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_patient_pay_amt = fail_if_error(in0.cal_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_due_amt = fail_if_error(in0.cal_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_cal_prof_svc_fee = fail_if_error(in0.cal_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_ingred_cost_paid = fail_if_error(in0.pst_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_dispensing_fee = fail_if_error(in0.pst_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_sales_tax_paid = fail_if_error(in0.pst_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_patient_pay_amt = fail_if_error(in0.pst_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_due_amt = fail_if_error(in0.pst_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_copay_amt = fail_if_error(in0.pst_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_pst_prof_svc_fee = fail_if_error(in0.pst_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_ingred_cost_paid = fail_if_error(in0.rsp_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_dispensing_fee = fail_if_error(in0.rsp_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_sales_tax_paid = fail_if_error(in0.rsp_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_patient_pay_amt = fail_if_error(in0.rsp_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_due_amt = fail_if_error(in0.rsp_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_copay_amt = fail_if_error(in0.rsp_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) cag_summ_rsp_prof_svc_fee = fail_if_error(in0.rsp_prof_svc_fee);
+let decimal("\x01",0) cag_summ_src_env_sk = fail_if_error(in0.src_env_sk);
+let unsigned integer(8) phar_summ_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) phar_summ_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) phar_summ_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) phar_summ_claim_stat_id = fail_if_error(string_lrtrim(in0.claim_stat_id));
+let decimal("\x01",0) phar_summ_carrier_sk = fail_if_error(in0.carrier_sk);
+let decimal("\x01",0) phar_summ_carrier_acct_sk = fail_if_error(in0.carrier_acct_sk);
+let decimal("\x01",0) phar_summ_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) phar_summ_claim_stat_sk = fail_if_error(in0.claim_stat_sk);
+let decimal("\x01",0) phar_summ_sbm_mn_id = fail_if_error(string_lrtrim(in0.sbm_mn_id));
+let decimal("\x01",0) phar_summ_phr_sk = fail_if_error(in0.phr_sk);
+let decimal("\x01",0) phar_summ_ntwk_sk = fail_if_error(in0.ntwk_sk);
+let decimal("\x01",0) phar_summ_super_ntwk_sk = fail_if_error(in0.super_ntwk_sk);
+let decimal("\x01",0) phar_summ_phr_afflt_sk = fail_if_error(in0.phr_afflt_sk);
+let decimal("\x01",0) phar_summ_ahfs_cd_sk = fail_if_error(in0.ahfs_cd_sk);
+let decimal("\x01",0) phar_summ_phr_pmt_cntr_sk = fail_if_error(in0.phr_pmt_cntr_sk);
+let decimal("\x01",0) phar_summ_gnrc_ind_sk = fail_if_error(in0.gnrc_ind_sk);
+let decimal("\x01",0) phar_summ_gnrc_mdspn_ind_sk = fail_if_error(in0.gnrc_mdspn_ind_sk);
+let decimal("\x01",0) phar_summ_mail_srvc_ind_sk = fail_if_error(in0.mail_srvc_ind_sk);
+let decimal("\x01",0) phar_summ_drug_rx_otc_ind_sk = fail_if_error(in0.drug_rx_otc_ind_sk);
+let decimal("\x01",0) phar_summ_drug_maint_cd_sk = fail_if_error(in0.drug_maint_cd_sk);
+let decimal("\x01",0) phar_summ_daw_cd_sk = fail_if_error(in0.daw_cd_sk);
+let decimal("\x01",0) phar_summ_dea_cd_sk = fail_if_error(in0.dea_cd_sk);
+let decimal("\x01",0) phar_summ_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) phar_summ_clt_formulary_sk = fail_if_error(in0.clt_formulary_sk);
+let decimal("\x01",0) phar_summ_dmr_ind_sk = fail_if_error(in0.dmr_ind_sk);
+let decimal("\x01",0) phar_summ_injectable_ind_sk = fail_if_error(in0.injectable_ind_sk);
+let decimal("\x01",0) phar_summ_rxsol_formulary_sk = fail_if_error(in0.rxsol_formulary_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) phar_summ_specialty_drug_flg;
+let decimal("\x01",0) phar_summ_claim_cntr = fail_if_error(in0.claim_cntr);
+let decimal("\x01".3, maximum_length=17, sign_reserved) phar_summ_drg_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_drug_spend_amt = fail_if_error(in0.clt_due_amt + in0.clt_sales_tax_paid + in0.clt_dispensing_fee);
+let decimal("\x01",0) phar_summ_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_tot_troop_amt = fail_if_error(in0.tot_troop_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_dispensing_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_sales_tax_paid = fail_if_error(in0.app_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_due_amt = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_copay_amt = fail_if_error(in0.app_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_app_prof_svc_fee = fail_if_error(in0.app_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_ingred_cost_paid = fail_if_error(in0.clt_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_dispensing_fee = fail_if_error(in0.clt_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_sales_tax_paid = fail_if_error(in0.clt_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_patient_pay_amt = fail_if_error(in0.clt_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_copay_amt = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and(sql_or(sql_or((in0.orig_carrier_id=="PSI2560"),(in0.orig_carrier_id=="PSI2565")),(in0.orig_carrier_id=="PSI2570")),(in0.filled_dt<"20050101"))))
+   in0.app_copay_amt
+ else
+   in0.clt_copay_amt));
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_clt_prof_svc_fee = fail_if_error(in0.clt_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_ingred_cost_paid = fail_if_error(in0.sbm_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_dispensing_fee = fail_if_error(in0.sbm_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_sales_tax_paid = fail_if_error(in0.sbm_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_patient_pay_amt = fail_if_error(in0.sbm_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_due_amt = fail_if_error(in0.sbm_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_usual_customary_amt = fail_if_error(in0.sbm_usual_customary_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_sbm_prof_svc_fee = fail_if_error(in0.sbm_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_ingred_cost_paid = fail_if_error(in0.cal_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_dispensing_fee = fail_if_error(in0.cal_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_sales_tax_paid = fail_if_error(in0.cal_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_patient_pay_amt = fail_if_error(in0.cal_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_due_amt = fail_if_error(in0.cal_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_cal_prof_svc_fee = fail_if_error(in0.cal_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_ingred_cost_paid = fail_if_error(in0.pst_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_dispensing_fee = fail_if_error(in0.pst_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_sales_tax_paid = fail_if_error(in0.pst_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_patient_pay_amt = fail_if_error(in0.pst_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_due_amt = fail_if_error(in0.pst_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_copay_amt = fail_if_error(in0.pst_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_pst_prof_svc_fee = fail_if_error(in0.pst_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_ingred_cost_paid = fail_if_error(in0.rsp_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_dispensing_fee = fail_if_error(in0.rsp_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_sales_tax_paid = fail_if_error(in0.rsp_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_patient_pay_amt = fail_if_error(in0.rsp_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_due_amt = fail_if_error(in0.rsp_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_copay_amt = fail_if_error(in0.rsp_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) phar_summ_rsp_prof_svc_fee = fail_if_error(in0.rsp_prof_svc_fee);
+let decimal("\x01",0) phar_summ_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+drug_summ_specialty_drug_flg=fail_if_error(first_defined(bzt_1_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, lookup("d_gpi_lkp",in0.gpi_sk).gpi_id).speclty_ind, "N"));
+
+/*   Default value   */
+phar_summ_specialty_drug_flg=fail_if_error(first_defined(bzt_1_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, lookup("d_gpi_lkp",in0.gpi_sk).gpi_id).speclty_ind, "N"));
+
+/*   Default value   */
+cag_summ_specialty_drug_flg=fail_if_error(first_defined(bzt_1_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, lookup("d_gpi_lkp",in0.gpi_sk).gpi_id).speclty_ind, "N"));
+
+  out0.drug_summ.dxf_hk_part1::drug_summ_dxf_hk_part1;
+  out0.drug_summ.dxf_hk_part2::drug_summ_dxf_hk_part2;
+  out0.drug_summ.dxf_sk::drug_summ_dxf_sk;
+  out0.drug_summ.claim_stat_id::drug_summ_claim_stat_id;
+  out0.drug_summ.carrier_sk::drug_summ_carrier_sk;
+  out0.drug_summ.carrier_acct_sk::drug_summ_carrier_acct_sk;
+  out0.drug_summ.cag_sk::drug_summ_cag_sk;
+  out0.drug_summ.claim_stat_sk::drug_summ_claim_stat_sk;
+  out0.drug_summ.sbm_mn_id::drug_summ_sbm_mn_id;
+  out0.drug_summ.gpi_sk::drug_summ_gpi_sk;
+  out0.drug_summ.prod_sk::drug_summ_prod_sk;
+  out0.drug_summ.drug_sk::drug_summ_drug_sk;
+  out0.drug_summ.gnrc_ind_sk::drug_summ_gnrc_ind_sk;
+  out0.drug_summ.gnrc_mdspn_ind_sk::drug_summ_gnrc_mdspn_ind_sk;
+  out0.drug_summ.mail_srvc_ind_sk::drug_summ_mail_srvc_ind_sk;
+  out0.drug_summ.drug_rx_otc_ind_sk::drug_summ_drug_rx_otc_ind_sk;
+  out0.drug_summ.drug_maint_cd_sk::drug_summ_drug_maint_cd_sk;
+  out0.drug_summ.daw_cd_sk::drug_summ_daw_cd_sk;
+  out0.drug_summ.dea_cd_sk::drug_summ_dea_cd_sk;
+  out0.drug_summ.admin_rte_sk::drug_summ_admin_rte_sk;
+  out0.drug_summ.compound_sk::drug_summ_compound_sk;
+  out0.drug_summ.clt_formulary_sk::drug_summ_clt_formulary_sk;
+  out0.drug_summ.dmr_ind_sk::drug_summ_dmr_ind_sk;
+  out0.drug_summ.injectable_ind_sk::drug_summ_injectable_ind_sk;
+  out0.drug_summ.dsg_frm_sk::drug_summ_dsg_frm_sk;
+  out0.drug_summ.days_of_supply_sk::drug_summ_days_of_supply_sk;
+  out0.drug_summ.rxsol_formulary_sk::drug_summ_rxsol_formulary_sk;
+  out0.drug_summ.specialty_drug_flg::drug_summ_specialty_drug_flg;
+  out0.drug_summ.claim_cntr::drug_summ_claim_cntr;
+  out0.drug_summ.drg_qty::drug_summ_drg_qty;
+  out0.drug_summ.drug_spend_amt::drug_summ_drug_spend_amt;
+  out0.drug_summ.days_sply::drug_summ_days_sply;
+  out0.drug_summ.tot_troop_amt::drug_summ_tot_troop_amt;
+  out0.drug_summ.app_ingred_cost_paid::drug_summ_app_ingred_cost_paid;
+  out0.drug_summ.app_dispensing_fee::drug_summ_app_dispensing_fee;
+  out0.drug_summ.app_sales_tax_paid::drug_summ_app_sales_tax_paid;
+  out0.drug_summ.app_patient_pay_amt::drug_summ_app_patient_pay_amt;
+  out0.drug_summ.app_due_amt::drug_summ_app_due_amt;
+  out0.drug_summ.app_copay_amt::drug_summ_app_copay_amt;
+  out0.drug_summ.app_prof_svc_fee::drug_summ_app_prof_svc_fee;
+  out0.drug_summ.clt_ingred_cost_paid::drug_summ_clt_ingred_cost_paid;
+  out0.drug_summ.clt_dispensing_fee::drug_summ_clt_dispensing_fee;
+  out0.drug_summ.clt_sales_tax_paid::drug_summ_clt_sales_tax_paid;
+  out0.drug_summ.clt_patient_pay_amt::drug_summ_clt_patient_pay_amt;
+  out0.drug_summ.clt_due_amt::drug_summ_clt_due_amt;
+  out0.drug_summ.clt_copay_amt::drug_summ_clt_copay_amt;
+  out0.drug_summ.clt_prof_svc_fee::drug_summ_clt_prof_svc_fee;
+  out0.drug_summ.sbm_ingred_cost_paid::drug_summ_sbm_ingred_cost_paid;
+  out0.drug_summ.sbm_dispensing_fee::drug_summ_sbm_dispensing_fee;
+  out0.drug_summ.sbm_sales_tax_paid::drug_summ_sbm_sales_tax_paid;
+  out0.drug_summ.sbm_patient_pay_amt::drug_summ_sbm_patient_pay_amt;
+  out0.drug_summ.sbm_due_amt::drug_summ_sbm_due_amt;
+  out0.drug_summ.sbm_usual_customary_amt::drug_summ_sbm_usual_customary_amt;
+  out0.drug_summ.sbm_prof_svc_fee::drug_summ_sbm_prof_svc_fee;
+  out0.drug_summ.cal_ingred_cost_paid::drug_summ_cal_ingred_cost_paid;
+  out0.drug_summ.cal_dispensing_fee::drug_summ_cal_dispensing_fee;
+  out0.drug_summ.cal_sales_tax_paid::drug_summ_cal_sales_tax_paid;
+  out0.drug_summ.cal_patient_pay_amt::drug_summ_cal_patient_pay_amt;
+  out0.drug_summ.cal_due_amt::drug_summ_cal_due_amt;
+  out0.drug_summ.cal_prof_svc_fee::drug_summ_cal_prof_svc_fee;
+  out0.drug_summ.pst_ingred_cost_paid::drug_summ_pst_ingred_cost_paid;
+  out0.drug_summ.pst_dispensing_fee::drug_summ_pst_dispensing_fee;
+  out0.drug_summ.pst_sales_tax_paid::drug_summ_pst_sales_tax_paid;
+  out0.drug_summ.pst_patient_pay_amt::drug_summ_pst_patient_pay_amt;
+  out0.drug_summ.pst_due_amt::drug_summ_pst_due_amt;
+  out0.drug_summ.pst_copay_amt::drug_summ_pst_copay_amt;
+  out0.drug_summ.pst_prof_svc_fee::drug_summ_pst_prof_svc_fee;
+  out0.drug_summ.rsp_ingred_cost_paid::drug_summ_rsp_ingred_cost_paid;
+  out0.drug_summ.rsp_dispensing_fee::drug_summ_rsp_dispensing_fee;
+  out0.drug_summ.rsp_sales_tax_paid::drug_summ_rsp_sales_tax_paid;
+  out0.drug_summ.rsp_patient_pay_amt::drug_summ_rsp_patient_pay_amt;
+  out0.drug_summ.rsp_due_amt::drug_summ_rsp_due_amt;
+  out0.drug_summ.rsp_copay_amt::drug_summ_rsp_copay_amt;
+  out0.drug_summ.rsp_prof_svc_fee::drug_summ_rsp_prof_svc_fee;
+  out0.drug_summ.src_env_sk::drug_summ_src_env_sk;
+  out0.cag_summ.dxf_hk_part1::cag_summ_dxf_hk_part1;
+  out0.cag_summ.dxf_hk_part2::cag_summ_dxf_hk_part2;
+  out0.cag_summ.dxf_sk::cag_summ_dxf_sk;
+  out0.cag_summ.claim_stat_id::cag_summ_claim_stat_id;
+  out0.cag_summ.carrier_sk::cag_summ_carrier_sk;
+  out0.cag_summ.carrier_acct_sk::cag_summ_carrier_acct_sk;
+  out0.cag_summ.cag_sk::cag_summ_cag_sk;
+  out0.cag_summ.claim_stat_sk::cag_summ_claim_stat_sk;
+  out0.cag_summ.sbm_mn_id::cag_summ_sbm_mn_id;
+  out0.cag_summ.gnrc_ind_sk::cag_summ_gnrc_ind_sk;
+  out0.cag_summ.gnrc_mdspn_ind_sk::cag_summ_gnrc_mdspn_ind_sk;
+  out0.cag_summ.mail_srvc_ind_sk::cag_summ_mail_srvc_ind_sk;
+  out0.cag_summ.drug_rx_otc_ind_sk::cag_summ_drug_rx_otc_ind_sk;
+  out0.cag_summ.drug_maint_cd_sk::cag_summ_drug_maint_cd_sk;
+  out0.cag_summ.cob_ind_sk::cag_summ_cob_ind_sk;
+  out0.cag_summ.daw_cd_sk::cag_summ_daw_cd_sk;
+  out0.cag_summ.dea_cd_sk::cag_summ_dea_cd_sk;
+  out0.cag_summ.fmly_type_sk::cag_summ_fmly_type_sk;
+  out0.cag_summ.cost_basis_sk::cag_summ_cost_basis_sk;
+  out0.cag_summ.admin_rte_sk::cag_summ_admin_rte_sk;
+  out0.cag_summ.compound_sk::cag_summ_compound_sk;
+  out0.cag_summ.clt_formulary_sk::cag_summ_clt_formulary_sk;
+  out0.cag_summ.dmr_ind_sk::cag_summ_dmr_ind_sk;
+  out0.cag_summ.injectable_ind_sk::cag_summ_injectable_ind_sk;
+  out0.cag_summ.dsg_frm_sk::cag_summ_dsg_frm_sk;
+  out0.cag_summ.rxsol_formulary_sk::cag_summ_rxsol_formulary_sk;
+  out0.cag_summ.specialty_drug_flg::cag_summ_specialty_drug_flg;
+  out0.cag_summ.claim_cntr::cag_summ_claim_cntr;
+  out0.cag_summ.drg_qty::cag_summ_drg_qty;
+  out0.cag_summ.drug_spend_amt::cag_summ_drug_spend_amt;
+  out0.cag_summ.days_sply::cag_summ_days_sply;
+  out0.cag_summ.tot_troop_amt::cag_summ_tot_troop_amt;
+  out0.cag_summ.app_ingred_cost_paid::cag_summ_app_ingred_cost_paid;
+  out0.cag_summ.app_dispensing_fee::cag_summ_app_dispensing_fee;
+  out0.cag_summ.app_sales_tax_paid::cag_summ_app_sales_tax_paid;
+  out0.cag_summ.app_patient_pay_amt::cag_summ_app_patient_pay_amt;
+  out0.cag_summ.app_due_amt::cag_summ_app_due_amt;
+  out0.cag_summ.app_copay_amt::cag_summ_app_copay_amt;
+  out0.cag_summ.app_prof_svc_fee::cag_summ_app_prof_svc_fee;
+  out0.cag_summ.clt_ingred_cost_paid::cag_summ_clt_ingred_cost_paid;
+  out0.cag_summ.clt_dispensing_fee::cag_summ_clt_dispensing_fee;
+  out0.cag_summ.clt_sales_tax_paid::cag_summ_clt_sales_tax_paid;
+  out0.cag_summ.clt_patient_pay_amt::cag_summ_clt_patient_pay_amt;
+  out0.cag_summ.clt_due_amt::cag_summ_clt_due_amt;
+  out0.cag_summ.clt_copay_amt::cag_summ_clt_copay_amt;
+  out0.cag_summ.clt_prof_svc_fee::cag_summ_clt_prof_svc_fee;
+  out0.cag_summ.sbm_ingred_cost_paid::cag_summ_sbm_ingred_cost_paid;
+  out0.cag_summ.sbm_dispensing_fee::cag_summ_sbm_dispensing_fee;
+  out0.cag_summ.sbm_sales_tax_paid::cag_summ_sbm_sales_tax_paid;
+  out0.cag_summ.sbm_patient_pay_amt::cag_summ_sbm_patient_pay_amt;
+  out0.cag_summ.sbm_due_amt::cag_summ_sbm_due_amt;
+  out0.cag_summ.sbm_usual_customary_amt::cag_summ_sbm_usual_customary_amt;
+  out0.cag_summ.sbm_prof_svc_fee::cag_summ_sbm_prof_svc_fee;
+  out0.cag_summ.cal_ingred_cost_paid::cag_summ_cal_ingred_cost_paid;
+  out0.cag_summ.cal_dispensing_fee::cag_summ_cal_dispensing_fee;
+  out0.cag_summ.cal_sales_tax_paid::cag_summ_cal_sales_tax_paid;
+  out0.cag_summ.cal_patient_pay_amt::cag_summ_cal_patient_pay_amt;
+  out0.cag_summ.cal_due_amt::cag_summ_cal_due_amt;
+  out0.cag_summ.cal_prof_svc_fee::cag_summ_cal_prof_svc_fee;
+  out0.cag_summ.pst_ingred_cost_paid::cag_summ_pst_ingred_cost_paid;
+  out0.cag_summ.pst_dispensing_fee::cag_summ_pst_dispensing_fee;
+  out0.cag_summ.pst_sales_tax_paid::cag_summ_pst_sales_tax_paid;
+  out0.cag_summ.pst_patient_pay_amt::cag_summ_pst_patient_pay_amt;
+  out0.cag_summ.pst_due_amt::cag_summ_pst_due_amt;
+  out0.cag_summ.pst_copay_amt::cag_summ_pst_copay_amt;
+  out0.cag_summ.pst_prof_svc_fee::cag_summ_pst_prof_svc_fee;
+  out0.cag_summ.rsp_ingred_cost_paid::cag_summ_rsp_ingred_cost_paid;
+  out0.cag_summ.rsp_dispensing_fee::cag_summ_rsp_dispensing_fee;
+  out0.cag_summ.rsp_sales_tax_paid::cag_summ_rsp_sales_tax_paid;
+  out0.cag_summ.rsp_patient_pay_amt::cag_summ_rsp_patient_pay_amt;
+  out0.cag_summ.rsp_due_amt::cag_summ_rsp_due_amt;
+  out0.cag_summ.rsp_copay_amt::cag_summ_rsp_copay_amt;
+  out0.cag_summ.rsp_prof_svc_fee::cag_summ_rsp_prof_svc_fee;
+  out0.cag_summ.src_env_sk::cag_summ_src_env_sk;
+  out0.phar_summ.dxf_hk_part1::phar_summ_dxf_hk_part1;
+  out0.phar_summ.dxf_hk_part2::phar_summ_dxf_hk_part2;
+  out0.phar_summ.dxf_sk::phar_summ_dxf_sk;
+  out0.phar_summ.claim_stat_id::phar_summ_claim_stat_id;
+  out0.phar_summ.carrier_sk::phar_summ_carrier_sk;
+  out0.phar_summ.carrier_acct_sk::phar_summ_carrier_acct_sk;
+  out0.phar_summ.cag_sk::phar_summ_cag_sk;
+  out0.phar_summ.claim_stat_sk::phar_summ_claim_stat_sk;
+  out0.phar_summ.sbm_mn_id::phar_summ_sbm_mn_id;
+  out0.phar_summ.phr_sk::phar_summ_phr_sk;
+  out0.phar_summ.ntwk_sk::phar_summ_ntwk_sk;
+  out0.phar_summ.super_ntwk_sk::phar_summ_super_ntwk_sk;
+  out0.phar_summ.phr_afflt_sk::phar_summ_phr_afflt_sk;
+  out0.phar_summ.ahfs_cd_sk::phar_summ_ahfs_cd_sk;
+  out0.phar_summ.phr_pmt_cntr_sk::phar_summ_phr_pmt_cntr_sk;
+  out0.phar_summ.gnrc_ind_sk::phar_summ_gnrc_ind_sk;
+  out0.phar_summ.gnrc_mdspn_ind_sk::phar_summ_gnrc_mdspn_ind_sk;
+  out0.phar_summ.mail_srvc_ind_sk::phar_summ_mail_srvc_ind_sk;
+  out0.phar_summ.drug_rx_otc_ind_sk::phar_summ_drug_rx_otc_ind_sk;
+  out0.phar_summ.drug_maint_cd_sk::phar_summ_drug_maint_cd_sk;
+  out0.phar_summ.daw_cd_sk::phar_summ_daw_cd_sk;
+  out0.phar_summ.dea_cd_sk::phar_summ_dea_cd_sk;
+  out0.phar_summ.compound_sk::phar_summ_compound_sk;
+  out0.phar_summ.clt_formulary_sk::phar_summ_clt_formulary_sk;
+  out0.phar_summ.dmr_ind_sk::phar_summ_dmr_ind_sk;
+  out0.phar_summ.injectable_ind_sk::phar_summ_injectable_ind_sk;
+  out0.phar_summ.rxsol_formulary_sk::phar_summ_rxsol_formulary_sk;
+  out0.phar_summ.specialty_drug_flg::phar_summ_specialty_drug_flg;
+  out0.phar_summ.claim_cntr::phar_summ_claim_cntr;
+  out0.phar_summ.drg_qty::phar_summ_drg_qty;
+  out0.phar_summ.drug_spend_amt::phar_summ_drug_spend_amt;
+  out0.phar_summ.days_sply::phar_summ_days_sply;
+  out0.phar_summ.tot_troop_amt::phar_summ_tot_troop_amt;
+  out0.phar_summ.app_ingred_cost_paid::phar_summ_app_ingred_cost_paid;
+  out0.phar_summ.app_dispensing_fee::phar_summ_app_dispensing_fee;
+  out0.phar_summ.app_sales_tax_paid::phar_summ_app_sales_tax_paid;
+  out0.phar_summ.app_patient_pay_amt::phar_summ_app_patient_pay_amt;
+  out0.phar_summ.app_due_amt::phar_summ_app_due_amt;
+  out0.phar_summ.app_copay_amt::phar_summ_app_copay_amt;
+  out0.phar_summ.app_prof_svc_fee::phar_summ_app_prof_svc_fee;
+  out0.phar_summ.clt_ingred_cost_paid::phar_summ_clt_ingred_cost_paid;
+  out0.phar_summ.clt_dispensing_fee::phar_summ_clt_dispensing_fee;
+  out0.phar_summ.clt_sales_tax_paid::phar_summ_clt_sales_tax_paid;
+  out0.phar_summ.clt_patient_pay_amt::phar_summ_clt_patient_pay_amt;
+  out0.phar_summ.clt_due_amt::phar_summ_clt_due_amt;
+  out0.phar_summ.clt_copay_amt::phar_summ_clt_copay_amt;
+  out0.phar_summ.clt_prof_svc_fee::phar_summ_clt_prof_svc_fee;
+  out0.phar_summ.sbm_ingred_cost_paid::phar_summ_sbm_ingred_cost_paid;
+  out0.phar_summ.sbm_dispensing_fee::phar_summ_sbm_dispensing_fee;
+  out0.phar_summ.sbm_sales_tax_paid::phar_summ_sbm_sales_tax_paid;
+  out0.phar_summ.sbm_patient_pay_amt::phar_summ_sbm_patient_pay_amt;
+  out0.phar_summ.sbm_due_amt::phar_summ_sbm_due_amt;
+  out0.phar_summ.sbm_usual_customary_amt::phar_summ_sbm_usual_customary_amt;
+  out0.phar_summ.sbm_prof_svc_fee::phar_summ_sbm_prof_svc_fee;
+  out0.phar_summ.cal_ingred_cost_paid::phar_summ_cal_ingred_cost_paid;
+  out0.phar_summ.cal_dispensing_fee::phar_summ_cal_dispensing_fee;
+  out0.phar_summ.cal_sales_tax_paid::phar_summ_cal_sales_tax_paid;
+  out0.phar_summ.cal_patient_pay_amt::phar_summ_cal_patient_pay_amt;
+  out0.phar_summ.cal_due_amt::phar_summ_cal_due_amt;
+  out0.phar_summ.cal_prof_svc_fee::phar_summ_cal_prof_svc_fee;
+  out0.phar_summ.pst_ingred_cost_paid::phar_summ_pst_ingred_cost_paid;
+  out0.phar_summ.pst_dispensing_fee::phar_summ_pst_dispensing_fee;
+  out0.phar_summ.pst_sales_tax_paid::phar_summ_pst_sales_tax_paid;
+  out0.phar_summ.pst_patient_pay_amt::phar_summ_pst_patient_pay_amt;
+  out0.phar_summ.pst_due_amt::phar_summ_pst_due_amt;
+  out0.phar_summ.pst_copay_amt::phar_summ_pst_copay_amt;
+  out0.phar_summ.pst_prof_svc_fee::phar_summ_pst_prof_svc_fee;
+  out0.phar_summ.rsp_ingred_cost_paid::phar_summ_rsp_ingred_cost_paid;
+  out0.phar_summ.rsp_dispensing_fee::phar_summ_rsp_dispensing_fee;
+  out0.phar_summ.rsp_sales_tax_paid::phar_summ_rsp_sales_tax_paid;
+  out0.phar_summ.rsp_patient_pay_amt::phar_summ_rsp_patient_pay_amt;
+  out0.phar_summ.rsp_due_amt::phar_summ_rsp_due_amt;
+  out0.phar_summ.rsp_copay_amt::phar_summ_rsp_copay_amt;
+  out0.phar_summ.rsp_prof_svc_fee::phar_summ_rsp_prof_svc_fee;
+  out0.phar_summ.src_env_sk::phar_summ_src_env_sk;
+  out0.*::in0.*;
+
+end;

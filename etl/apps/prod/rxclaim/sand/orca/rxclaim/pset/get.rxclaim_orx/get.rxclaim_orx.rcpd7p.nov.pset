@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcpd7p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name  Unqualified Table Name  Fields\r\nclmprdext2_bk1 rce12111                  rxclaimnbr,clmseqnbr,claimsts,carrierid,accountid,groupid,memberid\r\nclmprdfil_bk1  rcpd7p                  asd9hs,asi6h9,asokhc,asm1ih,asochc,astshx,asrgh9,asrhh9,asrih9,asukh9,asoxhg,asb2io,asfihs,asalhy,asamhy,asf1qu,asf2qu,asb3hd,asc9hk,asfjhs,aso4ic,asxzqv,asx0qv,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext2_bk1', 'clmprdext2_bk1.rce12111') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcpd7p')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \r\n\t\t"WHERE  rce12111.RXCLAIMNBR = RCPD7P.ASP2NB\tAND rce12111.CLMSEQNBR = RCPD7P.ASOINB \r\n\t\tAND TRIM(rce12111.CARRIERID) IS NOT NULL  AND TRIM(rce12111.CARRIERID) != '' AND TRIM(rce12111.CARRIERID) != 'JILL' AND rce12111.CARRIERID  NOT LIKE '%TEST%'\r\n\t\tAND (TRIM(rce12111.CLMORIGIN)  IN ('T', 'M', 'B', 'R' ,'A','I','J')  \r\n\t\t\t  AND ( (rce12111.SBMSRVPRID NOT IN ('1718634', '0556540', '1497704431', '1669498515') \r\n\t\t\t\tAND rce12111.SRVPROVID NOT IN ('1718634', '0556540', '1497704431', '1669498515')) \r\n\t\t\t\tOR (DECIMAL(rce12111.RXNUMBER) >= 10000) )) AND rce12111.DATESBM in (20211107,20211108,20211110,20211116,20211117,20211118,20211121,20211122,20211125,20211126)" +\r\n\t\t" OPTIMIZE FOR ALL ROWS"\r\n\t]
+END_CHANGES_TIME||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS")) (date("YYYY-MM-DD"))(today() - 1)]
+DO_PUBLISH_CLEAN_FILE||||0

@@ -1,0 +1,176 @@
+// Usage: include "/~$PUB_DB_XFR/db_list.xfr";
+// This file is used in PDL via AB_DML_DEFS.
+
+/* Tests:
+ksh <<'!'
+. ./ab_project_setup.ksh .
+export AB_INCLUDE_FILES=$PUB_DB_XFR/db_list.xfr
+m_eval 'get_matching_db_list("a b /dml/x c AI d", "", "a", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # "$AI_DML/x"
+m_eval 'get_matching_db_list("a b /dml/c d AI e\nx y /dml/z t AI u", "a x", "a", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # a & x
+m_eval 'get_matching_db_list("a b /dml/c d AI e\nx y /dml/z t AI u", "x a", "a", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # x & a
+m_eval 'get_matching_db_list("a b /dml/c d AI e\nx y /dml/z t AI u", "a x", "x", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # a & x
+m_eval 'get_matching_db_list("a b /dml/c d AI e\nx y /dml/z t AI u", "x y z\na b", "a", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # a
+!
+m_eval 'get_line_vec("foo\n#bar\nbaz buzz")' # [vector [record word_vec [vector "foo"]], [record word_vec [vector "baz", "buzz"]]]
+m_eval 'other_directory(".../dml", "pset")' # .../pset
+m_eval 'other_directory(".../dml/", "pset")' # .../pset
+m_eval 'other_directory(".../dml/x", "pset")' # .../pset
+m_eval 'other_directory(".../dml/x/dml/y", "pset")' # .../pset
+m_eval 'get_db_info_vec("a b /dml/x c AI d")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # "$AI_DML/x"
+m_eval 'get_matching_db_list("a b /dml/x c AI d", "", "a", "t")' | sed -e 's/\(\\r\)*\\n/\n/g' -e 's/\\\(.\)/\1/g' # "$AI_DML/x"
+!
+*/
+
+type db_info_t =
+record
+  string(long) logical_schema;
+  string(long) physical_schema;
+  string(long) dml_directory;
+  string(long) dbms_type;
+  string(long) parameter_prefix = "";
+  string(long) parameterized_dml_directory = "";
+  string(long) dbc_file = "";
+  string(long) pset_directory = "";
+  string(long) run_directory = "";
+  string(long) xfr_directory = "";
+  string(long) serial_layout = "";
+  string(long) mfs_layout = "";
+  string(long) mfs_local_layout = "";
+end;
+type db_info_vec_t = db_info_t[long];
+
+type schema_info_t=
+record 
+   string(long) schema_system_name; 
+end;
+type system_schema_info_t = schema_info_t[long]; 
+
+
+constant db_info_t empty_db_info = allocate();
+
+
+/* Returns all the matching DB List entries for a given Schema and Table Name.
+Can return multiple entries if the matching entry appears in the DB Groups List. */
+out :: get_matching_db_list(db_list, db_groups_list, schema, table) =
+begin
+  let db_line_vec = re_split_no_empty(db_list, "[\r\n]+");
+  let matching_db_line_vec = for ( let line in db_line_vec ) :
+    if ( starts_with(line, schema + " ") )
+      line;
+  let matching_db_line = null_if_error(matching_db_line_vec[0]);
+  let db_group_match_vec = for ( let line in get_line_vec(db_groups_list) ) :
+    if ( schema member line.word_vec )
+      line;
+  let matching_db_group_schema_vec = null_if_error(db_group_match_vec[0].word_vec);
+
+  out :1: if ( is_defined(matching_db_group_schema_vec) )
+    string_join(
+      for ( let schema in matching_db_group_schema_vec ) :
+        for ( let line in db_line_vec ) :
+          if ( starts_with(line, schema + " ") )
+            line,
+      "\n");
+  out :: matching_db_line;
+end;
+
+out :: get_line_vec(param) =
+begin
+  let clean_param = re_replace(param, "(?m-s)[ \t]*#.*", ""); // Remove comments.
+  let line_vec = re_split_no_empty(clean_param, "\r*\n");
+  out :: for ( let line in line_vec ) :
+    [record 
+      word_vec re_split_no_empty(line, "[ \t]+")
+    ];
+end;
+
+
+/* Return the path of a project subdirectory given the location of the DML directory.
+In order to allow non-database DML, we remove "/dml/../" and "/dml/<anything>/..", 
+so the DML directory can be one level lower than the other subdirectories.
+*/
+out :: other_directory(dml_directory, subdir) =
+begin
+  out :: re_replace(dml_directory + "/../" + subdir, "/dml(/.*)?/[.][.]/", "/");
+end;
+
+/* Parses a DB List and returns a vector of DB Info. */
+out :: get_db_info_vec(db_list, string(long) ai_serial = ".", string(long) ai_mfs = "") =
+begin
+  out :: for ( let line in get_line_vec(db_list) ) :
+    begin
+      let word_vec = line.word_vec;
+      let logical_schema = word_vec[0];
+      let physical_schema = word_vec[1];
+      let dml_directory = word_vec[2];
+      let dbms_type = word_vec[3];
+      let parameter_prefix = first_defined(null_if_error(word_vec[4]), "DB_XXX");  // This fallback tries to provide a hint about what is missing.
+      //let parameterized_dml_directory = "$" + parameter_prefix + "_DML" + re_match_replace(dml_directory, "^.*/dml(/.*)?$", "$1");
+        let parameterized_dml_directory = "$" + parameter_prefix + "_DML";
+      let db_directory = other_directory(dml_directory, "db");
+      let dbc_file = first_defined(null_if_error(word_vec[5]), db_directory + "/" + dbms_type + ".db_xxx.dbc");  // This fallback tries to provide a hint about what is missing.
+      let string(long) serial_layout = first_defined(null_if_error(word_vec[6]), "file:" + ai_serial);
+      let string(long) mfs_layout = first_defined(null_if_error(word_vec[7]), "mfile:" + ai_mfs);
+      let string(long) mfs_local_layout = first_defined(null_if_error(word_vec[8]), "mfile:" + ai_mfs);
+      result :: [record
+        logical_schema              logical_schema,
+        physical_schema             physical_schema,
+        dml_directory               dml_directory,
+        dbms_type                   dbms_type,
+        parameter_prefix            parameter_prefix,
+        parameterized_dml_directory parameterized_dml_directory,
+        dbc_file                    dbc_file,
+        pset_directory              other_directory(dml_directory, "pset"),
+        run_directory               other_directory(dml_directory, "run"),
+        xfr_directory               other_directory(dml_directory, "xfr"),
+        serial_layout               serial_layout,
+        mfs_layout                  mfs_layout,
+        mfs_local_layout            mfs_local_layout,
+      ];
+    end;
+end;
+
+/* Returns all the matching DB List entries for a given Schema and Table Name.
+Can return multiple entries if the matching entry appears in the DB Groups List. */
+out :: get_matching_db_list_dbms_type(db_list, dbms_type) =
+begin
+  let db_line_vec = re_split_no_empty(db_list, "[\r\n]+");
+  let matching_db_info_vec = for ( let line in db_line_vec ) :
+    if ( not starts_with(line, "#") and re_split_no_empty(line, "[ \t]+")[3] == dbms_type ) line;
+  out :: string_join(vector_sort_dedup_first(matching_db_info_vec), "\n");
+end;
+
+/* Returns all the matching DB List entries for a given DB PROJECT.
+Can return multiple entries if the matching entry appears in the DB Groups List. */
+out :: get_matching_db_list_db_project_dbms_logical(db_list, dbms_type, db_project, logical_schema) =
+begin
+  let db_line_vec = re_split_no_empty(db_list, "[\r\n]+");
+  let matching_db_info_vec = for ( let line in db_line_vec ) :
+    if ( not starts_with(line, "#") and re_split_no_empty(line, "[ \t]+")[3] == dbms_type and re_split_no_empty(line, "[ \t]+")[4] == db_project and re_split_no_empty(line, "[ \t]+")[0] == logical_schema ) line;
+  out :: string_join(matching_db_info_vec, "\n");
+end;
+
+out :: get_matching_db_list_db_project_dbms(db_list, dbms_type, db_project) =
+begin
+  let db_line_vec = re_split_no_empty(db_list, "[\r\n]+");
+  let matching_db_info_vec = for ( let line in db_line_vec ) :
+    if ( not starts_with(line, "#") and re_split_no_empty(line, "[ \t]+")[3] == dbms_type and re_split_no_empty(line, "[ \t]+")[4] == db_project ) line;
+  out :: string_join(matching_db_info_vec, "\n");
+end;
+
+out :: get_db_info_vec_db_project(db_list, db_project, string(long) ai_serial = ".", string(long) ai_mfs = "") =
+begin
+  out :: for(let db_info  in get_db_info_vec(db_list, ai_serial, ai_mfs)) : 
+    if(db_info.parameter_prefix == db_project) db_info;
+end;
+
+out :: get_system_info_vec(system_list) =
+begin
+  out :: for ( let line in get_line_vec(system_list) ) :
+    begin
+      let word_vec = line.word_vec; 
+      let system_name = word_vec[0];
+      result :: [record
+        system_name system_name,
+      ];
+    end;
+end;

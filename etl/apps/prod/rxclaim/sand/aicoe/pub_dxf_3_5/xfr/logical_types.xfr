@@ -1,0 +1,168 @@
+// Usage: include "/~$PUB_DMF_XFR/logical_types.xfr".
+// That XFR will include this one.
+
+// This file is used in PDL via ilm.xfr.
+
+
+/* Read a "logical" natural key type and remove the Effective Date and Newline fields.  
+This is used to populate an optional "physical" surrogate key in foreign key references.
+Also allows all the fields to be NULL, which allows for NULL foreign keys. */
+out :: read_optional_natural_key_type(dml_file) =
+begin
+  let key_type = read_natural_key_type(dml_file);
+  let info_vec = record_info(key_type);
+  key_type = add_fields("record\nend",
+    for ( let info in info_vec ) begin
+      info.nullable = 1;
+    end :
+      info );
+  out :: re_replace(key_type, "\n$", ""); // Trim off the trailing newline.
+end;
+
+
+/* Read a "physical" (database) type and remove the fields that do not have direct business meaning. */
+out :: read_logical_type(dml_file, biz_name_prefix) =
+begin
+  out :: read_filtered_logical_type(dml_file, 0, biz_name_prefix, "^$", ".");
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is present (0). */
+out :: read_optional_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_logical_type(dml_file, biz_name_prefix);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 0;\nend",
+    logical_type);
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is ignored (2), as if it had been left out of the ILM.
+Also allows all the fields to be NULL, which avoids having to map them. */
+out :: read_null_optional_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_logical_type(dml_file, biz_name_prefix);
+  let info_vec = record_info(logical_type);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 2;\nend",
+    add_fields("record\nend",
+      for ( let info in info_vec ) begin
+        info.nullable = 1;
+      end
+      : info));
+end;
+
+
+/* Read a "physical" (database) type and remove the fields that do not have direct business meaning. */
+out :: read_defaulted_logical_type(dml_file, biz_name_prefix) =
+begin
+  out :: read_filtered_logical_type(dml_file, 1, biz_name_prefix, "^$", ".");
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is present (0). */
+out :: read_optional_defaulted_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_defaulted_logical_type(dml_file, biz_name_prefix);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 0;\nend",
+    logical_type);
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is ignored (2), as if it had been left out of the ILM.
+Also allows all the fields to be NULL, which avoids having to map them. */
+out :: read_null_optional_defaulted_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_defaulted_logical_type(dml_file, biz_name_prefix);
+  let info_vec = record_info(logical_type);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 2;\nend",
+    add_fields("record\nend",
+      for ( let info in info_vec ) begin
+        info.nullable = 1;
+      end :
+        info));
+end;
+
+
+/* Read a "physical" (database) type and remove the fields that do not have direct business meaning. */
+out :: read_padded_logical_type(dml_file, biz_name_prefix) =
+begin
+  out :: read_filtered_logical_type(dml_file, 2, biz_name_prefix, "^$", ".");
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is present (0). */
+out :: read_optional_padded_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_padded_logical_type(dml_file, biz_name_prefix);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 0;\nend",
+    logical_type);
+end;
+
+/* Add an extra field, "drop_record", to the logical type to allow the whole record to be present (0), absent (1), or ignored (2).
+The default is that the record is ignored (2), as if it had been left out of the ILM.
+Also allows all the fields to be NULL, which avoids having to map them. */
+out :: read_null_optional_padded_logical_type(dml_file, biz_name_prefix) =
+begin
+  let logical_type = read_padded_logical_type(dml_file, biz_name_prefix);
+  let info_vec = record_info(logical_type);
+  out :: join_types(
+    "record\n  decimal(1) drop_record = 2;\nend",
+    add_fields("record\nend",
+      for ( let info in info_vec ) begin
+        info.nullable = 1;
+      end :
+        info));
+end;
+
+
+/* Read a "physical" (database) type and remove the fields that do not have direct business meaning,
+then filter the result so that it only contains a subset of the possible fields. */
+out :: read_filtered_logical_type(dml_file, set_defaults, biz_name_prefix, exclude_regexp, include_regexp) =
+begin
+  let dml_file_vec = string_split(dml_file, "/");
+  let dml_file_name = dml_file_vec[length_of(dml_file_vec)-1];
+  let physical_type = read_type(dml_file);
+  let field_name_vec = record_info_item(physical_type, "name");
+  let string("")[int] audit_name_vec = record_info_item(expand_type('include "/~$PUB_DXF_DML/generic_data_types.dml"; metadata type = ids_audit_type;'),"name");
+  /* Add any physical fields here (in alphabetical order, please). */
+  let physical_field_vec = vector_append(audit_name_vec, "newline"); 
+
+  let field_to_remove_vec = for ( let field_name in field_name_vec ) :
+    if ( re_index(field_name, include_regexp) == 0 or // Not matched by Include Regexp
+         re_index(field_name, exclude_regexp)  > 0 or // Matched by Exclude Regexp
+         //re_index(field_name, "_sk$")          > 0 or // It's a Surrogate Key (PK or FK).  NOTE: This expression must be updated appropriately.
+         field_name member physical_field_vec )       // It's a known Physical Field
+      field_name;
+  //let logical_type = remove_fields(physical_type, field_to_remove_vec); -- This loses structured comments.
+  let info_vec = record_info(physical_type);
+  let logical_type = add_fields("record\nend",
+    for ( let info in info_vec ) begin
+      let biz_name = null_if_error(scomment_info_item(info.scomment, "BizName"));
+      let biz_comment = null_if_error(scomment_info_item(info.scomment, "BizComment"));
+      let field_size = re_replace(re_replace(info.dml_type, "[)].*", ""), ".*[^0-9]", "");
+      if ( set_defaults != 0 and (info.default == "" or info.default == '""') ) begin
+        if ( info.form == "decimal" )
+          info.default = "0";
+        if ( info.form == "string" )
+          info.default = '""';
+        if ( set_defaults == 2 and info.form == "string" and field_size != "" )
+          info.dml_type = "string(" + field_size + ")";
+      end
+      if ( is_null(biz_name) )
+        biz_name = null_if_error(scomment_info_item(re_replace(info.scomment, "[ \t\r\n]+BizComment:.*", ""), "BizName")); // Strip out the BizComment, if it is causing parse errors.
+      if ( is_defined(biz_name) )
+        biz_name = "BizName: " + string_representation(biz_name_prefix + biz_name);
+      if ( is_null(biz_comment) )
+        biz_comment = re_replace(info.scomment, ".*[ \t\r\n]BizComment: *.", "");
+      info.comment = string_replace(biz_comment, "*/", "*-/") + "\n" + info.comment;
+      info.scomment = biz_name;
+    end :
+      if ( info.name not member field_to_remove_vec )
+        info);
+
+  out :: re_replace(logical_type, "\n$", ""); // Trim off the trailing newline.
+end;

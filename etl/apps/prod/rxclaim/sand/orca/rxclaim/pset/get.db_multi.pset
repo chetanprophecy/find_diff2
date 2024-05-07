@@ -1,0 +1,11 @@
+!prototype|P|||$AI_MP/get.db_multi.mp
+analysis_level|Pl|||none
+SOURCE_NAME||||$[ "" ]
+SOURCE_TABLE_LIST||||$[ "" ]
+DEFAULT_DEDUP_SORT_KEY|n|||{source_record_active_cd; source_update_dttm descending; source_sequence_number descending; source_create_dttm descending; dxf_src_dataset_id descending; dxf_src_rec_cnt descending; drop_record; $END_DATE_FIELD_NAME}
+SOURCE_DB_LIST||||$[ get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)  // This must be evaluated in the intermediate pset. ]
+START_CHANGES_TIME||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+SOURCE_DB_INFO_VEC||||$[ get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS) ]
+DO_CLEAN||||1
+DO_SOURCE||||0
+CLEAN_FILE_URL||||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING+"/clean."+ SOURCE_SYSTEM + "/clean."  + SOURCE_LOWER + ".dat.gz" ]

@@ -1,0 +1,124 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_scoop_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/12/20  Paul Thompson           Initial version
+ *  2017/04/26  Chinmay Sahoo           Added Required scoop types for med_scoop
+ ******************************************************************************************************************************************/
+ 
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+/******************************/
+/* Pharmacy Claim Scoop Types */
+/******************************/
+
+type pharma_claim_scoop_rqst_t =
+record
+  cli_pega_id_t           cli_clt_id;
+  cli_pbp_id_t            pbp_id = NULL;
+  
+  cli_date_t              review_period_start_dt;
+  cli_date_t              review_period_end_dt;
+  cli_date_t              filled_dt     = NULL;
+  cli_date_t              last_scoop_dt = NULL;
+  pharma_claim_stats_t    scoop_stats   = NULL;
+  
+  mbr_t                   clt_mbr;
+  cagm_nk_t               claim_cagm;
+  
+  hash_key_t              clt_mbr_cagm_hash;
+  hash_key_t              claim_cagm_hash;
+  cagm_sk_t               clt_mbr_cagm_sk;
+  cagm_sk_t               claim_cagm_sk;
+end;
+
+type pharma_claim_ext_dtl_t =
+record
+  cli_integer_id_t        cli_src_env_id             = NULL;
+  cli_integer_id_t        cli_prescriber_id          = NULL;
+  cli_string_t            gpi_nm                     = NULL;
+  cli_gpi_id_t            drg_bsic_nm_gpi_08_cd      = NULL;
+  cli_gpi_id_t            drg_dosag_frm_gpi_12_cd    = NULL;
+  cli_ind_t               prd_repackage_ind          = NULL('') /*@ BizName: "Periodic Repackage Indicator" */;
+  cli_string_t            package_size_uom_cd        = NULL('') /*@ BizName: "Package Size UOM Code" */;
+  cli_integer_t           package_qty                = NULL     /*@ BizName: "Package Quantity" */;
+  cli_decimal_t           package_size               = NULL('') /*@ BizName: "Package Size" BizComment: "DECIMAL(11,3)" */;
+  cli_decimal_t           total_package_qty          = NULL('') /*@ BizName: "Total Package Quantity" */;
+end;
+
+type pharma_claim_scoop_t =
+record
+  cli_pega_id_t           cli_clt_id;
+  hash_key_t              clt_mbr_cagm_hash;
+  hash_key_t              claim_cagm_hash;
+  cli_pbp_id_t            pbp_id = NULL;
+  
+  mbr_t                   clt_mbr;
+  cagm_nk_t               claim_mbr;
+  cagm_sk_t               clt_mbr_cagm_sk;
+  cagm_sk_t               claim_cagm_sk;
+  
+  pharma_claim_t          pharma_claim;
+  pharma_claim_ext_dtl_t  ext_dtl;
+  
+  cli_err_dtl_t           err_dtl;
+  cli_boolean_t           rec_vld_complete;
+end;
+
+type clt_mbr_scoop_stats_t =
+utf8 record
+  cli_pega_id_t           cli_clt_id;
+  hash_key_t              clt_mbr_cagm_hash;
+  hash_key_t              claim_cagm_hash;
+  cli_pbp_id_t            pbp_id = NULL;
+  cli_date_t              last_scoop_dt;
+  
+  cagm_nk_t               clt_mbr;
+  cagm_nk_t               claim_mbr;
+  cagm_sk_t               clt_mbr_cagm_sk;
+  cagm_sk_t               claim_cagm_sk;
+  
+  pharma_claim_stats_t    scoop_stats;
+end;
+
+/************************* Medical Scoop Types *********************/ 
+
+type med_claim_stats_t =
+utf8 record
+  cli_date_t        min_srvc_strt_dt = NULL;
+  cli_date_t        max_srvc_strt_dt = NULL;
+  cli_date_t[int]   srvc_strt_dt_vec = [vector];
+  cli_integer_t     srvc_strt_dt_cnt = 0;
+
+  cli_date_t        min_recv_dt = NULL;
+  cli_date_t        max_recv_dt = NULL;
+  cli_date_t[int]   recv_dt_vec = [vector];
+  cli_integer_t     recv_dt_cnt = 0;
+end;
+
+type med_claim_scoop_stats_t =
+utf8 record
+  cli_pega_id_t           cli_clt_id;
+  cli_date_t              last_scoop_dt;
+  med_claim_stats_t       scoop_stats;
+  cli_integer_id_t        ptnt_id;
+end;
+
+type med_claim_scoop_req_t=
+utf8 record
+  cli_pega_id_t              cli_clt_id                 ;
+  cli_date_t                 look_bck_start_dt          ;
+  cli_date_t                 look_bck_end_dt            ;
+  cli_date_t                 srvc_strt_dt       = NULL  ;
+  cli_date_t                 last_scoop_dt      = NULL  ;
+  med_claim_scoop_stats_t    scoop_stats        = NULL  ;
+  mbr_t                      clt_mbr                    ;
+  hash_key_t                 clt_mbr_cagm_hash          ;
+  cli_pbp_id_t                 pbp_id        = NULL('');
+end;
+
+

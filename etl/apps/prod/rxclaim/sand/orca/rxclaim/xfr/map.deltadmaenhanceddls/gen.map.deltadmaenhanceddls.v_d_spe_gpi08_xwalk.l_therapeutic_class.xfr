@@ -1,0 +1,66 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_deltadmaenhanceddls_v_d_spe_gpi08_xwalk_to_the_l_therapeutic_class_ILM_documentation(in)=
+begin
+
+out0.therptc_cls.thrpc_class_nm::depends_on(
+         in.thrpc_class_nm
+         );
+
+
+out0.dxf_src_rec_cnt::depends_on(
+         in.dxf_src_rec_cnt
+         );
+
+
+out0.therptc_cls.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_deltadmaenhanceddls_v_d_spe_gpi08_xwalk_to_the_l_therapeutic_class_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.therptc_cls.thrpc_class_nm,'therptc_cls.thrpc_class_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.therptc_cls.thrpc_class_sk,'therptc_cls.thrpc_class_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.therptc_cls.src_env_sk,'therptc_cls.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.thrpc_class_nm,'thrpc_class_nm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let little endian integer(4) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) therptc_cls_thrpc_class_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=80) therptc_cls_thrpc_class_nm = fail_if_error(in0.thrpc_class_nm);
+let decimal("\x01",0) therptc_cls_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.therptc_cls.thrpc_class_sk::therptc_cls_thrpc_class_sk;
+  out0.therptc_cls.thrpc_class_nm::therptc_cls_thrpc_class_nm;
+  out0.therptc_cls.src_env_sk::therptc_cls_src_env_sk;
+  out0.*::in0.*;
+end;

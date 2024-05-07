@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcpdep
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpdep                  i2p2nb,i2oinb,i2eon1,i2dws2,i2h2dt,i2h3dt,i2dus2,i2rmc2,i2rlc2,i2dvs2,i2enn1,i2ncpr,i2d1s2,i2nhpr,i2ocn2,i2n8hb,i2n6hb\nclmprdfil     rctcdp                  newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil", "rcpdep") + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil", "rctcdp")]
+DO_LOOKUP||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ if (START_CHANGES_TIME != '')   "where rcpdep.i2p2nb = rctcdp.dqp2nb and rcpdep.i2oinb = rctcdp.dqoinb and rctcdp.dqc4dt >= " +    string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) +   " and rctcdp.dqc4dt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) +   " OPTIMIZE FOR ALL ROWS"  else  "where rcpdep.i2p2nb = rctcdp.dqp2nb and rcpdep.i2oinb = rctcdp.dqoinb and rctcdp.dqc4dt >= " +    string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-1) +   " and rctcdp.dqc4dt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) +   " OPTIMIZE FOR ALL ROWS" ]
+DO_CLEAN||||1

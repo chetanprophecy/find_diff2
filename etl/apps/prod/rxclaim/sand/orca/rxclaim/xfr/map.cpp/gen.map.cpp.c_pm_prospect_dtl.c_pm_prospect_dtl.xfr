@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.c_pm_ppt_dtl.member_id,[passthrough],in0.member_id]
+  [out0.c_pm_ppt_dtl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_pm_ppt_dtl.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_pm_ppt_dtl.pm_patient_id,[passthrough],in0.pm_patient_id]
+  [out0.c_pm_ppt_dtl.prospect_rule_cd,[passthrough],in0.prospect_rule_cd]
+  [out0.c_pm_ppt_dtl.prospect_member_dtl_id,[passthrough],in0.prospect_member_dtl_id]
+  [out0.c_pm_ppt_dtl.member_dtl_id,[passthrough],in0.member_dtl_id]
+  [out0.c_pm_ppt_dtl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_pm_ppt_dtl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_pm_ppt_dtl.auditor_patient_id,[passthrough],in0.auditor_patient_id]
+  [out0.c_pm_ppt_dtl.prospect_patient_id,[passthrough],in0.prospect_patient_id]
+  [out0.c_pm_ppt_dtl.src_env_sk,[transform],]
+  [out0.c_pm_ppt_dtl.run_dt,[passthrough],in0.run_dt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_pm_ppt_dtl.member_id,'c_pm_ppt_dtl.member_id',1,0]
+     [out0.c_pm_ppt_dtl.cpp_create_ts,'c_pm_ppt_dtl.cpp_create_ts',1,0]
+     [out0.c_pm_ppt_dtl.cpp_update_ts,'c_pm_ppt_dtl.cpp_update_ts',1,0]
+     [out0.c_pm_ppt_dtl.pm_patient_id,'c_pm_ppt_dtl.pm_patient_id',1,0]
+     [out0.c_pm_ppt_dtl.prospect_rule_cd,'c_pm_ppt_dtl.prospect_rule_cd',1,0]
+     [out0.c_pm_ppt_dtl.prospect_member_dtl_id,'c_pm_ppt_dtl.prospect_member_dtl_id',1,0]
+     [out0.c_pm_ppt_dtl.member_dtl_id,'c_pm_ppt_dtl.member_dtl_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_pm_ppt_dtl.cpp_updated_by,'c_pm_ppt_dtl.cpp_updated_by',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_pm_ppt_dtl.cpp_created_by,'c_pm_ppt_dtl.cpp_created_by',1,0]
+     [out0.c_pm_ppt_dtl.auditor_patient_id,'c_pm_ppt_dtl.auditor_patient_id',1,0]
+     [out0.c_pm_ppt_dtl.prospect_patient_id,'c_pm_ppt_dtl.prospect_patient_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_pm_ppt_dtl.src_env_sk,'c_pm_ppt_dtl.src_env_sk',1,0]
+     [out0.c_pm_ppt_dtl.run_dt,'c_pm_ppt_dtl.run_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_id,'member_id',1,1]
+     [in0.run_dt,'run_dt',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.pm_patient_id,'pm_patient_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.prospect_member_dtl_id,'prospect_member_dtl_id',1,1]
+     [in0.prospect_rule_cd,'prospect_rule_cd',1,1]
+     [in0.prospect_patient_id,'prospect_patient_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.auditor_patient_id,'auditor_patient_id',1,1]
+     [in0.member_dtl_id,'member_dtl_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_pm_ppt_dtl_run_dt = fail_if_error(in0.run_dt);
+let decimal("\x01",0) c_pm_ppt_dtl_member_dtl_id = fail_if_error(in0.member_dtl_id);
+let utf8 string("\x01", maximum_length=80) c_pm_ppt_dtl_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_pm_ppt_dtl_prospect_member_dtl_id = fail_if_error(in0.prospect_member_dtl_id);
+let decimal("\x01",0) c_pm_ppt_dtl_prospect_patient_id = fail_if_error(in0.prospect_patient_id);
+let utf8 string("\x01", maximum_length=4000) c_pm_ppt_dtl_prospect_rule_cd = fail_if_error(in0.prospect_rule_cd);
+let decimal("\x01",0) c_pm_ppt_dtl_pm_patient_id = fail_if_error(in0.pm_patient_id);
+let decimal("\x01",0) c_pm_ppt_dtl_auditor_patient_id = fail_if_error(in0.auditor_patient_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_pm_ppt_dtl_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let utf8 string("\x01", maximum_length=80) c_pm_ppt_dtl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_pm_ppt_dtl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_pm_ppt_dtl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_pm_ppt_dtl_src_env_sk = 710;
+
+
+
+  out0.c_pm_ppt_dtl.run_dt::c_pm_ppt_dtl_run_dt;
+  out0.c_pm_ppt_dtl.member_dtl_id::c_pm_ppt_dtl_member_dtl_id;
+  out0.c_pm_ppt_dtl.member_id::c_pm_ppt_dtl_member_id;
+  out0.c_pm_ppt_dtl.prospect_member_dtl_id::c_pm_ppt_dtl_prospect_member_dtl_id;
+  out0.c_pm_ppt_dtl.prospect_patient_id::c_pm_ppt_dtl_prospect_patient_id;
+  out0.c_pm_ppt_dtl.prospect_rule_cd::c_pm_ppt_dtl_prospect_rule_cd;
+  out0.c_pm_ppt_dtl.pm_patient_id::c_pm_ppt_dtl_pm_patient_id;
+  out0.c_pm_ppt_dtl.auditor_patient_id::c_pm_ppt_dtl_auditor_patient_id;
+  out0.c_pm_ppt_dtl.cpp_update_ts::c_pm_ppt_dtl_cpp_update_ts;
+  out0.c_pm_ppt_dtl.cpp_updated_by::c_pm_ppt_dtl_cpp_updated_by;
+  out0.c_pm_ppt_dtl.cpp_create_ts::c_pm_ppt_dtl_cpp_create_ts;
+  out0.c_pm_ppt_dtl.cpp_created_by::c_pm_ppt_dtl_cpp_created_by;
+  out0.c_pm_ppt_dtl.src_env_sk::c_pm_ppt_dtl_src_env_sk;
+  out0.*::in0.*;
+
+end;

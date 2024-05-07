@@ -1,0 +1,152 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/carrier_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/10  Paul Thompson           Initial version
+ *  2016/08/25  Gaurav Mirje            Added load_ids_carrier_sk_lkup function and ids_carrier_sk_lkup_t to fetch the cli_carrier_id
+ *                                      based on the ids_src_env_sk,ids_carrier_sk.
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ *  2016/11/11  Paul Thompson           Removed cli_ from lookup file prefix, shifted to PUB_CLINICAL_MFS_REFDATA
+ *  2016/11/12  Paul Thompson           Added usage of indexes (when available) and also lookups on serial partitions
+ *  2016/11/28  Mohd Shadab             Added mapping part(out ::) in get_carrier_by_sk function which was missing
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_carrier_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/carrier.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/carrier.dat' );
+end;
+
+cli_string_t out :: get_carrier_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/********************************/
+/* Carrier Lookup (natural key) */
+/********************************/
+
+type carrier_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  carrier_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {carrier.carrier_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_lkup_t GLKUP_CARRIER = allocate_with_nulls();
+
+carrier_lkup_t out :: load_carrier_lkup() inline =
+begin
+  if (GLKUP_CARRIER.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_carrier_lkup_path();
+    let indx_path  = get_carrier_indx_path(lkup_path, 'carrier');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_CARRIER = if (indx_found) lookup_load(lkup_path, indx_path)
+                    else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_CARRIER;
+end;
+
+carrier_t out :: get_carrier(carrier_id) inline =
+begin
+  let carrier_lkup_t lkup = load_carrier_lkup();
+  
+  out :: lookup(lkup, carrier_id).carrier;
+end;
+
+/**********************************/
+/* Carrier Lookup (surrogate key) */
+/**********************************/
+
+type carrier_sk_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  carrier_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {carrier.cli_carrier_id}; 
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_sk_lkup_t GLKUP_CARRIER_BY_SK = allocate_with_nulls();
+
+carrier_sk_lkup_t out :: load_carrier_sk_lkup() inline =
+begin
+  if (GLKUP_CARRIER_BY_SK.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_carrier_lkup_path();
+    let indx_path  = get_carrier_indx_path(lkup_path, 'carrier_sk');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_CARRIER_BY_SK = if (indx_found) lookup_load(lkup_path, indx_path)
+                          else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_CARRIER_BY_SK;
+end;
+
+carrier_t out :: get_carrier_by_sk(cli_carrier_id) inline =
+begin
+  let carrier_sk_lkup_t lkup = load_carrier_sk_lkup();
+  out :: lookup(lkup, cli_carrier_id).carrier;
+end;
+
+/************************************************/
+/* Carrier Lookup (hierarchical surrogate keys) */
+/************************************************/
+
+type carrier_hier_sk_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  carrier_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = { carrier.cli_carrier_id}; 
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_hier_sk_lkup_t GLKUP_CARRIER_BY_HIER_SK = allocate_with_nulls();
+
+carrier_hier_sk_lkup_t out :: load_carrier_hier_sk_lkup() inline =
+begin
+  if (GLKUP_CARRIER_BY_HIER_SK.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_carrier_lkup_path();
+    let indx_path  = get_carrier_indx_path(lkup_path, 'carrier_hier_sk');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_CARRIER_BY_HIER_SK = if (indx_found) lookup_load(lkup_path, indx_path)
+                               else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_CARRIER_BY_HIER_SK;
+end;
+
+carrier_t out :: get_carrier_by_hier_sk(cli_carrier_id) inline =
+begin
+  let carrier_hier_sk_lkup_t lkup = load_carrier_hier_sk_lkup();
+  
+  out :: lookup(lkup, cli_carrier_id).carrier;
+end;

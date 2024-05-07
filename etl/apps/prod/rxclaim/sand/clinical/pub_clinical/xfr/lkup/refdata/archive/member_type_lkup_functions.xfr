@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/member_type_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_member_type_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_member_type.dat';
+end;
+
+/************************************************/
+/* Therapeutic Class Lookup (ids surrogate key) */
+/************************************************/
+
+type member_type_lkup_t =
+record
+  lookup_identifier_type   id             = -1; 
+  member_type_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')               key()          = {member_type.mbr_type_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let member_type_lkup_t GLKUP_MEMBER_TYPE = allocate_with_nulls();
+
+member_type_lkup_t out :: load_member_type_lkup() inline =
+begin
+  if (GLKUP_MEMBER_TYPE.id == lookup_not_loaded())
+    GLKUP_MEMBER_TYPE = lookup_load(this_partition_path(get_member_type_lkup_path()));
+  
+  out :: GLKUP_MEMBER_TYPE;
+end;
+
+member_type_t out :: get_member_type(mbr_type_cd) inline =
+begin
+  let member_type_lkup_t lkup = load_member_type_lkup();
+  out :: lookup(lkup, mbr_type_cd).member_type;
+end;

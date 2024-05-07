@@ -1,0 +1,86 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5f1eb7e5_1786_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rc_ppsl_pplsk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rc_ppl_ppsdsk.pref_prod_sched_id,[transform],in0.hnvrhc]
+  [out0.rc_ppsl.pref_prod_sched_id,[transform],in0.hnvrhc]
+  [out0.rc_ppsl_pplsk.pref_prod_lst_id,[transform],in0.hnvphc]
+  [out0.rc_ppsl.pref_prod_lst_id,[transform],in0.hnvphc]
+  [out0.rc_ppsl.pref_prod_sched_sk,[transform],]
+  [out0.rc_ppsl.pref_prod_lst_sk,[transform],]
+  [out0.rc_ppsl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rc_ppl_ppsdsk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rc_ppsl_pplsk.src_env_sk,'rc_ppsl_pplsk.src_env_sk',1,0]
+     [out0.rc_ppl_ppsdsk.pref_prod_sched_id,'rc_ppl_ppsdsk.pref_prod_sched_id',1,0]
+     [out0.rc_ppsl.pref_prod_sched_id,'rc_ppsl.pref_prod_sched_id',1,0]
+     [out0.rc_ppsl_pplsk.pref_prod_lst_id,'rc_ppsl_pplsk.pref_prod_lst_id',1,0]
+     [out0.rc_ppsl.pref_prod_lst_id,'rc_ppsl.pref_prod_lst_id',1,0]
+     [out0.rc_ppsl.pref_prod_sched_sk,'rc_ppsl.pref_prod_sched_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rc_ppsl.pref_prod_lst_sk,'rc_ppsl.pref_prod_lst_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rc_ppsl.src_env_sk,'rc_ppsl.src_env_sk',1,0]
+     [out0.rc_ppl_ppsdsk.src_env_sk,'rc_ppl_ppsdsk.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.hnvphc,'hnvphc',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',4,4]
+     [in0.hnvrhc,'hnvrhc',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) rc_ppsl_pref_prod_lst_sk = -1;
+let decimal("\x01",0) rc_ppsl_pref_prod_sched_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) rc_ppsl_pref_prod_lst_id;
+let string("\x01",charset="iso-8859-15", maximum_length=10) rc_ppsl_pref_prod_sched_id;
+let decimal("\x01",0) rc_ppsl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) rc_ppl_ppsdsk_pref_prod_sched_id;
+let decimal("\x01",0) rc_ppl_ppsdsk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) rc_ppsl_pplsk_pref_prod_lst_id;
+let decimal("\x01",0) rc_ppsl_pplsk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+rc_ppl_ppsdsk_pref_prod_sched_id=fail_if_error(str_nk(in0.hnvrhc));
+
+/*   Default value   */
+rc_ppsl_pref_prod_sched_id=fail_if_error(str_nk(in0.hnvrhc));
+
+/*   Default value   */
+rc_ppsl_pplsk_pref_prod_lst_id=fail_if_error(str_nk(in0.hnvphc));
+
+/*   Default value   */
+rc_ppsl_pref_prod_lst_id=fail_if_error(str_nk(in0.hnvphc));
+
+  out0.rc_ppsl.pref_prod_lst_sk::rc_ppsl_pref_prod_lst_sk;
+  out0.rc_ppsl.pref_prod_sched_sk::rc_ppsl_pref_prod_sched_sk;
+  out0.rc_ppsl.pref_prod_lst_id::rc_ppsl_pref_prod_lst_id;
+  out0.rc_ppsl.pref_prod_sched_id::rc_ppsl_pref_prod_sched_id;
+  out0.rc_ppsl.src_env_sk::rc_ppsl_src_env_sk;
+  out0.rc_ppl_ppsdsk.pref_prod_sched_id::rc_ppl_ppsdsk_pref_prod_sched_id;
+  out0.rc_ppl_ppsdsk.src_env_sk::rc_ppl_ppsdsk_src_env_sk;
+  out0.rc_ppsl_pplsk.pref_prod_lst_id::rc_ppsl_pplsk_pref_prod_lst_id;
+  out0.rc_ppsl_pplsk.src_env_sk::rc_ppsl_pplsk_src_env_sk;
+  out0.*::in0.*;
+
+end;

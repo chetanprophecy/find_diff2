@@ -1,0 +1,44 @@
+type logical_ids_rxclaim_d_rpt_sco_cal_00_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) record_code = NULL("");
+  decimal("\x01",0) claim_no = NULL("");
+  decimal("\x01",0) trlr_code = NULL("");
+  decimal("\x01",0) detail_code = NULL("");
+  decimal("\x01",0) header_code = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) zip_code = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) payee_id = NULL("");
+  decimal("\x01",0) seq_no = NULL("");
+  decimal("\x01",0) line_no = NULL("");
+  decimal("\x01".2, maximum_length=17, sign_reserved) det_amt_ind = NULL("");
+  decimal("\x01".2, maximum_length=17, sign_reserved) payment_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) filler_1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) payee_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) filler_2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) address_line1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) address_line2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) address_line3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) address_line4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) reportable_code = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) filler_3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) bank_transaction_code = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) bank_transit_routing_code = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=17) bank_account_number = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) print_suppression = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) filler_4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) trace_number = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) file_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_rpt_sco_cal_00_t d_rpt_scocal  /*@ BizName:'d rpt scocal' */;
+end;

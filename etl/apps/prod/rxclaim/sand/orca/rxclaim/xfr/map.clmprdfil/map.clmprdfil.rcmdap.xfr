@@ -1,0 +1,29 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.mda_action_code           :: if(is_null(in.mab6hn)) "NULL" else in.mab6hn;
+  out.mda_action_code_desc      :: if(is_null(in.mabsir)) "NULL" else in.mabsir;
+  out.mda_status                :: if(is_null(in.madaai)) "NULL" else in.madaai;
+  out.add_user_name             :: if(is_null(in.maakvn)) "NULL" else in.maakvn;
+  out.add_date                  :: if(string_substring((string(""))(decimal(""))in.mac2dt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mac2dt) else (date("YYYYMMDD")) '99991231';
+  out.add_time                  :: if(is_null(in.maabtm)) (datetime("HH24MISS"))'000000' else (datetime("HH24MISS")) string_concat(if(string_length((string(""))(decimal(""))in.maabtm)==5)'0' else '',(string(""))(decimal("")) in.maabtm);
+  out.add_program_name          :: if(is_null(in.maalvn)) "NULL" else in.maalvn;
+  out.chg_user_name             :: if(is_null(in.maadvn)) "NULL" else in.maadvn;
+  out.chg_date                  :: if(string_substring((string(""))(decimal(""))in.mabmdt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mabmdt) else (date("YYYYMMDD")) '99991231';
+  out.chg_time                  :: if(is_null(in.maabtm)) (datetime("HH24MISS"))'000000' else (datetime("HH24MISS")) string_concat(if(string_length((string(""))(decimal(""))in.maabtm)==5)'0' else '',(string(""))(decimal("")) in.maabtm);
+  out.chg_program_name          :: if(is_null(in.maaevn)) "NULL" else in.maaevn;
+  /*out.rxtrack_add_user_name   :: in.job name;
+  out.rxtrack_add_date          :: in.currentdate();
+  out.rxtrack_add_time          :: in.currenttime();
+  out.rxtrack_add_program_name  :: in.job name;
+  out.rxt_src_envrt_nm          :: in.;*/
+  out.rxt_src_envrt_id          :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm          :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm           :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid            :: 'app_orca_rxclaim';
+  out.rxt_create_run_id         :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd           :: '';
+  out.*                         :: in.*;
+end;
+
+

@@ -1,0 +1,32 @@
+record
+  unsigned integer(8) dxf_hk_part1 = 0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8) dxf_hk_part2 = 0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0) payment_transaction_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0) payment_transaction_rn = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0) patient_rn = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0) patient_payment_method_rn = NULL("") /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") transaction_date = NULL("") /*TIMESTAMP(6) NOT NULL*/;
+  decimal("\x01".2, maximum_length=10, sign_reserved) amount = NULL("") /*DECIMAL(8,2) NOT NULL*/;
+  decimal("\x01",0) manual = NULL("") /*BYTEINT*/;
+  decimal("\x01",0) order_rn = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) status = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=250) description = NULL("") /*VARCHAR(250)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) transaction_command_type = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) trans_num = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) related_trans_num = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=8) create_user = NULL("") /*VARCHAR(8) NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") create_date = NULL("") /*TIMESTAMP(6) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) auth_code = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0) check_number = NULL("") /*BIGINT*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*INTEGER*/;
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20) ids_updt_run_id = 0;
+  string("\x01",maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end

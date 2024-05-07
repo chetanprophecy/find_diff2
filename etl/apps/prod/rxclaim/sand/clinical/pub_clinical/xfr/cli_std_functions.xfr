@@ -1,0 +1,36 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/cli_std_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/05/20  Paul Thompson           Changelog added
+ *  2016/12/27  Sundari Kala            Added standardize_ids_null function to handle nullable fields of ids whcih is cli not nullable fields.
+ ************************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+/* Compares the in_string_1 & in_string_2, if they same then TRUE else FALSE */
+cli_boolean_t out :: compare_strings ( in_string_1 , in_string_2 ) =
+begin
+  out :1: string_lrtrim(first_defined(in_string_1, '')) == string_lrtrim(first_defined(in_string_2, ''));
+end;
+
+/* checks if in_string_1 is blank or null */
+cli_boolean_t out :: null_blank_check ( in_string ) =
+begin
+  out :: is_defined(in_string) and not is_blank(in_string);
+end;
+
+cli_string_t out :: standardize_string ( in_string ) =
+begin
+  out :: if ( is_defined(in_string) ) string_upcase( string_lrtrim( in_string ) ) else '';
+end
+
+
+cli_string_t out :: standardize_ids_null( in_string ) inline =
+begin
+ out :: if(is_null( in_string ) || is_blank( in_string )) '-' else in_string;
+end;

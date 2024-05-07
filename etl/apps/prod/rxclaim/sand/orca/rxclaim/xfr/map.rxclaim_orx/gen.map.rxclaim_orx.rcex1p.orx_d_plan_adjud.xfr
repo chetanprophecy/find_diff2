@@ -1,0 +1,80 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_pln_adjd_pln_adjud_sk = -1;
+let decimal("\x01",0) c_pln_adjd_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_cd_fnl;
+let string("\x01",charset="iso-8859-15", maximum_length=8) c_pln_adjd_pln_typ_id;
+let date("YYYYMMDD")("\x01") c_pln_adjd_pln_fnl_eff_dt = fail_if_error(!is_valid(in0.fnlplandte) ? "19000101" : length_of(in0.fnlplandte) member  [vector   6,7 ] ? (datetime("YYYYMMDD"))(string("\x01"))(decimal("\x01")) (19000000+ in0.fnlplandte):  in0.fnlplandte);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_gpi_list;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_grp_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_ndc_list;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_pref_gpi_list_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_pref_ndc_list_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pln_adjd_pln_qlfr;
+let decimal("\x01",0) c_pln_adjd_src_env_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_cag_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_employer_group_id;
+
+
+
+/*   Default value   */
+c_pln_adjd_pln_cd=fail_if_error(str_nk(in0.mbrplan));
+
+/*   Default value   */
+c_pln_adjd_pln_typ_id=fail_if_error(str_nk(in0.plantype));
+
+/*   Default value   */
+c_pln_adjd_pln_qlfr=fail_if_error(str_nk(in0.planqual));
+
+/*   Default value   */
+c_pln_adjd_pln_grp_cd=fail_if_error(str_nk(in0.groupplan));
+
+/*   Default value   */
+c_pln_adjd_pln_pref_gpi_list_nm=fail_if_error(str_nk(in0.plnpgpilst));
+
+/*   Default value   */
+ctrx_d_cag_employer_group_id=fail_if_error(str_nk(in0.groupid));
+
+/*   Default value   */
+c_pln_adjd_pln_ndc_list=fail_if_error(str_nk(in0.plnndclist));
+
+/*   Default value   */
+c_pln_adjd_pln_cd_fnl=fail_if_error(str_nk(in0.fnlplancde));
+
+/*   Default value   */
+c_pln_adjd_pln_gpi_list=fail_if_error(str_nk(in0.plngpilist));
+
+/*   Default value   */
+ctrx_d_cag_account_id=fail_if_error(str_nk(in0.accountid));
+
+/*   Default value   */
+c_pln_adjd_pln_pref_ndc_list_nm=fail_if_error(str_nk(in0.plnpndclst));
+
+/*   Default value   */
+ctrx_d_cag_carrier_id=fail_if_error(str_nk(in0.carrierid));
+
+  out0.c_pln_adjd.pln_adjud_sk::c_pln_adjd_pln_adjud_sk;
+  out0.c_pln_adjd.cag_sk::c_pln_adjd_cag_sk;
+  out0.c_pln_adjd.pln_cd::c_pln_adjd_pln_cd;
+  out0.c_pln_adjd.pln_cd_fnl::c_pln_adjd_pln_cd_fnl;
+  out0.c_pln_adjd.pln_typ_id::c_pln_adjd_pln_typ_id;
+  out0.c_pln_adjd.pln_fnl_eff_dt::c_pln_adjd_pln_fnl_eff_dt;
+  out0.c_pln_adjd.pln_gpi_list::c_pln_adjd_pln_gpi_list;
+  out0.c_pln_adjd.pln_grp_cd::c_pln_adjd_pln_grp_cd;
+  out0.c_pln_adjd.pln_ndc_list::c_pln_adjd_pln_ndc_list;
+  out0.c_pln_adjd.pln_pref_gpi_list_nm::c_pln_adjd_pln_pref_gpi_list_nm;
+  out0.c_pln_adjd.pln_pref_ndc_list_nm::c_pln_adjd_pln_pref_ndc_list_nm;
+  out0.c_pln_adjd.pln_qlfr::c_pln_adjd_pln_qlfr;
+  out0.c_pln_adjd.src_env_sk::c_pln_adjd_src_env_sk;
+  out0.ctrx_d_cag.carrier_id::ctrx_d_cag_carrier_id;
+  out0.ctrx_d_cag.account_id::ctrx_d_cag_account_id;
+  out0.ctrx_d_cag.employer_group_id::ctrx_d_cag_employer_group_id;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,66 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/payee_lkup_functions.xfr
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/09/14  Suresh Potu            Initial version, create lookup functions for payee process.
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_payee_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/payee.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/payee.dat' );
+end;
+
+cli_string_t out :: get_payee_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type payee_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  payee_hash_lkup_t    	  RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {payee.payee_id;payee.sequence_num}; // In ids to cli mapping payee_id,sequence_num(natural key) of ids mapped to cli_payee_id,cli_sequence_num in cli
+
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat";
+end;
+
+let payee_lkup_t GLKUP_PHARMACY = allocate_with_nulls();
+
+payee_lkup_t out :: load_payee_lkup() inline =
+begin
+  if (GLKUP_PHARMACY.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_payee_lkup_path();
+    let indx_path  = get_payee_indx_path(lkup_path, 'payee');
+    let indx_found = file_information(indx_path).found;
+
+    GLKUP_PHARMACY = if (indx_found) lookup_load(lkup_path, indx_path)
+                     else            lookup_load(lkup_path);
+  end;
+
+  out :: GLKUP_PHARMACY;
+end;
+
+payee_t out :: get_payee(cli_payee_id,cli_sequence_num) inline =
+begin
+  let payee_lkup_t lkup = load_payee_lkup();
+  out :: lookup(lkup,cli_payee_id,cli_sequence_num).payee;
+end;
+

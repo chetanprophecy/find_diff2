@@ -1,0 +1,54 @@
+// Usage: include "/~$PUB_DXF_XFR/keys.xfr";
+// This file is used in PDL via AB_DML_DEFS.
+
+/* Tests:
+ksh <<!
+. ./ab_project_setup.ksh .
+export AB_INCLUDE_FILES=$PUB_DXF_XFR/keys.xfr
+m_eval 'starts_with_key("{a; b}", "a")' # 1
+m_eval 'starts_with_key("{a; b}", "{a descending}")' # 0
+m_eval 'standardize_key("a")' # "{a}"
+m_eval 'standardize_key("{a; b interval_bottom; c interval_top}")' # "{a;b interval_bottom;c interval_top}"
+m_eval 'set_field_direction("{a; b; c}", "b", "descending")' # "{a;b descending;c}"
+m_eval 'set_field_direction("{a; b descending; c}", "b", "descending")' # "{a;b descending;c}"
+m_eval 'set_field_direction("{a; b ascending; c}", "b", "descending")' # "{a;b descending;c}"
+m_eval 'set_field_direction("{a; b descending; c}", "b", "ascending")' # "{a;b ascending;c}"
+m_eval 'set_field_direction("{a; b descending; c}", "b", "")' # "{a;b;c}"
+m_eval 'set_field_direction("{a; b descending; c}", "x", "")' # "{a;b descending;c}"
+!
+*/
+
+/* Returns 1 (True) if the key starts with the given prefix, after standardizing the format of both keys. */
+out :: starts_with_key(key, prefix) =
+begin
+  let pre = re_replace(standardize_key(prefix), "}$", "");
+
+  out :: starts_with(standardize_key(key), pre);
+end;
+
+
+/* Returns the key with standard punctuation. */
+out :: standardize_key(key) =
+begin
+  out :: make_key(key_info(key));
+end;
+
+
+/* Searches the given key for field_name and, if found, sets it's direction. */
+out :: set_field_direction(key, field_name, direction) =
+begin
+  let updated_info = for ( let info in key_info(key) ) begin
+    // Look for the field we want to modify...
+    if ( info.field_name == field_name ) begin
+      // Strip out any existing direction.
+      info.modifiers = for ( let m in info.modifiers ) :
+          if ( m not member [vector "ascending", "descending"] )
+            m;
+      // Add back the given direction.
+      if ( direction != "" )
+        info.modifiers = vector_append(info.modifiers, direction);
+    end
+  end :
+    info;
+  out :: make_key(updated_info);
+end;

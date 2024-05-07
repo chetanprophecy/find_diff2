@@ -1,0 +1,639 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_ca_autm.splty_fin_summary_act_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_ca_autm.splty_channel_act_ind,[passthrough],in0.specialty_channel]
+  [out0.d_ca_autm.slice_id,[transform],in0.slice_id]
+  [out0.d_carr_autm.splty_perf_car_ind,[passthrough],in0.specialty_performance]
+  [out0.d_carr_autm.drg_utilz_carrier,[passthrough],in0.drug_utililization]
+  [out0.d_cag_autm.drg_utiliz_acct,[passthrough],in0.drug_utililization]
+  [out0.d_cag_autm.account_nm,[passthrough],in0.account_name]
+  [out0.d_ca_autm.mail_srvce_carrier,[passthrough],in0.ms]
+  [out0.d_ca_autm.drg_utilz_carrier,[passthrough],in0.drug_utililization]
+  [out0.d_cag_autm.mail_srvce_carrier,[passthrough],in0.ms]
+  [out0.d_ca_autm.top_25_mbrs_carrier,[passthrough],in0.top_50_mbrs]
+  [out0.d_ca_autm.day_supply_carrier,[passthrough],in0.day_supply]
+  [out0.d_cag_autm.top_25_rx_carrier,[passthrough],in0.top_50_rx]
+  [out0.d_ca_autm.formulary_compl_acct,[passthrough],in0.formulary_compliance]
+  [out0.d_cag_autm.top_25_drg_carrier,[passthrough],in0.top_25_drug]
+  [out0.d_cag_autm.top_10_splty_drg_grp_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_cag_autm.account_id,[transform],in0.account]
+  [out0.d_ca_autm.top_25_rx_acct,[passthrough],in0.top_50_rx]
+  [out0.d_ca_autm.generic_utiliz_acct,[passthrough],in0.generic_utilization]
+  [out0.d_carr_autm.address_id,[passthrough],in0.address_id]
+  [out0.d_cag_autm.formulary_compl_grp,[passthrough],in0.formulary_compliance]
+  [out0.d_cag_autm.generic_utiliz_acct,[passthrough],in0.generic_utilization]
+  [out0.d_ca_autm.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_ca_autm.account_id,[transform],in0.account]
+  [out0.d_cag_autm.splty_channel_act_ind,[passthrough],in0.specialty_channel]
+  [out0.d_cag_autm.splty_acct,[passthrough],in0.specialty_drug]
+  [out0.d_ca_autm.top_25_drg_carrier,[passthrough],in0.top_25_drug]
+  [out0.d_carr_autm.carrier_nm,[passthrough],in0.carrier_name]
+  [out0.d_cag_autm.top_25_mbrs_carrier,[passthrough],in0.top_50_mbrs]
+  [out0.d_cag_autm.top_10_class_grp,[passthrough],in0.top_10_classes]
+  [out0.d_cag_autm.drg_utilz_carrier,[passthrough],in0.drug_utililization]
+  [out0.d_cag_autm.top_10_splty_thr_class_act_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_cag_autm.employer_group_nm,[passthrough],in0.group_name]
+  [out0.d_ca_autm.top_10_splty_thr_class_car_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_ca_autm.top_25_md_carrier,[passthrough],in0.top_50_md]
+  [out0.d_ca_autm.account_nm,[passthrough],in0.account_name]
+  [out0.d_cag_autm.splty_fin_summary_grp_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_carr_autm.top_25_mbrs_carrier,[passthrough],in0.top_50_mbrs]
+  [out0.d_cag_autm.formulary_compl_acct,[passthrough],in0.formulary_compliance]
+  [out0.d_cag_autm.day_supply_acct,[passthrough],in0.day_supply]
+  [out0.d_carr_autm.mail_srvce_carrier,[passthrough],in0.ms]
+  [out0.d_carr_autm.top_25_drg_carrier,[passthrough],in0.top_25_drug]
+  [out0.d_cag_autm.top_25_md_carrier,[passthrough],in0.top_50_md]
+  [out0.d_cag_autm.splty_channel_car_ind,[passthrough],in0.specialty_channel]
+  [out0.d_ca_autm.drct_mbr_reimbsmnt_acct,[passthrough],in0.dmr]
+  [out0.d_carr_autm.formulary_compl_carrier,[passthrough],in0.formulary_compliance]
+  [out0.d_cag_autm.top_10_splty_thr_class_car_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_ca_autm.top_10_splty_drg_act_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_carr_autm.splty_channel_car_ind,[passthrough],in0.specialty_channel]
+  [out0.d_carr_autm.slice_id,[transform],in0.slice_id]
+  [out0.d_ca_autm.top_25_rx_carrier,[passthrough],in0.top_50_rx]
+  [out0.d_ca_autm.generic_utiliz_carrier,[passthrough],in0.generic_utilization]
+  [out0.d_carr_autm.carrier_id,[transform],in0.carrier]
+  [out0.d_cag_autm.top_25_mbrs_grp,[passthrough],in0.top_50_mbrs]
+  [out0.d_cag_autm.top_25_mbrs_acct,[passthrough],in0.top_50_mbrs]
+  [out0.d_cag_autm.splty_channel_grp_ind,[passthrough],in0.specialty_channel]
+  [out0.d_cag_autm.top_10_class_acct,[passthrough],in0.top_10_classes]
+  [out0.d_cag_autm.splty_fin_summary_car_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_cag_autm.top_10_splty_drg_act_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_cag_autm.top_10_class_carrier,[passthrough],in0.top_10_classes]
+  [out0.d_cag_autm.top_25_drg_grp,[passthrough],in0.top_25_drug]
+  [out0.d_cag_autm.generic_utiliz_grp,[passthrough],in0.generic_utilization]
+  [out0.d_cag_autm.slice_desc,[passthrough],in0.account_name]
+  [out0.d_ca_autm.top_25_md_acct,[passthrough],in0.top_50_md]
+  [out0.d_ca_autm.drg_utiliz_acct,[passthrough],in0.drug_utililization]
+  [out0.d_cag_autm.mail_srvce_grp,[passthrough],in0.ms]
+  [out0.d_cag_autm.drct_mbr_rmbst_carrier,[passthrough],in0.dmr]
+  [out0.d_carr_autm.top_25_md_carrier,[passthrough],in0.top_50_md]
+  [out0.d_carr_autm.splty_carrier,[passthrough],in0.specialty_drug]
+  [out0.d_cag_autm.top_25_rx_acct,[passthrough],in0.top_50_rx]
+  [out0.d_cag_autm.employer_group_id,[transform],in0.group_id]
+  [out0.d_ca_autm.splty_perf_car_ind,[passthrough],in0.specialty_performance]
+  [out0.d_ca_autm.address_id,[passthrough],in0.address_id]
+  [out0.d_ca_autm.day_supply_acct,[passthrough],in0.day_supply]
+  [out0.d_cag_autm.top_25_md_grp,[passthrough],in0.top_50_md]
+  [out0.d_cag_autm.drug_utiliz_grp,[passthrough],in0.drug_utililization]
+  [out0.d_ca_autm.mail_srvce_acct,[passthrough],in0.ms]
+  [out0.d_cag_autm.mail_srvce_acct,[passthrough],in0.ms]
+  [out0.d_ca_autm.top_25_mbrs_acct,[passthrough],in0.top_50_mbrs]
+  [out0.d_cag_autm.splty_perf_grp_ind,[passthrough],in0.specialty_performance]
+  [out0.d_cag_autm.top_25_drg_acct,[passthrough],in0.top_25_drug]
+  [out0.d_cag_autm.address_id,[passthrough],in0.address_id]
+  [out0.d_ca_autm.formulary_compl_carrier,[passthrough],in0.formulary_compliance]
+  [out0.d_ca_autm.top_10_splty_drg_car_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_ca_autm.drct_mbr_rmbst_carrier,[passthrough],in0.dmr]
+  [out0.d_ca_autm.splty_perf_act_ind,[passthrough],in0.specialty_performance]
+  [out0.d_ca_autm.splty_fin_summary_car_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_ca_autm.splty_channel_car_ind,[passthrough],in0.specialty_channel]
+  [out0.d_cag_autm.drct_mbr_reimbsmnt_grp,[passthrough],in0.dmr]
+  [out0.d_cag_autm.generic_utiliz_carrier,[passthrough],in0.generic_utilization]
+  [out0.d_ca_autm.drop_record,[transform],in0.group_id,
+     in0.account,
+     in0.carrier,
+     'lookup("umr_grid2_lkp").carrier_cntr']
+  [out0.d_cag_autm.splty_perf_car_ind,[passthrough],in0.specialty_performance]
+  [out0.d_cag_autm.day_supply_grp,[passthrough],in0.day_supply]
+  [out0.d_ca_autm.slice_desc,[passthrough],in0.account_name]
+  [out0.d_carr_autm.top_10_class_carrier,[passthrough],in0.top_10_classes]
+  [out0.d_ca_autm.top_25_drg_acct,[passthrough],in0.top_25_drug]
+  [out0.d_cag_autm.splty_carrier,[passthrough],in0.specialty_drug]
+  [out0.d_cag_autm.drop_record,[transform],in0.group_id,
+     in0.account,
+     in0.carrier,
+     'lookup("umr_grid2_lkp").carrier_cntr']
+  [out0.d_ca_autm.specialty_acct,[passthrough],in0.specialty_drug]
+  [out0.d_cag_autm.top_10_splty_thr_class_grp_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_ca_autm.top_10_class_acct,[passthrough],in0.top_10_classes]
+  [out0.d_carr_autm.generic_utiliz_carrier,[passthrough],in0.generic_utilization]
+  [out0.d_cag_autm.splty_perf_act_ind,[passthrough],in0.specialty_performance]
+  [out0.d_carr_autm.splty_fin_summary_car_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_carr_autm.drct_mbr_rmbst_carrier,[passthrough],in0.dmr]
+  [out0.d_cag_autm.day_supply_carrier,[passthrough],in0.day_supply]
+  [out0.d_cag_autm.splty_fin_summary_act_ind,[passthrough],in0.specialty_financial_summary]
+  [out0.d_ca_autm.top_10_splty_thr_class_act_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_cag_autm.drct_mbr_reimbsmnt_acct,[passthrough],in0.dmr]
+  [out0.d_ca_autm.carrier_id,[transform],in0.carrier]
+  [out0.d_ca_autm.top_10_class_carrier,[passthrough],in0.top_10_classes]
+  [out0.d_cag_autm.top_25_md_acct,[passthrough],in0.top_50_md]
+  [out0.d_cag_autm.formulary_compl_carrier,[passthrough],in0.formulary_compliance]
+  [out0.d_cag_autm.slice_id,[transform],in0.slice_id]
+  [out0.d_cag_autm.top_10_splty_drg_car_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_ca_autm.carrier_nm,[passthrough],in0.carrier_name]
+  [out0.d_cag_autm.top_25_rx_grp,[passthrough],in0.top_50_rx]
+  [out0.d_carr_autm.top_25_rx_carrier,[passthrough],in0.top_50_rx]
+  [out0.d_cag_autm.splty_grp,[passthrough],in0.specialty_drug]
+  [out0.d_cag_autm.carrier_nm,[passthrough],in0.carrier_name]
+  [out0.d_carr_autm.top_10_splty_thr_class_car_ind,[passthrough],in0.top_10_specialty_therapeutic_classes]
+  [out0.d_carr_autm.top_10_splty_drg_car_ind,[passthrough],in0.top_10_specialty_drugs_by_plan_paid]
+  [out0.d_carr_autm.slice_desc,[passthrough],in0.account_name]
+  [out0.d_carr_autm.drop_record,[transform],in0.group_id,
+     in0.account,
+     in0.carrier]
+  [out0.d_carr_autm.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_carr_autm.day_supply_carrier,[passthrough],in0.day_supply]
+  [out0.d_ca_autm.specialty_carrier,[passthrough],in0.specialty_drug]
+  [out0.d_cag_autm.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_cag_autm.carrier_id,[transform],in0.carrier]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_ca_autm.splty_fin_summary_act_ind,'d_ca_autm.splty_fin_summary_act_ind',1,0]
+     [out0.d_ca_autm.splty_channel_act_ind,'d_ca_autm.splty_channel_act_ind',1,0]
+     [out0.d_ca_autm.slice_id,'d_ca_autm.slice_id',1,0]
+     [out0.d_carr_autm.splty_perf_car_ind,'d_carr_autm.splty_perf_car_ind',1,0]
+     [out0.d_carr_autm.drg_utilz_carrier,'d_carr_autm.drg_utilz_carrier',1,0]
+     [out0.d_cag_autm.drg_utiliz_acct,'d_cag_autm.drg_utiliz_acct',1,0]
+     [out0.d_cag_autm.account_nm,'d_cag_autm.account_nm',1,0]
+     [out0.d_ca_autm.mail_srvce_carrier,'d_ca_autm.mail_srvce_carrier',1,0]
+     [out0.d_ca_autm.drg_utilz_carrier,'d_ca_autm.drg_utilz_carrier',1,0]
+     [out0.d_cag_autm.mail_srvce_carrier,'d_cag_autm.mail_srvce_carrier',1,0]
+     [out0.d_ca_autm.top_25_mbrs_carrier,'d_ca_autm.top_25_mbrs_carrier',1,0]
+     [out0.d_ca_autm.day_supply_carrier,'d_ca_autm.day_supply_carrier',1,0]
+     [out0.d_cag_autm.top_25_rx_carrier,'d_cag_autm.top_25_rx_carrier',1,0]
+     [out0.d_ca_autm.formulary_compl_acct,'d_ca_autm.formulary_compl_acct',1,0]
+     [out0.d_cag_autm.top_25_drg_carrier,'d_cag_autm.top_25_drg_carrier',1,0]
+     [out0.d_cag_autm.top_10_splty_drg_grp_ind,'d_cag_autm.top_10_splty_drg_grp_ind',1,0]
+     [out0.d_cag_autm.account_id,'d_cag_autm.account_id',1,0]
+     [out0.d_ca_autm.top_25_rx_acct,'d_ca_autm.top_25_rx_acct',1,0]
+     [out0.d_ca_autm.generic_utiliz_acct,'d_ca_autm.generic_utiliz_acct',1,0]
+     [out0.d_carr_autm.address_id,'d_carr_autm.address_id',1,0]
+     [out0.d_cag_autm.formulary_compl_grp,'d_cag_autm.formulary_compl_grp',1,0]
+     [out0.d_cag_autm.generic_utiliz_acct,'d_cag_autm.generic_utiliz_acct',1,0]
+     [out0.d_ca_autm.src_env_sk,'d_ca_autm.src_env_sk',1,0]
+     [out0.d_ca_autm.account_id,'d_ca_autm.account_id',1,0]
+     [out0.d_cag_autm.splty_channel_act_ind,'d_cag_autm.splty_channel_act_ind',1,0]
+     [out0.d_cag_autm.splty_acct,'d_cag_autm.splty_acct',1,0]
+     [out0.d_ca_autm.top_25_drg_carrier,'d_ca_autm.top_25_drg_carrier',1,0]
+     [out0.d_carr_autm.carrier_nm,'d_carr_autm.carrier_nm',1,0]
+     [out0.d_cag_autm.top_25_mbrs_carrier,'d_cag_autm.top_25_mbrs_carrier',1,0]
+     [out0.d_cag_autm.top_10_class_grp,'d_cag_autm.top_10_class_grp',1,0]
+     [out0.d_cag_autm.drg_utilz_carrier,'d_cag_autm.drg_utilz_carrier',1,0]
+     [out0.d_cag_autm.top_10_splty_thr_class_act_ind,'d_cag_autm.top_10_splty_thr_class_act_ind',1,0]
+     [out0.d_cag_autm.employer_group_nm,'d_cag_autm.employer_group_nm',1,0]
+     [out0.d_ca_autm.top_10_splty_thr_class_car_ind,'d_ca_autm.top_10_splty_thr_class_car_ind',1,0]
+     [out0.d_ca_autm.top_25_md_carrier,'d_ca_autm.top_25_md_carrier',1,0]
+     [out0.d_ca_autm.account_nm,'d_ca_autm.account_nm',1,0]
+     [out0.d_cag_autm.splty_fin_summary_grp_ind,'d_cag_autm.splty_fin_summary_grp_ind',1,0]
+     [out0.d_carr_autm.top_25_mbrs_carrier,'d_carr_autm.top_25_mbrs_carrier',1,0]
+     [out0.d_cag_autm.formulary_compl_acct,'d_cag_autm.formulary_compl_acct',1,0]
+     [out0.d_cag_autm.day_supply_acct,'d_cag_autm.day_supply_acct',1,0]
+     [out0.d_carr_autm.mail_srvce_carrier,'d_carr_autm.mail_srvce_carrier',1,0]
+     [out0.d_carr_autm.top_25_drg_carrier,'d_carr_autm.top_25_drg_carrier',1,0]
+     [out0.d_cag_autm.top_25_md_carrier,'d_cag_autm.top_25_md_carrier',1,0]
+     [out0.d_cag_autm.splty_channel_car_ind,'d_cag_autm.splty_channel_car_ind',1,0]
+     [out0.d_ca_autm.drct_mbr_reimbsmnt_acct,'d_ca_autm.drct_mbr_reimbsmnt_acct',1,0]
+     [out0.d_carr_autm.formulary_compl_carrier,'d_carr_autm.formulary_compl_carrier',1,0]
+     [out0.d_cag_autm.top_10_splty_thr_class_car_ind,'d_cag_autm.top_10_splty_thr_class_car_ind',1,0]
+     [out0.d_ca_autm.top_10_splty_drg_act_ind,'d_ca_autm.top_10_splty_drg_act_ind',1,0]
+     [out0.d_carr_autm.splty_channel_car_ind,'d_carr_autm.splty_channel_car_ind',1,0]
+     [out0.d_carr_autm.slice_id,'d_carr_autm.slice_id',1,0]
+     [out0.d_ca_autm.top_25_rx_carrier,'d_ca_autm.top_25_rx_carrier',1,0]
+     [out0.d_ca_autm.generic_utiliz_carrier,'d_ca_autm.generic_utiliz_carrier',1,0]
+     [out0.d_carr_autm.carrier_id,'d_carr_autm.carrier_id',1,0]
+     [out0.d_cag_autm.top_25_mbrs_grp,'d_cag_autm.top_25_mbrs_grp',1,0]
+     [out0.d_cag_autm.top_25_mbrs_acct,'d_cag_autm.top_25_mbrs_acct',1,0]
+     [out0.d_cag_autm.splty_channel_grp_ind,'d_cag_autm.splty_channel_grp_ind',1,0]
+     [out0.d_cag_autm.top_10_class_acct,'d_cag_autm.top_10_class_acct',1,0]
+     [out0.d_cag_autm.splty_fin_summary_car_ind,'d_cag_autm.splty_fin_summary_car_ind',1,0]
+     [out0.d_cag_autm.top_10_splty_drg_act_ind,'d_cag_autm.top_10_splty_drg_act_ind',1,0]
+     [out0.d_cag_autm.top_10_class_carrier,'d_cag_autm.top_10_class_carrier',1,0]
+     [out0.d_cag_autm.top_25_drg_grp,'d_cag_autm.top_25_drg_grp',1,0]
+     [out0.d_cag_autm.generic_utiliz_grp,'d_cag_autm.generic_utiliz_grp',1,0]
+     [out0.d_cag_autm.slice_desc,'d_cag_autm.slice_desc',1,0]
+     [out0.d_ca_autm.top_25_md_acct,'d_ca_autm.top_25_md_acct',1,0]
+     [out0.d_ca_autm.drg_utiliz_acct,'d_ca_autm.drg_utiliz_acct',1,0]
+     [out0.d_cag_autm.mail_srvce_grp,'d_cag_autm.mail_srvce_grp',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_cag_autm.drct_mbr_rmbst_carrier,'d_cag_autm.drct_mbr_rmbst_carrier',1,0]
+     [out0.d_carr_autm.top_25_md_carrier,'d_carr_autm.top_25_md_carrier',1,0]
+     [out0.d_carr_autm.splty_carrier,'d_carr_autm.splty_carrier',1,0]
+     [out0.d_cag_autm.top_25_rx_acct,'d_cag_autm.top_25_rx_acct',1,0]
+     [out0.d_cag_autm.employer_group_id,'d_cag_autm.employer_group_id',1,0]
+     [out0.d_ca_autm.splty_perf_car_ind,'d_ca_autm.splty_perf_car_ind',1,0]
+     [out0.d_ca_autm.address_id,'d_ca_autm.address_id',1,0]
+     [out0.d_ca_autm.day_supply_acct,'d_ca_autm.day_supply_acct',1,0]
+     [out0.d_cag_autm.top_25_md_grp,'d_cag_autm.top_25_md_grp',1,0]
+     [out0.d_cag_autm.drug_utiliz_grp,'d_cag_autm.drug_utiliz_grp',1,0]
+     [out0.d_ca_autm.mail_srvce_acct,'d_ca_autm.mail_srvce_acct',1,0]
+     [out0.d_cag_autm.mail_srvce_acct,'d_cag_autm.mail_srvce_acct',1,0]
+     [out0.d_ca_autm.top_25_mbrs_acct,'d_ca_autm.top_25_mbrs_acct',1,0]
+     [out0.d_cag_autm.splty_perf_grp_ind,'d_cag_autm.splty_perf_grp_ind',1,0]
+     [out0.d_cag_autm.top_25_drg_acct,'d_cag_autm.top_25_drg_acct',1,0]
+     [out0.d_cag_autm.address_id,'d_cag_autm.address_id',1,0]
+     [out0.d_ca_autm.formulary_compl_carrier,'d_ca_autm.formulary_compl_carrier',1,0]
+     [out0.d_ca_autm.top_10_splty_drg_car_ind,'d_ca_autm.top_10_splty_drg_car_ind',1,0]
+     [out0.d_ca_autm.drct_mbr_rmbst_carrier,'d_ca_autm.drct_mbr_rmbst_carrier',1,0]
+     [out0.d_ca_autm.splty_perf_act_ind,'d_ca_autm.splty_perf_act_ind',1,0]
+     [out0.d_ca_autm.splty_fin_summary_car_ind,'d_ca_autm.splty_fin_summary_car_ind',1,0]
+     [out0.d_ca_autm.splty_channel_car_ind,'d_ca_autm.splty_channel_car_ind',1,0]
+     [out0.d_cag_autm.drct_mbr_reimbsmnt_grp,'d_cag_autm.drct_mbr_reimbsmnt_grp',1,0]
+     [out0.d_cag_autm.generic_utiliz_carrier,'d_cag_autm.generic_utiliz_carrier',1,0]
+     [out0.d_ca_autm.drop_record,'d_ca_autm.drop_record',4,3]
+     [out0.d_cag_autm.splty_perf_car_ind,'d_cag_autm.splty_perf_car_ind',1,0]
+     [out0.d_cag_autm.day_supply_grp,'d_cag_autm.day_supply_grp',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_ca_autm.slice_desc,'d_ca_autm.slice_desc',1,0]
+     [out0.d_carr_autm.top_10_class_carrier,'d_carr_autm.top_10_class_carrier',1,0]
+     [out0.d_ca_autm.top_25_drg_acct,'d_ca_autm.top_25_drg_acct',1,0]
+     [out0.d_cag_autm.splty_carrier,'d_cag_autm.splty_carrier',1,0]
+     [out0.d_cag_autm.drop_record,'d_cag_autm.drop_record',4,3]
+     [out0.d_ca_autm.specialty_acct,'d_ca_autm.specialty_acct',1,0]
+     [out0.d_cag_autm.top_10_splty_thr_class_grp_ind,'d_cag_autm.top_10_splty_thr_class_grp_ind',1,0]
+     [out0.d_ca_autm.top_10_class_acct,'d_ca_autm.top_10_class_acct',1,0]
+     [out0.d_carr_autm.generic_utiliz_carrier,'d_carr_autm.generic_utiliz_carrier',1,0]
+     [out0.d_cag_autm.splty_perf_act_ind,'d_cag_autm.splty_perf_act_ind',1,0]
+     [out0.d_carr_autm.splty_fin_summary_car_ind,'d_carr_autm.splty_fin_summary_car_ind',1,0]
+     [out0.d_carr_autm.drct_mbr_rmbst_carrier,'d_carr_autm.drct_mbr_rmbst_carrier',1,0]
+     [out0.d_cag_autm.day_supply_carrier,'d_cag_autm.day_supply_carrier',1,0]
+     [out0.d_cag_autm.splty_fin_summary_act_ind,'d_cag_autm.splty_fin_summary_act_ind',1,0]
+     [out0.d_ca_autm.top_10_splty_thr_class_act_ind,'d_ca_autm.top_10_splty_thr_class_act_ind',1,0]
+     [out0.d_cag_autm.drct_mbr_reimbsmnt_acct,'d_cag_autm.drct_mbr_reimbsmnt_acct',1,0]
+     [out0.d_ca_autm.carrier_id,'d_ca_autm.carrier_id',1,0]
+     [out0.d_ca_autm.top_10_class_carrier,'d_ca_autm.top_10_class_carrier',1,0]
+     [out0.d_cag_autm.top_25_md_acct,'d_cag_autm.top_25_md_acct',1,0]
+     [out0.d_cag_autm.formulary_compl_carrier,'d_cag_autm.formulary_compl_carrier',1,0]
+     [out0.d_cag_autm.slice_id,'d_cag_autm.slice_id',1,0]
+     [out0.d_cag_autm.top_10_splty_drg_car_ind,'d_cag_autm.top_10_splty_drg_car_ind',1,0]
+     [out0.d_ca_autm.carrier_nm,'d_ca_autm.carrier_nm',1,0]
+     [out0.d_cag_autm.top_25_rx_grp,'d_cag_autm.top_25_rx_grp',1,0]
+     [out0.d_carr_autm.top_25_rx_carrier,'d_carr_autm.top_25_rx_carrier',1,0]
+     [out0.d_cag_autm.splty_grp,'d_cag_autm.splty_grp',1,0]
+     [out0.d_cag_autm.carrier_nm,'d_cag_autm.carrier_nm',1,0]
+     [out0.d_carr_autm.top_10_splty_thr_class_car_ind,'d_carr_autm.top_10_splty_thr_class_car_ind',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_carr_autm.top_10_splty_drg_car_ind,'d_carr_autm.top_10_splty_drg_car_ind',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_carr_autm.slice_desc,'d_carr_autm.slice_desc',1,0]
+     [out0.d_carr_autm.drop_record,'d_carr_autm.drop_record',3,2]
+     [out0.d_carr_autm.src_env_sk,'d_carr_autm.src_env_sk',1,0]
+     [out0.d_carr_autm.day_supply_carrier,'d_carr_autm.day_supply_carrier',1,0]
+     [out0.d_ca_autm.specialty_carrier,'d_ca_autm.specialty_carrier',1,0]
+     [out0.d_cag_autm.src_env_sk,'d_cag_autm.src_env_sk',1,0]
+     [out0.d_cag_autm.carrier_id,'d_cag_autm.carrier_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.top_25_drug,'top_25_drug',6,6]
+     [in0.specialty_channel,'specialty_channel',6,6]
+     [in0.specialty_performance,'specialty_performance',6,6]
+     [in0.top_10_specialty_therapeutic_classes,'top_10_specialty_therapeutic_classes',6,6]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.address_id,'address_id',3,3]
+     [in0.carrier,'carrier',7,14]
+     [in0.account,'account',11,13]
+     [in0.dxf_src_sys_id,'DXF Source System ID',4,4]
+     [in0.day_supply,'day_supply',6,6]
+     [in0.slice_id,'slice_id',3,3]
+     [in0.top_50_mbrs,'top_50_mbrs',6,6]
+     [in0.specialty_drug,'specialty_drug',6,6]
+     [in0.ms,'ms',6,6]
+     [in0.group_id,'group_id',7,12]
+     [in0.top_10_classes,'top_10_classes',6,6]
+     [in0.top_10_specialty_drugs_by_plan_paid,'top_10_specialty_drugs_by_plan_paid',6,6]
+     ['lookup("umr_grid2_lkp").carrier_cntr','carrier_cntr',4,8]
+     [in0.specialty_financial_summary,'specialty_financial_summary',6,6]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.group_name,'group_name',1,1]
+     [in0.generic_utilization,'generic_utilization',6,6]
+     [in0.formulary_compliance,'formulary_compliance',6,6]
+     [in0.top_50_md,'top_50_md',6,6]
+     [in0.top_50_rx,'top_50_rx',6,6]
+     [in0.dmr,'dmr',6,6]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.carrier_name,'carrier_name',3,3]
+     [in0.account_name,'account_name',5,5]
+     [in0.drug_utililization,'drug_utililization',6,6]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') bzt_0;
+let decimal('') bzt_1;
+let decimal('') bzt_2;
+let decimal('') bzt_3;
+let decimal('') bzt_4;
+let decimal('') bzt_5;
+let long bzt_6 = 0;
+let long bzt_7 = 0;
+let decimal(1) d_ca_autm_drop_record = 2;
+let decimal("\x01",0) d_ca_autm_slice_id = fail_if_error(string_lrtrim(in0.slice_id));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_ca_autm_slice_desc = fail_if_error(in0.account_name);
+let string("\x01",charset="iso-8859-15", maximum_length=9) d_ca_autm_carrier_id = fail_if_error(string_lrtrim(in0.carrier));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_ca_autm_carrier_nm = fail_if_error(in0.carrier_name);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_ca_autm_account_id = fail_if_error(string_lrtrim(in0.account));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_ca_autm_account_nm = fail_if_error(in0.account_name);
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_ca_autm_address_id = fail_if_error(in0.address_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_drg_utilz_carrier = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_drg_utiliz_acct = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_day_supply_carrier = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_day_supply_acct = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_generic_utiliz_carrier = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_generic_utiliz_acct = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_formulary_compl_carrier = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_formulary_compl_acct = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_drg_carrier = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_drg_acct = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_class_carrier = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_class_acct = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_mail_srvce_carrier = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_mail_srvce_acct = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_drct_mbr_rmbst_carrier = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_drct_mbr_reimbsmnt_acct = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_specialty_carrier = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_specialty_acct = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_mbrs_carrier = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_mbrs_acct = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_rx_carrier = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_rx_acct = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_md_carrier = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_25_md_acct = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_channel_car_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_channel_act_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_fin_summary_car_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_fin_summary_act_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_perf_car_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_splty_perf_act_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_splty_drg_car_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_splty_drg_act_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_splty_thr_class_car_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_ca_autm_top_10_splty_thr_class_act_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let decimal("\x01",0) d_ca_autm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal(1) d_cag_autm_drop_record = 2;
+let decimal("\x01",0) d_cag_autm_slice_id = fail_if_error(string_lrtrim(in0.slice_id));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_cag_autm_slice_desc = fail_if_error(in0.account_name);
+let string("\x01",charset="iso-8859-15", maximum_length=9) d_cag_autm_carrier_id = fail_if_error(string_lrtrim(in0.carrier));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_cag_autm_carrier_nm = fail_if_error(in0.carrier_name);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_cag_autm_account_id = fail_if_error(string_lrtrim(in0.account));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_cag_autm_account_nm = fail_if_error(in0.account_name);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_cag_autm_employer_group_id = fail_if_error(string_lrtrim(in0.group_id));
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cag_autm_employer_group_nm = fail_if_error(in0.group_name);
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_cag_autm_address_id = fail_if_error(in0.address_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drg_utilz_carrier = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drg_utiliz_acct = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drug_utiliz_grp = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_day_supply_carrier = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_day_supply_acct = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_day_supply_grp = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_generic_utiliz_carrier = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_generic_utiliz_acct = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_generic_utiliz_grp = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_formulary_compl_carrier = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_formulary_compl_acct = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_formulary_compl_grp = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_drg_carrier = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_drg_acct = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_drg_grp = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_class_carrier = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_class_acct = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_class_grp = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_mail_srvce_carrier = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_mail_srvce_acct = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_mail_srvce_grp = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drct_mbr_rmbst_carrier = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drct_mbr_reimbsmnt_acct = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_drct_mbr_reimbsmnt_grp = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_carrier = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_acct = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_grp = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_mbrs_carrier = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_mbrs_acct = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_mbrs_grp = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_rx_carrier = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_rx_acct = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_rx_grp = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_md_carrier = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_md_acct = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_25_md_grp = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_channel_car_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_channel_act_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_channel_grp_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_fin_summary_car_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_fin_summary_act_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_fin_summary_grp_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_perf_car_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_perf_act_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_splty_perf_grp_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_drg_car_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_drg_act_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_drg_grp_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_thr_class_car_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_thr_class_act_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_autm_top_10_splty_thr_class_grp_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let decimal("\x01",0) d_cag_autm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal(1) d_carr_autm_drop_record = 2;
+let decimal("\x01",0) d_carr_autm_slice_id = fail_if_error(string_lrtrim(in0.slice_id));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_carr_autm_slice_desc = fail_if_error(in0.account_name);
+let string("\x01",charset="iso-8859-15", maximum_length=9) d_carr_autm_carrier_id = fail_if_error(string_lrtrim(in0.carrier));
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_carr_autm_carrier_nm = fail_if_error(in0.carrier_name);
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_carr_autm_address_id = fail_if_error(in0.address_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_drg_utilz_carrier = fail_if_error(in0.drug_utililization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_day_supply_carrier = fail_if_error(in0.day_supply);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_generic_utiliz_carrier = fail_if_error(in0.generic_utilization);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_formulary_compl_carrier = fail_if_error(in0.formulary_compliance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_25_drg_carrier = fail_if_error(in0.top_25_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_10_class_carrier = fail_if_error(in0.top_10_classes);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_mail_srvce_carrier = fail_if_error(in0.ms);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_drct_mbr_rmbst_carrier = fail_if_error(in0.dmr);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_splty_carrier = fail_if_error(in0.specialty_drug);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_25_mbrs_carrier = fail_if_error(in0.top_50_mbrs);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_25_rx_carrier = fail_if_error(in0.top_50_rx);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_25_md_carrier = fail_if_error(in0.top_50_md);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_splty_channel_car_ind = fail_if_error(in0.specialty_channel);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_splty_fin_summary_car_ind = fail_if_error(in0.specialty_financial_summary);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_splty_perf_car_ind = fail_if_error(in0.specialty_performance);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_10_splty_drg_car_ind = fail_if_error(in0.top_10_specialty_drugs_by_plan_paid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_carr_autm_top_10_splty_thr_class_car_ind = fail_if_error(in0.top_10_specialty_therapeutic_classes);
+let decimal("\x01",0) d_carr_autm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute d_cag_autm.drop_record  (#1)   */
+bzt_0 = fail_if_error(string_lrtrim(in0.account) == "ALL");
+bzt_1 = fail_if_error(string_lrtrim(in0.group_id) == "ALL");
+bzt_2 = fail_if_error(lookup("umr_grid2_lkp",in0.carrier).carrier_cntr >= 1);
+if(first_defined(fail_if_error(is_null(in0.carrier)==0),0))begin
+  if(first_defined(fail_if_error(is_null(in0.account)==0),0))begin
+  if(first_defined(fail_if_error((is_null(in0.group_id) ==0) && (bzt_0 ==0) && (bzt_1 ==0) && (bzt_2 ==1)),0))begin
+     d_cag_autm_drop_record=0;
+  end
+  else if(first_defined(fail_if_error((is_null(in0.group_id) ==0) && (bzt_0 ==1) && (bzt_1 ==1) && (bzt_2 ==1) && ((lookup("umr_grid2_lkp",in0.carrier).carrier_cntr == 1) ==0)),0))begin
+     d_cag_autm_drop_record=0;
+  end
+  else if(first_defined(fail_if_error((is_null(in0.group_id) ==0) && (bzt_0 ==0) && (bzt_1 ==1) && (bzt_2 ==1) && ((lookup("umr_grid2_lkp",in0.carrier).carrier_cntr == 1) ==0)),0))begin
+     d_cag_autm_drop_record=0;
+  end
+  end
+end
+
+/*   Rule:Compute d_carr_autm.drop_record  (#2)   */
+if(first_defined(fail_if_error((is_null(in0.carrier) ==0)),0))begin
+  if(first_defined(fail_if_error((is_null(in0.account) ==0) && ((string_lrtrim(in0.account) == "ALL") ==1) && ((sql_or(is_null(in0.group_id),is_blank(in0.group_id))) ==1)),0))begin
+     d_carr_autm_drop_record=0;
+  end
+  else if(first_defined(fail_if_error((is_null(in0.account) ==1) && ((sql_or(is_null(in0.account),is_blank(in0.account))) ==1) && ((sql_or(is_null(in0.group_id),is_blank(in0.group_id))) ==1)),0))begin
+     d_carr_autm_drop_record=0;
+  end
+end
+
+/*   Rule:Compute d_ca_autm.drop_record  (#3)   */
+bzt_3 = fail_if_error(sql_or(is_null(in0.group_id),is_blank(in0.group_id)));
+bzt_4 = fail_if_error(lookup("umr_grid2_lkp",in0.carrier).carrier_cntr > 1);
+bzt_5 = fail_if_error(lookup("umr_grid2_lkp",in0.carrier).carrier_cntr == 1);
+if(first_defined(fail_if_error(is_null(in0.carrier)==0),0))begin
+  if(first_defined(fail_if_error(is_null(in0.account)==0),0))begin
+  if(first_defined(fail_if_error(((string_lrtrim(in0.account) == "SPECIAL") ==1) && (bzt_3 ==1) && (bzt_4 ==1) && (bzt_5 ==0)),0))begin
+     d_ca_autm_drop_record=0;
+  end
+  else if(first_defined(fail_if_error(((string_lrtrim(in0.account) == "SPECIAL") ==0) && (bzt_3 ==1) && (bzt_4 ==1) && (bzt_5 ==0)),0))begin
+     d_ca_autm_drop_record=0;
+  end
+  else if(first_defined(fail_if_error(((string_lrtrim(in0.account) =="ALL") ==0) && (bzt_3 ==1) && (bzt_4 ==0) && (bzt_5 ==1)),0))begin
+     d_ca_autm_drop_record=0;
+  end
+  end
+end
+
+  out0.d_ca_autm.drop_record::d_ca_autm_drop_record;
+  out0.d_ca_autm.slice_id::d_ca_autm_slice_id;
+  out0.d_ca_autm.slice_desc::d_ca_autm_slice_desc;
+  out0.d_ca_autm.carrier_id::d_ca_autm_carrier_id;
+  out0.d_ca_autm.carrier_nm::d_ca_autm_carrier_nm;
+  out0.d_ca_autm.account_id::d_ca_autm_account_id;
+  out0.d_ca_autm.account_nm::d_ca_autm_account_nm;
+  out0.d_ca_autm.address_id::d_ca_autm_address_id;
+  out0.d_ca_autm.drg_utilz_carrier::d_ca_autm_drg_utilz_carrier;
+  out0.d_ca_autm.drg_utiliz_acct::d_ca_autm_drg_utiliz_acct;
+  out0.d_ca_autm.day_supply_carrier::d_ca_autm_day_supply_carrier;
+  out0.d_ca_autm.day_supply_acct::d_ca_autm_day_supply_acct;
+  out0.d_ca_autm.generic_utiliz_carrier::d_ca_autm_generic_utiliz_carrier;
+  out0.d_ca_autm.generic_utiliz_acct::d_ca_autm_generic_utiliz_acct;
+  out0.d_ca_autm.formulary_compl_carrier::d_ca_autm_formulary_compl_carrier;
+  out0.d_ca_autm.formulary_compl_acct::d_ca_autm_formulary_compl_acct;
+  out0.d_ca_autm.top_25_drg_carrier::d_ca_autm_top_25_drg_carrier;
+  out0.d_ca_autm.top_25_drg_acct::d_ca_autm_top_25_drg_acct;
+  out0.d_ca_autm.top_10_class_carrier::d_ca_autm_top_10_class_carrier;
+  out0.d_ca_autm.top_10_class_acct::d_ca_autm_top_10_class_acct;
+  out0.d_ca_autm.mail_srvce_carrier::d_ca_autm_mail_srvce_carrier;
+  out0.d_ca_autm.mail_srvce_acct::d_ca_autm_mail_srvce_acct;
+  out0.d_ca_autm.drct_mbr_rmbst_carrier::d_ca_autm_drct_mbr_rmbst_carrier;
+  out0.d_ca_autm.drct_mbr_reimbsmnt_acct::d_ca_autm_drct_mbr_reimbsmnt_acct;
+  out0.d_ca_autm.specialty_carrier::d_ca_autm_specialty_carrier;
+  out0.d_ca_autm.specialty_acct::d_ca_autm_specialty_acct;
+  out0.d_ca_autm.top_25_mbrs_carrier::d_ca_autm_top_25_mbrs_carrier;
+  out0.d_ca_autm.top_25_mbrs_acct::d_ca_autm_top_25_mbrs_acct;
+  out0.d_ca_autm.top_25_rx_carrier::d_ca_autm_top_25_rx_carrier;
+  out0.d_ca_autm.top_25_rx_acct::d_ca_autm_top_25_rx_acct;
+  out0.d_ca_autm.top_25_md_carrier::d_ca_autm_top_25_md_carrier;
+  out0.d_ca_autm.top_25_md_acct::d_ca_autm_top_25_md_acct;
+  out0.d_ca_autm.splty_channel_car_ind::d_ca_autm_splty_channel_car_ind;
+  out0.d_ca_autm.splty_channel_act_ind::d_ca_autm_splty_channel_act_ind;
+  out0.d_ca_autm.splty_fin_summary_car_ind::d_ca_autm_splty_fin_summary_car_ind;
+  out0.d_ca_autm.splty_fin_summary_act_ind::d_ca_autm_splty_fin_summary_act_ind;
+  out0.d_ca_autm.splty_perf_car_ind::d_ca_autm_splty_perf_car_ind;
+  out0.d_ca_autm.splty_perf_act_ind::d_ca_autm_splty_perf_act_ind;
+  out0.d_ca_autm.top_10_splty_drg_car_ind::d_ca_autm_top_10_splty_drg_car_ind;
+  out0.d_ca_autm.top_10_splty_drg_act_ind::d_ca_autm_top_10_splty_drg_act_ind;
+  out0.d_ca_autm.top_10_splty_thr_class_car_ind::d_ca_autm_top_10_splty_thr_class_car_ind;
+  out0.d_ca_autm.top_10_splty_thr_class_act_ind::d_ca_autm_top_10_splty_thr_class_act_ind;
+  out0.d_ca_autm.src_env_sk::d_ca_autm_src_env_sk;
+  out0.d_cag_autm.drop_record::d_cag_autm_drop_record;
+  out0.d_cag_autm.slice_id::d_cag_autm_slice_id;
+  out0.d_cag_autm.slice_desc::d_cag_autm_slice_desc;
+  out0.d_cag_autm.carrier_id::d_cag_autm_carrier_id;
+  out0.d_cag_autm.carrier_nm::d_cag_autm_carrier_nm;
+  out0.d_cag_autm.account_id::d_cag_autm_account_id;
+  out0.d_cag_autm.account_nm::d_cag_autm_account_nm;
+  out0.d_cag_autm.employer_group_id::d_cag_autm_employer_group_id;
+  out0.d_cag_autm.employer_group_nm::d_cag_autm_employer_group_nm;
+  out0.d_cag_autm.address_id::d_cag_autm_address_id;
+  out0.d_cag_autm.drg_utilz_carrier::d_cag_autm_drg_utilz_carrier;
+  out0.d_cag_autm.drg_utiliz_acct::d_cag_autm_drg_utiliz_acct;
+  out0.d_cag_autm.drug_utiliz_grp::d_cag_autm_drug_utiliz_grp;
+  out0.d_cag_autm.day_supply_carrier::d_cag_autm_day_supply_carrier;
+  out0.d_cag_autm.day_supply_acct::d_cag_autm_day_supply_acct;
+  out0.d_cag_autm.day_supply_grp::d_cag_autm_day_supply_grp;
+  out0.d_cag_autm.generic_utiliz_carrier::d_cag_autm_generic_utiliz_carrier;
+  out0.d_cag_autm.generic_utiliz_acct::d_cag_autm_generic_utiliz_acct;
+  out0.d_cag_autm.generic_utiliz_grp::d_cag_autm_generic_utiliz_grp;
+  out0.d_cag_autm.formulary_compl_carrier::d_cag_autm_formulary_compl_carrier;
+  out0.d_cag_autm.formulary_compl_acct::d_cag_autm_formulary_compl_acct;
+  out0.d_cag_autm.formulary_compl_grp::d_cag_autm_formulary_compl_grp;
+  out0.d_cag_autm.top_25_drg_carrier::d_cag_autm_top_25_drg_carrier;
+  out0.d_cag_autm.top_25_drg_acct::d_cag_autm_top_25_drg_acct;
+  out0.d_cag_autm.top_25_drg_grp::d_cag_autm_top_25_drg_grp;
+  out0.d_cag_autm.top_10_class_carrier::d_cag_autm_top_10_class_carrier;
+  out0.d_cag_autm.top_10_class_acct::d_cag_autm_top_10_class_acct;
+  out0.d_cag_autm.top_10_class_grp::d_cag_autm_top_10_class_grp;
+  out0.d_cag_autm.mail_srvce_carrier::d_cag_autm_mail_srvce_carrier;
+  out0.d_cag_autm.mail_srvce_acct::d_cag_autm_mail_srvce_acct;
+  out0.d_cag_autm.mail_srvce_grp::d_cag_autm_mail_srvce_grp;
+  out0.d_cag_autm.drct_mbr_rmbst_carrier::d_cag_autm_drct_mbr_rmbst_carrier;
+  out0.d_cag_autm.drct_mbr_reimbsmnt_acct::d_cag_autm_drct_mbr_reimbsmnt_acct;
+  out0.d_cag_autm.drct_mbr_reimbsmnt_grp::d_cag_autm_drct_mbr_reimbsmnt_grp;
+  out0.d_cag_autm.splty_carrier::d_cag_autm_splty_carrier;
+  out0.d_cag_autm.splty_acct::d_cag_autm_splty_acct;
+  out0.d_cag_autm.splty_grp::d_cag_autm_splty_grp;
+  out0.d_cag_autm.top_25_mbrs_carrier::d_cag_autm_top_25_mbrs_carrier;
+  out0.d_cag_autm.top_25_mbrs_acct::d_cag_autm_top_25_mbrs_acct;
+  out0.d_cag_autm.top_25_mbrs_grp::d_cag_autm_top_25_mbrs_grp;
+  out0.d_cag_autm.top_25_rx_carrier::d_cag_autm_top_25_rx_carrier;
+  out0.d_cag_autm.top_25_rx_acct::d_cag_autm_top_25_rx_acct;
+  out0.d_cag_autm.top_25_rx_grp::d_cag_autm_top_25_rx_grp;
+  out0.d_cag_autm.top_25_md_carrier::d_cag_autm_top_25_md_carrier;
+  out0.d_cag_autm.top_25_md_acct::d_cag_autm_top_25_md_acct;
+  out0.d_cag_autm.top_25_md_grp::d_cag_autm_top_25_md_grp;
+  out0.d_cag_autm.splty_channel_car_ind::d_cag_autm_splty_channel_car_ind;
+  out0.d_cag_autm.splty_channel_act_ind::d_cag_autm_splty_channel_act_ind;
+  out0.d_cag_autm.splty_channel_grp_ind::d_cag_autm_splty_channel_grp_ind;
+  out0.d_cag_autm.splty_fin_summary_car_ind::d_cag_autm_splty_fin_summary_car_ind;
+  out0.d_cag_autm.splty_fin_summary_act_ind::d_cag_autm_splty_fin_summary_act_ind;
+  out0.d_cag_autm.splty_fin_summary_grp_ind::d_cag_autm_splty_fin_summary_grp_ind;
+  out0.d_cag_autm.splty_perf_car_ind::d_cag_autm_splty_perf_car_ind;
+  out0.d_cag_autm.splty_perf_act_ind::d_cag_autm_splty_perf_act_ind;
+  out0.d_cag_autm.splty_perf_grp_ind::d_cag_autm_splty_perf_grp_ind;
+  out0.d_cag_autm.top_10_splty_drg_car_ind::d_cag_autm_top_10_splty_drg_car_ind;
+  out0.d_cag_autm.top_10_splty_drg_act_ind::d_cag_autm_top_10_splty_drg_act_ind;
+  out0.d_cag_autm.top_10_splty_drg_grp_ind::d_cag_autm_top_10_splty_drg_grp_ind;
+  out0.d_cag_autm.top_10_splty_thr_class_car_ind::d_cag_autm_top_10_splty_thr_class_car_ind;
+  out0.d_cag_autm.top_10_splty_thr_class_act_ind::d_cag_autm_top_10_splty_thr_class_act_ind;
+  out0.d_cag_autm.top_10_splty_thr_class_grp_ind::d_cag_autm_top_10_splty_thr_class_grp_ind;
+  out0.d_cag_autm.src_env_sk::d_cag_autm_src_env_sk;
+  out0.d_carr_autm.drop_record::d_carr_autm_drop_record;
+  out0.d_carr_autm.slice_id::d_carr_autm_slice_id;
+  out0.d_carr_autm.slice_desc::d_carr_autm_slice_desc;
+  out0.d_carr_autm.carrier_id::d_carr_autm_carrier_id;
+  out0.d_carr_autm.carrier_nm::d_carr_autm_carrier_nm;
+  out0.d_carr_autm.address_id::d_carr_autm_address_id;
+  out0.d_carr_autm.drg_utilz_carrier::d_carr_autm_drg_utilz_carrier;
+  out0.d_carr_autm.day_supply_carrier::d_carr_autm_day_supply_carrier;
+  out0.d_carr_autm.generic_utiliz_carrier::d_carr_autm_generic_utiliz_carrier;
+  out0.d_carr_autm.formulary_compl_carrier::d_carr_autm_formulary_compl_carrier;
+  out0.d_carr_autm.top_25_drg_carrier::d_carr_autm_top_25_drg_carrier;
+  out0.d_carr_autm.top_10_class_carrier::d_carr_autm_top_10_class_carrier;
+  out0.d_carr_autm.mail_srvce_carrier::d_carr_autm_mail_srvce_carrier;
+  out0.d_carr_autm.drct_mbr_rmbst_carrier::d_carr_autm_drct_mbr_rmbst_carrier;
+  out0.d_carr_autm.splty_carrier::d_carr_autm_splty_carrier;
+  out0.d_carr_autm.top_25_mbrs_carrier::d_carr_autm_top_25_mbrs_carrier;
+  out0.d_carr_autm.top_25_rx_carrier::d_carr_autm_top_25_rx_carrier;
+  out0.d_carr_autm.top_25_md_carrier::d_carr_autm_top_25_md_carrier;
+  out0.d_carr_autm.splty_channel_car_ind::d_carr_autm_splty_channel_car_ind;
+  out0.d_carr_autm.splty_fin_summary_car_ind::d_carr_autm_splty_fin_summary_car_ind;
+  out0.d_carr_autm.splty_perf_car_ind::d_carr_autm_splty_perf_car_ind;
+  out0.d_carr_autm.top_10_splty_drg_car_ind::d_carr_autm_top_10_splty_drg_car_ind;
+  out0.d_carr_autm.top_10_splty_thr_class_car_ind::d_carr_autm_top_10_splty_thr_class_car_ind;
+  out0.d_carr_autm.src_env_sk::d_carr_autm_src_env_sk;
+  out0.*::in0.*;
+
+end;

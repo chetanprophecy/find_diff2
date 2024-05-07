@@ -1,0 +1,324 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_ctrx_rxclaim_rcqmbp_to_the_ctrx_d_qual_medicare_benf_ILM_documentation(in)=
+begin
+
+out0.benf_mbr_sk.mbr_id::depends_on(
+         in.ahabcd
+         );
+
+
+out0.d_q_med_benf.employer_group_id::depends_on(
+         in.ahadcd
+         );
+
+
+out0.d_q_med_benf.account_id::depends_on(
+         in.ahaccd
+         );
+
+
+out0.d_q_med_benf.qmb_status_cd::depends_on(
+         in.ahijax
+         );
+
+
+out0.d_q_med_benf.qmb_thru_dt::depends_on(
+         in.ahm6cg
+         /*   Rule: "Compute d_q_med_benf.qmb_thru_dt"   */ );
+
+
+out0.d_q_med_benf.qmb_medicaid_dual_sts_cd::depends_on(
+         in.ahiiax
+         );
+
+
+out0.benf_thru_dt_sk.cal_day_dt::depends_on(
+         in.ahm6cg
+         );
+
+
+out0.d_q_med_benf.qmb_from_dt::depends_on(
+         in.ahm5cg
+         /*   Rule: "Compute d_q_med_benf.qmb_from_dt"   */ );
+
+
+out0.benf_mbr_sk.employer_group_id::depends_on(
+         in.ahadcd
+         );
+
+
+out0.benf_cag_sk.carrier_id::depends_on(
+         in.ahaacd
+         );
+
+
+out0.d_q_med_benf.qmb_medicare_id::depends_on(
+         in.ahg1vi
+         );
+
+
+out0.d_q_med_benf.carrier_id::depends_on(
+         in.ahaacd
+         );
+
+
+out0.benf_cag_sk.account_id::depends_on(
+         in.ahaacd
+         );
+
+
+out0.benf_from_dt_sk.cal_day_dt::depends_on(
+         in.ahm5cg
+         );
+
+
+out0.benf_mbr_sk.carrier_id::depends_on(
+         in.ahaacd
+         );
+
+
+out0.benf_cag_sk.employer_group_id::depends_on(
+         in.ahadcd
+         );
+
+
+out0.d_q_med_benf.mbr_id::depends_on(
+         in.ahabcd
+         );
+
+
+out0.d_q_med_benf.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.benf_mbr_sk.account_id::depends_on(
+         in.ahaccd
+         );
+
+
+out0.benf_carr_sk.carrier_id::depends_on(
+         in.ahaacd
+         );
+
+
+out0.d_q_med_benf.qmb_seq_no::depends_on(
+         in.ahp0bt
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_ctrx_rxclaim_rcqmbp_to_the_ctrx_d_qual_medicare_benf_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.benf_mbr_sk.mbr_id,'benf_mbr_sk.mbr_id',1,0]
+     [out0.d_q_med_benf.employer_group_id,'d_q_med_benf.employer_group_id',1,0]
+     [out0.d_q_med_benf.account_id,'d_q_med_benf.account_id',1,0]
+     [out0.d_q_med_benf.qmb_status_cd,'d_q_med_benf.qmb_status_cd',1,0]
+     [out0.d_q_med_benf.qmb_thru_dt,'d_q_med_benf.qmb_thru_dt',4,2]
+     [out0.d_q_med_benf.qmb_medicaid_dual_sts_cd,'d_q_med_benf.qmb_medicaid_dual_sts_cd',1,0]
+     [out0.benf_thru_dt_sk.cal_day_dt,'benf_thru_dt_sk.cal_day_dt',1,3]
+     [out0.d_q_med_benf.qmb_from_dt,'d_q_med_benf.qmb_from_dt',4,2]
+     [out0.d_q_med_benf.carrier_sk,'d_q_med_benf.carrier_sk',1,0]
+     [out0.d_q_med_benf.qmb_sk,'d_q_med_benf.qmb_sk',1,0]
+     [out0.benf_mbr_sk.employer_group_id,'benf_mbr_sk.employer_group_id',1,0]
+     [out0.benf_cag_sk.carrier_id,'benf_cag_sk.carrier_id',1,0]
+     [out0.d_q_med_benf.qmb_from_dt_sk,'d_q_med_benf.qmb_from_dt_sk',1,0]
+     [out0.d_q_med_benf.qmb_medicare_id,'d_q_med_benf.qmb_medicare_id',1,0]
+     [out0.d_q_med_benf.mbr_sk,'d_q_med_benf.mbr_sk',1,0]
+     [out0.d_q_med_benf.carrier_id,'d_q_med_benf.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.benf_cag_sk.account_id,'benf_cag_sk.account_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.benf_from_dt_sk.cal_day_dt,'benf_from_dt_sk.cal_day_dt',1,3]
+     [out0.d_q_med_benf.qmb_thru_dt_sk,'d_q_med_benf.qmb_thru_dt_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.benf_mbr_sk.carrier_id,'benf_mbr_sk.carrier_id',1,0]
+     [out0.benf_cag_sk.employer_group_id,'benf_cag_sk.employer_group_id',1,0]
+     [out0.d_q_med_benf.mbr_id,'d_q_med_benf.mbr_id',1,0]
+     [out0.d_q_med_benf.cag_sk,'d_q_med_benf.cag_sk',1,0]
+     [out0.d_q_med_benf.src_env_sk,'d_q_med_benf.src_env_sk',1,0]
+     [out0.benf_mbr_sk.account_id,'benf_mbr_sk.account_id',1,0]
+     [out0.benf_carr_sk.carrier_id,'benf_carr_sk.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_q_med_benf.sec_flg,'d_q_med_benf.sec_flg',1,0]
+     [out0.d_q_med_benf.qmb_seq_no,'d_q_med_benf.qmb_seq_no',1,0]
+  ]
+  impacts:
+  [
+     [in0.ahijax,'ahijax',1,1]
+     [in0.ahm6cg,'ahm6cg',5,4]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ahiiax,'ahiiax',1,1]
+     [in0.ahadcd,'ahadcd',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ahm5cg,'ahm5cg',5,4]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ahaccd,'ahaccd',2,2]
+     [in0.ahabcd,'ahabcd',2,2]
+     [in0.ahp0bt,'ahp0bt',1,1]
+     [in0.ahg1vi,'ahg1vi',1,1]
+     [in0.ahaacd,'ahaacd',5,5]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_0 not NULL = 0;
+let int bzt_1 not NULL = 0;
+let decimal("\x01",0) d_q_med_benf_qmb_sk = -1;
+let decimal("\x01",0) d_q_med_benf_mbr_sk = -1;
+let decimal("\x01",0) d_q_med_benf_cag_sk = -1;
+let decimal("\x01",0) d_q_med_benf_carrier_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_q_med_benf_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_q_med_benf_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_q_med_benf_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_q_med_benf_mbr_id;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_q_med_benf_qmb_medicare_id;
+let decimal("\x01",0) d_q_med_benf_qmb_seq_no;
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_q_med_benf_qmb_medicaid_dual_sts_cd;
+let decimal("\x01",0) d_q_med_benf_qmb_from_dt_sk = -1;
+let date("YYYYMMDD")("\x01") d_q_med_benf_qmb_from_dt;
+let decimal("\x01",0) d_q_med_benf_qmb_thru_dt_sk = -1;
+let date("YYYYMMDD")("\x01") d_q_med_benf_qmb_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_q_med_benf_qmb_status_cd;
+let decimal("\x01",0) d_q_med_benf_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) d_q_med_benf_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=30) benf_cag_sk_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) benf_cag_sk_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) benf_cag_sk_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) benf_carr_sk_carrier_id;
+let date("YYYYMMDD")("\x01") benf_from_dt_sk_cal_day_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=30) benf_mbr_sk_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) benf_mbr_sk_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) benf_mbr_sk_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=20) benf_mbr_sk_mbr_id;
+let date("YYYYMMDD")("\x01") benf_thru_dt_sk_cal_day_dt;
+
+
+
+/*   Rule:Compute d_q_med_benf.qmb_from_dt  (#1)   */
+if(first_defined(fail_if_error(((length_of(((decimal(""))string_lrtrim(in0.ahm5cg))) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+(decimal(""))string_lrtrim(in0.ahm5cg)))) ==1)),0))begin
+  bzt_0=1;
+  d_q_med_benf_qmb_from_dt=YYYYMMDD(19000000+(decimal(""))string_lrtrim(in0.ahm5cg));
+end
+else if(first_defined(fail_if_error(((length_of((decimal(""))string_lrtrim(in0.ahm5cg))) ==8) && ((is_valid(YYYYMMDD((decimal(""))string_lrtrim(in0.ahm5cg)))) ==1)),0))begin
+  bzt_0=1;
+  d_q_med_benf_qmb_from_dt=YYYYMMDD((decimal(""))string_lrtrim(in0.ahm5cg));
+end
+
+/*   Default value   */
+if(!bzt_0)begin
+  d_q_med_benf_qmb_from_dt=fail_if_error(low_date());
+end
+
+/*   Default value   */
+benf_from_dt_sk_cal_day_dt=fail_if_error(d_q_med_benf_qmb_from_dt);
+
+/*   Rule:Compute d_q_med_benf.qmb_thru_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of(((decimal(""))string_lrtrim(in0.ahm6cg))) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+(decimal(""))string_lrtrim(in0.ahm6cg)))) ==1)),0))begin
+  bzt_1=1;
+  d_q_med_benf_qmb_thru_dt=YYYYMMDD(19000000+(decimal(""))string_lrtrim(in0.ahm6cg));
+end
+else if(first_defined(fail_if_error(((length_of((decimal(""))string_lrtrim(in0.ahm6cg))) ==8) && ((is_valid(YYYYMMDD((decimal(""))string_lrtrim(in0.ahm6cg)))) ==1)),0))begin
+  bzt_1=1;
+  d_q_med_benf_qmb_thru_dt=YYYYMMDD((decimal(""))string_lrtrim(in0.ahm6cg));
+end
+
+/*   Default value   */
+if(!bzt_1)begin
+  d_q_med_benf_qmb_thru_dt=fail_if_error(low_date());
+end
+
+/*   Default value   */
+benf_thru_dt_sk_cal_day_dt=fail_if_error(d_q_med_benf_qmb_thru_dt);
+
+/*   Default value   */
+benf_mbr_sk_mbr_id=fail_if_error(str_nk(in0.ahabcd));
+
+/*   Default value   */
+d_q_med_benf_employer_group_id=fail_if_error(str_nk(in0.ahadcd));
+
+/*   Default value   */
+d_q_med_benf_account_id=fail_if_error(str_nk(in0.ahaccd));
+
+/*   Default value   */
+d_q_med_benf_qmb_status_cd=fail_if_error(str_non_nk(in0.ahijax));
+
+/*   Default value   */
+d_q_med_benf_qmb_medicaid_dual_sts_cd=fail_if_error(str_non_nk(in0.ahiiax));
+
+/*   Default value   */
+benf_mbr_sk_employer_group_id=fail_if_error(str_nk(in0.ahadcd));
+
+/*   Default value   */
+benf_cag_sk_carrier_id=fail_if_error(str_nk(in0.ahaacd));
+
+/*   Default value   */
+d_q_med_benf_qmb_medicare_id=fail_if_error(str_nk(in0.ahg1vi));
+
+/*   Default value   */
+d_q_med_benf_carrier_id=fail_if_error(str_nk(in0.ahaacd));
+
+/*   Default value   */
+benf_cag_sk_account_id=fail_if_error(str_nk(in0.ahaacd));
+
+/*   Default value   */
+benf_mbr_sk_carrier_id=fail_if_error(str_nk(in0.ahaacd));
+
+/*   Default value   */
+benf_cag_sk_employer_group_id=fail_if_error(str_nk(in0.ahadcd));
+
+/*   Default value   */
+d_q_med_benf_mbr_id=fail_if_error(str_nk(in0.ahabcd));
+
+/*   Default value   */
+benf_mbr_sk_account_id=fail_if_error(str_nk(in0.ahaccd));
+
+/*   Default value   */
+benf_carr_sk_carrier_id=fail_if_error(str_nk(in0.ahaacd));
+
+/*   Default value   */
+d_q_med_benf_qmb_seq_no=fail_if_error((decimal(''))(numeric_nk(in0.ahp0bt)));
+
+  out0.d_q_med_benf.qmb_sk::d_q_med_benf_qmb_sk;
+  out0.d_q_med_benf.mbr_sk::d_q_med_benf_mbr_sk;
+  out0.d_q_med_benf.cag_sk::d_q_med_benf_cag_sk;
+  out0.d_q_med_benf.carrier_sk::d_q_med_benf_carrier_sk;
+  out0.d_q_med_benf.carrier_id::d_q_med_benf_carrier_id;
+  out0.d_q_med_benf.account_id::d_q_med_benf_account_id;
+  out0.d_q_med_benf.employer_group_id::d_q_med_benf_employer_group_id;
+  out0.d_q_med_benf.mbr_id::d_q_med_benf_mbr_id;
+  out0.d_q_med_benf.qmb_medicare_id::d_q_med_benf_qmb_medicare_id;
+  out0.d_q_med_benf.qmb_seq_no::d_q_med_benf_qmb_seq_no;
+  out0.d_q_med_benf.qmb_medicaid_dual_sts_cd::d_q_med_benf_qmb_medicaid_dual_sts_cd;
+  out0.d_q_med_benf.qmb_from_dt_sk::d_q_med_benf_qmb_from_dt_sk;
+  out0.d_q_med_benf.qmb_from_dt::d_q_med_benf_qmb_from_dt;
+  out0.d_q_med_benf.qmb_thru_dt_sk::d_q_med_benf_qmb_thru_dt_sk;
+  out0.d_q_med_benf.qmb_thru_dt::d_q_med_benf_qmb_thru_dt;
+  out0.d_q_med_benf.qmb_status_cd::d_q_med_benf_qmb_status_cd;
+  out0.d_q_med_benf.src_env_sk::d_q_med_benf_src_env_sk;
+  out0.d_q_med_benf.sec_flg::d_q_med_benf_sec_flg;
+  out0.benf_cag_sk.carrier_id::benf_cag_sk_carrier_id;
+  out0.benf_cag_sk.account_id::benf_cag_sk_account_id;
+  out0.benf_cag_sk.employer_group_id::benf_cag_sk_employer_group_id;
+  out0.benf_carr_sk.carrier_id::benf_carr_sk_carrier_id;
+  out0.benf_from_dt_sk.cal_day_dt::benf_from_dt_sk_cal_day_dt;
+  out0.benf_mbr_sk.carrier_id::benf_mbr_sk_carrier_id;
+  out0.benf_mbr_sk.account_id::benf_mbr_sk_account_id;
+  out0.benf_mbr_sk.employer_group_id::benf_mbr_sk_employer_group_id;
+  out0.benf_mbr_sk.mbr_id::benf_mbr_sk_mbr_id;
+  out0.benf_thru_dt_sk.cal_day_dt::benf_thru_dt_sk_cal_day_dt;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,333 @@
+<AppConfTempl name="Publish to Datalake (Distribution)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage><![CDATA[out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "datalake_publish.") or string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "datalake_publish.<i>source_system.source</i>.\n" +
+    "E.g. datalake_publish.rxclaim_orx.rcmbrp\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="combine" prototype_path="${AI_PSET}/distribute.combine.raw.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <FlowData name="FILTER_INPUT" source_port="Read_Event_Log/out0" dest_port="Data_Suppression_Outbound/in0"/>
+      </Pset>
+      <Pset name="distribute" prototype_path="$AI_PSET/distribute.datalake.interim.pset"/>
+      <Pset name="publish" prototype_path="$AI_PSET/distribute.publish.datalake.interim.pset"/>
+    </Project>
+    <Variables name="vars">
+      <Variable name="source_name" type="string"/>
+      <Variable name="datalake_dml_version" type="string"/>
+      <Variable name="pk" type="string"/>
+    </Variables>
+    <Variables name="uivars">
+      <Variable name="appconf_name_error" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check appconf name">
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="uivars.appconf_name_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_substring(built_in, string_index(built_in, ".")+1, 9999)</SourceValue>
+      <TargetValue reference="vars.source_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.source_name"/>
+      <TargetValue reference="proj.combine.SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.source_name"/>
+      <TargetValue reference="proj.distribute.SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.source_name"/>
+      <TargetValue reference="proj.publish.SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.SOURCE_CODE"/>
+      <TargetValue reference="proj.publish.SOURCE_CODE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.COMPRESS_DATA_FILE"/>
+      <TargetValue reference="proj.publish.COMPRESS_DATA_FILE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.distribute.LOAD_TYPE"/>
+      <TargetValue reference="proj.publish.LOAD_TYPE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/combine.raw/combine.raw." + proj.combine.SOURCE_SYSTEM + "." + proj.combine.SOURCE_ENTITY + ".pset"</SourceValue>
+      <TargetValue reference="proj.combine" property="relative_path"/>
+      <Condition is_expression="true">not is_blank(proj.combine.SOURCE_SYSTEM) and not is_blank(proj.combine.SOURCE_ENTITY)</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/distribute.datalake/distribute.datalake." + proj.distribute.TARGET_SYSTEM + "." + proj.distribute.TARGET_ENTITY + ".pset"</SourceValue>
+      <TargetValue reference="proj.distribute" property="relative_path"/>
+      <Condition is_expression="true">not is_blank(proj.distribute.TARGET_SYSTEM) and not is_blank(proj.distribute.TARGET_ENTITY)</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/publish.datalake/publish.datalake." + proj.publish.TARGET_SYSTEM + "." + proj.publish.TARGET_ENTITY + ".pset"</SourceValue>
+      <TargetValue reference="proj.publish" property="relative_path"/>
+      <Condition is_expression="true">not is_blank(proj.publish.TARGET_SYSTEM) and not is_blank(proj.publish.TARGET_ENTITY)</Condition>
+    </Assignment>
+    <Assignment name="Populate comma separated list of PK columns">
+      <SourceValue is_expression="true" list_conversion_format="comma">for(let entry in key_info(vars.pk)): entry.field_name</SourceValue>
+      <TargetValue reference="proj.distribute.PRIMARY_KEY_COLUMNS"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label>Settings</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>OWD</ConstantValue>
+                <ConstantValue>RX1</ConstantValue>
+                <ConstantValue>RX2</ConstantValue>
+                <ConstantValue>DPM</ConstantValue>
+              </Choices>
+              <Label>Datalake Book/System Identifier</Label>
+              <SourceTargetValue reference="proj.distribute.SOURCE_CODE"/>
+            </ComboBox>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Daily</ConstantValue>
+                <ConstantValue>History</ConstantValue>
+              </Choices>
+              <Label>Load Type</Label>
+              <!--<SourceTargetValue reference="proj.run_datalake_transfer.LOAD_TYPE"/>-->
+              <SourceTargetValue reference="proj.distribute.LOAD_TYPE"/>
+            </ComboBox>
+            <CheckBox>
+              <Label>Publish Compressed File</Label>
+              <SourceTargetValue reference="proj.distribute.COMPRESS_DATA_FILE"/>
+            </CheckBox>
+          </UIElements>
+          <Style>recval</Style>
+        </Box>
+        <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+        <Box>
+          <Label>File Details</Label>
+          <UIElements>
+            <Box>
+              <Label/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Source System:&lt;/b&gt; " + proj.combine.SOURCE_SYSTEM</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Source Entity:&lt;/b&gt; " + proj.combine.SOURCE_ENTITY</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Target System:&lt;/b&gt; " + proj.distribute.TARGET_SYSTEM</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Target Entity:&lt;/b&gt; " + proj.distribute.TARGET_ENTITY</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>Files</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Target Data File:&lt;/b&gt; " + proj.distribute.TARGET_DATA_FILE</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Target Meta File:&lt;/b&gt; " + proj.distribute.TARGET_META_FILE</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Target Control File:&lt;/b&gt; " + proj.distribute.TARGET_CTL_FILE</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <Expanded>false</Expanded>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Filter/Transform</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Filter Expression</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Data</Label>
+                  <SourceTargetValue reference="proj.combine.FILTER_EXPRESSION"/>
+                  <Style>reduction</Style>
+                  <RecordFormat reference="proj.combine.FILTER_INPUT" property="record_format"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+        <Box>
+          <Label>Drop Columns from Raw Clean DML</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Drop columns from Raw Clean DML</Label>
+              <Title/>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Choose fields to drop</Label>
+                  <RecordFormat reference="proj.distribute.RAW_DML"/>
+                  <SourceTargetValue reference="proj.distribute.DROP_FIELDS"/>
+                </FieldPicker>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>reduction</Style>
+        </Box>
+        <Box>
+          <Label>Primary Key Columns</Label>
+          <UIElements>
+            <Popup>
+              <Label is_expression="true">(is_blank(proj.distribute.PRIMARY_KEY_COLUMNS)? "Specify": "Edit") +
+            " Primary Key Columns for " +
+            string_upcase(proj.distribute.TARGET_SYSTEM) + "." + string_upcase(proj.distribute.TARGET_ENTITY)</Label>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Select Key Columns</Label>
+                  <RecordFormat reference="proj.distribute.DATALAKE_DML"/>
+                  <SourceTargetValue reference="vars.pk"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>sort</Style>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Primary Key Columns:&lt;/b&gt; " + proj.distribute.PRIMARY_KEY_COLUMNS</Label>
+              <Visible is_expression="true">not is_blank(proj.distribute.PRIMARY_KEY_COLUMNS)</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>sort</Style>
+        </Box>
+        <Box>
+          <Label>Other Parameters</Label>
+          <UIElements>
+            <TextInput>
+              <Label>Database Type</Label>
+              <SourceTargetValue reference="proj.distribute.DATABASE_TYPE"/>
+              <Description>Example: ISeries
+This value goes into the generated CTL file</Description>
+            </TextInput>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+        <Box>
+          <Label>Secure FTP Details</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;SFTP Target Host:&lt;/b&gt; " + proj.publish.SFTP_HOST</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;SFTP Target Location:&lt;/b&gt; " + proj.publish.SFTP_LOCATION</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;SFTP User:&lt;/b&gt; " + proj.publish.SFTP_USER</Label>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label is_expression="true">"(The default values are configured in the interim pset " + proj.publish.prototype_path + ")"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mapping</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Configuration Name Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="uivars.appconf_name_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">uivars.appconf_name_error != ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Combine Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine.PROJECT_DIR + "/" + proj.combine.relative_path + "&lt;/b&gt;"</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.combine.PROJECT_DIR + "/" + proj.combine.relative_path)</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Distribute Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine.PROJECT_DIR + "/" + proj.distribute.relative_path + "&lt;/b&gt;"</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.combine.PROJECT_DIR + "/" + proj.distribute.relative_path)</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Publish Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine.PROJECT_DIR + "/" + proj.publish.relative_path + "&lt;/b&gt;"</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.combine.PROJECT_DIR + "/" + proj.publish.relative_path)</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

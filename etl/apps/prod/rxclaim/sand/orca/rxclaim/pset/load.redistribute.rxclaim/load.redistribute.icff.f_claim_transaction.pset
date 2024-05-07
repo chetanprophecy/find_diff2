@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/load.redistribute.interim.pset
+IDS_SOURCE_NAME||||ids_rxclaim.f_claim_transaction
+REPARTITIONED_TARGET_1_NAME||||ids_rxclaim.f_claim_transaction_sbmdt
+REPARTITIONED_TARGET_2_NAME||||ids_rxclaim.f_claim_transaction_filleddt
+DIRECT_ADDRESSED_TARGET_NAME||||ids_rxclaim.f_claim_transaction
+DA_SEC_ICFF_1_KEY_RECORD||||record\r\n  little endian integer(8) claim_nbr /*BIGINT NOT NULL*/;\r\n  little endian integer(4) claim_seq_nbr /*INTEGER NOT NULL*/;\r\n  string(1,charset="iso-8859-15") claim_stat_id /*CHAR(1) NOT NULL*/;\r\n  little endian integer(8) src_env_sk = NULL /*BIGINT*/;\r\nend
+RUN_ID||||$[string_split_no_empty(read_file(PUB_DATAHUB_SERIAL+"/run.idw.integration.all."+AI_PHASE+".run_id.dat"),"\\n")[0]]
+DA_SEC_ICFF_2_KEY_RECORD||||record\r\n  little endian integer(8) claim_nbr /*BIGINT NOT NULL*/;\r\n  little endian integer(4) claim_seq_nbr /*INTEGER NOT NULL*/;\r\n  little endian integer(8) src_env_sk = NULL /*BIGINT*/;\r\nend
+IS_IDS_DML_WITH_NK:sandbox||||True

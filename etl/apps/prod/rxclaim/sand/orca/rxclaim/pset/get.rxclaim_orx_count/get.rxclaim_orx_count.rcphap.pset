@@ -1,0 +1,7 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcphap
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx_count
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcphap                  \nclmprdfil_bk1 rcphrp                  \nclmprdfil_bk1 rcsrvp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcphap') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcphrp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcsrvp')]
+SQL||||select count(*) from (select distinct rcphap.aoavcd FROM clmprdfil_bk1.rcphap rcphap LEFT OUTER JOIN clmprdfil_bk1.rcphrp rcphrp on rcphap.aoavcd = rcphrp.avavcd LEFT OUTER JOIN clmprdfil_bk1.rcsrvp rcsrvp on rcphap.aoavcd = rcsrvp.atavcd) b

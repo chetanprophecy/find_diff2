@@ -1,0 +1,24 @@
+insert into CTR_100_A_FNL_MEMBER_MONTH   
+SELECT   
+  a.CAG_SK, c.PERD_TYPE_SK, c.PERD_START_DT_SK, a.PLN_SK, a.CLIENT_PROD_SK, a.CLIENT_RDR_SK
+  , a.GENDER_SK, a.MBR_AGE, a.AGE_BAND_SK, a.RELATIONSHIP_CD_SK, a.CARE_FACILITY_SK
+  , sum(a.ACTIVE_DAYS_ELIG_MBR_CNT_NO), sum(a.UTILIZING_MBR_CNT_NO),  sum(a.ACTIVE_DAYS_SUBSCRIBER_CNT_NO)
+  , avg(case when c.perd_type_nbr = 2 then ceil(months_between(last_day(c.PERD_END_DT), c.PERD_START_DT)) else 
+        ceil(months_between(last_day(c.PERD_START_DT), c.PERD_END_DT)) end) MONTH_END_ELIG_MBR_CNT_NO
+   , a.SRC_ENV_SK, '2023-08-18 00:00:00', '2023-08-18 00:00:00', 'From l_cust_mbr_elig','From l_cust_mbr_elig', max(a.RUN_ID), a.REC_STAT_CD
+from  CTR_100_A_FNL_MEMBER_MONTH a, ORX_IDW_DM_PRD.ADMIN.L_PERIOD_TYPE b
+   , (select p.DT_SK, r.PERD_TYPE_SK,  q.*
+      from ORX_IDW_DM_PRD.ADMIN.D_DATE p, ORX_IDW_DM_PRD.ADMIN.L_DYNAMIC_PERIOD q,  ORX_IDW_DM_PRD.ADMIN.L_PERIOD_TYPE r
+      where q.PERD_TYPE_NBR = r.PERD_TYPE_NBR and
+             (
+            (q.PERD_TYPE_NBR = 2 and p.CAL_DAY_DT between q.PERD_START_DT and q.PERD_END_DT)
+        or (q.PERD_TYPE_NBR > 2 and p.CAL_DAY_DT between q.PERD_END_DT and last_day(q.PERD_START_DT))
+             )
+   ) c
+where a.PERD_TYPE_SK = b.PERD_TYPE_SK 
+and    b.PERD_TYPE_NBR = 1
+and    a.PERD_START_DT_SK = c.DT_SK
+and c.PERD_START_DT_SK=20230701
+and    a.CAG_SK in (select distinct CAG_SK from ORX_IDW_DM_PRD.ADMIN.D_CAG where CARRIER_ID in ('CTR002X'))
+group by a.CAG_SK, c.PERD_TYPE_SK, c.PERD_START_DT_SK, a.PLN_SK, a.CLIENT_PROD_SK, a.CLIENT_RDR_SK
+  , a.GENDER_SK, a.MBR_AGE, a.AGE_BAND_SK, a.RELATIONSHIP_CD_SK, a.CARE_FACILITY_SK, a.SRC_ENV_SK, a.REC_STAT_CD;

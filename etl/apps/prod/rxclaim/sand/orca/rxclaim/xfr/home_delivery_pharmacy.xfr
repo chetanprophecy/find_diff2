@@ -1,0 +1,40 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID                  :: "003";
+  out.SRC_PHARMACY_ID             :: in.WRITTEN_PHARMACY_CODE;
+  out.NPI                         :: if(first_defined(in.PHARMACY_NPI,"-1")=='0000000000' and first_defined(in.WRITTEN_PHARMACY_CODE,"-1")=='0001') '1497845317' else if(first_defined(in.WRITTEN_PHARMACY_CODE,"-1")=='0002') '1457408536' else in.PHARMACY_NPI;
+  out.NABP                        :: "";//PHAP.B1AVCD (Lookup Query 1);
+  out.DISPENSER_CLASS             :: "";//PHAP.B1UFST (Lookup Query 1);
+  out.DISPENSER_TYPE              :: "";//PHAP.B1UGST (Lookup Query 1);
+  out.CHAIN_CODE                  :: "";//PHAP.B1TFC1 (Lookup Query 1);
+  out.DEA_NBR                     :: "";//PHAP.B1THC1 (Lookup Query 1);
+  out.FEDERAL_TAX_ID              :: "";//PHAP.B1TIC1 (Lookup Query 1);
+  out.MEDICAID_ID                 :: "";//PHAP.B1ASU1 (Lookup Query 1);
+  out.MEDICARE_ID                 :: "";//PHAP.B1P5C5 (Lookup Query 1);
+  out.PHARMACY_NAME               :: "";//PHAP.B1AAU1 (Lookup Query 1);
+  out.PARENT_CODE                 :: "";//RTPDT.AAEENC (Lookup Query 1);
+  out.TAXONOMY_CODE               :: "";//PTXP.BZPHC5 (Lookup Query 1);
+  out.STORE_NAME                  :: "";//PHAP.B1AAU1 (Lookup Query 1);
+  out.ADDRESS1                    :: "";//PHAP.B1ABU1 (Lookup Query 1);
+  out.CITY                        :: "";//PHAP.B1ADU1 (Lookup Query 1);
+  out.STATE                       :: "";//PHAP.B1TDC1 (Lookup Query 1);
+  out.ZIP                         :: "";//PHAP.B1AHU1 (Lookup Query 1);
+  out.PRIMARY_PHONE_NBR           :: "";//PHAP.B1ABNB (Lookup Query 1);
+  out.ADDRESS2                    :: "";//PHAP.B1ACU1 (Lookup Query 1);
+  out.EXTRACT_DT                  :: in.EXTRACT_FILE_DATE;
+  out.EXTRACT_TIME                :: in.EXTRACT_FILE_TIMESTAMP;/*
+  out.LOAD_DT                     :: "";//PHARMACY.LOAD_DT (Lookup Query 2) format YYYYMMDD;
+  out.LOAD_TIME                   :: "";//PHARMACY.LOAD_TIME (Lookup Query 2) format HHMMSS;
+  out.REC_PROCESS                 :: "";//if PHARMACY.LOAD_DT IS NULL or 0  then 'Y' else 'N';
+  out.RUN_NBR                     :: "0";
+  out.SRC_UPDT_DT                 :: "0";
+  out.SRC_UPDT_TIME               :: "0";
+  out.rxt_src_envrt_id            :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm            :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm             :: $RUN_TIMESTAMP;
+  out.rxt_create_uid              :: 'app_orca_rxclaim';
+  out.rxt_create_run_id           :: (decimal(""))$RUN_TIMESTAMP;
+  out.rxt_rec_stat_cd             :: '';*/
+  out.*                           :: in.*;
+end;

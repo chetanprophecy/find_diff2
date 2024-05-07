@@ -1,0 +1,26 @@
+!prototype|P|||$PUB_FTP_MP/get.ftp.ftp_list.mp
+PROTOCOL||||sftp
+FTP_HOST||||$CMS_FTP_HOST
+FTP_USER||||$CMS_FTP_USER
+FTP_EPW||||$CMS_FTP_EPW
+FILE_PATTERN|c|||.*
+LOGICAL_FILENAME||||CMS_MPF_RATINGS_SURE_UP_DATA_
+FTP_FILE_LOCATIONS|d|||AI_PHASE
+DATE_LOGIC_FORMAT|$|||"YYYYMMDD"
+CHECK_PROCESSED_FILES||||False
+FTP_FILE_LOCATIONS:dev||||$CMS_FTP_FILE_LOCATION
+FTP_FILE_LOCATIONS:qa||||$CMS_FTP_FILE_LOCATION
+FTP_FILE_LOCATIONS:uat||||$CMS_FTP_FILE_LOCATION
+FTP_FILE_LOCATIONS:prod||||$CMS_FTP_FILE_LOCATION
+SFTP_EXTRA_ARGS||||-o PreferredAuthentications=password -o PubkeyAuthentication=no -o ServerAliveInterval=60
+WORKDIR|d|||AI_PHASE
+WORKDIR:dev|c|||/etl/data/dev/serial/ecg_landing/inbound/cms
+WORKDIR:qa|$|||/etl/data/qa/serial/ecg_landing/inbound/cms
+WORKDIR:integration|$|||
+WORKDIR:uat|$|||/etl/data/qa/serial/ecg_landing/inbound/cms
+WORKDIR:prod|$|||/etl/data/prod/serial/ecg_landing/inbound/cms
+WORKDIR:stage|$|||
+DATE_LOGIC_XFR||||$PUB_FTP_XFR/get.ftp.date_logic_cms_mpf_accuracy_ratings.xfr
+START_DATE||||2017-08-20
+END_DATE||||2017-08-20
+FTP_FUSE_XFR|$|||$PUB_FTP_XFR/get.ftp.fuse.default.xfr

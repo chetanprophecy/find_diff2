@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcpdmp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpdmp                  \nclmprdfil_bk1 rctc2p                  \nclmprdfil_bk1 rctcdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcpdmp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctc2p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctcdp')]
+WHERE_CLAUSE||||
+DO_LOOKUP||||1
+DO_SOURCE||||0
+LOOKUP_FIELDS||||dup2nb,duoinb,dulptx
+SQL||||$["SELECT * FROM clmprdfil_bk1.RCPDMP R\n join \n(SELECT rctc2p.qnp2nb\n     , rctc2p.qnoinb\n  FROM clmprdfil_bk1.rctc2p  rctc2p\n     , clmprdfil_bk1.rctcdp  rctcdp\nWHERE rctcdp.DQP2NB = RCTC2P.QNP2NB\n and rctcdp.DQOINB = RCTC2P.QNOINB\n and RCTC2P.QNYUAU='Y'\n and rctcdp.DQC4DT >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME,-1))) +\n " AND rctcdp.DQC4DT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME))+")as A on R.dup2nb = A.qnp2nb and R.duoinb = A.qnoinb and R.dulptx like 'Auto%'"]
+LOOKUP_NAME_OVERRIDE||||rcpdmp_rctc2p

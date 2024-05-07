@@ -1,0 +1,17 @@
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$DB_CLINICAL_ODS_DML/patient_matching/patient_matching_types.dml";
+
+ type med_claim_icff_t=
+record
+ med_claim_t            med_claim;
+ lookup_keys_t          lookup_keys;
+ cli_integer_id_t       ptnt_id =NULL;
+ cli_date_t             med_mtch_create_dt;
+ match_result_t[int]    match_result;
+ string('\n')           match_outcome =' ';
+end;
+metadata type = med_claim_icff_t;
+
+

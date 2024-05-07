@@ -1,0 +1,14 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8) dxf_src_rec_cnt = 0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dxf_src_file_name = ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string("\x01", maximum_length=1) cdc_flag = NULL;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\x01") cdc_ts = NULL;
+  decimal("\x01",0, maximum_length=16, sign_reserved) qnp2nb /*DECIMAL(15) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) qnoinb /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=10) qnz5hm /*CHAR(10) NOT NULL*/;
+  decimal("\x01",0, maximum_length=16, sign_reserved) rxclaimnbr /*DECIMAL(15) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) clmseqnbr /*DECIMAL(3) NOT NULL*/;
+  string(1) newline = "\n";
+end

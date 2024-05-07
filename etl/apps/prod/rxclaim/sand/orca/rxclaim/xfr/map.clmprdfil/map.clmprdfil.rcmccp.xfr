@@ -1,0 +1,32 @@
+/*Reformat operation*/
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.car_carrier_id :: in.kmaacd;
+  out.mac_list :: in.kmj5s2;
+  out.mac_gpi :: in.kmvnc2;
+  out.mac_gppc :: in.kmvoc2;
+  out.mac_ndc_labeler_id :: in.kmvqc2;
+  out.mac_ndc_product_code :: in.kmvrc2;
+  out.mac_ndc_package_code :: in.kmvsc2;
+  out.mac_seq_nbr :: in.kmhzn1;
+  out.mac_status :: in.kmins2;
+  out.mac_from_date :: in.kmjldt;
+  out.mac_thru_date :: in.kmjmdt;
+  out.mac_cost :: in.kmpwpr;
+  out.add_date :: in.kmc2dt;
+  out.chg_user_name :: in.kmadvn;
+  out.chg_date :: in.kmbmdt;
+  out.chg_time :: in.kmabtm;
+  out.chg_program_name :: in.kmaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;
+
+
+

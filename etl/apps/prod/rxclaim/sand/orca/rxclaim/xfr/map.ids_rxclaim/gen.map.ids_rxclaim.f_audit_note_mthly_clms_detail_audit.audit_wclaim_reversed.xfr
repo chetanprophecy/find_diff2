@@ -1,0 +1,670 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_5_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup w_audit_claims_mthly_prd   */
+out0::bzt_5_6c54cc0a_59105740_572_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0, maximum_length=16, sign_reserved) dqp2nb = NULL("");
+  string("\x01", maximum_length=15) dqs7cd = NULL("");
+  string("\x01", maximum_length=1) dqs6st = NULL("");
+  decimal("\x01",0) prod_sk = NULL(""), phr_sk = NULL("");
+  decimal("\x01".2, maximum_length=13) e0d2pr = NULL("");
+  decimal("\x01",0) cag_sk = NULL("");
+  string("\x01", maximum_length=9) dqs6cd = NULL("");
+  string("\x01", maximum_length=2) dqilcj = NULL("");
+  string("\x01", maximum_length=15) dqtccd = NULL("");
+  string("\x01", maximum_length=9) dqq3c3 = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) dqoinb = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("");
+  string("\x01", maximum_length=1) dqk2st = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) dqimnb = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) drg_ndc_id = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) dqionb = NULL("");
+  string("\x01", maximum_length=15) dqs8cd = NULL("");
+  decimal("\x01",0, maximum_length=9, sign_reserved) dqbbda = NULL("");
+  string("\x01", maximum_length=20) dqs5cd = NULL("");
+  decimal("\x01",0) mbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_dea_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pbr_npi_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01", maximum_length=12) dqukcd = NULL("");
+  decimal("\x01",0, maximum_length=9, sign_reserved) dqabda = NULL("");
+  date("YYYYMMDD")("\x01") dqc4dt = NULL("");
+  decimal("\x01",0, maximum_length=8, sign_reserved) dqbmdt = NULL("");
+  decimal("\x01",0, maximum_length=7, sign_reserved) dqabtm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) drg_ndc_short_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) drg_lbl_nm = NULL("");
+  string("\x01", maximum_length=2) dqhtcj = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("w_audit_claims_mthly_prd",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_8_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: L_STATE   */
+out0::bzt_8_6c54cc0a_59105740_572_0(in0)=
+begin
+let record
+  decimal("\x01",0) state_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) state_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) state_cd_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: L_STATE",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_7_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCIBER_ALIAS   */
+out0::bzt_7_6c54cc0a_59105740_572_0(in0,in1)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCIBER_ALIAS",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_6_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCIBER_ALIAS WITH STCDE   */
+out0::bzt_6_6c54cc0a_59105740_572_0(in0,in1,in2)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCIBER_ALIAS WITH STCDE",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_59105740_572_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.adt_wc_rev.insert_uid,'adt_wc_rev.insert_uid',1,0]
+     [out0.adt_wc_rev.clt_adjust_cal_amt,'adt_wc_rev.clt_adjust_cal_amt',1,0]
+     [out0.adt_wc_rev.phr_contact_nm,'adt_wc_rev.phr_contact_nm',1,0]
+     [out0.adt_wc_rev.phr_sk,'adt_wc_rev.phr_sk',1,0]
+     [out0.adt_wc_rev.drg_qty,'adt_wc_rev.drg_qty',1,0]
+     [out0.adt_wc_rev.phr_adjust_amt,'adt_wc_rev.phr_adjust_amt',1,0]
+     [out0.adt_wc_rev.number_of_calls,'adt_wc_rev.number_of_calls',1,0]
+     [out0.adt_wc_rev.comments,'adt_wc_rev.comments',1,0]
+     [out0.adt_wc_rev.audit_category_id,'adt_wc_rev.audit_category_id',1,0]
+     [out0.adt_wc_rev.submd_mnth_id,'adt_wc_rev.submd_mnth_id',1,0]
+     [out0.adt_wc_rev.claim_stat_id,'adt_wc_rev.claim_stat_id',1,0]
+     [out0.adt_wc_rev.rec_stat_cd,'adt_wc_rev.rec_stat_cd',1,0]
+     [out0.adt_wc_rev.audit_job_sk,'adt_wc_rev.audit_job_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.adt_wc_rev.adjust_claim_seq_nbr,'adt_wc_rev.adjust_claim_seq_nbr',1,0]
+     [out0.adt_wc_rev.compound_cd_desc,'adt_wc_rev.compound_cd_desc',1,0]
+     [out0.adt_wc_rev.adjust_claim_stat_id,'adt_wc_rev.adjust_claim_stat_id',1,0]
+     [out0.adt_wc_rev.src_created_by,'adt_wc_rev.src_created_by',1,0]
+     [out0.adt_wc_rev.audit_nonfraud_violation_reason_sk,'adt_wc_rev.audit_nonfraud_violation_reason_sk',1,0]
+     [out0.adt_wc_rev.days_sply,'adt_wc_rev.days_sply',1,0]
+     [out0.adt_wc_rev.run_id,'adt_wc_rev.run_id',1,0]
+     [out0.adt_wc_rev.call_note_entry_dt,'adt_wc_rev.call_note_entry_dt',1,0]
+     [out0.adt_wc_rev.phr_adjust_cal_amt,'adt_wc_rev.phr_adjust_cal_amt',1,0]
+     [out0.adt_wc_rev.pbr_st_cd,'adt_wc_rev.pbr_st_cd',1,0]
+     [out0.adt_wc_rev.clt_adjust_amt,'adt_wc_rev.clt_adjust_amt',1,0]
+     [out0.adt_wc_rev.carrier_id,'adt_wc_rev.carrier_id',1,0]
+     [out0.adt_wc_rev.dxf_hk_part1,'adt_wc_rev.dxf_hk_part1',1,0]
+     [out0.adt_wc_rev.cms_contract_id,'adt_wc_rev.cms_contract_id',1,0]
+     [out0.adt_wc_rev.insert_ts,'adt_wc_rev.insert_ts',1,0]
+     [out0.adt_wc_rev.compound_cd,'adt_wc_rev.compound_cd',1,0]
+     [out0.adt_wc_rev.app_due_amt,'adt_wc_rev.app_due_amt',1,0]
+     [out0.adt_wc_rev.adjust_clt_due_amt,'adt_wc_rev.adjust_clt_due_amt',1,0]
+     [out0.adt_wc_rev.src_created_dt,'adt_wc_rev.src_created_dt',1,0]
+     [out0.adt_wc_rev.account_id,'adt_wc_rev.account_id',1,0]
+     [out0.adt_wc_rev.drg_ndc_short_id,'adt_wc_rev.drg_ndc_short_id',1,0]
+     [out0.adt_wc_rev.rx_written_dt,'adt_wc_rev.rx_written_dt',1,0]
+     [out0.adt_wc_rev.auditior_id,'adt_wc_rev.auditior_id',1,0]
+     [out0.adt_wc_rev.audit_payment_type_id,'adt_wc_rev.audit_payment_type_id',1,0]
+     [out0.adt_wc_rev.rxclaim_instance_ind,'adt_wc_rev.rxclaim_instance_ind',1,0]
+     [out0.adt_wc_rev.drg_ndc_id,'adt_wc_rev.drg_ndc_id',1,0]
+     [out0.adt_wc_rev.audit_category_sk,'adt_wc_rev.audit_category_sk',1,0]
+     [out0.adt_wc_rev.prod_sk,'adt_wc_rev.prod_sk',1,0]
+     [out0.adt_wc_rev.audit_fraud_type_id,'adt_wc_rev.audit_fraud_type_id',1,0]
+     [out0.adt_wc_rev.claim_nbr,'adt_wc_rev.claim_nbr',1,0]
+     [out0.adt_wc_rev.audit_fraud_perpetrator_sk,'adt_wc_rev.audit_fraud_perpetrator_sk',1,0]
+     [out0.adt_wc_rev.audit_fraud_violation_reason_id,'adt_wc_rev.audit_fraud_violation_reason_id',1,0]
+     [out0.adt_wc_rev.claim_seq_nbr,'adt_wc_rev.claim_seq_nbr',1,0]
+     [out0.adt_wc_rev.pbr_dea_id,'adt_wc_rev.pbr_dea_id',1,0]
+     [out0.adt_wc_rev.pbr_npi_id,'adt_wc_rev.pbr_npi_id',1,0]
+     [out0.adt_wc_rev.audit_type_sk,'adt_wc_rev.audit_type_sk',1,0]
+     [out0.adt_wc_rev.audit_fraud_type_sk,'adt_wc_rev.audit_fraud_type_sk',1,0]
+     [out0.adt_wc_rev.audit_nonfraud_violation_reason_id,'adt_wc_rev.audit_nonfraud_violation_reason_id',1,0]
+     [out0.adt_wc_rev.phr_st_cd,'adt_wc_rev.phr_st_cd',1,0]
+     [out0.adt_wc_rev.dxf_hk_part2,'adt_wc_rev.dxf_hk_part2',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.adt_wc_rev.mbr_sk,'adt_wc_rev.mbr_sk',1,0]
+     [out0.adt_wc_rev.number_of_emails,'adt_wc_rev.number_of_emails',1,0]
+     [out0.adt_wc_rev.sbm_tm,'adt_wc_rev.sbm_tm',1,0]
+     [out0.adt_wc_rev.mbr_id,'adt_wc_rev.mbr_id',1,0]
+     [out0.adt_wc_rev.phr_st_desc,'adt_wc_rev.phr_st_desc',1,0]
+     [out0.adt_wc_rev.sbm_dt,'adt_wc_rev.sbm_dt',1,0]
+     [out0.adt_wc_rev.audit_fraud_violation_reason_sk,'adt_wc_rev.audit_fraud_violation_reason_sk',1,0]
+     [out0.adt_wc_rev.update_ts,'adt_wc_rev.update_ts',1,0]
+     [out0.adt_wc_rev.audit_src_data,'adt_wc_rev.audit_src_data',1,0]
+     [out0.adt_wc_rev.audit_payment_type_sk,'adt_wc_rev.audit_payment_type_sk',1,0]
+     [out0.adt_wc_rev.adjust_app_due_amt,'adt_wc_rev.adjust_app_due_amt',1,0]
+     [out0.adt_wc_rev.filled_dt,'adt_wc_rev.filled_dt',1,0]
+     [out0.adt_wc_rev.dxf_sk,'adt_wc_rev.dxf_sk',1,0]
+     [out0.adt_wc_rev.audit_fraud_perpetrator_id,'adt_wc_rev.audit_fraud_perpetrator_id',1,0]
+     [out0.adt_wc_rev.chg_dt,'adt_wc_rev.chg_dt',1,0]
+     [out0.adt_wc_rev.phr_ncpdp_id,'adt_wc_rev.phr_ncpdp_id',1,0]
+     [out0.adt_wc_rev.employer_group_id,'adt_wc_rev.employer_group_id',1,0]
+     [out0.adt_wc_rev.src_insert_dt,'adt_wc_rev.src_insert_dt',1,0]
+     [out0.adt_wc_rev.pbr_sk,'adt_wc_rev.pbr_sk',1,0]
+     [out0.adt_wc_rev.src_update_ts,'adt_wc_rev.src_update_ts',1,0]
+     [out0.adt_wc_rev.src_env_sk,'adt_wc_rev.src_env_sk',1,0]
+     [out0.adt_wc_rev.chg_tm,'adt_wc_rev.chg_tm',1,0]
+     [out0.adt_wc_rev.cag_sk,'adt_wc_rev.cag_sk',1,0]
+     [out0.adt_wc_rev.update_uid,'adt_wc_rev.update_uid',1,0]
+     [out0.adt_wc_rev.rx_nbr,'adt_wc_rev.rx_nbr',1,0]
+     [out0.adt_wc_rev.cms_pbp_id,'adt_wc_rev.cms_pbp_id',1,0]
+     [out0.adt_wc_rev.phr_npi_no,'adt_wc_rev.phr_npi_no',1,0]
+     [out0.adt_wc_rev.compound_sk,'adt_wc_rev.compound_sk',1,0]
+     [out0.adt_wc_rev.audit_violation_reason_id,'adt_wc_rev.audit_violation_reason_id',1,0]
+     [out0.adt_wc_rev.clt_due_amt,'adt_wc_rev.clt_due_amt',1,0]
+     [out0.adt_wc_rev.adjust_claim_nbr,'adt_wc_rev.adjust_claim_nbr',1,0]
+     [out0.adt_wc_rev.drg_lbl_nm,'adt_wc_rev.drg_lbl_nm',1,0]
+     [out0.adt_wc_rev.zero_reclaim,'adt_wc_rev.zero_reclaim',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.adt_wc_rev.audit_violation_reason_sk,'adt_wc_rev.audit_violation_reason_sk',1,0]
+     [out0.adt_wc_rev.audit_call_note_id,'adt_wc_rev.audit_call_note_id',1,0]
+     [out0.adt_wc_rev.audit_type_id,'adt_wc_rev.audit_type_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.chg_tm,'chg_tm',1,1]
+     [in0.pbr_dea_id,'pbr_dea_id',1,1]
+     [in0.drg_ndc_id,'drg_ndc_id',1,1]
+     [in0.drg_ndc_short_id,'drg_ndc_short_id',1,1]
+     [in0.account_id,'account_id',1,1]
+     [in0.audit_fraud_type_sk,'audit_fraud_type_sk',1,1]
+     [in0.audit_payment_type_sk,'audit_payment_type_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqs5cd','dqs5cd',1,1]
+     [in0.audit_fraud_perpetrator_sk,'audit_fraud_perpetrator_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").pbr_dea_id','pbr_dea_id',1,1]
+     [in0.audit_nonfraud_violation_reason_id,'audit_nonfraud_violation_reason_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqoinb','dqoinb',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.phr_npi_no,'phr_npi_no',1,1]
+     [in0.claim_nbr,'claim_nbr',32,29]
+     ['lookup("w_audit_claims_mthly_prd").prod_sk','prod_sk',1,1]
+     ['lookup("LKP: D_PRESCIBER_ALIAS").pbr_sk','pbr_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").phr_ncpdp_id','phr_ncpdp_id',1,1]
+     [in0.phr_contact_nm,'phr_contact_nm',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqtccd','dqtccd',2,1]
+     [in0.cms_contract_id,'cms_contract_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqs7cd','dqs7cd',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqs6cd','dqs6cd',1,1]
+     [in0.phr_adjust_cal_amt,'phr_adjust_cal_amt',1,1]
+     [in0.app_due_amt,'app_due_amt',1,1]
+     [in0.compound_sk,'compound_sk',2,2]
+     ['lookup("w_audit_claims_mthly_prd").pbr_st_cd','pbr_st_cd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.number_of_calls,'number_of_calls',1,1]
+     [in0.adjust_claim_nbr,'adjust_claim_nbr',1,1]
+     [in0.phr_adjust_amt,'phr_adjust_amt',1,1]
+     [in0.chg_dt,'chg_dt',1,1]
+     [in0.update_uid,'update_uid',1,1]
+     [in0.zero_reclaim,'zero_reclaim',1,1]
+     [in0.number_of_emails,'number_of_emails',1,1]
+     ['lookup("w_audit_claims_mthly_prd").pbp_id','pbp_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").phr_sk','phr_sk',1,1]
+     [in0.days_sply,'days_sply',1,1]
+     [in0.insert_ts,'insert_ts',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqilcj','dqilcj',2,1]
+     [in0.audit_fraud_type_id,'audit_fraud_type_id',1,1]
+     [in0.cms_pbp_id,'cms_pbp_id',1,1]
+     [in0.audit_nonfraud_violation_reason_sk,'audit_nonfraud_violation_reason_sk',1,1]
+     [in0.auditior_id,'auditior_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqukcd','dqukcd',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.rec_stat_cd,'rec_stat_cd',1,1]
+     [in0.src_created_dt,'src_created_dt',1,1]
+     [in0.audit_fraud_violation_reason_id,'audit_fraud_violation_reason_id',1,1]
+     [in0.src_insert_dt,'src_insert_dt',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqabda','dqabda',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").phr_npi_no','phr_npi_no',1,1]
+     [in0.adjust_claim_seq_nbr,'adjust_claim_seq_nbr',1,1]
+     [in0.sbm_tm,'sbm_tm',1,1]
+     [in0.phr_st_cd,'phr_st_cd',2,2]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',2,2]
+     [in0.audit_job_sk,'audit_job_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqbbda','dqbbda',1,1]
+     [in0.pbr_npi_id,'pbr_npi_id',1,1]
+     [in0.pbr_sk,'pbr_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqs8cd','dqs8cd',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',32,29]
+     ['lookup("w_audit_claims_mthly_prd").mbr_sk','mbr_sk',1,1]
+     [in0.compound_cd_desc,'compound_cd_desc',1,1]
+     [in0.phr_st_desc,'phr_st_desc',1,1]
+     [in0.update_ts,'update_ts',1,1]
+     [in0.drg_qty,'drg_qty',1,1]
+     [in0.call_note_entry_dt,'call_note_entry_dt',1,1]
+     ['lookup("LKP: D_PRESCIBER_ALIAS WITH STCDE").pbr_sk','pbr_sk',1,1]
+     [in0.employer_group_id,'employer_group_id',1,1]
+     [in0.adjust_claim_stat_id,'adjust_claim_stat_id',1,1]
+     [in0.audit_type_id,'audit_type_id',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     ['lookup("w_audit_claims_mthly_prd").e0d2pr','e0d2pr',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqimnb','dqimnb',1,1]
+     [in0.audit_fraud_violation_reason_sk,'audit_fraud_violation_reason_sk',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqp2nb','dqp2nb',1,1]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.compound_cd,'compound_cd',1,1]
+     [in0.audit_call_note_id,'audit_call_note_id',1,1]
+     [in0.audit_violation_reason_sk,'audit_violation_reason_sk',1,1]
+     [in0.phr_sk,'phr_sk',1,1]
+     [in0.pbr_st_cd,'pbr_st_cd',2,2]
+     [in0.rx_nbr,'rx_nbr',1,1]
+     ['lookup("w_audit_claims_mthly_prd").phr_st_cd','phr_st_cd',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqs6st','dqs6st',1,1]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.comments,'comments',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.audit_payment_type_id,'audit_payment_type_id',1,1]
+     [in0.filled_dt,'filled_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.adjust_app_due_amt,'adjust_app_due_amt',1,1]
+     ['lookup("w_audit_claims_mthly_prd").pbr_npi_id','pbr_npi_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").cag_sk','cag_sk',1,1]
+     [in0.clt_adjust_amt,'clt_adjust_amt',1,1]
+     [in0.audit_violation_reason_id,'audit_violation_reason_id',1,1]
+     [in0.audit_category_id,'audit_category_id',1,1]
+     [in0.adjust_clt_due_amt,'adjust_clt_due_amt',1,1]
+     [in0.src_update_ts,'src_update_ts',1,1]
+     ['lookup("w_audit_claims_mthly_prd").prod_id','prod_id',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.mbr_id,'mbr_id',1,1]
+     [in0.clt_adjust_cal_amt,'clt_adjust_cal_amt',1,1]
+     [in0.submd_mnth_id,'submd_mnth_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").contract_num','contract_num',1,1]
+     [in0.audit_src_data,'audit_src_data',1,1]
+     [in0.audit_category_sk,'audit_category_sk',1,1]
+     [in0.rx_written_dt,'rx_written_dt',1,1]
+     ['lookup("LKP: L_COMPOUND").compound_cd_desc','compound_cd_desc',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqc4dt','dqc4dt',1,1]
+     ['lookup("LKP: L_STATE").state_cd_desc','state_cd_desc',1,1]
+     ['lookup("LKP: L_COMPOUND").compound_cd','compound_cd',1,1]
+     [in0.run_id,'run_id',1,1]
+     [in0.rxclaim_instance_ind,'rxclaim_instance_ind',32,29]
+     [in0.drg_lbl_nm,'drg_lbl_nm',1,1]
+     [in0.insert_uid,'insert_uid',1,1]
+     [in0.audit_type_sk,'audit_type_sk',1,1]
+     [in0.audit_fraud_perpetrator_id,'audit_fraud_perpetrator_id',1,1]
+     [in0.phr_ncpdp_id,'phr_ncpdp_id',1,1]
+     ['lookup("w_audit_claims_mthly_prd").dqionb','dqionb',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.src_created_by,'src_created_by',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) adt_wc_rev_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) adt_wc_rev_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) adt_wc_rev_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) adt_wc_rev_submd_mnth_id = fail_if_error(in0.submd_mnth_id);
+let decimal("\x01",0) adt_wc_rev_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) adt_wc_rev_mbr_sk = fail_if_error(in0.mbr_sk);
+let decimal("\x01",0) adt_wc_rev_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) adt_wc_rev_phr_sk = fail_if_error(in0.phr_sk);
+let decimal("\x01",0) adt_wc_rev_audit_category_sk = fail_if_error(in0.audit_category_sk);
+let decimal("\x01",0) adt_wc_rev_audit_payment_type_sk = fail_if_error(in0.audit_payment_type_sk);
+let decimal("\x01",0) adt_wc_rev_audit_job_sk = fail_if_error(in0.audit_job_sk);
+let decimal("\x01",0) adt_wc_rev_audit_type_sk = fail_if_error(in0.audit_type_sk);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_type_sk = fail_if_error(in0.audit_fraud_type_sk);
+let decimal("\x01",0) adt_wc_rev_audit_violation_reason_sk = fail_if_error(in0.audit_violation_reason_sk);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_violation_reason_sk = fail_if_error(in0.audit_fraud_violation_reason_sk);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_perpetrator_sk = fail_if_error(in0.audit_fraud_perpetrator_sk);
+let decimal("\x01",0) adt_wc_rev_audit_nonfraud_violation_reason_sk = fail_if_error(in0.audit_nonfraud_violation_reason_sk);
+let decimal("\x01",0) adt_wc_rev_pbr_sk = fail_if_error(in0.pbr_sk);
+let decimal("\x01",0) adt_wc_rev_prod_sk = fail_if_error(in0.prod_sk);
+let decimal("\x01",0) adt_wc_rev_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) adt_wc_rev_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) adt_wc_rev_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let date("YYYYMMDD")("\x01") adt_wc_rev_sbm_dt = fail_if_error(in0.sbm_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) adt_wc_rev_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) adt_wc_rev_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) adt_wc_rev_employer_group_id = fail_if_error(in0.employer_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) adt_wc_rev_mbr_id = fail_if_error(in0.mbr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) adt_wc_rev_rx_nbr = fail_if_error(in0.rx_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) adt_wc_rev_audit_src_data = fail_if_error(in0.audit_src_data);
+let string("\x01",charset="iso-8859-15", maximum_length=12) adt_wc_rev_phr_ncpdp_id = fail_if_error(in0.phr_ncpdp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) adt_wc_rev_phr_npi_no = fail_if_error(in0.phr_npi_no);
+let string("\x01",charset="iso-8859-15", maximum_length=3) adt_wc_rev_phr_st_cd = fail_if_error(in0.phr_st_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) adt_wc_rev_phr_st_desc = fail_if_error(in0.phr_st_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) adt_wc_rev_pbr_npi_id = fail_if_error(in0.pbr_npi_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) adt_wc_rev_pbr_dea_id = fail_if_error(in0.pbr_dea_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) adt_wc_rev_pbr_st_cd = fail_if_error(in0.pbr_st_cd);
+let date("YYYYMMDD")("\x01") adt_wc_rev_filled_dt = fail_if_error(in0.filled_dt);
+let date("YYYYMMDD")("\x01") adt_wc_rev_rx_written_dt = fail_if_error(in0.rx_written_dt);
+let decimal("\x01",0) adt_wc_rev_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".3, maximum_length=13, sign_reserved) adt_wc_rev_drg_qty = fail_if_error(in0.drg_qty);
+let string("\x01",charset="iso-8859-15", maximum_length=20) adt_wc_rev_drg_ndc_id = fail_if_error(in0.drg_ndc_id);
+let string("\x01",charset="iso-8859-15", maximum_length=9) adt_wc_rev_drg_ndc_short_id = fail_if_error(in0.drg_ndc_short_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) adt_wc_rev_drg_lbl_nm = fail_if_error(in0.drg_lbl_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=1) adt_wc_rev_compound_cd = fail_if_error(in0.compound_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) adt_wc_rev_compound_cd_desc = fail_if_error(in0.compound_cd_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=5) adt_wc_rev_cms_contract_id = fail_if_error(in0.cms_contract_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) adt_wc_rev_cms_pbp_id = fail_if_error(in0.cms_pbp_id);
+let decimal("\x01".2, maximum_length=11, sign_reserved) adt_wc_rev_app_due_amt = fail_if_error(in0.app_due_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) adt_wc_rev_auditior_id = fail_if_error(in0.auditior_id);
+let decimal("\x01",0) adt_wc_rev_audit_call_note_id = fail_if_error(in0.audit_call_note_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_call_note_entry_dt = fail_if_error(in0.call_note_entry_dt);
+let decimal("\x01".3, maximum_length=22, sign_reserved) adt_wc_rev_phr_adjust_amt = fail_if_error(in0.phr_adjust_amt);
+let decimal("\x01",0) adt_wc_rev_audit_category_id = fail_if_error(in0.audit_category_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) adt_wc_rev_zero_reclaim = fail_if_error(in0.zero_reclaim);
+let decimal("\x01",0) adt_wc_rev_audit_payment_type_id = fail_if_error(in0.audit_payment_type_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) adt_wc_rev_phr_contact_nm = fail_if_error(in0.phr_contact_nm);
+let decimal("\x01",0) adt_wc_rev_number_of_calls = fail_if_error(in0.number_of_calls);
+let decimal("\x01",0) adt_wc_rev_number_of_emails = fail_if_error(in0.number_of_emails);
+let decimal("\x01",0) adt_wc_rev_audit_type_id = fail_if_error(in0.audit_type_id);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_type_id = fail_if_error(in0.audit_fraud_type_id);
+let decimal("\x01",0) adt_wc_rev_audit_violation_reason_id = fail_if_error(in0.audit_violation_reason_id);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_violation_reason_id = fail_if_error(in0.audit_fraud_violation_reason_id);
+let decimal("\x01",0) adt_wc_rev_audit_fraud_perpetrator_id = fail_if_error(in0.audit_fraud_perpetrator_id);
+let decimal("\x01",0) adt_wc_rev_audit_nonfraud_violation_reason_id = fail_if_error(in0.audit_nonfraud_violation_reason_id);
+let string("\x01",charset="iso-8859-15", maximum_length=155) adt_wc_rev_comments = fail_if_error(in0.comments);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_src_created_dt = fail_if_error(in0.src_created_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) adt_wc_rev_src_created_by = fail_if_error(in0.src_created_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_src_insert_dt = fail_if_error(in0.src_insert_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_src_update_ts = fail_if_error(in0.src_update_ts);
+let decimal("\x01",0) adt_wc_rev_src_env_sk = fail_if_error(in0.src_env_sk);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_insert_ts = fail_if_error(in0.insert_ts);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_update_ts = fail_if_error(in0.update_ts);
+let string("\x01",charset="iso-8859-15", maximum_length=20) adt_wc_rev_insert_uid = fail_if_error(in0.insert_uid);
+let string("\x01",charset="iso-8859-15", maximum_length=20) adt_wc_rev_update_uid = fail_if_error(in0.update_uid);
+let decimal("\x01",0) adt_wc_rev_run_id = fail_if_error(in0.run_id);
+let decimal("\x01",0) adt_wc_rev_rec_stat_cd = fail_if_error(in0.rec_stat_cd);
+let decimal("\x01".2, maximum_length=11, sign_reserved) adt_wc_rev_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".3, maximum_length=22, sign_reserved) adt_wc_rev_clt_adjust_amt = fail_if_error(in0.clt_adjust_amt);
+let decimal("\x01".3, maximum_length=22, sign_reserved) adt_wc_rev_phr_adjust_cal_amt = fail_if_error(in0.phr_adjust_cal_amt);
+let decimal("\x01".3, maximum_length=22, sign_reserved) adt_wc_rev_clt_adjust_cal_amt = fail_if_error(in0.clt_adjust_cal_amt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_sbm_tm = fail_if_error(in0.sbm_tm);
+let date("YYYYMMDD")("\x01") adt_wc_rev_chg_dt = fail_if_error(in0.chg_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") adt_wc_rev_chg_tm = fail_if_error(in0.chg_tm);
+let decimal("\x01",0) adt_wc_rev_adjust_claim_nbr = fail_if_error(in0.adjust_claim_nbr);
+let decimal("\x01",0) adt_wc_rev_adjust_claim_seq_nbr = fail_if_error(in0.adjust_claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) adt_wc_rev_adjust_claim_stat_id = fail_if_error(in0.adjust_claim_stat_id);
+let decimal("\x01".2, maximum_length=11, sign_reserved) adt_wc_rev_adjust_app_due_amt = fail_if_error(in0.adjust_app_due_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) adt_wc_rev_adjust_clt_due_amt = fail_if_error(in0.adjust_clt_due_amt);
+let decimal("\x01",0) adt_wc_rev_rxclaim_instance_ind = fail_if_error(in0.rxclaim_instance_ind);
+let unicode decimal('') audit_claim_nbr;
+let unicode decimal('') audit_mbr_sk;
+let unicode decimal('') audit_cag_sk;
+let unicode decimal('') audit_phr_sk;
+let unicode decimal('') audit_pbr_sk;
+let unicode decimal('') audit_prod_sk;
+let unicode decimal('') audit_claim_seq_nbr;
+let unicode string(int) audit_claim_stat_id;
+let unicode date('YYYY-MM-DD') audit_sbm_dt;
+let unicode string(int) audit_carrier_id;
+let unicode string(int) audit_account_id;
+let unicode string(int) audit_employer_group_id;
+let unicode string(int) audit_mbr_id;
+let unicode string(int) audit_rx_nbr;
+let unicode string(int) audit_phr_ncpdp_id;
+let unicode string(int) audit_phr_npi_no;
+let unicode string(int) audit_phr_st_cd;
+let unicode string(int) audit_phr_st_desc;
+let unicode string(int) audit_pbr_npi_id;
+let unicode string(int) audit_pbr_dea_id;
+let unicode string(int) audit_pbr_st_cd;
+let unicode date('YYYY-MM-DD') audit_filled_dt;
+let unicode date('YYYY-MM-DD') audit_rx_written_dt;
+let unicode decimal('') audit_days_sply;
+let unicode decimal('') audit_drg_qty;
+let unicode string(int) audit_drg_ndc_id;
+let unicode string(int) audit_compound_cd;
+let unicode string(int) audit_compound_cd_desc;
+let unicode string(int) audit_cms_contract_id;
+let unicode string(int) audit_cms_pbp_id;
+let unicode decimal('') audit_app_due_amt;
+
+
+
+/*   Default value   */
+audit_phr_st_cd=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).phr_st_cd);
+
+/*   Default value   */
+audit_cms_pbp_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).pbp_id);
+
+/*   Default value   */
+audit_phr_sk=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).phr_sk);
+
+/*   Default value   */
+audit_compound_cd=fail_if_error(lookup("LKP: L_COMPOUND",in0.compound_sk).compound_cd);
+
+/*   Default value   */
+audit_mbr_sk=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).mbr_sk);
+
+/*   Default value   */
+audit_drg_ndc_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).prod_id);
+
+/*   Default value   */
+audit_carrier_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqs6cd);
+
+/*   Default value   */
+audit_cms_contract_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).contract_num);
+
+/*   Default value   */
+audit_cag_sk=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).cag_sk);
+
+/*   Default value   */
+audit_rx_nbr=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqukcd);
+
+/*   Default value   */
+audit_pbr_sk=fail_if_error(first_defined(bzt_6_6c54cc0a_59105740_572_0(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqtccd,bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqilcj, in0.pbr_st_cd).pbr_sk, bzt_7_6c54cc0a_59105740_572_0(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqtccd,bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqilcj).pbr_sk, -1));
+
+/*   Default value   */
+audit_pbr_dea_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).pbr_dea_id);
+
+/*   Default value   */
+audit_pbr_st_cd=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).pbr_st_cd);
+
+/*   Default value   */
+audit_drg_qty=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqionb);
+
+/*   Default value   */
+audit_filled_dt=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqbbda);
+
+/*   Default value   */
+audit_prod_sk=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).prod_sk);
+
+/*   Default value   */
+audit_account_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqs7cd);
+
+/*   Default value   */
+audit_claim_stat_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqs6st);
+
+/*   Default value   */
+audit_mbr_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqs5cd);
+
+/*   Default value   */
+audit_pbr_npi_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).pbr_npi_id);
+
+/*   Default value   */
+audit_phr_st_desc=fail_if_error(bzt_8_6c54cc0a_59105740_572_0(in0.phr_st_cd).state_cd_desc);
+
+/*   Default value   */
+audit_claim_seq_nbr=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqoinb);
+
+/*   Default value   */
+audit_sbm_dt=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqc4dt);
+
+/*   Default value   */
+audit_phr_ncpdp_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).phr_ncpdp_id);
+
+/*   Default value   */
+audit_rx_written_dt=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqabda);
+
+/*   Default value   */
+audit_compound_cd_desc=fail_if_error(lookup("LKP: L_COMPOUND",in0.compound_sk).compound_cd_desc);
+
+/*   Default value   */
+audit_claim_nbr=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqp2nb);
+
+/*   Default value   */
+audit_days_sply=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqimnb);
+
+/*   Default value   */
+audit_app_due_amt=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).e0d2pr);
+
+/*   Default value   */
+audit_phr_npi_no=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).phr_npi_no);
+
+/*   Default value   */
+audit_employer_group_id=fail_if_error(bzt_5_6c54cc0a_59105740_572_0(in0.claim_nbr,in0.claim_seq_nbr,"X",in0.rxclaim_instance_ind).dqs8cd);
+
+  out0.adt_wc_rev.dxf_hk_part1::adt_wc_rev_dxf_hk_part1;
+  out0.adt_wc_rev.dxf_hk_part2::adt_wc_rev_dxf_hk_part2;
+  out0.adt_wc_rev.dxf_sk::adt_wc_rev_dxf_sk;
+  out0.adt_wc_rev.submd_mnth_id::adt_wc_rev_submd_mnth_id;
+  out0.adt_wc_rev.claim_nbr::adt_wc_rev_claim_nbr;
+  out0.adt_wc_rev.mbr_sk::adt_wc_rev_mbr_sk;
+  out0.adt_wc_rev.cag_sk::adt_wc_rev_cag_sk;
+  out0.adt_wc_rev.phr_sk::adt_wc_rev_phr_sk;
+  out0.adt_wc_rev.audit_category_sk::adt_wc_rev_audit_category_sk;
+  out0.adt_wc_rev.audit_payment_type_sk::adt_wc_rev_audit_payment_type_sk;
+  out0.adt_wc_rev.audit_job_sk::adt_wc_rev_audit_job_sk;
+  out0.adt_wc_rev.audit_type_sk::adt_wc_rev_audit_type_sk;
+  out0.adt_wc_rev.audit_fraud_type_sk::adt_wc_rev_audit_fraud_type_sk;
+  out0.adt_wc_rev.audit_violation_reason_sk::adt_wc_rev_audit_violation_reason_sk;
+  out0.adt_wc_rev.audit_fraud_violation_reason_sk::adt_wc_rev_audit_fraud_violation_reason_sk;
+  out0.adt_wc_rev.audit_fraud_perpetrator_sk::adt_wc_rev_audit_fraud_perpetrator_sk;
+  out0.adt_wc_rev.audit_nonfraud_violation_reason_sk::adt_wc_rev_audit_nonfraud_violation_reason_sk;
+  out0.adt_wc_rev.pbr_sk::adt_wc_rev_pbr_sk;
+  out0.adt_wc_rev.prod_sk::adt_wc_rev_prod_sk;
+  out0.adt_wc_rev.compound_sk::adt_wc_rev_compound_sk;
+  out0.adt_wc_rev.claim_seq_nbr::adt_wc_rev_claim_seq_nbr;
+  out0.adt_wc_rev.claim_stat_id::adt_wc_rev_claim_stat_id;
+  out0.adt_wc_rev.sbm_dt::adt_wc_rev_sbm_dt;
+  out0.adt_wc_rev.carrier_id::adt_wc_rev_carrier_id;
+  out0.adt_wc_rev.account_id::adt_wc_rev_account_id;
+  out0.adt_wc_rev.employer_group_id::adt_wc_rev_employer_group_id;
+  out0.adt_wc_rev.mbr_id::adt_wc_rev_mbr_id;
+  out0.adt_wc_rev.rx_nbr::adt_wc_rev_rx_nbr;
+  out0.adt_wc_rev.audit_src_data::adt_wc_rev_audit_src_data;
+  out0.adt_wc_rev.phr_ncpdp_id::adt_wc_rev_phr_ncpdp_id;
+  out0.adt_wc_rev.phr_npi_no::adt_wc_rev_phr_npi_no;
+  out0.adt_wc_rev.phr_st_cd::adt_wc_rev_phr_st_cd;
+  out0.adt_wc_rev.phr_st_desc::adt_wc_rev_phr_st_desc;
+  out0.adt_wc_rev.pbr_npi_id::adt_wc_rev_pbr_npi_id;
+  out0.adt_wc_rev.pbr_dea_id::adt_wc_rev_pbr_dea_id;
+  out0.adt_wc_rev.pbr_st_cd::adt_wc_rev_pbr_st_cd;
+  out0.adt_wc_rev.filled_dt::adt_wc_rev_filled_dt;
+  out0.adt_wc_rev.rx_written_dt::adt_wc_rev_rx_written_dt;
+  out0.adt_wc_rev.days_sply::adt_wc_rev_days_sply;
+  out0.adt_wc_rev.drg_qty::adt_wc_rev_drg_qty;
+  out0.adt_wc_rev.drg_ndc_id::adt_wc_rev_drg_ndc_id;
+  out0.adt_wc_rev.drg_ndc_short_id::adt_wc_rev_drg_ndc_short_id;
+  out0.adt_wc_rev.drg_lbl_nm::adt_wc_rev_drg_lbl_nm;
+  out0.adt_wc_rev.compound_cd::adt_wc_rev_compound_cd;
+  out0.adt_wc_rev.compound_cd_desc::adt_wc_rev_compound_cd_desc;
+  out0.adt_wc_rev.cms_contract_id::adt_wc_rev_cms_contract_id;
+  out0.adt_wc_rev.cms_pbp_id::adt_wc_rev_cms_pbp_id;
+  out0.adt_wc_rev.app_due_amt::adt_wc_rev_app_due_amt;
+  out0.adt_wc_rev.auditior_id::adt_wc_rev_auditior_id;
+  out0.adt_wc_rev.audit_call_note_id::adt_wc_rev_audit_call_note_id;
+  out0.adt_wc_rev.call_note_entry_dt::adt_wc_rev_call_note_entry_dt;
+  out0.adt_wc_rev.phr_adjust_amt::adt_wc_rev_phr_adjust_amt;
+  out0.adt_wc_rev.audit_category_id::adt_wc_rev_audit_category_id;
+  out0.adt_wc_rev.zero_reclaim::adt_wc_rev_zero_reclaim;
+  out0.adt_wc_rev.audit_payment_type_id::adt_wc_rev_audit_payment_type_id;
+  out0.adt_wc_rev.phr_contact_nm::adt_wc_rev_phr_contact_nm;
+  out0.adt_wc_rev.number_of_calls::adt_wc_rev_number_of_calls;
+  out0.adt_wc_rev.number_of_emails::adt_wc_rev_number_of_emails;
+  out0.adt_wc_rev.audit_type_id::adt_wc_rev_audit_type_id;
+  out0.adt_wc_rev.audit_fraud_type_id::adt_wc_rev_audit_fraud_type_id;
+  out0.adt_wc_rev.audit_violation_reason_id::adt_wc_rev_audit_violation_reason_id;
+  out0.adt_wc_rev.audit_fraud_violation_reason_id::adt_wc_rev_audit_fraud_violation_reason_id;
+  out0.adt_wc_rev.audit_fraud_perpetrator_id::adt_wc_rev_audit_fraud_perpetrator_id;
+  out0.adt_wc_rev.audit_nonfraud_violation_reason_id::adt_wc_rev_audit_nonfraud_violation_reason_id;
+  out0.adt_wc_rev.comments::adt_wc_rev_comments;
+  out0.adt_wc_rev.src_created_dt::adt_wc_rev_src_created_dt;
+  out0.adt_wc_rev.src_created_by::adt_wc_rev_src_created_by;
+  out0.adt_wc_rev.src_insert_dt::adt_wc_rev_src_insert_dt;
+  out0.adt_wc_rev.src_update_ts::adt_wc_rev_src_update_ts;
+  out0.adt_wc_rev.src_env_sk::adt_wc_rev_src_env_sk;
+  out0.adt_wc_rev.insert_ts::adt_wc_rev_insert_ts;
+  out0.adt_wc_rev.update_ts::adt_wc_rev_update_ts;
+  out0.adt_wc_rev.insert_uid::adt_wc_rev_insert_uid;
+  out0.adt_wc_rev.update_uid::adt_wc_rev_update_uid;
+  out0.adt_wc_rev.run_id::adt_wc_rev_run_id;
+  out0.adt_wc_rev.rec_stat_cd::adt_wc_rev_rec_stat_cd;
+  out0.adt_wc_rev.clt_due_amt::adt_wc_rev_clt_due_amt;
+  out0.adt_wc_rev.clt_adjust_amt::adt_wc_rev_clt_adjust_amt;
+  out0.adt_wc_rev.phr_adjust_cal_amt::adt_wc_rev_phr_adjust_cal_amt;
+  out0.adt_wc_rev.clt_adjust_cal_amt::adt_wc_rev_clt_adjust_cal_amt;
+  out0.adt_wc_rev.sbm_tm::adt_wc_rev_sbm_tm;
+  out0.adt_wc_rev.chg_dt::adt_wc_rev_chg_dt;
+  out0.adt_wc_rev.chg_tm::adt_wc_rev_chg_tm;
+  out0.adt_wc_rev.adjust_claim_nbr::adt_wc_rev_adjust_claim_nbr;
+  out0.adt_wc_rev.adjust_claim_seq_nbr::adt_wc_rev_adjust_claim_seq_nbr;
+  out0.adt_wc_rev.adjust_claim_stat_id::adt_wc_rev_adjust_claim_stat_id;
+  out0.adt_wc_rev.adjust_app_due_amt::adt_wc_rev_adjust_app_due_amt;
+  out0.adt_wc_rev.adjust_clt_due_amt::adt_wc_rev_adjust_clt_due_amt;
+  out0.adt_wc_rev.rxclaim_instance_ind::adt_wc_rev_rxclaim_instance_ind;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,220 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/lexis_nexis_prescriber_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/29  Paul Thompson           Changelog added and updated to be more in pattern with other lookup functions
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_lexis_nexis_prescriber_lkup_path(cli_string_t secondary_index_nm = '') inline =
+begin
+  let cli_string_t secondary_index_suffix = ( is_blank(secondary_index_nm) ? '' : '_' + secondary_index_nm );
+  
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/lexis_nexis_prescriber' + secondary_index_suffix + '.dat.gz';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/lexis_nexis_prescriber' + secondary_index_suffix + '.dat.gz' );
+end;
+
+cli_string_t out :: get_lexis_nexis_prescriber_indx_path(cli_string_t lkup_path) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.gz$', '.idx');
+end;
+
+/****************************************************/
+/* Lexis Nexis Prescriber Lookup - Direct Addressed */
+/****************************************************/
+
+type lexis_nexis_prescriber_lkup_t =
+record
+  lookup_identifier_type              id             = -1;
+  lexis_nexis_prescriber_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  
+  // ICFF variables
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 0;
+  int load_once()              = 1;
+  int only_last_key_instance() = 0;
+  int direct_addressed()       = 1;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let lexis_nexis_prescriber_lkup_t GLKUP_LEXIS_NEXIS_PRESCRIBER = allocate_with_nulls();
+
+lexis_nexis_prescriber_lkup_t out :: load_lexis_nexis_prescriber_lkup() inline =
+begin
+  if (GLKUP_LEXIS_NEXIS_PRESCRIBER.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_lexis_nexis_prescriber_lkup_path();
+    GLKUP_LEXIS_NEXIS_PRESCRIBER = lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_LEXIS_NEXIS_PRESCRIBER;
+end;
+
+lexis_nexis_prescriber_t out :: get_lexis_nexis_prescriber(bc_lookup_address_type bc_addr) inline =
+begin
+  let lkup = load_lexis_nexis_prescriber_lkup();
+  out :: lookup(lkup, bc_addr).lexis_nexis_prescriber;
+end;
+
+/*********************************************/
+/* Lexis Nexis Prescriber Lookup - by DEA ID */
+/*********************************************/
+
+type lexis_nexis_prescriber_by_dea_id_lkup_t =
+record
+  lookup_identifier_type              id             = -1;
+  lexis_nexis_prescriber_addr_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                          key()          = {dea_key_hash};
+  
+  // ICFF variables
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 0;
+  int load_once()              = 1;
+  int only_last_key_instance() = 0;
+  int direct_addressed()       = 0;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let lexis_nexis_prescriber_by_dea_id_lkup_t GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_DEA_ID = allocate_with_nulls();
+
+lexis_nexis_prescriber_by_dea_id_lkup_t out :: load_lexis_nexis_prescriber_by_dea_id_lkup() inline =
+begin
+  if (GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_DEA_ID.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_lexis_nexis_prescriber_lkup_path('dea');
+    let indx_path  = get_lexis_nexis_prescriber_indx_path(lkup_path);
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_DEA_ID =
+      if (indx_found) lookup_load(lkup_path, indx_path)
+      else            force_error('Could not find index for Lexis Nexus Prescriber by DEA ID lookup');
+  end;
+  
+  out :: GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_DEA_ID;
+end;
+
+lexis_nexis_prescriber_t out :: get_lexis_nexis_prescriber_by_dea_id(cli_dea_id_t dea_id) inline =
+begin
+  let lkup    = load_lexis_nexis_prescriber_by_dea_id_lkup();
+  let bc_addr = lookup(lkup, hash_MD5(dea_id)).addr;
+  
+  out :: if (is_defined(bc_addr)) get_lexis_nexis_prescriber(bc_addr);
+end;
+
+/******************************************/
+/* Lexis Nexis Prescriber Lookup - by NPI */
+/******************************************/
+
+type lexis_nexis_prescriber_by_npi_lkup_t =
+record
+  lookup_identifier_type              id             = -1;
+  lexis_nexis_prescriber_addr_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                          key()          = {npi_key_hash};
+  
+  // ICFF variables
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 0;
+  int load_once()              = 1;
+  int only_last_key_instance() = 0;
+  int direct_addressed()       = 0;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let lexis_nexis_prescriber_by_npi_lkup_t GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_NPI = allocate_with_nulls();
+
+lexis_nexis_prescriber_by_npi_lkup_t out :: load_lexis_nexis_prescriber_by_npi_lkup() inline =
+begin
+  if (GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_NPI.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_lexis_nexis_prescriber_lkup_path('npi');
+    let indx_path  = get_lexis_nexis_prescriber_indx_path(lkup_path);
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_NPI =
+      if (indx_found) lookup_load(lkup_path, indx_path)
+      else            force_error('Could not find index for Lexis Nexus Prescriber by NPI lookup');
+  end;
+  
+  out :: GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_NPI;
+end;
+
+lexis_nexis_prescriber_t out :: get_lexis_nexis_prescriber_by_npi(cli_npi_id_t npi) inline =
+begin
+  let lkup    = load_lexis_nexis_prescriber_by_npi_lkup();
+  let bc_addr = lookup(lkup, hash_MD5(npi)).addr;
+  
+  out :: if (is_defined(bc_addr)) get_lexis_nexis_prescriber(bc_addr);
+end;
+
+/***********************************************************/
+/* Lexis Nexis Prescriber Lookup - by State License Number */
+/***********************************************************/
+
+type lexis_nexis_prescriber_by_st_lic_nbr_lkup_t =
+record
+  lookup_identifier_type              id             = -1;
+  lexis_nexis_prescriber_addr_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                          key()          = {st_lic_key_hash};
+  
+  // ICFF variables
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 0;
+  int load_once()              = 1;
+  int only_last_key_instance() = 0;
+  int direct_addressed()       = 0;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let lexis_nexis_prescriber_by_st_lic_nbr_lkup_t GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_ST_LIC_NBR = allocate_with_nulls();
+
+lexis_nexis_prescriber_by_st_lic_nbr_lkup_t out :: load_lexis_nexis_prescriber_by_st_lic_nbr_lkup() inline =
+begin
+  if (GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_ST_LIC_NBR.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_lexis_nexis_prescriber_lkup_path('st_lic');
+    let indx_path  = get_lexis_nexis_prescriber_indx_path(lkup_path);
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_ST_LIC_NBR =
+      if (indx_found) lookup_load(lkup_path, indx_path)
+      else            force_error('Could not find index for Lexis Nexus Prescriber by State License Number lookup');
+  end;
+  
+  out :: GLKUP_LEXIS_NEXIS_PRESCRIBER_BY_ST_LIC_NBR;
+end;
+
+lexis_nexis_prescriber_t out :: get_lexis_nexis_prescriber_by_st_lic_nbr(cli_st_lic_nbr_t st_lic_nbr) inline =
+begin
+  let lkup    = load_lexis_nexis_prescriber_by_st_lic_nbr_lkup();
+  let bc_addr = lookup(lkup, hash_MD5(st_lic_nbr)).addr;
+  
+  out :: if (is_defined(bc_addr)) get_lexis_nexis_prescriber(bc_addr);
+end;

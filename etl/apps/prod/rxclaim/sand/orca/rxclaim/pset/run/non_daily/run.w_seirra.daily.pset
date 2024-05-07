@@ -1,0 +1,6 @@
+!prototype|P|||$PUB_DXF_PLAN/run.all.plan
+RUN_GROUP||||w_seirra.daily
+RUN_ID_FILE||||$[ PUB_DATAHUB_SERIAL + "/run_id/" + APP_NM + ".run_id." + "w_seirra.generated" + ".dat" ]
+RUN_PLAN||||$[AI_PLAN + "/run/non_daily/run." +RUN_GROUP + ".plan" ]
+TIMEZONE_OFFSET_HOURS||||1
+START_CHANGES_TIME||||$[ (datetime("YYYY-MM-DD HH24:MI:SS")) datetime_add( (datetime("YYYY-MM-DD HH24:MI:SS")) string_filter_out(read_file(START_CHANGES_FILE),"\\r\\n") ,  seconds = TIMEZONE_OFFSET_HOURS ) ]

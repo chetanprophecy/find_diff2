@@ -1,0 +1,65 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/icd10_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/22  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_icd10_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/icd10.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/icd10.dat' );
+end;
+
+cli_string_t out :: get_icd10_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*********************************************/
+/* Source Environment Lookup (ids surrogate key) */
+/*********************************************/
+
+type icd10_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  icd10_hash_lkup_t       RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {rci10p.icd10_cd_type; rci10p.icd10_cd_frmt};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let icd10_lkup_t GLKUP_ICD10 = allocate_with_nulls();
+
+icd10_lkup_t out :: load_icd10_lkup() inline =
+begin
+  if (GLKUP_ICD10.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_icd10_lkup_path();
+    let indx_path  = get_icd10_indx_path(lkup_path, 'icd10');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_ICD10 = if (indx_found) lookup_load(lkup_path, indx_path)
+                  else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_ICD10;
+end;
+
+icd10_t out :: get_icd10(icd10_cd_type, icd10_cd_frmt) inline =
+begin
+  let icd10_lkup_t lkup = load_icd10_lkup();
+  out :: lookup(lkup, icd10_cd_type, icd10_cd_frmt).rci10p;
+end;

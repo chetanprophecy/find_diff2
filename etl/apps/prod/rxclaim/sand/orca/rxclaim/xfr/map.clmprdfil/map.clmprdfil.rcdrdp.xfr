@@ -1,0 +1,45 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.rxs_rxclaim_nbr            :: in.d3p2nb;
+  out.tcd_claim_seq_nbr_999s     :: in.d3oinb;
+  out.drd_pps_seq_nbr            :: in.d3jjnb;
+  out.drd_reason_for_srvcd       :: in.d3l7st;
+  out.drd_clinical_signifi       :: in.d3l1st;
+  out.drd_other_pharmacy_i       :: in.d3l2st;
+  out.drd_prev_date_of_fil       :: in.d3aeda;
+  out.drd_qty_of_prev_fill       :: in.d3jgnb;
+  out.drd_database_indicat       :: in.d3l3st;
+  out.drd_other_prescriber       :: in.d3l8st;
+  out.drd_free_text              :: in.d3lvtx;
+  out.drd_response               :: in.d3aeh6;
+  out.drd_override_list_in       :: in.d3afh6;
+  out.drd_cmpnd_ingredient       :: in.d3jdhr;
+  out.dut_edit_type              :: in.d3nkcd;
+  out.drd_conflicting_clai       :: in.d3iqhr;
+  out.drd_conflicting_seq        :: in.d3irhr;
+  out.drd_cnflct_cmpnd_ing       :: in.d3ithr;
+  out.drd_documentation_lv       :: in.d3bzik;
+  out.drd_onset                  :: in.d3b0ik;
+  out.drd_dups_found             :: in.d3ishr;
+  out.drd_dups_allowance         :: in.d3z5ha;
+  out.drd_conflicts_detect       :: in.d3iohr;
+  out.drd_conflicts_return       :: in.d3iphr;
+  out.drd_additional_text        :: in.d3r2ip;
+  out.add_user_name              :: in.d3akvn;
+  out.add_date                   :: in.d3c2dt;
+  out.add_time                   :: in.d3adtm;
+  out.add_program_name           :: in.d3alvn;
+  out.chg_user_name              :: in.d3advn;
+  out.chg_date                   :: in.d3bmdt;
+  out.chg_time                   :: in.d3abtm;
+  out.chg_program_name           :: in.d3aevn;
+  out.rxt_src_envrt_id           :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm           :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm            :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid             :: 'app_orca_rxclaim';
+  out.rxt_create_run_id          :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd            :: '';
+  out.*                          :: in.*;
+end;

@@ -1,0 +1,19 @@
+/* Event consumption entry. These records are loaded at
+   runtime by the distribution engine, after loading a
+   set of events to the target data mart table.
+*/
+
+type event_comsumption_log_type =
+record
+  /* Distribution target information */
+  string("|", maximum_length=20) data_mart;
+  string("|", maximum_length=70) table_name;
+  /* Distribution source information */
+  decimal("|", maximum_length=3) channel_id;
+  string("|", maximum_length=70) ids_table_name;
+  /* Event information */
+  decimal("|") num_events_consumed;
+  datetime("YYYYMMDD HH24:MI:SS.NNNNNN")("\n") watermark; // "created" timestamp of last event consumed
+end;
+
+metadata type = event_comsumption_log_type;

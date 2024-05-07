@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="OTHER" description="Set of Tasks performed as part of Day0 post implementations" durationDefaultSec1X80="0" isEnabled="false" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="6C5C0460-6A23-38D8-FCE7-2CBC0D394582_Day0" jobDefinitionGuid="CDB6EF56-9611-6B33-90EB-2E50BB041D2E_Day0" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Day0 Post Implementation Tasks" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/day0_post_implementation_steps.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint mode="DAILY" startDate="2017-08-29Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="01:15:00"/>
+      </startTimes>
+    </timeConstraint>
+  </constraintSet>
+
+</jobDefinition>

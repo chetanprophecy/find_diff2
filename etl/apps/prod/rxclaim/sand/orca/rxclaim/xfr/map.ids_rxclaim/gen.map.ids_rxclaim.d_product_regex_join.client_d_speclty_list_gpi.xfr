@@ -1,0 +1,57 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.clt_spec_gpi.speclty_list_nm,[transform],in0.speclty_list_nm]
+  [out0.clt_spec_gpi.speclty_list_gpi_sk,[transform],]
+  [out0.clt_spec_gpi.gpi_id,[transform],in0.gpi_no]
+  [out0.clt_spec_gpi.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.clt_spec_gpi.dxf_sk,'clt_spec_gpi.dxf_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.clt_spec_gpi.speclty_list_nm,'clt_spec_gpi.speclty_list_nm',1,0]
+     [out0.clt_spec_gpi.speclty_list_gpi_sk,'clt_spec_gpi.speclty_list_gpi_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.clt_spec_gpi.gpi_id,'clt_spec_gpi.gpi_id',1,0]
+     [out0.clt_spec_gpi.src_env_sk,'clt_spec_gpi.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi_no,'gpi_no',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.speclty_list_nm,'speclty_list_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let integer(8) clt_spec_gpi_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) clt_spec_gpi_speclty_list_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=50) clt_spec_gpi_speclty_list_nm = fail_if_error(string_lrtrim(in0.speclty_list_nm));
+let string("\x01",charset="iso-8859-15", maximum_length=14) clt_spec_gpi_gpi_id = fail_if_error(string_lrtrim(in0.gpi_no));
+let decimal("\x01",0) clt_spec_gpi_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.clt_spec_gpi.dxf_sk::clt_spec_gpi_dxf_sk;
+  out0.clt_spec_gpi.speclty_list_gpi_sk::clt_spec_gpi_speclty_list_gpi_sk;
+  out0.clt_spec_gpi.speclty_list_nm::clt_spec_gpi_speclty_list_nm;
+  out0.clt_spec_gpi.gpi_id::clt_spec_gpi_gpi_id;
+  out0.clt_spec_gpi.src_env_sk::clt_spec_gpi_src_env_sk;
+  out0.*::in0.*;
+
+end;

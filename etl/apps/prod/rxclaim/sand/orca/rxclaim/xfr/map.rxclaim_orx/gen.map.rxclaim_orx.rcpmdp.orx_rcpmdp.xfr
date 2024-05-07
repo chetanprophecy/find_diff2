@@ -1,0 +1,55 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_rcpmdp.mod_cd,[passthrough],in0.s5d8c4]
+  [out0.orx_rcpmdp.prod_key,[passthrough],in0.s5iin2]
+  [out0.orx_rcpmdp.pmd_orig_cd,[passthrough],in0.s5qps3]
+  [out0.orx_rcpmdp.pmd_stat_cd,[passthrough],in0.s5qos3]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_rcpmdp.mod_cd,'orx_rcpmdp.mod_cd',1,0]
+     [out0.orx_rcpmdp.prod_key,'orx_rcpmdp.prod_key',1,0]
+     [out0.orx_rcpmdp.pmd_orig_cd,'orx_rcpmdp.pmd_orig_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.orx_rcpmdp.pmd_stat_cd,'orx_rcpmdp.pmd_stat_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.s5qos3,'s5qos3',1,1]
+     [in0.s5iin2,'s5iin2',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.s5qps3,'s5qps3',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.s5d8c4,'s5d8c4',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",maximum_length=9) orx_rcpmdp_prod_key = fail_if_error(in0.s5iin2);
+let string("\x01",charset="iso-8859-15", maximum_length=6) orx_rcpmdp_mod_cd = fail_if_error(in0.s5d8c4);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcpmdp_pmd_stat_cd = fail_if_error(in0.s5qos3);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcpmdp_pmd_orig_cd = fail_if_error(in0.s5qps3);
+
+
+
+  out0.orx_rcpmdp.prod_key::orx_rcpmdp_prod_key;
+  out0.orx_rcpmdp.mod_cd::orx_rcpmdp_mod_cd;
+  out0.orx_rcpmdp.pmd_stat_cd::orx_rcpmdp_pmd_stat_cd;
+  out0.orx_rcpmdp.pmd_orig_cd::orx_rcpmdp_pmd_orig_cd;
+  out0.*::in0.*;
+
+end;

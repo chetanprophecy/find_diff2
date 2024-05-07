@@ -1,0 +1,8 @@
+!prototype|P|||${AI_PSET}/get.excel.interim.pset
+SOURCE_NAME||||rxclaim.lob_orx_ctrx_input_1key_lkp
+LOOKUP_FIELDS_KEY||||{carrier_id;account_id;employer_group_id;lob_srv_typ;lob_bus_typ;lob_clt_typ;src_env_sk}
+INPUT_FILE_PATTERN|$|||LOB_ORX_CTRX_INPUT.xlsx
+FILTER_EXPRESSION|$|||!is_null(carrier_id) && !is_blank(carrier_id) &&\n(is_null(account_id) || is_blank(account_id)) && \n(is_null(employer_group_id) || is_blank(employer_group_id))
+DO_LOOKUP||||True
+LOOKUP_KEY||||{carrier_id; src_env_sk}
+SOURCE_FILE_CLEAN_FLAG|$|||0

@@ -1,0 +1,76 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_38_6c54cc0a_59db271f_5f02_6
+    BizHidden:true
+@*/
+/*   lookup lkp_rcpdtp   */
+out0::bzt_38_6c54cc0a_59db271f_5f02_6(in0,in1,in2)=
+begin
+let record
+  decimal("\x01", maximum_length=18) e0p2nb = NULL("");
+  decimal("\x01", maximum_length=6) e0oinb = NULL("");
+  string("\x01", maximum_length=10) e0uicd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_rcpdtp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_58_6c54cc0a_59db271f_5f02_6
+    BizHidden:true
+@*/
+/*   lookup lkp_rcrxsp   */
+out0::bzt_58_6c54cc0a_59db271f_5f02_6(in0,in1)=
+begin
+let record
+  decimal("\x01",0, maximum_length=16, sign_reserved) dnp2nb;
+  string("\x01", maximum_length=1) dnkust;
+  decimal("\x01",0) src_env_sk = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_rcrxsp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_54_6c54cc0a_59db271f_5f02_6
+    BizHidden:true
+@*/
+/*   lookup lkp_rcrxsp   */
+out0::bzt_54_6c54cc0a_59db271f_5f02_6(in0,in1)=
+begin
+let record
+  decimal("\x01",0, maximum_length=16, sign_reserved) dnp2nb;
+  string("\x01", maximum_length=1) dnkust;
+  decimal("\x01",0) src_env_sk = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_rcrxsp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+let string(int) bzt_0_6c54cc0a_59db271f_5f02_6 = $RUN_ID;
+
+
+out0::reformat(in0)=
+begin
+
+let string("\x01",charset="iso-8859-15", maximum_length=1) cur_claim_stat_id;
+let string("\x01",charset="iso-8859-15", maximum_length=10) phr_cost_type;
+
+phr_cost_type=fail_if_error(str_non_nk(bzt_38_6c54cc0a_59db271f_5f02_6(in0.asp2nb,in0.asoinb,in0.dxf_src_sys_id).e0uicd));
+cur_claim_stat_id=fail_if_error(str_non_nk(bzt_54_6c54cc0a_59db271f_5f02_6(in0.asp2nb,in0.dxf_src_sys_id).dnkust));
+
+out0.dnkust :1: cur_claim_stat_id;
+out0.e0uicd :1: phr_cost_type;
+out0.* :2: in0.*;
+
+end;

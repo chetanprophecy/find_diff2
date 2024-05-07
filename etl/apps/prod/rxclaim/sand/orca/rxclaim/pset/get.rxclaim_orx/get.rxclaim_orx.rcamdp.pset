@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcamdp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcamdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcamdp')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||\n\n$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcamdp.icbmdt BETWEEN " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcamdp.icbmdt BETWEEN " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND  " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+SQL||||$[ "SELECT rcamdp.icabcd\n     , rcamdp.icaacd\n     , rcamdp.icaccd\n     , rcamdp.icadcd\n     , rcamdp.icbwn3\n     , rcamdp.ica4ck\n     , rcamdp.icrodt\n     , rcamdp.icrpdt\n     , '*'||rcamdp.icvst3 icvst3\n     , rcamdp.icakvn\n     , rcamdp.icc2dt\n     , rcamdp.icadtm\n     , rcamdp.icalvn\n     , rcamdp.icadvn\n     , rcamdp.icbmdt\n     , rcamdp.icabtm\n     , rcamdp.icaevn\n  FROM clmprdfil_bk1.rcamdp  rcamdp " +\n  if (START_CHANGES_TIME != '') \n    "WHERE rcamdp.icbmdt BETWEEN " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcamdp.icbmdt BETWEEN " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND  " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+ENABLE_DEFAULT_RULES||||True

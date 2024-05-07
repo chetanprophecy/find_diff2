@@ -1,0 +1,93 @@
+//home_delivery_fills_primary.xfr
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID                  :: "003";
+  out.SYS_PHARMACY_ID             :: in.WRITTEN_PHARMACY_CODE;
+  out.PHARMACY_NPI                :: if(first_defined(in.PHARMACY_NPI,"-1")=='0000000000' and first_defined(in.WRITTEN_PHARMACY_CODE,"0")=='0001') '1497845317' else in.PHARMACY_NPI;
+  out.RX_NBR                      :: in.RX_NUMBER;
+  out.FILL_NBR                    :: (string(""))(decimal(2,zerofill))(99-(decimal(""))in.REFILL_NBR);//(Prefix '0' for single digit);
+  out.NEW_REFILL                  :: if(first_defined(in.REFILL_NBR,"-1")=="99") 'N' else 'R';
+  out.PROD_CODE_DISP              :: in.NDC;
+  out.PROD_CODE_QUAL_DISP         :: if(first_defined((decimal(""))in.NDC,-1)>0) '03';
+  out.YR_FILLED                   :: string_substring((string(""))in.DATE_OF_SERVICE,1,4);//Year from DATE_OF_SERVICE (YYYY);
+  out.MON_FILLED                  :: string_substring((string(""))in.DATE_OF_SERVICE,5,2);//Month from DATE_OF_SERVICE (MM);
+  out.YR_MON_FILLED               :: string_substring((string(""))in.DATE_OF_SERVICE,1,6);//Year and month from DATE_OF_SERVICE (YYYYMM);
+  out.DT_FILLED                   :: in.DATE_OF_SERVICE;//(YYYYMMDD)
+  out.YR_SHIPPED                  :: string_substring((string(""))in.SHIP_DATE,1,4);//Year from SHIP_DATE (YYYY);
+  out.MON_SHIPPED                 :: string_substring((string(""))in.SHIP_DATE,5,2);//Month from SHIP_DATE (MM);
+  out.YR_MON_SHIPPED              :: string_substring((string(""))in.SHIP_DATE,1,6);//Year and month from SHIP_DATE (YYYYMM);
+  out.DT_SHIPPED                  :: in.SHIP_DATE;//(YYYYMMDD)
+  out.DISP_METRIC_QTY             :: in.QTY_DISPENSED;
+  out.DAYS_SUPPLY_DISP            :: in.DAYS_SUPPLY;
+  out.ORDER_NBR                   :: in.ORDER_NUMBER;
+  out.ACQUISITION_COST            :: in.ACTUAL_COST_PHM_PAID;
+  out.TOTAL_SALE_AMT              :: in.PRICE;
+  out.PATIENT_COPAY_COINS         :: in.RFCOPAY;
+  out.CLAIM_STS                   :: if(first_defined(in.ADJUDICATION_FLAG,'-1')=='' and first_defined((decimal(""))in.QTY_DISPENSED,-1)>0) 'P' else in.ADJUDICATION_FLAG;
+  out.PROD_CODE_PRESC             :: in.WRITTEN_DRUG_SERVICE_ID;
+  out.PROD_CODE_QUAL_PRESC        :: if(first_defined((decimal(""))in.WRITTEN_DRUG_SERVICE_ID,-1)>0) '03' else '';
+  out.YR_WRITTEN                  :: string_substring((string(""))in.DATE_WRITTEN,1,4);//DATE_WRITTEN (YYYY);
+  out.MON_WRITTEN                 :: string_substring((string(""))in.DATE_WRITTEN,5,2);//DATE_WRITTEN (MM)
+  out.YR_MON_WRITTEN              :: string_substring((string(""))in.DATE_WRITTEN,1,6);//DATE_WRITTEN (YYYYMM)
+  out.DT_WRITTEN                  :: in.DATE_WRITTEN;//DATE_WRITTEN(YYYYMMDD)
+  out.QTY_WRITTEN                 :: in.QTY_PRESCRIBED;
+  out.REFILLS_WRITTEN             :: in.REFILL_MAX;
+  out.DAYS_SUPPLY_WRITTEN         :: in.DAYS_SUPPLY;
+  out.DAW                         :: in.WRITTEN_PRODUCT_SELECTION_CODE;
+  out.SIG                         :: in.INSTRUCTIONS;
+  out.RX_ORIG_CODE                :: in.ORIGIN_CODE;
+  out.ICD_DIAG_CODE_01            :: in.PT_ICD_CODE_1;
+  out.ICD_DIAG_CODE_02            :: in.PT_ICD_CODE_2;
+  out.ICD_DIAG_CODE_03            :: in.PT_ICD_CODE_3;
+  out.ICD_DIAG_CODE_04            :: in.PT_ICD_CODE_4;
+  out.SRC_PRESCRIBER_ID           :: in.DOCTOR_NBR;
+  out.PRESCRIBER_DEA_NBR          :: in.DEA_NUMBER;
+  out.PRESCRIBER_NPI              :: in.MD_NPI_NBR;
+  out.SRC_PATIENT_ID              :: in.PATIENT_NBR;
+  out.ALT_PATIENT_ID              :: in.RXCLAIM_MEMBER_ID;
+  out.AWP_SRC                     :: in.AAWP;
+  out.WAC_SRC                     :: in.WAC;
+  out.MAC_SRC                     :: in.MAC;
+  out.SHIPPED_ADDRESS1            :: in.SHIPPING_ADDRESS1;
+  out.SHIPPED_ADDRESS2            :: in.SHIPPING_ADDRESS2;
+  out.SHIPPED_CITY                :: in.SHIPPING_CITY;
+  out.SHIPPED_STATE               :: in.SHIPPING_STATE;
+  out.SHIPPED_ZIP                 :: in.SHIPPING_ZIP;
+  out.SRC_EXTRACT_DT              :: in.EXTRACT_FILE_DATE;
+  out.SRC_EXTRACT_TIME            :: in.EXTRACT_FILE_TIMESTAMP;
+  out.COVERAGE_INDICATOR          :: in.COVERAGE_INDICATOR;
+  out.PRIMARY_PLAN_PAID           :: in.THIRD_PARTY_PAYMENT_AMOUNT;
+  out.PRIMARY_PLAN_ID             :: in.CARRIER_ID;
+  out.COST                        :: in.COST;
+  out.ALTERNATE_ID                :: in.ALTERNATE_ID;
+  out.FEE                         :: in.FEE;
+  out.TAX                         :: in.TAX;
+  out.MANUFACTURER                :: in.MANUFACTURER;
+  out.COVERAGE_TYPE               :: in.COVERAGE_TYPE;
+  out.CVG_SEQUENCE_NBR            :: in.CVG_SEQUENCE_NBR;
+  out.GENERIC_INDICATOR_MEDISPAN  :: in.GENERIC_INDICATOR_MEDISPAN;
+  out.PRODUCT_SELECTION_OVERRIDE  :: in.PRODUCT_SELECTION_OVERRIDE;
+  out.ACTUAL_COST_ACQUIRED        :: in.ACTUAL_COST_ACQUIRED;
+  out.AVG_ACTUAL_COST             :: in.AVG_ACTUAL_COST;
+  out.LABEL_NAME                  :: in.LABEL_NAME;
+  out.GPI                         :: in.GPI;
+  out.ENTERED_BY                  :: in.TOP;
+  out.ORDER_EXCEPT_FLAG           :: in.ORDER_EXCEPTION_FLAG;
+  out.PRIMARY_PLAN_CLM_REF_NBR    :: "";//RXCLM_NBR_REF (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then 0);
+  out.PRIMARY_PLAN_AUTH_CODE      :: "";//PLAN_AUTH_CODE  (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then '');
+  out.RXCLM_CAR_ID                :: "";//RXCLM_CAR_ID  (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then use PRIMARY_PLAN_ID column from source.If still not found,then  '');
+  out.RXCLM_CAR_NAME              :: "";//RXCLM_CAR_NAME   (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, use query 3. If stil not found, then '');
+  out.RXCLM_ACC_ID                :: "";//RXCLM_ACC_ID (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then use PLAN column from source.IF still not found,then  '');
+  out.RXCLM_GRP_ID                :: "";//RXCLM_GRP_ID (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2,  then use GROUP column from source.IF still not found,then '');
+  out.RXCLM_MBR_ID                :: "";//RXCLM_MBR_ID (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then use ALT_PATIENT_ID column from source.If still not found,then '');
+  out.RXCLM_SEQ_NBR               :: "";//RXCLM_SEQ_NBR (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then 0);
+  out.RXCLM_STS                   :: "";//RXCLM_STS (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then '');
+  out.RXCLM_CLT_UNIT_COST         :: "";//RXCLM_CT_UNIT_COST (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, then 0);
+  out.CLT_ING_COST                :: "";//CLT_ING_COST (Lookup Query 2);
+  out.CLT_AMT_DUE                 :: "";//CLT_AMT_DUE (Lookup Query 2);
+  out.RXTRK_SRC_SYS               :: "";//RXTRK_SRC_SYS (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, use query 3. If stil not found, then '');
+  out.RXTRK_SRC_SLIB              :: "";//RXTRK_SRC_SLIB (Lookup Query1.  If no match found using Lookup Query 1, then use lookup query 2. If not found in Query 2, use query 3. If stil not found, then '');
+  out.PRIMARY_PLAN_TRANSACT_DT    :: in.ADJUDICATION_DATE;
+  out.*                           :: in.*;
+end

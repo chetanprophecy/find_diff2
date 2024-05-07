@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="OTHER" description="This is the very first job of the schdule .This job sets the Control Center's internal property 'BOOK_DATE' at the start of the schedule .&#xD;&#xD;If the server goes down before this job could get executed and remains down for 24hours, meaning it crosses the date and the server comes back up on the next date , we need to pass the date manually in YYYYMMDD format instead of using the shell command &quot;$(date +%Y%m%d)&quot;" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="408673A8-864B-E096-6708-E0B1222DAE22" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Set BIZ_DT" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL_INT"/>
+
+  <mainAction executablePath="$AI_BIN/control_center/set_book_dt.ksh" executableType="PROGRAM" workingDirectory="${RUN}">
+    <arguments>
+      <argument isExpandable="false" value="CLINICAL_INT"/>
+    </arguments>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-26Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="01:15:00"/>
+      </startTimes>
+    </timeConstraint>
+  </constraintSet>
+
+</jobDefinition>

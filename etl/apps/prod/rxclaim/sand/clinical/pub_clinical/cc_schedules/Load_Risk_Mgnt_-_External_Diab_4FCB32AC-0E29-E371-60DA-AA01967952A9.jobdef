@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="LOAD_PROGRAM" description="This job will read full extract file from OEA team and load into C_RISK_SCOR_HIST ,C_RISK_SCOR_TOP_IND_DTL" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="4FCB32AC-0E29-E371-60DA-AA01967952A9" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Load Risk Mgnt - External Diab" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load_program" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/enri_diab_load_risk_score_mgnt.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="518400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="MONTHLY" startDate="2018-01-31Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfMonthDay day="1" nonOperationalOffset="0"/>
+      </days>
+      <monthsOfYear>
+        <monthOfYear value="JAN"/>
+        <monthOfYear value="FEB"/>
+        <monthOfYear value="MAR"/>
+        <monthOfYear value="APR"/>
+        <monthOfYear value="MAY"/>
+        <monthOfYear value="JUN"/>
+        <monthOfYear value="JUL"/>
+        <monthOfYear value="AUG"/>
+        <monthOfYear value="SEP"/>
+        <monthOfYear value="OCT"/>
+        <monthOfYear value="NOV"/>
+        <monthOfYear value="DEC"/>
+      </monthsOfYear>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="9204C631-6623-004D-0AF1-15928795BC81"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

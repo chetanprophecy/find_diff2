@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||dwxtract.rx49655p1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\ncustlib_bk1   rx49655p1               p1carrid,p1acctid,p1grpid,p1grpeffdt,p1grpthrdt,p1situsst,p1extdat,p1exttim,p1filler,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'custlib_bk1', 'custlib_bk1.rx49655p1')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rx49655p1.p1extdat >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rx49655p1.p1extdat <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rx49655p1.p1extdat >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rx49655p1.p1extdat <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+FROM_CLAUSE_VEC||||$[string_split_no_empty("FROM dwxtract.rx49655p1  rx49655p1|","|")]

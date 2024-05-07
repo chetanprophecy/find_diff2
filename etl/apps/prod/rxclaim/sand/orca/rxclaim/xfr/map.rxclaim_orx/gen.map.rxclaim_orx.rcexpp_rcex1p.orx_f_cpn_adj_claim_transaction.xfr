@@ -1,0 +1,414 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58eb5eaa_74d0_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.f_cpn_adj.claim_nbr,[passthrough],in0.akp2nb]
+  [out0.f_cpn_adj.sbm_dt_sk,[transform],]
+  [out0.f_cpn_adj.cag_sk,[transform],]
+  [out0.d_plan.pln_eff_dt,[transform],in0.fnlplandte]
+  [out0.f_cpn_adj.claim_stat_id,[passthrough],in0.aks6st]
+  [out0.d_plan.pln_cd,[passthrough],in0.fnlplancde]
+  [out0.f_cpn_adj.rbl_adj_atr_prd_slct_amt,[passthrough],in0.aksqqv]
+  [out0.f_cpn_adj.app_adj_flat_copay_amt,[passthrough],in0.akseqv]
+  [out0.f_cpn_adj.employer_group_id,[passthrough],in0.groupid]
+  [out0.d_phr.phr_id,[passthrough],in0.srvprovid]
+  [out0.f_cpn_adj.claim_seq_nbr,[transform],in0.akoinb]
+  [out0.f_cpn_adj.oop_applied_amt,[passthrough],in0.cctresrv11]
+  [out0.f_cpn_adj.days_sply,[passthrough],in0.dayssupply]
+  [out0.d_sbm_dt.cal_day_dt,[transform],in0.akc4dt]
+  [out0.d_mbr.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.aks6st]
+  [out0.f_cpn_adj.app_adj_prcnt_copay_amt,[passthrough],in0.aksfqv]
+  [out0.f_cpn_adj.account_id,[passthrough],in0.aks7cd]
+  [out0.f_cpn_adj.app_adj_atr_over_cap_amt,[passthrough],in0.akshqv]
+  [out0.d_fill_dt.cal_day_dt,[transform],in0.datesbm,
+     in0.dtefilled]
+  [out0.f_cpn_adj.sbm_dt,[transform],in0.akc4dt]
+  [out0.f_cpn_adj.member_id,[passthrough],in0.memberid]
+  [out0.f_cpn_adj.rbl_adj_flat_copay_amt,[passthrough],in0.aksmqv]
+  [out0.f_cpn_adj.app_adj_atr_prd_slct_amt,[passthrough],in0.aksiqv]
+  [out0.f_cpn_adj.mbr_sk,[transform],]
+  [out0.d_mbr.account_id,[passthrough],in0.accountid]
+  [out0.d_prod.prod_id_qlfr_cd,[transform],in0.prodtypcde,
+     in0.compoundcd]
+  [out0.f_cpn_adj.filled_dt_sk,[transform],]
+  [out0.d_cag.carrier_id,[passthrough],in0.carrierid]
+  [out0.f_cpn_adj.cpn_not_appld_amt,[passthrough],in0.akstqv]
+  [out0.f_cpn_adj.drg_qty,[passthrough],in0.decimalqty]
+  [out0.f_cpn_adj.rbl_adj_atr_over_cap_amt,[passthrough],in0.akspqv]
+  [out0.f_cpn_adj.rbl_adj_prcnt_copay_amt,[passthrough],in0.aksnqv]
+  [out0.f_cpn_adj.claim_cntr,[transform],in0.aks6st]
+  [out0.f_cpn_adj.final_pln_sk,[transform],]
+  [out0.f_cpn_adj.oth_pyr_na_ind,[passthrough],in0.aksaau]
+  [out0.d_cag.account_id,[passthrough],in0.accountid]
+  [out0.d_prod.prod_id,[transform],in0.productid,
+     in0.compoundcd]
+  [out0.f_cpn_adj.app_adj_ded_amt,[passthrough],in0.aksgqv]
+  [out0.f_cpn_adj.app_adj_copay_amt,[passthrough],in0.aksdqv]
+  [out0.d_mbr.mbr_id,[passthrough],in0.memberid]
+  [out0.f_cpn_adj.clt_due_amt,[passthrough],in0.cltdueamt]
+  [out0.d_mbr.carrier_id,[passthrough],in0.carrierid]
+  [out0.f_cpn_adj.clt_patient_pay_amt,[passthrough],in0.cltpatpay]
+  [out0.f_cpn_adj.app_adj_pat_pay_amt,[passthrough],in0.akskqv]
+  [out0.f_cpn_adj.rbl_adj_atr_sls_tax_amt,[passthrough],in0.aksrqv]
+  [out0.f_cpn_adj.oth_pyr_2nd_amt,[passthrough],in0.aksuqv]
+  [out0.f_cpn_adj.rbl_adj_copay_amt,[passthrough],in0.akslqv]
+  [out0.f_cpn_adj.prod_sk,[transform],]
+  [out0.f_cpn_adj.rbl_adj_ded_amt,[passthrough],in0.aksoqv]
+  [out0.f_cpn_adj.carrier_id,[passthrough],in0.aks6cd]
+  [out0.f_cpn_adj.reversal_ind,[transform],in0.aks6st]
+  [out0.f_cpn_adj.oth_pyr_3rd_amt,[passthrough],in0.aksvqv]
+  [out0.f_cpn_adj.app_due_amt,[passthrough],in0.phrdueamt]
+  [out0.f_cpn_adj.phr_sk,[transform],]
+  [out0.f_cpn_adj.app_patient_pay_amt,[passthrough],in0.phrpatpay]
+  [out0.f_cpn_adj.filled_dt,[transform],in0.datesbm,
+     in0.dtefilled]
+  [out0.f_cpn_adj.app_adj_atr_sls_tax_amt,[passthrough],in0.aksjqv]
+  [out0.f_cpn_adj.rbl_adj_pat_pay_amt,[passthrough],in0.akssqv]
+  [out0.d_cag.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.aks6st]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_cpn_adj.claim_nbr,'f_cpn_adj.claim_nbr',1,0]
+     [out0.d_plan.src_env_sk,'d_plan.src_env_sk',1,0]
+     [out0.f_cpn_adj.sbm_dt_sk,'f_cpn_adj.sbm_dt_sk',1,0]
+     [out0.f_cpn_adj.cag_sk,'f_cpn_adj.cag_sk',1,0]
+     [out0.d_plan.pln_eff_dt,'d_plan.pln_eff_dt',1,3]
+     [out0.f_cpn_adj.claim_stat_id,'f_cpn_adj.claim_stat_id',1,0]
+     [out0.d_plan.pln_cd,'d_plan.pln_cd',1,0]
+     [out0.f_cpn_adj.rbl_adj_atr_prd_slct_amt,'f_cpn_adj.rbl_adj_atr_prd_slct_amt',1,0]
+     [out0.f_cpn_adj.app_adj_flat_copay_amt,'f_cpn_adj.app_adj_flat_copay_amt',1,0]
+     [out0.f_cpn_adj.employer_group_id,'f_cpn_adj.employer_group_id',1,0]
+     [out0.d_phr.phr_id,'d_phr.phr_id',1,0]
+     [out0.f_cpn_adj.claim_seq_nbr,'f_cpn_adj.claim_seq_nbr',1,0]
+     [out0.f_cpn_adj.oop_applied_amt,'f_cpn_adj.oop_applied_amt',1,0]
+     [out0.f_cpn_adj.days_sply,'f_cpn_adj.days_sply',1,0]
+     [out0.d_sbm_dt.cal_day_dt,'d_sbm_dt.cal_day_dt',1,3]
+     [out0.d_mbr.employer_group_id,'d_mbr.employer_group_id',1,0]
+     [out0.f_cpn_adj.src_env_sk,'f_cpn_adj.src_env_sk',1,0]
+     [out0.f_cpn_adj.app_adj_prcnt_copay_amt,'f_cpn_adj.app_adj_prcnt_copay_amt',1,0]
+     [out0.f_cpn_adj.account_id,'f_cpn_adj.account_id',1,0]
+     [out0.f_cpn_adj.app_adj_atr_over_cap_amt,'f_cpn_adj.app_adj_atr_over_cap_amt',1,0]
+     [out0.d_fill_dt.cal_day_dt,'d_fill_dt.cal_day_dt',1,3]
+     [out0.f_cpn_adj.sbm_dt,'f_cpn_adj.sbm_dt',1,3]
+     [out0.f_cpn_adj.member_id,'f_cpn_adj.member_id',1,0]
+     [out0.f_cpn_adj.rbl_adj_flat_copay_amt,'f_cpn_adj.rbl_adj_flat_copay_amt',1,0]
+     [out0.f_cpn_adj.app_adj_atr_prd_slct_amt,'f_cpn_adj.app_adj_atr_prd_slct_amt',1,0]
+     [out0.f_cpn_adj.mbr_sk,'f_cpn_adj.mbr_sk',1,0]
+     [out0.d_mbr.account_id,'d_mbr.account_id',1,0]
+     [out0.d_prod.prod_id_qlfr_cd,'d_prod.prod_id_qlfr_cd',1,0]
+     [out0.f_cpn_adj.filled_dt_sk,'f_cpn_adj.filled_dt_sk',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.f_cpn_adj.cpn_not_appld_amt,'f_cpn_adj.cpn_not_appld_amt',1,0]
+     [out0.f_cpn_adj.drg_qty,'f_cpn_adj.drg_qty',1,0]
+     [out0.f_cpn_adj.rbl_adj_atr_over_cap_amt,'f_cpn_adj.rbl_adj_atr_over_cap_amt',1,0]
+     [out0.f_cpn_adj.rbl_adj_prcnt_copay_amt,'f_cpn_adj.rbl_adj_prcnt_copay_amt',1,0]
+     [out0.f_cpn_adj.claim_cntr,'f_cpn_adj.claim_cntr',1,0]
+     [out0.f_cpn_adj.final_pln_sk,'f_cpn_adj.final_pln_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_cpn_adj.oth_pyr_na_ind,'f_cpn_adj.oth_pyr_na_ind',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.d_prod.prod_id,'d_prod.prod_id',1,0]
+     [out0.f_cpn_adj.app_adj_ded_amt,'f_cpn_adj.app_adj_ded_amt',1,0]
+     [out0.f_cpn_adj.app_adj_copay_amt,'f_cpn_adj.app_adj_copay_amt',1,0]
+     [out0.d_mbr.mbr_id,'d_mbr.mbr_id',1,0]
+     [out0.f_cpn_adj.clt_due_amt,'f_cpn_adj.clt_due_amt',1,0]
+     [out0.d_mbr.carrier_id,'d_mbr.carrier_id',1,0]
+     [out0.f_cpn_adj.clt_patient_pay_amt,'f_cpn_adj.clt_patient_pay_amt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_cpn_adj.app_adj_pat_pay_amt,'f_cpn_adj.app_adj_pat_pay_amt',1,0]
+     [out0.f_cpn_adj.rbl_adj_atr_sls_tax_amt,'f_cpn_adj.rbl_adj_atr_sls_tax_amt',1,0]
+     [out0.f_cpn_adj.oth_pyr_2nd_amt,'f_cpn_adj.oth_pyr_2nd_amt',1,0]
+     [out0.f_cpn_adj.rbl_adj_copay_amt,'f_cpn_adj.rbl_adj_copay_amt',1,0]
+     [out0.f_cpn_adj.prod_sk,'f_cpn_adj.prod_sk',1,0]
+     [out0.f_cpn_adj.rbl_adj_ded_amt,'f_cpn_adj.rbl_adj_ded_amt',1,0]
+     [out0.f_cpn_adj.carrier_id,'f_cpn_adj.carrier_id',1,0]
+     [out0.f_cpn_adj.reversal_ind,'f_cpn_adj.reversal_ind',1,4]
+     [out0.f_cpn_adj.oth_pyr_3rd_amt,'f_cpn_adj.oth_pyr_3rd_amt',1,0]
+     [out0.f_cpn_adj.app_due_amt,'f_cpn_adj.app_due_amt',1,0]
+     [out0.f_cpn_adj.phr_sk,'f_cpn_adj.phr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_cpn_adj.app_patient_pay_amt,'f_cpn_adj.app_patient_pay_amt',1,0]
+     [out0.f_cpn_adj.filled_dt,'f_cpn_adj.filled_dt',1,3]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_cpn_adj.app_adj_atr_sls_tax_amt,'f_cpn_adj.app_adj_atr_sls_tax_amt',1,0]
+     [out0.f_cpn_adj.rbl_adj_pat_pay_amt,'f_cpn_adj.rbl_adj_pat_pay_amt',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.akstqv,'akstqv',1,1]
+     [in0.aksuqv,'aksuqv',1,1]
+     [in0.aks6st,'aks6st',6,9]
+     [in0.aksnqv,'aksnqv',1,1]
+     [in0.fnlplandte,'fnlplandte',5,4]
+     [in0.akshqv,'akshqv',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.aksmqv,'aksmqv',1,1]
+     [in0.decimalqty,'decimalqty',1,1]
+     [in0.groupnbr,'groupnbr',2,2]
+     [in0.accountid,'accountid',2,2]
+     [in0.aksgqv,'aksgqv',1,1]
+     [in0.carrierid,'carrierid',2,2]
+     [in0.aksoqv,'aksoqv',1,1]
+     [in0.akslqv,'akslqv',1,1]
+     [in0.fnlplancde,'fnlplancde',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dtefilled,'dtefilled',3,5]
+     [in0.aksaau,'aksaau',1,1]
+     [in0.groupid,'groupid',5,3]
+     [in0.cltdueamt,'cltdueamt',2,2]
+     [in0.phrpatpay,'phrpatpay',1,1]
+     [in0.akspqv,'akspqv',1,1]
+     [in0.akc4dt,'akc4dt',5,5]
+     [in0.akoinb,'akoinb',3,1]
+     [in0.srvprovid,'srvprovid',1,1]
+     [in0.aks7cd,'aks7cd',1,1]
+     [in0.akskqv,'akskqv',1,1]
+     [in0.dayssupply,'dayssupply',1,1]
+     [in0.prodtypcde,'prodtypcde',1,1]
+     [in0.cltpatpay,'cltpatpay',1,1]
+     [in0.aksiqv,'aksiqv',1,1]
+     [in0.aksrqv,'aksrqv',1,1]
+     [in0.productid,'productid',1,1]
+     [in0.aksdqv,'aksdqv',1,1]
+     [in0.akseqv,'akseqv',1,1]
+     [in0.aksjqv,'aksjqv',1,1]
+     [in0.phrdueamt,'phrdueamt',1,1]
+     [in0.aksqqv,'aksqqv',1,1]
+     [in0.akp2nb,'akp2nb',1,1]
+     [in0.src_env_sk,'src_env_sk',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aksvqv,'aksvqv',1,1]
+     [in0.memberid,'memberid',2,2]
+     [in0.cctresrv11,'cctresrv11',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.akssqv,'akssqv',1,1]
+     [in0.compoundcd,'compoundcd',2,2]
+     [in0.aksfqv,'aksfqv',1,1]
+     [in0.datesbm,'datesbm',2,5]
+     [in0.aks6cd,'aks6cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_1 = 0;
+let int bzt_2 = 0;
+let int bzt_3 = 0;
+let decimal("\x01",0) f_cpn_adj_claim_nbr = fail_if_error(in0.akp2nb);
+let decimal("\x01",0) f_cpn_adj_claim_seq_nbr = fail_if_error(if(in0.akoinb<0) in0.akoinb else (1000 - in0.akoinb));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cpn_adj_claim_stat_id = fail_if_error(in0.aks6st);
+let decimal("\x01",0) f_cpn_adj_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cpn_adj_carrier_id = fail_if_error(in0.aks6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) f_cpn_adj_account_id = fail_if_error(in0.aks7cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cpn_adj_employer_group_id = fail_if_error(in0.groupid);
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cpn_adj_member_id = fail_if_error(in0.memberid);
+let decimal("\x01",0) f_cpn_adj_mbr_sk = -1;
+let decimal("\x01",0) f_cpn_adj_phr_sk = -1;
+let decimal("\x01",0) f_cpn_adj_prod_sk = -1;
+let date("YYYYMMDD")("\x01") f_cpn_adj_sbm_dt;
+let decimal("\x01",0) f_cpn_adj_sbm_dt_sk = -1;
+let date("YYYYMMDD")("\x01") f_cpn_adj_filled_dt;
+let decimal("\x01",0) f_cpn_adj_filled_dt_sk = -1;
+let decimal("\x01",0) f_cpn_adj_final_pln_sk = -1;
+let decimal("\x01",0) f_cpn_adj_days_sply = fail_if_error(in0.dayssupply);
+let decimal("\x01",0) f_cpn_adj_claim_cntr = fail_if_error(string_lrtrim(in0.aks6st) member  [vector  "P","C" ] ? 1: string_lrtrim(in0.aks6st) member  [vector  "X","Z" ] ? -1 :0);
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cpn_adj_drg_qty = fail_if_error(in0.decimalqty);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_due_amt = fail_if_error(in0.phrdueamt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_patient_pay_amt = fail_if_error(in0.phrpatpay);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_clt_due_amt = fail_if_error(in0.cltdueamt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_clt_patient_pay_amt = fail_if_error(in0.cltpatpay);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_oop_applied_amt = fail_if_error(in0.cctresrv11);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_copay_amt = fail_if_error(in0.aksdqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_flat_copay_amt = fail_if_error(in0.akseqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_prcnt_copay_amt = fail_if_error(in0.aksfqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_ded_amt = fail_if_error(in0.aksgqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_atr_over_cap_amt = fail_if_error(in0.akshqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_atr_prd_slct_amt = fail_if_error(in0.aksiqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_atr_sls_tax_amt = fail_if_error(in0.aksjqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_app_adj_pat_pay_amt = fail_if_error(in0.akskqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_copay_amt = fail_if_error(in0.akslqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_flat_copay_amt = fail_if_error(in0.aksmqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_prcnt_copay_amt = fail_if_error(in0.aksnqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_ded_amt = fail_if_error(in0.aksoqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_atr_over_cap_amt = fail_if_error(in0.akspqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_atr_prd_slct_amt = fail_if_error(in0.aksqqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_atr_sls_tax_amt = fail_if_error(in0.aksrqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_rbl_adj_pat_pay_amt = fail_if_error(in0.akssqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_cpn_not_appld_amt = fail_if_error(in0.akstqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_oth_pyr_2nd_amt = fail_if_error(in0.aksuqv);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cpn_adj_oth_pyr_3rd_amt = fail_if_error(in0.aksvqv);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cpn_adj_oth_pyr_na_ind = fail_if_error(in0.aksaau);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cpn_adj_reversal_ind;
+let decimal("\x01",0) f_cpn_adj_src_env_sk = fail_if_error(in0.src_env_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error((sql_and((string_lrtrim(in0.aks6st)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid));
+let date("YYYYMMDD")("\x01") d_fill_dt_cal_day_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_employer_group_id = fail_if_error((sql_and((string_lrtrim(in0.aks6st)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid));
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_mbr_id = fail_if_error(in0.memberid);
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_phr_phr_id = fail_if_error(in0.srvprovid);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_plan_pln_cd = fail_if_error(in0.fnlplancde);
+let date("YYYYMMDD")("\x01") d_plan_pln_eff_dt;
+let decimal("\x01",0) d_plan_src_env_sk = fail_if_error(in0.src_env_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prod_prod_id = fail_if_error(string_lrtrim(in0.compoundcd ) member  [vector   '2','9' ] ? '-' :in0.productid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_prod_id_qlfr_cd = fail_if_error(string_lrtrim(in0.compoundcd ) member  [vector   '2','9' ] ? '-' :in0.prodtypcde);
+let date("YYYYMMDD")("\x01") d_sbm_dt_cal_day_dt;
+let unicode string(int) DteFilledValidation;
+let unicode string(int) DatesbmValue;
+let unicode string(int) FlnPlnDteVal;
+let unicode string(int) f_orx_reversal_ind = 'N';
+
+
+
+/*   Rule:Compute DteFilledValidation  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.dtefilled) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.datesbm))) ==1)),0))begin
+  bzt_1=1;
+  DteFilledValidation=YYYYMMDD(19000000+ in0.dtefilled);
+end
+else if(first_defined(fail_if_error(((length_of(in0.dtefilled)) ==8) && ((is_valid(YYYYMMDD(in0.datesbm))) ==1)),0))begin
+  bzt_1=1;
+  DteFilledValidation=YYYYMMDD(in0.dtefilled);
+end
+
+/*   Default value   */
+if(!bzt_1)begin
+  DteFilledValidation=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Default value   */
+d_fill_dt_cal_day_dt=fail_if_error(DteFilledValidation);
+
+/*   Default value   */
+f_cpn_adj_filled_dt=fail_if_error(DteFilledValidation);
+
+/*   Rule:Compute DatesbmValue  (#2)   */
+if(first_defined(fail_if_error(((length_of(in0.akc4dt) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.akc4dt))) ==1)),0))begin
+  bzt_2=1;
+  DatesbmValue=YYYYMMDD(19000000+in0.akc4dt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.akc4dt)) ==8) && ((is_valid(YYYYMMDD(in0.akc4dt))) ==1)),0))begin
+  bzt_2=1;
+  DatesbmValue=YYYYMMDD(in0.akc4dt);
+end
+
+/*   Default value   */
+if(!bzt_2)begin
+  DatesbmValue=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Default value   */
+f_cpn_adj_sbm_dt=fail_if_error(DatesbmValue);
+
+/*   Default value   */
+d_sbm_dt_cal_day_dt=fail_if_error(DatesbmValue);
+
+/*   Rule:Compute FlnPlnDteVal  (#3)   */
+if(first_defined(fail_if_error(((length_of(in0.fnlplandte) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.fnlplandte))) ==1)),0))begin
+  bzt_3=1;
+  FlnPlnDteVal=YYYYMMDD(19000000+ in0.fnlplandte);
+end
+else if(first_defined(fail_if_error(((length_of(in0.fnlplandte)) ==8) && ((is_valid(YYYYMMDD(in0.fnlplandte))) ==1)),0))begin
+  bzt_3=1;
+  FlnPlnDteVal=YYYYMMDD(in0.fnlplandte);
+end
+
+/*   Default value   */
+if(!bzt_3)begin
+  FlnPlnDteVal=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Default value   */
+d_plan_pln_eff_dt=fail_if_error(FlnPlnDteVal);
+
+/*   Rule:Compute f_orx_reversal_ind  (#4)   */
+if(first_defined((in0.aks6st =='X'),0))begin
+  f_orx_reversal_ind='Y';
+end
+else if(first_defined((in0.aks6st =='R'),0))begin
+  f_orx_reversal_ind='N';
+end
+else if(first_defined((in0.aks6st =='Z'),0))begin
+  f_orx_reversal_ind='Y';
+end
+
+/*   Default value   */
+f_cpn_adj_reversal_ind=fail_if_error(f_orx_reversal_ind);
+
+  out0.f_cpn_adj.claim_nbr::f_cpn_adj_claim_nbr;
+  out0.f_cpn_adj.claim_seq_nbr::f_cpn_adj_claim_seq_nbr;
+  out0.f_cpn_adj.claim_stat_id::f_cpn_adj_claim_stat_id;
+  out0.f_cpn_adj.cag_sk::f_cpn_adj_cag_sk;
+  out0.f_cpn_adj.carrier_id::f_cpn_adj_carrier_id;
+  out0.f_cpn_adj.account_id::f_cpn_adj_account_id;
+  out0.f_cpn_adj.employer_group_id::f_cpn_adj_employer_group_id;
+  out0.f_cpn_adj.member_id::f_cpn_adj_member_id;
+  out0.f_cpn_adj.mbr_sk::f_cpn_adj_mbr_sk;
+  out0.f_cpn_adj.phr_sk::f_cpn_adj_phr_sk;
+  out0.f_cpn_adj.prod_sk::f_cpn_adj_prod_sk;
+  out0.f_cpn_adj.sbm_dt::f_cpn_adj_sbm_dt;
+  out0.f_cpn_adj.sbm_dt_sk::f_cpn_adj_sbm_dt_sk;
+  out0.f_cpn_adj.filled_dt::f_cpn_adj_filled_dt;
+  out0.f_cpn_adj.filled_dt_sk::f_cpn_adj_filled_dt_sk;
+  out0.f_cpn_adj.final_pln_sk::f_cpn_adj_final_pln_sk;
+  out0.f_cpn_adj.days_sply::f_cpn_adj_days_sply;
+  out0.f_cpn_adj.claim_cntr::f_cpn_adj_claim_cntr;
+  out0.f_cpn_adj.drg_qty::f_cpn_adj_drg_qty;
+  out0.f_cpn_adj.app_due_amt::f_cpn_adj_app_due_amt;
+  out0.f_cpn_adj.app_patient_pay_amt::f_cpn_adj_app_patient_pay_amt;
+  out0.f_cpn_adj.clt_due_amt::f_cpn_adj_clt_due_amt;
+  out0.f_cpn_adj.clt_patient_pay_amt::f_cpn_adj_clt_patient_pay_amt;
+  out0.f_cpn_adj.oop_applied_amt::f_cpn_adj_oop_applied_amt;
+  out0.f_cpn_adj.app_adj_copay_amt::f_cpn_adj_app_adj_copay_amt;
+  out0.f_cpn_adj.app_adj_flat_copay_amt::f_cpn_adj_app_adj_flat_copay_amt;
+  out0.f_cpn_adj.app_adj_prcnt_copay_amt::f_cpn_adj_app_adj_prcnt_copay_amt;
+  out0.f_cpn_adj.app_adj_ded_amt::f_cpn_adj_app_adj_ded_amt;
+  out0.f_cpn_adj.app_adj_atr_over_cap_amt::f_cpn_adj_app_adj_atr_over_cap_amt;
+  out0.f_cpn_adj.app_adj_atr_prd_slct_amt::f_cpn_adj_app_adj_atr_prd_slct_amt;
+  out0.f_cpn_adj.app_adj_atr_sls_tax_amt::f_cpn_adj_app_adj_atr_sls_tax_amt;
+  out0.f_cpn_adj.app_adj_pat_pay_amt::f_cpn_adj_app_adj_pat_pay_amt;
+  out0.f_cpn_adj.rbl_adj_copay_amt::f_cpn_adj_rbl_adj_copay_amt;
+  out0.f_cpn_adj.rbl_adj_flat_copay_amt::f_cpn_adj_rbl_adj_flat_copay_amt;
+  out0.f_cpn_adj.rbl_adj_prcnt_copay_amt::f_cpn_adj_rbl_adj_prcnt_copay_amt;
+  out0.f_cpn_adj.rbl_adj_ded_amt::f_cpn_adj_rbl_adj_ded_amt;
+  out0.f_cpn_adj.rbl_adj_atr_over_cap_amt::f_cpn_adj_rbl_adj_atr_over_cap_amt;
+  out0.f_cpn_adj.rbl_adj_atr_prd_slct_amt::f_cpn_adj_rbl_adj_atr_prd_slct_amt;
+  out0.f_cpn_adj.rbl_adj_atr_sls_tax_amt::f_cpn_adj_rbl_adj_atr_sls_tax_amt;
+  out0.f_cpn_adj.rbl_adj_pat_pay_amt::f_cpn_adj_rbl_adj_pat_pay_amt;
+  out0.f_cpn_adj.cpn_not_appld_amt::f_cpn_adj_cpn_not_appld_amt;
+  out0.f_cpn_adj.oth_pyr_2nd_amt::f_cpn_adj_oth_pyr_2nd_amt;
+  out0.f_cpn_adj.oth_pyr_3rd_amt::f_cpn_adj_oth_pyr_3rd_amt;
+  out0.f_cpn_adj.oth_pyr_na_ind::f_cpn_adj_oth_pyr_na_ind;
+  out0.f_cpn_adj.reversal_ind::f_cpn_adj_reversal_ind;
+  out0.f_cpn_adj.src_env_sk::f_cpn_adj_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_fill_dt.cal_day_dt::d_fill_dt_cal_day_dt;
+  out0.d_mbr.carrier_id::d_mbr_carrier_id;
+  out0.d_mbr.account_id::d_mbr_account_id;
+  out0.d_mbr.employer_group_id::d_mbr_employer_group_id;
+  out0.d_mbr.mbr_id::d_mbr_mbr_id;
+  out0.d_phr.phr_id::d_phr_phr_id;
+  out0.d_plan.pln_cd::d_plan_pln_cd;
+  out0.d_plan.pln_eff_dt::d_plan_pln_eff_dt;
+  out0.d_plan.src_env_sk::d_plan_src_env_sk;
+  out0.d_prod.prod_id::d_prod_prod_id;
+  out0.d_prod.prod_id_qlfr_cd::d_prod_prod_id_qlfr_cd;
+  out0.d_sbm_dt.cal_day_dt::d_sbm_dt_cal_day_dt;
+  out0.*::in0.*;
+
+end;

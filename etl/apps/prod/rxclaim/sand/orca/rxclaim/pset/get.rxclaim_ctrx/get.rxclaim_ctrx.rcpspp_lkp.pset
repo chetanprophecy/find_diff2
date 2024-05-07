@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcpspp_lkp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpspp                  nzaqcd,nzflcd
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+WHERE_CLAUSE||||$[ " WHERE ((rcpspp.nzc2dt*1000000)+rcpspp.NZADTM between " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME -19000000000000))\n+ " and " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) END_CHANGES_TIME -19000000000000))\n+ ") "]
+DO_CLEAN||||0
+DO_SOURCE||||0
+DO_LOOKUP||||1
+DO_CONS_LOOKUP||||1
+LOOKUP_KEY||||{nzaqcd; rxt_src_envrt_id}
+EXTRA_DEDUP_SORT_KEY||||{dxf_src_dataset_id; dxf_src_rec_cnt; nzflcd}
+LOOKUP_NAME_OVERRIDE||||rcpspp_lkp

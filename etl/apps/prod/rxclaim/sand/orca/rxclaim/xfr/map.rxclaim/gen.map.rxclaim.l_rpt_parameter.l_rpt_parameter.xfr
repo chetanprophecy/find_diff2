@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_rpt_param.rng_upper_lmt,[passthrough],in0.rng_upper_lmt]
+  [out0.l_rpt_param.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_rpt_param.parm_value,[passthrough],in0.parm_value]
+  [out0.l_rpt_param.rng_lo_lmt,[passthrough],in0.rng_lo_lmt]
+  [out0.l_rpt_param.rpt_parm_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_rpt_param.rng_upper_lmt,'l_rpt_param.rng_upper_lmt',1,0]
+     [out0.l_rpt_param.src_env_sk,'l_rpt_param.src_env_sk',1,0]
+     [out0.l_rpt_param.parm_desc,'l_rpt_param.parm_desc',1,0]
+     [out0.l_rpt_param.parm_grp,'l_rpt_param.parm_grp',1,0]
+     [out0.l_rpt_param.parm_value,'l_rpt_param.parm_value',1,0]
+     [out0.l_rpt_param.rng_lo_lmt,'l_rpt_param.rng_lo_lmt',1,0]
+     [out0.l_rpt_param.parm_datatyp,'l_rpt_param.parm_datatyp',1,0]
+     [out0.l_rpt_param.rpt_parm_sk,'l_rpt_param.rpt_parm_sk',1,0]
+     [out0.l_rpt_param.parm_nm,'l_rpt_param.parm_nm',1,0]
+     [out0.l_rpt_param.parm_format,'l_rpt_param.parm_format',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.rng_upper_lmt,'rng_upper_lmt',1,1]
+     [in0.parm_datatyp,'parm_datatyp',1,1]
+     [in0.parm_desc,'parm_desc',1,1]
+     [in0.parm_nm,'parm_nm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.parm_format,'parm_format',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.rng_lo_lmt,'rng_lo_lmt',1,1]
+     [in0.parm_grp,'parm_grp',1,1]
+     [in0.parm_value,'parm_value',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_rpt_param_rpt_parm_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_rpt_param_parm_nm = fail_if_error(in0.parm_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rpt_param_parm_datatyp = fail_if_error(in0.parm_datatyp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rpt_param_parm_format = fail_if_error(in0.parm_format);
+let decimal("\x01".2, maximum_length=17, sign_reserved) l_rpt_param_parm_value = fail_if_error(in0.parm_value);
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_rpt_param_parm_grp = fail_if_error(in0.parm_grp);
+let string("\x01",charset="iso-8859-15", maximum_length=500) l_rpt_param_parm_desc = fail_if_error(in0.parm_desc);
+let decimal("\x01".2, maximum_length=17, sign_reserved) l_rpt_param_rng_lo_lmt = fail_if_error(in0.rng_lo_lmt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) l_rpt_param_rng_upper_lmt = fail_if_error(in0.rng_upper_lmt);
+let decimal("\x01",0) l_rpt_param_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_rpt_param.rpt_parm_sk::l_rpt_param_rpt_parm_sk;
+  out0.l_rpt_param.parm_nm::l_rpt_param_parm_nm;
+  out0.l_rpt_param.parm_datatyp::l_rpt_param_parm_datatyp;
+  out0.l_rpt_param.parm_format::l_rpt_param_parm_format;
+  out0.l_rpt_param.parm_value::l_rpt_param_parm_value;
+  out0.l_rpt_param.parm_grp::l_rpt_param_parm_grp;
+  out0.l_rpt_param.parm_desc::l_rpt_param_parm_desc;
+  out0.l_rpt_param.rng_lo_lmt::l_rpt_param_rng_lo_lmt;
+  out0.l_rpt_param.rng_upper_lmt::l_rpt_param_rng_upper_lmt;
+  out0.l_rpt_param.src_env_sk::l_rpt_param_src_env_sk;
+  out0.*::in0.*;
+
+end;

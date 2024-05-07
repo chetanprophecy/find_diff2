@@ -1,0 +1,96 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcmgdp_to_the_ctrx_d_pa_gpi_list_dtl_ILM_documentation(in)=
+begin
+
+out0.gpi_ls_dtl.pa_gpi_list_nm::depends_on(
+         in.bht1c4
+         );
+
+
+out0.gpi_ls_dtl.pa_gpi_id::depends_on(
+         in.bht2c4
+         );
+
+
+out0.gpi_ls_dtl.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.gpi_ls_dtl.pa_gpi_nm::depends_on(
+         in.bhnmt3
+         );
+
+
+out0.gpi_lst.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.gpi_lst.pa_gpi_list_nm::depends_on(
+         in.bht1c4
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcmgdp_to_the_ctrx_d_pa_gpi_list_dtl_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.gpi_ls_dtl.pa_gpi_list_nm,'gpi_ls_dtl.pa_gpi_list_nm',1,0]
+     [out0.gpi_ls_dtl.pa_gpi_id,'gpi_ls_dtl.pa_gpi_id',1,0]
+     [out0.gpi_ls_dtl.src_env_sk,'gpi_ls_dtl.src_env_sk',1,0]
+     [out0.gpi_ls_dtl.pa_gpi_nm,'gpi_ls_dtl.pa_gpi_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.gpi_ls_dtl.pa_gpi_list_dtl_sk,'gpi_ls_dtl.pa_gpi_list_dtl_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.gpi_ls_dtl.pa_gpi_list_sk,'gpi_ls_dtl.pa_gpi_list_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.gpi_lst.src_env_sk,'gpi_lst.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.gpi_lst.pa_gpi_list_nm,'gpi_lst.pa_gpi_list_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.bht2c4,'bht2c4',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',3,3]
+     [in0.bht1c4,'bht1c4',2,2]
+     [in0.bhnmt3,'bhnmt3',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) gpi_ls_dtl_pa_gpi_list_dtl_sk = -1;
+let decimal("\x01",0) gpi_ls_dtl_pa_gpi_list_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) gpi_ls_dtl_pa_gpi_list_nm = fail_if_error(in0.bht1c4);
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_ls_dtl_pa_gpi_id = fail_if_error(in0.bht2c4);
+let string("\x01",charset="iso-8859-15", maximum_length=60) gpi_ls_dtl_pa_gpi_nm = fail_if_error(in0.bhnmt3);
+let decimal("\x01",0) gpi_ls_dtl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) gpi_lst_pa_gpi_list_nm = fail_if_error(in0.bht1c4);
+let decimal("\x01",0) gpi_lst_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.gpi_ls_dtl.pa_gpi_list_dtl_sk::gpi_ls_dtl_pa_gpi_list_dtl_sk;
+  out0.gpi_ls_dtl.pa_gpi_list_sk::gpi_ls_dtl_pa_gpi_list_sk;
+  out0.gpi_ls_dtl.pa_gpi_list_nm::gpi_ls_dtl_pa_gpi_list_nm;
+  out0.gpi_ls_dtl.pa_gpi_id::gpi_ls_dtl_pa_gpi_id;
+  out0.gpi_ls_dtl.pa_gpi_nm::gpi_ls_dtl_pa_gpi_nm;
+  out0.gpi_ls_dtl.src_env_sk::gpi_ls_dtl_src_env_sk;
+  out0.gpi_lst.pa_gpi_list_nm::gpi_lst_pa_gpi_list_nm;
+  out0.gpi_lst.src_env_sk::gpi_lst_src_env_sk;
+  out0.*::in0.*;
+end;

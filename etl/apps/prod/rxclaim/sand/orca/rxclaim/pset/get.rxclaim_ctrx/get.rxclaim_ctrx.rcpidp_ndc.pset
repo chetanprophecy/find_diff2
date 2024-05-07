@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcpidp_ndc
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmprdfil     rcpidp                  s4iin2,s4e6c4,s4alvn,s4efc4,s4nqs3,s4cnt3,s4ozs3,s4xvs3,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+RUN_ID||||20181011000000
+SQL||||SELECT rcpidp.s4nqs3, rcpidp.s4e6c4, rcpidp.s4iin2, rcpidp.s4xvs3, rcpidp.s4cnt3, rcpidp.s4efc4, rcpidp.s4ozs3, rcpidp.s4alvn , rcfd1p.fgt5aj ,rcprdp.sze8qt,rcprdp.szpis3,rcprdp.sze9qt,rcprdp.szfaqt FROM clmprdfil.rcpidp  rcpidp left join (select * from clmprdfil.rcfd1p where fgrhis='03') as rcfd1p  on rcfd1p.fgyhhn=rcpidp.s4e6c4 and rcfd1p.fgrhis=rcpidp.s4nqs3 left join clmprdfil.rcprdp rcprdp on rcprdp.sziin2=rcpidp.s4iin2

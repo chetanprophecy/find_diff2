@@ -1,0 +1,107 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a66fa52_2e4f_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prov_drg.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_prov_drg.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_prov_drg.cpp_provider_feedback_sk,[transform],in0.provider_feedback_id,
+     'lookup("c_provider_feedback").dxf_sk']
+  [out0.c_prov_drg.src_env_sk,[transform],]
+  [out0.c_prov_drg.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_prov_drg.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_prov_drg.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_prov_drg.cpp_provider_map_drug_dtl_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prov_drg.parent_case_id,'c_prov_drg.parent_case_id',1,0]
+     [out0.c_prov_drg.cpp_update_ts,'c_prov_drg.cpp_update_ts',1,0]
+     [out0.c_prov_drg.cpp_created_by,'c_prov_drg.cpp_created_by',1,0]
+     [out0.c_prov_drg.provider_id,'c_prov_drg.provider_id',1,0]
+     [out0.c_prov_drg.drug_strength,'c_prov_drg.drug_strength',1,0]
+     [out0.c_prov_drg.cpp_provider_feedback_sk,'c_prov_drg.cpp_provider_feedback_sk',1,0]
+     [out0.c_prov_drg.src_env_sk,'c_prov_drg.src_env_sk',1,0]
+     [out0.c_prov_drg.cpp_create_ts,'c_prov_drg.cpp_create_ts',1,0]
+     [out0.c_prov_drg.maximum_daily_dose,'c_prov_drg.maximum_daily_dose',1,0]
+     [out0.c_prov_drg.cpp_updated_by,'c_prov_drg.cpp_updated_by',1,0]
+     [out0.c_prov_drg.cpp_provider_sk,'c_prov_drg.cpp_provider_sk',1,0]
+     [out0.c_prov_drg.drug_name,'c_prov_drg.drug_name',1,0]
+     [out0.c_prov_drg.cpp_provider_map_drug_dtl_sk,'c_prov_drg.cpp_provider_map_drug_dtl_sk',1,0]
+     [out0.c_prov_drg.drug_sig,'c_prov_drg.drug_sig',1,0]
+     [out0.c_prov_drg.case_id,'c_prov_drg.case_id',1,0]
+     [out0.c_prov_drg.provider_feedback_id,'c_prov_drg.provider_feedback_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.drug_name,'drug_name',1,1]
+     ['lookup("c_provider_feedback").dxf_sk','dxf_sk',1,1]
+     [in0.drug_sig,'drug_sig',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.parent_case_id,'parent_case_id',1,1]
+     [in0.drug_strength,'drug_strength',1,1]
+     [in0.provider_feedback_id,'provider_feedback_id',2,2]
+     [in0.case_id,'case_id',1,1]
+     [in0.maximum_daily_dose,'maximum_daily_dose',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prov_drg_cpp_provider_map_drug_dtl_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prov_drg_provider_feedback_id = fail_if_error(in0.provider_feedback_id);
+let decimal("\x01",0) c_prov_drg_cpp_provider_feedback_sk;
+let utf8 string("\x01", maximum_length=1056) c_prov_drg_drug_name = fail_if_error(in0.drug_name);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prov_drg_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) c_prov_drg_cpp_provider_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prov_drg_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prov_drg_parent_case_id = fail_if_error(in0.parent_case_id);
+let utf8 string("\x01", maximum_length=128) c_prov_drg_drug_strength = fail_if_error(in0.drug_strength);
+let utf8 string("\x01", maximum_length=128) c_prov_drg_drug_sig = fail_if_error(in0.drug_sig);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_prov_drg_maximum_daily_dose = fail_if_error(in0.maximum_daily_dose);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_drg_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_prov_drg_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_drg_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prov_drg_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_prov_drg_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_prov_drg_cpp_provider_feedback_sk=fail_if_error(lookup("c_provider_feedback",in0.provider_feedback_id).dxf_sk);
+
+/*   Default value   */
+c_prov_drg_cpp_provider_sk=fail_if_error(lookup("c_provider",in0.provider_id).dxf_sk);
+
+  out0.c_prov_drg.cpp_provider_map_drug_dtl_sk::c_prov_drg_cpp_provider_map_drug_dtl_sk;
+  out0.c_prov_drg.provider_feedback_id::c_prov_drg_provider_feedback_id;
+  out0.c_prov_drg.cpp_provider_feedback_sk::c_prov_drg_cpp_provider_feedback_sk;
+  out0.c_prov_drg.drug_name::c_prov_drg_drug_name;
+  out0.c_prov_drg.provider_id::c_prov_drg_provider_id;
+  out0.c_prov_drg.cpp_provider_sk::c_prov_drg_cpp_provider_sk;
+  out0.c_prov_drg.case_id::c_prov_drg_case_id;
+  out0.c_prov_drg.parent_case_id::c_prov_drg_parent_case_id;
+  out0.c_prov_drg.drug_strength::c_prov_drg_drug_strength;
+  out0.c_prov_drg.drug_sig::c_prov_drg_drug_sig;
+  out0.c_prov_drg.maximum_daily_dose::c_prov_drg_maximum_daily_dose;
+  out0.c_prov_drg.cpp_update_ts::c_prov_drg_cpp_update_ts;
+  out0.c_prov_drg.cpp_updated_by::c_prov_drg_cpp_updated_by;
+  out0.c_prov_drg.cpp_create_ts::c_prov_drg_cpp_create_ts;
+  out0.c_prov_drg.cpp_created_by::c_prov_drg_cpp_created_by;
+  out0.c_prov_drg.src_env_sk::c_prov_drg_src_env_sk;
+  out0.*::in0.*;
+
+end;

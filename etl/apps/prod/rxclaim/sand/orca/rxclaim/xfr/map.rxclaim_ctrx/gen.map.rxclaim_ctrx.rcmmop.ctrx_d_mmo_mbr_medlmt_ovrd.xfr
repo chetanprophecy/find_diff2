@@ -1,0 +1,90 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rcmmop.mmo_medlmt_overrd,[passthrough],in0.aqgtbs]
+  [out0.rcmmop.mmo_prior_auth_nbr,[passthrough],in0.aqf3vg]
+  [out0.rcmmop.employer_group_id,[passthrough],in0.aqadcd]
+  [out0.rcmmop.mmo_thru_dt,[transform],in0.aqwhcf]
+  [out0.rcmmop.mbr_id,[passthrough],in0.aqabcd]
+  [out0.rcmmop.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rcmmop.mmo_stat_cd,[passthrough],in0.aqjtau]
+  [out0.rcmmop.carrier_id,[passthrough],in0.aqaacd]
+  [out0.rcmmop.account_id,[passthrough],in0.aqaccd]
+  [out0.rcmmop.mmo_from_dt,[transform],in0.aqwgcf]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rcmmop.mmo_medlmt_overrd,'rcmmop.mmo_medlmt_overrd',1,0]
+     [out0.rcmmop.mmo_prior_auth_nbr,'rcmmop.mmo_prior_auth_nbr',1,0]
+     [out0.rcmmop.employer_group_id,'rcmmop.employer_group_id',1,0]
+     [out0.rcmmop.mmo_thru_dt,'rcmmop.mmo_thru_dt',1,0]
+     [out0.rcmmop.mbr_id,'rcmmop.mbr_id',1,0]
+     [out0.rcmmop.src_env_sk,'rcmmop.src_env_sk',1,0]
+     [out0.rcmmop.mmo_stat_cd,'rcmmop.mmo_stat_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.rcmmop.carrier_id,'rcmmop.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rcmmop.account_id,'rcmmop.account_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rcmmop.mmo_from_dt,'rcmmop.mmo_from_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.aqaccd,'aqaccd',1,1]
+     [in0.aqadcd,'aqadcd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aqabcd,'aqabcd',1,1]
+     [in0.aqaacd,'aqaacd',1,1]
+     [in0.aqwgcf,'aqwgcf',4,1]
+     [in0.aqgtbs,'aqgtbs',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.aqjtau,'aqjtau',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.aqwhcf,'aqwhcf',4,1]
+     [in0.aqf3vg,'aqf3vg',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01", maximum_length=20) rcmmop_mbr_id = fail_if_error(in0.aqabcd);
+let string("\x01", maximum_length=30) rcmmop_carrier_id = fail_if_error(in0.aqaacd);
+let string("\x01", maximum_length=40) rcmmop_account_id = fail_if_error(in0.aqaccd);
+let string("\x01", maximum_length=30) rcmmop_employer_group_id = fail_if_error(in0.aqadcd);
+let string("\x01", maximum_length=11) rcmmop_mmo_prior_auth_nbr = fail_if_error(in0.aqf3vg);
+let decimal("\x01".2, sign_reserved) rcmmop_mmo_medlmt_overrd = fail_if_error(in0.aqgtbs);
+let date("YYYYMMDD")("\x01") rcmmop_mmo_from_dt = fail_if_error((if (sql_and(sql_and(!is_null(in0.aqwgcf),is_valid(((date("YYYYMMDD"))((string(""))((decimal(""))(in0.aqwgcf+19000000)))))),(string_length(in0.aqwgcf) member [vector 6,7])))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(in0.aqwgcf+19000000))))
+ else
+   "18000101"));
+let date("YYYYMMDD")("\x01") rcmmop_mmo_thru_dt = fail_if_error((if (sql_and(sql_and(!is_null(in0.aqwhcf),is_valid(((date("YYYYMMDD"))((string(""))((decimal(""))(in0.aqwhcf+19000000)))))),(string_length(in0.aqwhcf) member [vector 6,7])))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(in0.aqwhcf+19000000))))
+ else
+   "18000101"));
+let string("\x01", maximum_length=1) rcmmop_mmo_stat_cd = fail_if_error(in0.aqjtau);
+let decimal("\x01",0) rcmmop_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rcmmop.mbr_id::rcmmop_mbr_id;
+  out0.rcmmop.carrier_id::rcmmop_carrier_id;
+  out0.rcmmop.account_id::rcmmop_account_id;
+  out0.rcmmop.employer_group_id::rcmmop_employer_group_id;
+  out0.rcmmop.mmo_prior_auth_nbr::rcmmop_mmo_prior_auth_nbr;
+  out0.rcmmop.mmo_medlmt_overrd::rcmmop_mmo_medlmt_overrd;
+  out0.rcmmop.mmo_from_dt::rcmmop_mmo_from_dt;
+  out0.rcmmop.mmo_thru_dt::rcmmop_mmo_thru_dt;
+  out0.rcmmop.mmo_stat_cd::rcmmop_mmo_stat_cd;
+  out0.rcmmop.src_env_sk::rcmmop_src_env_sk;
+  out0.*::in0.*;
+
+end;

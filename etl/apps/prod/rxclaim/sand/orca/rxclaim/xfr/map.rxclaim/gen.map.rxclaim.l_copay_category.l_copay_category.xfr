@@ -1,0 +1,20 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_copay_ctg_copay_category_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_copay_ctg_copay_category_cd = fail_if_error(in0.copay_category_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=300) l_copay_ctg_copay_category_desc = fail_if_error(in0.copay_category_desc);
+let decimal("\x01",0) l_copay_ctg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_copay_ctg.copay_category_sk::l_copay_ctg_copay_category_sk;
+  out0.l_copay_ctg.copay_category_cd::l_copay_ctg_copay_category_cd;
+  out0.l_copay_ctg.copay_category_desc::l_copay_ctg_copay_category_desc;
+  out0.l_copay_ctg.src_env_sk::l_copay_ctg_src_env_sk;
+  out0.*::in0.*;
+
+end;

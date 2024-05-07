@@ -1,0 +1,23 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_prior_auth_prior_auth_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_prior_auth_prior_auth_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) l_prior_auth_prior_auth_desc = fail_if_error((string_substring(string_lrtrim(in0.clientdef3),4,1)) member  [vector  'Y' ] ? "Yes" : (string_substring(string_lrtrim(in0.clientdef3),4,1)) member  [vector  'N' ] ? "No" : "Unknown");
+let decimal("\x01",0) l_prior_auth_src_env_sk = -1;
+
+
+
+/*   Default value   */
+l_prior_auth_prior_auth_id=fail_if_error(str_nk(string_substring(string_lrtrim(in0.clientdef3),4,1)));
+
+  out0.l_prior_auth.prior_auth_sk::l_prior_auth_prior_auth_sk;
+  out0.l_prior_auth.prior_auth_id::l_prior_auth_prior_auth_id;
+  out0.l_prior_auth.prior_auth_desc::l_prior_auth_prior_auth_desc;
+  out0.l_prior_auth.src_env_sk::l_prior_auth_src_env_sk;
+  out0.*::in0.*;
+
+end;

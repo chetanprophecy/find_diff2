@@ -1,0 +1,6 @@
+!prototype|P|||$AI_PSET/get.columnar.interim.pset
+GET_COLUMN_LIST||||dxf_hk_part1,dxf_hk_part2,dxf_sk,claim_nbr,claim_seq_nbr,claim_stat_id,sbm_dt,filled_dt,phr_prc_typ,origin_cd,clt_due_amt,app_due_amt,compound_sk,cag_sk,app_sales_tax_paid,claim_cntr,daw_cd,awp_unit_published,clt_sales_tax_paid,injectable_ind,claim_origin_cd,cost_type_cd_sk,clt_patient_pay_amt,clt_cost_type_code,dmr_ind_sk,drug_sk,sbm_usual_customary_amt,claim_stat_sk,prod_sk,gnrc_mdspn_ind_sk,reversal_ind,awp_unit_cost_ind,adj_rxcount_stnd_days_sply,awp_unit_cost,gnrc_ind_sk,clt_prc_typ_sk,app_dispensing_fee,clt_dispensing_fee,extd_awp_cost,hm_dlvry_ind_sk,phr_state_cd_sk,ntwk_sk,app_ingred_cost_paid,clt_ingred_cost_paid,cob_ind_sk,prod_adjud_sk,dsg_frm_sk,gpi_sk,drg_qty,phr_sk,app_copay_amt,ids_updt_run_id,clt_prc_typ,rx_origin_cd_sk,hm_dlvry_ind,orig_carrier_id,days_sply
+SOURCE_LOWER||||ids_rxclaim.f_clmsbmdt_d_prd_d_prd_adj_d_cag
+LOOKUP_FIELDS_KEY||||{}
+MAIN_DATASET||||ids_rxclaim.f_claim_transaction
+FILTER_EXPR||||$[ string_concat( 'sbm_dt >= (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "', START_CHANGES_TIME , '" and sbm_dt < (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "' , END_CHANGES_TIME,'"' ," and (!is_null(orig_carrier_id) and orig_carrier_id=='0267')")]

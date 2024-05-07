@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_589afd85_645c_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_med_clm_cd.cd_type,[passthrough],in0.cd_type]
+  [out0.c_med_clm_cd.cd_descr,[passthrough],in0.cd_descr]
+  [out0.c_med_clm_cd.cpp_medical_claim_sk,[transform],in0.medical_claim_id,
+     'lookup("c_medical_claim").dxf_sk']
+  [out0.c_med_clm_cd.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_med_clm_cd.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_med_clm_cd.medical_claim_id,[passthrough],in0.medical_claim_id]
+  [out0.c_med_clm_cd.src_env_sk,[transform],]
+  [out0.c_med_clm_cd.modifier,[passthrough],in0.modifier]
+  [out0.c_med_clm_cd.cpp_medical_claim_cd_sk,[transform],]
+  [out0.c_med_clm_cd.cd_value,[passthrough],in0.cd_value]
+  [out0.c_med_clm_cd.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_med_clm_cd.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_med_clm_cd.cd_type,'c_med_clm_cd.cd_type',1,0]
+     [out0.c_med_clm_cd.cd_descr,'c_med_clm_cd.cd_descr',1,0]
+     [out0.c_med_clm_cd.cpp_medical_claim_sk,'c_med_clm_cd.cpp_medical_claim_sk',1,0]
+     [out0.c_med_clm_cd.cpp_created_by,'c_med_clm_cd.cpp_created_by',1,0]
+     [out0.c_med_clm_cd.cpp_updated_by,'c_med_clm_cd.cpp_updated_by',1,0]
+     [out0.c_med_clm_cd.medical_claim_id,'c_med_clm_cd.medical_claim_id',1,0]
+     [out0.c_med_clm_cd.src_env_sk,'c_med_clm_cd.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_med_clm_cd.modifier,'c_med_clm_cd.modifier',1,0]
+     [out0.c_med_clm_cd.cpp_medical_claim_cd_sk,'c_med_clm_cd.cpp_medical_claim_cd_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_med_clm_cd.cd_value,'c_med_clm_cd.cd_value',1,0]
+     [out0.c_med_clm_cd.cpp_update_ts,'c_med_clm_cd.cpp_update_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_med_clm_cd.cpp_create_ts,'c_med_clm_cd.cpp_create_ts',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cd_value,'cd_value',1,1]
+     [in0.medical_claim_id,'medical_claim_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cd_descr,'cd_descr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.modifier,'modifier',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     ['lookup("c_medical_claim").dxf_sk','dxf_sk',1,1]
+     [in0.cd_type,'cd_type',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_med_clm_cd_cpp_medical_claim_cd_sk = -1;
+let decimal("\x01",0) c_med_clm_cd_medical_claim_id = fail_if_error(in0.medical_claim_id);
+let decimal("\x01",0) c_med_clm_cd_cpp_medical_claim_sk;
+let utf8 string("\x01", maximum_length=80) c_med_clm_cd_cd_type = fail_if_error(in0.cd_type);
+let utf8 string("\x01", maximum_length=40) c_med_clm_cd_cd_value = fail_if_error(in0.cd_value);
+let utf8 string("\x01", maximum_length=1020) c_med_clm_cd_cd_descr = fail_if_error(in0.cd_descr);
+let utf8 string("\x01", maximum_length=80) c_med_clm_cd_modifier = fail_if_error(in0.modifier);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_clm_cd_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_med_clm_cd_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_med_clm_cd_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_med_clm_cd_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_med_clm_cd_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_med_clm_cd_cpp_medical_claim_sk=fail_if_error(first_defined(lookup("c_medical_claim",in0.medical_claim_id).dxf_sk,-1));
+
+  out0.c_med_clm_cd.cpp_medical_claim_cd_sk::c_med_clm_cd_cpp_medical_claim_cd_sk;
+  out0.c_med_clm_cd.medical_claim_id::c_med_clm_cd_medical_claim_id;
+  out0.c_med_clm_cd.cpp_medical_claim_sk::c_med_clm_cd_cpp_medical_claim_sk;
+  out0.c_med_clm_cd.cd_type::c_med_clm_cd_cd_type;
+  out0.c_med_clm_cd.cd_value::c_med_clm_cd_cd_value;
+  out0.c_med_clm_cd.cd_descr::c_med_clm_cd_cd_descr;
+  out0.c_med_clm_cd.modifier::c_med_clm_cd_modifier;
+  out0.c_med_clm_cd.cpp_update_ts::c_med_clm_cd_cpp_update_ts;
+  out0.c_med_clm_cd.cpp_updated_by::c_med_clm_cd_cpp_updated_by;
+  out0.c_med_clm_cd.cpp_create_ts::c_med_clm_cd_cpp_create_ts;
+  out0.c_med_clm_cd.cpp_created_by::c_med_clm_cd_cpp_created_by;
+  out0.c_med_clm_cd.src_env_sk::c_med_clm_cd_src_env_sk;
+  out0.*::in0.*;
+
+end;

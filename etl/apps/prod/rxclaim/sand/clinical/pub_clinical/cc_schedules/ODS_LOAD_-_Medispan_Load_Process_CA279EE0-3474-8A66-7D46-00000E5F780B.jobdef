@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="LOAD" approveEnum1X170="APPROVED" description="This job will will read data from IDW and  load dimension tables ." durationDefaultSec1X80="0" isEnabled="true" isManuallyGeneratedOnly1X130="false" isNoMatchAnError1X60="true" isOperatorVisible1X150="false" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="CA279EE0-3474-8A66-7D46-00000E5F780B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS LOAD - Medispan Load Process" objectVersion="1.200" sandbox="${FILESYSTEM_ROOT}/load" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_PLAN/load_medispan_tables.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+    <property isWildcard="false" name="AB_AGREEMENT_ENVIRONMENT" value=""/>
+    <property isWildcard="false" name="AB_AGREEMENT_PROJECT" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="WEEKLY" startDate="2019-12-11Z" startDate1X180="2019-12-11T18:30:00.000000Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="11:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfWeekDay dayOfWeek="SUN" nonOperationalOffset="0"/>
+        <dayOfWeekDay dayOfWeek="SAT" nonOperationalOffset="0"/>
+      </days>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="300D72EE-E6FD-9236-44AB-00000E6DFF48"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

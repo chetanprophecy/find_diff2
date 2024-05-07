@@ -1,0 +1,39 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.SRC_SYS_ID          :: "003";
+  out.SRC_PRESCRIBER_ID   :: in.DOCTOR_NBR;
+  out.LAST_NAME           :: "";//First part of DOCTOR_NAME separated by comma. For Example: If DOCTOR_NAME = 'Stella, Tak Truong, then LAST_NAME = 'Stella';
+  out.FIRST_NAME          :: "";//Second part of DOCTOR_NAME separated by comma (first word from the string)  For Example: If DOCTOR_NAME = 'Stella, Tak Truong, then FIRST_NAME = 'Tak';
+  out.ADDRESS1            :: in.MD_ADDRESS;
+  out.ADDRESS2            :: NULL;
+  out.CITY                :: in.CITY_MD;
+  out.STATE               :: in.STATE_MD;
+  out.ZIP                 :: in.ZIP_CODE_MD;
+  out.PHONE_NBR           :: in.DOCTOR_PHONE;
+  out.FAX_NBR             :: in.FAX;
+  out.DEA_NBR             :: in.DEA_NUMBER;
+  out.NPI                 :: in.MD_NPI_NBR;
+  out.LICENSE_NBR         :: in.LICENSE;
+  out.SRC_SPECIALTY_DESC  :: in.SPECIALTY;
+  out.ALT_PRESCRIBER_ID   :: in.PHYSICIAN_ID;
+  out.MI                  :: "";//Second part of DOCTOR_NAME separated by comma (second word from the string)  For Example: If DOCTOR_NAME = 'Stella, Tak Truong, then LAST_NAME = 'Truong';
+  out.NPI_TYPE            :: NULL;
+  out.LICENSE_STATE       :: in.STATE_MD;
+  out.TAXONOMY_CODE       :: NULL;
+  out.EXTRACT_DT          :: in.EXTRACT_FILE_DATE;
+  out.EXTRACT_TIME        :: in.EXTRACT_FILE_TIMESTAMP;/*
+  out.LOAD_DT             :: "";//PRESCRIBER.LOAD_DT (Lookup Query 1) format YYYYMMDD;
+  out.LOAD_TIME           :: "";//PRESCRIBER.LOAD_TIME (Lookup Query 1) format HHHMMSS;
+  out.REC_PROCESS         :: "";//if PRESCRIBER.LOAD_DT IS NULL or 0  then 'Y' else 'N';
+  out.RUN_NBR             :: "0";
+  out.SRC_UPDT_DT         :: "0";
+  out.SRC_UPDT_TIME       :: "0";
+  out.rxt_src_envrt_id    :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm    :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm     :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid      :: 'app_orca_rxclaim';
+  out.rxt_create_run_id   :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd     :: '';*/
+  out.*                   :: in.*;
+end;

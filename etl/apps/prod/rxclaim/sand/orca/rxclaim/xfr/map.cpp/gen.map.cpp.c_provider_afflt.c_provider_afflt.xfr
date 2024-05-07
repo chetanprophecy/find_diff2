@@ -1,0 +1,93 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a0d6783_5689_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prdr_afflt.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_prdr_afflt.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_prdr_afflt.src_env_sk,[transform],]
+  [out0.c_prdr_afflt.cpp_provider_afflt_sk,[transform],]
+  [out0.c_prdr_afflt.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_prdr_afflt.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prdr_afflt.tax_id,'c_prdr_afflt.tax_id',1,0]
+     [out0.c_prdr_afflt.npi_id,'c_prdr_afflt.npi_id',1,0]
+     [out0.c_prdr_afflt.cpp_create_ts,'c_prdr_afflt.cpp_create_ts',1,0]
+     [out0.c_prdr_afflt.group_id,'c_prdr_afflt.group_id',1,0]
+     [out0.c_prdr_afflt.cpp_update_ts,'c_prdr_afflt.cpp_update_ts',1,0]
+     [out0.c_prdr_afflt.src_env_sk,'c_prdr_afflt.src_env_sk',1,0]
+     [out0.c_prdr_afflt.provider_afflt_id,'c_prdr_afflt.provider_afflt_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_prdr_afflt.mpin,'c_prdr_afflt.mpin',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_prdr_afflt.group_name,'c_prdr_afflt.group_name',1,0]
+     [out0.c_prdr_afflt.cpp_provider_afflt_sk,'c_prdr_afflt.cpp_provider_afflt_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_prdr_afflt.active_flag,'c_prdr_afflt.active_flag',1,0]
+     [out0.c_prdr_afflt.cpp_updated_by,'c_prdr_afflt.cpp_updated_by',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_prdr_afflt.cpp_created_by,'c_prdr_afflt.cpp_created_by',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.npi_id,'npi_id',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.active_flag,'active_flag',1,1]
+     [in0.group_name,'group_name',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.tax_id,'tax_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.group_id,'group_id',1,1]
+     [in0.provider_afflt_id,'provider_afflt_id',1,1]
+     [in0.mpin,'mpin',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prdr_afflt_cpp_provider_afflt_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prdr_afflt_provider_afflt_id = fail_if_error(in0.provider_afflt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prdr_afflt_npi_id = fail_if_error(in0.npi_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prdr_afflt_group_id = fail_if_error(in0.group_id);
+let utf8 string("\x01", maximum_length=320) c_prdr_afflt_group_name = fail_if_error(in0.group_name);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prdr_afflt_mpin = fail_if_error(in0.mpin);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prdr_afflt_tax_id = fail_if_error(in0.tax_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prdr_afflt_active_flag = fail_if_error(in0.active_flag);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prdr_afflt_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_prdr_afflt_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prdr_afflt_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prdr_afflt_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_prdr_afflt_src_env_sk = 710;
+
+
+
+  out0.c_prdr_afflt.cpp_provider_afflt_sk::c_prdr_afflt_cpp_provider_afflt_sk;
+  out0.c_prdr_afflt.provider_afflt_id::c_prdr_afflt_provider_afflt_id;
+  out0.c_prdr_afflt.npi_id::c_prdr_afflt_npi_id;
+  out0.c_prdr_afflt.group_id::c_prdr_afflt_group_id;
+  out0.c_prdr_afflt.group_name::c_prdr_afflt_group_name;
+  out0.c_prdr_afflt.mpin::c_prdr_afflt_mpin;
+  out0.c_prdr_afflt.tax_id::c_prdr_afflt_tax_id;
+  out0.c_prdr_afflt.active_flag::c_prdr_afflt_active_flag;
+  out0.c_prdr_afflt.cpp_update_ts::c_prdr_afflt_cpp_update_ts;
+  out0.c_prdr_afflt.cpp_updated_by::c_prdr_afflt_cpp_updated_by;
+  out0.c_prdr_afflt.cpp_create_ts::c_prdr_afflt_cpp_create_ts;
+  out0.c_prdr_afflt.cpp_created_by::c_prdr_afflt_cpp_created_by;
+  out0.c_prdr_afflt.src_env_sk::c_prdr_afflt_src_env_sk;
+  out0.*::in0.*;
+
+end;

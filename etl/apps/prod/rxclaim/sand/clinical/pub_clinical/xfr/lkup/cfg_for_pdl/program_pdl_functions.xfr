@@ -1,0 +1,300 @@
+
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/cfg_for_pdl/program_pdl_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2018/05/26  Sundar Rao           Initial version
+ *  2018/05/29  Vyshnavi Gangala     DML's and new functions added
+ *  2018/06/06  Sundar Rao           Create Program list Vec at Configuration level
+ * *******************************************************************************************************************************************/
+
+type rdur_date_t                      = date('YYYYMMDD');
+type rdur_string_t                    = utf8 string(int);
+type rdur_program_id_t                = utf8 string(int, maximum_length = 25);
+type rdur_program_nm_t                = utf8 string(int, maximum_length = 10);
+type rdur_method_id_t                 = utf8 string(int, maximum_length = 10);
+type rdur_evltn_rules_config_name_t   = utf8 string(int, maximum_length = 100);
+type rdur_gpi_list_id_1_t             = utf8 string(int, maximum_length=25);
+type rdur_gpi_list_id_1_name_t        = utf8 string(int, maximum_length=100);
+type rdur_gpi_list_id_2_t             = utf8 string(int, maximum_length=25);
+type rdur_gpi_list_id_2_name_t        = utf8 string(int, maximum_length=100);
+type rdur_outcome_ctgry_t             = utf8 string(int, maximum_length=100);
+
+
+rdur_string_t out :: rdur_string(in) inline =
+begin
+  out :: in;
+end;
+
+type program_cfg_t=
+record
+  utf8 string("\x01", maximum_length=25) program_id /*VARCHAR2(25) NOT NULL*/;
+  utf8 string("\x01", maximum_length=100) program_nm /*VARCHAR2(100) NOT NULL*/;
+  utf8 string("\x01", maximum_length=10) method_id /*VARCHAR2(10) NOT NULL*/;
+  utf8 string("\x01", maximum_length=100) evltn_rules_config_name /*VARCHAR2(100) NOT NULL*/;
+  utf8 string("\x01", maximum_length=25) gpi_list_id_1 = NULL("") /*VARCHAR2(25)*/;
+  utf8 string("\x01", maximum_length=100) gpi_list_id_1_name = NULL("") /*VARCHAR2(100)*/;
+  utf8 string("\x01", maximum_length=25) gpi_list_id_2 = NULL("") /*VARCHAR2(25)*/;
+  utf8 string("\x01", maximum_length=100) gpi_list_id_2_name = NULL("") /*VARCHAR2(100)*/;
+  utf8 string("\x01", maximum_length=100) outcome_ctgry = NULL("") /*VARCHAR2(100)*/;
+  string(1) newline = "\n";
+end;
+
+type program_cfg_vec_t = program_cfg_t[int];
+ 
+type program_cfg_id_nm_t =
+record
+  rdur_program_id_t  program_id;
+  rdur_program_nm_t  program_nm;
+  rdur_method_id_t method_id;
+  rdur_evltn_rules_config_name_t evltn_rules_config_name;
+  rdur_gpi_list_id_1_t gpi_list_id_1 = NULL("");
+  rdur_gpi_list_id_1_name_t gpi_list_id_1_name = NULL("");
+  rdur_gpi_list_id_2_t gpi_list_id_2 = NULL("");
+  rdur_gpi_list_id_2_name_t gpi_list_id_2_name = NULL("");
+  rdur_outcome_ctgry_t outcome_ctgry = NULL("");
+end;
+
+type all_program_list_cfg_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  program_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {evltn_rules_config_name};
+end;
+
+
+type all_gpi_list_cfg_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  program_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {method_id};
+end;
+
+type all_programs_list_cfg_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  program_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {};
+end;
+
+
+rdur_string_t out :: get_program_list_cfg_lkup_path(rdur_string_t lookup_dir, rdur_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + rdur_string(biz_dt) + '/c_evltn_method_program_config_lkp.dat';
+end;
+
+
+
+
+/*******************************************************/
+/* All Program List Config Lookup - Constant and Functions */
+/*******************************************************/
+
+
+
+all_program_list_cfg_lkup_t out :: load_all_program_list_cfg_lkup(rdur_string_t lookup_dir, rdur_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_program_list_cfg_lkup_path(lookup_dir,biz_dt));
+end;
+
+program_cfg_t out :: get_program(rdur_string_t lookup_dir,rdur_date_t biz_dt,rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+  let lkup = load_all_program_list_cfg_lkup(lookup_dir,biz_dt);
+  let program_cfg_t match = lookup(lkup,app_config_nm);
+  out :: match;
+end;
+
+out :: get_program_name(rdur_string_t lookup_dir,rdur_date_t biz_dt,rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+  let program_cfg_t match = get_program(lookup_dir,biz_dt,app_config_nm);
+  let utf8 string("") pname;
+  pname = string_filter_out(match.program_nm,"\n");
+  out :: first_defined(pname," ");
+end;
+
+out :: get_program_id(rdur_string_t lookup_dir,rdur_date_t biz_dt,rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+  let program_cfg_t match = get_program(lookup_dir,biz_dt,app_config_nm);
+  let utf8 string("") pid;
+  pid = string_filter_out(match.program_id,"\n");
+  out :: first_defined(pid," ");
+end;
+
+out :: get_program_list(rdur_string_t lookup_dir,rdur_date_t biz_dt,rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+  let program_cfg_t match = get_program(lookup_dir,biz_dt,app_config_nm);
+  let utf8 string("") pid= first_defined(string_filter_out(match.program_id,"\n")," ");
+  let utf8 string("") pname= first_defined(string_filter_out(match.program_nm,"\n")," ");
+  out :: string_concat(pid," ",pname);
+end;
+
+
+all_gpi_list_cfg_lkup_t out :: load_all_gpi_list_cfg_lkup(rdur_string_t lookup_dir, rdur_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_program_list_cfg_lkup_path(lookup_dir,biz_dt));
+end;
+
+
+program_cfg_t[int] out :: get_all_gpi_list_cfg_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_string_t method_id) inline =
+begin
+  let lkup = load_all_gpi_list_cfg_lkup(lookup_dir, biz_dt);
+  
+  let int i=0;
+  let program_cfg_t[int] match_vec   = [vector];
+  let int lkp_count = lookup_count(lkup,method_id);
+  match_vec =  for (i, i<lkp_count): lookup_next(lkup);   
+
+ out :: match_vec;
+end;
+
+out:: get_all_gpi_list_id_1_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_string_t method_id) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_gpi_list_cfg_vec(lookup_dir,biz_dt,method_id);
+let utf8 string("")[int] gpi_list_id_1_vec;
+let int lkp_cnt = length_of(match_vec);
+gpi_list_id_1_vec = for(j, j<lkp_cnt): match_vec[j].gpi_list_id_1;
+
+out :: vector_sort_dedup_first(gpi_list_id_1_vec);
+
+end;
+
+out:: get_all_gpi_list_1_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_string_t method_id) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_gpi_list_cfg_vec(lookup_dir,biz_dt,method_id);
+let utf8 string("")[int] gpi_list_1_vec;
+let int lkp_cnt = length_of(match_vec);
+gpi_list_1_vec = for(j, j<lkp_cnt): string_concat(match_vec[j].gpi_list_id_1," ",match_vec[j].gpi_list_id_1_name) ;
+
+out :: vector_sort_dedup_first(gpi_list_1_vec);
+
+end;
+
+out:: get_all_gpi_list_id_2_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_string_t method_id) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_gpi_list_cfg_vec(lookup_dir,biz_dt,method_id);
+let utf8 string("")[int] gpi_list_id_2_vec;
+let int lkp_cnt = length_of(match_vec);
+gpi_list_id_2_vec = for(j, j<lkp_cnt): match_vec[j].gpi_list_id_2;
+
+out :: vector_sort_dedup_first(gpi_list_id_2_vec);
+
+end;
+
+
+out:: get_all_gpi_list_2_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_string_t method_id) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_gpi_list_cfg_vec(lookup_dir,biz_dt,method_id);
+let utf8 string("")[int] gpi_list_2_vec;
+let int lkp_cnt = length_of(match_vec);
+gpi_list_2_vec = for(j, j<lkp_cnt): string_concat(match_vec[j].gpi_list_id_2," ",match_vec[j].gpi_list_id_2_name) ;
+
+out :: vector_sort_dedup_first(gpi_list_2_vec);
+
+end;
+
+
+all_programs_list_cfg_lkup_t out :: load_all_programs_list_cfg_lkup(rdur_string_t lookup_dir, rdur_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_program_list_cfg_lkup_path(lookup_dir,biz_dt));
+end;
+
+program_cfg_t[int] out :: get_all_program(rdur_string_t lookup_dir,rdur_date_t biz_dt) inline =
+begin
+  let lkup = load_all_programs_list_cfg_lkup(lookup_dir,biz_dt);
+  let int i=0;
+  let program_cfg_t[int] match_vec   = [vector];
+  let int lkp_count = lookup_count(lkup);
+  match_vec =  for (i, i<lkp_count): lookup_next(lkup);   
+
+ out :: match_vec;
+end;
+
+
+out :: get_all_program_name(rdur_string_t lookup_dir,rdur_date_t biz_dt) inline =
+begin
+  let int j=0;
+  let program_cfg_t[int] match_vec = get_all_program(lookup_dir,biz_dt);
+  let utf8 string("")[int] pname_vec;
+  let int lkp_cnt = length_of(match_vec);
+  pname_vec = for(j, j<lkp_cnt): first_defined(string_filter_out(match_vec[j].program_nm,"\n")," ");
+  out :: vector_sort_dedup_first(pname_vec);
+end;
+
+out :: get_all_program_id(rdur_string_t lookup_dir,rdur_date_t biz_dt) inline =
+begin
+  let int j=0;
+  let program_cfg_t[int] match_vec = get_all_program(lookup_dir,biz_dt);
+  let utf8 string("")[int] pid_vec;
+  let int lkp_cnt = length_of(match_vec);
+  pid_vec = for(j, j<lkp_cnt): first_defined(string_filter_out(match_vec[j].program_id,"\n")," ");
+  out :: vector_sort_dedup_first(pid_vec);
+end;
+
+out :: get_all_program_list(rdur_string_t lookup_dir,rdur_date_t biz_dt) inline =
+begin
+  let int j=0;
+  let program_cfg_t[int] match_vec = get_all_program(lookup_dir,biz_dt);
+  let int lkp_cnt = length_of(match_vec);
+  let utf8 string("")[int] plist_vec;
+  plist_vec = for(j, j<lkp_cnt): string_concat(first_defined(string_filter_out(match_vec[j].program_id,"\n")," ")," ",first_defined(string_filter_out(match_vec[j].program_nm,"\n")," "));
+  out :: vector_sort_dedup_first(plist_vec);
+end;
+
+out :: get_all_config_name(rdur_string_t lookup_dir,rdur_date_t biz_dt) inline =
+begin
+  let int j=0;
+  let program_cfg_t[int] match_vec = get_all_program(lookup_dir,biz_dt);
+  let utf8 string("")[int] config_name_vec;
+  let int lkp_cnt = length_of(match_vec);
+  config_name_vec = for(j, j<lkp_cnt): first_defined(string_filter_out(match_vec[j].evltn_rules_config_name,"\n")," ");
+  out :: vector_sort_dedup_first(config_name_vec);
+end;
+
+/*******************************************************/
+/* Functions to find  multiple programs at configuration*/
+/*******************************************************/
+
+
+program_cfg_t[int] out :: get_all_program_list_cfg_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+  let lkup = load_all_program_list_cfg_lkup(lookup_dir, biz_dt);
+  
+  let int i=0;
+  let program_cfg_t[int] match_vec   = [vector];
+  let int lkp_count = lookup_count(lkup,app_config_nm);
+  match_vec =  for (i, i<lkp_count): lookup_next(lkup);   
+
+ out :: match_vec;
+end;
+
+
+out:: get_all_program_id_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_program_list_cfg_vec(lookup_dir,biz_dt,app_config_nm);
+let utf8 string("")[int] program_id_vec;
+let int lkp_cnt = length_of(match_vec);
+program_id_vec = for(j, j<lkp_cnt): match_vec[j].program_id;
+
+out :: string_join(vector_sort_dedup_first(program_id_vec),",");
+
+end;
+
+out:: get_all_program_nm_vec(rdur_string_t lookup_dir, rdur_date_t biz_dt, rdur_evltn_rules_config_name_t app_config_nm) inline =
+begin
+let int j=0;
+let program_cfg_t[int] match_vec = get_all_program_list_cfg_vec(lookup_dir,biz_dt,app_config_nm);
+let utf8 string("")[int] program_nm_vec;
+let int lkp_cnt = length_of(match_vec);
+program_nm_vec = for(j, j<lkp_cnt): match_vec[j].program_nm;
+
+out :: string_join(vector_sort_dedup_first(program_nm_vec),",");
+
+end;

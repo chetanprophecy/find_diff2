@@ -1,0 +1,104 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5af2ca07_c8f1_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_srvc_lst.rasvl_srvc_lst_sk,[transform],]
+  [out0.l_srvc_lst.rasvl_nbr_of_gaps_alowd,[passthrough],in0.a1wyam]
+  [out0.l_srvc_lst.rasvl_exe_profile,[passthrough],in0.a1kuhi]
+  [out0.l_srvc_lst.rasvl_look_back_period,[passthrough],in0.a1wxam]
+  [out0.l_srvc_lst.rasvl_srvc_elig_chk,[passthrough],in0.a1myoc]
+  [out0.l_srvc_lst.rasvl_delay_hrs,[passthrough],in0.a1arpp]
+  [out0.l_srvc_lst.rasvl_delay_mnts,[passthrough],in0.a1aspp]
+  [out0.l_srvc_lst.rasvl_time_of_gaps,[passthrough],in0.a1w0am]
+  [out0.l_srvc_lst.rasvl_time_of_gaps_oper,[passthrough],in0.a1wzam]
+  [out0.l_srvc_lst.rasvl_srvc_lst_desc,[passthrough],in0.a1aiij]
+  [out0.l_srvc_lst.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_srvc_lst.rasvl_updt_tb_ltr,[passthrough],in0.a1u8ak]
+  [out0.l_srvc_lst.rasvl_delay_days,[passthrough],in0.a1aqpp]
+  [out0.l_srvc_lst.rasvl_srvc_lst_nm,[passthrough],in0.a1l8hd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_srvc_lst.rasvl_srvc_lst_sk,'l_srvc_lst.rasvl_srvc_lst_sk',1,0]
+     [out0.l_srvc_lst.rasvl_nbr_of_gaps_alowd,'l_srvc_lst.rasvl_nbr_of_gaps_alowd',1,0]
+     [out0.l_srvc_lst.rasvl_exe_profile,'l_srvc_lst.rasvl_exe_profile',1,0]
+     [out0.l_srvc_lst.rasvl_look_back_period,'l_srvc_lst.rasvl_look_back_period',1,0]
+     [out0.l_srvc_lst.rasvl_srvc_elig_chk,'l_srvc_lst.rasvl_srvc_elig_chk',1,0]
+     [out0.l_srvc_lst.rasvl_delay_hrs,'l_srvc_lst.rasvl_delay_hrs',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.l_srvc_lst.rasvl_delay_mnts,'l_srvc_lst.rasvl_delay_mnts',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_srvc_lst.rasvl_time_of_gaps,'l_srvc_lst.rasvl_time_of_gaps',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_srvc_lst.rasvl_time_of_gaps_oper,'l_srvc_lst.rasvl_time_of_gaps_oper',1,0]
+     [out0.l_srvc_lst.rasvl_srvc_lst_desc,'l_srvc_lst.rasvl_srvc_lst_desc',1,0]
+     [out0.l_srvc_lst.src_env_sk,'l_srvc_lst.src_env_sk',1,0]
+     [out0.l_srvc_lst.rasvl_updt_tb_ltr,'l_srvc_lst.rasvl_updt_tb_ltr',1,0]
+     [out0.l_srvc_lst.rasvl_delay_days,'l_srvc_lst.rasvl_delay_days',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_srvc_lst.rasvl_srvc_lst_nm,'l_srvc_lst.rasvl_srvc_lst_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.a1aqpp,'a1aqpp',1,1]
+     [in0.a1wyam,'a1wyam',1,1]
+     [in0.a1kuhi,'a1kuhi',1,1]
+     [in0.a1aiij,'a1aiij',1,1]
+     [in0.a1w0am,'a1w0am',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.a1l8hd,'a1l8hd',1,1]
+     [in0.a1aspp,'a1aspp',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.a1wzam,'a1wzam',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.a1myoc,'a1myoc',1,1]
+     [in0.a1arpp,'a1arpp',1,1]
+     [in0.a1wxam,'a1wxam',1,1]
+     [in0.a1u8ak,'a1u8ak',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_srvc_lst_rasvl_srvc_lst_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_srvc_lst_rasvl_srvc_lst_nm = fail_if_error(in0.a1l8hd);
+let string("\x01",charset="iso-8859-15", maximum_length=25) l_srvc_lst_rasvl_srvc_lst_desc = fail_if_error(in0.a1aiij);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_srvc_lst_rasvl_delay_days = fail_if_error(in0.a1aqpp);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_srvc_lst_rasvl_delay_hrs = fail_if_error(in0.a1arpp);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_srvc_lst_rasvl_delay_mnts = fail_if_error(in0.a1aspp);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_srvc_lst_rasvl_updt_tb_ltr = fail_if_error(in0.a1u8ak);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_srvc_lst_rasvl_srvc_elig_chk = fail_if_error(in0.a1myoc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_srvc_lst_rasvl_look_back_period = fail_if_error(in0.a1wxam);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_srvc_lst_rasvl_nbr_of_gaps_alowd = fail_if_error(in0.a1wyam);
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_srvc_lst_rasvl_time_of_gaps_oper = fail_if_error(in0.a1wzam);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_srvc_lst_rasvl_time_of_gaps = fail_if_error(in0.a1w0am);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_srvc_lst_rasvl_exe_profile = fail_if_error(in0.a1kuhi);
+let decimal("\x01",0) l_srvc_lst_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_srvc_lst.rasvl_srvc_lst_sk::l_srvc_lst_rasvl_srvc_lst_sk;
+  out0.l_srvc_lst.rasvl_srvc_lst_nm::l_srvc_lst_rasvl_srvc_lst_nm;
+  out0.l_srvc_lst.rasvl_srvc_lst_desc::l_srvc_lst_rasvl_srvc_lst_desc;
+  out0.l_srvc_lst.rasvl_delay_days::l_srvc_lst_rasvl_delay_days;
+  out0.l_srvc_lst.rasvl_delay_hrs::l_srvc_lst_rasvl_delay_hrs;
+  out0.l_srvc_lst.rasvl_delay_mnts::l_srvc_lst_rasvl_delay_mnts;
+  out0.l_srvc_lst.rasvl_updt_tb_ltr::l_srvc_lst_rasvl_updt_tb_ltr;
+  out0.l_srvc_lst.rasvl_srvc_elig_chk::l_srvc_lst_rasvl_srvc_elig_chk;
+  out0.l_srvc_lst.rasvl_look_back_period::l_srvc_lst_rasvl_look_back_period;
+  out0.l_srvc_lst.rasvl_nbr_of_gaps_alowd::l_srvc_lst_rasvl_nbr_of_gaps_alowd;
+  out0.l_srvc_lst.rasvl_time_of_gaps_oper::l_srvc_lst_rasvl_time_of_gaps_oper;
+  out0.l_srvc_lst.rasvl_time_of_gaps::l_srvc_lst_rasvl_time_of_gaps;
+  out0.l_srvc_lst.rasvl_exe_profile::l_srvc_lst_rasvl_exe_profile;
+  out0.l_srvc_lst.src_env_sk::l_srvc_lst_src_env_sk;
+  out0.*::in0.*;
+
+end;

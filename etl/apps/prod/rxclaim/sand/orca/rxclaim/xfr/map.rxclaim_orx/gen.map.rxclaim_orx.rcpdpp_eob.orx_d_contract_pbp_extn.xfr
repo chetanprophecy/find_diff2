@@ -1,0 +1,193 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5bdac3d0_d7a6_1
+    BizHidden:true
+@*/
+/*   lookup d_contract_pbp   */
+out0::bzt_2_6c54cc0a_5bdac3d0_d7a6_1(in0,in1,in2,in3,in4)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) contract_pbp_sk = NULL(""), cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) plan_cd = NULL("");
+  date("YYYYMMDD")("\x01") pdp_from_dt = NULL(""), pdp_thru_dt = NULL("");
+  decimal("\x01",0) sequence_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pdp_status_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_contract_pbp",in0,in1,in2,in3,in4));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5bdac3d0_d7a6_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_cont_extn.pdp_copay_coinsur_val3,[transform],in0.mpx3ih]
+  [out0.d_cont_extn.pdp_med_pln_type,[transform],in0.mpxli1]
+  [out0.d_cont_extn.carrier_id,[passthrough],in0.mpaacd]
+  [out0.d_cont_extn.pdp_website_addr,[transform],in0.mpo8ih]
+  [out0.d_cont_extn.pdp_status_cd,[passthrough],in0.mpouh9]
+  [out0.d_cont_extn.pdp_thru_dt,[transform],in0.mpnihg]
+  [out0.d_cont_extn.pdp_copay_coinsur_val1,[transform],in0.mpx3ih]
+  [out0.d_cont_extn.pbp_id,[transform],in0.mpvyhc]
+  [out0.d_cont_extn.pdp_from_dt,[transform],in0.mpnhhg]
+  [out0.d_cont_extn.pdp_thrshld_ctstr_cvg,[transform],in0.mphchs]
+  [out0.d_cont_extn.contract_no,[transform],in0.mpvwhc]
+  [out0.d_cont_extn.plan_cd,[passthrough],in0.mpaecd]
+  [out0.d_cont_extn.pdp_segment_id,[passthrough],in0.mpvzhc]
+  [out0.d_cont_extn.contract_pbp_sk,[transform],in0.mpv1hc,
+     in0.mpdahs,
+     in0.mpaacd,
+     in0.mpaecd,
+     in0.mpv0hc,
+     'lookup("d_contract_pbp").dxf_sk']
+  [out0.d_cont_extn.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_cont_extn.pdp_copay_coinsur_val2,[transform],in0.mpx3ih]
+  [out0.d_cont_extn.pdp_frmlry_notice_list,[passthrough],in0.mphrhd]
+  [out0.d_cont_extn.employer_group_id,[passthrough],in0.mpv1hc]
+  [out0.d_cont_extn.account_id,[passthrough],in0.mpv0hc]
+  [out0.d_cont_extn.sequence_no,[passthrough],in0.mpdahs]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_cont_extn.pdp_copay_coinsur_val3,'d_cont_extn.pdp_copay_coinsur_val3',1,0]
+     [out0.d_cont_extn.pdp_med_pln_type,'d_cont_extn.pdp_med_pln_type',1,0]
+     [out0.d_cont_extn.carrier_id,'d_cont_extn.carrier_id',1,0]
+     [out0.d_cont_extn.pdp_website_addr,'d_cont_extn.pdp_website_addr',1,0]
+     [out0.d_cont_extn.pdp_status_cd,'d_cont_extn.pdp_status_cd',1,0]
+     [out0.d_cont_extn.pdp_thru_dt,'d_cont_extn.pdp_thru_dt',3,2]
+     [out0.d_cont_extn.pdp_copay_coinsur_val1,'d_cont_extn.pdp_copay_coinsur_val1',1,0]
+     [out0.d_cont_extn.pbp_id,'d_cont_extn.pbp_id',1,0]
+     [out0.d_cont_extn.pdp_from_dt,'d_cont_extn.pdp_from_dt',3,2]
+     [out0.d_cont_extn.pdp_thrshld_ctstr_cvg,'d_cont_extn.pdp_thrshld_ctstr_cvg',1,0]
+     [out0.d_cont_extn.contract_no,'d_cont_extn.contract_no',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_cont_extn.plan_cd,'d_cont_extn.plan_cd',1,0]
+     [out0.d_cont_extn.pdp_segment_id,'d_cont_extn.pdp_segment_id',1,0]
+     [out0.d_cont_extn.contract_pbp_sk,'d_cont_extn.contract_pbp_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_cont_extn.src_env_sk,'d_cont_extn.src_env_sk',1,0]
+     [out0.d_cont_extn.pdp_copay_coinsur_val2,'d_cont_extn.pdp_copay_coinsur_val2',1,0]
+     [out0.d_cont_extn.pdp_frmlry_notice_list,'d_cont_extn.pdp_frmlry_notice_list',1,0]
+     [out0.d_cont_extn.employer_group_id,'d_cont_extn.employer_group_id',1,0]
+     [out0.d_cont_extn.account_id,'d_cont_extn.account_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_cont_extn.sequence_no,'d_cont_extn.sequence_no',1,0]
+  ]
+  impacts:
+  [
+     [in0.mpxli1,'mpxli1',1,1]
+     [in0.mpouh9,'mpouh9',1,1]
+     [in0.mphchs,'mphchs',2,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.mpaacd,'mpaacd',3,3]
+     ['lookup("d_contract_pbp").dxf_sk','dxf_sk',1,1]
+     [in0.mpnhhg,'mpnhhg',5,3]
+     [in0.mpvyhc,'mpvyhc',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.mpx3ih,'mpx3ih',28,3]
+     [in0.mpv0hc,'mpv0hc',3,3]
+     [in0.mpvwhc,'mpvwhc',1,1]
+     [in0.mpdahs,'mpdahs',3,3]
+     [in0.mphrhd,'mphrhd',1,1]
+     [in0.mpv1hc,'mpv1hc',3,3]
+     [in0.mpvzhc,'mpvzhc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.mpo8ih,'mpo8ih',1,1]
+     [in0.mpaecd,'mpaecd',3,3]
+     [in0.mpnihg,'mpnihg',5,3]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cont_extn_carrier_id = fail_if_error(in0.mpaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cont_extn_account_id = fail_if_error(in0.mpv0hc);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cont_extn_employer_group_id = fail_if_error(in0.mpv1hc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cont_extn_plan_cd = fail_if_error(in0.mpaecd);
+let decimal("\x01",0) d_cont_extn_sequence_no = fail_if_error(in0.mpdahs);
+let decimal("\x01",0) d_cont_extn_contract_pbp_sk;
+let decimal("\x01".2, maximum_length=10) d_cont_extn_pdp_thrshld_ctstr_cvg = fail_if_error(if(is_null(in0.mphchs))" " else (decimal(""))string_pad(str=in0.mphchs , length=10, pad_char=" " ));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cont_extn_pdp_copay_coinsur_val1 = fail_if_error(string_lrtrim(string_substring(str=in0.mpx3ih,start_index=1 , length=(decimal(""))math_abs(-1 +(if((decimal(""))string_index(str=in0.mpx3ih , find_str="¦" )>0)(decimal(""))string_index(str=in0.mpx3ih , find_str="¦" ) else (decimal(""))string_index(str=in0.mpx3ih , find_str="|" ))))));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cont_extn_pdp_copay_coinsur_val2 = fail_if_error(if((decimal(""))string_index(str=in0.mpx3ih, find_str="¦") > 0)string_lrtrim(string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih,find_str="¦")+1,length=(decimal(""))math_abs((decimal(""))string_index(str=string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih , find_str="¦")+1,length=string_length(in0.mpx3ih)),find_str="¦")-1) ) ) else string_lrtrim(string_substring(str=in0.mpx3ih,start_index=(decimal(""))string_index(str=in0.mpx3ih,find_str="|")+1,length=(decimal(""))math_abs((decimal(""))string_index(str=string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih , find_str="¦")+1,length=string_length(in0.mpx3ih)),find_str="|")-1) ) ));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cont_extn_pdp_copay_coinsur_val3 = fail_if_error(if((decimal(""))string_index(str=in0.mpx3ih, find_str="¦") > 0) string_substring(string_lrtrim(string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih , find_str="¦")+(decimal(""))string_index(str=string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih,find_str="¦")+1, length=string_length(in0.mpx3ih) ) , find_str="¦")+1 , length=string_length(in0.mpx3ih) ) ),1,10) else string_substring(string_lrtrim(string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih , find_str="|")+(decimal(""))string_index(str=string_substring(str=in0.mpx3ih , start_index=(decimal(""))string_index(str=in0.mpx3ih,find_str="|")+1, length=string_length(in0.mpx3ih) ) , find_str="|")+1 , length=string_length(in0.mpx3ih) ) ),1,10));
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_cont_extn_pdp_website_addr = fail_if_error(string_pad(str=in0.mpo8ih,length=60,pad_char=" "));
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cont_extn_pdp_med_pln_type = fail_if_error(string_pad(str=in0.mpxli1,length=2, pad_char=" " ));
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_cont_extn_contract_no = fail_if_error(string_pad(str=in0.mpvwhc, length=5,pad_char=" " ));
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_cont_extn_pbp_id = fail_if_error(string_pad(str=in0.mpvyhc,length=3,pad_char=" "));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_cont_extn_pdp_frmlry_notice_list = fail_if_error(in0.mphrhd);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_cont_extn_pdp_segment_id = fail_if_error(in0.mpvzhc);
+let date("YYYYMMDD")("\x01") d_cont_extn_pdp_from_dt = (date("YYYYMMDD"))"18000101";
+let date("YYYYMMDD")("\x01") d_cont_extn_pdp_thru_dt = (date("YYYYMMDD"))"99991231";
+let string("\x01", maximum_length=1) d_cont_extn_pdp_status_cd = fail_if_error(in0.mpouh9);
+let decimal("\x01",0) d_cont_extn_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute d_cont_extn.pdp_from_dt  (#1)   */
+if(first_defined(fail_if_error(((length_of((string(""))(decimal(""))in0.mpnhhg)) ==8) && ((is_valid((date("YYYYMMDD"))(string(""))(decimal(""))in0.mpnhhg)) ==1)),0))begin
+  d_cont_extn_pdp_from_dt=(date("YYYYMMDD"))(string(""))(decimal(""))in0.mpnhhg;
+end
+else if(first_defined(fail_if_error(((length_of(((string(""))((decimal(""))in0.mpnhhg))) member [vector 6,7])) && ((is_valid((date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in0.mpnhhg))) ==1)),0))begin
+  d_cont_extn_pdp_from_dt=(date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in0.mpnhhg);
+end
+
+/*   Rule:Compute d_cont_extn.pdp_thru_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of((string(""))(decimal(""))in0.mpnihg)) ==8) && ((is_valid((date("YYYYMMDD"))(string(""))(decimal(""))in0.mpnihg)) ==1)),0))begin
+  d_cont_extn_pdp_thru_dt=(date("YYYYMMDD"))(string(""))(decimal(""))in0.mpnihg;
+end
+else if(first_defined(fail_if_error(((length_of(((string(""))((decimal(""))in0.mpnihg))) member [vector 6,7])) && ((is_valid((date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in0.mpnihg))) ==1)),0))begin
+  d_cont_extn_pdp_thru_dt=(date("YYYYMMDD"))(string(""))(decimal(""))(19000000+in0.mpnihg);
+end
+
+/*   Default value   */
+d_cont_extn_contract_pbp_sk=fail_if_error(bzt_2_6c54cc0a_5bdac3d0_d7a6_1(string_lrtrim(in0.mpaacd), string_lrtrim(in0.mpv0hc), string_lrtrim(in0.mpv1hc),  in0.mpdahs,string_lrtrim(in0.mpaecd)).dxf_sk);
+
+  out0.d_cont_extn.carrier_id::d_cont_extn_carrier_id;
+  out0.d_cont_extn.account_id::d_cont_extn_account_id;
+  out0.d_cont_extn.employer_group_id::d_cont_extn_employer_group_id;
+  out0.d_cont_extn.plan_cd::d_cont_extn_plan_cd;
+  out0.d_cont_extn.sequence_no::d_cont_extn_sequence_no;
+  out0.d_cont_extn.contract_pbp_sk::d_cont_extn_contract_pbp_sk;
+  out0.d_cont_extn.pdp_thrshld_ctstr_cvg::d_cont_extn_pdp_thrshld_ctstr_cvg;
+  out0.d_cont_extn.pdp_copay_coinsur_val1::d_cont_extn_pdp_copay_coinsur_val1;
+  out0.d_cont_extn.pdp_copay_coinsur_val2::d_cont_extn_pdp_copay_coinsur_val2;
+  out0.d_cont_extn.pdp_copay_coinsur_val3::d_cont_extn_pdp_copay_coinsur_val3;
+  out0.d_cont_extn.pdp_website_addr::d_cont_extn_pdp_website_addr;
+  out0.d_cont_extn.pdp_med_pln_type::d_cont_extn_pdp_med_pln_type;
+  out0.d_cont_extn.contract_no::d_cont_extn_contract_no;
+  out0.d_cont_extn.pbp_id::d_cont_extn_pbp_id;
+  out0.d_cont_extn.pdp_frmlry_notice_list::d_cont_extn_pdp_frmlry_notice_list;
+  out0.d_cont_extn.pdp_segment_id::d_cont_extn_pdp_segment_id;
+  out0.d_cont_extn.pdp_from_dt::d_cont_extn_pdp_from_dt;
+  out0.d_cont_extn.pdp_thru_dt::d_cont_extn_pdp_thru_dt;
+  out0.d_cont_extn.pdp_status_cd::d_cont_extn_pdp_status_cd;
+  out0.d_cont_extn.src_env_sk::d_cont_extn_src_env_sk;
+  out0.*::in0.*;
+
+end;

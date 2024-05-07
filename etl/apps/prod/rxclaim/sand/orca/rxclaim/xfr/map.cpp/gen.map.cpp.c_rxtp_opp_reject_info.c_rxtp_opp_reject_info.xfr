@@ -1,0 +1,79 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5ad5ab63_e7bc_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_rxtp_rej.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_rxtp_rej.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_rxtp_rej.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_rxtp_rej.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_rxtp_rej.cpp_rxtp_opp_reject_cd_sk,[transform],]
+  [out0.c_rxtp_rej.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_rxtp_rej.reject_reason_cd,[passthrough],in0.reject_reason_cd]
+  [out0.c_rxtp_rej.rxtp_opp_id,[passthrough],in0.rxtp_opp_id]
+  [out0.c_rxtp_rej.reject_reason_descr,[passthrough],in0.reject_reason_descr]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_rxtp_rej.src_env_sk,'c_rxtp_rej.src_env_sk',1,0]
+     [out0.c_rxtp_rej.cpp_create_ts,'c_rxtp_rej.cpp_create_ts',1,0]
+     [out0.c_rxtp_rej.cpp_updated_by,'c_rxtp_rej.cpp_updated_by',1,0]
+     [out0.c_rxtp_rej.cpp_update_ts,'c_rxtp_rej.cpp_update_ts',1,0]
+     [out0.c_rxtp_rej.cpp_rxtp_opp_reject_cd_sk,'c_rxtp_rej.cpp_rxtp_opp_reject_cd_sk',1,0]
+     [out0.c_rxtp_rej.cpp_created_by,'c_rxtp_rej.cpp_created_by',1,0]
+     [out0.c_rxtp_rej.reject_reason_cd,'c_rxtp_rej.reject_reason_cd',1,0]
+     [out0.c_rxtp_rej.rxtp_opp_id,'c_rxtp_rej.rxtp_opp_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_rxtp_rej.reject_reason_descr,'c_rxtp_rej.reject_reason_descr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.reject_reason_descr,'reject_reason_descr',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.rxtp_opp_id,'rxtp_opp_id',1,1]
+     [in0.reject_reason_cd,'reject_reason_cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_rxtp_rej_cpp_rxtp_opp_reject_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_rxtp_rej_rxtp_opp_id = fail_if_error(in0.rxtp_opp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_rxtp_rej_reject_reason_cd = fail_if_error(in0.reject_reason_cd);
+let utf8 string("\x01", maximum_length=600) c_rxtp_rej_reject_reason_descr = fail_if_error(in0.reject_reason_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rxtp_rej_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_rxtp_rej_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rxtp_rej_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_rxtp_rej_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_rxtp_rej_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_rxtp_rej.cpp_rxtp_opp_reject_cd_sk::c_rxtp_rej_cpp_rxtp_opp_reject_cd_sk;
+  out0.c_rxtp_rej.rxtp_opp_id::c_rxtp_rej_rxtp_opp_id;
+  out0.c_rxtp_rej.reject_reason_cd::c_rxtp_rej_reject_reason_cd;
+  out0.c_rxtp_rej.reject_reason_descr::c_rxtp_rej_reject_reason_descr;
+  out0.c_rxtp_rej.cpp_update_ts::c_rxtp_rej_cpp_update_ts;
+  out0.c_rxtp_rej.cpp_updated_by::c_rxtp_rej_cpp_updated_by;
+  out0.c_rxtp_rej.cpp_create_ts::c_rxtp_rej_cpp_create_ts;
+  out0.c_rxtp_rej.cpp_created_by::c_rxtp_rej_cpp_created_by;
+  out0.c_rxtp_rej.src_env_sk::c_rxtp_rej_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,30 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+  out.mbr_member_id::in.aoabcd;
+  out.car_carrier_id::in.aoaacd;
+  out.acc_account_id::in.aoaccd;
+  out.grp_group_id::in.aoadcd;
+  out.diagnosis_qualifier::in.aosjaq;
+  out.diagnosis_type::in.aoskaq;
+  out.mdx_diagnosis_code::in.aorvhn;
+  out.mdx_seq_nbr::in.aohhal;
+  out.mdx_from_date::in.aoegce;
+  out.mdx_thru_date::in.aoehce;
+  out.mdx_status::in.aof6aj;
+  out.add_user_name::in.aoakvn;
+  out.add_date::in.aoc2dt;
+  out.add_time::in.aoadtm;
+  out.add_program_name::in.aoalvn;
+  out.chg_user_name::in.aoadvn;
+  out.chg_date::in.aobmdt;
+  out.chg_time::in.aoabtm;
+  out.chg_program_name::in.aoaevn;
+end;

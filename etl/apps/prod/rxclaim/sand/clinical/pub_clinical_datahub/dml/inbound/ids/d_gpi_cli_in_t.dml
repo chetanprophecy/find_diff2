@@ -1,0 +1,39 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_gpi_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_gpi_cli_in_t =
+record
+  //decimal("\x01",0)   gpi_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) legacy_src_env_id /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=14)   gpi_id = NULL("") /*VARCHAR(14)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   gpi_nm = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   injctbl_ind_flg = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   drg_grp_gpi_02_cd = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)   drg_grp_nm = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4)   drg_class_gpi_04_cd = NULL("") /*VARCHAR(4)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   drg_class_nm = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)   drg_sub_class_gpi_06_cd = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=60)   drg_sub_class_nm = NULL("") /*VARCHAR(60)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=8)   drg_bsic_nm_gpi_08_cd = NULL("") /*VARCHAR(8)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=70)   drg_bsic_nm = NULL("") /*VARCHAR(70)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)   drg_extd_nm_gpi_10_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=70)   drg_extd_nm = NULL("") /*VARCHAR(70)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=12)   drg_dosag_frm_gpi_12_cd = NULL("") /*VARCHAR(12)*/;
+  //decimal("\x01",0)   drug_sk = NULL("") /*BIGINT*/;
+  //decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type d_gpi_cli_in_vec_t = d_gpi_cli_in_t[int];
+
+metadata type = d_gpi_cli_in_t;
+

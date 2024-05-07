@@ -1,0 +1,115 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_593f8b2e_7808_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_pr_sch.pref_prod_sched_sk,[transform],]
+  [out0.d_pr_sch.generic_otc_tier,[passthrough],in0.hpy6hs]
+  [out0.d_pr_sch.multi_src_cd_m_tier,[passthrough],in0.hpg9hs]
+  [out0.d_pr_sch.qualifier,[passthrough],in0.hpz6id]
+  [out0.d_pr_sch.add_date,[transform],in0.hpc2dt]
+  [out0.d_pr_sch.pref_prod_sched_desc,[passthrough],in0.hpl2ih]
+  [out0.d_pr_sch.multi_src_cd_o_tier,[passthrough],in0.hpg7hs]
+  [out0.d_pr_sch.multi_src_cd_n_tier,[passthrough],in0.hpg8hs]
+  [out0.d_pr_sch.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_pr_sch.compound_tier,[passthrough],in0.hppyaq]
+  [out0.d_pr_sch.multi_src_cd_y_tier,[passthrough],in0.hpg6hs]
+  [out0.d_pr_sch.medical_supplies_tier,[passthrough],in0.hpy7hs]
+  [out0.d_pr_sch.brand_otc_tier,[passthrough],in0.hpy5hs]
+  [out0.d_pr_sch.chg_date,[transform],in0.hpbmdt]
+  [out0.d_pr_sch.pref_prod_sched_id,[passthrough],in0.hpvrhc]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_pr_sch.pref_prod_sched_sk,'d_pr_sch.pref_prod_sched_sk',1,0]
+     [out0.d_pr_sch.generic_otc_tier,'d_pr_sch.generic_otc_tier',1,0]
+     [out0.d_pr_sch.multi_src_cd_m_tier,'d_pr_sch.multi_src_cd_m_tier',1,0]
+     [out0.d_pr_sch.qualifier,'d_pr_sch.qualifier',1,0]
+     [out0.d_pr_sch.add_date,'d_pr_sch.add_date',1,0]
+     [out0.d_pr_sch.pref_prod_sched_desc,'d_pr_sch.pref_prod_sched_desc',1,0]
+     [out0.d_pr_sch.multi_src_cd_o_tier,'d_pr_sch.multi_src_cd_o_tier',1,0]
+     [out0.d_pr_sch.multi_src_cd_n_tier,'d_pr_sch.multi_src_cd_n_tier',1,0]
+     [out0.d_pr_sch.src_env_sk,'d_pr_sch.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_pr_sch.compound_tier,'d_pr_sch.compound_tier',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_pr_sch.multi_src_cd_y_tier,'d_pr_sch.multi_src_cd_y_tier',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_pr_sch.medical_supplies_tier,'d_pr_sch.medical_supplies_tier',1,0]
+     [out0.d_pr_sch.brand_otc_tier,'d_pr_sch.brand_otc_tier',1,0]
+     [out0.d_pr_sch.chg_date,'d_pr_sch.chg_date',1,0]
+     [out0.d_pr_sch.pref_prod_sched_id,'d_pr_sch.pref_prod_sched_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.hpbmdt,'hpbmdt',1,1]
+     [in0.hpc2dt,'hpc2dt',1,1]
+     [in0.hpy7hs,'hpy7hs',1,1]
+     [in0.hpg9hs,'hpg9hs',1,1]
+     [in0.hpg6hs,'hpg6hs',1,1]
+     [in0.hppyaq,'hppyaq',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.hpy5hs,'hpy5hs',1,1]
+     [in0.hpvrhc,'hpvrhc',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.hpg7hs,'hpg7hs',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.hpz6id,'hpz6id',1,1]
+     [in0.hpy6hs,'hpy6hs',1,1]
+     [in0.hpg8hs,'hpg8hs',1,1]
+     [in0.hpl2ih,'hpl2ih',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_pr_sch_pref_prod_sched_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_pr_sch_pref_prod_sched_id = fail_if_error(in0.hpvrhc);
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_pr_sch_pref_prod_sched_desc = fail_if_error(in0.hpl2ih);
+let decimal("\x01",0) d_pr_sch_multi_src_cd_y_tier = fail_if_error(in0.hpg6hs);
+let decimal("\x01",0) d_pr_sch_multi_src_cd_o_tier = fail_if_error(in0.hpg7hs);
+let decimal("\x01",0) d_pr_sch_multi_src_cd_n_tier = fail_if_error(in0.hpg8hs);
+let decimal("\x01",0) d_pr_sch_multi_src_cd_m_tier = fail_if_error(in0.hpg9hs);
+let decimal("\x01",0) d_pr_sch_brand_otc_tier = fail_if_error(in0.hpy5hs);
+let decimal("\x01",0) d_pr_sch_generic_otc_tier = fail_if_error(in0.hpy6hs);
+let decimal("\x01",0) d_pr_sch_medical_supplies_tier = fail_if_error(in0.hpy7hs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_pr_sch_qualifier = fail_if_error(in0.hpz6id);
+let decimal("\x01",0) d_pr_sch_compound_tier = fail_if_error(in0.hppyaq);
+let date("YYYYMMDD")("\x01") d_pr_sch_add_date;
+let date("YYYYMMDD")("\x01") d_pr_sch_chg_date;
+let decimal("\x01",0) d_pr_sch_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_pr_sch_add_date=fail_if_error(date_check(in0.hpc2dt));
+
+/*   Default value   */
+d_pr_sch_chg_date=fail_if_error(date_check(in0.hpbmdt));
+
+  out0.d_pr_sch.pref_prod_sched_sk::d_pr_sch_pref_prod_sched_sk;
+  out0.d_pr_sch.pref_prod_sched_id::d_pr_sch_pref_prod_sched_id;
+  out0.d_pr_sch.pref_prod_sched_desc::d_pr_sch_pref_prod_sched_desc;
+  out0.d_pr_sch.multi_src_cd_y_tier::d_pr_sch_multi_src_cd_y_tier;
+  out0.d_pr_sch.multi_src_cd_o_tier::d_pr_sch_multi_src_cd_o_tier;
+  out0.d_pr_sch.multi_src_cd_n_tier::d_pr_sch_multi_src_cd_n_tier;
+  out0.d_pr_sch.multi_src_cd_m_tier::d_pr_sch_multi_src_cd_m_tier;
+  out0.d_pr_sch.brand_otc_tier::d_pr_sch_brand_otc_tier;
+  out0.d_pr_sch.generic_otc_tier::d_pr_sch_generic_otc_tier;
+  out0.d_pr_sch.medical_supplies_tier::d_pr_sch_medical_supplies_tier;
+  out0.d_pr_sch.qualifier::d_pr_sch_qualifier;
+  out0.d_pr_sch.compound_tier::d_pr_sch_compound_tier;
+  out0.d_pr_sch.add_date::d_pr_sch_add_date;
+  out0.d_pr_sch.chg_date::d_pr_sch_chg_date;
+  out0.d_pr_sch.src_env_sk::d_pr_sch_src_env_sk;
+  out0.*::in0.*;
+
+end;

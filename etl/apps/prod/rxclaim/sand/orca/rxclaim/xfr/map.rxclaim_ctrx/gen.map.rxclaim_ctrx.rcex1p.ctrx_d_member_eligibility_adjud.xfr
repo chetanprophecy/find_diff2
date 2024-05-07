@@ -1,0 +1,102 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_mbr_elgt.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_mbr_elgt.cag_sk,[transform],]
+  [out0.d_mbr_elgt.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.claimsts]
+  [out0.d_mbr_elgt.clt_prod_cd,[passthrough],in0.mbrprodcde]
+  [out0.d_mbr_elgt.pln_cd,[passthrough],in0.mbrplan]
+  [out0.d_cag_mbr_elg.account_id,[passthrough],in0.accountid]
+  [out0.d_mbr_elgt.mbr_id,[transform],in0.cardholder,
+     in0.memberid,
+     in0.claimsts]
+  [out0.d_mbr_elgt.carrier_id,[passthrough],in0.carrierid]
+  [out0.d_cag_mbr_elg.employer_group_id,[passthrough],in0.groupid]
+  [out0.d_cag_mbr_elg.carrier_id,[passthrough],in0.carrierid]
+  [out0.d_mbr_elgt.clt_rdr_cd,[passthrough],in0.mbrridercd]
+  [out0.d_mbr_elgt.account_id,[passthrough],in0.accountid]
+  [out0.d_mbr_elgt.mbr_eligty_adjud_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_mbr_elgt.src_env_sk,'d_mbr_elgt.src_env_sk',1,0]
+     [out0.d_mbr_elgt.cag_sk,'d_mbr_elgt.cag_sk',1,0]
+     [out0.d_mbr_elgt.employer_group_id,'d_mbr_elgt.employer_group_id',1,0]
+     [out0.d_mbr_elgt.clt_prod_cd,'d_mbr_elgt.clt_prod_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mbr_elgt.pln_cd,'d_mbr_elgt.pln_cd',1,0]
+     [out0.d_cag_mbr_elg.account_id,'d_cag_mbr_elg.account_id',1,0]
+     [out0.d_mbr_elgt.mbr_id,'d_mbr_elgt.mbr_id',1,0]
+     [out0.d_mbr_elgt.carrier_id,'d_mbr_elgt.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_cag_mbr_elg.employer_group_id,'d_cag_mbr_elg.employer_group_id',1,0]
+     [out0.d_cag_mbr_elg.carrier_id,'d_cag_mbr_elg.carrier_id',1,0]
+     [out0.d_mbr_elgt.clt_rdr_cd,'d_mbr_elgt.clt_rdr_cd',1,0]
+     [out0.d_mbr_elgt.account_id,'d_mbr_elgt.account_id',1,0]
+     [out0.d_mbr_elgt.mbr_eligty_adjud_sk,'d_mbr_elgt.mbr_eligty_adjud_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.cardholder,'cardholder',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.accountid,'accountid',2,2]
+     [in0.mbrprodcde,'mbrprodcde',1,1]
+     [in0.groupnbr,'groupnbr',1,1]
+     [in0.carrierid,'carrierid',2,2]
+     [in0.groupid,'groupid',3,2]
+     [in0.claimsts,'claimsts',2,2]
+     [in0.mbrridercd,'mbrridercd',1,1]
+     [in0.memberid,'memberid',2,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.mbrplan,'mbrplan',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_mbr_elgt_mbr_eligty_adjud_sk = -1;
+let decimal("\x01",0) d_mbr_elgt_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_elgt_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_elgt_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_elgt_employer_group_id = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid));
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_elgt_mbr_id = fail_if_error((sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.memberid)==''))?in0.cardholder:in0.memberid));
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_mbr_elgt_clt_prod_cd = fail_if_error(in0.mbrprodcde);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_mbr_elgt_clt_rdr_cd = fail_if_error(in0.mbrridercd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_mbr_elgt_pln_cd = fail_if_error(in0.mbrplan);
+let decimal("\x01",0) d_mbr_elgt_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_mbr_elg_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_mbr_elg_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_mbr_elg_employer_group_id = fail_if_error(in0.groupid);
+
+
+
+  out0.d_mbr_elgt.mbr_eligty_adjud_sk::d_mbr_elgt_mbr_eligty_adjud_sk;
+  out0.d_mbr_elgt.cag_sk::d_mbr_elgt_cag_sk;
+  out0.d_mbr_elgt.carrier_id::d_mbr_elgt_carrier_id;
+  out0.d_mbr_elgt.account_id::d_mbr_elgt_account_id;
+  out0.d_mbr_elgt.employer_group_id::d_mbr_elgt_employer_group_id;
+  out0.d_mbr_elgt.mbr_id::d_mbr_elgt_mbr_id;
+  out0.d_mbr_elgt.clt_prod_cd::d_mbr_elgt_clt_prod_cd;
+  out0.d_mbr_elgt.clt_rdr_cd::d_mbr_elgt_clt_rdr_cd;
+  out0.d_mbr_elgt.pln_cd::d_mbr_elgt_pln_cd;
+  out0.d_mbr_elgt.src_env_sk::d_mbr_elgt_src_env_sk;
+  out0.d_cag_mbr_elg.carrier_id::d_cag_mbr_elg_carrier_id;
+  out0.d_cag_mbr_elg.account_id::d_cag_mbr_elg_account_id;
+  out0.d_cag_mbr_elg.employer_group_id::d_cag_mbr_elg_employer_group_id;
+  out0.*::in0.*;
+
+end;

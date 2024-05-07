@@ -1,0 +1,118 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_583322e0_619a_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.fnlmemm.month_cnt_no,[transform],]
+  [out0.fnlmemm.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.fnlmemm.mbr_age,[transform],in0.mbr_age]
+  [out0.fnlmemm.processing_month_start_dt,[passthrough],in0.processing_month_date_value]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.fnlmemm.age_band_sk,'fnlmemm.age_band_sk',1,0]
+     [out0.fnlmemm.active_days_elig_mbr_cnt_no,'fnlmemm.active_days_elig_mbr_cnt_no',1,0]
+     [out0.fnlmemm.perd_start_dt_sk,'fnlmemm.perd_start_dt_sk',1,0]
+     [out0.fnlmemm.dxf_hk_part2,'fnlmemm.dxf_hk_part2',1,0]
+     [out0.fnlmemm.active_days_subscriber_cnt_no,'fnlmemm.active_days_subscriber_cnt_no',1,0]
+     [out0.fnlmemm.utilizing_mbr_cnt_no,'fnlmemm.utilizing_mbr_cnt_no',1,0]
+     [out0.fnlmemm.relationship_cd_sk,'fnlmemm.relationship_cd_sk',1,0]
+     [out0.fnlmemm.client_rdr_sk,'fnlmemm.client_rdr_sk',1,0]
+     [out0.fnlmemm.dxf_sk,'fnlmemm.dxf_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.fnlmemm.dxf_hk_part1,'fnlmemm.dxf_hk_part1',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.fnlmemm.perd_type_sk,'fnlmemm.perd_type_sk',1,0]
+     [out0.fnlmemm.month_cnt_no,'fnlmemm.month_cnt_no',1,0]
+     [out0.fnlmemm.pln_sk,'fnlmemm.pln_sk',1,0]
+     [out0.fnlmemm.cag_sk,'fnlmemm.cag_sk',1,0]
+     [out0.fnlmemm.care_facility_sk,'fnlmemm.care_facility_sk',1,0]
+     [out0.fnlmemm.gender_sk,'fnlmemm.gender_sk',1,0]
+     [out0.fnlmemm.client_prod_sk,'fnlmemm.client_prod_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.fnlmemm.src_env_sk,'fnlmemm.src_env_sk',1,0]
+     [out0.fnlmemm.mbr_age,'fnlmemm.mbr_age',1,0]
+     [out0.fnlmemm.processing_month_start_dt,'fnlmemm.processing_month_start_dt',1,0]
+  ]
+  impacts:
+  [
+     [in0.relationship_cd_sk,'relationship_cd_sk',1,1]
+     [in0.perd_start_dt_sk,'perd_start_dt_sk',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.active_days_subscriber_cnt_no,'active_days_subscriber_cnt_no',1,1]
+     [in0.utilizing_mbr_cnt_no,'utilizing_mbr_cnt_no',1,1]
+     [in0.client_prod_sk,'client_prod_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.care_facility_sk,'care_facility_sk',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.gender_sk,'gender_sk',1,1]
+     [in0.perd_type_sk,'perd_type_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.processing_month_date_value,'processing_month_date_value',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.mbr_age,'mbr_age',1,1]
+     [in0.pln_sk,'pln_sk',1,1]
+     [in0.active_days_elig_mbr_cnt_no,'active_days_elig_mbr_cnt_no',1,1]
+     [in0.client_rdr_sk,'client_rdr_sk',1,1]
+     [in0.age_band_sk,'age_band_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let date("YYYYMMDD")("\x01") fnlmemm_processing_month_start_dt = fail_if_error(in0.processing_month_date_value);
+let unsigned integer(8) fnlmemm_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) fnlmemm_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) fnlmemm_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) fnlmemm_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) fnlmemm_perd_type_sk = fail_if_error(in0.perd_type_sk);
+let decimal("\x01",0) fnlmemm_perd_start_dt_sk = fail_if_error(in0.perd_start_dt_sk);
+let decimal("\x01",0) fnlmemm_pln_sk = fail_if_error(in0.pln_sk);
+let decimal("\x01",0) fnlmemm_client_prod_sk = fail_if_error(in0.client_prod_sk);
+let decimal("\x01",0) fnlmemm_client_rdr_sk = fail_if_error(in0.client_rdr_sk);
+let decimal("\x01",0) fnlmemm_gender_sk = fail_if_error(in0.gender_sk);
+let decimal("\x01",0) fnlmemm_mbr_age = fail_if_error(string_trim(in0.mbr_age));
+let decimal("\x01",0) fnlmemm_age_band_sk = fail_if_error(in0.age_band_sk);
+let decimal("\x01",0) fnlmemm_relationship_cd_sk = fail_if_error(in0.relationship_cd_sk);
+let decimal("\x01",0) fnlmemm_care_facility_sk = fail_if_error(in0.care_facility_sk);
+let decimal("\x01",0) fnlmemm_active_days_elig_mbr_cnt_no = fail_if_error(in0.active_days_elig_mbr_cnt_no);
+let decimal("\x01",0) fnlmemm_utilizing_mbr_cnt_no = fail_if_error(in0.utilizing_mbr_cnt_no);
+let decimal("\x01",0) fnlmemm_active_days_subscriber_cnt_no = fail_if_error(in0.active_days_subscriber_cnt_no);
+let decimal("\x01",0) fnlmemm_month_cnt_no = 1;
+let decimal("\x01",0) fnlmemm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.fnlmemm.processing_month_start_dt::fnlmemm_processing_month_start_dt;
+  out0.fnlmemm.dxf_hk_part1::fnlmemm_dxf_hk_part1;
+  out0.fnlmemm.dxf_hk_part2::fnlmemm_dxf_hk_part2;
+  out0.fnlmemm.dxf_sk::fnlmemm_dxf_sk;
+  out0.fnlmemm.cag_sk::fnlmemm_cag_sk;
+  out0.fnlmemm.perd_type_sk::fnlmemm_perd_type_sk;
+  out0.fnlmemm.perd_start_dt_sk::fnlmemm_perd_start_dt_sk;
+  out0.fnlmemm.pln_sk::fnlmemm_pln_sk;
+  out0.fnlmemm.client_prod_sk::fnlmemm_client_prod_sk;
+  out0.fnlmemm.client_rdr_sk::fnlmemm_client_rdr_sk;
+  out0.fnlmemm.gender_sk::fnlmemm_gender_sk;
+  out0.fnlmemm.mbr_age::fnlmemm_mbr_age;
+  out0.fnlmemm.age_band_sk::fnlmemm_age_band_sk;
+  out0.fnlmemm.relationship_cd_sk::fnlmemm_relationship_cd_sk;
+  out0.fnlmemm.care_facility_sk::fnlmemm_care_facility_sk;
+  out0.fnlmemm.active_days_elig_mbr_cnt_no::fnlmemm_active_days_elig_mbr_cnt_no;
+  out0.fnlmemm.utilizing_mbr_cnt_no::fnlmemm_utilizing_mbr_cnt_no;
+  out0.fnlmemm.active_days_subscriber_cnt_no::fnlmemm_active_days_subscriber_cnt_no;
+  out0.fnlmemm.month_cnt_no::fnlmemm_month_cnt_no;
+  out0.fnlmemm.src_env_sk::fnlmemm_src_env_sk;
+  out0.*::in0.*;
+
+end;

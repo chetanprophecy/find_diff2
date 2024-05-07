@@ -1,0 +1,76 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_97d014ac_576a9495_3941_1
+    BizHidden:true
+@*/
+/*   lookup msms_region   */
+out0::bzt_2_97d014ac_576a9495_3941_1(in0)=
+begin
+let record
+  utf8 string("\t") state_cd, msms_rgn;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("msms_region",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_97d014ac_576a9495_3941_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_state.state_cd_sk,[transform],]
+  [out0.l_state.msms_rgn,[transform],in0.state_cd,
+     'lookup("msms_region").msms_rgn']
+  [out0.l_state.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_state.state_cd_sk,'l_state.state_cd_sk',1,0]
+     [out0.l_state.state_cd,'l_state.state_cd',1,0]
+     [out0.l_state.msms_rgn,'l_state.msms_rgn',1,0]
+     [out0.l_state.src_env_sk,'l_state.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_state.state_cd_desc,'l_state.state_cd_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.state_cd,'state_cd',3,2]
+     ['lookup("msms_region").msms_rgn','msms_rgn',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.state_cd_desc,'state_cd_desc',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_state_state_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_state_state_cd = fail_if_error(in0.state_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_state_state_cd_desc = fail_if_error(in0.state_cd_desc);
+let decimal("\x01",0) l_state_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_state_msms_rgn;
+
+
+
+/*   Default value   */
+l_state_msms_rgn=fail_if_error(first_defined(bzt_2_97d014ac_576a9495_3941_1(in0.state_cd).msms_rgn,'Not Specified'));
+
+  out0.l_state.state_cd_sk::l_state_state_cd_sk;
+  out0.l_state.state_cd::l_state_state_cd;
+  out0.l_state.state_cd_desc::l_state_state_cd_desc;
+  out0.l_state.src_env_sk::l_state_src_env_sk;
+  out0.l_state.msms_rgn::l_state_msms_rgn;
+  out0.*::in0.*;
+
+end;

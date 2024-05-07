@@ -1,0 +1,4 @@
+!prototype|P|||$AI_MP/oneoff/f_common_trx_dtl2.mp
+IDS_DATASET||||ids_rxclaim.f_claim_transaction.reduced
+FLOW_TYPE||||ctrx
+INPUT_READ_FL_VEC||||$[begin\r\nlet string("")[int] v_all_ids_file_vec=INPUT_READ_FL_VEC_INTER;\r\nlet int len_vec=length_of(v_all_ids_file_vec);\r\n            let string("")[int] v_final_ids_file_before_dummy= \r\n            for (let int i=0, i < len_vec): \r\n            if( ( (decimal("")) string_substring(string_split(v_all_ids_file_vec[i],".")[3],0,8) >=(decimal("")) START_DATE )  and ( (decimal("")) string_substring(string_split(v_all_ids_file_vec[i],".")[3],0,8) <= (decimal("")) END_DATE ) ) \r\n              v_all_ids_file_vec[i]; \r\n\r\n\r\nresult ::  v_final_ids_file_before_dummy;\r\nend ]

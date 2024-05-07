@@ -1,0 +1,62 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_phsmed_qtr.ending_quarter_id,[transform],in0.dateval]
+  [out0.l_phsmed_qtr.starting_quarter_id,[transform],in0.dateval]
+  [out0.l_phsmed_qtr.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_phsmed_qtr.ending_quarter_id,'l_phsmed_qtr.ending_quarter_id',1,2]
+     [out0.l_phsmed_qtr.starting_quarter_id,'l_phsmed_qtr.starting_quarter_id',1,2]
+     [out0.l_phsmed_qtr.src_env_sk,'l_phsmed_qtr.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.dateval,'dateval',2,4]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_phsmed_qtr_starting_quarter_id;
+let decimal("\x01",0) l_phsmed_qtr_ending_quarter_id;
+let decimal("\x01",0) l_phsmed_qtr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string(int) v_month = fail_if_error((date("MM"))in0.dateval);
+let string(int) v_year = fail_if_error((date("YYYY"))in0.dateval);
+
+
+
+/*   Default value   */
+l_phsmed_qtr_starting_quarter_id=fail_if_error(if( v_month member   [vector   '01', '02', '03']) ((((decimal(""))v_year - 2) * 10) + 4)
+else if( v_month member   [vector   '04', '05', '06']) ((((decimal(""))v_year - 1) * 10) + 1)
+else if( v_month member   [vector   '07', '08', '09']) ((((decimal(""))v_year - 1) * 10) + 2)
+else ((((decimal(""))v_year - 1) * 10) + 3));
+
+/*   Default value   */
+l_phsmed_qtr_ending_quarter_id=fail_if_error(if( v_month member   [vector   '01', '02', '03']) ((((decimal(""))v_year - 1) * 10) + 4)
+else if( v_month member   [vector   '04', '05', '06']) ((((decimal(""))v_year) * 10) + 1)
+else if( v_month member   [vector   '07', '08', '09']) ((((decimal(""))v_year) * 10) + 2)
+else ((((decimal(""))v_year) * 10) + 3));
+
+  out0.l_phsmed_qtr.starting_quarter_id::l_phsmed_qtr_starting_quarter_id;
+  out0.l_phsmed_qtr.ending_quarter_id::l_phsmed_qtr_ending_quarter_id;
+  out0.l_phsmed_qtr.src_env_sk::l_phsmed_qtr_src_env_sk;
+  out0.*::in0.*;
+
+end;

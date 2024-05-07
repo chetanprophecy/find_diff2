@@ -1,0 +1,317 @@
+<AppConfTempl name="zz[DEPRECATED] Publish to Datalake [dat, meta, ctl files]" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "datalake_publish.") or string_filter(appconf_name, ".") != "." )
+    "This application configuration must be named:\n" +
+    "datalake_publish.<i>group_name</i>,\n" +
+    "where <i>group_name</i> identifies" +
+    "a logical grouping of files and" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="run_datalake_transfer" prototype_path="${PUB_DXF_PLAN}/run.datalake_transfer.plan">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="PUB_DATAHUB" expression="$PUB_DATAHUB"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <ListVariable name="file_list" type="string"/>
+      <Variable name="appIdentifier" type="string"/>
+      <ListVariable name="file_list_from_sand" type="string"/>
+      <Variable name="pvt_eme_project" type="emeObject"/>
+      <Variable name="group" type="string"/>
+    </Variables>
+    <Variables name="pvt">
+      <ListVariable name="available_pvt_list" type="string"/>
+      <Variable name="private_sand" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <Variables name="uivars">
+      <Variable name="dml_check_message" type="string"/>
+      <Variable name="appconf_name_error" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check appconf name">
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="uivars.appconf_name_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="vars.group"/>
+    </Assignment>
+    <Assignment name="Pset path">
+      <SourceValue is_expression="true">"pset/run.datalake_publish/run.datalake_publish." + vars.group + ".distribution.pset"</SourceValue>
+      <TargetValue reference="proj.run_datalake_transfer" property="relative_path"/>
+      <Condition is_expression="true">uivars.appconf_name_error == "" and vars.group != ""</Condition>
+    </Assignment>
+    <Assignment name="List all datasets from get psets">
+      <SourceValue is_expression="true">begin
+  let root = pvt.private_sand + "/pset";
+  let string("")[] list = [vector];
+  for(let d in directory_listing(root, "get.*", "dir"))
+    for(let f in directory_listing(root + "/" + d, "get.*.*.pset", "file"))
+      list = vector_append(list, string_replace_first(string_prefix(f, string_rindex(f, ".")-1), "get.", ""));
+  result :: list;
+end</SourceValue>
+      <TargetValue reference="vars.file_list_from_sand"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.file_list" list_conversion_format="comma"/>
+      <TargetValue reference="proj.run_datalake_transfer.DATASET_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split_no_empty(proj.run_datalake_transfer.ACE_AVAILABLE_PRIVATE_SANDBOXES, "\n")</SourceValue>
+      <TargetValue reference="pvt.available_pvt_list"/>
+    </Assignment>
+    <Assignment name="Check if target DMLs are present">
+      <SourceValue is_expression="true">begin
+  let string("")[] msg_list = [vector "&lt;b&gt;Datalake DMLs not found for the following files:&lt;/b&gt;"];
+  if(proj.run_datalake_transfer.DATASET_LIST != "")
+  begin
+    let existing_dmls = directory_listing(proj.run_datalake_transfer.PROJECT_DIR + "/dml/datalake", "datalake.*.*.dml", "file");
+    for(let dataset in string_split_no_empty(proj.run_datalake_transfer.DATASET_LIST, ","))
+      if(("datalake." + dataset + ".dml") not member existing_dmls)
+            msg_list = vector_append(msg_list, dataset);
+  end
+  result :: if(length_of(msg_list) == 1) "" else string_join(msg_list, "\n");
+end</SourceValue>
+      <TargetValue reference="uivars.dml_check_message"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>main</Label>
+      <Column>
+        <Box>
+          <Label>Settings</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>OWD</ConstantValue>
+                <ConstantValue>RX1</ConstantValue>
+                <ConstantValue>RX2</ConstantValue>
+              </Choices>
+              <Label>Datalake Book/System Identifier</Label>
+              <SourceTargetValue reference="proj.run_datalake_transfer.SOURCE_CODE"/>
+            </ComboBox>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Daily</ConstantValue>
+                <ConstantValue>History</ConstantValue>
+              </Choices>
+              <Label>Load Type</Label>
+              <!--<SourceTargetValue reference="proj.run_datalake_transfer.LOAD_TYPE"/>-->
+              <SourceTargetValue reference="proj.run_datalake_transfer.LOAD_TYPE"/>
+            </ComboBox>
+            <CheckBox>
+              <Label>Compress files before publishing</Label>
+              <SourceTargetValue reference="proj.run_datalake_transfer.COMPRESS_DATA_FILES"/>
+              <Visible is_expression="true">proj.run_datalake_transfer.DATASET_LIST != ''</Visible>
+            </CheckBox>
+            <Box>
+              <Label>Files to Publish</Label>
+              <UIElements>
+                <Popup>
+                  <Label>Select/Edit files to publish...</Label>
+                  <Title/>
+                  <UIElements>
+                    <Popup>
+                      <Label>Pull file list from private/source sandbox...</Label>
+                      <Title/>
+                      <UIElements>
+                        <List>
+                          <Choices reference="pvt.available_pvt_list"/>
+                          <Label>Available sandboxes (pick one)</Label>
+                          <SourceTargetValue reference="pvt.private_sand"/>
+                        </List>
+                      </UIElements>
+                      <Description>This will be used only for pulling a list at configuration time, and is not saved as part of the pset</Description>
+                    </Popup>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;font color='#660000'&gt;Using private sandbox " + pvt.private_sand + "&lt;/font&gt;"</Label>
+                      <Visible is_expression="true">pvt.private_sand != ''</Visible>
+                    </TextLabel>
+                    <Spacer>
+                      <Width>100%</Width>
+                      <Height>25</Height>
+                    </Spacer>
+                    <Box>
+                      <Label>File list</Label>
+                      <UIElements>
+                        <OrderedList>
+                          <Choices is_expression="true">vars.file_list_from_sand</Choices>
+                          <Label>List of files present in above sandbox. Select any files from this list.</Label>
+                          <SourceTargetValue reference="vars.file_list"/>
+                          <Visible is_expression="true">length_of(vars.file_list_from_sand)</Visible>
+                        </OrderedList>
+                        <TextLabel>
+                          <Label>&lt;font color="#ff0000"&gt; No get psets found. Select a private sandbox above, which contains the get psets of the files that you want to publish. &lt;/font&gt;</Label>
+                          <Visible is_expression="true">not length_of(vars.file_list_from_sand)</Visible>
+                        </TextLabel>
+                      </UIElements>
+                      <Style>mainSource</Style>
+                      <Expanded is_expression="true">not is_blank(pvt.private_sand)</Expanded>
+                    </Box>
+                  </UIElements>
+                </Popup>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Current list:&lt;/b&gt;\n" +
+                    string_replace(proj.run_datalake_transfer.DATASET_LIST, ",", "\n")</Label>
+                  <Visible is_expression="true">proj.run_datalake_transfer.DATASET_LIST != ''</Visible>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>recval</Style>
+        </Box>
+        <Box>
+          <Label>Errors/Warnings</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="uivars.dml_check_message"/>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"(" + built_in.project_rpath + "/dml/datalake/datalake.&lt;system&gt;.&lt;source&gt;.dml)"</Label>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextLabel>
+              <Label>&lt;font color="#999999"&gt;&lt;b&gt;Note:&lt;/b&gt; Datalake DMLs were previously called ECG DMLs&lt;/font&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">uivars.dml_check_message != ""</Visible>
+          <LineOut>off</LineOut>
+        </Box>
+        <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Label>History Processing Settings</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>EVENT_LOG</ConstantValue>
+                <ConstantValue>CUSTOM_DIRECTORY</ConstantValue>
+              </Choices>
+              <Label>Location of historical clean files</Label>
+              <SourceTargetValue reference="proj.run_datalake_transfer.HIST_SOURCE_TYPE"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>Pick from raw event log</ConstantValue>
+                <ConstantValue>Pick from a specific directory</ConstantValue>
+              </ChoiceDisplayNames>
+            </RadioButtons>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Private/source project relative path:&lt;/b&gt; " + proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT</Label>
+                  <Description>This is required for picking clean DMLs, and selecting the default location of the clean files</Description>
+                </TextLabel>
+                <Popup>
+                  <Label>Select...</Label>
+                  <Title/>
+                  <UIElements>
+                    <EmeBrowser>
+                      <Label>Select a project</Label>
+                      <Eme reference="eme"/>
+                      <SourceTargetValue reference="vars.pvt_eme_project"/>
+                      <MaxCount>1</MaxCount>
+                      <BrowseMode>taxonomy</BrowseMode>
+                      <Taxonomies>
+                        <ConstantValue>Object Types:Projects</ConstantValue>
+                      </Taxonomies>
+                    </EmeBrowser>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Visible>false</Visible>
+            </HorizontalLayoutContainer>
+            <TextInput>
+              <Label>Private/source project relative path (e.g. orca/rxclaim)</Label>
+              <SourceTargetValue reference="proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT"/>
+              <Visible is_expression="true">proj.run_datalake_transfer.HIST_SOURCE_TYPE != "EVENT_LOG"</Visible>
+            </TextInput>
+            <TextLabel>
+              <Label is_expression="true">"(Clean DMLs will be picked up from /Projects/" + proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT + "/dml/clean.*/)"</Label>
+              <Visible is_expression="true">proj.run_datalake_transfer.HIST_SOURCE_TYPE != "EVENT_LOG" and
+proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT != ""</Visible>
+            </TextLabel>
+            <TextInput>
+              <Label>Override clean files directory for history</Label>
+              <SourceTargetValue reference="proj.run_datalake_transfer.HIST_CLEAN_FILE_DIR" source_property="expression"/>
+              <Visible is_expression="true">proj.run_datalake_transfer.HIST_SOURCE_TYPE == "CUSTOM_DIRECTORY" and proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT != ''</Visible>
+              <Description>Default directory is the clean file directory based on the private relative location selected above.</Description>
+            </TextInput>
+          </UIElements>
+          <Style/>
+          <Enabled is_expression="true">proj.run_datalake_transfer.DATASET_LIST != ''</Enabled>
+        </Box>
+        <Box>
+          <Label>About Specifying a Range of RUN_IDs</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>By default the process picks up all the clean files available in the directory.
+If you want to override the range of RUN_IDs to process in a given run, then pass it on the command line, like -START_RUN_ID &lt;run id A&gt; -END_RUN_ID &lt;run id B&gt;.
+If you want to read the values from a config file then use something like -START_RUN_ID $[read_file(&lt;config_file&gt;)]</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>outer</Style>
+          <Expanded>false</Expanded>
+          <LineIn>off</LineIn>
+          <LineOut>off</LineOut>
+        </Box>
+        <Visible is_expression="true">0 and
+uivars.appconf_name_error == "" and proj.run_datalake_transfer.LOAD_TYPE == "History"</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Run</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Execute Plan Pset</Label>
+              <SourceValue reference="proj.run_datalake_transfer"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>executable</Style>
+          <Enabled is_expression="true">proj.run_datalake_transfer.DATASET_LIST != '' and
+not (proj.run_datalake_transfer.LOAD_TYPE == "History" and proj.run_datalake_transfer.HIST_SOURCE_TYPE == "CUSTOM_DIRECTORY" and proj.run_datalake_transfer.HIST_CLEAN_RELATIVE_PROJECT == '') /* if loading history and pulling from a custom location, then we need to know the relative project (if pulling from event log then realtive project is not needed because data file and dml both are present in event log */</Enabled>
+        </Box>
+        <Visible is_expression="true">uivars.appconf_name_error == ""</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Configuration Name Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="uivars.appconf_name_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">uivars.appconf_name_error != ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.run_datalake_transfer.PROJECT_DIR + "/" + proj.run_datalake_transfer.relative_path + "&lt;/b&gt;"</Label>
+          <Width>1200</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.run_datalake_transfer.PROJECT_DIR + "/" + proj.run_datalake_transfer.relative_path)</Label>
+          <Width>1200</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,46 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_582d5140_4fba_3 = $RUN_ID;
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_intn_evdnc_cpp_intvn_evdnce_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_intn_evdnc_intvn_evdnce_id = fail_if_error(in0.intvn_evdnce_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_intn_evdnc_intvn_idntfn_id = fail_if_error(in0.intvn_idntfn_id);
+let decimal("\x01",0) c_intn_evdnc_cpp_intvn_idntfn_sk;
+let utf8 string("\x01", maximum_length=400) c_intn_evdnc_intvn_evdnce_type = fail_if_error(in0.intvn_evdnce_type);
+let utf8 string("\x01", maximum_length=400) c_intn_evdnc_intvn_evdnce_value = fail_if_error(in0.intvn_evdnce_value);
+let utf8 string("\x01", maximum_length=400) c_intn_evdnc_ref_type = fail_if_error(in0.ref_type);
+let utf8 string("\x01", maximum_length=400) c_intn_evdnc_ref_value = fail_if_error(in0.ref_value);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_intn_evdnc_evdnce_review_period_start_dt = fail_if_error(in0.evdnce_review_period_start_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_intn_evdnc_evdnce_review_period_end_dt = fail_if_error(in0.evdnce_review_period_end_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_intn_evdnc_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_intn_evdnc_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_intn_evdnc_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_intn_evdnc_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_intn_evdnc_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_intn_evdnc_cpp_intvn_idntfn_sk=fail_if_error(first_defined(lookup("c_intvn_idntfn",in0.intvn_idntfn_id).dxf_sk,-1));
+
+  out0.c_intn_evdnc.cpp_intvn_evdnce_sk::c_intn_evdnc_cpp_intvn_evdnce_sk;
+  out0.c_intn_evdnc.intvn_evdnce_id::c_intn_evdnc_intvn_evdnce_id;
+  out0.c_intn_evdnc.intvn_idntfn_id::c_intn_evdnc_intvn_idntfn_id;
+  out0.c_intn_evdnc.cpp_intvn_idntfn_sk::c_intn_evdnc_cpp_intvn_idntfn_sk;
+  out0.c_intn_evdnc.intvn_evdnce_type::c_intn_evdnc_intvn_evdnce_type;
+  out0.c_intn_evdnc.intvn_evdnce_value::c_intn_evdnc_intvn_evdnce_value;
+  out0.c_intn_evdnc.ref_type::c_intn_evdnc_ref_type;
+  out0.c_intn_evdnc.ref_value::c_intn_evdnc_ref_value;
+  out0.c_intn_evdnc.evdnce_review_period_start_dt::c_intn_evdnc_evdnce_review_period_start_dt;
+  out0.c_intn_evdnc.evdnce_review_period_end_dt::c_intn_evdnc_evdnce_review_period_end_dt;
+  out0.c_intn_evdnc.cpp_update_ts::c_intn_evdnc_cpp_update_ts;
+  out0.c_intn_evdnc.cpp_updated_by::c_intn_evdnc_cpp_updated_by;
+  out0.c_intn_evdnc.cpp_create_ts::c_intn_evdnc_cpp_create_ts;
+  out0.c_intn_evdnc.cpp_created_by::c_intn_evdnc_cpp_created_by;
+  out0.c_intn_evdnc.src_env_sk::c_intn_evdnc_src_env_sk;
+  out0.*::in0.*;
+
+end;

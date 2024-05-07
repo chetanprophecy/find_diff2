@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||orchard.f_claims_detail
+SOURCE_DB_PROJECT||||DB_RXCLAIM_ORCHARD
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\norchard       f_claims_detail
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+SOURCE_LOGICAL_NAME||||orca_rxclaim
+SQL||||SELECT   f_claims_detail.claim_number         AS  claim_number\n,   f_claims_detail.claim_seq_number     AS  claim_seq_number\n,   f_claims_detail.claim_status_id      AS  claim_status_id\n,   f_claims_detail.rxclaim_bob_key      AS  rxclaim_bob_key\n,   f_claims_detail.injectable_indicator AS  injectable_indicator\n,   f_claims_detail.formulary_flag       AS  formulary_flag\n,   f_claims_detail.risk_pool_id         AS  risk_pool_id\n,   f_claims_detail.prior_auth_id        AS  prior_auth_id\n,   f_claims_detail.rxsol_formulary_id   AS  rxsol_formulary_id\n,   f_claims_detail.ntpn_indicator       AS  ntpn_indicator\n,   f_claims_detail.dmr_indicator_key         AS   dmr_indicator_key\n,   f_claims_detail.claim_origination_code_key         AS  claim_origination_code_key\n,   f_claims_detail.claim_origination_code         AS  claim_origination_code\n,   f_claims_detail.reported_gap_discount_amt         AS  reported_gap_discount_amt\nFROM    $DB_RXCLAIM_ORCHARD_DB_NAME.PHARM_CLAIM.f_claims_detail    f_claims_detail\nwhere f_claims_detail.submitted_date >= '20150101' and f_claims_detail.submitted_date <='20170630'\nand f_claims_detail.rxclaim_bob_key IN (1,2)
+DO_SOURCE||||0
+DO_CLEAN||||1

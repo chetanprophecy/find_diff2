@@ -1,0 +1,84 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a279697_652c_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prtcpt_mbr.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_prtcpt_mbr.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_prtcpt_mbr.src_env_sk,[transform],]
+  [out0.c_prtcpt_mbr.cpp_partcptng_member_sk,[transform],]
+  [out0.c_prtcpt_mbr.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_prtcpt_mbr.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prtcpt_mbr.cpp_updated_by,'c_prtcpt_mbr.cpp_updated_by',1,0]
+     [out0.c_prtcpt_mbr.cpp_created_by,'c_prtcpt_mbr.cpp_created_by',1,0]
+     [out0.c_prtcpt_mbr.targ_flag,'c_prtcpt_mbr.targ_flag',1,0]
+     [out0.c_prtcpt_mbr.src_env_sk,'c_prtcpt_mbr.src_env_sk',1,0]
+     [out0.c_prtcpt_mbr.cpp_partcptng_member_sk,'c_prtcpt_mbr.cpp_partcptng_member_sk',1,0]
+     [out0.c_prtcpt_mbr.targ_member_stts,'c_prtcpt_mbr.targ_member_stts',1,0]
+     [out0.c_prtcpt_mbr.excl_reason_cd_descr,'c_prtcpt_mbr.excl_reason_cd_descr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_prtcpt_mbr.cpp_create_ts,'c_prtcpt_mbr.cpp_create_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_prtcpt_mbr.cpp_update_ts,'c_prtcpt_mbr.cpp_update_ts',1,0]
+     [out0.c_prtcpt_mbr.excl_reason_cd,'c_prtcpt_mbr.excl_reason_cd',1,0]
+     [out0.c_prtcpt_mbr.case_id,'c_prtcpt_mbr.case_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.targ_member_stts,'targ_member_stts',1,1]
+     [in0.targ_flag,'targ_flag',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.excl_reason_cd_descr,'excl_reason_cd_descr',1,1]
+     [in0.excl_reason_cd,'excl_reason_cd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prtcpt_mbr_cpp_partcptng_member_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_prtcpt_mbr_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prtcpt_mbr_targ_flag = fail_if_error(in0.targ_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_prtcpt_mbr_targ_member_stts = fail_if_error(in0.targ_member_stts);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prtcpt_mbr_excl_reason_cd = fail_if_error(in0.excl_reason_cd);
+let utf8 string("\x01", maximum_length=200) c_prtcpt_mbr_excl_reason_cd_descr = fail_if_error(in0.excl_reason_cd_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prtcpt_mbr_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prtcpt_mbr_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prtcpt_mbr_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prtcpt_mbr_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_prtcpt_mbr_src_env_sk = 710;
+
+
+
+  out0.c_prtcpt_mbr.cpp_partcptng_member_sk::c_prtcpt_mbr_cpp_partcptng_member_sk;
+  out0.c_prtcpt_mbr.case_id::c_prtcpt_mbr_case_id;
+  out0.c_prtcpt_mbr.targ_flag::c_prtcpt_mbr_targ_flag;
+  out0.c_prtcpt_mbr.targ_member_stts::c_prtcpt_mbr_targ_member_stts;
+  out0.c_prtcpt_mbr.excl_reason_cd::c_prtcpt_mbr_excl_reason_cd;
+  out0.c_prtcpt_mbr.excl_reason_cd_descr::c_prtcpt_mbr_excl_reason_cd_descr;
+  out0.c_prtcpt_mbr.cpp_update_ts::c_prtcpt_mbr_cpp_update_ts;
+  out0.c_prtcpt_mbr.cpp_updated_by::c_prtcpt_mbr_cpp_updated_by;
+  out0.c_prtcpt_mbr.cpp_create_ts::c_prtcpt_mbr_cpp_create_ts;
+  out0.c_prtcpt_mbr.cpp_created_by::c_prtcpt_mbr_cpp_created_by;
+  out0.c_prtcpt_mbr.src_env_sk::c_prtcpt_mbr_src_env_sk;
+  out0.*::in0.*;
+
+end;

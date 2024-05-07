@@ -1,0 +1,93 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58aed0fc_6f28_4 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_ass_em.src_env_sk,[transform],]
+  [out0.c_mem_ass_em.member_assessment_id,[passthrough],in0.member_assessment_id]
+  [out0.c_mem_ass_em.educational_material_type_id,[passthrough],in0.educational_material_type_id]
+  [out0.c_mem_ass_em.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_ass_em.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_ass_em.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_ass_em.cpp_member_assessment_sk,[transform],in0.sequence_num,
+     in0.member_assessment_id,
+     'lookup("c_member_assessment").dxf_sk']
+  [out0.c_mem_ass_em.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_ass_em.cpp_member_assessment_ematerial_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_ass_em.src_env_sk,'c_mem_ass_em.src_env_sk',1,0]
+     [out0.c_mem_ass_em.member_assessment_id,'c_mem_ass_em.member_assessment_id',1,0]
+     [out0.c_mem_ass_em.educational_material_type_id,'c_mem_ass_em.educational_material_type_id',1,0]
+     [out0.c_mem_ass_em.reported_dt,'c_mem_ass_em.reported_dt',1,0]
+     [out0.c_mem_ass_em.cpp_updated_by,'c_mem_ass_em.cpp_updated_by',1,0]
+     [out0.c_mem_ass_em.cpp_created_by,'c_mem_ass_em.cpp_created_by',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mem_ass_em.cpp_create_ts,'c_mem_ass_em.cpp_create_ts',1,0]
+     [out0.c_mem_ass_em.cpp_member_assessment_sk,'c_mem_ass_em.cpp_member_assessment_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_ass_em.cpp_update_ts,'c_mem_ass_em.cpp_update_ts',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_ass_em.sequence_num,'c_mem_ass_em.sequence_num',1,0]
+     [out0.c_mem_ass_em.cpp_member_assessment_ematerial_sk,'c_mem_ass_em.cpp_member_assessment_ematerial_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.member_assessment_id,'member_assessment_id',2,2]
+     [in0.educational_material_type_id,'educational_material_type_id',1,1]
+     ['lookup("c_member_assessment").dxf_sk','dxf_sk',1,1]
+     [in0.reported_dt,'reported_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_ass_em_cpp_member_assessment_ematerial_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_mem_ass_em_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let decimal("\x01",0) c_mem_ass_em_cpp_member_assessment_sk;
+let utf8 string("\x01", maximum_length=200) c_mem_ass_em_educational_material_type_id = fail_if_error(in0.educational_material_type_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_ass_em_sequence_num = fail_if_error(in0.sequence_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ass_em_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_ass_em_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ass_em_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_ass_em_cpp_created_by = fail_if_error(in0.created_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ass_em_reported_dt = fail_if_error(in0.reported_dt);
+let decimal("\x01",0) c_mem_ass_em_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mem_ass_em_cpp_member_assessment_sk=fail_if_error(first_defined(lookup("c_member_assessment",in0.member_assessment_id,in0.sequence_num).dxf_sk,-1));
+
+  out0.c_mem_ass_em.cpp_member_assessment_ematerial_sk::c_mem_ass_em_cpp_member_assessment_ematerial_sk;
+  out0.c_mem_ass_em.member_assessment_id::c_mem_ass_em_member_assessment_id;
+  out0.c_mem_ass_em.cpp_member_assessment_sk::c_mem_ass_em_cpp_member_assessment_sk;
+  out0.c_mem_ass_em.educational_material_type_id::c_mem_ass_em_educational_material_type_id;
+  out0.c_mem_ass_em.sequence_num::c_mem_ass_em_sequence_num;
+  out0.c_mem_ass_em.cpp_update_ts::c_mem_ass_em_cpp_update_ts;
+  out0.c_mem_ass_em.cpp_updated_by::c_mem_ass_em_cpp_updated_by;
+  out0.c_mem_ass_em.cpp_create_ts::c_mem_ass_em_cpp_create_ts;
+  out0.c_mem_ass_em.cpp_created_by::c_mem_ass_em_cpp_created_by;
+  out0.c_mem_ass_em.reported_dt::c_mem_ass_em_reported_dt;
+  out0.c_mem_ass_em.src_env_sk::c_mem_ass_em_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,110 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b83eed6_7bef_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_md_lmt_th.med_limit_new_mbr,[passthrough],in0.amkkaw]
+  [out0.d_md_lmt_th.med_limit,[passthrough],in0.amf5bs]
+  [out0.d_md_lmt_th.med_limit_thru_dt,[transform],in0.ambmdt_thru_dt]
+  [out0.d_md_lmt_th.med_limit_thrshld_sk,[transform],]
+  [out0.d_md_lmt_th.med_limit_thrshld_qual,[passthrough],in0.ammwav]
+  [out0.d_md_lmt_th.med_limit_msg_cd,[passthrough],in0.amdqvg]
+  [out0.d_md_lmt_th.med_limit_from_dt,[transform],in0.ambmdt_from_dt]
+  [out0.d_md_lmt_th.dur_srvc_nm,[passthrough],in0.amnkcd]
+  [out0.d_md_lmt_th.med_limit_ir_flg,[passthrough],in0.amk9aw]
+  [out0.d_md_lmt_th.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_md_lmt_th.med_limit_phr_thrshld,[passthrough],in0.amk2bs]
+  [out0.d_md_lmt_th.med_limit_resp,[passthrough],in0.amh8au]
+  [out0.d_md_lmt_th.dur_tbl_nm,[passthrough],in0.amnxcd]
+  [out0.d_md_lmt_th.med_limit_pbr_thrshld,[passthrough],in0.amf8bs]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_md_lmt_th.med_limit_new_mbr,'d_md_lmt_th.med_limit_new_mbr',1,0]
+     [out0.d_md_lmt_th.med_limit,'d_md_lmt_th.med_limit',1,0]
+     [out0.d_md_lmt_th.med_limit_thru_dt,'d_md_lmt_th.med_limit_thru_dt',1,0]
+     [out0.d_md_lmt_th.med_limit_thrshld_sk,'d_md_lmt_th.med_limit_thrshld_sk',1,0]
+     [out0.d_md_lmt_th.med_limit_thrshld_qual,'d_md_lmt_th.med_limit_thrshld_qual',1,0]
+     [out0.d_md_lmt_th.med_limit_msg_cd,'d_md_lmt_th.med_limit_msg_cd',1,0]
+     [out0.d_md_lmt_th.med_limit_from_dt,'d_md_lmt_th.med_limit_from_dt',1,0]
+     [out0.d_md_lmt_th.dur_srvc_nm,'d_md_lmt_th.dur_srvc_nm',1,0]
+     [out0.d_md_lmt_th.med_limit_ir_flg,'d_md_lmt_th.med_limit_ir_flg',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_md_lmt_th.src_env_sk,'d_md_lmt_th.src_env_sk',1,0]
+     [out0.d_md_lmt_th.med_limit_phr_thrshld,'d_md_lmt_th.med_limit_phr_thrshld',1,0]
+     [out0.d_md_lmt_th.med_limit_resp,'d_md_lmt_th.med_limit_resp',1,0]
+     [out0.d_md_lmt_th.dur_tbl_nm,'d_md_lmt_th.dur_tbl_nm',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_md_lmt_th.med_limit_pbr_thrshld,'d_md_lmt_th.med_limit_pbr_thrshld',1,0]
+  ]
+  impacts:
+  [
+     [in0.amk2bs,'amk2bs',1,1]
+     [in0.amdqvg,'amdqvg',1,1]
+     [in0.amnxcd,'amnxcd',1,1]
+     [in0.amh8au,'amh8au',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ambmdt_thru_dt,'ambmdt_thru_dt',1,1]
+     [in0.amnkcd,'amnkcd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.amkkaw,'amkkaw',1,1]
+     [in0.ammwav,'ammwav',1,1]
+     [in0.amf5bs,'amf5bs',1,1]
+     [in0.amk9aw,'amk9aw',1,1]
+     [in0.ambmdt_from_dt,'ambmdt_from_dt',1,1]
+     [in0.amf8bs,'amf8bs',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_md_lmt_th_med_limit_thrshld_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_md_lmt_th_dur_tbl_nm = fail_if_error(in0.amnxcd);
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_md_lmt_th_dur_srvc_nm = fail_if_error(in0.amnkcd);
+let decimal("\x01".2, maximum_length=9, sign_reserved) d_md_lmt_th_med_limit = fail_if_error(in0.amf5bs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_md_lmt_th_med_limit_resp = fail_if_error(in0.amh8au);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_md_lmt_th_med_limit_msg_cd = fail_if_error(in0.amdqvg);
+let decimal("\x01",0) d_md_lmt_th_med_limit_pbr_thrshld = fail_if_error(in0.amf8bs);
+let decimal("\x01",0) d_md_lmt_th_med_limit_phr_thrshld = fail_if_error(in0.amk2bs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_md_lmt_th_med_limit_thrshld_qual = fail_if_error(in0.ammwav);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_md_lmt_th_med_limit_new_mbr = fail_if_error(in0.amkkaw);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_md_lmt_th_med_limit_ir_flg = fail_if_error(in0.amk9aw);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_md_lmt_th_med_limit_from_dt;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_md_lmt_th_med_limit_thru_dt;
+let decimal("\x01",0) d_md_lmt_th_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_md_lmt_th_med_limit_thru_dt=fail_if_error(date_check(in0.ambmdt_thru_dt));
+
+/*   Default value   */
+d_md_lmt_th_med_limit_from_dt=fail_if_error(date_check(in0.ambmdt_from_dt));
+
+  out0.d_md_lmt_th.med_limit_thrshld_sk::d_md_lmt_th_med_limit_thrshld_sk;
+  out0.d_md_lmt_th.dur_tbl_nm::d_md_lmt_th_dur_tbl_nm;
+  out0.d_md_lmt_th.dur_srvc_nm::d_md_lmt_th_dur_srvc_nm;
+  out0.d_md_lmt_th.med_limit::d_md_lmt_th_med_limit;
+  out0.d_md_lmt_th.med_limit_resp::d_md_lmt_th_med_limit_resp;
+  out0.d_md_lmt_th.med_limit_msg_cd::d_md_lmt_th_med_limit_msg_cd;
+  out0.d_md_lmt_th.med_limit_pbr_thrshld::d_md_lmt_th_med_limit_pbr_thrshld;
+  out0.d_md_lmt_th.med_limit_phr_thrshld::d_md_lmt_th_med_limit_phr_thrshld;
+  out0.d_md_lmt_th.med_limit_thrshld_qual::d_md_lmt_th_med_limit_thrshld_qual;
+  out0.d_md_lmt_th.med_limit_new_mbr::d_md_lmt_th_med_limit_new_mbr;
+  out0.d_md_lmt_th.med_limit_ir_flg::d_md_lmt_th_med_limit_ir_flg;
+  out0.d_md_lmt_th.med_limit_from_dt::d_md_lmt_th_med_limit_from_dt;
+  out0.d_md_lmt_th.med_limit_thru_dt::d_md_lmt_th_med_limit_thru_dt;
+  out0.d_md_lmt_th.src_env_sk::d_md_lmt_th_src_env_sk;
+  out0.*::in0.*;
+
+end;

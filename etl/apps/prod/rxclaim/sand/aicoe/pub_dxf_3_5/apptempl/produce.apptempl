@@ -1,0 +1,1286 @@
+<AppConfTempl name="Produce (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+/* Check for the given appconf name to see whether it is as per naming convension */
+
+out :: check_appconf(appconf_name) = 
+begin
+  out :1: if( not starts_with(appconf_name, "produce."))
+              "This application configuration must be named as:\nproduce.<i>something</i>\nPlease close and rename it.";
+  out :2: if( (string_filter(appconf_name, ".") == "..." && string_split(appconf_name, ".")[3] != "reduced" ) or (not (string_filter(appconf_name, ".") == "." || string_filter(appconf_name, ".") == ".." || string_filter(appconf_name, ".") == "...")))
+              "This application configuration must be named as:\nproduce.<i>file_identifier</i> (or)\nproduce.<i>source_system</i>.<i>file_identifier</i> (or)\nproduce.<i>source_system</i>.<i>file_identifier</i>.reduced\nwhere <i>source_system</i> and <i>file_identifier</i>\nmust not contain periods (.)\nPlease close and rename it.";
+  out :3: "";
+end
+
+out :: get_nk_flag(v_input_src, v_source_system) = 
+begin
+let string("") pset_name="$AI_PSET/load." + v_source_system + "/load." + string_replace(v_input_src, ".reduced", "") + ".pset";
+let pset_info_type load_pset = allocate_with_defaults();
+let tnl_index=-1;
+let string("") nk_dml_flg;
+
+if(file_information(pset_name).found)
+begin
+	load_pset = pset_info(read_file(pset_name));
+	tnl_index = vector_search(load_pset.parameters, [record name "IS_IDS_DML_WITH_NK" value "" interpretation "" value_in_file 0 interpret_file_contents 0 overridable 1], {name});
+end
+
+nk_dml_flg = (string("")) if(tnl_index != -1) load_pset.parameters[tnl_index].value else "False";
+
+out ::  if(nk_dml_flg member [vector "1", "True"]) "True" else "False";
+end
+
+
+out :: get_file_dml(v_input_type, v_input_src, v_source_system, v_input_reduced, v_ilm_name, v_is_nk_dml) =
+begin
+let string("") file_dml_nm;
+file_dml_nm=if(v_input_type == "Serial Lookup")
+            "$AI_DML/lookup." + v_source_system + "/lookup." + v_input_src
+        else if(v_input_type == "Public Clean")
+            "$PUB_DATAHUB_DML/raw/clean." + v_source_system + "/clean." + v_input_src
+        else if(v_input_type == "Clean")
+            "$AI_DML/clean." + v_source_system + "/clean." + v_input_src
+        else if(v_input_type == "Source")
+            "$AI_DML/source." + v_source_system + "/source." + v_input_src
+        else if(v_input_type member [vector "Split", "Interim Split"])
+            "$AI_DML/split." + v_source_system + "/split." + v_input_src
+        else if(v_input_type member [vector "Event"] || (v_input_type member [vector "IDS"] && (v_is_nk_dml == "False" || v_input_reduced)))
+            "$PUB_DATAHUB_DML/" + v_source_system + "/" + v_input_src        
+	else if(v_input_type member [vector "IDS"] && v_is_nk_dml == "True")
+            "$PUB_DATAHUB_DML/nk/" + v_source_system + "/" + v_input_src 
+	else if(v_input_type member [vector "ILM"])
+            "$PUB_DATAHUB_DML/ilm/ilm." + v_ilm_name
+        else "";
+out :: if(v_input_reduced) file_dml_nm + ".reduced.dml" else if(v_input_type != "Other") file_dml_nm + ".dml" else "";
+end
+
+out :: get_file_name(v_input_type, v_input_src, v_source_system, v_input_reduced, v_ilm_name, v_is_nk_dml, v_source_entity, v_app_nm, v_input_event_type, v_variation) =
+begin
+let string("") file_nm;
+let long two_step_lookup_flag = if(v_input_reduced) is_two_step_lookup(v_input_src + ".reduced") else is_two_step_lookup(v_input_src);
+
+file_nm=if(v_input_type == "Serial Lookup" && v_input_reduced)
+            "$AI_SERIAL_LOOKUP/lookup." + v_source_system + "/lookup." + v_input_src + ".reduced.dat"
+	else if(v_input_type == "Serial Lookup")
+	   "$AI_SERIAL_LOOKUP/lookup." + v_source_system + "/lookup." + v_input_src + ".dat"
+        else if(v_input_type == "Public Clean" && v_input_reduced)
+            "$PUB_DATAHUB_MFS/raw/clean." + v_source_system + "/clean." + v_input_src + ".reduced.${RUN_ID}.dat.gz"
+        else if(v_input_type == "Public Clean")
+            "$PUB_DATAHUB_MFS/raw/clean." + v_source_system + "/clean." + v_input_src + ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "Clean" && v_input_reduced)
+            "$AI_MFS/clean." + v_source_system + "/clean." + v_input_src + ".reduced.${RUN_ID}.dat.gz"
+        else if(v_input_type == "Clean")
+            "$AI_MFS/clean." + v_source_system + "/clean." + v_input_src + ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "Source" && v_input_reduced)
+            "$AI_MFS/source." + v_source_system + "/source." + v_input_src + ".reduced.${RUN_ID}.dat.gz"
+        else if(v_input_type == "Source")
+            "$AI_MFS/source." + v_source_system + "/source." + v_input_src + ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "IDS" && v_input_reduced && two_step_lookup_flag == 1)
+            "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".reduced.dat.gz" + "\n" + "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".reduced.archive.dat.gz"
+        else if(v_input_type == "IDS" && v_input_reduced && two_step_lookup_flag == 0)
+            "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".reduced.dat.gz"
+        else if(v_input_type == "IDS" && two_step_lookup_flag == 1)
+            "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".dat.gz" + "\n" + "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".archive.dat.gz"
+        else if(v_input_type == "IDS" && two_step_lookup_flag == 0)
+            "$PUB_DATAHUB_MFS_LOOKUP/ids/" + v_source_system + "/one/" + v_source_entity + ".dat.gz"
+        else if(v_input_type == "ILM")
+            "$PUB_DATAHUB_MFS/ilm/" + v_source_system + "/ilm." + v_input_src + "." + v_variation + "." + v_ilm_name +  ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "Split")
+            "$AI_MFS/split/split." + v_ilm_name + "." + v_input_src + ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "Interim Split")
+            "$AI_MFS/split/interim." + v_ilm_name + "." + v_input_src + ".${RUN_ID}.dat.gz"
+        else if(v_input_type == "Event")
+            "$PUB_DATAHUB_MFS/event/" + v_source_system + "/" + v_app_nm + "." + v_ilm_name + "." + v_source_entity + "." + v_input_event_type + ".${RUN_ID}.dat.gz"
+        else "";
+
+out :: file_nm;
+end
+
+
+out :: built_list_of_rpaths(proj_list) =
+begin
+
+let string("")[] v_list_of_browsable_rpaths = string_split(proj_list,"\r\n");
+let string("") v_each_proj_path="";
+let string("")[] v_final_rpaths=allocate_with_defaults();
+
+  for(let int i,i< length_of(v_list_of_browsable_rpaths))
+  begin
+          v_each_proj_path=string_concat(v_list_of_browsable_rpaths[i],"/data/serial/lookup/");
+          v_final_rpaths=vector_append(v_final_rpaths, v_each_proj_path);
+  end
+
+out :: v_final_rpaths;
+end;
+
+
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="produce" prototype_path="${AI_PSET}/produce.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="config_nm_error" type="string"/>
+      <Variable name="app_nm" type="string"/>
+      <Variable name="lookup_error" type="string"/>
+      <Variable name="src_tgt_match_ind" type="boolean"/>
+      <Variable name="rfmt_ruleset" type="ruleset"/>
+      <Variable name="variation" type="string"/>
+      <Variable name="src" type="compound">
+        <Variable name="input_src" type="string"/>
+        <Variable name="input_type" type="string"/>
+        <Variable name="source_entity" type="string"/>
+        <Variable name="source_system" type="string"/>
+        <Variable name="file_name" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="event_type" type="string"/>
+        <Variable name="is_reduced" type="boolean"/>
+        <Variable name="is_nk_dml" type="string"/>
+        <Variable name="ilm_name" type="string"/>
+        <Variable name="filter_flag" type="boolean"/>
+        <Variable name="is_valid" type="boolean"/>
+      </Variable>
+      <Variable name="tgt" type="compound">
+        <Variable name="input_src" type="string"/>
+        <Variable name="input_type" type="string"/>
+        <Variable name="source_entity" type="string"/>
+        <Variable name="source_system" type="string"/>
+        <Variable name="file_name" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="event_type" type="string"/>
+        <Variable name="is_reduced" type="boolean"/>
+        <Variable name="is_nk_dml" type="string"/>
+        <Variable name="ilm_name" type="string"/>
+        <Variable name="filter_flag" type="boolean"/>
+        <Variable name="is_valid" type="boolean"/>
+      </Variable>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_obj" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+        <Variable name="eme_name" type="string"/>
+      </ListVariable>
+    </Variables>
+    <Eme name="eme"/>
+    <SharedFile name="catalog" path="" is_appconf_owned="true"/>
+    <SharedFile name="norm_xfr_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="rfmt_xfr_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="scan_xfr_file" path="" is_appconf_owned="true"/>
+    <SharedFile name="rollup_xfr_file" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.config_nm_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/produce/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.produce" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let len=length_of(string_split_no_empty($PROJECT_DIR, "/"));
+result :: string_split_no_empty($PROJECT_DIR, "/")[len -1];
+end</SourceValue>
+      <TargetValue reference="vars.app_nm"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""]) vars.src.input_src else ""</SourceValue>
+      <TargetValue reference="vars.src.input_src"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""]) re_replace(string_downcase(vars.src.input_src), "[.].*", "") else ""</SourceValue>
+      <TargetValue reference="vars.src.source_system"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""])  re_replace(string_downcase(vars.src.input_src), ".*[.]", "") else ""</SourceValue>
+      <TargetValue reference="vars.src.source_entity"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""]) get_nk_flag(vars.src.input_src, vars.src.source_system) else "False"</SourceValue>
+      <TargetValue reference="vars.src.is_nk_dml"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""]) "" else vars.src.file_name</SourceValue>
+      <TargetValue reference="vars.src.file_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""]) "" else vars.src.record_format</SourceValue>
+      <TargetValue reference="vars.src.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""])  get_file_name(vars.src.input_type, vars.src.input_src, vars.src.source_system, vars.src.is_reduced, vars.src.ilm_name, vars.src.is_nk_dml, vars.src.source_entity, vars.app_nm, vars.src.event_type, vars.variation) else vars.src.file_name</SourceValue>
+      <TargetValue reference="proj.produce.INPUT_FILE_PATH"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.input_type not member [vector "Other", ""])  get_file_dml(vars.src.input_type, vars.src.input_src, vars.src.source_system, vars.src.is_reduced, vars.src.ilm_name, vars.src.is_nk_dml) else vars.src.record_format</SourceValue>
+      <TargetValue reference="proj.produce.INPUT_FILE_DML"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+result :: if(
+(
+   (vars.src.input_type == "Other") 
+|| (vars.src.input_type member [vector "Source", "Clean", "Serial Lookup", "Public Clean", "IDS"] &amp;&amp; vars.src.input_src != "" )
+|| (vars.src.input_type member [vector "ILM", "Split", "Interim Split"] &amp;&amp; vars.src.input_src != "" &amp;&amp; vars.src.ilm_name != "")
+|| (vars.src.input_type member [vector "Event"] &amp;&amp; vars.src.input_src != "" &amp;&amp; vars.src.ilm_name != "" &amp;&amp; vars.src.event_type member [vector "insert", "update"])
+)
+&amp;&amp; (proj.produce.INPUT_FILE_PATH != "" &amp;&amp; proj.produce.INPUT_FILE_DML != "") &amp;&amp; !ends_with(vars.src.input_src, ".reduced")) 1 else 0;
+end</SourceValue>
+      <TargetValue reference="vars.src.is_valid"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.input_src else if(vars.tgt.input_type not member [vector "Other", ""]) vars.tgt.input_src else ""</SourceValue>
+      <TargetValue reference="vars.tgt.input_src"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.input_type else if(vars.tgt.input_type not member [vector ""]) vars.tgt.input_type else ""</SourceValue>
+      <TargetValue reference="vars.tgt.input_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.source_system else if(vars.tgt.input_type not member [vector "Other", ""]) re_replace(string_downcase(vars.tgt.input_src), "[.].*", "") else ""</SourceValue>
+      <TargetValue reference="vars.tgt.source_system"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.source_entity else if(vars.tgt.input_type not member [vector "Other", ""]) re_replace(string_downcase(vars.tgt.input_src), ".*[.]", "") else ""</SourceValue>
+      <TargetValue reference="vars.tgt.source_entity"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.is_nk_dml else if(vars.tgt.input_type not member [vector "Other", ""]) get_nk_flag(vars.tgt.input_src, vars.tgt.source_system) else "False"</SourceValue>
+      <TargetValue reference="vars.tgt.is_nk_dml"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.tgt.input_type not member [vector "Other", ""]) "" else vars.tgt.file_name</SourceValue>
+      <TargetValue reference="vars.tgt.file_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.tgt.input_type not member [vector "Other", ""]) "" else vars.tgt.record_format</SourceValue>
+      <TargetValue reference="vars.tgt.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.file_name else if(vars.tgt.input_type not member [vector "Other", ""]) get_file_name(vars.tgt.input_type, vars.tgt.input_src, vars.tgt.source_system, vars.tgt.is_reduced, vars.tgt.ilm_name, vars.tgt.is_nk_dml, vars.tgt.source_entity, vars.app_nm, vars.tgt.event_type, vars.variation) else vars.tgt.file_name</SourceValue>
+      <TargetValue reference="proj.produce.OUTPUT_FILE_LOCATION"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.record_format else if(vars.tgt.input_type not member [vector "Other", ""])  get_file_dml(vars.tgt.input_type, vars.tgt.input_src, vars.tgt.source_system, vars.tgt.is_reduced, vars.tgt.ilm_name, vars.tgt.is_nk_dml) else vars.tgt.record_format</SourceValue>
+      <TargetValue reference="proj.produce.OUTPUT_FILE_DML"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.event_type else if(vars.tgt.input_type not member [vector "Other", ""]) vars.tgt.event_type else ""</SourceValue>
+      <TargetValue reference="vars.tgt.event_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.ilm_name else if(vars.tgt.input_type not member [vector "Other", ""]) vars.tgt.ilm_name else ""</SourceValue>
+      <TargetValue reference="vars.tgt.ilm_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src_tgt_match_ind) vars.src.is_reduced else if(vars.tgt.input_type not member [vector "Other", ""]) vars.tgt.is_reduced else 0</SourceValue>
+      <TargetValue reference="vars.tgt.is_reduced"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+result :: if(
+(
+   (vars.tgt.input_type == "Other") 
+|| (vars.tgt.input_type member [vector "Source", "Clean", "Serial Lookup", "Public Clean", "IDS"] &amp;&amp; vars.tgt.input_src != "" )
+|| (vars.tgt.input_type member [vector "ILM", "Split", "Interim Split"] &amp;&amp; vars.tgt.input_src != "" &amp;&amp; vars.tgt.ilm_name != "")
+|| (vars.tgt.input_type member [vector "Event"] &amp;&amp; vars.tgt.input_src != "" &amp;&amp; vars.tgt.ilm_name != "" &amp;&amp; vars.tgt.event_type member [vector "insert", "update"])
+)
+&amp;&amp; (proj.produce.OUTPUT_FILE_LOCATION != "" &amp;&amp; proj.produce.OUTPUT_FILE_DML != "") &amp;&amp; !ends_with(vars.tgt.input_src, ".reduced")) 1 else 0;
+end</SourceValue>
+      <TargetValue reference="vars.tgt.is_valid"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.src.filter_flag) proj.produce.FILTER_EXPR else ""</SourceValue>
+      <TargetValue reference="proj.produce.FILTER_EXPR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.tgt.filter_flag) proj.produce.POST_FILTER_EXPR else ""</SourceValue>
+      <TargetValue reference="proj.produce.POST_FILTER_EXPR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.produce.USE_NORM == "True") "$AI_XFR/produce/" + built_in + "_normalize.xfr" else ""</SourceValue>
+      <TargetValue reference="norm_xfr_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="norm_xfr_file" property="path"/>
+      <TargetValue reference="proj.produce.NORM_XFR" property="parameterized_path_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/produce/" + built_in + "_rfmt.xfr"</SourceValue>
+      <TargetValue reference="rfmt_xfr_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="rfmt_xfr_file" property="path"/>
+      <TargetValue reference="proj.produce.MAPPING_XFR" property="parameterized_path_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.rfmt_ruleset"/>
+      <TargetValue reference="rfmt_xfr_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.produce.NORM_OUTPUT_DML"/>
+      <TargetValue reference="vars.rfmt_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</SourceValue>
+      <TargetValue reference="vars.rfmt_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.rfmt_ruleset" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="vars.rfmt_ruleset" property="package_catalog_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.produce"/>
+      <TargetValue reference="vars.rfmt_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.rfmt_ruleset" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(vars.lookups) &gt; 0) "$AI_CAT/produce/" + built_in + ".cat" else ""</SourceValue>
+      <TargetValue reference="catalog" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="proj.produce.AB_CATALOG" property="parameterized_path_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let lkp_vec_len = length_of(vars.lookups);
+result :: string_join(for(let k, k &lt; lkp_vec_len)                 	
+            : vars.lookups[k].lookup_name + "," + vars.lookups[k].key + ",/~" + vars.lookups[k].sample_data_path + ",/~" + re_replace(vars.lookups[k].eme_obj.parameterized_record_format_rpath, "[{}]", "") + "\n", "");
+end</SourceValue>
+      <TargetValue reference="catalog"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog"/>
+      <TargetValue reference="proj.produce.ACE_CATALOG_CONTENTS" property="dollar_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let lkp_vec_len = length_of(vars.lookups);
+result :: for(let i, i &lt; lkp_vec_len) : re_replace(string_replace_first(vars.lookups[i].eme_obj.parameterized_rpath, "/~", ""), "[{}]", "");
+end</SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_obj" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let lkp_vec_len = length_of(vars.lookups);
+let string("") lkp_err="";
+for (let i, i &lt; lkp_vec_len &amp;&amp; lkp_err == "")
+    lkp_err = if(is_blank(vars.lookups[i].lookup_name)) printf("Lookup #%d: Please provide a lookup name", i+1)
+              else if(is_blank(vars.lookups[i].key)) printf("Lookup #%d: Please provide a lookup key", i+1)
+              else if(is_blank(vars.lookups[i].sample_data_path)) printf("Lookup #%d: Please select valid dataset", i+1)
+			  else if(not starts_with(vars.lookups[i].eme_name,"lookup.")) printf("Lookup #%d: Please select lookup starting with lookup.", i+1)
+			  else if(not ends_with(vars.lookups[i].eme_name,".dat")) printf("Lookup #%d: Please select lookup ending with .dat", i+1)
+              else if(not ends_with(vars.lookups[i].eme_obj.parameterized_record_format_rpath, ".dml")) printf("Lookup #%d: Invalid dml", i+1)
+              else "";
+result :: lkp_err;
+end</SourceValue>
+      <TargetValue reference="vars.lookup_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.produce.USE_SCAN == "True") "$AI_XFR/produce/" + built_in + "_scan.xfr" else ""</SourceValue>
+      <TargetValue reference="scan_xfr_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="scan_xfr_file" property="path"/>
+      <TargetValue reference="proj.produce.SCAN_XFR" property="parameterized_path_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.produce.USE_ROLLUP == "True") "$AI_XFR/produce/" + built_in + "_rollup.xfr" else ""</SourceValue>
+      <TargetValue reference="rollup_xfr_file" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="rollup_xfr_file" property="path"/>
+      <TargetValue reference="proj.produce.ROLLUP_XFR" property="parameterized_path_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.produce.SORT_KEY)) "True" else "False"</SourceValue>
+      <TargetValue reference="proj.produce.USE_SORT"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(proj.produce.DEDUP_KEY)) "True" else "False"</SourceValue>
+      <TargetValue reference="proj.produce.USE_DEDUP"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[begin
+  let lkp_vec_len = length_of(vars.lookups);
+  result :: for(let i, i < lkp_vec_len) : string_split(vars.lookups[i].eme_obj.rpath, "/")[length_of(string_split(vars.lookups[i].eme_obj.rpath, "/")) -1];
+end]]></SourceValue>
+      <TargetValue reference="vars.lookups.eme_name"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.produce"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>"&lt;font color='#000000'&gt;Appconf Naming Error&lt;/font&gt;"</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.config_nm_error"/>
+              <Visible is_expression="true">vars.config_nm_error != ""</Visible>
+              <ReadOnly>true</ReadOnly>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.config_nm_error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Source File Setup</Label>
+          <UIElements>
+            <Box>
+              <Label/>
+              <UIElements>
+                <Popup>
+                  <Label>&lt;font color='#0000ff'&gt;Select/Modify Input File Properties... &lt;/font&gt;</Label>
+                  <Title/>
+                  <UIElements>
+                    <VerticalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: To start, Select InputFile Type. **&lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type == ""</Visible>
+                          <Description>Choose Other option from dropdown to provide complete filename/filepattern and record format directly.</Description>
+                        </TextLabel>
+                        <HorizontalLayoutContainer>
+                          <UIElements>
+                            <ComboBox>
+                              <Choices>
+                                <ConstantValue>Source</ConstantValue>
+                                <ConstantValue>Clean</ConstantValue>
+                                <ConstantValue>Serial Lookup</ConstantValue>
+                                <ConstantValue>Public Clean</ConstantValue>
+                                <ConstantValue>ILM</ConstantValue>
+                                <ConstantValue>Split</ConstantValue>
+                                <ConstantValue>Interim Split</ConstantValue>
+                                <ConstantValue>IDS</ConstantValue>
+                                <ConstantValue>Event</ConstantValue>
+                                <ConstantValue>Other</ConstantValue>
+                              </Choices>
+                              <Label>Input File Type...</Label>
+                              <SourceTargetValue reference="vars.src.input_type"/>
+                              <BlankValueDisplayName>"Please select"</BlankValueDisplayName>
+                            </ComboBox>
+                            <CheckBox>
+                              <Label>IS_REDUCED</Label>
+                              <SourceTargetValue reference="vars.src.is_reduced"/>
+                              <Visible is_expression="true">vars.src.input_type member [vector "IDS", "Clean", "Source", "Serial Lookup", "Public Clean"]</Visible>
+                            </CheckBox>
+                            <RadioButtons>
+                              <Choices>
+                                <ConstantValue>insert</ConstantValue>
+                                <ConstantValue>update</ConstantValue>
+                              </Choices>
+                              <Label>Select Event File Type</Label>
+                              <SourceTargetValue reference="vars.src.event_type"/>
+                              <Visible is_expression="true">vars.src.input_type == "Event"</Visible>
+                            </RadioButtons>
+                            <TextInput>
+                              <Label>Variation</Label>
+                              <Visible is_expression="true">vars.src.input_type == "ILM"</Visible>
+                              <SourceTargetValue reference="vars.variation"/>
+                            </TextInput>
+                          </UIElements>
+                          <Label>Horizontal Layout Container</Label>
+                        </HorizontalLayoutContainer>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.src.input_type != "Other"</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: Before you go on, Please provide Input Source Name. **&lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type not member [vector "Other", ""] &amp;&amp; vars.src.input_src == ""</Visible>
+                          <Description>Please provide Input Source Name to proceed with the configuration.</Description>
+                        </TextLabel>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: Input Source Name shouldn't end with .reduced instead use IS_REDUCED checkbox option to select reduced file. ** &lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type not member [vector "Other", ""] &amp;&amp; ends_with(vars.src.input_src, ".reduced")</Visible>
+                          <Description>Input Source Name shouldn't end with .reduced instead use IS_REDUCED checkbox option.</Description>
+                        </TextLabel>
+                        <TextInput>
+                          <Label>Input File Source Name (E.g., ids_common.d_date, ids_rxclaim.d_mpa_audit, rxclaim_orx.rcex4p etc)</Label>
+                          <SourceTargetValue reference="vars.src.input_src"/>
+                          <Visible is_expression="true">vars.src.input_type not member [vector "", "Other"]</Visible>
+                        </TextInput>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.src.input_type member [vector "ILM", "Split", "Event"]</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: Before you go on, Please provide ILM Name. **&lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type member [vector "ILM", "Split", "Event"] &amp;&amp; vars.src.ilm_name == ""</Visible>
+                          <Description>Please provide ILM Name to proceed with the configuration.</Description>
+                        </TextLabel>
+                        <TextInput>
+                          <Label>ILM Name</Label>
+                          <SourceTargetValue reference="vars.src.ilm_name"/>
+                          <Visible is_expression="true">vars.src.input_type member [vector "ILM", "Split", "Event"]</Visible>
+                        </TextInput>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.src.input_type == "Other"</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: Before you go on, please select/provide InputFile Path/Pattern. **&lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type != "" &amp;&amp; proj.produce.INPUT_FILE_PATH == ""</Visible>
+                          <Description>Without InputFile Path/Pattern we can't proceed withrest of the configuration.</Description>
+                        </TextLabel>
+                        <TextLabel>
+                          <Label>&lt;font color='#ff0000'&gt;** Note: Before you go on, please select/provide InputFile Record Format. **&lt;/font&gt;</Label>
+                          <Visible is_expression="true">vars.src.input_type != "" &amp;&amp; proj.produce.INPUT_FILE_DML == ""</Visible>
+                          <Description>Without InputFile Record Format we can't proceed withrest of the configuration.</Description>
+                        </TextLabel>
+                        <Box>
+                          <Label>Input File/Pattern and it's DML Selection</Label>
+                          <UIElements>
+                            <TextInput>
+                              <Label>InputFile Path (or) Pattern</Label>
+                              <SourceTargetValue reference="vars.src.file_name"/>
+                            </TextInput>
+                            <TextInput>
+                              <Label>InputFile Record Format</Label>
+                              <SourceTargetValue reference="vars.src.record_format"/>
+                            </TextInput>
+                          </UIElements>
+                          <Visible is_expression="true">vars.src.input_type == "Other"</Visible>
+                          <Style>inner</Style>
+                        </Box>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                        </Spacer>
+                        <Box>
+                          <Label is_expression="true">"Input File Details"</Label>
+                          <UIElements>
+                            <TextLabel>
+                              <Label reference="proj.produce.INPUT_FILE_PATH" property="expression"/>
+                              <ReadOnly>true</ReadOnly>
+                            </TextLabel>
+                            <TextLabel>
+                              <Label reference="proj.produce.INPUT_FILE_DML" property="expression"/>
+                              <ReadOnly>true</ReadOnly>
+                            </TextLabel>
+                          </UIElements>
+                          <Style>inner</Style>
+                          <Visible reference="vars.src.is_valid"/>
+                        </Box>
+                      </UIElements>
+                    </VerticalLayoutContainer>
+                  </UIElements>
+                  <Style>mainSource</Style>
+                  <Width>800</Width>
+                  <Height>600</Height>
+                </Popup>
+                <Popup>
+                  <Label>View Input File</Label>
+                  <Title/>
+                  <UIElements>
+                    <ViewData>
+                      <Label>View Data</Label>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.produce.INPUT_FILE_DML))</RecordFormat>
+                      <SourceValue reference="proj.produce.INPUT_FILE_PATH"/>
+                    </ViewData>
+                  </UIElements>
+                  <Visible is_expression="true">vars.src.is_valid &amp;&amp; file_information(proj.produce.INPUT_FILE_DML).found</Visible>
+                </Popup>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                  <Visible reference="vars.src.is_valid"/>
+                </Spacer>
+                <Box>
+                  <Label is_expression="true">"Input File Details"</Label>
+                  <UIElements>
+                    <TextLabel>
+                      <Label reference="proj.produce.INPUT_FILE_PATH" property="expression"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextLabel>
+                    <TextLabel>
+                      <Label reference="proj.produce.INPUT_FILE_DML" property="expression"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextLabel>
+                  </UIElements>
+                  <Style>inner</Style>
+                  <Visible reference="vars.src.is_valid"/>
+                </Box>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label/>
+              <UIElements>
+                <CheckBox>
+                  <Label>Apply Source Filter</Label>
+                  <SourceTargetValue reference="vars.src.filter_flag"/>
+                </CheckBox>
+                <Box>
+                  <Label>Filter the Source data</Label>
+                  <UIElements>
+                    <Popup>
+                      <Label>Optional: Filter Source Records...</Label>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Expression Editor</Label>
+                          <RecordFormat is_expression="true">expand_type(read_file(proj.produce.INPUT_FILE_DML))</RecordFormat>
+                          <SourceTargetValue reference="proj.produce.FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                      <Style>expressionEditor</Style>
+                      <Title>Keep Only These Source Records</Title>
+                      <Description>Provide the rules for which records should be kept.</Description>
+                    </Popup>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;b&gt;\nFilter Expression\n\n&lt;/b&gt;" + proj.produce.FILTER_EXPR</Label>
+                      <Visible is_expression="true">proj.produce.FILTER_EXPR != ""</Visible>
+                    </TextLabel>
+                  </UIElements>
+                  <Style>reduction</Style>
+                  <Visible reference="vars.src.filter_flag"/>
+                </Box>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible reference="vars.src.is_valid"/>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.config_nm_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Missing Source DML</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="proj.produce.INPUT_FILE_DML" property="expression"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.src.is_valid &amp;&amp; not file_information(proj.produce.INPUT_FILE_DML).found</Visible>
+        </Box>
+        <Box>
+          <Label>Optional: Catalog Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select any lookups...</Label>
+              <Title>Choose the Lookups (lookup.*.dat)</Title>
+              <UIElements>
+                <EmeBrowser>
+                  <SourceTargetValue reference="vars.lookups.eme_obj"/>
+                  <Eme reference="eme"/>
+                  <BrowseMode>directory</BrowseMode>
+                  <BrowsableRootRpaths is_expression="true">built_list_of_rpaths(proj.produce.ACE_LOOKUP_PROJECT_LIST)</BrowsableRootRpaths>
+                  <ObjectTypes>dataset</ObjectTypes>
+                  <AllowDuplicates>true</AllowDuplicates>
+                </EmeBrowser>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Label is_expression="true">if(is_blank(lkp.lookup_name)) "**Please enter lookup name**" else lkp.lookup_name</Label>
+                  <UIElements>
+                    <TextLabel>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                    </TextInput>
+                    <Popup>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_obj.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_obj.name)</Title>
+                      <UIElements>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <ContextPset reference="proj.produce"/>
+                          <RecordFormat reference="lkp.eme_obj" property="record_format"/>
+                          <SourceTargetValue reference="lkp.key"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                        </KeyPicker>
+                      </UIElements>
+                      <Style>key</Style>
+                    </Popup>
+                  </UIElements>
+                  <Style>dataset</Style>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) || is_blank(lkp.key)</Expanded>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                                        "\n\nLookup Name:\n" + lkp.lookup_name +
+                                        "\n\nSource Dataset:\n" + ds_name(lkp.eme_obj.name) +
+                                        (if ( is_blank(lkp.key) ) "" else
+                                          "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>enrichmentSource</Style>
+          <Visible is_expression="true">file_information(proj.produce.OUTPUT_FILE_DML).found</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label reference="vars.lookup_error"/>
+          <UIElements/>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">file_information(proj.produce.OUTPUT_FILE_DML).found &amp;&amp; vars.lookup_error != ""</Visible>
+        </Box>
+        <Box>
+          <Label/>
+          <UIElements>
+            <CheckBox>
+              <Label>Do Normalize</Label>
+              <SourceTargetValue reference="proj.produce.USE_NORM"/>
+              <FalseValue>False</FalseValue>
+              <TrueValue>True</TrueValue>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible reference="proj.produce.USE_NORM"/>
+            </Spacer>
+            <Box>
+              <Label/>
+              <UIElements>
+                <Popup>
+                  <Label>Select/Modify Normalize DML...</Label>
+                  <Title/>
+                  <UIElements>
+                    <FileBrowser>
+                      <Label>Browse Normalize DML</Label>
+                      <SourceTargetValue reference="proj.produce.NORM_FILE_DML" target_property="parameterized_path_expression"/>
+                      <BrowsableRoot is_expression="true">$AI_DML</BrowsableRoot>
+                    </FileBrowser>
+                  </UIElements>
+                </Popup>
+                <Popup>
+                  <Label>Add/Edit Normalize mapping...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextArea>
+                      <Label>Please add/modify Normalize Mapping</Label>
+                      <SourceTargetValue reference="norm_xfr_file"/>
+                      <Width>1000</Width>
+                      <Height>500</Height>
+                    </TextArea>
+                  </UIElements>
+                  <Style>mapping</Style>
+                  <Width>1200</Width>
+                  <Height>600</Height>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">proj.produce.USE_NORM</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible reference="proj.produce.USE_NORM"/>
+            </Spacer>
+            <BusinessRulesPopup>
+              <Label>Edit Mapping Rules...</Label>
+              <SourceTargetValue reference="vars.rfmt_ruleset"/>
+              <Title>Mapping Transformation Rules...</Title>
+              <Style>mapping</Style>
+            </BusinessRulesPopup>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label>Optional: Repartitioning of Source Data</Label>
+              <UIElements>
+                <Popup>
+                  <Label>Edit/Select Sort Key...</Label>
+                  <Title/>
+                  <UIElements>
+                    <KeyPicker>
+                      <Label>Key Picker</Label>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                      <SourceTargetValue reference="proj.produce.SORT_KEY"/>
+                    </KeyPicker>
+                  </UIElements>
+                  <Style>key</Style>
+                </Popup>
+                <Popup>
+                  <Label>Edit/Select Extra Sort Key...</Label>
+                  <Title/>
+                  <UIElements>
+                    <KeyPicker>
+                      <Label>Key Picker</Label>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                      <SourceTargetValue reference="proj.produce.EXTRA_SORT_KEY"/>
+                    </KeyPicker>
+                  </UIElements>
+                  <Style>key</Style>
+                </Popup>
+                <Popup>
+                  <Label>Edit/Select Dedup Key...</Label>
+                  <Title/>
+                  <UIElements>
+                    <KeyPicker>
+                      <Label>Key Picker</Label>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                      <SourceTargetValue reference="proj.produce.DEDUP_KEY"/>
+                    </KeyPicker>
+                  </UIElements>
+                  <Style>key</Style>
+                </Popup>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Sort Key :- &lt;/b&gt;" +  proj.produce.SORT_KEY + "\n" +
+            "&lt;b&gt;Extra Sort Key :- &lt;/b&gt;" + proj.produce.EXTRA_SORT_KEY + "\n" +
+            "&lt;b&gt;Dedup Key :- &lt;/b&gt;" + proj.produce.DEDUP_KEY</Label>
+                  <Visible is_expression="true">proj.produce.USE_SORT == "True" || (proj.produce.USE_SORT == "True" &amp;&amp; proj.produce.USE_DEDUP == "True")</Visible>
+                </TextLabel>
+              </UIElements>
+              <Style>key</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible reference="proj.produce.USE_NORM"/>
+            </Spacer>
+            <Box>
+              <Label/>
+              <UIElements>
+                <CheckBox>
+                  <Label>Do Scan</Label>
+                  <SourceTargetValue reference="proj.produce.USE_SCAN"/>
+                  <FalseValue>False</FalseValue>
+                  <TrueValue>True</TrueValue>
+                </CheckBox>
+                <CheckBox>
+                  <Label>Do Rollup</Label>
+                  <SourceTargetValue reference="proj.produce.USE_ROLLUP"/>
+                  <FalseValue>False</FalseValue>
+                  <TrueValue>True</TrueValue>
+                </CheckBox>
+                <Box>
+                  <Label/>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"Scan Key : " + proj.produce.SCAN_KEY</Label>
+                    </TextLabel>
+                    <Popup>
+                      <Label>Edit/Modify Scan Key...</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Key Picker</Label>
+                          <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                          <SourceTargetValue reference="proj.produce.SCAN_KEY"/>
+                        </KeyPicker>
+                      </UIElements>
+                      <Style>key</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Edit/Modify Scan Mapping Rules...</Label>
+                      <Title/>
+                      <UIElements>
+                        <TextArea>
+                          <Label>Text Area</Label>
+                          <SourceTargetValue reference="scan_xfr_file"/>
+                          <Height>500</Height>
+                          <Width>1000</Width>
+                        </TextArea>
+                      </UIElements>
+                      <Height>600</Height>
+                      <Width>1200</Width>
+                    </Popup>
+                  </UIElements>
+                  <Style>inner</Style>
+                  <Visible reference="proj.produce.USE_SCAN"/>
+                </Box>
+                <Box>
+                  <Label/>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"Rollup Key : " + proj.produce.ROLLUP_KEY</Label>
+                    </TextLabel>
+                    <Popup>
+                      <Label>Edit/Modify Rollup Key...</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Key Picker</Label>
+                          <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                          <SourceTargetValue reference="proj.produce.ROLLUP_KEY"/>
+                        </KeyPicker>
+                      </UIElements>
+                      <Style>key</Style>
+                    </Popup>
+                    <Popup>
+                      <Label>Edit/Modify Rollup Mapping Rules...</Label>
+                      <Title/>
+                      <UIElements>
+                        <TextArea>
+                          <Label>Text Area</Label>
+                          <SourceTargetValue reference="rollup_xfr_file"/>
+                          <Height>500</Height>
+                          <Width>1000</Width>
+                        </TextArea>
+                      </UIElements>
+                      <Height>600</Height>
+                      <Width>1200</Width>
+                    </Popup>
+                  </UIElements>
+                  <Style>inner</Style>
+                  <Visible reference="proj.produce.USE_ROLLUP"/>
+                </Box>
+              </UIElements>
+              <Style>rollup</Style>
+            </Box>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">file_information(proj.produce.OUTPUT_FILE_DML).found &amp;&amp; vars.lookup_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target File Setup</Label>
+          <UIElements>
+            <Box>
+              <UIElements>
+                <CheckBox>
+                  <Label>Is Target is same as Source</Label>
+                  <SourceTargetValue reference="vars.src_tgt_match_ind"/>
+                  <Visible is_expression="true">!( if(vars.src.is_reduced) is_two_step_lookup(vars.src.input_src + ".reduced") else is_two_step_lookup(vars.src.input_src))</Visible>
+                </CheckBox>
+                <TextLabel>
+                  <Label>** Note: Select OutputFile Type to proceed. **</Label>
+                  <Visible is_expression="true">vars.tgt.input_type == ""</Visible>
+                  <Description>Choose Other option from dropdown to provide complete filename/filepattern and record format directly.</Description>
+                </TextLabel>
+                <Popup>
+                  <Label>&lt;font color='#0000ff'&gt;Select/Modify Output File Properties... &lt;/font&gt;</Label>
+                  <Title/>
+                  <UIElements>
+                    <VerticalLayoutContainer>
+                      <UIElements>
+                        <HorizontalLayoutContainer>
+                          <UIElements>
+                            <ComboBox>
+                              <Choices>
+                                <ConstantValue>Source</ConstantValue>
+                                <ConstantValue>Clean</ConstantValue>
+                                <ConstantValue>Serial Lookup</ConstantValue>
+                                <ConstantValue>Public Clean</ConstantValue>
+                                <ConstantValue>ILM</ConstantValue>
+                                <ConstantValue>Split</ConstantValue>
+                                <ConstantValue>Interim Split</ConstantValue>
+                                <ConstantValue>IDS</ConstantValue>
+                                <ConstantValue>Event</ConstantValue>
+                                <ConstantValue>Other</ConstantValue>
+                              </Choices>
+                              <Label>Output File Type...</Label>
+                              <SourceTargetValue reference="vars.tgt.input_type"/>
+                              <BlankValueDisplayName>"Please select"</BlankValueDisplayName>
+                            </ComboBox>
+                            <CheckBox>
+                              <Label>IS_REDUCED</Label>
+                              <SourceTargetValue reference="vars.tgt.is_reduced"/>
+                              <Visible is_expression="true">vars.tgt.input_type member [vector "IDS", "Clean", "Source", "Serial Lookup", "Public Clean"]</Visible>
+                            </CheckBox>
+                            <RadioButtons>
+                              <Choices>
+                                <ConstantValue>insert</ConstantValue>
+                                <ConstantValue>update</ConstantValue>
+                              </Choices>
+                              <Label>Select Event File Type</Label>
+                              <SourceTargetValue reference="vars.tgt.event_type"/>
+                              <Visible is_expression="true">vars.tgt.input_type == "Event"</Visible>
+                            </RadioButtons>
+                            <TextInput>
+                              <Label>Variation</Label>
+                              <Visible is_expression="true">vars.tgt.input_type == "ILM"</Visible>
+                              <SourceTargetValue reference="vars.variation"/>
+                            </TextInput>
+                          </UIElements>
+                          <Label>Horizontal Layout Container</Label>
+                        </HorizontalLayoutContainer>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.tgt.input_type != "Other"</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>** Note: Before you go on, Please provide Output Source Name. **</Label>
+                          <Visible is_expression="true">vars.tgt.input_type not member [vector "Other", ""] &amp;&amp; vars.tgt.input_src == ""</Visible>
+                          <Description>Please provide Output Source Name to proceed with the configuration.</Description>
+                        </TextLabel>
+                        <TextInput>
+                          <Label>Output File Source Name (E.g., ids_common.d_date, ids_rxclaim.d_mpa_audit, rxclaim_orx.rcex4p etc)</Label>
+                          <SourceTargetValue reference="vars.tgt.input_src"/>
+                          <Visible is_expression="true">vars.tgt.input_type not member [vector "", "Other"]</Visible>
+                        </TextInput>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.tgt.input_type member [vector "ILM", "Split", "Event"]</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>** Note: Before you go on, Please provide ILM Name. **</Label>
+                          <Visible is_expression="true">vars.tgt.input_type member [vector "ILM", "Split", "Event"] &amp;&amp; vars.tgt.ilm_name == ""</Visible>
+                          <Description>Please provide ILM Name to proceed with the configuration.</Description>
+                        </TextLabel>
+                        <TextInput>
+                          <Label>ILM Name</Label>
+                          <SourceTargetValue reference="vars.tgt.ilm_name"/>
+                          <Visible is_expression="true">vars.tgt.input_type member [vector "ILM", "Split", "Event"]</Visible>
+                        </TextInput>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                          <Visible is_expression="true">vars.tgt.input_type == "Other"</Visible>
+                        </Spacer>
+                        <TextLabel>
+                          <Label>** Note: Before you go on, please select/provide OutputFile Path/Pattern. **</Label>
+                          <Visible is_expression="true">vars.tgt.input_type != "" &amp;&amp; proj.produce.OUTPUT_FILE_LOCATION == ""</Visible>
+                          <Description>Without OutputFile Path/Pattern we can't proceed withrest of the configuration.</Description>
+                        </TextLabel>
+                        <TextLabel>
+                          <Label>** Note: Before you go on, please select/provide OutputFile Record Format. **</Label>
+                          <Visible is_expression="true">vars.tgt.input_type != "" &amp;&amp; proj.produce.OUTPUT_FILE_DML == ""</Visible>
+                          <Description>Without InputFile Record Format we can't proceed withrest of the configuration.</Description>
+                        </TextLabel>
+                        <Box>
+                          <Label>Output File/Pattern and it's DML Selection</Label>
+                          <UIElements>
+                            <TextInput>
+                              <Label>OutputFile Path (or) Pattern</Label>
+                              <SourceTargetValue reference="vars.tgt.file_name"/>
+                            </TextInput>
+                            <TextInput>
+                              <Label>OutputFile Record Format</Label>
+                              <SourceTargetValue reference="vars.tgt.record_format"/>
+                            </TextInput>
+                          </UIElements>
+                          <Visible is_expression="true">vars.tgt.input_type == "Other"</Visible>
+                          <Style>inner</Style>
+                        </Box>
+                        <Spacer>
+                          <Width>100%</Width>
+                          <Height>25</Height>
+                        </Spacer>
+                        <Box>
+                          <Label is_expression="true">"Output File Details"</Label>
+                          <UIElements>
+                            <TextLabel>
+                              <Label reference="proj.produce.OUTPUT_FILE_LOCATION" property="expression"/>
+                              <ReadOnly>true</ReadOnly>
+                            </TextLabel>
+                            <TextLabel>
+                              <Label reference="proj.produce.OUTPUT_FILE_DML" property="expression"/>
+                              <ReadOnly>true</ReadOnly>
+                            </TextLabel>
+                          </UIElements>
+                          <Style>inner</Style>
+                          <Visible reference="vars.tgt.is_valid"/>
+                        </Box>
+                      </UIElements>
+                    </VerticalLayoutContainer>
+                  </UIElements>
+                  <Style>mainSource</Style>
+                  <Width>800</Width>
+                  <Height>600</Height>
+                </Popup>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                  <Visible reference="vars.tgt.is_valid"/>
+                </Spacer>
+                <Box>
+                  <Label is_expression="true">"Output File Details"</Label>
+                  <UIElements>
+                    <TextLabel>
+                      <Label reference="proj.produce.OUTPUT_FILE_LOCATION" property="expression"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextLabel>
+                    <TextLabel>
+                      <Label reference="proj.produce.OUTPUT_FILE_DML" property="expression"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextLabel>
+                  </UIElements>
+                  <Style>inner</Style>
+                  <Visible reference="vars.tgt.is_valid"/>
+                </Box>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label/>
+              <UIElements>
+                <CheckBox>
+                  <Label>Apply Target Filter</Label>
+                  <SourceTargetValue reference="vars.tgt.filter_flag"/>
+                </CheckBox>
+                <Box>
+                  <Label>Filter for Target data</Label>
+                  <UIElements>
+                    <Popup>
+                      <Label>Optional: Filter Target Records...</Label>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Expression Editor</Label>
+                          <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                          <SourceTargetValue reference="proj.produce.POST_FILTER_EXPR"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                      <Style>expressionEditor</Style>
+                      <Title>Keep Only These Source Records</Title>
+                      <Description>Provide the rules for which records should be kept.</Description>
+                    </Popup>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;b&gt;\nFilter Expression\n\n&lt;/b&gt;" + proj.produce.POST_FILTER_EXPR</Label>
+                      <Visible is_expression="true">proj.produce.POST_FILTER_EXPR != ""</Visible>
+                    </TextLabel>
+                  </UIElements>
+                  <Style>reduction</Style>
+                  <Visible reference="vars.tgt.filter_flag"/>
+                </Box>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible reference="vars.tgt.is_valid"/>
+            </Box>
+            <Box>
+              <Label/>
+              <UIElements>
+                <ExecuteButton>
+                  <Label>Remember: Save before you run.</Label>
+                  <SourceValue reference="proj.produce"/>
+                  <ButtonLabel>Run Produce</ButtonLabel>
+                </ExecuteButton>
+                <Popup>
+                  <Label>View Output File</Label>
+                  <Title/>
+                  <UIElements>
+                    <ViewData>
+                      <Label>View Data</Label>
+                      <RecordFormat is_expression="true">expand_type(read_type(proj.produce.OUTPUT_FILE_DML))</RecordFormat>
+                      <SourceValue reference="proj.produce.OUTPUT_FILE_LOCATION"/>
+                    </ViewData>
+                  </UIElements>
+                  <Visible is_expression="true">vars.tgt.is_valid &amp;&amp; file_information(proj.produce.OUTPUT_FILE_DML).found</Visible>
+                </Popup>
+              </UIElements>
+              <Style>executable</Style>
+              <Visible reference="vars.tgt.is_valid"/>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">file_information(proj.produce.INPUT_FILE_DML).found &amp;&amp; vars.src.is_valid</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Missing Target DML</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="proj.produce.OUTPUT_FILE_DML" property="expression"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.tgt.is_valid &amp;&amp; not file_information(proj.produce.OUTPUT_FILE_DML).found</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label reference="proj.produce" property="contents"/>
+          <Width>1000</Width>
+          <Height>1000</Height>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label>&lt;font size="14 pt"&gt;
+
+&lt;b&gt;Steps for creating produce configuration&lt;/b&gt;
+
+1. Naming convention should be one from below.
+produce.file_identifier
+produce.source_system.file_identifier
+produce.source_system.file_identifier.reduced
+
+2.	Once you are into the configuration, First you need to choose the source type from the options such as Source, Clean, Serial Lookup, Public Clean, ILM, Split, Interim Split, IDS, Event because these are the commonly generated objects using existing DXF framework. Then Select Source Name. Once Source type and Source name details are chosen, configuration displays Source File Name and DML.  Other than existing types if you want to physically provide Source File name and DML you can provide the same by choosing Other option in Source type drop down.  There is an additional deselect records option is available to filter un-wanted Source records.
+
+3.	Then we need to go with Target type and target name similar to Step 2 along with target filter.
+
+4.	We have embedded more functionalities such as using catalog lookups in mapping transformations, Normalize to produce more records, Repartitioning of data to regroup the source data, Scan to perform cumulative calculations and Rollup to perform aggregations etc for custom requirements if any.
+
+5.	Lastly if we are trying to reproduce the same source file again as target file, functionality is simplified by just checking the checkbox option in target selection column.
+
+Note that Normalize, Scan and Rollup xfrs had to be written and copied to text areas provided because we dont have respective rulesets available to generate the transform.
+
+&lt;b&gt;Testing the Produce&lt;/b&gt;
+
+Once your have configured the produce, save it and run it.  You should not get any errors and you should review the resulting records via the "View File..." links.  It is important that you run the produce for two reasons.  First, you should test it.  Second, 
+you need to run it in order to provide data to the next stage in the process.
+
+&lt;b&gt;Publishing Your Work&lt;/b&gt;
+
+Be sure to publish your working configuration once it is tested.  This makes the work you have done available to others and unlocks the configuration so that other people can work on it too.  Give yourself a pat on the back if you include a meaniful comment when you publish.  Ideally, you should describe why this source was added.  Comments that describe "why" are more useful than comments that only describe "what" was done.
+
+Please feel free to engage ABINITIO COE team by raising a ticket in SN group "Ab Initio" if there are any gaps in using template for the functionality, if you need any help or more information about this process.
+
+&lt;/font&gt;</Label>
+          <Width>1200</Width>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

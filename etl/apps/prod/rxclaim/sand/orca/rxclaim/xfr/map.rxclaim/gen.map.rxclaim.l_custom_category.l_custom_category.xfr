@@ -1,0 +1,68 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_cust_cat.category_name,[transform],in0.category_name]
+  [out0.l_cust_cat.custom_category_sk,[transform],]
+  [out0.l_cust_cat.category_psi_comments,[transform],in0.category_psi_comments]
+  [out0.l_cust_cat.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_cust_cat.user_id,[transform],in0.user_id]
+  [out0.l_cust_cat.category_mpd_comments,[transform],in0.category_mpd_comments]
+  [out0.l_cust_cat.category_id,[transform],in0.category_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_cust_cat.category_name,'l_cust_cat.category_name',1,0]
+     [out0.l_cust_cat.custom_category_sk,'l_cust_cat.custom_category_sk',1,0]
+     [out0.l_cust_cat.category_psi_comments,'l_cust_cat.category_psi_comments',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_cust_cat.src_env_sk,'l_cust_cat.src_env_sk',1,0]
+     [out0.l_cust_cat.user_id,'l_cust_cat.user_id',1,0]
+     [out0.l_cust_cat.category_mpd_comments,'l_cust_cat.category_mpd_comments',1,0]
+     [out0.l_cust_cat.category_id,'l_cust_cat.category_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.user_id,'user_id',1,1]
+     [in0.category_name,'category_name',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.category_psi_comments,'category_psi_comments',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.category_mpd_comments,'category_mpd_comments',1,1]
+     [in0.category_id,'category_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_cust_cat_custom_category_sk = -1;
+let decimal("\x01",0, maximum_length=11) l_cust_cat_category_id = fail_if_error(string_lrtrim(in0.category_id));
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_cust_cat_category_name = fail_if_error(string_lrtrim(in0.category_name));
+let string("\x01",charset="iso-8859-15", maximum_length=512) l_cust_cat_category_psi_comments = fail_if_error(string_lrtrim(in0.category_psi_comments));
+let string("\x01",charset="iso-8859-15", maximum_length=512) l_cust_cat_category_mpd_comments = fail_if_error(string_lrtrim(in0.category_mpd_comments));
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_cust_cat_user_id = fail_if_error(string_lrtrim(in0.user_id));
+let decimal("\x01",0) l_cust_cat_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_cust_cat.custom_category_sk::l_cust_cat_custom_category_sk;
+  out0.l_cust_cat.category_id::l_cust_cat_category_id;
+  out0.l_cust_cat.category_name::l_cust_cat_category_name;
+  out0.l_cust_cat.category_psi_comments::l_cust_cat_category_psi_comments;
+  out0.l_cust_cat.category_mpd_comments::l_cust_cat_category_mpd_comments;
+  out0.l_cust_cat.user_id::l_cust_cat_user_id;
+  out0.l_cust_cat.src_env_sk::l_cust_cat_src_env_sk;
+  out0.*::in0.*;
+
+end;

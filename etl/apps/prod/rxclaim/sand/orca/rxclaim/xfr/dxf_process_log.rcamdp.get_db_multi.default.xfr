@@ -1,0 +1,52 @@
+include "/~$PUB_DXF_XFR/dataset_id.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+
+let long dxf_src_sys_id = /*if (string_split($"AB_PSET_NAME", ".")[2] == "rebates") "rebates" else*/ name_to_sys_id($"SOURCE_LOGICAL_NAME");
+let long dxf_src_dataset_id = /* if ( this_partition() == 0 ) get_dataset_id("$DATASET_ID_LOOKUP_PATH") else */ 0;  /* The index into the Source Process table. */
+let long stride = number_of_partitions();
+let long dxf_src_rec_cnt = this_partition() - stride + 1; /* The number of records processed from this source.  Also used as a record number on each source record. */
+let string(unsigned integer(1)) dxf_src_file_name = "";
+let start_time = now();
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") v_START_CHANGES_TIME=if(is_blank($"START_CHANGES_TIME") or is_null($"START_CHANGES_TIME")) (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS")) now()
+                      else (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME" ;
+
+/* Always output 1 record.  Also increments the record counter. */
+out :: length(in) =
+begin
+  dxf_src_rec_cnt = dxf_src_rec_cnt + stride;
+  out :: 1;
+end;
+
+
+/* Add Source ID and Record Number.  Remove trailing blanks from strings. */
+out :: normalize(in, index) =
+begin
+  out.(*, name == "dxf_src_sys_id") :1: dxf_src_sys_id;
+  out.(*, name == "dxf_src_dataset_id") :2: dxf_src_dataset_id;
+  out.(*, name == "dxf_src_rec_cnt") :3: dxf_src_rec_cnt;
+  out.(*, name == "dxf_src_file_name") :4: dxf_src_file_name;
+  out.(*, name == "cdc_ts" ) :5: (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  v_START_CHANGES_TIME ;
+  out.(*, name == "cdc_flag"):6: "N";
+  out.icvst3 :7: string_trim(in.icvst3); 
+  out.(*, form == "string") :8: string_lrtrim(in.*);
+  
+  out.* :: in.*;
+end;
+
+
+/* Write the Source ID and Record Count to the log. */
+log_event :: final_log_output() =
+begin
+  let dxf_job_event_text_t job_info = [record
+    dxf_src_dataset_id  dxf_src_dataset_id,  // Only set in partition 0.
+    dxf_src_rec_cnt     dxf_src_rec_cnt,
+    dataset_start_dttm  start_time,
+    dataset_end_dttm    now(),
+  ];
+
+  log_event.event_type :: "DXF Job Log: 0"; // We need to include a fake dataset ID for the rollup key that follows.
+  log_event.event_text :: job_info.as_event_text();
+end;

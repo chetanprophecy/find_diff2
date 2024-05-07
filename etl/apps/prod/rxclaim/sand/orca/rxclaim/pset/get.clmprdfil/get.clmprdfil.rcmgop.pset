@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcmgop
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmgop                  cyabcd,cyaacd,cyaccd,cyadcd,cymmcd,cyfkdt,cyfldt,cycjst,cyfmdt,cyfndt,cya9s1,cyafvn,cyaqqt,cyarqt,cyconb,cycpnb,cybas1,cybds1,cydbn1,cyvynb,cybes1,cydcn1,cyv1nb,cybgs1,cybzs2,cyc8n1,cyv4nb,cyjnn1,cyv5nb,cybls1,cyden1,cybopr,cyels3,cycqnb,cycrnb,cyc4qt,cycyqt,cycuqt,cycvqt,cybeh7,cybqs1,cybrs1,cybss1,cyb8s2,cyfes2,cyu7s2,cybjs1,cyohcd,cylwcd,cyexcd,cyeycd,cyfsnb,cydkst,cym2hr,cym3hr,cyi4cd,cyi5cd,cyi6cd,cyaqt1,cyc3c1,cybks1,cya3s3,cya4s3,cyu6s3,cyu7s3,cylghb,cyxch6,cyxeh6,cyv9s3,cyv7s3,cyavcd,cyv8s3,cypgdt,cyfgcj,cyfhcj,cycrn3,cyezc6,cycsn3,cyctn3,cyuih9,cycbi1,cycci1,cyx5i1,cyenib,cyobhf,cyaxhi,cyskid,cyb5ie,cydxai,cybxal,cyb3qu,cyoohb,cyn4hr,cyh0ai,cyduqu,cyy5aj,cys8ho,cyakvn,cyc2dt,cyadtm,cyalvn,cyadvn,cybmdt,cyabtm,cyaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$["WHERE rcmgop.cyaacd IS NOT NULL AND rcmgop.cyaacd NOT IN ("+ $CARRIER_EXCL +") AND cybmdt between " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) ]
+START_CHANGES_TIME||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

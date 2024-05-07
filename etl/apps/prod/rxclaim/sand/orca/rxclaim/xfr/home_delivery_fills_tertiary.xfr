@@ -1,0 +1,13 @@
+//home_delivery_fills_tertiary.xfr
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.PHARMACY_NPI              :: if(first_defined(in.PHARMACY_NPI,"-1")=='0000000000' and first_defined(in.WRITTEN_PHARMACY_CODE,"0")=='0001') '1497845317' else in.PHARMACY_NPI;
+  out.RX_NBR                    :: in.RX_NUMBER;
+  out.FILL_NBR                  :: (string(""))(decimal(2, zerofill))(99-(decimal(""))in.REFILL_NBR);//(Prefix '0' for single digit)
+  out.TERTIARY_PLAN_ID          :: in.CARRIER_ID;
+  out.TERTIARY_PLAN_PAID        :: in.THIRD_PARTY_PAYMENT_AMOUNT;
+  out.TERTIARY_PLAN_TRANSACT_DT :: in.ADJUDICATION_DATE;
+  out.TERTIARY_PLAN_CLM_REF_NBR :: "";//in.RXCLM_NBR_REF (Lookup Query 1);
+  out.TERTIARY_PLAN_AUTH_CODE   :: "";//in.PLAN_AUTH_CODE (Lookup Query 1);
+end

@@ -1,0 +1,8 @@
+!prototype|P|||$PUB_DXF_PLAN/run.all.plan
+RUN_GROUP||||ctrx_dim.rcdrdp_7days
+RUN_ID||||$[begin\r\n  let string ("\\n") num_suffix;\r\n  switch (RUN_GROUP)\r\n  case "orx_dim.generated":\r\n    num_suffix = "01";\r\n   case "orx_dim":\r\n    num_suffix = "01";\r\n  case "ctrx_dim.generated":\r\n    num_suffix = "02";\r\n  case "ctrx_dim":\r\n    num_suffix = "02";\r\n case "ctrx_dim.generated_datalake":\r\n    num_suffix = "22";\r\n  case "orx_fac":\r\n    num_suffix = "03";\r\n  case "ctrx_fac":\r\n    num_suffix = "04";\r\n  case "cpp_out":\r\n    num_suffix = "05";\r\n  default:\r\n    num_suffix = "00";\r\n  end\r\nresult :: (string("")) (datetime("YYYYMMDDHH24MI")) now() + num_suffix ;\r\nend;\r\n]
+RUN_ID_FILE||||$[begin\r\nlet string("") v_group=string_split(RUN_GROUP,".")[0];\r\nresult :: PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase(v_group) + "."+ AI_PHASE + ".run_id.dat" ;\r\nend ;\r\n]
+TIMEZONE_OFFSET_HOURS||||0
+START_CHANGES_TIME||||$[\r\n (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))datetime_add((datetime("YYYY-MM-DD HH24:MI:SS"))now(),-7)\r\n]
+START_CHANGES_FILE||||$[ if (RUN_GROUP !="") \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE + "." + RUN_GROUP + ".prev_end_changes_time.txt"\r\n   else \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE +"." + RUN_GROUP + ".prev_end_changes_time.txt"\r\n// You must make sure that this file exists before running this plan.  Initialize it with:\r\n// echo "" > "$AI_SERIAL/../dev.prev_end_changes_time.txt"\r\n// where dev, qa, uat, or prod are the AI_PHASE for this execution\r\n]
+RUN_PLAN||||$[AI_PSET + "/run/daily/run." +RUN_GROUP + ".pset" ]

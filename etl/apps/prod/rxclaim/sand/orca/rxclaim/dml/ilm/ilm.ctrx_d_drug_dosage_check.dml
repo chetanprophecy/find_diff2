@@ -1,0 +1,31 @@
+type logical_ids_common_d_drug_dosage_check_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  unsigned integer(8) dxf_sk = 0;
+  decimal("\x01",0) ddc_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=19) ddc_key = NULL("");
+  decimal("\x01".2, maximum_length=8, sign_reserved) min_dly_dose = NULL("");
+  decimal("\x01".2, maximum_length=8, sign_reserved) usual_dly_dose = NULL("");
+  decimal("\x01".2, maximum_length=8, sign_reserved) max_dly_dose = NULL("");
+  decimal("\x01",0) min_thrpy_days = NULL("");
+  decimal("\x01",0) usual_thrpy_days = NULL("");
+  decimal("\x01",0) max_thrpy_days = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) user_defd_fld1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) user_defd_fld2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) freq_admin_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) ddc_ref_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=18) user_defd_fld3 = NULL("");
+  date("YYYYMMDD")("\x01") ddc_chg_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_d_drug_dosage_check_t d_drg_dsg_ch  /*@ BizName:'d drg dsg ch' */;
+end;

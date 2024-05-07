@@ -1,0 +1,25 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) orx_rsk_pl_risk_pool_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rsk_pl_risk_pool_id;
+let decimal("\x01",0) orx_rsk_pl_risk_pool_flg = fail_if_error((string_substring(string_lrtrim(in0.clientdef3),3,1)) member  [vector  'Y' ] ? 1 : (string_substring(string_lrtrim(in0.clientdef3),3,1)) member  [vector  'N' ] ? 0 : 2);
+let string("\x01",charset="iso-8859-15", maximum_length=25) orx_rsk_pl_risk_pool_desc = fail_if_error((string_substring(string_lrtrim(in0.clientdef3),3,1)) member  [vector  'Y' ] ? "Yes" : (string_substring(string_lrtrim(in0.clientdef3),3,1)) member  [vector  'N' ] ? "No" : "Unknown");
+let decimal("\x01",0) orx_rsk_pl_src_env_sk = -1;
+
+
+
+/*   Default value   */
+orx_rsk_pl_risk_pool_id=fail_if_error(str_nk(string_substring(string_lrtrim(in0.clientdef3),3,1)));
+
+  out0.orx_rsk_pl.risk_pool_sk::orx_rsk_pl_risk_pool_sk;
+  out0.orx_rsk_pl.risk_pool_id::orx_rsk_pl_risk_pool_id;
+  out0.orx_rsk_pl.risk_pool_flg::orx_rsk_pl_risk_pool_flg;
+  out0.orx_rsk_pl.risk_pool_desc::orx_rsk_pl_risk_pool_desc;
+  out0.orx_rsk_pl.src_env_sk::orx_rsk_pl_src_env_sk;
+  out0.*::in0.*;
+
+end;

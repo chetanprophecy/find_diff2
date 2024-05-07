@@ -1,0 +1,96 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_exec_lkup_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/15  Paul Thompson           Initial version
+ *  2016/11/19  Maumita Sengupta        Added lookup type for job execution with only client id and biz date as key
+ *  2016/11/21  Maumita Sengupta        Added lookup type for job execution with Client id, biz date and product type    
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+
+/*******************/
+/* Job Exec Lookup */
+/*******************/
+
+type job_exec_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  job_exec_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {biz_dt; job.cli_clt_id; rules_config.app_config_nm};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+/****************************************/
+/* Job Exec Lookup with client id and program type cd as key*/
+/****************************************/
+
+type job_exec_clt_id_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  job_exec_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {biz_dt; job.cli_clt_id; rules_config.program_type_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+
+/***********************/
+/* Rules Config Lookup */
+/***********************/
+
+type rules_config_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  rules_config_t         RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {biz_dt; rules_config_cfg.app_config_nm};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+
+/***************************************************/
+/* Job Exec Lookup with client id and Biz Dt as key*/
+/***************************************************/
+
+type job_exec_by_clt_tmr_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  job_exec_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {biz_dt; job.cli_clt_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+
+/************************************************************/
+/* Job Exec Lookup with client id and product type cd as key*/
+/************************************************************/
+
+type job_exec_clt_id_prod_typ_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  job_exec_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {biz_dt; job.cli_clt_id; product.product_type_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;

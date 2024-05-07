@@ -1,0 +1,110 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/src_env_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/10  Paul Thompson           Initial version
+ *  2016/08/23  Sundari Kala            Added load_ids_src_env_sk_lkup function and ids_src_env_sk_lkup_t to fetch the
+ *                                      cli_src_env_id or src_env_id based on the ids_src_env_sk.
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ *  2016/11/11  Paul Thompson           Removed cli_ from lookup file prefix
+ *  2016/11/12  Paul Thompson           Added usage of indexes (when available) and also lookups on serial partitions
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_src_env_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/src_env.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/src_env.dat' );
+end;
+
+cli_string_t out :: get_src_env_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type src_env_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  src_env_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {src_env.src_env_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let src_env_lkup_t GLKUP_SRC_ENV = allocate_with_nulls();
+
+src_env_lkup_t out :: load_src_env_lkup() inline =
+begin
+  if (GLKUP_SRC_ENV.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_src_env_lkup_path();
+    let indx_path  = get_src_env_indx_path(lkup_path, 'src_env');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_SRC_ENV = if (indx_found) lookup_load(lkup_path, indx_path)
+                    else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_SRC_ENV;
+end;
+
+src_env_t out :: get_src_env(src_env_id) inline =
+begin
+  let src_env_lkup_t lkup = load_src_env_lkup();
+  out :: lookup(lkup, src_env_id).src_env;
+end;
+
+/*********************************************/
+/* Source Environment Lookup (surrogate key) */
+/*********************************************/
+
+type src_env_sk_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  src_env_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {src_env.cli_src_env_id}; 
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let src_env_sk_lkup_t GLKUP_SRC_ENV_SK = allocate_with_nulls();
+
+src_env_sk_lkup_t out :: load_src_env_sk_lkup() inline =
+begin
+  if (GLKUP_SRC_ENV_SK.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_src_env_lkup_path();
+    let indx_path  = get_src_env_indx_path(lkup_path, 'src_env_sk');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_SRC_ENV_SK = if (indx_found) lookup_load(lkup_path, indx_path)
+                       else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_SRC_ENV_SK;
+end;
+
+src_env_t out :: get_src_env_by_sk(cli_src_env_id) inline =
+begin
+  let src_env_sk_lkup_t lkup = load_src_env_sk_lkup();
+  out :: lookup(lkup, cli_src_env_id).src_env;
+end;

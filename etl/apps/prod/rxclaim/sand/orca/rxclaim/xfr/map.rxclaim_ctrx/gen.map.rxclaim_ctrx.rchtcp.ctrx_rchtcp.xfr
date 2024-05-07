@@ -1,0 +1,90 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b0cffa3_3624_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rchtcp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rchtcp.taxonomy_desc,[passthrough],in0.alspio]
+  [out0.rchtcp.taxonomy_cd,[passthrough],in0.alrlhj]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rchtcp.alc2dt,'rchtcp.alc2dt',1,0]
+     [out0.rchtcp.alalvn,'rchtcp.alalvn',1,0]
+     [out0.rchtcp.alp5ie,'rchtcp.alp5ie',1,0]
+     [out0.rchtcp.alakvn,'rchtcp.alakvn',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rchtcp.alv2hu,'rchtcp.alv2hu',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rchtcp.alabtm,'rchtcp.alabtm',1,0]
+     [out0.rchtcp.albmdt,'rchtcp.albmdt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.rchtcp.src_env_sk,'rchtcp.src_env_sk',1,0]
+     [out0.rchtcp.alaevn,'rchtcp.alaevn',1,0]
+     [out0.rchtcp.aladvn,'rchtcp.aladvn',1,0]
+     [out0.rchtcp.aladtm,'rchtcp.aladtm',1,0]
+     [out0.rchtcp.taxonomy_desc,'rchtcp.taxonomy_desc',1,0]
+     [out0.rchtcp.taxonomy_cd,'rchtcp.taxonomy_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.alaevn,'alaevn',1,1]
+     [in0.albmdt,'albmdt',1,1]
+     [in0.alc2dt,'alc2dt',1,1]
+     [in0.aladvn,'aladvn',1,1]
+     [in0.alabtm,'alabtm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aladtm,'aladtm',1,1]
+     [in0.alakvn,'alakvn',1,1]
+     [in0.alspio,'alspio',1,1]
+     [in0.alrlhj,'alrlhj',1,1]
+     [in0.alalvn,'alalvn',1,1]
+     [in0.alp5ie,'alp5ie',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.alv2hu,'alv2hu',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01", maximum_length=10) rchtcp_taxonomy_cd = fail_if_error(in0.alrlhj);
+let decimal("\x01",0, maximum_length=6, sign_reserved) rchtcp_alv2hu = fail_if_error(in0.alv2hu);
+let string("\x01", maximum_length=400) rchtcp_taxonomy_desc = fail_if_error(in0.alspio);
+let string("\x01", maximum_length=1) rchtcp_alp5ie = fail_if_error(in0.alp5ie);
+let string("\x01", maximum_length=10) rchtcp_alakvn = fail_if_error(in0.alakvn);
+let decimal("\x01",0, maximum_length=8, sign_reserved) rchtcp_alc2dt = fail_if_error(in0.alc2dt);
+let decimal("\x01",0, maximum_length=7, sign_reserved) rchtcp_aladtm = fail_if_error(in0.aladtm);
+let string("\x01", maximum_length=10) rchtcp_alalvn = fail_if_error(in0.alalvn);
+let string("\x01", maximum_length=10) rchtcp_aladvn = fail_if_error(in0.aladvn);
+let decimal("\x01",0, maximum_length=8, sign_reserved) rchtcp_albmdt = fail_if_error(in0.albmdt);
+let decimal("\x01",0, maximum_length=7, sign_reserved) rchtcp_alabtm = fail_if_error(in0.alabtm);
+let string("\x01", maximum_length=10) rchtcp_alaevn = fail_if_error(in0.alaevn);
+let decimal("\x01",0) rchtcp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rchtcp.taxonomy_cd::rchtcp_taxonomy_cd;
+  out0.rchtcp.alv2hu::rchtcp_alv2hu;
+  out0.rchtcp.taxonomy_desc::rchtcp_taxonomy_desc;
+  out0.rchtcp.alp5ie::rchtcp_alp5ie;
+  out0.rchtcp.alakvn::rchtcp_alakvn;
+  out0.rchtcp.alc2dt::rchtcp_alc2dt;
+  out0.rchtcp.aladtm::rchtcp_aladtm;
+  out0.rchtcp.alalvn::rchtcp_alalvn;
+  out0.rchtcp.aladvn::rchtcp_aladvn;
+  out0.rchtcp.albmdt::rchtcp_albmdt;
+  out0.rchtcp.alabtm::rchtcp_alabtm;
+  out0.rchtcp.alaevn::rchtcp_alaevn;
+  out0.rchtcp.src_env_sk::rchtcp_src_env_sk;
+  out0.*::in0.*;
+
+end;

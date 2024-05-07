@@ -1,0 +1,132 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_1_97d014ac_576bd22b_9d7_0
+    BizHidden:true
+@*/
+/*   lookup d_cag_lkp   */
+out0::bzt_1_97d014ac_576bd22b_9d7_0(in0,in1,in2)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_cag_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_cag_adj.client_seg_cd,[passthrough],in0.clntsgmnt]
+  [out0.d_cag_adj.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_cag_adj.cag_sk,[transform],]
+  [out0.d_cag_ad.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.claimsts]
+  [out0.d_cag_adj.cag_adjud_sk,[transform],]
+  [out0.d_cag_adj.carrier_id,[passthrough],in0.carrierid]
+  [out0.d_cag_adj.client_id,[transform],in0.accountid,
+     in0.claimsts,
+     in0.carrierid,
+     in0.groupid,
+     in0.groupnbr,
+     'lookup("d_cag_lkp").client_id']
+  [out0.d_cag_ad.account_id,[passthrough],in0.accountid]
+  [out0.d_cag_adj.client_rgn_cd,[passthrough],in0.clntregion]
+  [out0.d_cag_adj.account_id,[passthrough],in0.accountid]
+  [out0.d_cag_adj.employer_group_id,[transform],in0.groupnbr,
+     in0.groupid,
+     in0.claimsts]
+  [out0.d_cag_ad.carrier_id,[passthrough],in0.carrierid]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_cag_adj.client_seg_cd,'d_cag_adj.client_seg_cd',1,0]
+     [out0.d_cag_adj.src_env_sk,'d_cag_adj.src_env_sk',1,0]
+     [out0.d_cag_adj.cag_sk,'d_cag_adj.cag_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_cag_ad.employer_group_id,'d_cag_ad.employer_group_id',1,0]
+     [out0.d_cag_adj.cag_adjud_sk,'d_cag_adj.cag_adjud_sk',1,0]
+     [out0.d_cag_adj.carrier_id,'d_cag_adj.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_cag_adj.client_id,'d_cag_adj.client_id',1,0]
+     [out0.d_cag_ad.account_id,'d_cag_ad.account_id',1,0]
+     [out0.d_cag_adj.client_rgn_cd,'d_cag_adj.client_rgn_cd',1,0]
+     [out0.d_cag_adj.account_id,'d_cag_adj.account_id',1,0]
+     [out0.d_cag_adj.employer_group_id,'d_cag_adj.employer_group_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_cag_ad.carrier_id,'d_cag_ad.carrier_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.clntsgmnt,'clntsgmnt',1,1]
+     [in0.accountid,'accountid',3,3]
+     ['lookup("d_cag_lkp").client_id','client_id',1,1]
+     [in0.groupnbr,'groupnbr',3,3]
+     [in0.carrierid,'carrierid',3,3]
+     [in0.groupid,'groupid',6,3]
+     [in0.claimsts,'claimsts',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.clntregion,'clntregion',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_cag_adj_cag_adjud_sk = -1;
+let decimal("\x01",0) d_cag_adj_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_adj_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_adj_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_cag_adj_employer_group_id = fail_if_error((if (sql_and((string_lrtrim(in0.claimsts)!="R"),is_blank(string_lrtrim(in0.groupid))))
+   in0.groupnbr
+ else
+   in0.groupid));
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cag_adj_client_id;
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cag_adj_client_rgn_cd = fail_if_error(in0.clntregion);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_cag_adj_client_seg_cd = fail_if_error(in0.clntsgmnt);
+let decimal("\x01",0) d_cag_adj_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_ad_carrier_id = fail_if_error(in0.carrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_ad_account_id = fail_if_error(in0.accountid);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_ad_employer_group_id = fail_if_error((if (sql_and((string_lrtrim(in0.claimsts)!="R"),is_blank(string_lrtrim(in0.groupid))))
+   in0.groupnbr
+ else
+   in0.groupid));
+
+
+
+/*   Default value   */
+d_cag_adj_client_id=fail_if_error(bzt_1_97d014ac_576bd22b_9d7_0(in0.carrierid,in0.accountid,(sql_and((string_lrtrim(in0.claimsts)!="R"),(string_lrtrim(in0.groupid)==''))?in0.groupnbr:in0.groupid)).client_id);
+
+  out0.d_cag_adj.cag_adjud_sk::d_cag_adj_cag_adjud_sk;
+  out0.d_cag_adj.cag_sk::d_cag_adj_cag_sk;
+  out0.d_cag_adj.carrier_id::d_cag_adj_carrier_id;
+  out0.d_cag_adj.account_id::d_cag_adj_account_id;
+  out0.d_cag_adj.employer_group_id::d_cag_adj_employer_group_id;
+  out0.d_cag_adj.client_id::d_cag_adj_client_id;
+  out0.d_cag_adj.client_rgn_cd::d_cag_adj_client_rgn_cd;
+  out0.d_cag_adj.client_seg_cd::d_cag_adj_client_seg_cd;
+  out0.d_cag_adj.src_env_sk::d_cag_adj_src_env_sk;
+  out0.d_cag_ad.carrier_id::d_cag_ad_carrier_id;
+  out0.d_cag_ad.account_id::d_cag_ad_account_id;
+  out0.d_cag_ad.employer_group_id::d_cag_ad_employer_group_id;
+  out0.*::in0.*;
+
+end;

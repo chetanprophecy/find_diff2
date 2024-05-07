@@ -1,0 +1,115 @@
+include '~$AI_DML/produce/produce.rxcui_assignment_types.dml';//Metadata types inside
+
+//let rxcui_type[int] rxcui=allocate_with_defaults();
+//let rcnd2p_type[int] rcnd2p=allocate_with_defaults();
+let rxcui_normalized_type[int] rxcui_normalized_output=allocate_with_defaults();
+rxcui_normalized_output :: populate_ndc(in) =
+begin
+let rxcui_normalized_type rxcui_normalized_tmp=allocate_with_defaults();
+let  v_in_src_sys_id=if(in.dxf_src_sys_id==500) [vector 500,480] else [vector in.dxf_src_sys_id] ;
+let  in_src_sys_id=in.dxf_src_sys_id;
+let int rxcui_cnt=lookup_count("rxcui",in.dxf_src_sys_id,in.rxcui);
+let int rcnd2p_cnt=lookup_count("rcnd2p_ndc",in_src_sys_id,in.ndc);
+let rxcui_type rxcui=allocate_with_defaults();//rxcui Type
+let rcnd2p_type rcnd2p=allocate_with_defaults();
+
+for (let k=0, k < length_of(v_in_src_sys_id))
+begin
+in_src_sys_id=v_in_src_sys_id[k];
+rxcui_cnt=lookup_count("rxcui",in.dxf_src_sys_id,in.rxcui);
+rcnd2p_cnt=lookup_count("rcnd2p_ndc",in_src_sys_id,in.ndc);
+ rxcui=allocate_with_defaults();//rxcui Type
+ rcnd2p=allocate_with_defaults();
+  for(let i=0,i<rxcui_cnt)
+    begin  
+        rxcui=lookup_next("rxcui");//rxcui Type
+        rcnd2p_cnt=lookup_count("rcnd2p_ndc",in_src_sys_id,in.ndc);
+        for(let j=0,j<rcnd2p_cnt)
+        begin
+        
+         rcnd2p=lookup_next("rcnd2p_ndc");
+      
+       
+      rxcui_normalized_tmp.rxcui         = rxcui.rxcui        ;
+      rxcui_normalized_tmp.msc           = if(rcnd2p.dxf_src_sys_id==480)first_defined(lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,'*ALL','*ALL').abguh6,lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,in.ndc).s4ozs3,rxcui.msc,"X") else first_defined(lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,'*ALL','*ALL').abguh6,rxcui.msc,"X");
+      rxcui_normalized_tmp.active_ind    = rxcui.active_ind   ;
+      rxcui_normalized_tmp.partd_ind     = rxcui.partd_ind    ;
+      rxcui_normalized_tmp.eff_dt        = rxcui.eff_dt       ;
+      rxcui_normalized_tmp.term_dt       = rxcui.term_dt      ;
+      rxcui_normalized_tmp.rxcui_type_cd = rxcui.rxcui_type_cd;
+      rxcui_normalized_tmp.altr_ndc = rxcui.ndc;
+      
+      rxcui_normalized_tmp.afq7hb =      rcnd2p.afq7hb;   
+      rxcui_normalized_tmp.afq8hb =      rcnd2p.afq8hb;
+      //rxcui_normalized_tmp.aftwig =      rcnd2p.aftwig; //03/14/2018: as pe Supriya we need to pull the value from RCPID instead of RCND2P since RCPIDP is more accurate source for it. 03/20 Reverted the change due to lack of approval.
+      rxcui_normalized_tmp.aftwig =      first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,in.ndc).s4cnt3,rcnd2p.aftwig);
+      rxcui_normalized_tmp.prxy_ndc_desc = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,in.ndc).fgt5aj,"");
+      rxcui_normalized_tmp.alt_ndc_desc = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,rxcui.ndc).fgt5aj,"");
+      rxcui_normalized_tmp.prxy_ndc_uom = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,in.ndc).szpis3,"");
+      rxcui_normalized_tmp.alt_ndc_uom = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,rxcui.ndc).szpis3,"");
+      rxcui_normalized_tmp.package_size = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,rxcui.ndc).sze8qt,"");
+      rxcui_normalized_tmp.qty = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,rxcui.ndc).sze9qt,"");
+      rxcui_normalized_tmp.total_qty = first_defined(lookup("rcpidp_ndc",rcnd2p.dxf_src_sys_id,rxcui.ndc).szfaqt,"");
+      rxcui_normalized_tmp.aetvig =      rcnd2p.aetvig;
+      rxcui_normalized_tmp.awx9vg =      rcnd2p.awx9vg;
+      rxcui_normalized_tmp.contract_no = rcnd2p.contract_no;
+      rxcui_normalized_tmp.mpvyhc=rcnd2p.mpvyhc;
+      rxcui_normalized_tmp.dxf_src_sys_id=rcnd2p.dxf_src_sys_id;
+      rxcui_normalized_tmp.rxt_src_envrt_nm = rcnd2p.rxt_src_envrt_nm;
+      
+      
+      
+      
+      rxcui_normalized_tmp.rcpcop_msc = first_defined(lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,'*ALL','*ALL').abguh6,"X");
+      
+      /*WE FIRST EXPAND PROXY WITHOUT MSC - GET ALL NDCS WITH SAME RXCUI, AND PARTD_IND='Y' AND ACTIVE_IND='Y' AND TERM_DT > RUN_DATE.
+THEN CHECK FOR ALL THESE NDCS IF OVERRIDE PRESENT IN RCPCOP (PROD_KEY AVAILABLE IN RXCUI). IF PRESENT USE MSC FROM RCPCOP - ONLY KEEP MAPPED NDCS THAT HAVE M, N, O IN RCPCOP. 
+THOSE NDCS THAT ARE NOT MATCHED WITH RCPCOP, USE MSC FROM RXCUI TABLE.*/
+       /*
+      rxcui_normalized_tmp.rcpcop_msc = first_defined(lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,'*ALL','*ALL').abguh6,
+      lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,rcnd2p.carrier_id,'*ALL').abguh6,
+      lookup("rcpcop_ndc_nca",rcnd2p.dxf_src_sys_id,rxcui.ndc,rcnd2p.carrier_id,rcnd2p.account_id).abguh6); */
+      
+      rxcui_normalized_tmp.carrier_id=rcnd2p.carrier_id;
+      rxcui_normalized_tmp.account_id=rcnd2p.account_id;
+       
+      //   rxcui_normalized_tmp.* = in.*;
+      
+       rxcui_normalized_tmp.proxy_ndc = in.ndc;         
+       rxcui_normalized_tmp.claim_count = first_defined(lookup("rcmddp_ndc",rcnd2p.dxf_src_sys_id,rcnd2p.contract_no,rcnd2p.mpvyhc,rxcui.ndc).claim_count,0);
+       rxcui_normalized_tmp.unit_cost_amt = first_defined(lookup("d_product_unit_cost_ndc",rxcui.ndc).unit_cost_amt,0);
+       rxcui_normalized_output=vector_append(rxcui_normalized_output,rxcui_normalized_tmp);
+       
+        end;
+        
+     end;
+     end;
+end;
+
+
+out :: input_select(in) =
+begin
+  out :: lookup_count("rxcui",in.dxf_src_sys_id,in.rxcui)>1;
+end;
+
+/* This function is optional. */
+/*Number of records to output.  Either this function or finished() must be defined.*/
+out::length(in)=
+begin
+populate_ndc(in);
+ out :: length_of(rxcui_normalized_output);
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+
+out.* :: rxcui_normalized_output[index].*;
+
+end;
+/*(($[read_file("$AI_SERIAL/ndc_reports/description_uom_cntrl_file.dat")]) and (string_lrtrim(out.prxy_ndc_desc)==string_lrtrim(out.alt_ndc_desc))  and (string_lrtrim(out.prxy_ndc_uom)==string_lrtrim(out.alt_ndc_uom))) and */
+out :: output_select(out) =
+begin
+ let desc_uom_cond=if( $[read_file("$AI_SERIAL/ndc_reports/description_uom_cntrl_file.dat")] == 0) 1 else if (((!is_null(out.prxy_ndc_desc) and !is_null(out.alt_ndc_desc)) and string_lrtrim(out.prxy_ndc_desc)==string_lrtrim(out.alt_ndc_desc))  and ((!is_null(out.prxy_ndc_uom) and !is_null(out.alt_ndc_uom)) and string_lrtrim(out.prxy_ndc_uom)==string_lrtrim(out.alt_ndc_uom))) 1 else 0;
+  out ::   ((out.proxy_ndc==out.altr_ndc) or out.claim_count>0) and out.msc=="Y"  and first_defined(lookup("rcpidp_ndc",out.dxf_src_sys_id,out.altr_ndc).s4xvs3,"")=="A" and desc_uom_cond ;
+end;

@@ -1,0 +1,67 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/validation/cli_validation_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/29  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_scoop_types.dml";
+
+include "~$PUB_CLINICAL_XFR/const/product_const.xfr";
+include "~$PUB_CLINICAL_XFR/err/cli_err_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/pharmacy_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/product_lkup_functions.xfr";
+include "~$PUB_CLINICAL_LKUP_XFR/refdata/lexis_nexis_prescriber_lkup_functions.xfr";
+
+cli_err_dtl_t out :: validate_pharma_claim(pharma_claim_t in, pharma_claim_ext_dtl_t ext_dtl) inline =
+begin
+  let cli_err_vec_t err_vec = [vector];
+  
+  // Validate Carrier
+//if (is_null(get_carrier(in..carrier_id)))
+//  err_vec = vector_append(err_vec, create_carrier_not_found_err(in.txn_dtl.carrier_id));
+//  
+//// Validate Carrier Account
+//if (is_null(get_carrier_acct(in..carrier_id, in..carrier_acct_id)))
+//  err_vec = vector_append(err_vec, create_carrier_acct_not_found_err(in.carrier_id, in.carrier_acct_id));
+  
+  if (is_null(get_pharmacy( in.txn_dtl.pharmacy_alias_id)))
+    err_vec = vector_append(err_vec, pharmacy_not_found_err(in.txn_dtl.pharmacy_alias_id));
+  
+  if (is_null(get_product(in.txn_dtl.ndc_id, PRODUCT_QLFR_CD_NATIONAL_DRUG_CD)))
+    err_vec = vector_append(err_vec, drug_product_not_found_err(in.txn_dtl.ndc_id));  
+  
+  if (is_null(get_product(in.txn_dtl.product_id, in.txn_dtl.product_id_qlfr_cd)))
+    err_vec = vector_append(err_vec, drug_product_not_found_err(in.txn_dtl.ndc_id));
+  
+  if (is_null(ext_dtl.cli_prescriber_id))
+    err_vec = vector_append(err_vec,prescriber_npi_or_dea_not_found_err(in.txn_dtl.prescriber_dea_id, in.txn_dtl.prescriber_npi));
+                
+  out.result  :: ( length_of(err_vec) == 0 );
+  out.err_vec :: err_vec;
+end;
+
+
+cli_err_dtl_t out :: validate_medical_claim(med_claim_t in) inline =
+begin
+  let cli_err_vec_t err_vec = [vector];
+  
+  // Validate Carrier
+//if (is_null(get_carrier(in..carrier_id)))
+//  err_vec = vector_append(err_vec, create_carrier_not_found_err(in.txn_dtl.carrier_id));
+//  
+//// Validate Carrier Account
+//if (is_null(get_carrier_acct(in..carrier_id, in..carrier_acct_id)))
+//  err_vec = vector_append(err_vec, create_carrier_acct_not_found_err(in.carrier_id, in.carrier_acct_id));
+  
+  if (is_null(get_lexis_nexis_prescriber_by_npi(in.provider.npi_id)) or is_null(get_lexis_nexis_prescriber_by_dea_id(in.provider.dea_id)))
+    err_vec = vector_append(err_vec,prescriber_npi_or_dea_not_found_err(in.provider.npi_id,in.provider.dea_id));
+        
+  out.result  :: ( length_of(err_vec) == 0 );
+  out.err_vec :: err_vec;
+end;

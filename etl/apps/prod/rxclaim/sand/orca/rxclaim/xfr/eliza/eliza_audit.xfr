@@ -1,0 +1,12 @@
+/*Reformat operation*/
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.* :: in.*;
+  out.rxt_src_envrt_id                  :: '105';//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm                  :: system_number_to_name(105);
+  out.rxt_create_dttm                   :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid                    :: 'app_orca_rxclaim';
+  out.rxt_create_run_id                 :: (string(""))(datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS"))"${END_CHANGES_TIME}";
+  out.rxt_rec_stat_cd                   :: '';
+end;

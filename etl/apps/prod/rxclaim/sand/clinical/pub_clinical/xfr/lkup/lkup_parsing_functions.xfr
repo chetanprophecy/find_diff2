@@ -1,0 +1,64 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/lkup_parsing_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/02  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+//    let pkg = read_package(DML_FILE);
+//    let dml_package_member[int] lkup_type_vec = [vector];
+//    let dml_package_member      x;
+//
+//    for (x in pkg.members)
+//      if ( (x.form == 'type') and string_like(x.name, '%_lkup_t') )
+//        lkup_type_vec = vector_append(lkup_type_vec, x);
+//    
+//    result :: string_representation( for (let m in lkup_type_vec) : type_info(m.dml_type, pkg.includes) );
+//  end
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+type lkup_dtl_t =
+record
+  cli_string_t  lkup_nm;
+  cli_string_t  key;
+end;
+type lkup_dtl_vec_t = lkup_dtl_t[int];
+
+lkup_dtl_t out :: get_lkup_dtl(dml_package_member mbr, dml_include_vec include_vec) inline =
+begin
+  let dml_type_info       mbr_type       = type_info  (mbr.dml_type, include_vec);
+  let dml_field_info_vec  field_info_vec = record_info(mbr.dml_type, include_vec);
+  
+  let dml_field_info      field_info;
+  let cli_string_t        key;
+  
+  for (field_info in field_info_vec)
+    if (field_info.name == 'key()')
+      key = field_info.default;
+  
+  out.lkup_nm :: string_split(mbr.name, '_lkup_t')[0];
+  out.key     :: key;
+end;
+
+lkup_dtl_vec_t out :: get_lkup_dtl_vec(cli_string_t lkup_functions_file) inline =
+begin
+  let lkup_dtl_t          lkup_dtl;
+  let lkup_dtl_vec_t      lkup_dtl_vec = [vector];
+  
+  let dml_package_info    pkg = read_package(lkup_functions_file);
+  let dml_package_member  mbr;
+  
+  for (mbr in pkg.members)
+    if ( (mbr.form == 'type') and string_like(mbr.name, '%_lkup_t') )
+    begin
+      lkup_dtl     = get_lkup_dtl(mbr, pkg.includes);
+      lkup_dtl_vec = vector_append(lkup_dtl_vec, lkup_dtl);
+    end;
+  
+  out :: lkup_dtl_vec;
+end;
+

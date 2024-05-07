@@ -1,0 +1,246 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_581716c5_134c_8 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_member_dtl.death_dt,[passthrough],in0.death_dt]
+  [out0.c_member_dtl.birth_dt,[passthrough],in0.birth_dt]
+  [out0.c_member_dtl.member_dtl_id,[passthrough],in0.member_dtl_id]
+  [out0.c_member_dtl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_member_dtl.cli_carrier_id,[passthrough],in0.cli_carrier_id]
+  [out0.c_member_dtl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_member_dtl.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_member_dtl.cli_member_id,[passthrough],in0.cli_member_id]
+  [out0.c_member_dtl.cli_acct_id,[passthrough],in0.cli_acct_id]
+  [out0.c_member_dtl.src_env_sk,[transform],]
+  [out0.c_member_dtl.src_env_id,[passthrough],in0.src_env_id]
+  [out0.c_member_dtl.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_member_dtl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_member_dtl.active_flag,[passthrough],in0.active_flag]
+  [out0.c_member_dtl.cpp_member_dtl_sk,[transform],]
+  [out0.c_member_dtl.cli_src_env_id,[passthrough],in0.cli_src_env_id]
+  [out0.c_member_dtl.hic_num,[passthrough],in0.hic_num]
+  [out0.c_member_dtl.record_end_dt,[passthrough],in0.record_end_dt]
+  [out0.c_member_dtl.init,[passthrough],in0.init]
+  [out0.c_member_dtl.cli_emplyr_group_id,[passthrough],in0.cli_emplyr_group_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_member_dtl.prmry_attn_line,'c_member_dtl.prmry_attn_line',1,0]
+     [out0.c_member_dtl.death_dt,'c_member_dtl.death_dt',1,0]
+     [out0.c_member_dtl.birth_dt,'c_member_dtl.birth_dt',1,0]
+     [out0.c_member_dtl.member_dtl_id,'c_member_dtl.member_dtl_id',1,0]
+     [out0.c_member_dtl.sin_ssn,'c_member_dtl.sin_ssn',1,0]
+     [out0.c_member_dtl.carrier_id,'c_member_dtl.carrier_id',1,0]
+     [out0.c_member_dtl.cpp_created_by,'c_member_dtl.cpp_created_by',1,0]
+     [out0.c_member_dtl.cli_carrier_id,'c_member_dtl.cli_carrier_id',1,0]
+     [out0.c_member_dtl.cpp_updated_by,'c_member_dtl.cpp_updated_by',1,0]
+     [out0.c_member_dtl.cpp_member_sk,'c_member_dtl.cpp_member_sk',1,0]
+     [out0.c_member_dtl.cli_member_id,'c_member_dtl.cli_member_id',1,0]
+     [out0.c_member_dtl.cov_lvl_cd,'c_member_dtl.cov_lvl_cd',1,0]
+     [out0.c_member_dtl.plan_id,'c_member_dtl.plan_id',1,0]
+     [out0.c_member_dtl.cli_acct_id,'c_member_dtl.cli_acct_id',1,0]
+     [out0.c_member_dtl.prmry_cntry_cd,'c_member_dtl.prmry_cntry_cd',1,0]
+     [out0.c_member_dtl.prmry_phone_num,'c_member_dtl.prmry_phone_num',1,0]
+     [out0.c_member_dtl.src_env_sk,'c_member_dtl.src_env_sk',1,0]
+     [out0.c_member_dtl.prmry_building_mail_stop,'c_member_dtl.prmry_building_mail_stop',1,0]
+     [out0.c_member_dtl.prmry_addr_1,'c_member_dtl.prmry_addr_1',1,0]
+     [out0.c_member_dtl.prmry_addr_2,'c_member_dtl.prmry_addr_2',1,0]
+     [out0.c_member_dtl.prmry_city_town,'c_member_dtl.prmry_city_town',1,0]
+     [out0.c_member_dtl.gender_cd,'c_member_dtl.gender_cd',1,0]
+     [out0.c_member_dtl.src_env_id,'c_member_dtl.src_env_id',1,0]
+     [out0.c_member_dtl.person_cd,'c_member_dtl.person_cd',1,0]
+     [out0.c_member_dtl.member_id,'c_member_dtl.member_id',1,0]
+     [out0.c_member_dtl.cpp_update_ts,'c_member_dtl.cpp_update_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_member_dtl.cpp_create_ts,'c_member_dtl.cpp_create_ts',1,0]
+     [out0.c_member_dtl.active_flag,'c_member_dtl.active_flag',1,0]
+     [out0.c_member_dtl.relationship_cd,'c_member_dtl.relationship_cd',1,0]
+     [out0.c_member_dtl.cpp_member_dtl_sk,'c_member_dtl.cpp_member_dtl_sk',1,0]
+     [out0.c_member_dtl.prmry_area_cd,'c_member_dtl.prmry_area_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_member_dtl.cli_src_env_id,'c_member_dtl.cli_src_env_id',1,0]
+     [out0.c_member_dtl.hic_num,'c_member_dtl.hic_num',1,0]
+     [out0.c_member_dtl.prmry_province_st_cd,'c_member_dtl.prmry_province_st_cd',1,0]
+     [out0.c_member_dtl.gender_descr,'c_member_dtl.gender_descr',1,0]
+     [out0.c_member_dtl.src_client_id,'c_member_dtl.src_client_id',1,0]
+     [out0.c_member_dtl.prmry_extn,'c_member_dtl.prmry_extn',1,0]
+     [out0.c_member_dtl.subs_patient_id,'c_member_dtl.subs_patient_id',1,0]
+     [out0.c_member_dtl.last_name,'c_member_dtl.last_name',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_member_dtl.record_end_dt,'c_member_dtl.record_end_dt',1,0]
+     [out0.c_member_dtl.init,'c_member_dtl.init',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_member_dtl.emplyr_group_id,'c_member_dtl.emplyr_group_id',1,0]
+     [out0.c_member_dtl.first_name,'c_member_dtl.first_name',1,0]
+     [out0.c_member_dtl.prmry_postal_zip,'c_member_dtl.prmry_postal_zip',1,0]
+     [out0.c_member_dtl.acct_id,'c_member_dtl.acct_id',1,0]
+     [out0.c_member_dtl.cli_emplyr_group_id,'c_member_dtl.cli_emplyr_group_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.prmry_cntry_cd,'prmry_cntry_cd',1,1]
+     [in0.prmry_building_mail_stop,'prmry_building_mail_stop',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.prmry_city_town,'prmry_city_town',1,1]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     [in0.cov_lvl_cd,'cov_lvl_cd',1,1]
+     [in0.death_dt,'death_dt',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.first_name,'first_name',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.prmry_addr_1,'prmry_addr_1',1,1]
+     [in0.last_name,'last_name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.prmry_phone_num,'prmry_phone_num',1,1]
+     [in0.record_end_dt,'record_end_dt',1,1]
+     [in0.prmry_attn_line,'prmry_attn_line',1,1]
+     [in0.member_dtl_id,'member_dtl_id',1,1]
+     [in0.prmry_area_cd,'prmry_area_cd',1,1]
+     [in0.init,'init',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.prmry_extn,'prmry_extn',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.gender_cd,'gender_cd',1,1]
+     [in0.active_flag,'active_flag',1,1]
+     [in0.subs_patient_id,'subs_patient_id',1,1]
+     [in0.gender_descr,'gender_descr',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.hic_num,'hic_num',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+     [in0.prmry_province_st_cd,'prmry_province_st_cd',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.plan_id,'plan_id',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.sin_ssn,'sin_ssn',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.relationship_cd,'relationship_cd',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.person_cd,'person_cd',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.src_client_id,'src_client_id',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.birth_dt,'birth_dt',1,1]
+     [in0.prmry_addr_2,'prmry_addr_2',1,1]
+     [in0.prmry_postal_zip,'prmry_postal_zip',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_member_dtl_cpp_member_dtl_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_member_dtl_id = fail_if_error(in0.member_dtl_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_dtl_cli_member_id = fail_if_error(in0.cli_member_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_member_dtl_src_env_id = fail_if_error(in0.src_env_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_member_dtl_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_member_dtl_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_member_dtl_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_member_dtl_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_member_dtl_cpp_member_sk;
+let utf8 string("\x01", maximum_length=200) c_member_dtl_first_name = fail_if_error(in0.first_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_member_dtl_init = fail_if_error(in0.init);
+let utf8 string("\x01", maximum_length=200) c_member_dtl_last_name = fail_if_error(in0.last_name);
+let date("YYYYMMDD")("\x01") c_member_dtl_birth_dt = fail_if_error(in0.birth_dt);
+let date("YYYYMMDD")("\x01") c_member_dtl_death_dt = fail_if_error(in0.death_dt);
+let utf8 string("\x01", maximum_length=4) c_member_dtl_gender_cd = fail_if_error(in0.gender_cd);
+let utf8 string("\x01", maximum_length=120) c_member_dtl_gender_descr = fail_if_error(in0.gender_descr);
+let utf8 string("\x01", maximum_length=36) c_member_dtl_sin_ssn = fail_if_error(in0.sin_ssn);
+let utf8 string("\x01", maximum_length=12) c_member_dtl_person_cd = fail_if_error(in0.person_cd);
+let utf8 string("\x01", maximum_length=4) c_member_dtl_relationship_cd = fail_if_error(in0.relationship_cd);
+let utf8 string("\x01", maximum_length=200) c_member_dtl_src_client_id = fail_if_error(in0.src_client_id);
+let utf8 string("\x01", maximum_length=80) c_member_dtl_plan_id = fail_if_error(in0.plan_id);
+let utf8 string("\x01", maximum_length=152) c_member_dtl_subs_patient_id = fail_if_error(in0.subs_patient_id);
+let utf8 string("\x01", maximum_length=4) c_member_dtl_cov_lvl_cd = fail_if_error(in0.cov_lvl_cd);
+let utf8 string("\x01", maximum_length=400) c_member_dtl_prmry_addr_1 = fail_if_error(in0.prmry_addr_1);
+let utf8 string("\x01", maximum_length=400) c_member_dtl_prmry_addr_2 = fail_if_error(in0.prmry_addr_2);
+let utf8 string("\x01", maximum_length=120) c_member_dtl_prmry_city_town = fail_if_error(in0.prmry_city_town);
+let utf8 string("\x01", maximum_length=8) c_member_dtl_prmry_province_st_cd = fail_if_error(in0.prmry_province_st_cd);
+let utf8 string("\x01", maximum_length=40) c_member_dtl_prmry_postal_zip = fail_if_error(in0.prmry_postal_zip);
+let utf8 string("\x01", maximum_length=16) c_member_dtl_prmry_cntry_cd = fail_if_error(in0.prmry_cntry_cd);
+let utf8 string("\x01", maximum_length=120) c_member_dtl_prmry_attn_line = fail_if_error(in0.prmry_attn_line);
+let utf8 string("\x01", maximum_length=80) c_member_dtl_prmry_building_mail_stop = fail_if_error(in0.prmry_building_mail_stop);
+let utf8 string("\x01", maximum_length=28) c_member_dtl_prmry_area_cd = fail_if_error(in0.prmry_area_cd);
+let utf8 string("\x01", maximum_length=40) c_member_dtl_prmry_phone_num = fail_if_error(in0.prmry_phone_num);
+let utf8 string("\x01", maximum_length=24) c_member_dtl_prmry_extn = fail_if_error(in0.prmry_extn);
+let utf8 string("\x01", maximum_length=80) c_member_dtl_hic_num = fail_if_error(in0.hic_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_dtl_record_end_dt = fail_if_error(in0.record_end_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_member_dtl_active_flag = fail_if_error(in0.active_flag);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_dtl_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_member_dtl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_dtl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_member_dtl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_member_dtl_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_member_dtl_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_member_dtl.cpp_member_dtl_sk::c_member_dtl_cpp_member_dtl_sk;
+  out0.c_member_dtl.member_dtl_id::c_member_dtl_member_dtl_id;
+  out0.c_member_dtl.cli_src_env_id::c_member_dtl_cli_src_env_id;
+  out0.c_member_dtl.cli_carrier_id::c_member_dtl_cli_carrier_id;
+  out0.c_member_dtl.cli_acct_id::c_member_dtl_cli_acct_id;
+  out0.c_member_dtl.cli_emplyr_group_id::c_member_dtl_cli_emplyr_group_id;
+  out0.c_member_dtl.cli_member_id::c_member_dtl_cli_member_id;
+  out0.c_member_dtl.src_env_id::c_member_dtl_src_env_id;
+  out0.c_member_dtl.carrier_id::c_member_dtl_carrier_id;
+  out0.c_member_dtl.acct_id::c_member_dtl_acct_id;
+  out0.c_member_dtl.emplyr_group_id::c_member_dtl_emplyr_group_id;
+  out0.c_member_dtl.member_id::c_member_dtl_member_id;
+  out0.c_member_dtl.cpp_member_sk::c_member_dtl_cpp_member_sk;
+  out0.c_member_dtl.first_name::c_member_dtl_first_name;
+  out0.c_member_dtl.init::c_member_dtl_init;
+  out0.c_member_dtl.last_name::c_member_dtl_last_name;
+  out0.c_member_dtl.birth_dt::c_member_dtl_birth_dt;
+  out0.c_member_dtl.death_dt::c_member_dtl_death_dt;
+  out0.c_member_dtl.gender_cd::c_member_dtl_gender_cd;
+  out0.c_member_dtl.gender_descr::c_member_dtl_gender_descr;
+  out0.c_member_dtl.sin_ssn::c_member_dtl_sin_ssn;
+  out0.c_member_dtl.person_cd::c_member_dtl_person_cd;
+  out0.c_member_dtl.relationship_cd::c_member_dtl_relationship_cd;
+  out0.c_member_dtl.src_client_id::c_member_dtl_src_client_id;
+  out0.c_member_dtl.plan_id::c_member_dtl_plan_id;
+  out0.c_member_dtl.subs_patient_id::c_member_dtl_subs_patient_id;
+  out0.c_member_dtl.cov_lvl_cd::c_member_dtl_cov_lvl_cd;
+  out0.c_member_dtl.prmry_addr_1::c_member_dtl_prmry_addr_1;
+  out0.c_member_dtl.prmry_addr_2::c_member_dtl_prmry_addr_2;
+  out0.c_member_dtl.prmry_city_town::c_member_dtl_prmry_city_town;
+  out0.c_member_dtl.prmry_province_st_cd::c_member_dtl_prmry_province_st_cd;
+  out0.c_member_dtl.prmry_postal_zip::c_member_dtl_prmry_postal_zip;
+  out0.c_member_dtl.prmry_cntry_cd::c_member_dtl_prmry_cntry_cd;
+  out0.c_member_dtl.prmry_attn_line::c_member_dtl_prmry_attn_line;
+  out0.c_member_dtl.prmry_building_mail_stop::c_member_dtl_prmry_building_mail_stop;
+  out0.c_member_dtl.prmry_area_cd::c_member_dtl_prmry_area_cd;
+  out0.c_member_dtl.prmry_phone_num::c_member_dtl_prmry_phone_num;
+  out0.c_member_dtl.prmry_extn::c_member_dtl_prmry_extn;
+  out0.c_member_dtl.hic_num::c_member_dtl_hic_num;
+  out0.c_member_dtl.record_end_dt::c_member_dtl_record_end_dt;
+  out0.c_member_dtl.active_flag::c_member_dtl_active_flag;
+  out0.c_member_dtl.cpp_update_ts::c_member_dtl_cpp_update_ts;
+  out0.c_member_dtl.cpp_updated_by::c_member_dtl_cpp_updated_by;
+  out0.c_member_dtl.cpp_create_ts::c_member_dtl_cpp_create_ts;
+  out0.c_member_dtl.cpp_created_by::c_member_dtl_cpp_created_by;
+  out0.c_member_dtl.src_env_sk::c_member_dtl_src_env_sk;
+  out0.*::in0.*;
+
+end;

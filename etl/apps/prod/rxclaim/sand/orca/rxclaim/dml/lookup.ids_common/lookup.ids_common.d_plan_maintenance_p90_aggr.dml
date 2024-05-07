@@ -1,0 +1,20 @@
+record
+  //integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0) pln_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_id = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pmn_gpi_list_sts = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pmn_ndc_list_id = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pmn_ndc_list_sts = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01") pmn_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") pmn_thru_dt = NULL("") /*DATE*/;
+  
+    record
+        string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_id = allocate_with_nulls() /*VARCHAR(10)*/;
+        string("\x01",charset="iso-8859-15", maximum_length=1)  pmn_gpi_list_sts = allocate_with_nulls() /*CHAR(1)*/;
+        string("\x01",charset="iso-8859-15", maximum_length=10) pmn_ndc_list_id = allocate_with_nulls() /*VARCHAR(10)*/;
+        string("\x01",charset="iso-8859-15", maximum_length=1) pmn_ndc_list_sts = allocate_with_nulls() /*CHAR(1)*/;
+        date("YYYYMMDD")("\x01") pmn_from_dt = allocate_with_nulls() /*DATE*/;
+        date("YYYYMMDD")("\x01") pmn_thru_dt = allocate_with_nulls() /*DATE*/;
+    end[int] vec_d_plan_maintenance_p90 =allocate_with_nulls();
+end

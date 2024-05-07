@@ -1,0 +1,28 @@
+let int __no_aggregation_fields__ = allocate();
+
+type temporary_type =
+record
+int tmp_fld_start_pos = 0;
+int tmp_prev_fld_start_pos = 0;
+end;
+
+record
+  int __no_aggregation_fields__ = 0;
+end temp :: initialize(in) =
+begin
+ temp.tmp_fld_start_pos :: 1;
+ temp.tmp_prev_fld_start_pos :: 0;
+end;
+
+out :: scan(temp, in) =
+begin
+out.tmp_prev_fld_start_pos :: temp.tmp_fld_start_pos;
+out.tmp_fld_start_pos :: temp.tmp_fld_start_pos + in.fld_max_len;
+end;
+
+out :: finalize(temp, in) =
+begin
+  out.*::in.*;
+  out.fld_strt_pos :: temp.tmp_prev_fld_start_pos;
+end;
+

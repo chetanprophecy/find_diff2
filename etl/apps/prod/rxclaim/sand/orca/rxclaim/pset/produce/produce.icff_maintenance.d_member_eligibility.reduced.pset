@@ -1,0 +1,18 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.reduced.dat.gz
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_common/ids_common.d_mmd_member_eligibility.reduced.dml
+OUTPUT_FILE_LOCATION||||$INPUT_FILE_PATH
+RUN_ID||||20171107005520
+READ_MULTI_ICFF||||N
+READ_MULTI_ICFF_START_DATE||||
+SORT_KEY||||{dxf_hk_part1}
+DEDUP_KEY||||{dxf_hk_part1;dxf_hk_part2; mmd_seq_nbr }
+USE_NORM||||False
+OUTPUT_FILE_DML|$|||$INPUT_FILE_DML
+USE_SORT||||True
+AB_CATALOG|$|||$AI_CAT/produce/produce.d_member_demographics.cat
+FILTER_EXPR||||$[  \r\nbegin\r\n\r\nlet string(int) cag_filter       = "ids_rec_stat_cd=='1' \r\n        and  ! (first_defined  (  lookup('d_cag_lkp_cag',carrier_id,NULL,NULL), \r\n                                lookup('d_cag_lkp_cag',carrier_id,account_id,NULL), \r\n                                lookup('d_cag_lkp_cag',carrier_id,account_id,employer_group_id) , \r\n                                [record  exclusion_flag 'N' like_flag 'N'] \r\n                            ).exclusion_flag=='Y') ";\r\n \r\nresult ::    cag_filter ;\r\n\r\n\r\nend;]
+EXTRA_SORT_KEY||||{dxf_hk_part2; mmd_seq_nbr; ids_updt_dttm descending }
+NORM_OUTPUT_DML||||$INPUT_FILE_DML
+USE_DEDUP||||True
+POST_FILTER_EXPR||||first_defined( mmd_record_status,'') == 'A'

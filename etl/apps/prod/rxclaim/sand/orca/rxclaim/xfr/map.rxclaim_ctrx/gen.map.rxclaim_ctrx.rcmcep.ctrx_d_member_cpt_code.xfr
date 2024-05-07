@@ -1,0 +1,136 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_mbr_cpt.mbr_id,[passthrough],in0.sdabcd]
+  [out0.d_member.employer_group_id,[passthrough],in0.sdadcd]
+  [out0.d_mbr_cpt.mce_stat,[passthrough],in0.sduman]
+  [out0.d_member.carrier_id,[passthrough],in0.sdaacd]
+  [out0.d_mbr_cpt.mbr_sk,[transform],]
+  [out0.d_member.mbr_id,[passthrough],in0.sdabcd]
+  [out0.d_cag.account_id,[passthrough],in0.sdaccd]
+  [out0.d_mbr_cpt.cag_sk,[transform],]
+  [out0.d_mbr_cpt.carrier_id,[passthrough],in0.sdaacd]
+  [out0.d_mbr_cpt.employer_group_id,[passthrough],in0.sdadcd]
+  [out0.d_cag.carrier_id,[passthrough],in0.sdaacd]
+  [out0.d_mbr_cpt.mce_medical_clm_nbr,[passthrough],in0.sdulan]
+  [out0.d_mbr_cpt.mem_cpt_sk,[transform],]
+  [out0.d_mbr_cpt.mce_from_dt,[transform],in0.sduwce]
+  [out0.d_mbr_cpt.mce_seq_nbr,[passthrough],in0.sdukan]
+  [out0.d_mbr_cpt.mce_thru_dt,[transform],in0.sduxce]
+  [out0.d_mbr_cpt.mce_cpt_cd,[passthrough],in0.sdujan]
+  [out0.d_mbr_cpt.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_mbr_cpt.account_id,[passthrough],in0.sdaccd]
+  [out0.d_member.account_id,[passthrough],in0.sdaccd]
+  [out0.d_cag.employer_group_id,[passthrough],in0.sdadcd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_mbr_cpt.mbr_id,'d_mbr_cpt.mbr_id',1,0]
+     [out0.d_member.employer_group_id,'d_member.employer_group_id',1,0]
+     [out0.d_mbr_cpt.mce_stat,'d_mbr_cpt.mce_stat',1,0]
+     [out0.d_member.carrier_id,'d_member.carrier_id',1,0]
+     [out0.d_mbr_cpt.mbr_sk,'d_mbr_cpt.mbr_sk',1,0]
+     [out0.d_member.mbr_id,'d_member.mbr_id',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.d_mbr_cpt.cag_sk,'d_mbr_cpt.cag_sk',1,0]
+     [out0.d_mbr_cpt.carrier_id,'d_mbr_cpt.carrier_id',1,0]
+     [out0.d_mbr_cpt.employer_group_id,'d_mbr_cpt.employer_group_id',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.d_mbr_cpt.mce_medical_clm_nbr,'d_mbr_cpt.mce_medical_clm_nbr',1,0]
+     [out0.d_mbr_cpt.mem_cpt_sk,'d_mbr_cpt.mem_cpt_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_mbr_cpt.mce_from_dt,'d_mbr_cpt.mce_from_dt',1,0]
+     [out0.d_mbr_cpt.mce_seq_nbr,'d_mbr_cpt.mce_seq_nbr',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_mbr_cpt.mce_thru_dt,'d_mbr_cpt.mce_thru_dt',1,0]
+     [out0.d_mbr_cpt.mce_cpt_cd,'d_mbr_cpt.mce_cpt_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mbr_cpt.src_env_sk,'d_mbr_cpt.src_env_sk',1,0]
+     [out0.d_mbr_cpt.account_id,'d_mbr_cpt.account_id',1,0]
+     [out0.d_member.account_id,'d_member.account_id',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.sduxce,'sduxce',1,1]
+     [in0.sduwce,'sduwce',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.sdadcd,'sdadcd',3,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.sdaccd,'sdaccd',3,3]
+     [in0.sdujan,'sdujan',1,1]
+     [in0.sdulan,'sdulan',1,1]
+     [in0.sdaacd,'sdaacd',3,3]
+     [in0.sduman,'sduman',1,1]
+     [in0.sdukan,'sdukan',1,1]
+     [in0.sdabcd,'sdabcd',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_mbr_cpt_mem_cpt_sk = -1;
+let decimal("\x01",0) d_mbr_cpt_cag_sk = -1;
+let decimal("\x01",0) d_mbr_cpt_mbr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_cpt_carrier_id = fail_if_error(in0.sdaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_cpt_account_id = fail_if_error(in0.sdaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_cpt_employer_group_id = fail_if_error(in0.sdadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_cpt_mbr_id = fail_if_error(in0.sdabcd);
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_mbr_cpt_mce_cpt_cd = fail_if_error(in0.sdujan);
+let decimal("\x01",0) d_mbr_cpt_mce_seq_nbr = fail_if_error(in0.sdukan);
+let date("YYYYMMDD")("\x01") d_mbr_cpt_mce_from_dt;
+let date("YYYYMMDD")("\x01") d_mbr_cpt_mce_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_cpt_mce_medical_clm_nbr = fail_if_error(in0.sdulan);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_mbr_cpt_mce_stat = fail_if_error(in0.sduman);
+let decimal("\x01",0) d_mbr_cpt_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.sdaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.sdaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.sdadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_carrier_id = fail_if_error(in0.sdaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_member_account_id = fail_if_error(in0.sdaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_employer_group_id = fail_if_error(in0.sdadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_member_mbr_id = fail_if_error(in0.sdabcd);
+
+
+
+/*   Default value   */
+d_mbr_cpt_mce_from_dt=fail_if_error(date_check(in0.sduwce));
+
+/*   Default value   */
+d_mbr_cpt_mce_thru_dt=fail_if_error(date_check(in0.sduxce));
+
+  out0.d_mbr_cpt.mem_cpt_sk::d_mbr_cpt_mem_cpt_sk;
+  out0.d_mbr_cpt.cag_sk::d_mbr_cpt_cag_sk;
+  out0.d_mbr_cpt.mbr_sk::d_mbr_cpt_mbr_sk;
+  out0.d_mbr_cpt.carrier_id::d_mbr_cpt_carrier_id;
+  out0.d_mbr_cpt.account_id::d_mbr_cpt_account_id;
+  out0.d_mbr_cpt.employer_group_id::d_mbr_cpt_employer_group_id;
+  out0.d_mbr_cpt.mbr_id::d_mbr_cpt_mbr_id;
+  out0.d_mbr_cpt.mce_cpt_cd::d_mbr_cpt_mce_cpt_cd;
+  out0.d_mbr_cpt.mce_seq_nbr::d_mbr_cpt_mce_seq_nbr;
+  out0.d_mbr_cpt.mce_from_dt::d_mbr_cpt_mce_from_dt;
+  out0.d_mbr_cpt.mce_thru_dt::d_mbr_cpt_mce_thru_dt;
+  out0.d_mbr_cpt.mce_medical_clm_nbr::d_mbr_cpt_mce_medical_clm_nbr;
+  out0.d_mbr_cpt.mce_stat::d_mbr_cpt_mce_stat;
+  out0.d_mbr_cpt.src_env_sk::d_mbr_cpt_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_member.carrier_id::d_member_carrier_id;
+  out0.d_member.account_id::d_member_account_id;
+  out0.d_member.employer_group_id::d_member_employer_group_id;
+  out0.d_member.mbr_id::d_member_mbr_id;
+  out0.*::in0.*;
+
+end;

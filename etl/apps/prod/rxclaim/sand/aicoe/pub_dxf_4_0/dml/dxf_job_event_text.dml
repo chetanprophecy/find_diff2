@@ -1,0 +1,25 @@
+// Usage: include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+
+type dxf_job_event_text_t =
+record
+  decimal("\n") dxf_src_dataset_id;
+  decimal("\n") dxf_src_rec_cnt;
+  string("\n") dxf_src_file_name = "";
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") dataset_start_dttm;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") dataset_end_dttm;
+  string("\n") file_path = ""; /*@ BizName:'File Path' BizComment:'Relative to the incoming directory.' @*/
+  decimal("\n") file_size = ""; /*@ BizName:'File Size' @*/
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\n") file_modified_dttm = -1; /*@ BizName:'File Modify Date/Time' BizComment:'Taken from the modify time in the filesystem.  This is useful for tracking arrival times.' @*/
+  string("") as_event_text() = string_concat(
+    dxf_src_dataset_id, "\n",
+    dxf_src_rec_cnt, "\n",
+    dxf_src_file_name, "\n",
+    dataset_start_dttm, "\n",
+    dataset_end_dttm, "\n",
+    file_path, "\n",
+    file_size, "\n",
+    file_modified_dttm, "\n");
+end;
+
+metadata type = dxf_job_event_text_t;

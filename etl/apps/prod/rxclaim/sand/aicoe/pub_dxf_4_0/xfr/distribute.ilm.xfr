@@ -1,0 +1,47 @@
+type ilm_event_registration_type =
+record
+  /* Distribution target information */
+  string("|") channel_id;
+  string("|") source_table_name;
+  string("|") datamart;
+  string("|") sources;
+  string("|") ids_table_name;
+  string("|") ilm_name;
+  string(1) newline = "\n";
+end;
+
+metadata type = ilm_event_registration_type;
+
+out :: read_files_for_ilm_file()=
+begin
+  let string("") content = "";
+
+    content = read_file(pdl_resolve("$AI_META").resolved_value + "/distribute.ilm.dat");
+  
+  out :: content;
+end;
+
+ilm_event_registration_type[] out :: get_all_registrations_for_ilm_file(datamart, source_table_name)=
+begin
+  let string("\x01") contents = read_files_for_ilm_file();
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let ilm_event_registration_type[] registrations = [vector];
+  for(let line in lines)
+  begin
+    if(not is_blank(line) and not starts_with(line, "#"))
+    begin
+      let string("") l = line + "\n";
+      let ilm_event_registration_type r = reinterpret(l);
+      registrations = vector_append(registrations, r);
+    end
+  end
+  out :: registrations;
+end;
+
+ilm_event_registration_type[] out :: get_registration_details_for_ilm_file(datamart, source_table_name,sources)=
+begin
+  let ilm_event_registration_type[] regs = [vector];
+  regs = for(let reg in get_all_registrations_for_ilm_file(datamart, source_table_name)) : if(reg.source_table_name == source_table_name and reg.datamart == datamart and reg.sources == sources) reg;
+  
+  out :: regs;
+end;

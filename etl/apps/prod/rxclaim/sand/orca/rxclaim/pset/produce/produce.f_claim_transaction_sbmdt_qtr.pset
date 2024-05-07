@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_qtr.$RUN_ID.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_qtr.dml
+SORT_KEY||||{claim_nbr;claim_stat_id}
+USE_ROLLUP||||True
+ROLLUP_XFR||||$AI_XFR/aggregation/aggregate.f_claim_transaction_sbmdt.xfr
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_sbmdt_qtr.$RUN_ID.dat.gz
+OUTPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_transaction_sbmdt_qtr.dml
+EXTRA_SORT_KEY||||{claim_seq_nbr}
+FILTER_EXPR|$|||all_defined(src_env_sk, claim_stat_id) && src_env_sk member [vector 480, 490] && claim_stat_id member [vector 'P', 'X']

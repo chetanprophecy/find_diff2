@@ -1,0 +1,68 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/member_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/10  Mohd Shadab             Modified the mbr file name and key
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ *  2016/11/30  Mohd Shadab             Removed cli from file name and added function to load serial or mfs layout file as per requirement
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_mbr_lkup_path() inline =
+begin
+  out :1: if (number_of_partitions() == 1) PUB_CLINICAL_SERIAL_REFDATA + '/mbr.dat';
+  out  ::             this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/mbr.dat' );
+end;
+
+cli_string_t out :: get_mbr_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*****************/
+/* Member Lookup */
+/*****************/
+
+type mbr_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  mbr_hash_lkup_t         RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {mbr.carrier_id; mbr.carrier_acct_id; mbr.employer_group_id; mbr.mbr_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let mbr_lkup_t GLKUP_MBR = allocate_with_nulls();
+
+mbr_lkup_t out :: load_mbr_lkup() inline =
+begin
+  if (GLKUP_MBR.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_mbr_lkup_path();
+    let indx_path  = get_mbr_indx_path(lkup_path, 'mbr');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_MBR = if (indx_found) lookup_load(lkup_path, indx_path)
+                else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_MBR;
+end;
+
+mbr_t out :: get_mbr(carrier_id, carrier_acct_id, employer_group_id, mbr_id) inline =
+begin
+  let lkup = load_mbr_lkup();
+  out :: lookup(lkup, carrier_id, carrier_acct_id, employer_group_id, mbr_id).mbr;
+end;

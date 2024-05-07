@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcpdmp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpdmp                  \nclmprdfil_bk1 rctc2p                  \nclmprdfil_bk1 rctcdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcpdmp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctc2p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctcdp')]
+WHERE_CLAUSE||||
+DO_LOOKUP||||1
+DO_SOURCE||||0
+LOOKUP_FIELDS||||dup2nb,duoinb,dulptx
+SQL||||$["SELECT * FROM clmprdfil_bk1.RCPDMP R\r\n join \r\n(SELECT rctc2p.qnp2nb\r\n     , rctc2p.qnoinb\r\n  FROM clmprdfil_bk1.rctc2p  rctc2p\r\n     , clmprdfil_bk1.rctcdp  rctcdp\r\nWHERE rctcdp.DQP2NB = RCTC2P.QNP2NB\r\n and rctcdp.DQOINB = RCTC2P.QNOINB\r\n and RCTC2P.QNYUAU='Y' and (rctc2p.qnp2nb,rctc2p.qnoinb) IN (SELECT temp.claimnbr,1000-temp.clamsts FROM DWXTRACT2.TMP_HSI_3 temp) )as A on R.dup2nb = A.qnp2nb and R.duoinb = A.qnoinb and R.dulptx like 'Auto%'"]
+LOOKUP_NAME_OVERRIDE||||rcpdmp_rctc2p

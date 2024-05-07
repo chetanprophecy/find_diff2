@@ -1,0 +1,60 @@
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+//include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+let string("") file_nm="";
+let int index_position=0;
+let decimal("") v_date_value=0;
+let string("") v_file_nm_for_sort="abc"; //assign som initial val;ue to avoid null in assignment
+//let long dxf_src_sys_id = 0;
+//let long dxf_src_dataset_id = 0;
+//let long dxf_src_rec_cnt = 0; 
+//let string(unsigned integer(1)) dxf_src_file_name = "";
+//let start_time = now();
+
+/* Always output 1 record.  Also increments the record counter. */
+out :: length(in) =
+begin
+  out :: 1;
+end;
+
+/* Add Source ID and Record Number.  Remove trailing blanks from strings. */
+out :: normalize(in, index) =
+begin
+    
+    file_nm = string_downcase(string_replace(string_substring(in.filename, string_rindex(in.filename, "/") + 1, 9999), "HIST_", ""));
+     if(file_nm !=v_file_nm_for_sort) 
+       begin
+       v_file_nm_for_sort=file_nm;
+       v_date_value=first_defined(string_filter(re_get_match(v_file_nm_for_sort,"[0-9]{8}[t][0-9]{6}"),"0123456789"),0);
+       end
+  //dxf_src_dataset_id = in.src_dataset_id;
+  //dxf_src_file_name = in.filename;
+  //dxf_src_rec_cnt = in.file_rec_cntr;
+  //dxf_src_sys_id = if(string_substring(file_nm, 1, string_index(file_nm, "_") - 1) == "owd") first_without_error((decimal("\x01")) in.rxt_src_envrt_id, 9999) else name_to_sys_id(string_substring(file_nm, 1, string_index(file_nm, "_") - 1));
+  out.(*, name == "dxf_src_sys_id") :1: if(string_substring(file_nm, 1, string_index(file_nm, "_") - 1) == "owd") first_without_error((decimal("\x01")) in.rxt_src_envrt_id, 9999) else name_to_sys_id(string_substring(file_nm, 1, string_index(file_nm, "_") - 1));
+  out.(*, name == "dxf_src_file_name") :2: in.filename;
+  out.(*, name == "dxf_src_dataset_id") :3:v_date_value ;
+  out.(*, name == "dxf_src_rec_cnt") :4: in.file_rec_cntr;
+  out.(*, form == "string") :5: string_lrtrim(in.*);
+  out.* :: in.*;
+
+  
+
+end;
+
+/* Write the Source ID and Record Count to the log. */
+/*log_event :: final_log_output() =
+begin
+  let dxf_job_event_text_t job_info = [record
+    dxf_src_dataset_id  dxf_src_dataset_id,  // Only set in partition 0.
+    dxf_src_file_name   dxf_src_file_name,
+    dxf_src_rec_cnt     dxf_src_rec_cnt,
+    dataset_start_dttm  start_time,
+    dataset_end_dttm    now(),
+  ];
+
+  log_event.event_type :: "DXF Job Log: 0"; // We need to include a fake dataset ID for the rollup key that follows.
+  log_event.event_text :: job_info.as_event_text();
+end;
+*/

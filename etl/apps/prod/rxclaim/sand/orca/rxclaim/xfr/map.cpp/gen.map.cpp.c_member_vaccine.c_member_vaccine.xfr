@@ -1,0 +1,133 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c18648e_c7ec_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mbr_vac.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mbr_vac.cpp_member_vaccine_sk,[transform],]
+  [out0.c_mbr_vac.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mbr_vac.src_env_sk,[transform],]
+  [out0.c_mbr_vac.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member_lkp").dxf_sk']
+  [out0.c_mbr_vac.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mbr_vac.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mbr_vac.cpp_create_ts,'c_mbr_vac.cpp_create_ts',1,0]
+     [out0.c_mbr_vac.case_id,'c_mbr_vac.case_id',1,0]
+     [out0.c_mbr_vac.acct_id,'c_mbr_vac.acct_id',1,0]
+     [out0.c_mbr_vac.cli_acct_id,'c_mbr_vac.cli_acct_id',1,0]
+     [out0.c_mbr_vac.carrier_id,'c_mbr_vac.carrier_id',1,0]
+     [out0.c_mbr_vac.cpp_member_vaccine_sk,'c_mbr_vac.cpp_member_vaccine_sk',1,0]
+     [out0.c_mbr_vac.cli_member_id,'c_mbr_vac.cli_member_id',1,0]
+     [out0.c_mbr_vac.cpp_created_by,'c_mbr_vac.cpp_created_by',1,0]
+     [out0.c_mbr_vac.sequence_num,'c_mbr_vac.sequence_num',1,0]
+     [out0.c_mbr_vac.member_id,'c_mbr_vac.member_id',1,0]
+     [out0.c_mbr_vac.member_vaccine_id,'c_mbr_vac.member_vaccine_id',1,0]
+     [out0.c_mbr_vac.src_env_sk,'c_mbr_vac.src_env_sk',1,0]
+     [out0.c_mbr_vac.vaccine_cd,'c_mbr_vac.vaccine_cd',1,0]
+     [out0.c_mbr_vac.vaccine_cmmt,'c_mbr_vac.vaccine_cmmt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mbr_vac.vaccine_name,'c_mbr_vac.vaccine_name',1,0]
+     [out0.c_mbr_vac.cpp_member_sk,'c_mbr_vac.cpp_member_sk',1,0]
+     [out0.c_mbr_vac.emplyr_group_id,'c_mbr_vac.emplyr_group_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mbr_vac.cpp_updated_by,'c_mbr_vac.cpp_updated_by',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mbr_vac.cli_carrier_id,'c_mbr_vac.cli_carrier_id',1,0]
+     [out0.c_mbr_vac.cpp_update_ts,'c_mbr_vac.cpp_update_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_mbr_vac.cli_emplyr_group_id,'c_mbr_vac.cli_emplyr_group_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     ['lookup("c_member_lkp").dxf_sk','dxf_sk',1,1]
+     [in0.vaccine_cmmt,'vaccine_cmmt',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.sequence_num,'sequence_num',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.vaccine_name,'vaccine_name',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.vaccine_cd,'vaccine_cd',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.member_vaccine_id,'member_vaccine_id',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mbr_vac_cpp_member_vaccine_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_mbr_vac_member_vaccine_id = fail_if_error(in0.member_vaccine_id);
+let decimal("\x01",0) c_mbr_vac_sequence_num = fail_if_error(in0.sequence_num);
+let decimal("\x01",0) c_mbr_vac_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0) c_mbr_vac_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0) c_mbr_vac_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0) c_mbr_vac_cli_member_id = fail_if_error(in0.cli_member_id);
+let utf8 string("\x01", maximum_length=120) c_mbr_vac_carrier_id = fail_if_error(in0.carrier_id);
+let utf8 string("\x01", maximum_length=160) c_mbr_vac_acct_id = fail_if_error(in0.acct_id);
+let utf8 string("\x01", maximum_length=120) c_mbr_vac_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let utf8 string("\x01", maximum_length=80) c_mbr_vac_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_mbr_vac_cpp_member_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_mbr_vac_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_mbr_vac_vaccine_cd = fail_if_error(in0.vaccine_cd);
+let utf8 string("\x01", maximum_length=400) c_mbr_vac_vaccine_name = fail_if_error(in0.vaccine_name);
+let utf8 string("\x01", maximum_length=400) c_mbr_vac_vaccine_cmmt = fail_if_error(in0.vaccine_cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mbr_vac_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mbr_vac_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mbr_vac_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mbr_vac_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mbr_vac_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mbr_vac_cpp_member_sk=fail_if_error(first_defined(lookup("c_member_lkp",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_mbr_vac.cpp_member_vaccine_sk::c_mbr_vac_cpp_member_vaccine_sk;
+  out0.c_mbr_vac.member_vaccine_id::c_mbr_vac_member_vaccine_id;
+  out0.c_mbr_vac.sequence_num::c_mbr_vac_sequence_num;
+  out0.c_mbr_vac.cli_carrier_id::c_mbr_vac_cli_carrier_id;
+  out0.c_mbr_vac.cli_acct_id::c_mbr_vac_cli_acct_id;
+  out0.c_mbr_vac.cli_emplyr_group_id::c_mbr_vac_cli_emplyr_group_id;
+  out0.c_mbr_vac.cli_member_id::c_mbr_vac_cli_member_id;
+  out0.c_mbr_vac.carrier_id::c_mbr_vac_carrier_id;
+  out0.c_mbr_vac.acct_id::c_mbr_vac_acct_id;
+  out0.c_mbr_vac.emplyr_group_id::c_mbr_vac_emplyr_group_id;
+  out0.c_mbr_vac.member_id::c_mbr_vac_member_id;
+  out0.c_mbr_vac.cpp_member_sk::c_mbr_vac_cpp_member_sk;
+  out0.c_mbr_vac.case_id::c_mbr_vac_case_id;
+  out0.c_mbr_vac.vaccine_cd::c_mbr_vac_vaccine_cd;
+  out0.c_mbr_vac.vaccine_name::c_mbr_vac_vaccine_name;
+  out0.c_mbr_vac.vaccine_cmmt::c_mbr_vac_vaccine_cmmt;
+  out0.c_mbr_vac.cpp_update_ts::c_mbr_vac_cpp_update_ts;
+  out0.c_mbr_vac.cpp_updated_by::c_mbr_vac_cpp_updated_by;
+  out0.c_mbr_vac.cpp_create_ts::c_mbr_vac_cpp_create_ts;
+  out0.c_mbr_vac.cpp_created_by::c_mbr_vac_cpp_created_by;
+  out0.c_mbr_vac.src_env_sk::c_mbr_vac_src_env_sk;
+  out0.*::in0.*;
+
+end;

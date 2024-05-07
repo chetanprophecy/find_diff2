@@ -1,0 +1,30 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.plan_code :: in.itaecd;
+  out.plan_eff_date :: in.itakdt;
+  out.fnl_ndc_list_name :: in.itqxc2;
+  out.pfn_seq_nbr :: in.itdan3;
+  out.pfn_message_cde :: in.itqzc2;
+  out.pfn_from_date :: in.itsndt;
+  out.pfn_thru_date :: in.itsodt;
+  out.pfn_status :: in.ithxck;
+  out.pfn_sequence_search :: in.itm5hs;
+  out.pfn_compound_criteria :: in.itgyia;
+  out.pfn_plan_dflt_list :: in.itgehn;
+  out.add_user_name :: in.itakvn;
+  out.add_date :: in.itc2dt;
+  out.add_time :: in.itadtm;
+  out.add_program_name :: in.italvn;
+  out.chg_user_name :: in.itadvn;
+  out.chg_date :: in.itbmdt;
+  out.chg_time :: in.itabtm;
+  out.chg_program_name :: in.itaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

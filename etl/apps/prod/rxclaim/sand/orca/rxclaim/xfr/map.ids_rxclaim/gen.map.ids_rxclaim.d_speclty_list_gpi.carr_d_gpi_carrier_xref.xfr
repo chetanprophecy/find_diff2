@@ -1,0 +1,65 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.car_gpi_xref.speclty_ind,[transform],]
+  [out0.car_gpi_xref.dxf_sk,[transform],]
+  [out0.car_gpi_xref.gpi_carrier_sk,[transform],]
+  [out0.car_gpi_xref.gpi_id,[transform],in0.gpi_id]
+  [out0.car_gpi_xref.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.car_gpi_xref.carrier_id,[transform],in0.carrier_id]
+  [out0.car_gpi_xref.speclty_ind_nm,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.car_gpi_xref.speclty_ind,'car_gpi_xref.speclty_ind',1,0]
+     [out0.car_gpi_xref.dxf_sk,'car_gpi_xref.dxf_sk',1,0]
+     [out0.car_gpi_xref.gpi_carrier_sk,'car_gpi_xref.gpi_carrier_sk',1,0]
+     [out0.car_gpi_xref.gpi_id,'car_gpi_xref.gpi_id',1,0]
+     [out0.car_gpi_xref.src_env_sk,'car_gpi_xref.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.car_gpi_xref.carrier_id,'car_gpi_xref.carrier_id',1,0]
+     [out0.car_gpi_xref.speclty_ind_nm,'car_gpi_xref.speclty_ind_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi_id,'gpi_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let integer(8) car_gpi_xref_dxf_sk = 0;
+let decimal("\x01",0) car_gpi_xref_gpi_carrier_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) car_gpi_xref_carrier_id = fail_if_error(string_lrtrim(in0.carrier_id));
+let string("\x01",charset="iso-8859-15", maximum_length=14) car_gpi_xref_gpi_id = fail_if_error(string_lrtrim(in0.gpi_id));
+let string("\x01",charset="iso-8859-15", maximum_length=1) car_gpi_xref_speclty_ind = 'Y';
+let string("\x01",charset="iso-8859-15", maximum_length=50) car_gpi_xref_speclty_ind_nm = 'Specialty';
+let decimal("\x01",0) car_gpi_xref_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.car_gpi_xref.dxf_sk::car_gpi_xref_dxf_sk;
+  out0.car_gpi_xref.gpi_carrier_sk::car_gpi_xref_gpi_carrier_sk;
+  out0.car_gpi_xref.carrier_id::car_gpi_xref_carrier_id;
+  out0.car_gpi_xref.gpi_id::car_gpi_xref_gpi_id;
+  out0.car_gpi_xref.speclty_ind::car_gpi_xref_speclty_ind;
+  out0.car_gpi_xref.speclty_ind_nm::car_gpi_xref_speclty_ind_nm;
+  out0.car_gpi_xref.src_env_sk::car_gpi_xref_src_env_sk;
+  out0.*::in0.*;
+
+end;

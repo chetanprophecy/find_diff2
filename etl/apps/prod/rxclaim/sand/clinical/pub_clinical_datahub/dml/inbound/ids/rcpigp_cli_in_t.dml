@@ -1,0 +1,36 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/rcpigp_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/10  Majid Mohammed           Initial version
+ ******************************************************************************************************************************************/
+
+type rcpigp_cli_in_t =
+record
+
+  decimal("\x01",maximum_length=5) src_sys_id = 0;
+  decimal("\x01",maximum_length=9) prod_key /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_ing_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01",maximum_length=9) pig_ing_id /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) pig_gnrc_nm /*VARCHAR(40) NOT NULL*/;
+  decimal("\x01",maximum_length=18) pig_strngth /*NUMERIC(13,5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11) pig_strngth_uom_cd /*VARCHAR(11) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_ing_flg /*CHAR(1) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_rec_stat_cd /*CHAR(1) NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01") pig_inactive_dt  /*TIMESTAMP(6) NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end ;
+   
+type rcpigp_cli_in_vec_t = rcpigp_cli_in_t[int];
+
+metadata type = rcpigp_cli_in_t;

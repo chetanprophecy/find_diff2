@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="DM" description="This job produce yearly TAC extract report." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="D045E64E-9F0E-E628-5891-9F5F9568C8E9" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Clinical Report - TAC Extract yearly" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/dm" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/tac_extract_xlsx_reports_yearly.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <expirationEnd durationSec="262800" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint mode="MONTHLY" startDate="2018-03-06Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfMonthDay day="5" nonOperationalOffset="0"/>
+      </days>
+      <monthsOfYear>
+        <monthOfYear value="JAN"/>
+      </monthsOfYear>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="2B878509-DA55-E2D5-4A70-5AF238F3F0B0"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.phr_xref.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.phr_xref.inactive_date,[transform],in0.inactive_date]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phr_xref.phr_zip,'phr_xref.phr_zip',1,0]
+     [out0.phr_xref.phr_state,'phr_xref.phr_state',1,0]
+     [out0.phr_xref.phr_npi_no,'phr_xref.phr_npi_no',1,0]
+     [out0.phr_xref.phr_type,'phr_xref.phr_type',1,0]
+     [out0.phr_xref.phr_store_no,'phr_xref.phr_store_no',1,0]
+     [out0.phr_xref.phr_nm,'phr_xref.phr_nm',1,0]
+     [out0.phr_xref.phr_city,'phr_xref.phr_city',1,0]
+     [out0.phr_xref.phr_addr2,'phr_xref.phr_addr2',1,0]
+     [out0.phr_xref.phr_addr,'phr_xref.phr_addr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.phr_xref.phr_ncpdp_id,'phr_xref.phr_ncpdp_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.phr_xref.src_env_sk,'phr_xref.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phr_xref.phr_id,'phr_xref.phr_id',1,0]
+     [out0.phr_xref.inactive_date,'phr_xref.inactive_date',1,0]
+     [out0.phr_xref.phr_group,'phr_xref.phr_group',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.phr_group,'phr_group',1,1]
+     [in0.inactive_date,'inactive_date',4,1]
+     [in0.phr_store_no,'phr_store_no',1,1]
+     [in0.phr_city,'phr_city',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.phr_ncpdp_id,'phr_ncpdp_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.phr_state,'phr_state',1,1]
+     [in0.phr_addr,'phr_addr',1,1]
+     [in0.phr_npi_no,'phr_npi_no',1,1]
+     [in0.phr_nm,'phr_nm',1,1]
+     [in0.phr_zip,'phr_zip',1,1]
+     [in0.phr_id,'phr_id',1,1]
+     [in0.phr_addr2,'phr_addr2',1,1]
+     [in0.phr_type,'phr_type',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=12) phr_xref_phr_id = fail_if_error(in0.phr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) phr_xref_phr_ncpdp_id = fail_if_error(in0.phr_ncpdp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phr_xref_phr_npi_no = fail_if_error(in0.phr_npi_no);
+let string("\x01",charset="iso-8859-15", maximum_length=60) phr_xref_phr_nm = fail_if_error(in0.phr_nm);
+let date("YYYYMMDD")("\x01") phr_xref_inactive_date = fail_if_error((if (sql_or(is_null(in0.inactive_date),is_blank(in0.inactive_date)))
+   in0.inactive_date
+ else
+   ((date('YYYYMMDD'))((date('MM/DD/YYYY'))in0.inactive_date))));
+let string("\x01",charset="iso-8859-15", maximum_length=10) phr_xref_phr_store_no = fail_if_error(in0.phr_store_no);
+let string("\x01",charset="iso-8859-15", maximum_length=55) phr_xref_phr_addr = fail_if_error(in0.phr_addr);
+let string("\x01",charset="iso-8859-15", maximum_length=55) phr_xref_phr_addr2 = fail_if_error(in0.phr_addr2);
+let string("\x01",charset="iso-8859-15", maximum_length=30) phr_xref_phr_city = fail_if_error(in0.phr_city);
+let string("\x01",charset="iso-8859-15", maximum_length=3) phr_xref_phr_state = fail_if_error(in0.phr_state);
+let string("\x01",charset="iso-8859-15", maximum_length=15) phr_xref_phr_zip = fail_if_error(in0.phr_zip);
+let string("\x01",charset="iso-8859-15", maximum_length=55) phr_xref_phr_group = fail_if_error(in0.phr_group);
+let string("\x01",charset="iso-8859-15", maximum_length=30) phr_xref_phr_type = fail_if_error(in0.phr_type);
+let decimal("\x01",0) phr_xref_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.phr_xref.phr_id::phr_xref_phr_id;
+  out0.phr_xref.phr_ncpdp_id::phr_xref_phr_ncpdp_id;
+  out0.phr_xref.phr_npi_no::phr_xref_phr_npi_no;
+  out0.phr_xref.phr_nm::phr_xref_phr_nm;
+  out0.phr_xref.inactive_date::phr_xref_inactive_date;
+  out0.phr_xref.phr_store_no::phr_xref_phr_store_no;
+  out0.phr_xref.phr_addr::phr_xref_phr_addr;
+  out0.phr_xref.phr_addr2::phr_xref_phr_addr2;
+  out0.phr_xref.phr_city::phr_xref_phr_city;
+  out0.phr_xref.phr_state::phr_xref_phr_state;
+  out0.phr_xref.phr_zip::phr_xref_phr_zip;
+  out0.phr_xref.phr_group::phr_xref_phr_group;
+  out0.phr_xref.phr_type::phr_xref_phr_type;
+  out0.phr_xref.src_env_sk::phr_xref_src_env_sk;
+  out0.*::in0.*;
+
+end;

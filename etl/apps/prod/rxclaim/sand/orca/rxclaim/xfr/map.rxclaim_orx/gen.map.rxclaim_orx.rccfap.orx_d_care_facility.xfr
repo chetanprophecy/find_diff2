@@ -1,0 +1,132 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58ab1710_502d_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_care_fac.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_care_fac.care_fac_nm,[transform],in0.akbhtx]
+  [out0.d_care_fac.carrier_id,[passthrough],in0.akaacd]
+  [out0.d_care_fac.cfa_zip,[transform],in0.akb6tx]
+  [out0.d_care_fac.cfa_state,[transform],in0.akb7tx]
+  [out0.d_care_fac.cfa_city,[transform],in0.akb5tx]
+  [out0.d_care_fac.cfa_addr,[transform],in0.akb4tx]
+  [out0.d_care_fac.care_fac_sk,[transform],]
+  [out0.d_care_fac.cfa_cntry,[transform],in0.akpyc2]
+  [out0.d_care_fac.cfa_phone,[passthrough],in0.akaenb]
+  [out0.d_care_fac.cfa_zip3,[transform],in0.akhht1]
+  [out0.d_care_fac.cfa_zip2,[transform],in0.akhgt1]
+  [out0.d_care_fac.care_fac_id,[transform],in0.akapcd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_care_fac.src_env_sk,'d_care_fac.src_env_sk',1,0]
+     [out0.d_care_fac.care_fac_nm,'d_care_fac.care_fac_nm',1,0]
+     [out0.d_care_fac.carrier_id,'d_care_fac.carrier_id',1,0]
+     [out0.d_care_fac.cfa_zip,'d_care_fac.cfa_zip',1,0]
+     [out0.d_care_fac.cfa_state,'d_care_fac.cfa_state',1,0]
+     [out0.d_care_fac.cfa_city,'d_care_fac.cfa_city',1,0]
+     [out0.d_care_fac.cfa_addr,'d_care_fac.cfa_addr',1,0]
+     [out0.d_care_fac.care_fac_sk,'d_care_fac.care_fac_sk',1,0]
+     [out0.d_care_fac.cfa_cntry,'d_care_fac.cfa_cntry',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_care_fac.cfa_phone,'d_care_fac.cfa_phone',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_care_fac.cfa_zip3,'d_care_fac.cfa_zip3',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_care_fac.cfa_zip2,'d_care_fac.cfa_zip2',1,0]
+     [out0.d_care_fac.care_fac_id,'d_care_fac.care_fac_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.akb6tx,'akb6tx',4,1]
+     [in0.akb4tx,'akb4tx',4,1]
+     [in0.akaacd,'akaacd',1,1]
+     [in0.akaenb,'akaenb',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.akapcd,'akapcd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.akhgt1,'akhgt1',4,1]
+     [in0.akb7tx,'akb7tx',4,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.akpyc2,'akpyc2',4,1]
+     [in0.akhht1,'akhht1',4,1]
+     [in0.akb5tx,'akb5tx',4,1]
+     [in0.akbhtx,'akbhtx',5,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_care_fac_care_fac_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_care_fac_carrier_id = fail_if_error(in0.akaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_care_fac_care_fac_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_care_fac_care_fac_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_care_fac_cfa_addr = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akb4tx)),is_blank(string_lrtrim(in0.akb4tx))),(string_lrtrim(in0.akb4tx) member [vector'UNKNOWN','NOADDRESS','NO NAME'])))
+   '-'
+ else
+   string_lrtrim(in0.akb4tx)));
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_care_fac_cfa_city = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akb5tx)),is_blank(string_lrtrim(in0.akb5tx))),(string_lrtrim(in0.akb5tx) member [vector'UNKNOWN','NOCITY'])))
+   '-'
+ else
+   string_lrtrim(in0.akb5tx)));
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_care_fac_cfa_state = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akb7tx)),is_blank(string_lrtrim(in0.akb7tx))),(string_lrtrim(in0.akb7tx) member [vector'UNKNOWN','NOSTATE'])))
+   '-'
+ else
+   string_lrtrim(in0.akb7tx)));
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_care_fac_cfa_zip = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akb6tx)),is_blank(string_lrtrim(in0.akb6tx))),(string_lrtrim(in0.akb6tx) member [vector'UNKNOWN','NOZIP'])))
+   '-'
+ else
+   string_lrtrim(in0.akb6tx)));
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_care_fac_cfa_zip2 = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akhgt1)),is_blank(string_lrtrim(in0.akhgt1))),(string_lrtrim(in0.akhgt1) member [vector'UNKNOWN','NOZIP'])))
+   '-'
+ else
+   string_lrtrim(in0.akhgt1)));
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_care_fac_cfa_zip3 = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akhht1)),is_blank(string_lrtrim(in0.akhht1))),(string_lrtrim(in0.akhht1) member [vector'UNKNOWN','NOZIP'])))
+   '-'
+ else
+   string_lrtrim(in0.akhht1)));
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_care_fac_cfa_cntry = fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akpyc2)),is_blank(string_lrtrim(in0.akpyc2))),(string_lrtrim(in0.akpyc2) member [vector'UNKNOWN','NOCOUNTRY'])))
+   '-'
+ else
+   string_lrtrim(in0.akpyc2)));
+let decimal("\x01",0) d_care_fac_cfa_phone = fail_if_error(in0.akaenb);
+let decimal("\x01",0) d_care_fac_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_care_fac_care_fac_nm=fail_if_error((if (sql_or(sql_or(is_null(string_lrtrim(in0.akbhtx)),is_blank(string_lrtrim(in0.akbhtx))),(string_lrtrim(in0.akbhtx) member [vector'UNKNOWN','NO NAME'])))
+   '-'
+ else
+   (if (is_blank(asciival_32to126_range(in0.akbhtx)))
+      '-'
+    else
+      asciival_32to126_range(in0.akbhtx))));
+
+/*   Default value   */
+d_care_fac_care_fac_id=fail_if_error(string_lrtrim(asciival_32to126_range(in0.akapcd)));
+
+  out0.d_care_fac.care_fac_sk::d_care_fac_care_fac_sk;
+  out0.d_care_fac.carrier_id::d_care_fac_carrier_id;
+  out0.d_care_fac.care_fac_id::d_care_fac_care_fac_id;
+  out0.d_care_fac.care_fac_nm::d_care_fac_care_fac_nm;
+  out0.d_care_fac.cfa_addr::d_care_fac_cfa_addr;
+  out0.d_care_fac.cfa_city::d_care_fac_cfa_city;
+  out0.d_care_fac.cfa_state::d_care_fac_cfa_state;
+  out0.d_care_fac.cfa_zip::d_care_fac_cfa_zip;
+  out0.d_care_fac.cfa_zip2::d_care_fac_cfa_zip2;
+  out0.d_care_fac.cfa_zip3::d_care_fac_cfa_zip3;
+  out0.d_care_fac.cfa_cntry::d_care_fac_cfa_cntry;
+  out0.d_care_fac.cfa_phone::d_care_fac_cfa_phone;
+  out0.d_care_fac.src_env_sk::d_care_fac_src_env_sk;
+  out0.*::in0.*;
+
+end;

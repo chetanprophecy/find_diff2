@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="OTHER" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="E4D19D52-D280-71BE-E0A3-BCCEBE521E2D" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="IDS Trigger File Reconciliation " objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="mv" executableType="PROGRAM" workingDirectory="${RUN}">
+    <arguments>
+      <argument isExpandable="false" value="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/ids_rxclaim_reconcilation_trigger.ctl"/>
+      <argument isExpandable="false" value="$PUB_CLINICAL_DATAHUB_SERIAL_ARCHIVE/ids_rxclaim_reconcilation_trigger_${BIZ_DT}.ctl"/>
+    </arguments>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-08-07Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="23:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="BD17CC2D-38C8-3A82-4866-0F7E6AF1144E"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

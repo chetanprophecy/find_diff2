@@ -1,0 +1,6 @@
+!prototype|P|||$AI_MP/home_delivery_data_processing.mp
+OUTPUT_DML||||$AI_DML/home_delivery_fills_secondary.dml
+SORT_KEY||||{REFILL_NBR; RX_NUMBER; WRITTEN_PHARMACY_CODE}
+DUPLICATING_CONDITION||||out :: output_indexes(in) =\r\nbegin\r\n  out :: if (first_defined(in.COVERAGE_INDICATOR,"-1")=="S") [vector 0] else [vector -1];\r\nend;
+MAPPING_XFR||||$AI_XFR/home_delivery_fills_secondary.xfr
+OUTPUT_FILE_PATH||||$AI_SERIAL_TEMP/home_delivery_fills_secondary.dat

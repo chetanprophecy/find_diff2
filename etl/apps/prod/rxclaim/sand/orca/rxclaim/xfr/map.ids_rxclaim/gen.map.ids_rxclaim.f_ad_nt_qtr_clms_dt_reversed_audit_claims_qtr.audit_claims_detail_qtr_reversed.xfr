@@ -1,0 +1,406 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_6_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: L_STATE   */
+out0::bzt_6_6c54cc0a_59105740_572_0(in0)=
+begin
+let record
+  decimal("\x01",0) state_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) state_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) state_cd_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: L_STATE",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_5_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCIBER_ALIAS   */
+out0::bzt_5_6c54cc0a_59105740_572_0(in0,in1)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCIBER_ALIAS",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_59105740_572_0
+    BizHidden:true
+@*/
+/*   lookup LKP: D_PRESCIBER_ALIAS WITH STCDE   */
+out0::bzt_4_6c54cc0a_59105740_572_0(in0,in1,in2)=
+begin
+let record
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("LKP: D_PRESCIBER_ALIAS WITH STCDE",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_59105740_572_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.audit.cms_pbp_id,[passthrough],in0.pbp_id]
+  [out0.audit.compound_cd,[transform],in0.compound_sk,
+     'lookup("LKP: L_COMPOUND").compound_cd']
+  [out0.audit.drg_ndc_id,[passthrough],in0.prod_id]
+  [out0.audit.carrier_id,[passthrough],in0.dqs6cd]
+  [out0.audit.cms_contract_id,[passthrough],in0.contract_num]
+  [out0.audit.rx_nbr,[passthrough],in0.dqukcd]
+  [out0.audit.audit_src_data,[transform],]
+  [out0.audit.pbr_sk,[transform],in0.pbr_st_cd,
+     in0.dqilcj,
+     in0.dqtccd,
+     'lookup("LKP: D_PRESCIBER_ALIAS").pbr_sk',
+     'lookup("LKP: D_PRESCIBER_ALIAS WITH STCDE").pbr_sk']
+  [out0.audit.drg_qty,[passthrough],in0.dqionb]
+  [out0.audit.filled_dt,[passthrough],in0.dqbbda]
+  [out0.audit.account_id,[passthrough],in0.dqs7cd]
+  [out0.audit.mbr_id,[passthrough],in0.dqs5cd]
+  [out0.audit.phr_st_desc,[transform],in0.phr_st_cd,
+     'lookup("LKP: L_STATE").state_cd_desc']
+  [out0.audit.sbm_dt,[passthrough],in0.dqc4dt]
+  [out0.audit.rx_written_dt,[passthrough],in0.dqabda]
+  [out0.audit.compound_cd_desc,[transform],'lookup("LKP: L_COMPOUND").compound_cd_desc']
+  [out0.audit.days_sply,[passthrough],in0.dqimnb]
+  [out0.audit.app_due_amt,[passthrough],in0.e0d2pr]
+  [out0.audit.employer_group_id,[passthrough],in0.dqs8cd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.audit.phr_st_cd,'audit.phr_st_cd',1,0]
+     [out0.audit.audit_type_id,'audit.audit_type_id',1,0]
+     [out0.audit.src_insert_dt,'audit.src_insert_dt',1,0]
+     [out0.audit.src_update_ts,'audit.src_update_ts',1,0]
+     [out0.audit.audit_fraud_violation_reason_sk,'audit.audit_fraud_violation_reason_sk',1,0]
+     [out0.audit.adjustment_amt,'audit.adjustment_amt',1,0]
+     [out0.audit.phr_contact_nm,'audit.phr_contact_nm',1,0]
+     [out0.audit.comments,'audit.comments',1,0]
+     [out0.audit.cms_pbp_id,'audit.cms_pbp_id',1,0]
+     [out0.audit.phr_sk,'audit.phr_sk',1,0]
+     [out0.audit.submd_mnth_id,'audit.submd_mnth_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.audit.call_note_entry_dt,'audit.call_note_entry_dt',1,0]
+     [out0.audit.compound_cd,'audit.compound_cd',1,0]
+     [out0.audit.mbr_sk,'audit.mbr_sk',1,0]
+     [out0.audit.auditior_id,'audit.auditior_id',1,0]
+     [out0.audit.drg_ndc_id,'audit.drg_ndc_id',1,0]
+     [out0.audit.audit_violation_reason_id,'audit.audit_violation_reason_id',1,0]
+     [out0.audit.carrier_id,'audit.carrier_id',1,0]
+     [out0.audit.cms_contract_id,'audit.cms_contract_id',1,0]
+     [out0.audit.drg_lbl_nm,'audit.drg_lbl_nm',1,0]
+     [out0.audit.src_created_by,'audit.src_created_by',1,0]
+     [out0.audit.cag_sk,'audit.cag_sk',1,0]
+     [out0.audit.audit_fraud_violation_reason_id,'audit.audit_fraud_violation_reason_id',1,0]
+     [out0.audit.src_env_sk,'audit.src_env_sk',1,0]
+     [out0.audit.rx_nbr,'audit.rx_nbr',1,0]
+     [out0.audit.audit_type_sk,'audit.audit_type_sk',1,0]
+     [out0.audit.audit_src_data,'audit.audit_src_data',1,0]
+     [out0.audit.pbr_dea_id,'audit.pbr_dea_id',1,0]
+     [out0.audit.pbr_sk,'audit.pbr_sk',1,0]
+     [out0.audit.audit_category_sk,'audit.audit_category_sk',1,0]
+     [out0.audit.audit_fraud_perpetrator_id,'audit.audit_fraud_perpetrator_id',1,0]
+     [out0.audit.drg_qty,'audit.drg_qty',1,0]
+     [out0.audit.pbr_st_cd,'audit.pbr_st_cd',1,0]
+     [out0.audit.filled_dt,'audit.filled_dt',1,0]
+     [out0.audit.account_id,'audit.account_id',1,0]
+     [out0.audit.prod_sk,'audit.prod_sk',1,0]
+     [out0.audit.claim_stat_id,'audit.claim_stat_id',1,0]
+     [out0.audit.number_of_emails,'audit.number_of_emails',1,0]
+     [out0.audit.drg_ndc_short_id,'audit.drg_ndc_short_id',1,0]
+     [out0.audit.audit_fraud_type_id,'audit.audit_fraud_type_id',1,0]
+     [out0.audit.audit_call_note_id,'audit.audit_call_note_id',1,0]
+     [out0.audit.mbr_id,'audit.mbr_id',1,0]
+     [out0.audit.audit_payment_type_id,'audit.audit_payment_type_id',1,0]
+     [out0.audit.pbr_npi_id,'audit.pbr_npi_id',1,0]
+     [out0.audit.phr_st_desc,'audit.phr_st_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.audit.audit_payment_type_sk,'audit.audit_payment_type_sk',1,0]
+     [out0.audit.claim_seq_nbr,'audit.claim_seq_nbr',1,0]
+     [out0.audit.sbm_dt,'audit.sbm_dt',1,0]
+     [out0.audit.number_of_calls,'audit.number_of_calls',1,0]
+     [out0.audit.audit_nonfraud_violation_reason_id,'audit.audit_nonfraud_violation_reason_id',1,0]
+     [out0.audit.phr_ncpdp_id,'audit.phr_ncpdp_id',1,0]
+     [out0.audit.audit_violation_reason_sk,'audit.audit_violation_reason_sk',1,0]
+     [out0.audit.rx_written_dt,'audit.rx_written_dt',1,0]
+     [out0.audit.compound_cd_desc,'audit.compound_cd_desc',1,0]
+     [out0.audit.audit_fraud_perpetrator_sk,'audit.audit_fraud_perpetrator_sk',1,0]
+     [out0.audit.audit_job_sk,'audit.audit_job_sk',1,0]
+     [out0.audit.claim_nbr,'audit.claim_nbr',1,0]
+     [out0.audit.src_created_dt,'audit.src_created_dt',1,0]
+     [out0.audit.days_sply,'audit.days_sply',1,0]
+     [out0.audit.submd_qtr_id,'audit.submd_qtr_id',1,0]
+     [out0.audit.audit_category_id,'audit.audit_category_id',1,0]
+     [out0.audit.compound_sk,'audit.compound_sk',1,0]
+     [out0.audit.zero_reclaim,'audit.zero_reclaim',1,0]
+     [out0.audit.app_due_amt,'audit.app_due_amt',1,0]
+     [out0.audit.audit_nonfraud_violation_reason_sk,'audit.audit_nonfraud_violation_reason_sk',1,0]
+     [out0.audit.phr_npi_no,'audit.phr_npi_no',1,0]
+     [out0.audit.employer_group_id,'audit.employer_group_id',1,0]
+     [out0.audit.processing_quarter_start_dt,'audit.processing_quarter_start_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.audit.audit_fraud_type_sk,'audit.audit_fraud_type_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.dqs5cd,'dqs5cd',1,1]
+     [in0.pbr_dea_id,'pbr_dea_id',1,1]
+     [in0.dqs6cd,'dqs6cd',1,1]
+     [in0.drg_ndc_short_id,'drg_ndc_short_id',1,1]
+     [in0.dqs7cd,'dqs7cd',1,1]
+     [in0.audit_fraud_type_sk,'audit_fraud_type_sk',1,1]
+     [in0.audit_payment_type_sk,'audit_payment_type_sk',1,1]
+     [in0.audit_fraud_perpetrator_sk,'audit_fraud_perpetrator_sk',1,1]
+     [in0.audit_nonfraud_violation_reason_id,'audit_nonfraud_violation_reason_id',1,1]
+     [in0.dqtccd,'dqtccd',2,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.phr_npi_no,'phr_npi_no',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     ['lookup("LKP: D_PRESCIBER_ALIAS").pbr_sk','pbr_sk',1,1]
+     [in0.phr_contact_nm,'phr_contact_nm',1,1]
+     [in0.compound_sk,'compound_sk',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.number_of_calls,'number_of_calls',1,1]
+     [in0.zero_reclaim,'zero_reclaim',1,1]
+     [in0.number_of_emails,'number_of_emails',1,1]
+     [in0.audit_fraud_type_id,'audit_fraud_type_id',1,1]
+     [in0.audit_nonfraud_violation_reason_sk,'audit_nonfraud_violation_reason_sk',1,1]
+     [in0.auditior_id,'auditior_id',1,1]
+     [in0.dqbbda,'dqbbda',1,1]
+     [in0.src_created_dt,'src_created_dt',1,1]
+     [in0.processing_quarter_start_dt,'processing_quarter_start_dt',1,1]
+     [in0.src_insert_dt,'src_insert_dt',1,1]
+     [in0.audit_fraud_violation_reason_id,'audit_fraud_violation_reason_id',1,1]
+     [in0.e0d2pr,'e0d2pr',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     [in0.dqionb,'dqionb',1,1]
+     [in0.dqukcd,'dqukcd',1,1]
+     [in0.phr_st_cd,'phr_st_cd',2,2]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.audit_job_sk,'audit_job_sk',1,1]
+     [in0.pbr_npi_id,'pbr_npi_id',1,1]
+     [in0.dqimnb,'dqimnb',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+     [in0.dqilcj,'dqilcj',2,1]
+     [in0.dqs8cd,'dqs8cd',1,1]
+     [in0.pbp_id,'pbp_id',1,1]
+     [in0.call_note_entry_dt,'call_note_entry_dt',1,1]
+     ['lookup("LKP: D_PRESCIBER_ALIAS WITH STCDE").pbr_sk','pbr_sk',1,1]
+     [in0.audit_type_id,'audit_type_id',1,1]
+     [in0.prod_id,'prod_id',1,1]
+     [in0.contract_num,'contract_num',1,1]
+     [in0.audit_fraud_violation_reason_sk,'audit_fraud_violation_reason_sk',1,1]
+     [in0.audit_call_note_id,'audit_call_note_id',1,1]
+     [in0.audit_violation_reason_sk,'audit_violation_reason_sk',1,1]
+     [in0.phr_sk,'phr_sk',1,1]
+     [in0.pbr_st_cd,'pbr_st_cd',2,2]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.comments,'comments',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.adjustment_amt,'adjustment_amt',1,1]
+     [in0.audit_payment_type_id,'audit_payment_type_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.audit_violation_reason_id,'audit_violation_reason_id',1,1]
+     [in0.audit_category_id,'audit_category_id',1,1]
+     [in0.src_update_ts,'src_update_ts',1,1]
+     [in0.dqc4dt,'dqc4dt',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.dqabda,'dqabda',1,1]
+     [in0.submd_mnth_id,'submd_mnth_id',1,1]
+     [in0.audit_category_sk,'audit_category_sk',1,1]
+     ['lookup("LKP: L_COMPOUND").compound_cd_desc','compound_cd_desc',1,1]
+     ['lookup("LKP: L_STATE").state_cd_desc','state_cd_desc',1,1]
+     ['lookup("LKP: L_COMPOUND").compound_cd','compound_cd',1,1]
+     [in0.drg_lbl_nm,'drg_lbl_nm',1,1]
+     [in0.audit_type_sk,'audit_type_sk',1,1]
+     [in0.audit_fraud_perpetrator_id,'audit_fraud_perpetrator_id',1,1]
+     [in0.phr_ncpdp_id,'phr_ncpdp_id',1,1]
+     [in0.submd_qtr_id,'submd_qtr_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.src_created_by,'src_created_by',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) audit_submd_qtr_id = fail_if_error(in0.submd_qtr_id);
+let decimal("\x01",0) audit_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) audit_submd_mnth_id = fail_if_error(in0.submd_mnth_id);
+let decimal("\x01",0) audit_mbr_sk = fail_if_error(in0.mbr_sk);
+let decimal("\x01",0) audit_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) audit_phr_sk = fail_if_error(in0.phr_sk);
+let decimal("\x01",0) audit_audit_category_sk = fail_if_error(in0.audit_category_sk);
+let decimal("\x01",0) audit_audit_payment_type_sk = fail_if_error(in0.audit_payment_type_sk);
+let decimal("\x01",0) audit_audit_job_sk = fail_if_error(in0.audit_job_sk);
+let decimal("\x01",0) audit_audit_type_sk = fail_if_error(in0.audit_type_sk);
+let decimal("\x01",0) audit_audit_fraud_type_sk = fail_if_error(in0.audit_fraud_type_sk);
+let decimal("\x01",0) audit_audit_violation_reason_sk = fail_if_error(in0.audit_violation_reason_sk);
+let decimal("\x01",0) audit_audit_fraud_violation_reason_sk = fail_if_error(in0.audit_fraud_violation_reason_sk);
+let decimal("\x01",0) audit_audit_fraud_perpetrator_sk = fail_if_error(in0.audit_fraud_perpetrator_sk);
+let decimal("\x01",0) audit_audit_nonfraud_violation_reason_sk = fail_if_error(in0.audit_nonfraud_violation_reason_sk);
+let decimal("\x01",0) audit_pbr_sk;
+let decimal("\x01",0) audit_prod_sk = fail_if_error(in0.prod_sk);
+let decimal("\x01",0) audit_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) audit_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) audit_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let date("YYYYMMDD")("\x01") audit_sbm_dt = fail_if_error(in0.dqc4dt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) audit_carrier_id = fail_if_error(in0.dqs6cd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) audit_account_id = fail_if_error(in0.dqs7cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) audit_employer_group_id = fail_if_error(in0.dqs8cd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) audit_mbr_id = fail_if_error(in0.dqs5cd);
+let string("\x01",charset="iso-8859-15", maximum_length=12) audit_rx_nbr = fail_if_error(in0.dqukcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) audit_audit_src_data = "C";
+let string("\x01",charset="iso-8859-15", maximum_length=12) audit_phr_ncpdp_id = fail_if_error(in0.phr_ncpdp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) audit_phr_npi_no = fail_if_error(in0.phr_npi_no);
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_phr_st_cd = fail_if_error(in0.phr_st_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) audit_phr_st_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=10) audit_pbr_npi_id = fail_if_error(in0.pbr_npi_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) audit_pbr_dea_id = fail_if_error(in0.pbr_dea_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_pbr_st_cd = fail_if_error(in0.pbr_st_cd);
+let date("YYYYMMDD")("\x01") audit_filled_dt = fail_if_error(in0.dqbbda);
+let date("YYYYMMDD")("\x01") audit_rx_written_dt = fail_if_error(in0.dqabda);
+let decimal("\x01",0) audit_days_sply = fail_if_error(in0.dqimnb);
+let decimal("\x01".3, maximum_length=13, sign_reserved) audit_drg_qty = fail_if_error(in0.dqionb);
+let string("\x01",charset="iso-8859-15", maximum_length=20) audit_drg_ndc_id = fail_if_error(in0.prod_id);
+let string("\x01",charset="iso-8859-15", maximum_length=9) audit_drg_ndc_short_id = fail_if_error(in0.drg_ndc_short_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) audit_drg_lbl_nm = fail_if_error(in0.drg_lbl_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=1) audit_compound_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=50) audit_compound_cd_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=5) audit_cms_contract_id = fail_if_error(in0.contract_num);
+let string("\x01",charset="iso-8859-15", maximum_length=3) audit_cms_pbp_id = fail_if_error(in0.pbp_id);
+let decimal("\x01".2, maximum_length=11, sign_reserved) audit_app_due_amt = fail_if_error(in0.e0d2pr);
+let string("\x01",charset="iso-8859-15", maximum_length=30) audit_auditior_id = fail_if_error(in0.auditior_id);
+let decimal("\x01",0) audit_audit_call_note_id = fail_if_error(in0.audit_call_note_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") audit_call_note_entry_dt = fail_if_error(in0.call_note_entry_dt);
+let decimal("\x01".3, maximum_length=22, sign_reserved) audit_adjustment_amt = fail_if_error(in0.adjustment_amt);
+let decimal("\x01",0) audit_audit_category_id = fail_if_error(in0.audit_category_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) audit_zero_reclaim = fail_if_error(in0.zero_reclaim);
+let decimal("\x01",0) audit_audit_payment_type_id = fail_if_error(in0.audit_payment_type_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) audit_phr_contact_nm = fail_if_error(in0.phr_contact_nm);
+let decimal("\x01",0) audit_number_of_calls = fail_if_error(in0.number_of_calls);
+let decimal("\x01",0) audit_number_of_emails = fail_if_error(in0.number_of_emails);
+let decimal("\x01",0) audit_audit_type_id = fail_if_error(in0.audit_type_id);
+let decimal("\x01",0) audit_audit_fraud_type_id = fail_if_error(in0.audit_fraud_type_id);
+let decimal("\x01",0) audit_audit_violation_reason_id = fail_if_error(in0.audit_violation_reason_id);
+let decimal("\x01",0) audit_audit_fraud_violation_reason_id = fail_if_error(in0.audit_fraud_violation_reason_id);
+let decimal("\x01",0) audit_audit_fraud_perpetrator_id = fail_if_error(in0.audit_fraud_perpetrator_id);
+let decimal("\x01",0) audit_audit_nonfraud_violation_reason_id = fail_if_error(in0.audit_nonfraud_violation_reason_id);
+let string("\x01",charset="iso-8859-15", maximum_length=155) audit_comments = fail_if_error(in0.comments);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") audit_src_created_dt = fail_if_error(in0.src_created_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) audit_src_created_by = fail_if_error(in0.src_created_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") audit_src_insert_dt = fail_if_error(in0.src_insert_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") audit_src_update_ts = fail_if_error(in0.src_update_ts);
+let date("YYYYMMDD")("\x01") audit_processing_quarter_start_dt = fail_if_error(in0.processing_quarter_start_dt);
+let decimal("\x01",0) audit_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+audit_compound_cd=fail_if_error(lookup("LKP: L_COMPOUND",in0.compound_sk).compound_cd);
+
+/*   Default value   */
+audit_pbr_sk=fail_if_error(first_defined(bzt_4_6c54cc0a_59105740_572_0(in0.dqtccd, in0.dqilcj, in0.pbr_st_cd).pbr_sk, bzt_5_6c54cc0a_59105740_572_0(in0.dqtccd, in0.dqilcj).pbr_sk, -1));
+
+/*   Default value   */
+audit_phr_st_desc=fail_if_error(bzt_6_6c54cc0a_59105740_572_0(in0.phr_st_cd).state_cd_desc);
+
+/*   Default value   */
+audit_compound_cd_desc=fail_if_error(lookup("LKP: L_COMPOUND",in0.compound_sk).compound_cd_desc);
+
+  out0.audit.submd_qtr_id::audit_submd_qtr_id;
+  out0.audit.claim_nbr::audit_claim_nbr;
+  out0.audit.submd_mnth_id::audit_submd_mnth_id;
+  out0.audit.mbr_sk::audit_mbr_sk;
+  out0.audit.cag_sk::audit_cag_sk;
+  out0.audit.phr_sk::audit_phr_sk;
+  out0.audit.audit_category_sk::audit_audit_category_sk;
+  out0.audit.audit_payment_type_sk::audit_audit_payment_type_sk;
+  out0.audit.audit_job_sk::audit_audit_job_sk;
+  out0.audit.audit_type_sk::audit_audit_type_sk;
+  out0.audit.audit_fraud_type_sk::audit_audit_fraud_type_sk;
+  out0.audit.audit_violation_reason_sk::audit_audit_violation_reason_sk;
+  out0.audit.audit_fraud_violation_reason_sk::audit_audit_fraud_violation_reason_sk;
+  out0.audit.audit_fraud_perpetrator_sk::audit_audit_fraud_perpetrator_sk;
+  out0.audit.audit_nonfraud_violation_reason_sk::audit_audit_nonfraud_violation_reason_sk;
+  out0.audit.pbr_sk::audit_pbr_sk;
+  out0.audit.prod_sk::audit_prod_sk;
+  out0.audit.compound_sk::audit_compound_sk;
+  out0.audit.claim_seq_nbr::audit_claim_seq_nbr;
+  out0.audit.claim_stat_id::audit_claim_stat_id;
+  out0.audit.sbm_dt::audit_sbm_dt;
+  out0.audit.carrier_id::audit_carrier_id;
+  out0.audit.account_id::audit_account_id;
+  out0.audit.employer_group_id::audit_employer_group_id;
+  out0.audit.mbr_id::audit_mbr_id;
+  out0.audit.rx_nbr::audit_rx_nbr;
+  out0.audit.audit_src_data::audit_audit_src_data;
+  out0.audit.phr_ncpdp_id::audit_phr_ncpdp_id;
+  out0.audit.phr_npi_no::audit_phr_npi_no;
+  out0.audit.phr_st_cd::audit_phr_st_cd;
+  out0.audit.phr_st_desc::audit_phr_st_desc;
+  out0.audit.pbr_npi_id::audit_pbr_npi_id;
+  out0.audit.pbr_dea_id::audit_pbr_dea_id;
+  out0.audit.pbr_st_cd::audit_pbr_st_cd;
+  out0.audit.filled_dt::audit_filled_dt;
+  out0.audit.rx_written_dt::audit_rx_written_dt;
+  out0.audit.days_sply::audit_days_sply;
+  out0.audit.drg_qty::audit_drg_qty;
+  out0.audit.drg_ndc_id::audit_drg_ndc_id;
+  out0.audit.drg_ndc_short_id::audit_drg_ndc_short_id;
+  out0.audit.drg_lbl_nm::audit_drg_lbl_nm;
+  out0.audit.compound_cd::audit_compound_cd;
+  out0.audit.compound_cd_desc::audit_compound_cd_desc;
+  out0.audit.cms_contract_id::audit_cms_contract_id;
+  out0.audit.cms_pbp_id::audit_cms_pbp_id;
+  out0.audit.app_due_amt::audit_app_due_amt;
+  out0.audit.auditior_id::audit_auditior_id;
+  out0.audit.audit_call_note_id::audit_audit_call_note_id;
+  out0.audit.call_note_entry_dt::audit_call_note_entry_dt;
+  out0.audit.adjustment_amt::audit_adjustment_amt;
+  out0.audit.audit_category_id::audit_audit_category_id;
+  out0.audit.zero_reclaim::audit_zero_reclaim;
+  out0.audit.audit_payment_type_id::audit_audit_payment_type_id;
+  out0.audit.phr_contact_nm::audit_phr_contact_nm;
+  out0.audit.number_of_calls::audit_number_of_calls;
+  out0.audit.number_of_emails::audit_number_of_emails;
+  out0.audit.audit_type_id::audit_audit_type_id;
+  out0.audit.audit_fraud_type_id::audit_audit_fraud_type_id;
+  out0.audit.audit_violation_reason_id::audit_audit_violation_reason_id;
+  out0.audit.audit_fraud_violation_reason_id::audit_audit_fraud_violation_reason_id;
+  out0.audit.audit_fraud_perpetrator_id::audit_audit_fraud_perpetrator_id;
+  out0.audit.audit_nonfraud_violation_reason_id::audit_audit_nonfraud_violation_reason_id;
+  out0.audit.comments::audit_comments;
+  out0.audit.src_created_dt::audit_src_created_dt;
+  out0.audit.src_created_by::audit_src_created_by;
+  out0.audit.src_insert_dt::audit_src_insert_dt;
+  out0.audit.src_update_ts::audit_src_update_ts;
+  out0.audit.processing_quarter_start_dt::audit_processing_quarter_start_dt;
+  out0.audit.src_env_sk::audit_src_env_sk;
+  out0.*::in0.*;
+
+end;

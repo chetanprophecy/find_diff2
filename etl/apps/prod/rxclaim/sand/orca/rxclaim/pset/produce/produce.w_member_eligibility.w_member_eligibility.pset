@@ -1,0 +1,18 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH||||$AI_MFS/clean.rxclaim/clean.rxclaim.w_member_eligilibility.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_common/clean.ids_common.d_member_eligibility_rtm.dml
+READ_MULTI_ICFF||||N
+READ_MULTI_ICFF_START_DATE||||
+SORT_KEY||||{dxf_hk_part1}
+DEDUP_KEY||||{dxf_hk_part1;dxf_hk_part2; ids_updt_dttm descending}
+USE_NORM||||True
+NORM_XFR||||$AI_XFR/produce/produce.w_member_eligibilty_nrmlz.xfr
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.w_member_eligibility.dml
+USE_SORT||||False
+AB_CATALOG|$|||$AI_CAT/produce/produce.w_member_eligibility.cat
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.w_member_eligibility.ids_rxclaim.w_member_eligibility.${RUN_ID}.dat.gz
+LOOKUP_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.reduced.dat.gz
+LOOKUP_FILE_DML||||$PUB_DATAHUB_DML/ids_common/ids_common.d_mmd_member_eligibility.reduced.dml
+FILTER_EXPR||||$[  \r\nbegin\r\n\r\nlet string(int) cag_filter = "! (first_defined ( lookup('d_cag_lkp_cag',carrier_id,NULL,NULL),\r\n                                                lookup('d_cag_lkp_cag',carrier_id,account_id,NULL),\r\n                                                lookup('d_cag_lkp_cag',carrier_id,account_id,employer_group_id) ,\r\n                                                [record exclusion_flag 'N' ]).exclusion_flag=='Y')";\r\n\r\nresult :: cag_filter ;\r\n\r\nend;]
+RUN_ID||||20180719123456
+NORM_FILE_DML|$|||$OUTPUT_FILE_DML

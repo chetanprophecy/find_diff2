@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcmmfp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmmfp                  als6cd,als7cd,als8cd,allmhb,alp2nb,aloinb,als6st,alemda,albbda,als9t3,alpxhf,alpzhf,alntaj,alo0is,alo1is,aljual,ale1ce,alosak,alnuaj,alhlho,aletce,alantz,alopis,aloqis,aloris,alosis,aleuce,alotak,alhmho,alnvaj,alhnho,alevce,alaotz,alotis,alouis,alovis,alowis,alewce,alouak,alhoho,alb8iw,alygar,alaove,alb9iw,alcaiw,alapve,alakvn,alc2dt,aladtm,alalvn,aladvn,albmdt,alabtm,alaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcmmfp')]
+WHERE_CLAUSE||||$[if (DAILY_FLAG != "Y")  if (CARRIER_ID_MIN == "*")    "WHERE RCMMFP.ALBMDT  between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+    " OPTIMIZE FOR ALL ROWS"  else    "WHERE RCMMFP.ALS6CD between '" + CARRIER_ID_MIN + "' AND '" + CARRIER_ID_MAX + "'  and RCMMFP.ALBMDT  between " +     string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+    " OPTIMIZE FOR ALL ROWS"else  if (START_CHANGES_TIME != '')    "WHERE RCMMFP.ALBMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +    " AND RCMMFP.ALBMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"  else    "WHERE RCMMFP.ALBMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +    " AND RCMMFP.ALBMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"]
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1
+ENABLE_DEFAULT_RULES||||True

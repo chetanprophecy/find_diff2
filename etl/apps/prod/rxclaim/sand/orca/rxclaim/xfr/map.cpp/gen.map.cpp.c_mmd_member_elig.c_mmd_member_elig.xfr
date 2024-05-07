@@ -1,0 +1,165 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a16b779_1a74_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mmd_m_elig.src_env_sk,[transform],]
+  [out0.c_mmd_m_elig.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mmd_m_elig.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mmd_m_elig.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mmd_m_elig.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mmd_m_elig.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_mmd_m_elig.cpp_mmd_member_elg_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mmd_m_elig.src_env_sk,'c_mmd_m_elig.src_env_sk',1,0]
+     [out0.c_mmd_m_elig.sequence_num,'c_mmd_m_elig.sequence_num',1,0]
+     [out0.c_mmd_m_elig.end_dt,'c_mmd_m_elig.end_dt',1,0]
+     [out0.c_mmd_m_elig.src_env_id,'c_mmd_m_elig.src_env_id',1,0]
+     [out0.c_mmd_m_elig.member_id,'c_mmd_m_elig.member_id',1,0]
+     [out0.c_mmd_m_elig.copay_category,'c_mmd_m_elig.copay_category',1,0]
+     [out0.c_mmd_m_elig.cpp_update_ts,'c_mmd_m_elig.cpp_update_ts',1,0]
+     [out0.c_mmd_m_elig.cpp_create_ts,'c_mmd_m_elig.cpp_create_ts',1,0]
+     [out0.c_mmd_m_elig.copay_category_eff_dt,'c_mmd_m_elig.copay_category_eff_dt',1,0]
+     [out0.c_mmd_m_elig.carrier_id,'c_mmd_m_elig.carrier_id',1,0]
+     [out0.c_mmd_m_elig.cpp_created_by,'c_mmd_m_elig.cpp_created_by',1,0]
+     [out0.c_mmd_m_elig.cli_carrier_id,'c_mmd_m_elig.cli_carrier_id',1,0]
+     [out0.c_mmd_m_elig.cpp_updated_by,'c_mmd_m_elig.cpp_updated_by',1,0]
+     [out0.c_mmd_m_elig.cli_member_id,'c_mmd_m_elig.cli_member_id',1,0]
+     [out0.c_mmd_m_elig.cpp_member_sk,'c_mmd_m_elig.cpp_member_sk',1,0]
+     [out0.c_mmd_m_elig.enrollment_src,'c_mmd_m_elig.enrollment_src',1,0]
+     [out0.c_mmd_m_elig.cli_acct_id,'c_mmd_m_elig.cli_acct_id',1,0]
+     [out0.c_mmd_m_elig.eff_dt,'c_mmd_m_elig.eff_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_mmd_m_elig.pbp_id,'c_mmd_m_elig.pbp_id',1,0]
+     [out0.c_mmd_m_elig.cpp_mmd_member_elg_sk,'c_mmd_m_elig.cpp_mmd_member_elg_sk',1,0]
+     [out0.c_mmd_m_elig.subsidy_lvl,'c_mmd_m_elig.subsidy_lvl',1,0]
+     [out0.c_mmd_m_elig.mmd_elig_end_dt,'c_mmd_m_elig.mmd_elig_end_dt',1,0]
+     [out0.c_mmd_m_elig.contract_id,'c_mmd_m_elig.contract_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mmd_m_elig.emplyr_group_id,'c_mmd_m_elig.emplyr_group_id',1,0]
+     [out0.c_mmd_m_elig.acct_id,'c_mmd_m_elig.acct_id',1,0]
+     [out0.c_mmd_m_elig.cli_emplyr_group_id,'c_mmd_m_elig.cli_emplyr_group_id',1,0]
+     [out0.c_mmd_m_elig.segment_id,'c_mmd_m_elig.segment_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mmd_m_elig.mmd_elig_eff_dt,'c_mmd_m_elig.mmd_elig_eff_dt',1,0]
+     [out0.c_mmd_m_elig.mmd_stts,'c_mmd_m_elig.mmd_stts',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.eff_dt,'eff_dt',1,1]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.mmd_elig_eff_dt,'mmd_elig_eff_dt',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     [in0.pbp_id,'pbp_id',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.mmd_stts,'mmd_stts',1,1]
+     [in0.mmd_elig_end_dt,'mmd_elig_end_dt',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.sequence_num,'sequence_num',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.subsidy_lvl,'subsidy_lvl',1,1]
+     [in0.contract_id,'contract_id',1,1]
+     [in0.copay_category,'copay_category',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.segment_id,'segment_id',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.end_dt,'end_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.enrollment_src,'enrollment_src',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.copay_category_eff_dt,'copay_category_eff_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mmd_m_elig_cpp_mmd_member_elg_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mmd_m_elig_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_mmd_m_elig_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mmd_m_elig_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mmd_m_elig_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mmd_m_elig_sequence_num = fail_if_error(in0.sequence_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_eff_dt = fail_if_error(in0.eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_end_dt = fail_if_error(in0.end_dt);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mmd_m_elig_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mmd_m_elig_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mmd_m_elig_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mmd_m_elig_cli_member_id = fail_if_error(in0.cli_member_id);
+let decimal("\x01",0) c_mmd_m_elig_cpp_member_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mmd_m_elig_mmd_stts = fail_if_error(in0.mmd_stts);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_mmd_m_elig_src_env_id = fail_if_error(in0.src_env_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_mmd_elig_eff_dt = fail_if_error(in0.mmd_elig_eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_mmd_elig_end_dt = fail_if_error(in0.mmd_elig_end_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=5) c_mmd_m_elig_contract_id = fail_if_error(in0.contract_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) c_mmd_m_elig_pbp_id = fail_if_error(in0.pbp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) c_mmd_m_elig_segment_id = fail_if_error(in0.segment_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) c_mmd_m_elig_subsidy_lvl = fail_if_error(in0.subsidy_lvl);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mmd_m_elig_copay_category = fail_if_error(in0.copay_category);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_copay_category_eff_dt = fail_if_error(in0.copay_category_eff_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mmd_m_elig_enrollment_src = fail_if_error(in0.enrollment_src);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mmd_m_elig_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mmd_m_elig_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mmd_m_elig_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mmd_m_elig_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mmd_m_elig_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_mmd_m_elig.cpp_mmd_member_elg_sk::c_mmd_m_elig_cpp_mmd_member_elg_sk;
+  out0.c_mmd_m_elig.carrier_id::c_mmd_m_elig_carrier_id;
+  out0.c_mmd_m_elig.acct_id::c_mmd_m_elig_acct_id;
+  out0.c_mmd_m_elig.emplyr_group_id::c_mmd_m_elig_emplyr_group_id;
+  out0.c_mmd_m_elig.member_id::c_mmd_m_elig_member_id;
+  out0.c_mmd_m_elig.sequence_num::c_mmd_m_elig_sequence_num;
+  out0.c_mmd_m_elig.eff_dt::c_mmd_m_elig_eff_dt;
+  out0.c_mmd_m_elig.end_dt::c_mmd_m_elig_end_dt;
+  out0.c_mmd_m_elig.cli_carrier_id::c_mmd_m_elig_cli_carrier_id;
+  out0.c_mmd_m_elig.cli_acct_id::c_mmd_m_elig_cli_acct_id;
+  out0.c_mmd_m_elig.cli_emplyr_group_id::c_mmd_m_elig_cli_emplyr_group_id;
+  out0.c_mmd_m_elig.cli_member_id::c_mmd_m_elig_cli_member_id;
+  out0.c_mmd_m_elig.cpp_member_sk::c_mmd_m_elig_cpp_member_sk;
+  out0.c_mmd_m_elig.mmd_stts::c_mmd_m_elig_mmd_stts;
+  out0.c_mmd_m_elig.src_env_id::c_mmd_m_elig_src_env_id;
+  out0.c_mmd_m_elig.mmd_elig_eff_dt::c_mmd_m_elig_mmd_elig_eff_dt;
+  out0.c_mmd_m_elig.mmd_elig_end_dt::c_mmd_m_elig_mmd_elig_end_dt;
+  out0.c_mmd_m_elig.contract_id::c_mmd_m_elig_contract_id;
+  out0.c_mmd_m_elig.pbp_id::c_mmd_m_elig_pbp_id;
+  out0.c_mmd_m_elig.segment_id::c_mmd_m_elig_segment_id;
+  out0.c_mmd_m_elig.subsidy_lvl::c_mmd_m_elig_subsidy_lvl;
+  out0.c_mmd_m_elig.copay_category::c_mmd_m_elig_copay_category;
+  out0.c_mmd_m_elig.copay_category_eff_dt::c_mmd_m_elig_copay_category_eff_dt;
+  out0.c_mmd_m_elig.enrollment_src::c_mmd_m_elig_enrollment_src;
+  out0.c_mmd_m_elig.cpp_update_ts::c_mmd_m_elig_cpp_update_ts;
+  out0.c_mmd_m_elig.cpp_updated_by::c_mmd_m_elig_cpp_updated_by;
+  out0.c_mmd_m_elig.cpp_create_ts::c_mmd_m_elig_cpp_create_ts;
+  out0.c_mmd_m_elig.cpp_created_by::c_mmd_m_elig_cpp_created_by;
+  out0.c_mmd_m_elig.src_env_sk::c_mmd_m_elig_src_env_sk;
+  out0.*::in0.*;
+
+end;

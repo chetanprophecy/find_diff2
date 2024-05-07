@@ -1,0 +1,46 @@
+type logical_ids_rxclaim_d_medlmt_prm_tbl_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01",maximum_length=8) dur_table_nm = NULL("");
+  string("\x01",maximum_length=8) dur_srvc_nm = NULL("");
+  decimal("\x01") dur_priorty = NULL("");
+  string("\x01",maximum_length=1) dur_pharm_resp = NULL("");
+  string("\x01",maximum_length=1) dur_othr_pharm_resp = NULL("");
+  string("\x01",maximum_length=1) dur_status = NULL("");
+  decimal("\x01".2, sign_reserved) medlmt_limit = NULL("");
+  string("\x01",maximum_length=1) medlmt_resp = NULL("");
+  string("\x01",maximum_length=10) medlmt_msg_cd = NULL("");
+  decimal("\x01".2, sign_reserved) medlmt_limit2 = NULL("");
+  string("\x01",maximum_length=1) medlmt_resp2 = NULL("");
+  string("\x01",maximum_length=10) medlmt_msg_cd2 = NULL("");
+  string("\x01",maximum_length=10) medlmt_gpi_lst_id = NULL("");
+  decimal("\x01") medlmt_lkbk_days = NULL("");
+  decimal("\x01") medlmt_pbr_thrsold = NULL("");
+  string("\x01",maximum_length=1) medlmt_pbr_ind = NULL("");
+  decimal("\x01") medlmt_thrpy_ovrlp_xcld_pct = NULL("");
+  string("\x01",maximum_length=10) medlmt_xcld_pat_res_cd_list = NULL("");
+  string("\x01",maximum_length=6) medlmt_xcld_diag_cd_lst = NULL("");
+  string("\x01",maximum_length=10) medlmt_xcld_gpi_lst = NULL("");
+  decimal("\x01") medlmt_xcld_gpi_lkbk_days = NULL("");
+  string("\x01",maximum_length=6) medlmt_xcld_taxonomy_list = NULL("");
+  string("\x01",maximum_length=1) medlmt_xcld_diag_cd_qual = NULL("");
+  decimal("\x01".2, sign_reserved) medlmt_limit3 = NULL("");
+  string("\x01",maximum_length=1) medlmt_resp3 = NULL("");
+  decimal("\x01") medlmt_phr_thrshold = NULL("");
+  string("\x01",maximum_length=1) medlmt_phr_thrshold_qlfr = NULL("");
+  string("\x01",maximum_length=1) medlmt_pbr_thrshold_qlfr = NULL("");
+  string("\x01",maximum_length=6) medlmt_taxonomy_list = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_medlmt_prm_tbl_t rcd15p  /*@ BizName:'rcd15p' */;
+end;

@@ -1,0 +1,45 @@
+include "/~$AI_XFR/dataset_id.xfr";
+include "/~$AI_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+
+let long dmf_src_sys_id = name_to_sys_id($"SOURCE_LOGICAL_NAME");
+let long dmf_src_dataset_id = if ( this_partition() == 0 ) get_dataset_id($"DATASET_ID_LOOKUP_PATH") else 0;  /* The index into the Source Process table. */
+let long stride = number_of_partitions();
+let long dmf_src_rec_cnt = this_partition() - stride + 1; /* The number of records processed from this source.  Also used as a record number on each source record. */
+let start_time = now();
+
+
+/* Always output 1 record.  Also increments the record counter. */
+out :: length(in) =
+begin
+  dmf_src_rec_cnt = dmf_src_rec_cnt + stride;
+  out :: 1;
+end;
+
+
+/* Add Source ID and Record Number.  Remove trailing blanks from strings. */
+out :: normalize(in, index) =
+begin
+  out.(*, name == "dmf_src_sys_id") :1: dmf_src_sys_id;
+  out.(*, name == "dmf_src_dataset_id") :2: dmf_src_dataset_id;
+  out.(*, name == "dmf_src_rec_cnt") :3: dmf_src_rec_cnt;
+  out.(*, form == "string") :4: string_trim_no_empty(in.*);
+  out.* :: in.*;
+end;
+
+
+/* Write the Source ID and Record Count to the log. */
+log_event :: final_log_output() =
+begin
+  let dxf_job_event_text_t job_info = [record
+    dxf_src_dataset_id  dmf_src_dataset_id,  // Only set in partition 0.
+    dxf_src_rec_cnt     dmf_src_rec_cnt,
+    dataset_start_dttm  start_time,
+    dataset_end_dttm    now(),
+  ];
+
+  log_event.event_type :: "DMF Job Log: 0"; // We need to include a fake dataset ID for the rollup key that follows.
+  log_event.event_text :: job_info.as_event_text();
+end;

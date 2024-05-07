@@ -1,0 +1,63 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.phar_ntwk.ntwk_sk,[transform],]
+  [out0.phar_ntwk.phr_ntwrk_seq_no,[passthrough],in0.asfsnb]
+  [out0.phar_ntwk.phr_ntwrk_carr_nm,[passthrough],in0.asaacd]
+  [out0.phar_ntwk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.phar_ntwk.phr_ntwrk_id,[passthrough],in0.aseycd]
+  [out0.phar_ntwk.phr_ntwrk_rgn_nm,[passthrough],in0.aso2cd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phar_ntwk.ntwk_sk,'phar_ntwk.ntwk_sk',1,0]
+     [out0.phar_ntwk.phr_ntwrk_seq_no,'phar_ntwk.phr_ntwrk_seq_no',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.phar_ntwk.phr_ntwrk_carr_nm,'phar_ntwk.phr_ntwrk_carr_nm',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phar_ntwk.src_env_sk,'phar_ntwk.src_env_sk',1,0]
+     [out0.phar_ntwk.phr_ntwrk_id,'phar_ntwk.phr_ntwrk_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.phar_ntwk.phr_ntwrk_rgn_nm,'phar_ntwk.phr_ntwrk_rgn_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.aseycd,'aseycd',1,1]
+     [in0.asfsnb,'asfsnb',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.aso2cd,'aso2cd',1,1]
+     [in0.asaacd,'asaacd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) phar_ntwk_ntwk_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) phar_ntwk_phr_ntwrk_id = fail_if_error(in0.aseycd);
+let decimal("\x01",0) phar_ntwk_phr_ntwrk_seq_no = fail_if_error(in0.asfsnb);
+let string("\x01",charset="iso-8859-15", maximum_length=9) phar_ntwk_phr_ntwrk_carr_nm = fail_if_error(in0.asaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phar_ntwk_phr_ntwrk_rgn_nm = fail_if_error(in0.aso2cd);
+let decimal("\x01",0) phar_ntwk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.phar_ntwk.ntwk_sk::phar_ntwk_ntwk_sk;
+  out0.phar_ntwk.phr_ntwrk_id::phar_ntwk_phr_ntwrk_id;
+  out0.phar_ntwk.phr_ntwrk_seq_no::phar_ntwk_phr_ntwrk_seq_no;
+  out0.phar_ntwk.phr_ntwrk_carr_nm::phar_ntwk_phr_ntwrk_carr_nm;
+  out0.phar_ntwk.phr_ntwrk_rgn_nm::phar_ntwk_phr_ntwrk_rgn_nm;
+  out0.phar_ntwk.src_env_sk::phar_ntwk_src_env_sk;
+  out0.*::in0.*;
+
+end;

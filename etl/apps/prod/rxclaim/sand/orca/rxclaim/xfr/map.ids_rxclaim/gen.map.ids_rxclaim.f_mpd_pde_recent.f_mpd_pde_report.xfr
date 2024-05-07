@@ -1,0 +1,89 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a5dd5e0_7842_2
+    BizHidden:true
+@*/
+/*   lookup pde_report   */
+out0::bzt_2_6c54cc0a_5a5dd5e0_7842_2(in0)=
+begin
+let record
+  string(" ") file_id;
+  string("\n") file_dt;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("pde_report",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a5dd5e0_7842_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.mpd_pde_rpt.resp_file_dt,[transform],in0.pde_file_id,
+     'lookup("pde_report").file_dt']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mpd_pde_rpt.pde_file_sbm_ts,'mpd_pde_rpt.pde_file_sbm_ts',1,0]
+     [out0.mpd_pde_rpt.dxf_hk_part1,'mpd_pde_rpt.dxf_hk_part1',1,0]
+     [out0.mpd_pde_rpt.dxf_hk_part2,'mpd_pde_rpt.dxf_hk_part2',1,0]
+     [out0.mpd_pde_rpt.src_env_sk,'mpd_pde_rpt.src_env_sk',1,0]
+     [out0.mpd_pde_rpt.resp_file_dt,'mpd_pde_rpt.resp_file_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mpd_pde_rpt.mdh_chg_ts,'mpd_pde_rpt.mdh_chg_ts',1,0]
+     [out0.mpd_pde_rpt.dxf_sk,'mpd_pde_rpt.dxf_sk',1,0]
+     [out0.mpd_pde_rpt.pde_file_id,'mpd_pde_rpt.pde_file_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.pde_file_sbm_ts,'pde_file_sbm_ts',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.pde_file_id,'pde_file_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     ['lookup("pde_report").file_dt','file_dt',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.mdh_chg_ts,'mdh_chg_ts',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) mpd_pde_rpt_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) mpd_pde_rpt_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) mpd_pde_rpt_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mpd_pde_rpt_pde_file_id = fail_if_error(in0.pde_file_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") mpd_pde_rpt_pde_file_sbm_ts = fail_if_error(in0.pde_file_sbm_ts);
+let date("YYYYMMDD")("\x01") mpd_pde_rpt_resp_file_dt;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") mpd_pde_rpt_mdh_chg_ts = fail_if_error(in0.mdh_chg_ts);
+let decimal("\x01",0) mpd_pde_rpt_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+mpd_pde_rpt_resp_file_dt=fail_if_error(first_defined(bzt_2_6c54cc0a_5a5dd5e0_7842_2(in0.pde_file_id).file_dt,'19000101'));
+
+  out0.mpd_pde_rpt.dxf_hk_part1::mpd_pde_rpt_dxf_hk_part1;
+  out0.mpd_pde_rpt.dxf_hk_part2::mpd_pde_rpt_dxf_hk_part2;
+  out0.mpd_pde_rpt.dxf_sk::mpd_pde_rpt_dxf_sk;
+  out0.mpd_pde_rpt.pde_file_id::mpd_pde_rpt_pde_file_id;
+  out0.mpd_pde_rpt.pde_file_sbm_ts::mpd_pde_rpt_pde_file_sbm_ts;
+  out0.mpd_pde_rpt.resp_file_dt::mpd_pde_rpt_resp_file_dt;
+  out0.mpd_pde_rpt.mdh_chg_ts::mpd_pde_rpt_mdh_chg_ts;
+  out0.mpd_pde_rpt.src_env_sk::mpd_pde_rpt_src_env_sk;
+  out0.*::in0.*;
+
+end;

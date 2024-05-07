@@ -1,0 +1,35 @@
+/* Remember the effective and end dates. */
+type temporary_type =
+record
+  long cur_eff_dt = NULL(-1);
+  long prev_eff_dt = NULL(-1);
+end;
+
+constant long adjacent_interval_microseconds = ($ADJACENT_INTERVAL_SECONDS) * 1000000;
+
+
+/* Initialize the Effective Date accumulator to NULL. */
+temp :: initialize(in) =
+begin
+  temp :: allocate_with_nulls();
+end;
+
+
+/* Remember the new Effective Date and carry over the Previous (Later) Effective Date. */
+out :: scan(temp, in) =
+begin
+  out.prev_eff_dt :: temp.cur_eff_dt;
+  out.cur_eff_dt :: in.$EFFECTIVE_DATE_FIELD_NAME;
+end;
+
+
+/* Within a given Natural Key group, for overlapping dates, this sets the End Date/Time to the following Effective Date/Time, minus 1 second. 
+This does *not* fill in gaps, however. */
+out :: finalize(temp, in) =
+begin
+  // This works because records are sorted in descending order by Effective Date.
+  out.$END_DATE_FIELD_NAME :1: if ( temp.prev_eff_dt <= (long)in.$END_DATE_FIELD_NAME )
+    temp.prev_eff_dt - adjacent_interval_microseconds;  // This is skipped for the first record in NK group.
+  out.$END_DATE_FIELD_NAME :: in.$END_DATE_FIELD_NAME;  // So the first (latest) record keeps its original End Date.
+  out.* :: in.*;
+end;

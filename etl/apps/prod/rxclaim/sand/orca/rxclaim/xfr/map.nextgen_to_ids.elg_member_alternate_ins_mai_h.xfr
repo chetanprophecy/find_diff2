@@ -1,0 +1,59 @@
+include "/~$PUB_DXF_XFR/dataset_id.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+let string("") run_user_id = "aiorcrxc";/*$(echo '"'`whoami`'"')  ;*/
+let start_time = now();
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") v_START_CHANGES_TIME=if(is_blank($"START_CHANGES_TIME") or is_null($"START_CHANGES_TIME")) (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS")) now()
+                      else (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME" ;
+                      
+                      
+
+out :: reformat(in) =
+begin
+
+let decimal("") dxf_src_sys_id=in.src_env_sk;
+  out.* :: in.*;
+  
+  out.(*, name == "cdc_ts" ) :5: (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  v_START_CHANGES_TIME ;
+  out.(*, name == "cdc_flag"):6: "N";
+  out.(*, name == "rxt_src_envrt_id") :7: (string(""))(decimal(""))dxf_src_sys_id;   // Added for LCTRX direct access migration.
+  out.(*, name == "rxt_src_envrt_nm") :8:  system_number_to_name(dxf_src_sys_id);
+  out.(*, name == "rxt_create_uid") :9: run_user_id;
+  out.(*, name == "rxt_create_run_id") :10: (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS")) $"END_CHANGES_TIME";
+  out.(*, name == "rxt_create_dttm") :11: (datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME";
+  
+  out.dxf_src_sys_id :: dxf_src_sys_id;
+  
+out.ahdps3::in.mai_alt_insurance_flag;
+out.ahabcd::in.mbr_member_id;
+out.ahz9n1::in.mai_seq_nbr;
+out.ahaacd::in.car_carrier_id;
+out.ahdyib::in.mai_cob_pricing_type;
+
+out.ahrkc3::in.mai_alt_insurance_mbr_id;
+
+
+
+out.ahl9dt::(decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.mai_eff_date;
+
+out.ahmadt::(decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.mai_thru_date;
+
+out.ahrjc3::in.mai_alt_insurance_id;
+
+
+out.ahaccd::in.acc_account_id;
+out.ahadcd::in.grp_group_id;
+out.ahdqs3::in.mai_status;
+out.ahc2dt :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.add_date;
+out.ahadtm :: (decimal(""))(string(""))(datetime("HH24MISS"))(datetime("HH24:MI:SS"))in.add_time;
+out.ahalvn :: in.add_program_name;
+out.ahadvn :: in.chg_user_name;
+out.ahbmdt :: (decimal(""))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.chg_date;
+out.ahabtm :: (decimal(""))(string(""))(datetime("HH24MISS"))(datetime("HH24:MI:SS"))in.chg_time;
+out.ahaevn :: in.chg_program_name;
+
+end;
+
+

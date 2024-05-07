@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcdrop
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcdrop                  arp2nb,aroinb,arjjnb,ardpvg\nclmprdfil     rcdrdp                  newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcdrop.arp2nb= rcdrdp.D3P2NB \n     and  rcdrop.aroinb= rcdrdp.D3OINB \n     and  rcdrop.arjjnb= rcdrdp.D3JJNB\n     and rcdrdp.D3BMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcdrdp.D3BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcdrop.arp2nb= rcdrdp.D3P2NB \n     and  rcdrop.aroinb= rcdrdp.D3OINB \n     and  rcdrop.arjjnb= rcdrdp.D3JJNB\n     and rcdrdp.D3BMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcdrdp.D3BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+SOURCE_DB_INFO_VEC||||$[ \r\nbegin \r\nresult :: for (let i in get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS)) :\r\n        if (!string_like(i.logical_schema,'%nvm%')) i ;\r\nend\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

@@ -1,0 +1,9 @@
+out::reformat(in)=
+begin
+let record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] v_norm_key_vec=allocate_with_defaults();
+  out.* :: in.*;
+  out.norm_key_vec :: vector_append(v_norm_key_vec,[record dxf_sk in.dxf_sk]);
+end
+

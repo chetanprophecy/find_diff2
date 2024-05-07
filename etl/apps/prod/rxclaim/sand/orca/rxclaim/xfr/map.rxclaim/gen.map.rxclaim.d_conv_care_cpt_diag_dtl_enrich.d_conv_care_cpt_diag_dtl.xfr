@@ -1,0 +1,84 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a7ca5cd_4e67_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_cc_diagdtl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_cc_diagdtl.diag_dx_type,[passthrough],in0.dx_tab]
+  [out0.d_cc_diagdtl.prev_list_flg,[transform],in0.on_ge_list]
+  [out0.d_cc_diagdtl.cpt_cd,[passthrough],in0.cpt_code]
+  [out0.d_cc_diagdtl.diag_cd,[passthrough],in0.diagnosis_code]
+  [out0.d_cc_diagdtl.prev_setup_flg,[transform],in0.setup_as_preventative]
+  [out0.d_cc_diagdtl.diag_dep_flg,[transform],in0.diagnosis_dependant]
+  [out0.d_cc_diagdtl.schedule_type,[passthrough],in0.schedule]
+  [out0.d_cc_diagdtl.srv_nm,[passthrough],in0.service_name]
+  [out0.d_cc_diagdtl.cpt_diag_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_cc_diagdtl.src_env_sk,'d_cc_diagdtl.src_env_sk',1,0]
+     [out0.d_cc_diagdtl.diag_dx_type,'d_cc_diagdtl.diag_dx_type',1,0]
+     [out0.d_cc_diagdtl.prev_list_flg,'d_cc_diagdtl.prev_list_flg',1,0]
+     [out0.d_cc_diagdtl.cpt_cd,'d_cc_diagdtl.cpt_cd',1,0]
+     [out0.d_cc_diagdtl.diag_cd,'d_cc_diagdtl.diag_cd',1,0]
+     [out0.d_cc_diagdtl.prev_setup_flg,'d_cc_diagdtl.prev_setup_flg',1,0]
+     [out0.d_cc_diagdtl.diag_dep_flg,'d_cc_diagdtl.diag_dep_flg',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_cc_diagdtl.schedule_type,'d_cc_diagdtl.schedule_type',1,0]
+     [out0.d_cc_diagdtl.srv_nm,'d_cc_diagdtl.srv_nm',1,0]
+     [out0.d_cc_diagdtl.cpt_diag_sk,'d_cc_diagdtl.cpt_diag_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dx_tab,'dx_tab',1,1]
+     [in0.diagnosis_dependant,'diagnosis_dependant',2,1]
+     [in0.schedule,'schedule',1,1]
+     [in0.cpt_code,'cpt_code',1,1]
+     [in0.diagnosis_code,'diagnosis_code',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.on_ge_list,'on_ge_list',1,1]
+     [in0.setup_as_preventative,'setup_as_preventative',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.service_name,'service_name',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_cc_diagdtl_cpt_diag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_cc_diagdtl_cpt_cd = fail_if_error(in0.cpt_code);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_cc_diagdtl_diag_cd = fail_if_error(in0.diagnosis_code);
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cc_diagdtl_schedule_type = fail_if_error(in0.schedule);
+let string("\x01",charset="iso-8859-15", maximum_length=100) d_cc_diagdtl_srv_nm = fail_if_error(in0.service_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_cc_diagdtl_prev_list_flg = fail_if_error(string_substring(str=in0.on_ge_list , start_index=0 , length=1 ));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_cc_diagdtl_prev_setup_flg = fail_if_error(string_substring(in0.setup_as_preventative,0,1));
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_cc_diagdtl_diag_dep_flg = fail_if_error(if (string_trim(string_upcase(in0.diagnosis_dependant))=="NO/YES") "Y" else string_substring(in0.diagnosis_dependant ,0,1));
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_cc_diagdtl_diag_dx_type = fail_if_error(in0.dx_tab);
+let decimal("\x01",0) d_cc_diagdtl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.d_cc_diagdtl.cpt_diag_sk::d_cc_diagdtl_cpt_diag_sk;
+  out0.d_cc_diagdtl.cpt_cd::d_cc_diagdtl_cpt_cd;
+  out0.d_cc_diagdtl.diag_cd::d_cc_diagdtl_diag_cd;
+  out0.d_cc_diagdtl.schedule_type::d_cc_diagdtl_schedule_type;
+  out0.d_cc_diagdtl.srv_nm::d_cc_diagdtl_srv_nm;
+  out0.d_cc_diagdtl.prev_list_flg::d_cc_diagdtl_prev_list_flg;
+  out0.d_cc_diagdtl.prev_setup_flg::d_cc_diagdtl_prev_setup_flg;
+  out0.d_cc_diagdtl.diag_dep_flg::d_cc_diagdtl_diag_dep_flg;
+  out0.d_cc_diagdtl.diag_dx_type::d_cc_diagdtl_diag_dx_type;
+  out0.d_cc_diagdtl.src_env_sk::d_cc_diagdtl_src_env_sk;
+  out0.*::in0.*;
+
+end;

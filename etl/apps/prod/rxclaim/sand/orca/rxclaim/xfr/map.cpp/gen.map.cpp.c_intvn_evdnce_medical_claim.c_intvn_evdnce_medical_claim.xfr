@@ -1,0 +1,67 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.c_in_ed_m_cl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_in_ed_m_cl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_in_ed_m_cl.src_env_sk,[transform],]
+  [out0.c_in_ed_m_cl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_in_ed_m_cl.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_in_ed_m_cl.cpp_updated_by,'c_in_ed_m_cl.cpp_updated_by',1,0]
+     [out0.c_in_ed_m_cl.cpp_created_by,'c_in_ed_m_cl.cpp_created_by',1,0]
+     [out0.c_in_ed_m_cl.src_env_sk,'c_in_ed_m_cl.src_env_sk',1,0]
+     [out0.c_in_ed_m_cl.medical_claim_id,'c_in_ed_m_cl.medical_claim_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_in_ed_m_cl.cpp_create_ts,'c_in_ed_m_cl.cpp_create_ts',1,0]
+     [out0.c_in_ed_m_cl.cpp_update_ts,'c_in_ed_m_cl.cpp_update_ts',1,0]
+     [out0.c_in_ed_m_cl.intvn_evdnce_id,'c_in_ed_m_cl.intvn_evdnce_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.intvn_evdnce_id,'intvn_evdnce_id',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.medical_claim_id,'medical_claim_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_in_ed_m_cl_intvn_evdnce_id = fail_if_error(in0.intvn_evdnce_id);
+let decimal("\x01",0) c_in_ed_m_cl_medical_claim_id = fail_if_error(in0.medical_claim_id);
+let datetime("YYYYMMDDHH24MISS")("\x01") c_in_ed_m_cl_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_in_ed_m_cl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDDHH24MISS")("\x01") c_in_ed_m_cl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_in_ed_m_cl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_in_ed_m_cl_src_env_sk = 710;
+
+
+
+  out0.c_in_ed_m_cl.intvn_evdnce_id::c_in_ed_m_cl_intvn_evdnce_id;
+  out0.c_in_ed_m_cl.medical_claim_id::c_in_ed_m_cl_medical_claim_id;
+  out0.c_in_ed_m_cl.cpp_update_ts::c_in_ed_m_cl_cpp_update_ts;
+  out0.c_in_ed_m_cl.cpp_updated_by::c_in_ed_m_cl_cpp_updated_by;
+  out0.c_in_ed_m_cl.cpp_create_ts::c_in_ed_m_cl_cpp_create_ts;
+  out0.c_in_ed_m_cl.cpp_created_by::c_in_ed_m_cl_cpp_created_by;
+  out0.c_in_ed_m_cl.src_env_sk::c_in_ed_m_cl_src_env_sk;
+  out0.*::in0.*;
+
+end;

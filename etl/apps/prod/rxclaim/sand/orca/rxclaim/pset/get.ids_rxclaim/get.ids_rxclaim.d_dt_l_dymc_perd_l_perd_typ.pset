@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_rxclaim.d_dt_l_dymc_perd
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.l_period_type
+JOIN_TYPE|l|||Inner Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{perd_type_nbr}
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\n\r\nend
+TARGET_NAME||||ids_rxclaim.d_dt_l_dymc_perd_l_perd_typ
+NON_DRIVER_1_OUTPUT_FIELDS||||dxf_sk,perd_type_nbr
+DO_LOOKUP||||0
+DO_CLEAN||||1
+DRIVER_FILE_TYPE||||Clean
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+JOIN_XFR||||out::join(in0, in1)=\r\nbegin\r\n  out.dxf_sk :: in1.dxf_sk;\r\n  out.* :1: in0.*;\r\n  out.* :2: in1.*;\r\nend;

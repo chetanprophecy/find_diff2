@@ -1,0 +1,99 @@
+/* Convert a business-friendly variable name to a technical field name. */
+out :: bizname_to_techname(in) =
+begin
+  let tech_name = re_replace(string_downcase(in), "[^a-z0-9_]+", "_");
+  // Too bad we cannot call ddl_name_to_dml_name() from the ACE.
+  out :1: if ( tech_name member [vector
+      "NULL",
+      "__KEYTYPE__",
+      "and",
+      "ascii",
+      "begin",
+      "big",
+      "char",
+      "constant",
+      "date",
+      "datetime",
+      "decimal",
+      "delimiter",
+      "double",
+      "ebcdic",
+      "else",
+      "end",
+      "endian",
+      "euc_jis",
+      "float",
+      "for",
+      "ibm",
+      "ieee",
+      "if",
+      "include",
+      "int",
+      "integer",
+      "iso_8859_1",
+      "iso_8859_2",
+      "iso_8859_3",
+      "iso_8859_4",
+      "iso_8859_5",
+      "iso_8859_6",
+      "iso_8859_7",
+      "iso_8859_8",
+      "iso_8859_9",
+      "iso_arabic",
+      "iso_cyrillic",
+      "iso_easteuropean",
+      "iso_greek",
+      "iso_hebrew",
+      "iso_latin",
+      "iso_latin_1",
+      "iso_latin_2",
+      "iso_latin_3",
+      "iso_latin_4",
+      "iso_turkish",
+      "jis_201",
+      "let",
+      "little",
+      "long",
+      "member",
+      "metadata",
+      "not",
+      "or",
+      "package",
+      "packed",
+      "real",
+      "record",
+      "reinterpret_as",
+      "shift_jis",
+      "short",
+      "signed",
+      "string",
+      "switch",
+      "this_record",
+      "type",
+      "unicode",
+      "union",
+      "unsigned",
+      "utf8",
+      "void",
+      "while"] )
+    "_" + tech_name + "_";
+  out :: tech_name;
+end;
+
+
+// Creates a record format from a list of decimal and string business names.
+out :: manual_dml(decimal_fields, string_fields) =
+begin
+  let decimal_vec = re_split_no_empty(decimal_fields, "[\r\n]+");
+  let string_vec = re_split_no_empty(string_fields, "[\r\n]+");
+  out :: "record\n" +
+    string_join(
+      for ( let f in decimal_vec ) :
+        printf('  decimal("") %s /*@ BizName:%s */;\n', bizname_to_techname(f), string_representation(f)),
+      "") +
+    string_join(
+      for ( let f in string_vec ) :
+        printf("  string(unsigned integer(1)) %s /*@ BizName:%s */;\n", bizname_to_techname(f), string_representation(f)),
+      "") +
+    "end\n";
+end;

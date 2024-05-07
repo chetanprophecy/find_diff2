@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rccrdp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rccrdp                  fxtjc3,fxtkc3,fxakvn,fxc2dt,fxadtm,fxalvn,fxadvn,fxbmdt,fxabtm,fxaevn,newline\nclmprdfil     rccpbp
+SOURCE_DB_LIST||||$[begin\r\nlet string("")[int] line = string_split_no_empty(get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccpbp'), "\\n");\r\nlet string("")[int] newline1 = for(let newline in line) : if(not starts_with(newline,"clmbwcfil" ) ) newline;\r\nresult :: string_join(newline1, "\\n");\r\nend + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccpbp')]
+WHERE_CLAUSE||||where rccrdp.fxtjc3= rccpbp.aoibtv\n
+DO_LOOKUP||||0
+DO_SOURCE||||0
+LOOKUP_FIELDS||||fxtjc3,fxtkc3,fxakvn,fxc2dt,fxadtm,fxalvn,fxadvn,fxbmdt,fxabtm,fxaevn
+LOOKUP_KEY||||{fxtkc3}
+DO_CLEAN||||1
+RUN_ID||||20190508000000

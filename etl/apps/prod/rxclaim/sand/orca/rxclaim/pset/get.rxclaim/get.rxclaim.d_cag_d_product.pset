@@ -1,0 +1,17 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_common.d_cag
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_product
+DRIVER_OUTPUT_FIELDS||||carrier_id,dxf_sk,ids_updt_dttm
+NON_DRIVER_1_OUTPUT_FIELDS||||gpi_no,dxf_sk,ids_updt_dttm
+JOIN_TYPE|l|||Cartesian Product
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{}
+DO_CLEAN||||1
+ADDITIONAL_FIELDS_DML||||record\r\n  string("\\x01",charset="iso-8859-15", maximum_length=1) speclty_ind = NULL("") /*CHAR(1)*/;\r\n  string("\\x01",charset="iso-8859-15", maximum_length=50) speclty_ind_nm = NULL("") /*VARCHAR(50)*/;\r\nend
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nout.speclty_ind :: "N";\r\nout.speclty_ind_nm :: "Non-Specialty";\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nout.gpi_no :: if(is_null(in.gpi_no) || is_blank(in.gpi_no)) "-" else in.gpi_no;\r\nout.speclty_ind :: "N";\r\nout.speclty_ind_nm :: "Non-Specialty";\r\nend
+DRIVER_EXTRA_PBKS_KEY||||{carrier_id}
+NON_DRIVER_1_EXTRA_PBKS_KEY||||{gpi_no}
+TARGET_NAME||||rxclaim.d_cag_d_product
+DRIVER_DEDUP_ON_JOIN_KEY||||True
+NON_DRIVER_1_DEDUP_ON_JOIN_KEY||||True

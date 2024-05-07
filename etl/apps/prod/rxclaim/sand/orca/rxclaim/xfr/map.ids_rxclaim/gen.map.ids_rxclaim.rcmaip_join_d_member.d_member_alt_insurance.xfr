@@ -1,0 +1,145 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_1_6c54cc0a_582dc306_5a5e_4
+    BizHidden:true
+@*/
+/*   lookup cob_pricing_type   */
+out0::bzt_1_6c54cc0a_582dc306_5a5e_4(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=2) cob_pricing_type_cd = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("cob_pricing_type",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.mem_alt_ins.cob_pricing_type_cd,[passthrough],in0.ahdyib]
+  [out0.mem_alt_ins.employer_group_id,[passthrough],in0.ahadcd]
+  [out0.mem_alt_ins.cob_pricing_type_sk,[transform],in0.ahdyib,
+     'lookup("cob_pricing_type").dxf_sk']
+  [out0.mem_alt_ins.mai_stat_cd,[passthrough],in0.ahdqs3]
+  [out0.mem_alt_ins.mai_thru_dt,[transform],in0.ahmadt]
+  [out0.mem_alt_ins.carrier_id,[passthrough],in0.ahaacd]
+  [out0.mem_alt_ins.mai_from_dt,[transform],in0.ahl9dt]
+  [out0.mem_alt_ins.account_id,[passthrough],in0.ahaccd]
+  [out0.mem_alt_ins.mbr_id,[passthrough],in0.ahabcd]
+  [out0.mem_alt_ins.sequence_num,[transform],in0.ahadcd,
+     in0.ahz9n1]
+  [out0.mem_alt_ins.member_alt_insurance_sk,[transform],]
+  [out0.mem_alt_ins.alt_insurance_flg,[transform],in0.ahdps3]
+  [out0.mem_alt_ins.mbr_sk,[passthrough],in0.dxf_sk]
+  [out0.mem_alt_ins.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mem_alt_ins.cob_pricing_type_cd,'mem_alt_ins.cob_pricing_type_cd',1,0]
+     [out0.mem_alt_ins.employer_group_id,'mem_alt_ins.employer_group_id',1,0]
+     [out0.mem_alt_ins.cob_pricing_type_sk,'mem_alt_ins.cob_pricing_type_sk',1,0]
+     [out0.mem_alt_ins.mai_stat_cd,'mem_alt_ins.mai_stat_cd',1,0]
+     [out0.mem_alt_ins.mai_thru_dt,'mem_alt_ins.mai_thru_dt',1,0]
+     [out0.mem_alt_ins.carrier_id,'mem_alt_ins.carrier_id',1,0]
+     [out0.mem_alt_ins.dxf_sk,'mem_alt_ins.dxf_sk',1,0]
+     [out0.mem_alt_ins.mai_from_dt,'mem_alt_ins.mai_from_dt',1,0]
+     [out0.mem_alt_ins.account_id,'mem_alt_ins.account_id',1,0]
+     [out0.mem_alt_ins.cag_sk,'mem_alt_ins.cag_sk',1,0]
+     [out0.mem_alt_ins.mbr_alt_ins_mbr_id,'mem_alt_ins.mbr_alt_ins_mbr_id',1,0]
+     [out0.mem_alt_ins.mbr_id,'mem_alt_ins.mbr_id',1,0]
+     [out0.mem_alt_ins.sequence_num,'mem_alt_ins.sequence_num',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mem_alt_ins.member_alt_insurance_sk,'mem_alt_ins.member_alt_insurance_sk',1,0]
+     [out0.mem_alt_ins.alt_insurance_flg,'mem_alt_ins.alt_insurance_flg',1,0]
+     [out0.mem_alt_ins.mbr_sk,'mem_alt_ins.mbr_sk',1,0]
+     [out0.mem_alt_ins.mbr_alt_ins_id,'mem_alt_ins.mbr_alt_ins_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.mem_alt_ins.src_env_sk,'mem_alt_ins.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',2,2]
+     ['lookup("cob_pricing_type").dxf_sk','dxf_sk',1,1]
+     [in0.ahmadt,'ahmadt',2,1]
+     [in0.ahl9dt,'ahl9dt',4,1]
+     [in0.mbr_alt_ins_mbr_id,'mbr_alt_ins_mbr_id',1,1]
+     [in0.ahdps3,'ahdps3',2,1]
+     [in0.ahdyib,'ahdyib',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.mbr_alt_ins_id,'mbr_alt_ins_id',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.ahadcd,'ahadcd',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ahdqs3,'ahdqs3',1,1]
+     [in0.ahz9n1,'ahz9n1',2,1]
+     [in0.ahaccd,'ahaccd',1,1]
+     [in0.ahabcd,'ahabcd',1,1]
+     [in0.ahaacd,'ahaacd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let integer(8) mem_alt_ins_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) mem_alt_ins_member_alt_insurance_sk = -1;
+let decimal("\x01",0) mem_alt_ins_mbr_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) mem_alt_ins_cob_pricing_type_sk;
+let decimal("\x01",0) mem_alt_ins_cag_sk = fail_if_error(in0.cag_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) mem_alt_ins_mbr_id = fail_if_error(in0.ahabcd);
+let string("\x01",charset="iso-8859-15", maximum_length=9) mem_alt_ins_carrier_id = fail_if_error(in0.ahaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=15) mem_alt_ins_account_id = fail_if_error(in0.ahaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=15) mem_alt_ins_employer_group_id = fail_if_error(in0.ahadcd);
+let decimal("\x01",0) mem_alt_ins_sequence_num = fail_if_error((if (sql_or(is_null(in0.ahz9n1),is_blank(string_lrtrim(in0.ahz9n1))))
+   0
+ else
+   ((decimal(""))in0.ahadcd)));
+let string("\x01",charset="iso-8859-15", maximum_length=1) mem_alt_ins_mai_stat_cd = fail_if_error(in0.ahdqs3);
+let date("YYYYMMDD")("\x01") mem_alt_ins_mai_from_dt = fail_if_error((if (sql_or(sql_or(is_blank(string_lrtrim(in0.ahl9dt)),is_null(in0.ahl9dt)),(((date("YYYYMMDD"))(in0.ahl9dt-19000000))=="18000101")))
+   ((date("YYYYMMDD"))"19000101")
+ else
+   ((date("YYYYMMDD"))(in0.ahl9dt+1900000))));
+let date("YYYYMMDD")("\x01") mem_alt_ins_mai_thru_dt = fail_if_error(if (is_valid((date("YYYYMMDD"))(in0.ahmadt +19000000))) (date("YYYYMMDD")) (in0.ahmadt +19000000) else (date("YYYYMMDD")) "18000101");
+let decimal("\x01",0) mem_alt_ins_alt_insurance_flg = fail_if_error(if(string_upcase(in0.ahdps3) =="Y") 1 else if (string_upcase(in0.ahdps3) =="N") 0  else 2);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mem_alt_ins_mbr_alt_ins_id = fail_if_error(in0.mbr_alt_ins_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) mem_alt_ins_mbr_alt_ins_mbr_id = fail_if_error(in0.mbr_alt_ins_mbr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) mem_alt_ins_cob_pricing_type_cd = fail_if_error(in0.ahdyib);
+let decimal("\x01",0) mem_alt_ins_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+mem_alt_ins_cob_pricing_type_sk=fail_if_error(bzt_1_6c54cc0a_582dc306_5a5e_4(in0.ahdyib).dxf_sk);
+
+  out0.mem_alt_ins.dxf_sk::mem_alt_ins_dxf_sk;
+  out0.mem_alt_ins.member_alt_insurance_sk::mem_alt_ins_member_alt_insurance_sk;
+  out0.mem_alt_ins.mbr_sk::mem_alt_ins_mbr_sk;
+  out0.mem_alt_ins.cob_pricing_type_sk::mem_alt_ins_cob_pricing_type_sk;
+  out0.mem_alt_ins.cag_sk::mem_alt_ins_cag_sk;
+  out0.mem_alt_ins.mbr_id::mem_alt_ins_mbr_id;
+  out0.mem_alt_ins.carrier_id::mem_alt_ins_carrier_id;
+  out0.mem_alt_ins.account_id::mem_alt_ins_account_id;
+  out0.mem_alt_ins.employer_group_id::mem_alt_ins_employer_group_id;
+  out0.mem_alt_ins.sequence_num::mem_alt_ins_sequence_num;
+  out0.mem_alt_ins.mai_stat_cd::mem_alt_ins_mai_stat_cd;
+  out0.mem_alt_ins.mai_from_dt::mem_alt_ins_mai_from_dt;
+  out0.mem_alt_ins.mai_thru_dt::mem_alt_ins_mai_thru_dt;
+  out0.mem_alt_ins.alt_insurance_flg::mem_alt_ins_alt_insurance_flg;
+  out0.mem_alt_ins.mbr_alt_ins_id::mem_alt_ins_mbr_alt_ins_id;
+  out0.mem_alt_ins.mbr_alt_ins_mbr_id::mem_alt_ins_mbr_alt_ins_mbr_id;
+  out0.mem_alt_ins.cob_pricing_type_cd::mem_alt_ins_cob_pricing_type_cd;
+  out0.mem_alt_ins.src_env_sk::mem_alt_ins_src_env_sk;
+  out0.*::in0.*;
+
+end;

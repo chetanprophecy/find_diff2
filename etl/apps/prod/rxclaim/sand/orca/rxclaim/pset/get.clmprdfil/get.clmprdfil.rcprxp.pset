@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcprxp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcprxp                  bjaecd,bjakdt,bjezh7,bjeycd,bjfsnb,bjqpn1,bjaacd,bjo2cd,bjt9s2,bjkbdt,bjkcdt,bjntwk,bjqwh6,bjfxht,bjvrid,bjseie,bjf5ai,bjf4hn,bjioai,bjq9an,bjraan,bjnthp,bjnuhp,bjnvhp,bjyyap,bjyzap,bjy0ap,bjz7hq,bjz8hq,bjocar,bjvjat,bjakvn,bjc2dt,bjadtm,bjalvn,bjadvn,bjbmdt,bjabtm,bjaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]
+WHERE_CLAUSE||||$["WHERE rcprxp.bjaacd IS NOT NULL AND rcprxp.bjaacd NOT IN ("+ $CARRIER_EXCL +") AND bjbmdt between " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) ]

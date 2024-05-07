@@ -1,0 +1,120 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_581716c5_134c_7 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_member.acct_id,[passthrough],in0.acct_id]
+  [out0.c_member.cli_member_id,[passthrough],in0.cli_member_id]
+  [out0.c_member.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_member.cli_acct_id,[passthrough],in0.cli_acct_id]
+  [out0.c_member.patient_id,[passthrough],in0.patient_id]
+  [out0.c_member.carrier_id,[passthrough],in0.carrier_id]
+  [out0.c_member.emplyr_group_id,[passthrough],in0.emplyr_group_id]
+  [out0.c_member.cli_emplyr_group_id,[passthrough],in0.cli_emplyr_group_id]
+  [out0.c_member.cli_src_env_id,[passthrough],in0.cli_src_env_id]
+  [out0.c_member.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_member.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_member.member_id,[passthrough],in0.member_id]
+  [out0.c_member.src_env_id,[passthrough],in0.src_env_id]
+  [out0.c_member.cli_carrier_id,[passthrough],in0.cli_carrier_id]
+  [out0.c_member.cpp_member_sk,[transform],]
+  [out0.c_member.src_env_sk,[transform],]
+  [out0.c_member.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_member.acct_id,'c_member.acct_id',1,0]
+     [out0.c_member.cli_member_id,'c_member.cli_member_id',1,0]
+     [out0.c_member.cpp_created_by,'c_member.cpp_created_by',1,0]
+     [out0.c_member.cli_acct_id,'c_member.cli_acct_id',1,0]
+     [out0.c_member.patient_id,'c_member.patient_id',1,0]
+     [out0.c_member.carrier_id,'c_member.carrier_id',1,0]
+     [out0.c_member.emplyr_group_id,'c_member.emplyr_group_id',1,0]
+     [out0.c_member.cli_emplyr_group_id,'c_member.cli_emplyr_group_id',1,0]
+     [out0.c_member.cli_src_env_id,'c_member.cli_src_env_id',1,0]
+     [out0.c_member.cpp_update_ts,'c_member.cpp_update_ts',1,0]
+     [out0.c_member.cpp_create_ts,'c_member.cpp_create_ts',1,0]
+     [out0.c_member.member_id,'c_member.member_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_member.src_env_id,'c_member.src_env_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_member.cli_carrier_id,'c_member.cli_carrier_id',1,0]
+     [out0.c_member.cpp_member_sk,'c_member.cpp_member_sk',1,0]
+     [out0.c_member.src_env_sk,'c_member.src_env_sk',1,0]
+     [out0.c_member.cpp_updated_by,'c_member.cpp_updated_by',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.patient_id,'patient_id',1,1]
+     [in0.member_id,'member_id',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',1,1]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.acct_id,'acct_id',1,1]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_member_cpp_member_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_member_cli_member_id = fail_if_error(in0.cli_member_id);
+let utf8 string("\x01", maximum_length=16) c_member_src_env_id = fail_if_error(in0.src_env_id);
+let utf8 string("\x01", maximum_length=120) c_member_carrier_id = fail_if_error(in0.carrier_id);
+let utf8 string("\x01", maximum_length=160) c_member_acct_id = fail_if_error(in0.acct_id);
+let utf8 string("\x01", maximum_length=120) c_member_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let utf8 string("\x01", maximum_length=80) c_member_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_member_patient_id = fail_if_error(in0.patient_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_member_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_member_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_member_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_member_src_env_sk = 710;
+
+
+
+  out0.c_member.cpp_member_sk::c_member_cpp_member_sk;
+  out0.c_member.cli_src_env_id::c_member_cli_src_env_id;
+  out0.c_member.cli_carrier_id::c_member_cli_carrier_id;
+  out0.c_member.cli_acct_id::c_member_cli_acct_id;
+  out0.c_member.cli_emplyr_group_id::c_member_cli_emplyr_group_id;
+  out0.c_member.cli_member_id::c_member_cli_member_id;
+  out0.c_member.src_env_id::c_member_src_env_id;
+  out0.c_member.carrier_id::c_member_carrier_id;
+  out0.c_member.acct_id::c_member_acct_id;
+  out0.c_member.emplyr_group_id::c_member_emplyr_group_id;
+  out0.c_member.member_id::c_member_member_id;
+  out0.c_member.patient_id::c_member_patient_id;
+  out0.c_member.cpp_update_ts::c_member_cpp_update_ts;
+  out0.c_member.cpp_updated_by::c_member_cpp_updated_by;
+  out0.c_member.cpp_create_ts::c_member_cpp_create_ts;
+  out0.c_member.cpp_created_by::c_member_cpp_created_by;
+  out0.c_member.src_env_sk::c_member_src_env_sk;
+  out0.*::in0.*;
+
+end;

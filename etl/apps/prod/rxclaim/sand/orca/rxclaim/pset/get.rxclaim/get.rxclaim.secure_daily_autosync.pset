@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.xml.interim.pset
+TARGET_NAME||||rxclaim.secure_daily_autosync
+RFMT_TRANSFORM||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\nlet decimal('') bzt_0_6c54cc0a_57ea5dca_3f46_2 = $RUN_ID;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.seq_num,'seq_num',1,0]\n  ]\n  impacts:\n  [\n     [in0.seq_num,'seq_num',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;
+LOOKUP_FIELDS_KEY||||{}
+INPUT_FILE_PATTERN||||User_List_Comm.xml
+DO_LOOKUP||||0
+DO_CLEAN||||1
+READ_DB_NORMALIZE_XFR_FILE||||$AI_XFR/get_xfr.secure_daily_autosync.xfr
+OUTPUT_DML||||$[\nif ( DO_SOURCE )\n  SOURCE_DML\nelse if ( DO_CLEAN )\n  CLEAN_DML\nelse\n  LOOKUP_DML\n]
+CLEAN_DML||||utf8 record\r\n string("|") Login;\r\n string("|") FullName;\r\n string("|") Enabled;\r\n string("|")UserGroup ;\r\n string(1) newline ="\\n";\r\nend;
+INPUT_FILE_PATH||||/etl/data/$AI_PHASE/serial/ecg_landing/inbound/aiorcrxc/RXCLAIM/AUTOSYNC

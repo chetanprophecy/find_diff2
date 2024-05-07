@@ -1,0 +1,32 @@
+type logical_ids_common_rcmmdp_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  unsigned integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id;
+  decimal("\x01",maximum_length=5) mmd_seq_nbr;
+  string("\x01",charset="iso-8859-15", maximum_length=1) mmd_record_status;
+  datetime("YYYYMMDDHH24MISS")("\x01") mmd_from_dt;
+  datetime("YYYYMMDDHH24MISS")("\x01") mmd_thru_dt;
+  string("\x01",charset="iso-8859-15", maximum_length=5) mmd_contract_id;
+  string("\x01",charset="iso-8859-15", maximum_length=3) mmd_pbp_id;
+  string("\x01",charset="iso-8859-15", maximum_length=3) mmd_segment_id;
+  string("\x01",charset="iso-8859-15", maximum_length=3) mmd_subsidy_lvl;
+  string("\x01",charset="iso-8859-15", maximum_length=1) mmd_copay_category;
+  datetime("YYYYMMDDHH24MISS")("\x01") mmd_copay_catg_eff_td;
+  string("\x01",charset="iso-8859-15", maximum_length=1) mmd_enrlmnt_src;
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_rcmmdp_t orx_rcmmdp  /*@ BizName:'orx rcmmdp' */;
+end;

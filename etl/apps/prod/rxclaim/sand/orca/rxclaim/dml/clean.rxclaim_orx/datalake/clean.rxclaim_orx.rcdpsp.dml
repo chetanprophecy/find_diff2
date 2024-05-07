@@ -1,0 +1,17 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8) dxf_src_rec_cnt = 0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dxf_src_file_name = ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string("\x01", maximum_length=1) cdc_flag;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\x01") cdc_ts;
+  decimal("\x01", 0) aop2nb;
+  decimal("\x01", 0) aooinb;
+  decimal("\x01", 0) aor5n2;
+  string("\x01", maximum_length=2) aolast = NULL("");
+  string("\x01", maximum_length=2) aolbst = NULL("");
+  string("\x01", maximum_length=2) aolcst = NULL("");
+  string("\x01", maximum_length=2) aoi1cj = NULL("");
+  string("\x01", maximum_length=2) aoi2cj = NULL("");
+  string("\n", maximum_length=20) aor7c4 = NULL("");
+end

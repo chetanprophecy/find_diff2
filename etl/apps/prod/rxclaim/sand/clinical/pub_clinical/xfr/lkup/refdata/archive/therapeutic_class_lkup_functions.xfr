@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/therapeutic_class_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_thrpc_class_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_therapeutic_class.dat';
+end;
+
+/************************************************/
+/* Therapeutic Class Lookup (ids surrogate key) */
+/************************************************/
+
+type thrpc_class_lkup_t =
+record
+  lookup_identifier_type         id             = -1; 
+  therapeutic_class_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                     key()          = {therapeutic_class.thrpc_class_nm};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let thrpc_class_lkup_t GLKUP_THRPC_CLASS = allocate_with_nulls();
+
+thrpc_class_lkup_t out :: load_thrpc_class_lkup() inline =
+begin
+  if (GLKUP_THRPC_CLASS.id == lookup_not_loaded())
+    GLKUP_THRPC_CLASS = lookup_load(this_partition_path(get_thrpc_class_lkup_path()));
+  
+  out :: GLKUP_THRPC_CLASS;
+end;
+
+thrpc_class_t out :: get_thrpc_class(thrpc_class_nm) inline =
+begin
+  let thrpc_class_lkup_t lkup = load_thrpc_class_lkup();
+  out :: lookup(lkup, thrpc_class_nm).therapeutic_class;
+end;

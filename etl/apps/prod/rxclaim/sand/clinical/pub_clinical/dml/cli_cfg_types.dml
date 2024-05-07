@@ -1,0 +1,691 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_cfg_types.dml
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/07/12  Paul Thompson           Initial version
+ *  2016/07/12  Upal Chatterjee         Updated type name 'cli_account_id_t' to 'cli_carrier_acct_id_t'
+ *  2016/09/01  Mohd Shadab             Updated cli config out dmls according to table dmls
+ *  2016/09/05  Majid Mohammed          Added cli cfg types for NAS sources
+ *  2016/10/18  Paul Thompson           Added list_cfg_id_nm_t
+ *  2016/11/07  Mohd Shadab             Added three new fields in snomed_cd_cfg_t 
+ *  2016/11/14  Chinmay Sahoo           Added New field(cli_mbr_id) to transition_in_care_cfg_t.
+ *  2016/12/16  Mohd Shadab             Added job_t to unload job table that will be used as a lookup in our initialization process
+ *  2017/08/11  Ketan Majgaonkar        Updated the length of cd_descr field from 70 to 255 in med_cd_cfg_t type
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+/*********************************/
+/* Business Reference Data types */
+/*********************************/
+
+//
+// Common List Config Type
+//
+
+type list_cfg_t =
+utf8 record
+  cli_list_type_cd_t               list_type_cd;
+  cli_pega_id_t                    list_id;
+  cli_vers_nbr_t                   list_vers_nbr;
+  cli_gpi_list_descr_t             list_descr = NULL(''); // added columns list descr and gpi_list_type 
+  cli_gpi_list_type_t              list_type  = NULL('');
+  cli_list_nm_t                    list_nm    = NULL('');
+  cli_year_t                       list_yr    = NULL(''); // coming from  med list tbl but not from gpi
+//cli_date_t                       eff_dt     = NULL(''); // dropped from gpi as well as med list tbl
+//cli_date_t                       end_dt     = NULL(''); // dropped from gpi as well as med list  tbl
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts  = NULL('');
+  cli_user_t                       update_by  = NULL('');
+end;
+type list_cfg_vec_t = list_cfg_t[int];
+
+type list_cfg_id_nm_t =
+record
+  cli_pega_id_t  list_id;
+  cli_list_nm_t  list_nm;
+end;
+
+//
+// Clinical Rational Config type
+//
+
+type clncl_rtnle_cfg_t =
+utf8 record
+  cli_list_type_cd_t               list_type_cd;
+  cli_pega_id_t                    list_id;
+  cli_vers_nbr_t                   list_vers_nbr;
+  cli_idntfn_cd_t                  idntfn_cd;
+  cli_ref_type_cd_t                ref_type_cd;
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts   = NULL('');
+  cli_user_t                       update_by   = NULL('');
+end;
+type clncl_rtnle_cfg_vec_t = clncl_rtnle_cfg_t[int];
+
+//
+// GPI Config type
+//
+
+type gpi_drug_cfg_t =
+utf8 record
+  cli_gpi_id_t                                         gpi_id              = NULL('');
+  string(int, maximum_length=70)                       gpi_nm              = NULL('');
+  string(int, maximum_length=1)                        prvcy_drug_flag     = NULL('');
+  string(int, maximum_length=14)                       type_dosage_form    = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  strength            = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  package_size        = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  cnvrsn_factor       = NULL('');
+  cli_integer_t                                        days_supply_thrshld = NULL;
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  dose_thrshld        = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  mpr_thrshld         = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  pdc_thrshld         = NULL('');
+  decimal('\x01'.5, maximum_length=17, sign_reserved)  med_thrshld         = NULL('');
+end;
+
+type gpi_cfg_t =
+utf8 record
+  cli_list_type_cd_t               list_type_cd;
+  cli_pega_id_t                    list_id;
+  cli_vers_nbr_t                   list_vers_nbr;
+  cli_idntfn_cd_t                  idntfn_cd;
+
+  cli_intvn_cd_t                   intvn_cd          = NULL('');
+  string(int, maximum_length=1)    lvl               = NULL('');
+  string(int, maximum_length=100)  thrptc_class      = NULL('');
+  string(int, maximum_length=100)  thrptc_sub_class  = NULL('');
+  string(int, maximum_length=70)   disease           = NULL('');
+
+  gpi_drug_cfg_t                   drug_a;
+  gpi_drug_cfg_t                   drug_b            = NULL;
+  gpi_drug_cfg_t                   drug_c            = NULL;
+
+  cli_integer_t                    age_thrshld       = NULL;
+  cli_integer_t                    idntfn_period     = NULL;
+  cli_date_t                       idntfn_eff_dt     = NULL('');
+  cli_date_t                       idntfn_term_dt    = NULL('');
+  cli_date_t                       eval_eff_dt       = NULL('');
+  cli_date_t                       eval_term_dt      = NULL('');
+  string(int, maximum_length=2048) cmmt              = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts         = NULL('');
+  cli_user_t                       update_by         = NULL('');
+end;
+type gpi_cfg_vec_t = gpi_cfg_t[int];
+
+//
+// Medical Code Config type
+//
+
+type med_cd_cfg_t =
+utf8 record
+  cli_list_type_cd_t                list_type_cd;
+  cli_pega_id_t                     list_id;
+  cli_vers_nbr_t                    list_vers_nbr;
+  cli_idntfn_cd_t                   idntfn_cd;
+
+  cli_intvn_cd_t                    intvn_cd       = NULL('');
+  string(int, maximum_length=70)    disease        = NULL('');
+  cli_med_cd_type_t                 cd_type;
+  cli_med_cd_t                      cd;
+  string(int, maximum_length=255)   cd_descr       = NULL('');
+  cli_date_t                        idntfn_eff_dt  = NULL('');
+  cli_date_t                        idntfn_term_dt = NULL('');
+  cli_date_t                        eval_eff_dt    = NULL('');
+  cli_date_t                        eval_term_dt   = NULL('');
+  string(int, maximum_length=2048) cmmt           = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts      = NULL('');
+  cli_user_t                       update_by      = NULL('');
+end;
+type med_cd_cfg_vec_t = med_cd_cfg_t[int];
+
+//
+// Quality Config type
+//
+
+type quality_cfg_t =
+utf8 record
+  cli_list_type_cd_t               list_type_cd;
+  cli_pega_id_t                    list_id;
+  cli_vers_nbr_t                   list_vers_nbr;
+  cli_idntfn_cd_t                  idntfn_cd;
+  cli_measure_type_cd_t            measure_type;
+
+  string(int, maximum_length=1)    measure_value = NULL('');
+  cli_date_t                       eff_dt        = NULL('');
+  cli_date_t                       end_dt        = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts     = NULL('');
+  cli_user_t                       update_by     = NULL('');
+end;
+type quality_cfg_vec_t = quality_cfg_t[int];
+
+//
+// Snomed Code List Entry type
+//
+
+// Disregard for now. The snomed code tables are a WIP progress
+// in the ODS pending feedback to Srikrishna from Danmay.
+
+//type snomed_cd_cfg_t =
+//utf8 record
+//  cli_list_type_cd_t               list_type_cd;
+//  cli_pega_id_t                    list_id;
+//  cli_vers_nbr_t                   list_vers_nbr;
+//  cli_idntfn_cd_t                  idntfn_cd;
+//
+//  cli_intvn_cd_t                   intvn_cd         = NULL('');
+//  string(int, maximum_length=10)   reporting_cd     = NULL('');
+//  string(int, maximum_length=2048) rule_descr       = NULL('');
+//
+//  string(int, maximum_length=100)  idsnomed1        = NULL('');
+//  string(int, maximum_length=100)  idsnomed2        = NULL('');
+//  string(int, maximum_length=100)  idsnomed3        = NULL('');
+//  string(int, maximum_length=100)  idsnomed4        = NULL('');
+//  string(int, maximum_length=100)  idsnomed5        = NULL('');
+//
+//  string(int, maximum_length=100)  intsnomed1       = NULL('');
+//  string(int, maximum_length=100)  intsnomed2       = NULL('');
+//  string(int, maximum_length=100)  intsnomed3       = NULL('');
+//  string(int, maximum_length=100)  intsnomed4       = NULL('');
+//  string(int, maximum_length=100)  intsnomed5       = NULL('');
+//
+//  string(int, maximum_length=100)  evalsnomed1      = NULL('');
+//  string(int, maximum_length=100)  evalsnomed2      = NULL('');
+//  string(int, maximum_length=100)  evalsnomed3      = NULL('');
+//  string(int, maximum_length=100)  evalsnomed4      = NULL('');
+//  string(int, maximum_length=100)  evalsnomed5      = NULL('');
+//
+//  string(int, maximum_length=100)  rptsnomed1       = NULL('');
+//  string(int, maximum_length=100)  rptsnomed2       = NULL('');
+//  string(int, maximum_length=100)  rptsnomed3       = NULL('');
+//  string(int, maximum_length=100)  rptsnomed4       = NULL('');
+//  string(int, maximum_length=100)  rptsnomed5       = NULL('');
+//
+//  cli_datetime_t                   create_ts;
+//  cli_user_t                       create_by;
+//  cli_datetime_t                   update_ts        = NULL('');
+//  cli_user_t                       update_by        = NULL('');
+//end;
+//type snomed_cd_cfg_vec_t = snomed_cd_cfg_t[int];
+
+/**************************/
+/* Member List Data types */
+/**************************/
+
+type mbr_list_cfg_t =
+utf8 record
+  cli_integer_id_t                 mbr_list_id;
+  cli_list_nm_t                    list_nm   = NULL('');
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts = NULL('');
+  cli_user_t                       update_by = NULL('');
+end;
+type mbr_list_cfg_vec_t = mbr_list_cfg_t[int];
+
+
+
+type mbr_cfg_t =
+utf8 record
+  cli_integer_id_t                 mbr_list_id;
+  cli_pega_id_t                    mbr_list_dtl_id;
+
+  cli_src_env_id_t                 src_env_id;
+  cli_carrier_id_t                 carrier_id;
+  cli_carrier_acct_id_t            account_id;
+  cli_employer_group_id_t          employer_group_id = NULL('');
+  cli_mbr_id_t                     member_id;
+
+  cli_first_nm_t                   first_nm          = NULL('');
+  cli_last_nm_t                    last_nm           = NULL('');
+  cli_date_t                       birth_dt          = NULL('');
+  cli_addr_t                       addr1             = NULL('');
+  cli_addr_t                       addr2             = NULL('');
+  cli_city_nm_t                    city_nm           = NULL('');
+  cli_st_cd_t                      st_cd             = NULL('');
+  cli_zip_t                        zip_5             = NULL('');
+  cli_zip2_t                       zip_4             = NULL('');
+  cli_decimal_t                    phone_nbr         = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts        = NULL('');
+  cli_user_t                       update_by        = NULL('');
+end;
+type mbr_cfg_vec_t = mbr_cfg_t[int];
+
+/**************/
+/* Type types */
+/**************/
+
+type config_type_cfg_t =
+utf8 record
+  cli_config_type_cd_t             config_type_cd;
+  string(int, maximum_length=200)  config_type_nm    = NULL('');
+  string(int, maximum_length=400)  config_type_descr = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts         = NULL('');
+  cli_user_t                       update_by         = NULL('');
+end;
+type config_type_cfg_vec_t = config_type_cfg_t[int];
+
+type product_type_cfg_t =
+utf8 record
+  cli_product_type_cd_t            product_type_cd;
+  string(int, maximum_length=200)  product_type_nm    = NULL('');
+  string(int, maximum_length=400)  product_type_descr = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts          = NULL('');
+  cli_user_t                       update_by          = NULL('');
+end;
+type product_type_cfg_vec_t = product_type_cfg_t[int];
+
+type program_type_cfg_t =
+utf8 record
+  cli_program_type_cd_t            program_type_cd;
+  string(int, maximum_length=200)  program_type_nm    = NULL('');
+  string(int, maximum_length=400)  program_type_descr = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts          = NULL('');
+  cli_user_t                       update_by          = NULL('');
+end;
+type program_type_cfg_vec_t = program_type_cfg_t[int];
+
+/***********************/
+/* Configuration types */
+/***********************/
+
+type clt_cfg_t =
+utf8 record
+  cli_pega_id_t                    cli_clt_id;
+
+  string(int, maximum_length=100)  clt_nm;
+  cli_integer_id_t                 cli_src_env_id         = NULL;
+  
+//string(int, maximum_length=64)   plan_type              = NULL('');
+//string(int, maximum_length=64)   plan_mngr              = NULL('');
+//string(int, maximum_length=2)    hist_rx_claim          = NULL('');
+  cli_flag_t                       mtm_client_flag        = NULL('');
+  cli_flag_t                       mbr_idntfn_list_flag   = NULL('');
+  cli_flag_t                       mbr_targeted_list_flag = NULL('');
+//cli_flag_t                       hpcm_mbr_list_flag     = NULL('');
+//string(int, maximum_length=4)    mbr_uniq               = NULL('');
+//cli_date_t                       clt_eff_dt             = NULL('');
+//cli_date_t                       clt_end_dt             = NULL('');
+//cli_string_t                     cmmt                   = NULL('');
+//string(int, maximum_length=20)   billing_category       = NULL('');
+//string(int, maximum_length=30)   billing_method         = NULL('');
+//string(int, maximum_length=10)   med_claim              = NULL('');
+//string(int, maximum_length=5)    performance_guarantee  = NULL('');
+//string(int, maximum_length=1)    prior_pbm_claim_flag   = NULL('');
+//string(int, maximum_length=1)    prospective_clt_flag   = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts              = NULL('');
+  cli_user_t                       update_by              = NULL('');
+end;
+type clt_cfg_vec_t = clt_cfg_t[int];
+
+type product_cfg_t =
+utf8 record
+  cli_pega_id_t                    cli_product_id;
+
+  string(int, maximum_length=50)   product_nm    = NULL('');
+  cli_program_type_cd_t            product_type_cd;
+//string(int, maximum_length=250)  product_descr = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts     = NULL('');
+  cli_user_t                       update_by     = NULL('');
+end;
+type product_cfg_vec_t = product_cfg_t[int];
+
+type program_cfg_t =
+utf8 record
+  cli_program_id_t                 program_id;
+
+  string(int, maximum_length=100)  program_nm             = NULL('');
+  cli_program_type_cd_t            program_type_cd;
+  cli_job_freq_t                   eval_job_freq          = NULL('');
+  cli_job_freq_t                   idntfn_job_freq        = NULL('');
+//string(int, maximum_length=250)  program_descr          = NULL('');
+//string(int, maximum_length=25)   program_exec_type      = NULL('');
+//string(int, maximum_length=15)   idntfn_performed_by    = NULL('');
+//string(int, maximum_length=15)   case_mgmt_performed_by = NULL('');
+//string(int, maximum_length=15)   targeting_selection    = NULL('');
+//string(int, maximum_length=15)   eval_selection         = NULL('');
+  cli_rules_config_id_t            idntfn_rules_config_id = NULL('');
+  cli_rules_config_id_t            eval_rules_config_id   = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts              = NULL('');
+  cli_user_t                       update_by              = NULL('');
+end;
+type program_cfg_vec_t = program_cfg_t[int];
+
+type rules_config_cfg_t =
+record
+  cli_rules_config_id_t            rules_config_id;
+
+  cli_config_type_cd_t             config_type_cd;
+  cli_program_type_cd_t            program_type_cd;
+  string(int, maximum_length=200)  config_nm       = NULL('');
+  string(int, maximum_length=400)  config_descr    = NULL('');
+  cli_app_config_nm_t              app_config_nm   = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts       = NULL('');
+  cli_user_t                       update_by       = NULL('');
+end;
+type rules_config_cfg_vec_t = rules_config_cfg_t[int];
+
+type member_flag_hist_cfg_t =
+record
+   cli_mbr_flg_hst_id_t             mbr_flg_hst_id;
+   cli_integer_id_t                 cli_src_env_id;     
+   cli_integer_id_t                 cli_carrier_id;
+   cli_integer_id_t                 cli_carrier_acct_id;
+   cli_integer_id_t                 cli_employer_group_id;
+   cli_integer_id_t                 cli_member_id;
+   cli_src_env_id_t                 src_env_id           = NULL('')   /* VARCHAR(4)   NOT NULL */;
+   cli_carrier_id_t                 carrier_id            /* VARCHAR(30)  NOT NULL */;
+   cli_carrier_acct_id_t            carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+   cli_employer_group_id_t          employer_group_id     /* VARCHAR(40)  NOT NULL */;
+   cli_mbr_id_t                     mbr_id;
+   cli_date_t                       rprt_dt;
+   cli_mbr_flg_hst_flg_typ_t        flg_typ;
+   cli_flag_t                       flg_vl;
+   cli_datetime_t                   flg_act_dt;       
+   cli_datetime_t                   flg_end_dt;          
+   cli_datetime_t                   create_ts;         
+   cli_user_t                       create_by;         
+   cli_datetime_t                   update_ts             = NULL('');         
+   cli_user_t                       update_by             = NULL(''); 
+end;
+/***************************************/
+/* Configuration Cross Reference types */
+/***************************************/
+
+type product_program_offering_cfg_t =
+utf8 record
+  cli_pega_id_t                    cli_product_id;
+  cli_program_id_t                 program_id;
+  cli_automation_type_t            automation_type=NULL;
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts = NULL('');
+  cli_user_t                       update_by = NULL('');
+end;
+type product_program_offering_cfg_vec_t = product_program_offering_cfg_t[int];
+
+type clt_product_subscrp_cfg_t =
+record
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cli_product_id;
+  cli_date_t                       eff_dt             = NULL('');
+  cli_date_t                       end_dt             = NULL('');
+  
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts = NULL('');
+  cli_user_t                       update_by = NULL('');
+end;
+type clt_product_subscrp_cfg_vec_t = clt_product_subscrp_cfg_t[int];
+
+type cag_filter_cfg_t =
+record
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cag_filter_id;
+
+  cli_carrier_id_t                 carrier_id_filter;
+  cli_carrier_acct_id_t            account_id_filter        = NULL('');
+  cli_employer_group_id_t          employer_group_id_filter = NULL('');
+
+  cli_boolean_t                    excl_flag;
+  cli_plan_cd_t                    plan_cd                  = NULL('');
+  cli_contract_nbr_t               contract_nbr             = NULL('');
+  cli_pbp_id_t                     pbp_id                   = NULL('');
+
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts                = NULL('');
+  cli_user_t                       update_by                = NULL('');
+end;
+type cag_filter_cfg_vec_t = cag_filter_cfg_t[int];
+
+/***********************************/
+/* NAS Sources Configuration types */
+/***********************************/
+
+type mbr_list_dtl_cfg_t =
+utf8 record
+  cli_integer_id_t                 cli_mbr_list_id;
+  cli_integer_id_t                 cli_mbr_list_dtl_id;
+  cli_integer_id_t                 cli_src_env_id;
+  cli_integer_id_t                 cli_carrier_id;
+  cli_integer_id_t                 cli_carrier_acct_id;
+  cli_integer_id_t                 cli_employer_group_id;
+  cli_src_env_id_t                 src_env_id            /* VARCHAR(4)   NOT NULL */;
+  cli_carrier_id_t                 carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                     mbr_id;
+  cli_first_nm_t                   first_nm           = NULL('') /* VARCHAR(25)           */;
+  cli_last_nm_t                    last_nm            = NULL('') /* VARCHAR(35)           */;
+  cli_date_t                       birth_dt           = NULL('') /* DATE                  */;
+  cli_addr_t                       addr1              = NULL('') /* VARCHAR(60)           */;
+  cli_addr_t                       addr2              = NULL('') /* VARCHAR(60)           */;
+  cli_city_nm_t                    city_nm            = NULL('') /* VARCHAR(30)           */;
+  cli_st_cd_t                      st_cd              = NULL('') /* VARCHAR(3)            */;
+  cli_zip_t                        zip                = NULL('') /* VARCHAR(5)            */;
+  cli_zip2_t                       zip2               = NULL('') /* VARCHAR(4)            */;
+  cli_decimal_t                    phone              = NULL('') /* BIGINT                */;
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;   
+  cli_datetime_t                   update_ts;
+  cli_user_t                       update_by; 
+end;
+type mbr_list_dtl_cfg_vec_t = mbr_list_dtl_cfg_t[int];
+
+type med_proc_cd_cfg_t =
+utf8 record
+  cli_integer_id_t                     cli_proc_cd_id             /* cli sk */;
+  cli_proc_cd_t                        cli_proc_cd                /* nk */;
+  cli_proc_desc_t                      cli_proc_desc              /*VARCHAR2(4000) NOT NULL*/;
+  cli_nf_total_rvn_t                   cli_nf_total_rvn           = NULL("") /*NUMBER(12,2)*/;
+  cli_fac_total_rvn_t                  cli_fac_total_rvn          = NULL("") /*NUMBER(12,2)*/;
+  cli_proc_sub_catg_desc_t             cli_proc_sub_catg_desc     = NULL("") /*VARCHAR2(600)*/;
+  cli_proc_catg_desc_t                 cli_proc_catg_desc         = NULL("") /*VARCHAR2(600)*/;
+  cli_datetime_t                       create_ts;
+  cli_user_t                           create_by;   
+  cli_datetime_t                       update_ts                  = NULL('');
+  cli_user_t                           update_by                  = NULL(''); 
+end;
+type med_proc_cd_cfg_vec_t = med_proc_cd_cfg_t[int];
+
+type med_proc_mod_cd_cfg_t =
+utf8 record
+  cli_integer_id_t                     cli_proc_mod_cd_id; /* sk */
+  cli_proc_mod_cd_t                    cli_proc_mod_cd;    /* nk */
+  cli_proc_mod_desc_t                  cli_proc_mod_desc   = NULL("") /*VARCHAR2(1020)*/;
+  cli_proc_mod_name_t                  cli_proc_mod_name   = NULL("") /*VARCHAR2(1020)*/;
+  cli_datetime_t                       create_ts;
+  cli_user_t                           create_by;   
+  cli_datetime_t                       update_ts           = NULL('');
+  cli_user_t                           update_by           = NULL('');
+end;
+type med_proc_mod_cd_cfg_vec_t = med_proc_mod_cd_cfg_t[int];
+
+type snomed_cd_cfg_t =
+utf8 record
+  cli_integer_id_t                      cli_snomed_cd_id; /* sk   */
+  cli_snomed_ct_t                       snomed_ct         /* nk  VARCHAR2(200) NOT NULL*/;
+  cli_snomed_ct_id_t                    snomed_ct_id      = NULL("") /*  nk    VARCHAR2(20)*/;
+  
+  cli_category_t                        category        /*VARCHAR2(200) NOT NULL*/;
+  cli_medication_t                      medication      /*VARCHAR2(200) NOT NULL*/;
+  
+  cli_date_t                            eff_dt;
+  cli_date_t                            end_dt           =NULL('');
+  string(int, maximum_length=75)        emtm_case_stage  =NULL('');
+  cli_stat_t                            status           =NULL('');
+  cli_datetime_t                       create_ts;
+  cli_user_t                           create_by;   
+  cli_datetime_t                       update_ts        = NULL('');
+  cli_user_t                           update_by        = NULL(''); 
+end;
+type snomed_cd_cfg_vec_t = snomed_cd_cfg_t[int];
+
+type transition_in_care_cfg_t =
+utf8 record
+  cli_integer_id_t                 cli_trns_in_care_id;    /* cli sk */
+  cli_integer_id_t                 cli_src_env_id;         /* nk */
+  cli_integer_id_t                 cli_carrier_id;        /* nk */
+  cli_integer_id_t                 cli_carrier_acct_id;   /* nk */
+  cli_integer_id_t                 cli_employer_group_id;    /* nk */
+  cli_integer_id_t                 cli_mbr_id;
+  cli_src_env_id_t                 src_env_id            /* VARCHAR(4)   NOT NULL */;
+  cli_carrier_id_t                 carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            acct_id               /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                     mbr_id;               /* nk */ 
+  cli_first_nm_t                   first_nm           = NULL('') /* VARCHAR(25)           */;
+  cli_last_nm_t                    last_nm            = NULL('') /* VARCHAR(35)           */;
+  cli_date_t                       birth_dt           = NULL('') /* DATE                  */;
+  cli_addr_t                       addr1              = NULL('') /* VARCHAR(60)           */;
+  cli_addr_t                       addr2              = NULL('') /* VARCHAR(60)           */;
+  cli_city_nm_t                    city_nm            = NULL('') /* VARCHAR(30)           */;
+  cli_st_cd_t                      st_cd              = NULL('') /* VARCHAR(3)            */;
+  cli_zip_t                        zip                = NULL('') /* VARCHAR(5)            */;
+  cli_zip2_t                       zip2               = NULL('') /* VARCHAR(4)            */;
+  cli_decimal_t                    phone              = NULL('') /* BIGINT                */;
+  cli_date_t                       toc_active_dt;     /* DATE                   nk */
+  cli_date_t                       toc_expire_dt;     /* DATE                  */
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;   
+  cli_datetime_t                   update_ts          = NULL('');
+  cli_user_t                       update_by          = NULL(''); 
+end;
+type transition_in_care_cfg_vec_t = transition_in_care_cfg_t[int];
+
+type clt_program_mbr_list_cfg_t =
+utf8 record
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cli_product_id;
+  cli_program_id_t                 program_id;
+  cli_integer_id_t                 cli_mbr_list_id;
+  cli_flag_t                       incl_excl_flag;
+  cli_date_t                       eff_dt =NULL('');
+  cli_date_t                       end_dt =NULL('');
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;
+  cli_datetime_t                   update_ts = NULL('');
+  cli_user_t                       update_by = NULL('');
+end;
+type clt_program_mbr_list_cfg_vec_t = clt_program_mbr_list_cfg_t[int];
+
+type clt_program_mbr_incl_excl_list_cfg_t =
+utf8 record
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cli_product_id;
+  cli_program_id_t                 program_id;
+  cli_src_env_id_t                 src_env_id            /* VARCHAR(4)   NOT NULL */;
+  cli_carrier_id_t                 carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                     mbr_id;
+  cli_flag_t                       incl_excl_flag;
+  cli_date_t                       eff_dt             = NULL('');
+  cli_date_t                       end_dt             = NULL('');
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;   
+  cli_datetime_t                   update_ts;
+  cli_user_t                       update_by; 
+end;
+type clt_program_mbr_incl_excl_list_cfg_vec_t = clt_program_mbr_incl_excl_list_cfg_t[int];
+
+
+type pc_uhg_pbm_cl_cpp_work_cfg_t=
+utf8 record
+string(int, maximum_length=32) pyid = NULL("") /*VARCHAR2(32)*/;
+string(int, maximum_length=32) pystatuswork = NULL("") /*VARCHAR2(32)*/;
+end;
+type pc_uhg_pbm_cl_cpp_work_cfg_vec_t = pc_uhg_pbm_cl_cpp_work_cfg_t[int];
+
+type pm_global_alias_cfg_t=
+utf8 record
+  string("\x01", maximum_length=400) name = NULL("") /*VARCHAR2(400)*/;
+  string("\x01", maximum_length=200) name_alias = NULL("") /*VARCHAR2(200)*/;
+  cli_decimal_t alias_type = NULL("") /*NUMBER(38)*/;
+  cli_datetime_t update_timestamp = NULL("") /*DATE*/;
+  cli_first_nm_t updated_by = NULL("") /*VARCHAR2(20)*/;
+  cli_datetime_t create_timestamp /*DATE NOT NULL*/;
+  cli_first_nm_t created_by /*VARCHAR2(20) NOT NULL*/;
+end;
+
+
+type job_t=
+utf8 record
+cli_date_t                           exec_dt = NULL("") /*@ DbColName:"EXEC_DT", DbDataType:"DATE" @*/ ;
+    cli_integer_id_t                 job_id;
+    cli_pega_id_t                    client_id;
+    cli_pega_id_t                    product_id;
+    cli_program_id_t                 program_id;
+end;
+
+type assessment_type_t=
+utf8 record
+ string("\x01", maximum_length=15)       assessment_type_id;
+ string("\x01", maximum_length=50)       assessment_type;
+ cli_datetime_t                          update_timestamp    = NULL("");
+ cli_first_nm_t                          updated_by          = NULL("");
+ cli_datetime_t                          create_timestamp;
+ cli_first_nm_t                          created_by;
+ 
+end;
+
+type educational_material_type_t=
+utf8 record
+  string("\x01", maximum_length=15)       educational_material_type_id /*VARCHAR2(15) NOT NULL*/;
+  string("\x01", maximum_length=50)       educational_material_type_desc /*VARCHAR2(50) NOT NULL*/;
+  cli_datetime_t                          update_timestamp    = NULL("");
+  cli_first_nm_t                          updated_by          = NULL("");
+  cli_datetime_t                          create_timestamp;
+  cli_first_nm_t                          created_by;
+end;
+
+type product_type_t=
+utf8 record
+  string("\x01", maximum_length=10)       product_type_cd /*@ DbColName:"PRODUCT_TYPE_CD", DbDataType:"VARCHAR2(10)", DbNullable:"NOT NULL" @*/ ;
+  string("\x01", maximum_length=200)      product_type_name = NULL("") /*@ DbColName:"PRODUCT_TYPE_NAME", DbDataType:"VARCHAR2(200)" @*/ ;
+  string("\x01", maximum_length=400)      product_type_descr = NULL("") /*@ DbColName:"PRODUCT_TYPE_DESCR", DbDataType:"VARCHAR2(400)" @*/ ;
+  cli_datetime_t                          update_timestamp    = NULL("");
+  cli_first_nm_t                          updated_by          = NULL("");
+  cli_datetime_t                          create_timestamp;
+  cli_first_nm_t                          created_by;
+end;

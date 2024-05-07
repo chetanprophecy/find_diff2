@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||gmrpdb.pfpcfile
+SOURCE_DB_PROJECT||||DB_ORXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\ngmrpdb        pfcontrol               \ngmrpdb        pfpcfile
+SOURCE_DBMS_TYPE||||mysql
+SQL||||SELECT A.contract, A.pbp, A.segment, A.pharmacynpi, A.priceid, A.brandfee30, A.genericfee30, A.vaccinefee, A.preferredstatusretail, A.retailpharmacy, A.mailpharmacy, A.specialitypharmacy, A.homeinfusionpharmacy, A.longtermcarepharmacy, A.preferredstatusmail, A.floorprice, A.brandfee60, A.genericfee60, A.brandfee90, A.genericfee90, A.pharmacyid, B.cmspostdate, B.planyear from gmrpdb.pfpcfile A JOIN  (select C.jobid as job_id, C.planyear, C.cmspostdate FROM gmrpdb.pfcontrol C JOIN ( SELECT max(jobid) as jbid,contract, cmspostdate, planyear FROM gmrpdb.pfcontrol where createdatetime>$[string_concat("'",(string(""))(datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME,"'")] and jobid<=900000 and MONTH(cmspostdate) NOT IN (9, 10, 11) and planyear=substr((DATE_FORMAT(DATE_ADD((STR_TO_DATE(cmspostdate,'%Y-%m-%d')), INTERVAL 13 DAY), '%Y-%m-%d')),1,4) group by contract, cmspostdate, planyear ) max_value where max_value.jbid= C.jobid  and max_value.cmspostdate=C.cmspostdate and max_value.planyear=C.planyear) B ON A.jobid = B.job_id
+DO_CLEAN||||1
+START_CHANGES_TIME:eme||||""
+SOURCE_LOGICAL_NAME||||gmrp
+START_CHANGES_TIME:sandbox||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS")) (date("YYYY-MM-DD"))(today() -1)]

@@ -1,0 +1,24 @@
+record 
+  unsigned integer(8) dxf_hk_part1=0;
+  unsigned integer(8) dxf_hk_part2=0;
+  unsigned integer(8) dxf_sk=0;
+  decimal("\x01",0)   tm_sk /*INTEGER NOT NULL*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved)   hr_nbr = NULL("") /*DECIMAL(2)*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved)   mm_nbr = NULL("") /*DECIMAL(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   hr_txt = NULL("") /*CHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   mm_txt = NULL("") /*CHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=7)   hh_mm_txt /*CHAR(7) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   am_pm_ind = NULL("") /*CHAR(2)*/;
+  decimal("\x01",0, maximum_length=5, sign_reserved)   min_nbr_in_day = NULL("") /*DECIMAL(4)*/;
+  decimal("\x01",0)   ids_src_envrt_id = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)   ids_src_envrt_nm = NULL("") /*VARCHAR(20)*/;
+  datetime("YYYYMMDDHH24MISS")  ids_create_dttm /*TIMESTAMP(6) NOT NULL*/;
+  string(unsigned integer(1), maximum_length=20)  ids_create_uid = NULL("") /*VARCHAR(20)*/;
+  little endian integer(8)  ids_create_run_id = NULL /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")  ids_updt_dttm /*TIMESTAMP(6) NOT NULL*/;
+  string(unsigned integer(1), maximum_length=20)  ids_updt_uid = NULL("") /*VARCHAR(20)*/;
+  little endian integer(8)  ids_updt_run_id = NULL /*BIGINT*/;
+  little endian integer(1)  ids_rec_stat_cd = NULL /*BYTEINT*/;
+  string(1)  newline =  "\n";
+end
+

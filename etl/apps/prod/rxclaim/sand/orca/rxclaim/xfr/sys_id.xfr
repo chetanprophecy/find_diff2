@@ -1,0 +1,166 @@
+/* This file is used in PDL via AB_DML_DEFS. */
+
+out :: name_to_sys_id(sys_name) =
+begin
+  out :: name_pbs_to_sys_id(sys_name, 1);  // Note that the second parameter MUST be an integer to be consistent with the switch statement in which it's used.
+end;
+
+
+out :: system_number_to_name(sys_id) =
+begin
+  out :: switch (sys_id)
+    case 2: 'Billing and Payment';
+    case 100: 'rxexpress';
+    case 105: 'eliza';
+    case 146: 'CIG';
+    case 147: 'CTR';
+    case 149: 'HUM';
+    case 150: 'NMH';
+    case 148: 'PRD';
+    case 178: 'rxuprdfil';
+    case 200: 'RXTrack_DM';
+    case 201: 'RXTrack_AM';
+    case 202: 'RXTrack_Combo';
+    case 310: 'MCAD';
+    case 500: 'A6_NMH';
+    case 510: 'A5_CTR';
+    case 520: 'A2_NVM';
+    case 530: 'A2_INM';
+    case 540: 'A2_BWC';
+    case 550: 'A2_GAM';
+    case 555: 'A2_VAH';   //As part of Kaiser Implementation, added new entry to fix Bug in AM Payments to populate rxt_src_envrt_nm field
+    case 560: 'A6_CIG';
+    case 570: 'A6_HUM';
+    case 580: 'CCTA_PRD';
+    case 590: 'A6_CGC';
+    case 610: 'clinmgmt';
+    case 620: 'KSR'; //New entry added for Kaiser
+    case 630 : 'M21';
+    case 640 : 'AZM';
+    case 111 : 'SDM';
+    default:  'UNK';
+  end;
+end;
+
+
+decimal("")
+out :: name_to_sys_id_local(sys_name, ai_rel_loc) =
+begin
+  out :1: if ( sys_name == "meta" )
+    name_to_sys_id_local(ai_rel_loc, sys_name);  // For local "systems", use the name of the target
+  out :: name_to_sys_id(sys_name);
+end;
+
+
+out :: name_pbs_to_sys_id(sys_name, pbs_id) =
+begin
+  out :: switch ( sys_name )
+    case "cbs":                   2;    // Billing and Payment Source Files
+    case "rxexpress":           100;    // Flat File Rxtrack AM
+    case "rxtrack_dm":          200;    // RxTRACK NextGen Data Mart
+    case "rxtrack_am":          201;    // RxTRACK NextGen Atomic Data Model
+    case "rxtrack_combo":       202;    // New RXTRACK_COMBO database on TF24
+    case "rxtcombo":            202;    // New RXTRACK_COMBO database on TF24
+    case "mbrsrvcs_cms":        402;    // Avaya
+    case "mbrsrvcs_ivr":        403;    // Nuance
+    case "clmprdext_a6_nmh":      500;    // Framework 4 iseries source
+    case "clmprdfil_a6_nmh":      500;    // Framework 4 iseries source
+    case "clmprdobj_a6_nmh":      500;    // Framework 4 iseries source
+    case "rxaprdfil_a6_nmh":      500;    // Framework 4 iseries source
+    case "rxkprdfil_a6_nmh":      500;    // Framework 4 iseries source
+    case "rxuprdfil_a6_nmh":      500;    // Framework 4 iseries source
+    case "comprdfil_a6_nmh":      500;
+    case "clmctrext":     510;    // Framework 4 iseries source
+    case "clmctrfil":     510;    // Framework 4 iseries source
+    case "clmctrobj":     510;    // Framework 4 iseries source
+    case "rxactrfil":     510;    // Framework 4 iseries source
+    case "rxkctrfil":     510;    // Framework 4 iseries source
+    case "rxuctrfil":     510;    // Framework 4 iseries source
+    case "comctrfil":     510;
+    case "clmnvmext":     520;    // Framework 4 iseries source
+    case "clmnvmfil":     520;    // Framework 4 iseries source
+    case "clmnvmobj":     520;    // Framework 4 iseries source
+    case "rxanvmfil":     520;    // Framework 4 iseries source
+    case "rxknvmfil":     520;    // Framework 4 iseries source
+    case "rxunvmfil":     520;    // Framework 4 iseries source
+    case "comnvmfil":     520;
+    case "clminmext":     530;    // Framework 4 iseries source
+    case "clminmfil":     530;    // Framework 4 iseries source
+    case "clminmobj":     530;    // Framework 4 iseries source
+    case "rxainmfil":     530;    // Framework 4 iseries source
+    case "rxkinmfil":     530;    // Framework 4 iseries source
+    case "rxuinmfil":     530;    // Framework 4 iseries source
+    case "cominmfil":     530;
+    case "clmbwcext":     540;    // Framework 4 iseries source
+    case "clmbwcfil":     540;    // Framework 4 iseries source
+    case "clmbwcobj":     540;    // Framework 4 iseries source
+    case "rxabwcfil":     540;    // Framework 4 iseries source
+    case "rxkbwcfil":     540;    // Framework 4 iseries source
+    case "rxubwcfil":     540;    // Framework 4 iseries source
+    case "combwcfil":     540;
+    case "clmgamext":     550;    // Framework 4 iseries source
+    case "clmgamfil":     550;    // Framework 4 iseries source
+    case "clmgamobj":     550;    // Framework 4 iseries source
+    case "rxagamfil":     550;    // Framework 4 iseries source
+    case "rxkgamfil":     550;    // Framework 4 iseries source
+    case "rxugamfil":     550;    // Framework 4 iseries source
+    case "comgamfil":     550;
+    case "clmvahfil":     555;    // Framework 4 iseries source
+    case "clmvahext":     555;    // Framework 4 iseries source included in Kaiser Release for VAH
+    case "clmvahobj":     555;    // Framework 4 iseries source included in Kaiser release for VAH
+    case "comvahfil":     555;
+    case "clmcigext":     560;    // Framework 4 iseries source
+    case "clmcigfil":     560;    // Framework 4 iseries source
+    case "clmcigobj":     560;    // Framework 4 iseries source
+    case "rxacigfil":     560;    // Framework 4 iseries source
+    case "rxkcigfil":     560;    // Framework 4 iseries source
+    case "rxucigfil":     560;    // Framework 4 iseries source
+    case "comcigfil":     560;
+    case "clmhumext":     570;    // Framework 4 iseries source
+    case "clmhumfil":     570;    // Framework 4 iseries source
+    case "clmhumobj":     570;    // Framework 4 iseries source
+    case "rxahumfil":     570;    // Framework 4 iseries source
+    case "rxkhumfil":     570;    // Framework 4 iseries source
+    case "rxuhumfil":     570;    // Framework 4 iseries source
+    case "comhumfil":     570;
+    case "clmprdext":     580;    // Framework 4 iseries source
+    case "clmprdfil":     580;    // Framework 4 iseries source
+    case "clmprdobj":     580;    // Framework 4 iseries source
+    case "rxaprdfil":     580;    // Framework 4 iseries source
+    case "rxkprdfil":     580;    // Framework 4 iseries source
+    case "rxuprdfil":     580;    // Framework 4 iseries source
+    case "comprdfil":     580;
+    case "clmcgcext":     590;    // Framework 4 iseries source
+    case "clmcgcfil":     590;    // Framework 4 iseries source
+    case "clmcgcobj":     590;    // Framework 4 iseries source
+    case "rxacgcfil":     590;    // Framework 4 iseries source
+    case "rxkcgcfil":     590;    // Framework 4 iseries source
+    case "rxucgcfil":     590;    // Framework 4 iseries source
+    case "comcgcfil":     590;
+    case "clmppcfil":     600;    // Framework 4 iseries source
+    case "clinmgmt":      610;    // specialty source from csv file
+    case "clmksrext":     620;    // Framework 4 iseries source for Kaiser for KSR
+    case "clmksrfil":     620;    // Framework 4 iseries source for Kaiser for KSR
+    case "clmksrobj":     620;    // Framework 4 iseries source for Kaiser for KSR
+    case "rxaksrfil":     620;    // Framework 4 iseries source for Kaiser for KSR
+    case "rxkksrfil":     620;    // Framework 4 iseries source for Kaiser for KSR
+    case "rxuksrfil":     620;    // Framework 4 iseries source for Kaisers for KSR
+    case "comksrfil":     620;
+    case "clmm21ext":     630;    // Framework 4 iseries source for Kaiser for M21
+    case "clmm21fil":     630;    // Framework 4 iseries source for Kaiser for M21
+    case "clmm21obj":     630;    // Framework 4 iseries source for Kaiser for M21
+    case "comm21fil":     630;
+    case "clmazmext":     640;    // Framework 4 iseries source for Kaiser for AZM
+    case "clmazmfil":     640;    // Framework 4 iseries source for Kaiser for AZM
+    case "clmazmobj":     640;    // Framework 4 iseries source for Kaiser for AZM
+    case "rxuazmfil":     640;    // Framework 4 iseries source for Kaisers for AZM
+    case "comazmfil":     640;
+    
+    case "clmsdmext":     001;
+    case "clmsdmfil":     001;
+    case "clmsdmobj":     001;
+    case "rxusdmfil":     001;
+    case "comsdmfil":     001;
+    default: force_error("Unknown System Name: " + sys_name);
+  end;
+end;

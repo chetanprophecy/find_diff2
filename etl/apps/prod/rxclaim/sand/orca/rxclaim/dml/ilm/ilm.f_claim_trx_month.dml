@@ -1,0 +1,144 @@
+type logical_ids_rxclaim_f_claim_trx_month_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) cag_sk = NULL("");
+  decimal("\x01",0) mbr_sk = NULL("");
+  decimal("\x01",0) injectable_ind_sk = NULL("");
+  decimal("\x01",0) clt_formulary_sk = NULL("");
+  decimal("\x01",0) risk_pool_sk = NULL("");
+  decimal("\x01",0) prior_auth_sk = NULL("");
+  decimal("\x01",0) rxsol_formulary_sk = NULL("");
+  decimal("\x01",0) dmr_ind_sk = NULL("");
+  decimal("\x01",0) custom_client_ind_sk = NULL("");
+  decimal("\x01",0) claim_origination_code_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clt_formulary_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_formulary_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_origin_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ntpn_ind = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) reported_gap_discount_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) dmr_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) custom_client_ind = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01",0) tier_level = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) client_cost_tier_amt = NULL("");
+  decimal("\x01",0) carrier_sk = NULL("");
+  decimal("\x01",0) claim_nbr_encrp = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_id_encrp = NULL("");
+  decimal("\x01",0) sec_flg = NULL("");
+end;
+
+
+type opt_nk_ids_rxclaim_l_claim_origin_code_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'clm orgn cd: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) clam_origin_cd = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_claim_origin_code_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) clam_origin_cd = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_custom_client_indicator_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'cst clnt ind: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) custom_client_ind = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_custom_client_indicator_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) custom_client_ind = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_dmr_indicator_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'dmrind: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) dmr_ind = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_dmr_indicator_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) dmr_ind = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_formulary_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'frmlry: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) formulary_id = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_formulary_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) formulary_id = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_injectable_indicator_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'injct ind: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind = NULL /*CHAR(1) NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_injectable_indicator_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind /*CHAR(1) NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_l_prior_auth_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'prior auth: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_id = NULL("") /*CHAR(1) NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_prior_auth_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_id = NULL("") /*CHAR(1) NOT NULL*/;
+end;
+
+type opt_nk_ids_rxclaim_l_risk_pool_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'risk pool: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_id = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_risk_pool_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_id = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_rxsol_formulary_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'rxsol frmlry: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_formulary_id = NULL /*CHAR(1) NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_rxsol_formulary_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_formulary_id /*CHAR(1) NOT NULL*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_f_claim_trx_month_t f_clm_trx_mn  /*@ BizName:'f clm trx mn' */;
+  opt_nk_ids_rxclaim_l_claim_origin_code_t clm_orgn_cd  /*@ BizName:'clm orgn cd' */;
+  opt_nk_ids_rxclaim_l_custom_client_indicator_t cst_clnt_ind  /*@ BizName:'cst clnt ind' */;
+  opt_nk_ids_rxclaim_l_dmr_indicator_t dmrind  /*@ BizName:'dmrind' */;
+  opt_nk_ids_rxclaim_l_formulary_t frmlry  /*@ BizName:'frmlry' */;
+  opt_nk_ids_rxclaim_l_injectable_indicator_t injct_ind  /*@ BizName:'injct ind' */;
+  opt_nk_ids_rxclaim_l_prior_auth_t prior_auth  /*@ BizName:'prior auth' */;
+  opt_nk_ids_rxclaim_l_risk_pool_t risk_pool  /*@ BizName:'risk pool' */;
+  opt_nk_ids_rxclaim_l_rxsol_formulary_t rxsol_frmlry  /*@ BizName:'rxsol frmlry' */;
+end;

@@ -1,0 +1,25 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+out.mdk_exclusion_reason_code :: if(is_null(in.mkcehn)) "NULL" else in.mkcehn;
+out.mdk_exclusion_reason_desc :: if(is_null(in.mkbyir)) "NULL" else in.mkbyir;
+out.add_user_name :: if(is_null(in.mkakvn)) "NULL" else in.mkakvn;
+out.add_date :: if(string_substring((string(""))(decimal(""))in.mkc2dt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mkc2dt) else (date("YYYYMMDD")) '99991231';
+out.add_time :: if(first_defined(in.mkadtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.mkadtm)==4)'00' else if(string_length((string(""))(decimal(""))in.mkadtm)==5)'0' else '',(string(""))(decimal("")) in.mkadtm);
+out.add_program_name :: if(is_null(in.mkalvn)) "NULL" else in.mkalvn;
+out.chg_user_name :: if(is_null(in.mkadvn)) "NULL" else in.mkadvn;
+out.chg_date :: if(string_substring((string(""))(decimal(""))in.mkbmdt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.mkbmdt) else (date("YYYYMMDD")) '99991231';
+out.chg_time :: if(first_defined(in.mkabtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.mkabtm)==4)'00' else if(string_length((string(""))(decimal(""))in.mkabtm)==5)'0' else '',(string(""))(decimal("")) in.mkabtm);
+out.chg_program_name :: if(is_null(in.mkaevn)) "NULL" else in.mkaevn;
+/*out.rxtrack_add_user_name :: in.Job Name;
+out.rxtrack_add_date :: in.CurrentDate();
+out.rxtrack_add_time :: in.CurrentTime();
+out.rxtrack_add_program_name :: in.Job Name; */
+out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+out.rxt_create_uid :: 'app_orca_rxclaim';
+out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+out.rxt_rec_stat_cd :: '';
+out.* :: in.*;
+end;

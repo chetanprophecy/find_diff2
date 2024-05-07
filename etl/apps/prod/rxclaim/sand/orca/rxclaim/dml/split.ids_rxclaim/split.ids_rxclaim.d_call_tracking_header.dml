@@ -1,0 +1,108 @@
+/* Do Not Edit.  This file is generated automatically by combining
+ * "$PUB_DXF_DML/split_header.type2.dml", "$AI_DML/dxf_header.dml", any "$ADDITIONAL_FIELDS_DML",
+ * and "/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.d_call_tracking_header.dml".
+ * Changing the target DML and re-running "$AI_PSET/setup.ilm/setup.ilm.ctrx_d_call_tracking_header.pset" will update this file.
+ */
+
+type opt_nk_ids_common_d_date_t =
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type opt_nk_ids_common_d_member_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+type opt_nk_ids_common_d_cag_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_pharmacy_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL("") /*VARCHAR(12) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_carrier_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type split_ids_rxclaim_d_call_tracking_header_t =
+record
+  decimal(1) is_equal = 0;
+  decimal(1) drop_record = 0;
+  datetime("YYYY-MM-DD HH24:MI:SS") matching__eff_dt = NULL("");
+  little endian integer(8)  dxf_src_dataset_id =  0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8)  dxf_src_rec_cnt =  0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2)  dxf_src_sys_id =  0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1))  dxf_src_file_name =  ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  unsigned integer(8)    dxf_hk_part1 =    0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)    dxf_hk_part2 =    0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)    dxf_sk =    0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)     call_track_hdr_sk = NULL("") /*BIGINT NOT NULL*/;
+  date("YYYYMMDD")("\x01")     clh_create_dt = NULL("") /*DATE NOT NULL*/;
+  decimal("\x01",0)     clh_create_dt_sk = NULL("") /*BIGINT NOT NULL*/;
+  datetime("HH24:MI:SS.NNNNNN")("\x01")     clh_create_tm = NULL("") /*TIME(6) NOT NULL*/;
+  decimal("\x01",0)     clh_job_nbr = NULL("") /*INTEGER NOT NULL*/;
+  decimal("\x01",0)     mbr_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     cag_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     phr_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     carrier_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=18)     mbr_id = NULL("") /*VARCHAR(18)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=9)     carrier_id = NULL("") /*VARCHAR(9)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=15)     account_id = NULL("") /*VARCHAR(15)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=15)     employer_group_id = NULL("") /*VARCHAR(15)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=12)     phr_id = NULL("") /*VARCHAR(12)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)     ctht_call_type = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11)     prior_auth_nbr = NULL("") /*VARCHAR(11)*/;
+  decimal("\x01",0)     claim_nbr = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)     aff_affil_id = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)     inm_incident_id = NULL("") /*VARCHAR(25)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)     clh_stat_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)     clh_src_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)     clh_lvl_ind = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01")     clh_inquiry_recv_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     clh_inquiry_recv_dt_sk = NULL("") /*BIGINT NOT NULL*/;
+  date("YYYYMMDD")("\x01")     clh_info_req_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     clh_info_req_dt_sk = NULL("") /*BIGINT NOT NULL*/;
+  date("YYYYMMDD")("\x01")     clh_info_recv_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     clh_info_recv_dt_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)     clh_inc_regstrtn_orig = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)     clh_phr_nm = NULL("") /*VARCHAR(25)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)     clh_phr_contact = NULL("") /*VARCHAR(25)*/;
+  decimal("\x01",0)     clh_phr_phone = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)     clh_adjustor_nm = NULL("") /*VARCHAR(25)*/;
+  decimal("\x01",0)     clh_adjustor_phone = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)     clh_assigned_nm = NULL("") /*VARCHAR(3)*/;
+  decimal("\x01",0)     clh_call_priorty = NULL("") /*INTEGER*/;
+  date("YYYYMMDD")("\x01")     clh_nxt_call_dt = NULL("") /*DATE*/;
+  decimal("\x01",0)     clh_nxt_call_dt_sk = NULL("") /*BIGINT NOT NULL*/;
+  datetime("HH24:MI:SS.NNNNNN")("\x01")     clh_nxt_call_tm = NULL("") /*TIME(6)*/;
+  decimal("\x01",0)     claim_nbr_encrp = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=65)     mbr_id_encrp = NULL("") /*VARCHAR(65)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11)     prior_auth_nbr_encrp = NULL("") /*VARCHAR(11)*/;
+  decimal("\x01",0)     src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     sec_flg = NULL("") /*SMALLINT*/;
+end;
+
+metadata type =
+record
+  split_ids_rxclaim_d_call_tracking_header_t cl_trk_hdr;
+  opt_nk_ids_common_d_date_t clh_crt_dt;
+  opt_nk_ids_common_d_member_t d_mbr;
+  opt_nk_ids_common_d_cag_t d_cag;
+  opt_nk_ids_common_d_pharmacy_t pharmacy;
+  opt_nk_ids_common_d_carrier_t d_carrier;
+  opt_nk_ids_common_d_date_t clh_inq_dt;
+  opt_nk_ids_common_d_date_t clh_req_dt;
+  opt_nk_ids_common_d_date_t clh_recv_dt;
+  opt_nk_ids_common_d_date_t clh_nxt_dt;
+  string(1)   newline = "\n";
+end;

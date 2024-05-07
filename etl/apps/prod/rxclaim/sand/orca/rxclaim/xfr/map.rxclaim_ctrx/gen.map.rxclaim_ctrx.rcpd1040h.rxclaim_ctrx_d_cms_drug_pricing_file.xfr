@@ -1,0 +1,97 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59cc99cb_7642_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cms_drg_pr.pricing_file_mail_flg,[transform],in0.pfrecord]
+  [out0.cms_drg_pr.days_of_supply,[transform],in0.pfrecord]
+  [out0.cms_drg_pr.prod_directory_dt,[transform],in0.cmspstdte]
+  [out0.ndc.prod_id_qlfr_cd,[transform],]
+  [out0.cms_drg_pr.ceiling_cost_flg,[transform],in0.pfrecord]
+  [out0.prd_dir_dt.cal_day_dt,[transform],in0.cmspstdte]
+  [out0.cms_drg_pr.cms_contract_id,[transform],in0.pfrecord]
+  [out0.cms_drg_pr.unit_cost,[transform],in0.pfrecord]
+  [out0.cms_drg_pr.cms_proxy_ndc_id,[transform],in0.pfrecord]
+  [out0.ndc.prod_id,[passthrough],in0.ndcid]
+  [out0.cms_drg_pr.price_id,[transform],in0.pfrecord]
+  [out0.cms_drg_pr.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cms_drg_pr.drop_record,[transform],in0.cmspstdte]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cms_drg_pr.pricing_file_mail_flg,'cms_drg_pr.pricing_file_mail_flg',1,0]
+     [out0.cms_drg_pr.days_of_supply,'cms_drg_pr.days_of_supply',1,0]
+     [out0.cms_drg_pr.prod_directory_dt,'cms_drg_pr.prod_directory_dt',3,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ndc.prod_id_qlfr_cd,'ndc.prod_id_qlfr_cd',1,0]
+     [out0.cms_drg_pr.ceiling_cost_flg,'cms_drg_pr.ceiling_cost_flg',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.prd_dir_dt.cal_day_dt,'prd_dir_dt.cal_day_dt',1,1]
+     [out0.cms_drg_pr.cms_contract_id,'cms_drg_pr.cms_contract_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cms_drg_pr.unit_cost,'cms_drg_pr.unit_cost',1,0]
+     [out0.cms_drg_pr.cms_proxy_ndc_id,'cms_drg_pr.cms_proxy_ndc_id',1,0]
+     [out0.ndc.prod_id,'ndc.prod_id',1,0]
+     [out0.cms_drg_pr.price_id,'cms_drg_pr.price_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cms_drg_pr.src_env_sk,'cms_drg_pr.src_env_sk',1,0]
+     [out0.cms_drg_pr.drop_record,'cms_drg_pr.drop_record',1,1]
+  ]
+  impacts:
+  [
+     [in0.pfrecord,'pfrecord',8,7]
+     [in0.cmspstdte,'cmspstdte',2,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ndcid,'ndcid',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal(1) cms_drg_pr_drop_record;
+let string("\x01",charset="iso-8859-15", maximum_length=5) cms_drg_pr_cms_contract_id = fail_if_error(string_substring(in0.pfrecord,1,5));
+let string("\x01",charset="iso-8859-15", maximum_length=3) cms_drg_pr_price_id = fail_if_error(string_substring(in0.pfrecord,6,3));
+let string("\x01",charset="iso-8859-15", maximum_length=11) cms_drg_pr_cms_proxy_ndc_id = fail_if_error(string_substring(in0.pfrecord,9,11));
+let decimal("\x01",0) cms_drg_pr_days_of_supply = fail_if_error(string_substring(in0.pfrecord,20,2));
+let string("\x01",charset="iso-8859-15", maximum_length=1) cms_drg_pr_pricing_file_mail_flg = fail_if_error(string_substring(in0.pfrecord,22,1));
+let decimal("\x01".4, maximum_length=17, sign_reserved) cms_drg_pr_unit_cost = fail_if_error((decimal("\x01"))string_substring(in0.pfrecord,23,8)+((decimal("\x01"))string_substring(in0.pfrecord,31,4)/10000));
+let string("\x01",charset="iso-8859-15", maximum_length=1) cms_drg_pr_ceiling_cost_flg = fail_if_error(string_substring(in0.pfrecord,35,1));
+let date("YYYYMMDD")("\x01") cms_drg_pr_prod_directory_dt = fail_if_error(if(is_valid((date("YYYYMMDD"))(string(""))(decimal(""))in0.cmspstdte))(date("YYYYMMDD"))(string(""))(decimal(""))in0.cmspstdte else '19000101');
+let decimal("\x01",0) cms_drg_pr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ndc_prod_id = fail_if_error(in0.ndcid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ndc_prod_id_qlfr_cd = "03";
+let date("YYYYMMDD")("\x01") prd_dir_dt_cal_day_dt;
+
+
+
+/*   Default value   */
+prd_dir_dt_cal_day_dt=fail_if_error(cms_drg_pr_prod_directory_dt);
+
+/*   Default value   */
+cms_drg_pr_drop_record=fail_if_error(if(lookup_match("cal_sub",cms_drg_pr_prod_directory_dt))0 else 2);
+
+  out0.cms_drg_pr.drop_record::cms_drg_pr_drop_record;
+  out0.cms_drg_pr.cms_contract_id::cms_drg_pr_cms_contract_id;
+  out0.cms_drg_pr.price_id::cms_drg_pr_price_id;
+  out0.cms_drg_pr.cms_proxy_ndc_id::cms_drg_pr_cms_proxy_ndc_id;
+  out0.cms_drg_pr.days_of_supply::cms_drg_pr_days_of_supply;
+  out0.cms_drg_pr.pricing_file_mail_flg::cms_drg_pr_pricing_file_mail_flg;
+  out0.cms_drg_pr.unit_cost::cms_drg_pr_unit_cost;
+  out0.cms_drg_pr.ceiling_cost_flg::cms_drg_pr_ceiling_cost_flg;
+  out0.cms_drg_pr.prod_directory_dt::cms_drg_pr_prod_directory_dt;
+  out0.cms_drg_pr.src_env_sk::cms_drg_pr_src_env_sk;
+  out0.ndc.prod_id::ndc_prod_id;
+  out0.ndc.prod_id_qlfr_cd::ndc_prod_id_qlfr_cd;
+  out0.prd_dir_dt.cal_day_dt::prd_dir_dt_cal_day_dt;
+  out0.*::in0.*;
+
+end;

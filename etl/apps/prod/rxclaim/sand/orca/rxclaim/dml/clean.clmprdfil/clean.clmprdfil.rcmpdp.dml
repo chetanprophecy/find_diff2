@@ -1,0 +1,50 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=18)  a4abcd /*CHAR(18) NOT NULL */ /*@
+BizName:"RCMPDP: MBR Member ID"
+ BizComment:"Identification assigned to the member."
+@*/;
+  string(unsigned integer(1),maximum_length=9)  a4aacd /*CHAR(9) NOT NULL */ /*@
+BizName:"RCMPDP: CAR Carrier ID"
+ BizComment:"Type the nine character identifier of the owner of the accounts, groups, and members."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  a4accd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMPDP: ACC Account ID"
+ BizComment:"Type the unique identifier that is associated with this account throughout the RxCLAIM system.  15 alpha-numeric characters. :P. When *ALL is used during dynamic eligibility, the account will be identified by referencing the group specified in the group field to find the first corresponding Account."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  a4adcd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMPDP: GRP Group ID"
+ BizComment:"Type the unique identifier that is associated with the group throughout the RxClaim system.  15 alpha-numeric characters."
+@*/;
+  string(unsigned integer(1),maximum_length=11)  a4mmcd /*CHAR(11) NOT NULL */ /*@
+BizName:"RCMPDP: MPA Prior Auth Number"
+ BizComment:"Prior authorization request number."
+@*/;
+  little endian integer(2)  a4can2 /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCMPDP: MPD Seq Nbr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  a4uut2 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMPDP: MPD Audit Detail"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  a4advn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMPDP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  a4bmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMPDP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  a4abtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMPDP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  a4aevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMPDP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

@@ -1,0 +1,17 @@
+include "~$PUB_DXF_XFR/common_functions.xfr";
+
+out :: reformat(in) =
+begin
+
+   let hash_key_combine_type dxf_hk = reinterpret(get_hash(in, '{cag_sk; prod_sk}'));
+   out.dxf_hk_part1 :: dxf_hk.dxf_hk_part1;
+   out.dxf_hk_part2 :: dxf_hk.dxf_hk_part2;
+   out.* :: in.*;
+  out.ids_create_run_id :: in.run_id;
+  out.ids_create_uid :: in.insert_uid;
+  out.ids_create_dttm :: in.insert_ts;
+  out.ids_updt_dttm :: in.update_ts;
+  out.ids_updt_uid :: in.update_uid;
+  out.ids_rec_stat_cd :: in.rec_stat_cd;
+  out.dxf_sk :: in.prod_cag_sk;
+end;

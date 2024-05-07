@@ -1,0 +1,59 @@
+/* Do Not Edit.  This file is generated automatically by combining
+ * "$PUB_DXF_DML/split_header.type2.dml", "$AI_DML/dxf_header.dml", any "$ADDITIONAL_FIELDS_DML",
+ * and "/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.f_lics_annual_mbrship_detail.dml".
+ * Changing the target DML and re-running "$AI_PSET/setup.ilm/setup.ilm.f_lics_annual_mbrship_detail.pset" will update this file.
+ */
+
+type opt_nk_ids_common_d_cag_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_member_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+type split_ids_rxclaim_f_lics_annual_mbrship_detail_t =
+record
+  decimal(1) is_equal = 0;
+  decimal(1) drop_record = 0;
+  datetime("YYYY-MM-DD HH24:MI:SS") matching__eff_dt = NULL("");
+  little endian integer(8)  dxf_src_dataset_id =  0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8)  dxf_src_rec_cnt =  0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2)  dxf_src_sys_id =  0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1))  dxf_src_file_name =  ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  unsigned integer(8)    dxf_hk_part1 =    0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)    dxf_hk_part2 =    0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)    dxf_sk =    0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)     cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     mbr_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)     client_nm = NULL("") /*VARCHAR(25)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)     account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     mbr_id = NULL("") /*VARCHAR(20)*/;
+  date("YYYYMMDD")("\x01")     perd_start_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")     perd_end_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     rec_id = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0)     seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     hicn = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     mbi = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01".2, maximum_length=17, sign_reserved)     tot_actual_lics_subsidy_amt = NULL("") /*DECIMAL(15,2)*/;
+  decimal("\x01".2, maximum_length=17, sign_reserved)     curr_reinsurance_subsidy_adj_amt = NULL("") /*DECIMAL(15,2)*/;
+  decimal("\x01".2, maximum_length=17, sign_reserved)     tot_pay = NULL("") /*DECIMAL(15,2)*/;
+  decimal("\x01",0)     src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+metadata type =
+record
+  split_ids_rxclaim_f_lics_annual_mbrship_detail_t lics_amd;
+  opt_nk_ids_common_d_cag_t d_cag;
+  opt_nk_ids_common_d_member_t d_mbr;
+  string(1)   newline = "\n";
+end;

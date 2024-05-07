@@ -1,0 +1,792 @@
+<AppConfTempl name="Intermediate Logical Model (Integration)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[
+include "/~$PUB_DB_XFR/db_list.xfr";
+include "/~$PUB_DXF_XFR/manual_dml.xfr";
+
+//
+// Conversion Types and Functions:
+//
+
+type ilm_table_info_t =
+record
+  string(int) table_name;
+  string(int) subrecord_biz_name;
+  string(int) source_records = "logical";
+  string(int) target_fields = "logical";
+  string(int) foreign_sk_list = "";
+  string(int) subrecord_name = "";
+  string(int) record_type = "logical";
+  string(int)[int] foreign_sk_vec = [vector];
+end;
+
+type fsk_table_info_t =
+record
+  string(int) foreign_sk_name;
+  string(int) referenced_table_name;
+end;
+
+type fsk_subrecord_info_t =
+record
+  string(int) qualified_fsk_name;
+  string(int) subrecord_biz_name;
+end;
+
+
+/* Converts the ILM Table Grid into a vector of records.
+In the process, it enriches the records with derived information. */
+out :: get_ilm_table_info_vec(ilm_table_grid) =
+begin
+  out :: for ( let ilm_table_info_t t in ilm_table_grid )
+    begin
+      t.subrecord_name = re_replace(re_replace(
+        string_downcase(t.subrecord_biz_name),
+        "[^a-z0-9]+", "_"),
+        "^member$", "_member_");
+      t.record_type = string_replace(t.source_records, "logical", t.target_fields);
+      t.foreign_sk_vec = string_split_no_empty(t.foreign_sk_list, ",");
+    end
+    : t;
+end;
+
+
+/* Converts the Foreign SK Table Grid into a vector of records. */
+out :: get_fsk_table_info_vec(fsk_table_grid) =
+begin
+  out :: for ( let fsk_table_info_t t in fsk_table_grid ) :
+    t;
+end;
+
+
+/* Converts the Foreign SK Table Grid into a vector of records. */
+out :: get_fsk_subrecord_info_vec(fsk_subrecord_grid) =
+begin
+  out :: for ( let fsk_subrecord_info_t t in fsk_subrecord_grid ) :
+    t;
+end;
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "ilm.") )
+    "\n" +
+    "This application configuration must be named: ilm.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != "." )
+    "\n" +
+    "This application configuration must be named: ilm.<i>ilm_name</i>,\n" +
+    "where <i>ilm_name</i> must not contain a period (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+
+/* Checks the given ILM Table Grid and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_ilm_tables(ilm_table_grid) =
+begin
+  let table_info_vec = get_ilm_table_info_vec(ilm_table_grid);
+  let no_subrecord_biz_name_vec = for ( let t in table_info_vec ) :
+    if ( t.subrecord_biz_name == "" )
+      t.table_name;
+  let start_with_a_letter_vec = for ( let t in table_info_vec ) :
+    if ( re_index(t.subrecord_biz_name, "^[^A-Za-z]") )
+      t.table_name;
+  let duplicate_subrecord_name_vec = for ( let t in table_info_vec ) :
+    if ( length_of(vector_select(table_info_vec, t, {subrecord_name})) != 1 )
+      t.table_name;
+  let too_long_subrecord_biz_name_vec = for ( let t in table_info_vec ) :
+    if ( string_length(t.subrecord_biz_name) > 12 )
+      t.table_name;
+
+  out :1: if ( length_of(no_subrecord_biz_name_vec) > 0 )
+    "Please provide a Subrecord Name for:\n" +
+    string_join(no_subrecord_biz_name_vec, ",\n");
+  out :2: if ( length_of(no_subrecord_biz_name_vec) > 0 )
+    "Please start the Subrecord Name with a letter for:\n" +
+    string_join(start_with_a_letter_vec, ",\n");
+  out :3: if ( length_of(duplicate_subrecord_name_vec) > 0 )
+    "Please provide a unique Subrecord Name for:\n" +
+    string_join(duplicate_subrecord_name_vec, ",\n");
+  out :4: if ( length_of(too_long_subrecord_biz_name_vec) > 0 )
+    "Please use 12 or fewer characters for the Subrecord Name for:\n" +
+    string_join(too_long_subrecord_biz_name_vec, ",\n");
+  out :: "";
+end;
+
+
+/* Checks the given Foreign Surrogate Key Table Grid and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_fsk_tables(fsk_table_grid) =
+begin
+  let fsk_table_info = get_fsk_table_info_vec(fsk_table_grid);
+  let no_table_name_vec = for ( let t in fsk_table_info ) :
+    if ( t.referenced_table_name == "" )
+      t.foreign_sk_name;
+
+  out :1: if ( length_of(no_table_name_vec) > 0 )
+    "Please provide a Table Name for:\n" +
+    string_join(no_table_name_vec, ",\n");
+  out :: "";
+end;
+
+
+/* Checks the given Foreign Surrogate Key Subrecord Grid and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_fsk_subrecords(fsk_subrecord_grid) =
+begin
+  let fsk_subrecord_info = get_fsk_subrecord_info_vec(fsk_subrecord_grid);
+  let no_subrecord_name_vec = for ( let t in fsk_subrecord_info ) :
+    if ( t.subrecord_biz_name == "" )
+      t.qualified_fsk_name;
+
+  out :1: if ( length_of(no_subrecord_name_vec) > 0 )
+    "Please provide a Subrecord Name for:\n" +
+    string_join(no_subrecord_name_vec, ",\n");
+  out :: "";
+end;
+
+//
+// Misc. Helper Functions:
+//
+
+/* Reads directories in the given DB List to find all the tables that have DML files defined 
+and returns a vector of these tables, including their fully qualified logical names. */
+out :: get_available_ilm_table_vec(db_list) =
+begin
+  let db_vec = get_db_info_vec(db_list);
+
+  out :: vector_sort_dedup_first(
+    for ( let db in db_vec ) :
+      for ( let dml in directory_listing(db.dml_directory + "/" + db.logical_schema, db.logical_schema + ".*.dml") ) :
+        re_replace(dml, "[.]dml$", ""));
+end;
+
+
+/* Wraps a string with the HTML markup for a fixed-width font. */
+out :: fixed_font(str) =
+begin
+  out :: '<font face="courier,fixedsys,monospace,monaco,consolas">' + str + '</font>';
+end;
+
+  ]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="appconf_errors" type="string"/>
+      <ListVariable name="available_ilm_tables" type="string"/>
+      <ListVariable name="ilm_table_grid" type="compound">
+        <Variable name="table_name" type="string"/>
+        <Variable name="subrecord_biz_name" type="string"/>
+        <Variable name="source_records" type="string"/>
+        <Variable name="target_fields" type="string"/>
+        <Variable name="foreign_sk_list" type="string"/>
+        <Variable name="do_ids_with_nk" type="boolean"/>
+      </ListVariable>
+      <Variable name="ilm_table_errors" type="string"/>
+      <ListVariable name="fsk_table_grid" type="compound">
+        <Variable name="foreign_sk_name" type="string"/>
+        <Variable name="referenced_table_name" type="string"/>
+      </ListVariable>
+      <Variable name="fsk_table_errors" type="string"/>
+      <ListVariable name="fsk_subrecord_grid" type="compound">
+        <Variable name="qualified_fsk_name" type="string"/>
+        <Variable name="subrecord_biz_name" type="string"/>
+      </ListVariable>
+      <Variable name="fsk_subrecord_errors" type="string"/>
+      <ListVariable name="ilm_target_do_ids_with_nk" type="compound">
+        <Variable name="table_name" type="string"/>
+        <Variable name="do_ids_with_nk" type="boolean"/>
+      </ListVariable>
+    </Variables>
+    <Project name="proj">
+      <Pset name="ilm" prototype_path="$AI_PSET/setup.ilm.interim.pset"/>
+    </Project>
+  </Metadata>
+  <AutomaticAssignments>
+    <!-- Check for Application Configuration Errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in.configuration_name)</SourceValue>
+      <TargetValue reference="vars.appconf_errors"/>
+    </Assignment>
+    <!-- Establish the PSet naming convention: -->
+    <Assignment>
+      <SourceValue is_expression="true">"pset/setup.ilm/setup." + built_in.configuration_name + ".pset"</SourceValue>
+      <TargetValue reference="proj.ilm" property="relative_path"/>
+      <Condition is_expression="true">vars.appconf_errors == ""</Condition>
+    </Assignment>
+    <!-- Get the list of valid table names. -->
+    <Assignment>
+      <SourceValue is_expression="true">get_available_ilm_table_vec(proj.ilm.TARGET_DB_LIST)</SourceValue>
+      <TargetValue reference="vars.available_ilm_tables"/>
+      <Condition is_expression="true">vars.appconf_errors == "" and proj.ilm.ILM_NAME != ""</Condition>
+    </Assignment>
+    <!-- Apply Default Values to new ILM Table Grid Rows. -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[
+        for ( let s in vars.ilm_table_grid.source_records ) :
+          if ( s == "" ) "logical" else s
+      ]]></SourceValue>
+      <TargetValue reference="vars.ilm_table_grid.source_records" resizes_list="false"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[
+        for ( let s in vars.ilm_table_grid.target_fields ) :
+          if ( s == "" ) "logical" else s
+      ]]></SourceValue>
+      <TargetValue reference="vars.ilm_table_grid.target_fields" resizes_list="false"/>
+    </Assignment>
+    <!-- Check for ILM Table Errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_ilm_tables(vars.ilm_table_grid)</SourceValue>
+      <TargetValue reference="vars.ilm_table_errors"/>
+    </Assignment>
+    <!-- Populate the Foreign Surrogate Key Table Grid, based on the ILM Table Info. -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[ begin
+        let fsk_table_info_t[int] old_fsk_vec = vars.fsk_table_grid;
+        let ilm_table_grid = get_ilm_table_info_vec(vars.ilm_table_grid);
+        let flattened_fsk_vec = for ( let t in ilm_table_grid ) :
+          for ( let fsk in t.foreign_sk_vec ) :
+            fsk;
+        let string(int) referenced_table_name;
+        flattened_fsk_vec = vector_sort_dedup_first(flattened_fsk_vec);
+        result :: for ( let fsk in flattened_fsk_vec )
+          begin
+            referenced_table_name = "";
+            for ( let o in old_fsk_vec )
+              if ( o.foreign_sk_name == fsk )
+                referenced_table_name = o.referenced_table_name;
+          end
+          : [record
+              foreign_sk_name          fsk
+              referenced_table_name    referenced_table_name
+            ];
+      end ]]></SourceValue>
+      <TargetValue reference="vars.fsk_table_grid"/>
+    </Assignment>
+    <!-- Check for Foreign Surrogate Key Table Errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_fsk_tables(vars.fsk_table_grid)</SourceValue>
+      <TargetValue reference="vars.fsk_table_errors"/>
+    </Assignment>
+    <!-- Populate the Foreign Surrogate Key Subrecord Grid, based on the Foreign Surrogate Key Info. -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[ begin
+        let fsk_subrecord_info_t[int] prev_fsk_vec = vars.fsk_subrecord_grid;
+        let ilm_table_grid = get_ilm_table_info_vec(vars.ilm_table_grid);
+        let flattened_fsk_vec = for ( let t in ilm_table_grid ) :
+          for ( let fsk in t.foreign_sk_vec ) :
+            t.subrecord_name + "." + fsk;
+        let fsk_subrecord_info_t orig;
+        result :: for ( let fsk in flattened_fsk_vec )
+          begin
+            orig = allocate(); // Set the defaults, in case there is no match.
+            orig.qualified_fsk_name = fsk;
+            for ( let prev in prev_fsk_vec )
+              if ( prev.qualified_fsk_name == fsk ) 
+                orig = prev;
+          end
+          : orig;
+      end ]]></SourceValue>
+      <TargetValue reference="vars.fsk_subrecord_grid"/>
+    </Assignment>
+    <!-- Check for Foreign Surrogate Key Subrecord Errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_fsk_subrecords(vars.fsk_subrecord_grid)</SourceValue>
+      <TargetValue reference="vars.fsk_subrecord_errors"/>
+    </Assignment>
+    <!-- Populate the Setup ILM PSet. -->
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in.configuration_name, "^ilm[.]", "")</SourceValue>
+      <TargetValue reference="proj.ilm.ILM_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[ begin
+        let ilm_table_info_t header = [record
+          table_name         "# Logical Table Name"
+          subrecord_biz_name "Subrecord Biz Name"
+          record_type        "Subrecord Type"];
+        let table_info_vec = vector_concat(
+          [vector header],
+          get_ilm_table_info_vec(vars.ilm_table_grid));
+        let decimal("") name_width = vector_max(
+          for ( let t in table_info_vec ) :
+            string_length(t.table_name));
+        let decimal("") subrecord_width = vector_max(
+          for ( let t in table_info_vec ) :
+            string_length(t.subrecord_biz_name));
+        let fmt = string_concat("%-", name_width, "s  %-", subrecord_width, "s  %s");
+        result :: string_join(
+          for ( let t in table_info_vec ) :
+            printf(fmt, t.table_name, re_replace(t.subrecord_biz_name, " ", "_"), t.record_type),
+          "\n");
+      end ]]></SourceValue>
+      <TargetValue reference="proj.ilm.ILM_TABLE_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[ begin
+        let fsk_table_info_t header = [record
+          foreign_sk_name       "# FSK Name"
+          referenced_table_name "Referenced Table Name"];
+        let fsk_table_vec = vector_concat(
+          [vector header],
+          get_fsk_table_info_vec(vars.fsk_table_grid));
+        let decimal("") fsk_width = vector_max(
+          for ( let t in fsk_table_vec ) :
+            string_length(t.foreign_sk_name));
+        let fmt = string_concat("%-", fsk_width, "s  %s");
+        result :: string_join(
+          for ( let t in fsk_table_vec ) :
+            printf(fmt, t.foreign_sk_name, t.referenced_table_name),
+          "\n");
+      end ]]></SourceValue>
+      <TargetValue reference="proj.ilm.FSK_TABLE_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let fsk_subrecord_info_t header = [record
+          qualified_fsk_name "# Qualified FSK Name"
+          subrecord_biz_name "Subrecord Biz Name"
+        ]; 
+        let fsk_subrecord_vec = vector_concat(
+          [vector header],
+          get_fsk_subrecord_info_vec(vars.fsk_subrecord_grid));
+        let decimal("") fsk_width = vector_max(
+          for ( let t in fsk_subrecord_vec ) :
+            string_length(t.qualified_fsk_name));
+        let fmt = string_concat("%-", fsk_width, "s  %s");
+        result :: string_join(
+          for ( let t in fsk_subrecord_vec ) :
+            printf(fmt, t.qualified_fsk_name, re_replace(t.subrecord_biz_name, " ", "_")),
+          "\n");
+      end</SourceValue>
+      <TargetValue reference="proj.ilm.FSK_SUBRECORD_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let record 
+    string("") table_name;
+    string("") do_ids_with_nk;
+  end[int] ilm_target_with_nk_vec = [vector];
+  ilm_target_with_nk_vec = for(let target in vars.ilm_table_grid) : [record table_name target.table_name do_ids_with_nk (target.do_ids_with_nk?"1":"0")];
+  result :: "$[" + string_representation(ilm_target_with_nk_vec) + "]";
+end</SourceValue>
+      <TargetValue reference="proj.ilm.ILM_TARGET_DO_IDS_WITH_NK_VEC"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.ilm"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Setup ILM</Label>
+      <Column>
+        <Box>
+          <!-- Select the target tables and give them short names. -->
+          <Style>mainSource</Style>
+          <Label>Define the ILM Target Tables</Label>
+          <UIElements>
+            <TextLabel>
+              <Visible is_expression="true">vars.appconf_errors != ""</Visible>
+              <Label is_expression="true"><![CDATA[ "<b>Errors:" + vars.appconf_errors + "</b>" ]]></Label>
+            </TextLabel>
+            <TextLabel>
+              <Visible is_expression="true">vars.appconf_errors == ""</Visible>
+              <Label is_expression="true"><![CDATA[ "<b>ILM:</b> " + proj.ilm.ILM_NAME ]]></Label>
+            </TextLabel>
+            <Popup>
+              <Visible is_expression="true">vars.appconf_errors == ""</Visible>
+              <Style>options</Style>
+              <Label>Select Target Tables...</Label>
+              <Title>Select Target Tables</Title>
+              <UIElements>
+                <OrderedList>
+                  <Label>Choose One or More Tables to Populate</Label>
+                  <Choices reference="vars.available_ilm_tables"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <SourceTargetValue reference="vars.ilm_table_grid.table_name"/>
+                </OrderedList>
+                <TextLabel>
+                  <Label>To come up with the Subrecord Name, think of what "section" of the source is going to the target.
+For example, if you are mapping a hierarchical source of customer data and that has 2 addresses, 
+and this is mapping to a customer record and two address records, pick the customer table once
+and the address table twice, then name them "Cust", "Home Addr" and "Work Addr".
+Try to keep the Subrecord Names short, preferably 10 characters or less, and use Title Case.</Label>
+                </TextLabel>
+                <DataGrid>
+                  <Label>Set the Subrecord Names for the ILM Target Tables</Label>
+                  <Width>950</Width>
+                  <ColumnMetadata>
+                    <Column data_field="table_name">
+                      <HeaderText>Table Name</HeaderText>
+                      <ReadOnly>true</ReadOnly>
+                    </Column>
+                    <Column data_field="subrecord_biz_name">
+                      <HeaderText>Subrecord Name (Title Case)</HeaderText>
+                    </Column>
+                    <Column data_field="source_records">
+                      <HeaderText>Source Records</HeaderText>
+                      <Choices>
+                        <ConstantValue>logical</ConstantValue>
+                        <ConstantValue>optional_logical</ConstantValue>
+                        <ConstantValue>null_optional_logical</ConstantValue>
+                      </Choices>
+                      <ChoiceDisplayNames>
+                        <ConstantValue>Always Populated</ConstantValue>
+                        <ConstantValue>May Not be Populated</ConstantValue>
+                        <ConstantValue>Unavailable in Some Mappings</ConstantValue>
+                      </ChoiceDisplayNames>
+                    </Column>
+                    <Column data_field="target_fields">
+                      <HeaderText>Target Fields</HeaderText>
+                      <Choices>
+                        <ConstantValue>logical</ConstantValue>
+                        <ConstantValue>defaulted_logical</ConstantValue>
+                        <ConstantValue>padded_logical</ConstantValue>
+                      </Choices>
+                      <ChoiceDisplayNames>
+                        <ConstantValue>May be NULL or Non-NULL</ConstantValue>
+                        <ConstantValue>Default to 0 or Empty ("")</ConstantValue>
+                        <ConstantValue>Default to 0 or are Padded</ConstantValue>
+                      </ChoiceDisplayNames>
+                    </Column>
+                  </ColumnMetadata>
+                  <SourceTargetValue reference="vars.ilm_table_grid" resizes_list="false"/>
+                </DataGrid>
+                <TextLabel>
+                  <Visible is_expression="true">vars.ilm_table_errors != ""</Visible>
+                  <Label is_expression="true"><![CDATA[ "<b>Errors:\n\n" + vars.ilm_table_errors + "</b>" ]]></Label>
+                </TextLabel>
+              </UIElements>
+            </Popup>
+            <CheckBox>
+              <Label>Skip Loading, Just Use in ILM Gets</Label>
+              <SourceTargetValue reference="proj.ilm.DO_SPLIT"/>
+              <TrueValue>0</TrueValue>
+              <FalseValue>1</FalseValue>
+            </CheckBox>
+            <Spacer>
+              <Height>10</Height>
+            </Spacer>
+            <TextLabel>
+              <Visible is_expression="true">vars.ilm_table_errors != ""</Visible>
+              <Label is_expression="true"><![CDATA[ "<b>\nErrors:\n\n" + vars.ilm_table_errors + "</b>" ]]></Label>
+            </TextLabel>
+            <Box>
+              <Visible is_expression="true">vars.ilm_table_errors == ""</Visible>
+              <Style>inner</Style>
+              <Label>ILM Target List</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>600</Width>
+                  <Label is_expression="true">fixed_font(proj.ilm.ILM_TABLE_LIST)</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <!--
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.appconf_errors == ""</Visible>
+          <Label>Prepare for Rollup</Label>
+          <UIElements>
+            <Popup>
+              <Enabled is_expression="true">string_index(proj.aggr.ILM_DML, "/dml/aggr/aggr.")</Enabled>
+              <Label>Define Target Format...</Label>
+              <Title>Define Target Format</Title>
+              <UIElements>
+                <RecordFormat>
+                  <Label is_expression="true">parameterize_path(proj.aggr.ILM_DML.value_location, "proj.aggr")</Label>
+                  <ShowSampleDataArea>false</ShowSampleDataArea>
+                  <SourceTargetValue reference="aggr_dml" source_property="contents" target_property="contents"/>
+                  <BrowsingStartDirectory reference="proj.aggr.TARGET_DB_DML" property="value_location"/>
+                </RecordFormat>
+              </UIElements>
+              <Style>recordFormat</Style>
+            </Popup>
+          </UIElements>
+          <Style>targetEntity</Style>
+        </Box>
+      </Column> -->
+      <Column>
+        <Box>
+          <!-- Select the foreign surrogate keys. -->
+          <Visible is_expression="true">vars.appconf_errors == "" and vars.ilm_table_errors == ""</Visible>
+          <Style>mainSource</Style>
+          <Label>List Any Foreign Surrogate Keys</Label>
+          <UIElements>
+            <ForEach item="subrecord" list_reference="vars.ilm_table_grid">
+              <UIElements>
+                <Popup>
+                  <Style>key</Style>
+                  <Label is_expression="true">"Select Foreign Surrogate Keys for " + subrecord.subrecord_biz_name + "..."</Label>
+                  <Title>Select Foreign Surrogate Keys</Title>
+                  <Description>Lets you specify all the foreign surrogate keys that appear in each target.</Description>
+                  <UIElements>
+                    <FieldPicker>
+                      <IsKey>false</IsKey>
+                      <Label is_expression="true">subrecord.subrecord_biz_name</Label>
+                      <ContextPset reference="proj.ilm"/>
+                      <RecordFormat is_expression="true"><![CDATA[ begin
+                        let db_vec = get_db_info_vec(proj.ilm.TARGET_DB_LIST);
+                        let table_name = subrecord.table_name;
+                        let schema_name = re_replace(table_name, "[.].*", "");
+                        let dml_directory_vec = for ( let db in db_vec ) :
+                          if ( db.logical_schema == schema_name )
+                            db.dml_directory;
+                        let dml_directory = dml_directory_vec[0]; // There *should* always be one element in the vector.
+                        let dml_file_name = dml_directory + "/" +
+                          schema_name + "/" +
+                          table_name + ".dml";
+                        result :: read_type(dml_file_name);
+                      end ]]></RecordFormat>
+                      <SourceTargetValue reference="subrecord.foreign_sk_list"/>
+                    </FieldPicker>
+                  </UIElements>
+                </Popup>
+                <Box>
+                  <Label is_expression="true">subrecord.subrecord_biz_name</Label>
+                  <UIElements>
+                    <CheckBox>
+                      <Label>Create IDS DML with Natural Key fields</Label>
+                      <SourceTargetValue reference="subrecord.do_ids_with_nk"/>
+                      <TrueValue>True</TrueValue>
+                      <FalseValue>False</FalseValue>
+                      <Description>Tick this check box if you want to create an IDS DML with Natural Key fields. (Enabled only if foreign keys are picked.)</Description>
+                      <Enabled is_expression="true">subrecord.foreign_sk_list != ""</Enabled>
+                    </CheckBox>
+                  </UIElements>
+                  <Style>inner</Style>
+                </Box>
+              </UIElements>
+            </ForEach>
+            <Spacer>
+              <Height>10</Height>
+            </Spacer>
+            <Box>
+              <Style>inner</Style>
+              <Label>Foreign Surrogate Keys</Label>
+              <UIElements>
+                <ForEach item="subrecord" list_reference="vars.ilm_table_grid">
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true"><![CDATA[ begin
+                        let fsk_vec = string_split(subrecord.foreign_sk_list, ",");
+                        result :: "<b>Foreign Surrogate Keys for " + subrecord.subrecord_biz_name + ":</b>\n" +
+                          string_join(fsk_vec, "\n") +
+                        "\n";
+                      end ]]></Label>
+                    </TextLabel>
+                  </UIElements>
+                </ForEach>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <!-- Assign tables to the foreign surrogate keys. -->
+          <Visible is_expression="true">vars.appconf_errors == "" and vars.ilm_table_errors == "" and length_of(vars.fsk_table_grid) != 0</Visible>
+          <Style>mainSource</Style>
+          <Label>Pick the Tables that the Foreign Surrogate Keys Reference</Label>
+          <UIElements>
+            <Popup>
+              <Style>options</Style>
+              <Label>Assign Tables to Foreign Surrogate Keys...</Label>
+              <Title>Assign Tables to Foreign Surrogate Keys</Title>
+              <UIElements>
+                <DataGrid>
+                  <Label>Set the Referenced Table Names for the Foreign Surrogate Keys</Label>
+                  <Width>800</Width>
+                  <Height>600</Height>
+                  <ColumnMetadata>
+                    <Column data_field="foreign_sk_name">
+                      <HeaderText>Foreign SK Name</HeaderText>
+                      <ReadOnly>true</ReadOnly>
+                    </Column>
+                    <Column data_field="referenced_table_name">
+                      <HeaderText>Referenced Table Name</HeaderText>
+                      <Choices>
+                        <ReferenceValue reference="vars.available_ilm_tables"/>
+                      </Choices>
+                    </Column>
+                  </ColumnMetadata>
+                  <SourceTargetValue reference="vars.fsk_table_grid" resizes_list="false"/>
+                </DataGrid>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>10</Height>
+            </Spacer>
+            <TextLabel>
+              <Visible is_expression="true">vars.fsk_table_errors != ""</Visible>
+              <Label is_expression="true"><![CDATA[ "<b>\nErrors:\n\n" + vars.fsk_table_errors + "</b>" ]]></Label>
+            </TextLabel>
+            <Box>
+              <Visible is_expression="true">vars.fsk_table_errors == ""</Visible>
+              <Style>inner</Style>
+              <Label>Foreign Surrogate Key Tables</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>500</Width>
+                  <Label is_expression="true">fixed_font(proj.ilm.FSK_TABLE_LIST)</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+        <Box>
+          <!-- Give the natural keys short names. -->
+          <Visible is_expression="true">vars.appconf_errors == "" and vars.ilm_table_errors == "" and vars.fsk_table_errors == "" and length_of(vars.fsk_subrecord_grid) != 0</Visible>
+          <Style>mainSource</Style>
+          <Label>Define the Natural Key Targets</Label>
+          <UIElements>
+            <Popup>
+              <Style>options</Style>
+              <Label>Assign Subrecord Names for Natural Keys...</Label>
+              <Title>Assign Subrecord Names for Natural Keys</Title>
+              <UIElements>
+                <TextLabel>
+                  <Label>Foreign Surrogate Keys are "found" by looking up their corresponding Natural Keys.
+In this section, you specify where those natural keys can be found.  There may already be a subrecord that has all natural keys
+that you need (with exactly the right names), in that case, you enter the existing subrecords name.  However, it is more likely
+that this information does not exist in the right form.  In that case, you provide a new subrecord name, so that there is a
+"slot" in the ILM to map the appropriate natural key fields.</Label>
+                </TextLabel>
+                <DataGrid>
+                  <Label>Set the Names for the Natural Key Subrecords</Label>
+                  <Width>800</Width>
+                  <Height>600</Height>
+                  <ColumnMetadata>
+                    <Column data_field="qualified_fsk_name">
+                      <HeaderText>Foreign SK Name</HeaderText>
+                      <ReadOnly>true</ReadOnly>
+                    </Column>
+                    <Column data_field="subrecord_biz_name">
+                      <HeaderText>Subrecord Name (Title Case)</HeaderText>
+                    </Column>
+                  </ColumnMetadata>
+                  <SourceTargetValue reference="vars.fsk_subrecord_grid" resizes_list="false"/>
+                </DataGrid>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>10</Height>
+            </Spacer>
+            <TextLabel>
+              <Visible is_expression="true">vars.fsk_subrecord_errors != ""</Visible>
+              <Label is_expression="true"><![CDATA[ "<b>\nErrors:\n\n" + vars.fsk_subrecord_errors + "</b>" ]]></Label>
+            </TextLabel>
+            <Box>
+              <Visible is_expression="true">vars.fsk_subrecord_errors == ""</Visible>
+              <Style>inner</Style>
+              <Label>Natural Key Subrecords for Foreign Surrogate Keys</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>500</Width>
+                  <Label is_expression="true">fixed_font(proj.ilm.FSK_SUBRECORD_LIST)</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Setup</Label>
+          <UIElements>
+            <TextLabel>
+              <Label><![CDATA[<b>Tip:</b> To update the ILM and the related split psets, Save, Run, <i>Close</i>, and Publish.  Closing will ensure that the list of files produced by the run gets included in the Publish step.]]></Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Setup ILM</ButtonLabel>
+              <SourceValue reference="proj.ilm"/>
+            </ExecuteButton>
+          </UIElements>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>View DML</Label>
+      <UIElements>
+        <TextArea>
+          <Label>ILM DML</Label>
+          <SourceValue reference="proj.ilm.ILM_DML"/>
+          <Height>600</Height>
+          <Width>1500</Width>
+        </TextArea>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label><![CDATA[<b>How to Name Your ILMs</b>
+
+The name of the intermediate logical model is based on the name of your
+"ilm" application configuration.  This name is arbitrary, but there
+are certain conventions that you should respect.  Try to use a short,
+human-readable name that is descriptive.  Try to avoid just using the
+target table name, especially if you are mapping to multiple tables.
+For example, claim is better than clm, fact_transaction_claim, or rt200p.
+If you need multiple words, use underscores (_), not periods (.).
+
+<b>What an ILM is For</b>
+
+ILMs exist in order to make mapping easier.  They allow you to assemble
+the tables that make up the target so that you can provide a "landing
+place" for all the data in your source.  If your source looks a lot
+like your target, then your ILM may be trivial, and just contain a
+single target table.  However, if your source has information that
+needs to land in many target tables, then your ILM will need to
+include all of these targets.
+
+Also, an ILM may have the same table listed more than once.  This
+happens when the source has different instances of the same type of
+data.  For example, a customer record may have multiple addresses
+embedded in it, or multiple phone numbers.  In this case, the ILM
+might have 2 dim_address records, named "Home Addr" and "Work Addr"
+and 3 dim_phone records, named "Home Ph", "Work Ph", and "Cell Ph".
+
+<b>Handling Variations in Source Availability</b>
+
+In some cases, a source will not always include information for
+every target in the ILM.  For example, the Cell Phone may sometimes
+be blank or NULL.  In that case, you may not want to create a
+"Cell Ph" entry in the dim_phone table.  To do this, mark the
+Source Record as "May Not be Populated".  This will add a
+"drop_record" field that controls whether the information
+is available in the current source record.
+
+Also, where possible, it makes sense to use the same ILM for multiple
+sources, espeically if you have multiple different source systems
+feeding your target database.  You can mark any ILM target as
+"Unavailable in Some Mappings", which will also add a "drop_record"
+field, and it will also make sure all target fields are not required
+(NULLable) so that you can leave the field mappings blank.
+
+There are 3 different possible values for drop_record, 0 means that
+the source record is populated.  1 means that the source has explicitly
+asked for the record to be removed, as in a logical delete.  2 means
+that the source has "nothing to say" about that record, and the
+mapping should simply be ignored.  No target record will be created or
+deleted.
+          ]]></Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

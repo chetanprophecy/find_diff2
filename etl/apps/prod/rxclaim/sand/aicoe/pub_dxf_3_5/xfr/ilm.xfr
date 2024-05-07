@@ -1,0 +1,239 @@
+include "/~$PUB_DB_XFR/db_list.xfr";
+include "/~$PUB_DXF_XFR/pset.xfr";
+include "/~$PUB_DXF_XFR/logical_types.xfr";
+
+type ilm_table_info_t =
+record
+  string(long) table_name;
+  string(long) subrecord_biz_name;
+  string(long) record_type;
+  string(long) schema = "";
+  string(long) type_prefix = "";
+  string(long) type_name = "";
+  string(long) subrecord_name = "";
+  //string(long) parameter_prefix = "";
+  string(long) parameterized_dml_directory = "";
+  string(long) dml_file = "";
+  dml_field_info_vec field_info_vec = allocate();
+  string(long)[long] all_field_names_vec = allocate();
+  string(long) primary_sk_name = "";
+end;
+
+type ilm_table_info_vec_t = ilm_table_info_t[long];
+
+
+type fsk_table_info_t =
+record
+  string(long) foreign_sk_name;
+  string(long) referenced_table_name;
+  string(long) schema = "";
+  string(long) pset_file = "";
+  //string(long) parameter_prefix = "";
+  string(long) parameterized_dml_directory = "";
+  string(long) dml_file = "";
+  dml_field_info_vec field_info_vec = allocate();
+end;
+
+type fsk_table_info_vec_t = fsk_table_info_t[long];
+
+
+type fsk_subrecord_info_t =
+record
+  string(long) qualified_fsk_name;
+  string(long) subrecord_biz_name;
+  string(long) subrecord_name = "";
+  string(long) referenced_table_name;
+  string(long) type_name = "";
+  string(long) foreign_sk_name = "";
+  dml_field_info_vec field_info_vec = allocate();
+end;
+
+type fsk_subrecord_info_vec_t = fsk_subrecord_info_t[long];
+
+
+/* Search in the DB Info Vec to find the schema for this Schema and Entity.
+This is smart enough to handle the case where the same schema has 2 different DML directories. */
+out :: get_parameterized_dml_directory(db_info_vec, schema, entity) =
+begin
+  let string(long)[long] parameterized_dml_directory_vec =
+    for ( let db in db_info_vec ) :
+      if ( db.logical_schema == schema and
+           first_without_error(read_type("/~" + db.parameterized_dml_directory + "/" +
+                                         schema + "/" +  entity + ".dml") != "", 0) )
+        db.parameterized_dml_directory;
+  out :: first_without_error(parameterized_dml_directory_vec[0], "__LOGICAL_SCHEMA_NOT_FOUND__");
+end;
+
+
+/* Converts the ILM Table List into a vector of records.
+In the process, it enriches the records with derived information. */
+out :: get_ilm_table_info_vec(db_info_vec, ilm_table_list) =
+begin
+  let string(long)[long] word_vec;
+  let string(long) func;
+  let string(long) table_dml;
+  let ilm_table_info_t t;
+
+  out :: for ( let line in get_line_vec(ilm_table_list) )
+    begin
+      word_vec = line.word_vec;
+      t = allocate();
+      t.table_name = word_vec[0];
+      t.subrecord_biz_name = re_replace(word_vec[1], "_", " ");
+      t.record_type = word_vec[2];
+      t.type_prefix = re_replace(re_replace(t.record_type,
+        "optional", "opt"),
+        "padded", "pad");
+      t.schema = re_replace(t.table_name, "[.].*", "");
+      /* Assemble the type name from the table name. */
+      t.subrecord_name = ddl_name_to_dml_name(re_replace(string_downcase(t.subrecord_biz_name), "[^a-z0-9]+", "_"));
+      t.type_name = t.type_prefix + "_" + string_replace(t.table_name, ".", "_") +  "_t"; // removed the subrecord name from type  -- "__" + t.subrecord_name +
+      t.parameterized_dml_directory = get_parameterized_dml_directory(db_info_vec, t.schema, t.table_name);
+      t.dml_file = "/~" + t.parameterized_dml_directory + "/" +
+        t.schema + "/" +
+        t.table_name + ".dml";
+      func = "read_" + t.record_type + "_type";
+      table_dml = eval(t, func + '(dml_file, subrecord_biz_name + ": ")');
+      t.field_info_vec = record_info(table_dml);
+      t.all_field_names_vec = record_info_item(read_type(t.dml_file), "name");
+      t.primary_sk_name = get_sk_ids(t.table_name);
+    end
+    : t;
+end;
+
+/* Converts the Foreign Surrogate Key Table List into a vector of records.
+In the process, it enriches the records with derived information. */
+out :: get_fsk_table_info_vec(db_info_vec, fsk_table_list) =
+begin
+  let string(long)[long] word_vec;
+  let fsk_table_info_t t;
+  let string(long)[long] nk_vec;
+
+  out :: for ( let line in get_line_vec(fsk_table_list) )
+    begin
+      word_vec = line.word_vec;
+      t = allocate();
+      t.foreign_sk_name = word_vec[0];
+      t.referenced_table_name = word_vec[1];
+      t.schema = re_replace(t.referenced_table_name, "[.].*", "");
+      t.pset_file = get_load_pset(t.referenced_table_name);
+      nk_vec = for ( let k in key_info(get_nk_ids(t.referenced_table_name)) ) :
+         k.field_name;
+      t.parameterized_dml_directory = get_parameterized_dml_directory(db_info_vec, t.schema, t.referenced_table_name);
+      t.dml_file = "/~" + t.parameterized_dml_directory + "/" +
+        t.schema + "/" +
+        t.referenced_table_name + ".dml";
+      t.field_info_vec = for ( let i in record_info(expand_type(read_type(t.dml_file))) )
+        i.scomment = string_lrtrim(i.scomment);
+        :
+          if ( i.name member nk_vec )
+            i;
+    end
+    : t;
+end;
+
+
+/* Converts the Foreign Surrogate Key Subrecord List into a vector of records, using the Foreign Surrogate Key Table List.
+In the process, it enriches the records with derived information. */
+out :: get_fsk_subrecord_info_vec(fsk_table_info_vec_t fsk_table_info_vec, fsk_subrecord_list) =
+begin
+  let string(long)[long] word_vec;
+  let fsk_table_info_t[long] fsk_table_vec;
+  let fsk_subrecord_info_t t;
+
+  out :: for ( let line in get_line_vec(fsk_subrecord_list) )
+    begin
+      word_vec = line.word_vec;
+      t = allocate();
+      t.qualified_fsk_name = word_vec[0];
+      t.subrecord_biz_name = re_replace(word_vec[1], "_", " ");
+      t.subrecord_name = ddl_name_to_dml_name(re_replace(string_downcase(t.subrecord_biz_name), "[^a-z0-9]+", "_"));
+      t.foreign_sk_name = re_replace(t.qualified_fsk_name, ".*[.]", "");
+      // Find the table name for this FSK.
+      fsk_table_vec = for ( let tbl in fsk_table_info_vec ) :
+        if ( tbl.foreign_sk_name == t.foreign_sk_name )
+          tbl;
+      t.referenced_table_name = fsk_table_vec[0].referenced_table_name;
+      t.type_name = "nk_" + string_replace(t.referenced_table_name, ".", "_") + "_t";
+      t.field_info_vec = for ( let i in fsk_table_vec[0].field_info_vec )
+        begin
+          i.scomment = re_replace(i.scomment, "BizName: *[\x22\x27]", "&" + t.subrecord_biz_name + ": ");  // The hex codes are single and double quotes.
+        end
+        : i;
+    end
+    : t;
+end;
+
+
+out :: get_ilm_dml(ilm_table_info_vec_t ilm_table_info_vec, fsk_subrecord_info_vec) =
+begin
+  let string(long)[long] ilm_table_subrecord_vec = for ( let t in ilm_table_info_vec ) :
+    t.subrecord_name;
+  let dxf_header_dml = expand_type(read_type("/~$PUB_DXF_DML/dxf_header.dml"));
+  let string(long) func;
+  let string(long) table_dml;
+  // Make sure there is an opt_logical type for every table.
+  let opt_logical_vec = for ( let t in vector_sort_dedup_first(ilm_table_info_vec, {table_name}) )
+    begin
+      t.record_type = "optional_logical";
+      t.type_prefix = "opt_logical";
+      /* Assemble the type name from the table name. */
+      t.type_name = t.type_prefix + "_" + string_replace(t.table_name, ".", "_") + "_t";
+      func = "read_" + t.record_type + "_type";
+      table_dml = eval(t, func + '(dml_file, subrecord_biz_name + ": ")');
+      t.field_info_vec = record_info(table_dml);
+      t.all_field_names_vec = record_info_item(read_type(t.dml_file), "name");
+    end
+    : t;
+  let table_type_declarations = string_join(
+    for ( let t in vector_sort_dedup_first(ilm_table_info_vec, {type_name}) ) :
+      //if ( t.type_prefix != "opt_logical" )
+        "type " + t.type_name + " =\n" +
+        //string_replace(add_fields("record\nend", t.field_info_vec), "$", "\\$") + ";\n" +
+        add_fields("record\nend", t.field_info_vec) + ";\n" +
+        "\n",
+    "") /*+
+    "\n\n// Optional Logical Types\n" +
+    "// Used in the Normalize in the Shred.\n" +
+    string_join(
+    for ( let t in opt_logical_vec ) :
+      "type " + t.type_name + " =\n" +
+      add_fields("record\nend", t.field_info_vec) + ";\n" +
+      "\n",
+    "")*/;
+  let nk_type_declarations = string_join(
+    for ( let t in vector_sort_dedup_first(fsk_subrecord_info_vec, {type_name}) ) :
+      "type opt_" + t.type_name + " =  // Used in ILMs and mappings\n" +
+      add_fields(
+"record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'" + t.subrecord_biz_name + ": Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+end",
+        for ( let i in t.field_info_vec )
+            i.nullable = 1;
+          : i) + ";\n" +
+      "type " + t.type_name + " =  // Used in splits\n" +
+      add_fields("record\nend", t.field_info_vec)+ ";\n" +
+      "\n",
+    "");
+
+  out :: re_replace(
+    ( table_type_declarations +
+      "\n" +
+      nk_type_declarations +
+      (if ( nk_type_declarations == "" ) "" else "\n") +
+      "metadata type =\n" +
+      re_replace(dxf_header_dml, "end$", "") +
+      string_join(
+        for ( let t in ilm_table_info_vec ) :
+          "  " + t.type_name + " " + t.subrecord_name + "  /*@ BizName:'" + t.subrecord_biz_name + "' */;\n",
+        "") +
+      string_join(
+        for ( let t in vector_sort_dedup_first(fsk_subrecord_info_vec, {subrecord_name}) ) :
+          if ( t.subrecord_name not member ilm_table_subrecord_vec )
+            "  opt_" + t.type_name + " " + t.subrecord_name + "  /*@ BizName:'" + t.subrecord_biz_name + "' */;\n",
+        "") +
+      // (if ( nk_type_declarations == "" ) "" else '  date("YYYY-MM-DD") _lookup_date_; /*@ BizName: "Lookup Date" @*/\n') +
+      "end;\n" ),
+    "\n;", ";");
+end;

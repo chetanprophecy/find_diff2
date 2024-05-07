@@ -1,0 +1,16 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_rxclaim.a_fnl_member_month
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.l_period_type
+JOIN_TYPE|l|||Inner Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{perd_type_sk}
+ADDITIONAL_FIELDS_DML||||record\r\n  date("YYYYMMDD")("\\x01")   processing_month_start_dt;\r\n  decimal("\\x01",0)  dxf_sk;  \r\nend
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.dxf_sk :: (decimal("")) in.dxf_sk;\r\nout.processing_month_start_dt :: (date("YYYYMMDD"))"1900101";\r\nout.* :: in.*;\r\nend
+TARGET_NAME||||ids_rxclaim.a_fnl_mm_l_perd_type
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+NON_DRIVER_1_OUTPUT_FIELDS||||perd_type_nbr
+NON_DRIVER_1_FILTER_EXPR||||perd_type_nbr==1
+DO_CLEAN||||1
+OVERRIDE_JOIN_KEY||||{dxf_sk}
+JOIN_XFR:sandbox||||out::join(in0, in1)=\r\nbegin\r\n  out.perd_type_sk :1: in0.perd_type_sk;\r\n  out.perd_type_sk :2: in1.dxf_sk;\r\n  out.processing_month_start_dt :3: in0.processing_month_start_dt;\r\n  out.* :1: in0.*;\r\n  out.* :2: in1.*;\r\nend;

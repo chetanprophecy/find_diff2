@@ -1,0 +1,1706 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+type bzt_27_97d014ac_5756b186_bcc4_2 = record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) state_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) state_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) state_cd_desc = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string(1) newline = NULL("");
+end;
+type bzt_16_97d014ac_5756b186_bcc4_2 = record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end;
+type bzt_21_97d014ac_5756b186_bcc4_2 = record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  utf8 string("\x01", maximum_length=1020) carrier_id = NULL(""), account_id = NULL(""), employer_group_id = NULL(""), bseg_bus_typ = NULL(""), bseg_clt_typ = NULL(""), bseg_srv_typ = NULL("");
+  decimal("\x01",0) rx_client_id = NULL(""), cag_sense_sk = NULL(""), test_flg = NULL("");
+  utf8 string("\x01", maximum_length=1020) legacy_org = NULL(""), pricing_type = NULL(""), segment = NULL(""), lob = NULL(""), hospice_tier = NULL(""), malvl = NULL(""), suppress = NULL(""), prd_grp = NULL(""), funding_arrangment_desc = NULL(""), mod_custid = NULL(""), reb_payeeid = NULL(""), geography = NULL(""), client_affiliation = NULL(""), fdm_client_id = NULL(""), mdm_cageid = NULL(""), cag_grp = NULL(""), coalition_nm = NULL("");
+  date("YYYY-MM-DD")("\x01") coalition_eff_dt = NULL(""), coalition_trmntn_dt = NULL("");
+  utf8 string("\x01", maximum_length=1020) carve_typ = NULL(""), rx_bin = NULL(""), rx_pcn = NULL(""), rx_grp_nbr = NULL(""), clncl_acct_lvl = NULL(""), clncl_client_nm = NULL(""), clncl_clean_nm = NULL(""), clncl_client_rollup_nm = NULL(""), clncl_st = NULL(""), clncl_rgn = NULL("");
+  date("YYYY-MM-DD")("\x01") clncl_eff_dt = NULL(""), clncl_trmntn_dt = NULL(""), clncl_trans_dt = NULL("");
+  decimal("\x01",0) inr_user_flg = NULL(""), clncl_user_flg = NULL(""), adhc_user_flg = NULL(""), sec_flg = NULL("");
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01") lastmodifieddate = NULL("");
+  decimal("\x01",0) hcit_flg = NULL("");
+  string(1) newline = "\n";
+end;
+type bzt_9_97d014ac_5756b186_bcc4_2 = record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) acct_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) acct_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) employer_group_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) employer_group_nm = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup lkp_cag_sense   */
+out0::bzt_46_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let bzt_21_97d014ac_5756b186_bcc4_2 __bzt_local_res__;
+if(!bzt_49_97d014ac_5756b186_bcc4_2)begin
+  bzt_49_97d014ac_5756b186_bcc4_2 = 1;
+  bzt_48_97d014ac_5756b186_bcc4_2 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("lkp_cag_sense",in0,in1,in2));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_47_97d014ac_5756b186_bcc4_2 = __bzt_local_res__;
+     bzt_48_97d014ac_5756b186_bcc4_2 = 1;
+  end
+end
+  out0:1:if(bzt_48_97d014ac_5756b186_bcc4_2)bzt_47_97d014ac_5756b186_bcc4_2;
+  out0::NULL;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup lkp_active_cag_flag   */
+out0::bzt_56_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01", maximum_length=9) carrier_id = NULL("");
+  string("\x01", maximum_length=15) account_id = NULL(""), employer_group_id = NULL("");
+  string("\x01", maximum_length=1) cag_actv_flg = NULL("");
+  string("\x01", maximum_length=5) rxt_src_envrt_id = NULL("");
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lkp_active_cag_flag",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_carrier_acct   */
+out0::bzt_55_97d014ac_5756b186_bcc4_2(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL(""), account_nm = NULL("");
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_carrier_acct",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_carrier_non_placeholder_lkp   */
+out0::bzt_41_97d014ac_5756b186_bcc4_2(in0)=
+begin
+let bzt_16_97d014ac_5756b186_bcc4_2 __bzt_local_res__;
+if(!bzt_44_97d014ac_5756b186_bcc4_2)begin
+  bzt_44_97d014ac_5756b186_bcc4_2 = 1;
+  bzt_43_97d014ac_5756b186_bcc4_2 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("d_carrier_non_placeholder_lkp",in0));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_42_97d014ac_5756b186_bcc4_2 = __bzt_local_res__;
+     bzt_43_97d014ac_5756b186_bcc4_2 = 1;
+  end
+end
+  out0:1:if(bzt_43_97d014ac_5756b186_bcc4_2)bzt_42_97d014ac_5756b186_bcc4_2;
+  out0::NULL;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup cag_gps_plan_code   */
+out0::bzt_61_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string(",") source_environment_key, carrier_id, account_id, employer_group_id;
+  string("\r\n") gps_plan_code;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("cag_gps_plan_code",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup l_state_lkp   */
+out0::bzt_34_97d014ac_5756b186_bcc4_2(in0)=
+begin
+let bzt_27_97d014ac_5756b186_bcc4_2 __bzt_local_res__;
+if(!bzt_37_97d014ac_5756b186_bcc4_2)begin
+  bzt_37_97d014ac_5756b186_bcc4_2 = 1;
+  bzt_36_97d014ac_5756b186_bcc4_2 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("l_state_lkp",string_lrtrim(in0.acojst)));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_35_97d014ac_5756b186_bcc4_2 = __bzt_local_res__;
+     bzt_36_97d014ac_5756b186_bcc4_2 = 1;
+  end
+end
+  out0:1:if(bzt_36_97d014ac_5756b186_bcc4_2)bzt_35_97d014ac_5756b186_bcc4_2;
+  out0::NULL;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_cag_ind_lkp   */
+out0::bzt_57_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) carrier_sk = NULL(""), carrier_acct_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL(""), account_nm = NULL(""), employer_group_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL(""), gps_plan_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_only_ind = NULL(""), hm_dlvry_stat_ind = NULL(""), rebates_only_ind = NULL(""), rebates_stat_ind = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_cag_ind_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup f_benft_file_extnd_lkp   */
+out0::bzt_51_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let bzt_9_97d014ac_5756b186_bcc4_2 __bzt_local_res__;
+if(!bzt_54_97d014ac_5756b186_bcc4_2)begin
+  bzt_54_97d014ac_5756b186_bcc4_2 = 1;
+  bzt_53_97d014ac_5756b186_bcc4_2 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("f_benft_file_extnd_lkp",in0,in1,in2));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_52_97d014ac_5756b186_bcc4_2 = __bzt_local_res__;
+     bzt_53_97d014ac_5756b186_bcc4_2 = 1;
+  end
+end
+  out0:1:if(bzt_53_97d014ac_5756b186_bcc4_2)bzt_52_97d014ac_5756b186_bcc4_2;
+  out0::NULL;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup client_id_cag_mask   */
+out0::bzt_40_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("client_id_cag_mask",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup client_id_cag_mask   */
+out0::bzt_39_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("client_id_cag_mask",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup client_id_cag_mask   */
+out0::bzt_38_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("client_id_cag_mask",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_carrier   */
+out0::bzt_45_97d014ac_5756b186_bcc4_2(in0)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) carrier_state_cd = NULL("");
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_carrier",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup rccagp   */
+out0::bzt_50_97d014ac_5756b186_bcc4_2(in0,in1,in2)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01", maximum_length=9) hyfqc6 = NULL("");
+  string("\x01", maximum_length=15) hyfrc6 = NULL(""), hyfsc6 = NULL("");
+  string("\x01", maximum_length=10) hyf4c6 = NULL("");
+  string("\x01", maximum_length=5) rxt_src_envrt_id = NULL("");
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rccagp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+let record
+  unicode string(int) inner = NULL;
+end bzt_0_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();
+let record
+  unicode string(int) inner = NULL;
+end bzt_1_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();
+let record
+  unicode string(int) inner = NULL;
+end bzt_2_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();
+let bzt_27_97d014ac_5756b186_bcc4_2 bzt_35_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();  /*   lookup l_state_lkp   */
+let int bzt_36_97d014ac_5756b186_bcc4_2 = 0;
+let int bzt_37_97d014ac_5756b186_bcc4_2 = 0;
+let bzt_16_97d014ac_5756b186_bcc4_2 bzt_42_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();  /*   lookup d_carrier_non_placeholder_lkp   */
+let int bzt_43_97d014ac_5756b186_bcc4_2 = 0;
+let int bzt_44_97d014ac_5756b186_bcc4_2 = 0;
+let bzt_21_97d014ac_5756b186_bcc4_2 bzt_47_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();  /*   lookup lkp_cag_sense   */
+let int bzt_48_97d014ac_5756b186_bcc4_2 = 0;
+let int bzt_49_97d014ac_5756b186_bcc4_2 = 0;
+let bzt_9_97d014ac_5756b186_bcc4_2 bzt_52_97d014ac_5756b186_bcc4_2 = allocate_with_nulls();  /*   lookup f_benft_file_extnd_lkp   */
+let int bzt_53_97d014ac_5756b186_bcc4_2 = 0;
+let int bzt_54_97d014ac_5756b186_bcc4_2 = 0;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcgrpp_to_the_ctrx_d_cag_ILM_documentation(in)=
+begin
+
+out0.ctrx_d_cag.prd_grp::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').prd_grp  
+         );
+
+
+out0.ctrx_d_cag.pricing_type::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').pricing_type  
+         );
+
+
+out0.c_d_carr_acc.carrier_id::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.rx_client_id::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').rx_client_id  
+         );
+
+
+out0.ctrx_d_cag.bseg_bus_typ::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').bseg_bus_typ  
+         );
+
+
+out0.ctrx_d_cag.account_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("f_benft_file_extnd_lkp",'keystr','keystr','keystr').acct_nm  ,
+         lookup("d_carrier_acct",'keystr','keystr').account_nm                
+         );
+
+
+out0.ctrx_d_cag.rx_grp_nbr::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').rx_grp_nbr  
+         );
+
+
+out0.ctrx_d_cag.account_id::depends_on(
+         in.acaccd
+         );
+
+
+out0.ctrx_d_cag.clncl_acct_lvl::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_acct_lvl  
+         );
+
+
+out0.ctrx_d_cag.hm_dlvry_only_ind::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_only_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_stat_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_only_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_stat_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').carrier_id         
+         );
+
+
+out0.ctrx_d_cag.group_city_nm::depends_on(
+         in.acmztx
+         );
+
+
+out0.ctrx_d_cag.clncl_user_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_user_flg  
+         );
+
+
+out0.ctrx_d_cag.cag_actv_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_active_cag_flag",'keystr','keystr','keystr').cag_actv_flg  
+         );
+
+
+out0.ctrx_d_cag.carrier_category_desc::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.hcit_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').hcit_flg  
+         );
+
+
+out0.ctrx_d_cag.clncl_clean_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_clean_nm  
+         );
+
+
+out0.ctrx_d_cag.rx_bin::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').rx_bin  
+         );
+
+
+out0.ctrx_d_cag.lob::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').lob  
+         );
+
+
+out0.ctrx_d_cag.group_st_cd::depends_on(
+         in.acojst
+         );
+
+
+out0.ctrx_d_cag.carrier_category_id::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.clncl_trmntn_dt::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_trmntn_dt  
+         );
+
+
+out0.ctrx_d_cag.employer_group_nm::depends_on(
+         in.acattx,
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("f_benft_file_extnd_lkp",'keystr','keystr','keystr').employer_group_nm  
+         );
+
+
+out0.ctrx_d_cag.inr_user_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').inr_user_flg  
+         );
+
+
+out0.ctrx_d_cag.malvl::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').malvl  
+         );
+
+
+out0.ctrx_d_cag.bseg_clt_typ::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').bseg_clt_typ  
+         );
+
+
+out0.ctrx_d_cag.carve_typ::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').carve_typ  
+         );
+
+
+out0.ctrx_d_cag.coalition_trmntn_dt::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').coalition_trmntn_dt  
+         );
+
+
+out0.ctrx_d_cag.group_zip_cd::depends_on(
+         in.acm0tx
+         );
+
+
+out0.ctrx_d_cag.contract_num::depends_on(
+         in.acadcd,
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.reb_payeeid::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').reb_payeeid  
+         );
+
+
+out0.ctrx_d_cag.rebates_only_ind::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_only_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_stat_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_only_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_stat_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').carrier_id         
+         );
+
+
+out0.ctrx_d_cag.carrier_state_cd::depends_on(
+         in.acaacd,
+         lookup("d_carrier",'keystr').carrier_state_cd  
+         );
+
+
+out0.ctrx_d_cag.coalition_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').coalition_nm  
+         );
+
+
+out0.ctrx_d_cag.clncl_eff_dt::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_eff_dt  
+         );
+
+
+out0.ctrx_d_cag.mdm_cageid::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').mdm_cageid  
+         );
+
+
+out0.ctrx_d_cag.hospice_tier::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').hospice_tier  
+         );
+
+
+out0.ctrx_d_cag.bseg_srv_typ::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').bseg_srv_typ  
+         );
+
+
+out0.ctrx_d_cag.client_affiliation::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').client_affiliation  
+         );
+
+
+out0.ctrx_d_cag.pvcy_excl_ind::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.clncl_client_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_client_nm  
+         );
+
+
+out0.ctrx_d_cag.group_state_cd_sk::depends_on(
+         in.acojst,
+         lookup("l_state_lkp",'keystr').state_cd_sk  
+         );
+
+
+out0.ctrx_d_cag.group_addr2::depends_on(
+         in.acmytx
+         );
+
+
+out0.ctrx_d_cag.pbp_id::depends_on(
+         in.acaccd,
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.client_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("client_id_cag_mask",'keystr','keystr','keystr').client_id  
+         );
+
+
+out0.ctrx_d_cag.adhc_user_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').adhc_user_flg  
+         );
+
+
+out0.ctrx_d_cag.employer_group_id::depends_on(
+         in.acadcd
+         );
+
+
+out0.ctrx_d_cag.geography::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').geography  
+         );
+
+
+out0.ctrx_d_cag.coalition_eff_dt::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').coalition_eff_dt  
+         );
+
+
+out0.ctrx_d_cag.clncl_rgn::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_rgn  
+         );
+
+
+out0.ctrx_d_cag.fdm_client_id::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').fdm_client_id  
+         );
+
+
+out0.ctrx_d_cag.suppress::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').suppress  
+         );
+
+
+out0.ctrx_d_cag.cag_sense_sk::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').cag_sense_sk  
+         );
+
+
+out0.ctrx_d_cag.client_id::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("client_id_cag_mask",'keystr','keystr','keystr').client_id  
+         );
+
+
+out0.ctrx_d_cag.clncl_client_rollup_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_client_rollup_nm  
+         );
+
+
+out0.ctrx_d_cag.grp_renewal_dt::depends_on(
+         in.acahdt
+         /*   Rule: "Compute ctrx_d_cag.grp_renewal_dt"   */ );
+
+
+out0.ctrx_d_cag.legacy_org::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').legacy_org  
+         );
+
+
+out0.c_d_carr_acc.account_id::depends_on(
+         in.acaccd
+         );
+
+
+out0.ctrx_d_cag.clncl_st::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_st  
+         );
+
+
+out0.ctrx_d_cag.test_flg::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').test_flg  
+         );
+
+
+out0.ctrx_d_cag.rx_pcn::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').rx_pcn  
+         );
+
+
+out0.ctrx_d_cag.mod_custid::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').mod_custid  
+         );
+
+
+out0.ctrx_d_cag.busns_typ::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("rccagp",'keystr','keystr','keystr').hyf4c6  
+         );
+
+
+out0.ctrx_d_cag.segment::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').segment  
+         );
+
+
+out0.ctrx_d_cag.group_addr1::depends_on(
+         in.acmxtx
+         );
+
+
+out0.ctrx_d_cag.rebates_stat_ind::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_only_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_stat_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_only_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_stat_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').carrier_id         
+         );
+
+
+out0.dxf_src_rec_cnt::depends_on(
+         in.dxf_src_rec_cnt
+         );
+
+
+out0.ctrx_d_cag.cag_grp::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').cag_grp  
+         );
+
+
+out0.ctrx_d_cag.hm_dlvry_stat_ind::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_only_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').rebates_stat_ind   ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_only_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').hm_dlvry_stat_ind  ,
+         lookup("d_cag_ind_lkp",'keystr','keystr','keystr').carrier_id         
+         );
+
+
+out0.ctrx_d_cag.carrier_nm::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("d_carrier",'keystr').carrier_nm                                 ,
+         lookup("f_benft_file_extnd_lkp",'keystr','keystr','keystr').carrier_nm  
+         );
+
+
+out0.ctrx_d_cag.funding_arrangment_desc::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').funding_arrangment_desc  
+         );
+
+
+out0.ctrx_d_cag.carrier_id::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.clncl_trans_dt::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("lkp_cag_sense",'keystr','keystr','keystr').clncl_trans_dt  
+         );
+
+
+out0.ctrx_d_cag.gps_plan_cd::depends_on(
+         in.acadcd,
+         in.acaccd,
+         in.acaacd,
+         lookup("cag_gps_plan_code",'keystr','keystr','keystr').gps_plan_code  
+         );
+
+
+out0.ctrx_d_cag.group_cntry::depends_on(
+         in.acpxc2
+         );
+
+
+out0.ctrx_d_carr.carrier_id::depends_on(
+         in.acaacd
+         );
+
+
+out0.ctrx_d_cag.src_env_sk::depends_on(
+         in.acaacd,
+         in.rxt_src_envrt_id,
+         lookup("d_carrier_non_placeholder_lkp",'keystr').src_env_sk  
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcgrpp_to_the_ctrx_d_cag_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_d_cag.prd_grp,'ctrx_d_cag.prd_grp',1,3]
+     [out0.ctrx_d_cag.pricing_type,'ctrx_d_cag.pricing_type',1,3]
+     [out0.ctrx_d_cag.pharmacy_rider_cd,'ctrx_d_cag.pharmacy_rider_cd',1,0]
+     [out0.c_d_carr_acc.carrier_id,'c_d_carr_acc.carrier_id',1,1]
+     [out0.ctrx_d_cag.rx_client_id,'ctrx_d_cag.rx_client_id',1,3]
+     [out0.ctrx_d_cag.sec_flg,'ctrx_d_cag.sec_flg',1,0]
+     [out0.ctrx_d_cag.bseg_bus_typ,'ctrx_d_cag.bseg_bus_typ',1,3]
+     [out0.ctrx_d_cag.renewal_dt,'ctrx_d_cag.renewal_dt',1,0]
+     [out0.ctrx_d_cag.account_nm,'ctrx_d_cag.account_nm',1,3]
+     [out0.ctrx_d_cag.rx_grp_nbr,'ctrx_d_cag.rx_grp_nbr',1,3]
+     [out0.ctrx_d_cag.migration_effective_dt,'ctrx_d_cag.migration_effective_dt',1,0]
+     [out0.ctrx_d_cag.funding_arrangment_cd,'ctrx_d_cag.funding_arrangment_cd',1,0]
+     [out0.ctrx_d_cag.acct_product_type_desc,'ctrx_d_cag.acct_product_type_desc',1,0]
+     [out0.ctrx_d_cag.account_id,'ctrx_d_cag.account_id',1,1]
+     [out0.ctrx_d_cag.clncl_acct_lvl,'ctrx_d_cag.clncl_acct_lvl',1,3]
+     [out0.ctrx_d_cag.hm_dlvry_only_ind,'ctrx_d_cag.hm_dlvry_only_ind',1,8]
+     [out0.ctrx_d_cag.group_city_nm,'ctrx_d_cag.group_city_nm',1,0]
+     [out0.ctrx_d_cag.pick_lob_cd,'ctrx_d_cag.pick_lob_cd',1,0]
+     [out0.ctrx_d_cag.clncl_user_flg,'ctrx_d_cag.clncl_user_flg',1,3]
+     [out0.ctrx_d_cag.cag_actv_flg,'ctrx_d_cag.cag_actv_flg',1,3]
+     [out0.ctrx_d_cag.carrier_category_desc,'ctrx_d_cag.carrier_category_desc',1,0]
+     [out0.ctrx_d_cag.hcit_flg,'ctrx_d_cag.hcit_flg',1,3]
+     [out0.ctrx_d_cag.hmo_acct_dvsn_cd,'ctrx_d_cag.hmo_acct_dvsn_cd',1,0]
+     [out0.ctrx_d_cag.pa_site_nm,'ctrx_d_cag.pa_site_nm',1,0]
+     [out0.ctrx_d_cag.clncl_clean_nm,'ctrx_d_cag.clncl_clean_nm',1,3]
+     [out0.ctrx_d_cag.rx_bin,'ctrx_d_cag.rx_bin',1,3]
+     [out0.ctrx_d_cag.lob,'ctrx_d_cag.lob',1,3]
+     [out0.ctrx_d_cag.group_st_cd,'ctrx_d_cag.group_st_cd',1,0]
+     [out0.ctrx_d_cag.accumulator_ind,'ctrx_d_cag.accumulator_ind',1,0]
+     [out0.ctrx_d_cag.custom_no,'ctrx_d_cag.custom_no',1,0]
+     [out0.ctrx_d_cag.carrier_category_id,'ctrx_d_cag.carrier_category_id',1,0]
+     [out0.ctrx_d_cag.plan_option_id,'ctrx_d_cag.plan_option_id',1,0]
+     [out0.ctrx_d_cag.speciality_ind,'ctrx_d_cag.speciality_ind',1,0]
+     [out0.ctrx_d_cag.franchise_no,'ctrx_d_cag.franchise_no',1,0]
+     [out0.ctrx_d_cag.sold_market_site_cd,'ctrx_d_cag.sold_market_site_cd',1,0]
+     [out0.ctrx_d_cag.clncl_trmntn_dt,'ctrx_d_cag.clncl_trmntn_dt',1,3]
+     [out0.ctrx_d_cag.product_cd,'ctrx_d_cag.product_cd',1,0]
+     [out0.ctrx_d_cag.carrier_acct_sk,'ctrx_d_cag.carrier_acct_sk',1,0]
+     [out0.ctrx_d_cag.employer_group_nm,'ctrx_d_cag.employer_group_nm',1,3]
+     [out0.ctrx_d_cag.inr_user_flg,'ctrx_d_cag.inr_user_flg',1,3]
+     [out0.ctrx_d_cag.malvl,'ctrx_d_cag.malvl',1,3]
+     [out0.ctrx_d_cag.bseg_clt_typ,'ctrx_d_cag.bseg_clt_typ',1,3]
+     [out0.ctrx_d_cag.oracle_client_cd,'ctrx_d_cag.oracle_client_cd',1,0]
+     [out0.ctrx_d_cag.migration_ind,'ctrx_d_cag.migration_ind',1,0]
+     [out0.ctrx_d_cag.carve_typ,'ctrx_d_cag.carve_typ',1,3]
+     [out0.ctrx_d_cag.revn_ind,'ctrx_d_cag.revn_ind',1,0]
+     [out0.ctrx_d_cag.coalition_trmntn_dt,'ctrx_d_cag.coalition_trmntn_dt',1,3]
+     [out0.ctrx_d_cag.group_zip_cd,'ctrx_d_cag.group_zip_cd',1,0]
+     [out0.ctrx_d_cag.contract_num,'ctrx_d_cag.contract_num',1,0]
+     [out0.ctrx_d_cag.reb_payeeid,'ctrx_d_cag.reb_payeeid',1,3]
+     [out0.ctrx_d_cag.rebates_only_ind,'ctrx_d_cag.rebates_only_ind',1,8]
+     [out0.ctrx_d_cag.acct_product_line_desc,'ctrx_d_cag.acct_product_line_desc',1,0]
+     [out0.ctrx_d_cag.carrier_state_cd,'ctrx_d_cag.carrier_state_cd',1,1]
+     [out0.ctrx_d_cag.coalition_nm,'ctrx_d_cag.coalition_nm',1,3]
+     [out0.ctrx_d_cag.clncl_eff_dt,'ctrx_d_cag.clncl_eff_dt',1,3]
+     [out0.ctrx_d_cag.claim_suffix_cd,'ctrx_d_cag.claim_suffix_cd',1,0]
+     [out0.ctrx_d_cag.mdm_cageid,'ctrx_d_cag.mdm_cageid',1,3]
+     [out0.ctrx_d_cag.hospice_tier,'ctrx_d_cag.hospice_tier',1,3]
+     [out0.ctrx_d_cag.orignl_src_sys_typ,'ctrx_d_cag.orignl_src_sys_typ',1,0]
+     [out0.ctrx_d_cag.cob_ind,'ctrx_d_cag.cob_ind',1,0]
+     [out0.ctrx_d_cag.platform_ind,'ctrx_d_cag.platform_ind',1,0]
+     [out0.ctrx_d_cag.bseg_srv_typ,'ctrx_d_cag.bseg_srv_typ',1,3]
+     [out0.ctrx_d_cag.segment_ind,'ctrx_d_cag.segment_ind',1,0]
+     [out0.ctrx_d_cag.plan_variation_cd,'ctrx_d_cag.plan_variation_cd',1,0]
+     [out0.ctrx_d_cag.client_affiliation,'ctrx_d_cag.client_affiliation',1,3]
+     [out0.ctrx_d_cag.pvcy_excl_ind,'ctrx_d_cag.pvcy_excl_ind',1,0]
+     [out0.ctrx_d_cag.pcmt_plan_id,'ctrx_d_cag.pcmt_plan_id',1,0]
+     [out0.ctrx_d_cag.clncl_client_nm,'ctrx_d_cag.clncl_client_nm',1,3]
+     [out0.ctrx_d_cag.group_state_cd_sk,'ctrx_d_cag.group_state_cd_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_d_cag.coc_cd,'ctrx_d_cag.coc_cd',1,0]
+     [out0.ctrx_d_cag.group_addr2,'ctrx_d_cag.group_addr2',1,0]
+     [out0.ctrx_d_cag.product_id,'ctrx_d_cag.product_id',1,0]
+     [out0.ctrx_d_cag.pbp_id,'ctrx_d_cag.pbp_id',1,0]
+     [out0.ctrx_d_cag.iplan_ind,'ctrx_d_cag.iplan_ind',1,0]
+     [out0.ctrx_d_cag.client_nm,'ctrx_d_cag.client_nm',1,1]
+     [out0.ctrx_d_cag.adhc_user_flg,'ctrx_d_cag.adhc_user_flg',1,3]
+     [out0.ctrx_d_cag.employer_group_id,'ctrx_d_cag.employer_group_id',1,1]
+     [out0.ctrx_d_cag.pcmt_mbr_group_contrct_id,'ctrx_d_cag.pcmt_mbr_group_contrct_id',1,0]
+     [out0.ctrx_d_cag.erisa_id,'ctrx_d_cag.erisa_id',1,0]
+     [out0.ctrx_d_cag.geography,'ctrx_d_cag.geography',1,3]
+     [out0.ctrx_d_cag.legacy_csp,'ctrx_d_cag.legacy_csp',1,0]
+     [out0.ctrx_d_cag.coalition_eff_dt,'ctrx_d_cag.coalition_eff_dt',1,3]
+     [out0.ctrx_d_cag.clncl_rgn,'ctrx_d_cag.clncl_rgn',1,3]
+     [out0.ctrx_d_cag.fdm_client_id,'ctrx_d_cag.fdm_client_id',1,3]
+     [out0.ctrx_d_cag.suppress,'ctrx_d_cag.suppress',1,3]
+     [out0.ctrx_d_cag.cag_sense_sk,'ctrx_d_cag.cag_sense_sk',1,3]
+     [out0.ctrx_d_cag.spclty_eff_dt,'ctrx_d_cag.spclty_eff_dt',1,0]
+     [out0.ctrx_d_cag.client_id,'ctrx_d_cag.client_id',2,0]
+     [out0.ctrx_d_cag.clncl_client_rollup_nm,'ctrx_d_cag.clncl_client_rollup_nm',1,3]
+     [out0.ctrx_d_cag.grp_renewal_dt,'ctrx_d_cag.grp_renewal_dt',3,2]
+     [out0.ctrx_d_cag.acct_product_type_id,'ctrx_d_cag.acct_product_type_id',1,0]
+     [out0.ctrx_d_cag.acctg_lob_sk,'ctrx_d_cag.acctg_lob_sk',1,0]
+     [out0.ctrx_d_cag.carrier_sk,'ctrx_d_cag.carrier_sk',1,0]
+     [out0.ctrx_d_cag.legacy_org,'ctrx_d_cag.legacy_org',1,3]
+     [out0.c_d_carr_acc.account_id,'c_d_carr_acc.account_id',1,1]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_d_cag.clncl_st,'ctrx_d_cag.clncl_st',1,3]
+     [out0.ctrx_d_cag.test_flg,'ctrx_d_cag.test_flg',1,3]
+     [out0.ctrx_d_cag.gl_product_cd,'ctrx_d_cag.gl_product_cd',1,0]
+     [out0.ctrx_d_cag.reporting_cd,'ctrx_d_cag.reporting_cd',1,0]
+     [out0.ctrx_d_cag.cob_effective_dt,'ctrx_d_cag.cob_effective_dt',1,0]
+     [out0.ctrx_d_cag.policy_no,'ctrx_d_cag.policy_no',1,0]
+     [out0.ctrx_d_cag.rx_pcn,'ctrx_d_cag.rx_pcn',1,3]
+     [out0.ctrx_d_cag.product_classifier_id,'ctrx_d_cag.product_classifier_id',1,0]
+     [out0.ctrx_d_cag.mod_custid,'ctrx_d_cag.mod_custid',1,3]
+     [out0.ctrx_d_cag.legacy_group_id,'ctrx_d_cag.legacy_group_id',1,0]
+     [out0.ctrx_d_cag.obligor_cd,'ctrx_d_cag.obligor_cd',1,0]
+     [out0.ctrx_d_cag.cag_sk,'ctrx_d_cag.cag_sk',1,0]
+     [out0.ctrx_d_cag.dar_lob_sk,'ctrx_d_cag.dar_lob_sk',1,0]
+     [out0.ctrx_d_cag.busns_typ,'ctrx_d_cag.busns_typ',1,3]
+     [out0.ctrx_d_cag.segment,'ctrx_d_cag.segment',1,3]
+     [out0.ctrx_d_cag.group_addr1,'ctrx_d_cag.group_addr1',1,0]
+     [out0.ctrx_d_cag.rebates_stat_ind,'ctrx_d_cag.rebates_stat_ind',1,8]
+     [out0.ctrx_d_cag.client_carrier_id,'ctrx_d_cag.client_carrier_id',1,0]
+     [out0.ctrx_d_cag.gl_customer_cd,'ctrx_d_cag.gl_customer_cd',1,0]
+     [out0.ctrx_d_cag.claim_account_cd,'ctrx_d_cag.claim_account_cd',1,0]
+     [out0.ctrx_d_cag.acct_product_line_id,'ctrx_d_cag.acct_product_line_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_d_cag.cag_grp,'ctrx_d_cag.cag_grp',1,3]
+     [out0.ctrx_d_cag.hm_dlvry_stat_ind,'ctrx_d_cag.hm_dlvry_stat_ind',1,8]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_d_cag.client_sk,'ctrx_d_cag.client_sk',1,0]
+     [out0.ctrx_d_cag.carrier_nm,'ctrx_d_cag.carrier_nm',1,3]
+     [out0.ctrx_d_cag.funding_arrangment_desc,'ctrx_d_cag.funding_arrangment_desc',1,3]
+     [out0.ctrx_d_cag.transaction_ts,'ctrx_d_cag.transaction_ts',1,0]
+     [out0.ctrx_d_cag.lead_partner_cd,'ctrx_d_cag.lead_partner_cd',1,0]
+     [out0.ctrx_d_cag.acct_client_type_id,'ctrx_d_cag.acct_client_type_id',1,0]
+     [out0.ctrx_d_cag.carrier_id,'ctrx_d_cag.carrier_id',1,1]
+     [out0.ctrx_d_cag.clncl_trans_dt,'ctrx_d_cag.clncl_trans_dt',1,3]
+     [out0.ctrx_d_cag.mbr_group_id,'ctrx_d_cag.mbr_group_id',1,0]
+     [out0.ctrx_d_cag.sales_office_cd,'ctrx_d_cag.sales_office_cd',1,0]
+     [out0.ctrx_d_cag.shared_arrangement_ind,'ctrx_d_cag.shared_arrangement_ind',1,0]
+     [out0.ctrx_d_cag.gps_plan_cd,'ctrx_d_cag.gps_plan_cd',1,0]
+     [out0.ctrx_d_cag.group_cntry,'ctrx_d_cag.group_cntry',1,0]
+     [out0.ctrx_d_cag.legal_entity_cd,'ctrx_d_cag.legal_entity_cd',1,0]
+     [out0.ctrx_d_cag.acct_client_type_desc,'ctrx_d_cag.acct_client_type_desc',1,0]
+     [out0.ctrx_d_carr.carrier_id,'ctrx_d_carr.carrier_id',1,1]
+     [out0.ctrx_d_cag.src_env_sk,'ctrx_d_cag.src_env_sk',1,1]
+     [out0.ctrx_d_cag.situs_state_cd,'ctrx_d_cag.situs_state_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.acadcd,'acadcd',8,62]
+     [in0.acattx,'acattx',1,1]
+     [in0.acmztx,'acmztx',1,1]
+     [in0.acaccd,'acaccd',10,63]
+     [in0.acmxtx,'acmxtx',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.acahdt,'acahdt',5,3]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.acojst,'acojst',2,2]
+     [in0.acpxc2,'acpxc2',1,1]
+     [in0.acmytx,'acmytx',1,1]
+     [in0.acm0tx,'acm0tx',1,1]
+     [in0.acaacd,'acaacd',16,70]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',3,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("l_state_lkp").state_cd_sk','state_cd_sk',1,1]
+     ['lookup("lkp_cag_sense").clncl_eff_dt','clncl_eff_dt',1,1]
+     ['lookup("lkp_cag_sense").carve_typ','carve_typ',1,1]
+     ['lookup("lkp_cag_sense").mdm_cageid','mdm_cageid',1,1]
+     ['lookup("d_carrier").carrier_nm','carrier_nm',3,1]
+     ['lookup("d_cag_ind_lkp").rebates_only_ind','rebates_only_ind',1,9]
+     ['lookup("lkp_cag_sense").bseg_srv_typ','bseg_srv_typ',1,1]
+     ['lookup("lkp_cag_sense").coalition_nm','coalition_nm',1,1]
+     ['lookup("f_benft_file_extnd_lkp").employer_group_nm','employer_group_nm',4,1]
+     ['lookup("lkp_cag_sense").funding_arrangment_desc','funding_arrangment_desc',1,1]
+     ['lookup("d_cag_ind_lkp").rebates_stat_ind','rebates_stat_ind',1,9]
+     ['lookup("lkp_cag_sense").client_affiliation','client_affiliation',1,1]
+     ['lookup("lkp_cag_sense").clncl_clean_nm','clncl_clean_nm',1,1]
+     ['lookup("lkp_cag_sense").adhc_user_flg','adhc_user_flg',1,1]
+     ['lookup("f_benft_file_extnd_lkp").acct_nm','acct_nm',4,1]
+     ['lookup("lkp_cag_sense").clncl_trans_dt','clncl_trans_dt',1,1]
+     ['lookup("d_cag_ind_lkp").hm_dlvry_only_ind','hm_dlvry_only_ind',1,9]
+     ['lookup("d_carrier_acct").account_nm','account_nm',1,1]
+     ['lookup("lkp_cag_sense").clncl_client_nm','clncl_client_nm',1,1]
+     ['lookup("lkp_cag_sense").clncl_user_flg','clncl_user_flg',1,1]
+     ['lookup("d_carrier_non_placeholder_lkp").src_env_sk','src_env_sk',2,1]
+     ['lookup("lkp_cag_sense").segment','segment',1,1]
+     ['lookup("lkp_active_cag_flag").cag_actv_flg','cag_actv_flg',1,1]
+     ['lookup("lkp_cag_sense").rx_bin','rx_bin',1,1]
+     ['lookup("lkp_cag_sense").rx_grp_nbr','rx_grp_nbr',1,1]
+     ['lookup("lkp_cag_sense").inr_user_flg','inr_user_flg',1,1]
+     ['lookup("lkp_cag_sense").hospice_tier','hospice_tier',1,1]
+     ['lookup("lkp_cag_sense").fdm_client_id','fdm_client_id',1,1]
+     ['lookup("lkp_cag_sense").rx_pcn','rx_pcn',1,1]
+     ['lookup("lkp_cag_sense").cag_sense_sk','cag_sense_sk',1,1]
+     ['lookup("lkp_cag_sense").pricing_type','pricing_type',1,1]
+     ['lookup("lkp_cag_sense").mod_custid','mod_custid',1,1]
+     ['lookup("lkp_cag_sense").clncl_trmntn_dt','clncl_trmntn_dt',1,1]
+     ['lookup("lkp_cag_sense").lob','lob',1,1]
+     ['lookup("lkp_cag_sense").legacy_org','legacy_org',1,1]
+     ['lookup("lkp_cag_sense").rx_client_id','rx_client_id',1,1]
+     ['lookup("lkp_cag_sense").hcit_flg','hcit_flg',1,1]
+     ['lookup("lkp_cag_sense").clncl_acct_lvl','clncl_acct_lvl',1,1]
+     ['lookup("lkp_cag_sense").reb_payeeid','reb_payeeid',1,1]
+     ['lookup("lkp_cag_sense").geography','geography',1,1]
+     ['lookup("lkp_cag_sense").coalition_eff_dt','coalition_eff_dt',1,1]
+     ['lookup("lkp_cag_sense").coalition_trmntn_dt','coalition_trmntn_dt',1,1]
+     ['lookup("lkp_cag_sense").suppress','suppress',1,1]
+     ['lookup("lkp_cag_sense").test_flg','test_flg',1,1]
+     ['lookup("client_id_cag_mask").client_id','client_id',6,2]
+     ['lookup("lkp_cag_sense").prd_grp','prd_grp',1,1]
+     ['lookup("d_cag_ind_lkp").hm_dlvry_stat_ind','hm_dlvry_stat_ind',1,9]
+     ['lookup("d_cag_ind_lkp").carrier_id','carrier_id',1,9]
+     ['lookup("lkp_cag_sense").bseg_clt_typ','bseg_clt_typ',1,1]
+     ['lookup("f_benft_file_extnd_lkp").carrier_nm','carrier_nm',1,1]
+     ['lookup("rccagp").hyf4c6','hyf4c6',1,1]
+     ['lookup("lkp_cag_sense").clncl_client_rollup_nm','clncl_client_rollup_nm',1,1]
+     ['lookup("lkp_cag_sense").clncl_st','clncl_st',1,1]
+     ['lookup("lkp_cag_sense").clncl_rgn','clncl_rgn',1,1]
+     ['lookup("d_carrier").carrier_state_cd','carrier_state_cd',1,1]
+     ['lookup("lkp_cag_sense").bseg_bus_typ','bseg_bus_typ',1,1]
+     ['lookup("cag_gps_plan_code").gps_plan_code','gps_plan_code',2,1]
+     ['lookup("lkp_cag_sense").malvl','malvl',1,1]
+     ['lookup("lkp_cag_sense").cag_grp','cag_grp',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_31 not NULL = 0;
+let int bzt_33 not NULL = 0;
+let int bzt_58 not NULL = 0;
+let unicode string(integer(4)) bzt_59;
+let int bzt_60 not NULL = 0;
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) ctrx_d_cag_cag_sk = -1;
+let decimal("\x01",0) ctrx_d_cag_dar_lob_sk = -1;
+let decimal("\x01",0) ctrx_d_cag_acctg_lob_sk = -1;
+let decimal("\x01",0) ctrx_d_cag_client_sk = -1;
+let decimal("\x01",0) ctrx_d_cag_carrier_sk = -1;
+let decimal("\x01",0) ctrx_d_cag_carrier_acct_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_client_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_cag_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_client_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_carrier_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_account_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_employer_group_nm;
+let decimal("\x01",0) ctrx_d_cag_pvcy_excl_ind = fail_if_error(string_lrtrim(in0.acaacd) member  [vector  'ACTRCHSI','080005'] ? 1:0);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_pa_site_nm = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_carrier_category_id = fail_if_error(string_lrtrim(in0.acaacd) == "PDPIND" ? "C":"A");
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_carrier_category_desc = fail_if_error(string_lrtrim(in0.acaacd) == "PDPIND" ? "C":"A");
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_carrier_state_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_client_type_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_client_type_desc = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_product_type_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_product_type_desc = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_product_line_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_product_line_desc = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_contract_num = fail_if_error(string_lrtrim(in0.acaacd) member  [vector  "MPDOVA","PDPIND"] ? string_substring(in0.acadcd,2,5) : '-');
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_pbp_id = fail_if_error(string_lrtrim(in0.acaacd) member  [vector  "MPDOVA","PDPIND"] ? string_substring(in0.acaccd,4,3) : '-');
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_gps_plan_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_oracle_client_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_claim_suffix_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=12) ctrx_d_cag_custom_no = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_funding_arrangment_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_plan_variation_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_policy_no = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_reporting_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_product_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_segment_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_hmo_acct_dvsn_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_claim_account_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_sold_market_site_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_situs_state_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_platform_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_client_carrier_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_shared_arrangement_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_sales_office_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_accumulator_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_erisa_id = '-';
+let date("YYYYMMDD")("\x01") ctrx_d_cag_renewal_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_iplan_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_legal_entity_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_franchise_no = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_lead_partner_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_coc_cd = '-';
+let decimal("\x01",0) ctrx_d_cag_migration_ind = 0;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_migration_effective_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_product_classifier_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_pharmacy_rider_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_cag_cob_ind = '-';
+let date("YYYYMMDD")("\x01") ctrx_d_cag_cob_effective_dt;
+let datetime("YYYYMMDDHH24MISS")("\x01") ctrx_d_cag_transaction_ts;
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_obligor_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_speciality_ind = '-';
+let date("YYYYMMDD")("\x01") ctrx_d_cag_spclty_eff_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_pick_lob_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=6) ctrx_d_cag_gl_product_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_gl_customer_cd = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=8) ctrx_d_cag_product_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_hm_dlvry_only_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_hm_dlvry_stat_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_rebates_only_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_rebates_stat_ind;
+let decimal("\x01",0) ctrx_d_cag_src_env_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_srv_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_bus_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_clt_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_busns_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=25) ctrx_d_cag_group_addr1 = fail_if_error(string_lrtrim(in0.acmxtx));
+let string("\x01",charset="iso-8859-15", maximum_length=15) ctrx_d_cag_group_addr2 = fail_if_error(string_lrtrim(in0.acmytx));
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_cag_group_city_nm = fail_if_error(string_lrtrim(in0.acmztx));
+let decimal("\x01",0) ctrx_d_cag_group_state_cd_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_group_st_cd = fail_if_error(string_lrtrim(in0.acojst));
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_group_zip_cd = fail_if_error(string_lrtrim(in0.acm0tx));
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_group_cntry = fail_if_error(string_lrtrim(in0.acpxc2));
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_cag_actv_flg;
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_mbr_group_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_plan_option_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_cag_pcmt_mbr_group_contrct_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_pcmt_plan_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_legacy_group_id = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_legacy_csp = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_revn_ind = '-';
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_orignl_src_sys_typ = '-';
+let date("YYYYMMDD")("\x01") ctrx_d_cag_grp_renewal_dt;
+let decimal("\x01",0) ctrx_d_cag_cag_sense_sk;
+let decimal("\x01",0) ctrx_d_cag_test_flg;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_legacy_org;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_pricing_type;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_segment;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_lob;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_hospice_tier;
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_malvl;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_suppress;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_prd_grp;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_funding_arrangment_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_mod_custid;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_reb_payeeid;
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_geography;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_client_affiliation;
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_fdm_client_id;
+let string("\x01",charset="iso-8859-15", maximum_length=400) ctrx_d_cag_mdm_cageid;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_carve_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_rx_bin;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_rx_pcn;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_rx_grp_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_clncl_acct_lvl;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_clncl_client_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_clncl_clean_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=255) ctrx_d_cag_clncl_client_rollup_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_clncl_st;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_clncl_rgn;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_clncl_eff_dt;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_clncl_trmntn_dt;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_clncl_trans_dt;
+let decimal("\x01",0) ctrx_d_cag_inr_user_flg;
+let decimal("\x01",0) ctrx_d_cag_clncl_user_flg;
+let decimal("\x01",0) ctrx_d_cag_adhc_user_flg;
+let decimal("\x01",0) ctrx_d_cag_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_coalition_nm;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_coalition_eff_dt;
+let date("YYYYMMDD")("\x01") ctrx_d_cag_coalition_trmntn_dt;
+let decimal("\x01",0) ctrx_d_cag_rx_client_id;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_cag_grp;
+let decimal("\x01",0) ctrx_d_cag_hcit_flg;
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_d_carr_acc_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_d_carr_acc_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_carr_carrier_id;
+let unicode string(int)[int] cag_ind_lkp = allocate_with_defaults();
+
+bzt_37_97d014ac_5756b186_bcc4_2 = 0;
+bzt_44_97d014ac_5756b186_bcc4_2 = 0;
+bzt_49_97d014ac_5756b186_bcc4_2 = 0;
+bzt_54_97d014ac_5756b186_bcc4_2 = 0;
+bzt_0_97d014ac_5756b186_bcc4_2.inner = fail_if_error((if ((is_null(in0.acaacd) || is_blank(in0.acaacd)))
+   '-'
+ else
+   in0.acaacd));
+bzt_1_97d014ac_5756b186_bcc4_2.inner = fail_if_error((if ((is_null(in0.acaccd) || is_blank(in0.acaccd)))
+   '-'
+ else
+   in0.acaccd));
+bzt_2_97d014ac_5756b186_bcc4_2.inner = fail_if_error((if ((is_null(in0.acadcd) || is_blank(in0.acadcd)))
+   '-'
+ else
+   in0.acadcd));
+
+
+/*   Rule:Compute ctrx_d_cag.grp_renewal_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of(in0.acahdt)) ==8) && ((is_valid(YYYYMMDD(in0.acahdt))) ==1)),0))begin
+  bzt_33=1;
+  ctrx_d_cag_grp_renewal_dt=YYYYMMDD(in0.acahdt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.acahdt) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.acahdt))) ==1)),0))begin
+  bzt_33=1;
+  ctrx_d_cag_grp_renewal_dt=YYYYMMDD(19000000+ in0.acahdt);
+end
+
+/*   Default value   */
+if(!bzt_33)begin
+  ctrx_d_cag_grp_renewal_dt=fail_if_error(high_date());
+end
+
+/*   Default value   */
+ctrx_d_cag_renewal_dt=fail_if_error(low_date());
+
+/*   Default value   */
+ctrx_d_cag_migration_effective_dt=fail_if_error(low_date());
+
+/*   Default value   */
+ctrx_d_cag_employer_group_id=fail_if_error(bzt_2_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_group_state_cd_sk=fail_if_error(bzt_34_97d014ac_5756b186_bcc4_2(in0).state_cd_sk);
+
+/*   Default value   */
+ctrx_d_cag_spclty_eff_dt=fail_if_error(low_date());
+
+/*   Default value   */
+ctrx_d_cag_client_id=fail_if_error(first_defined(if(is_defined(bzt_38_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), first_defined(string_lrtrim(in0.acaccd),"*"), first_defined(string_lrtrim(in0.acadcd),"*")).client_id)) string_substring(bzt_38_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), first_defined(string_lrtrim(in0.acaccd),"*"), first_defined(string_lrtrim(in0.acadcd),"*")).client_id,0,50) else if(is_defined(bzt_39_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), first_defined(string_lrtrim(in0.acaccd),"*"), "*").client_id)) string_substring(bzt_39_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), first_defined(string_lrtrim(in0.acaccd),"*"), "*").client_id,0,50) else if(is_defined(bzt_40_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), "*","*").client_id)) string_substring(bzt_40_97d014ac_5756b186_bcc4_2(string_lrtrim(in0.acaacd), "*","*").client_id,0,50) else "OPTUM","OPTUM"));
+
+/*   Default value   */
+ctrx_d_cag_client_nm=fail_if_error(ctrx_d_cag_client_id);
+
+/*   Default value   */
+ctrx_d_cag_cob_effective_dt=fail_if_error(low_date());
+
+/*   Default value   */
+ctrx_d_carr_carrier_id=fail_if_error(bzt_0_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_carrier_id=fail_if_error(bzt_0_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_src_env_sk=fail_if_error((decimal(''))(first_defined((if(in0.rxt_src_envrt_id != ((string("")) bzt_41_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).src_env_sk)) bzt_41_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).src_env_sk else in0.rxt_src_envrt_id),in0.rxt_src_envrt_id)));
+
+/*   Default value   */
+ctrx_d_cag_carrier_state_cd=fail_if_error(bzt_45_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).carrier_state_cd);
+
+/*   Default value   */
+c_d_carr_acc_carrier_id=fail_if_error(bzt_0_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_clncl_trmntn_dt=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_trmntn_dt,(date("YYYYMMDD"))"20391231"));
+
+/*   Default value   */
+ctrx_d_cag_clncl_rgn=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_rgn,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_st=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_st,'-'));
+
+/*   Default value   */
+ctrx_d_cag_fdm_client_id=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).fdm_client_id,'-'));
+
+/*   Default value   */
+ctrx_d_cag_mod_custid=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).mod_custid,'-'));
+
+/*   Default value   */
+ctrx_d_cag_suppress=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).suppress,'-'));
+
+/*   Default value   */
+ctrx_d_cag_hospice_tier=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).hospice_tier,'-'));
+
+/*   Default value   */
+ctrx_d_cag_pricing_type=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).pricing_type,'-'));
+
+/*   Default value   */
+ctrx_d_cag_legacy_org=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).legacy_org,'-'));
+
+/*   Default value   */
+ctrx_d_cag_cag_sense_sk=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).cag_sense_sk,0));
+
+/*   Default value   */
+ctrx_d_cag_busns_typ=fail_if_error(bzt_50_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner, bzt_1_97d014ac_5756b186_bcc4_2.inner, bzt_2_97d014ac_5756b186_bcc4_2.inner).hyf4c6);
+
+/*   Default value   */
+ctrx_d_cag_funding_arrangment_desc=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).funding_arrangment_desc,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_eff_dt=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_eff_dt,low_date()));
+
+/*   Default value   */
+ctrx_d_cag_bseg_bus_typ=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).bseg_bus_typ,'-'));
+
+/*   Default value   */
+c_d_carr_acc_account_id=fail_if_error(bzt_1_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_rx_client_id=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).rx_client_id,0));
+
+/*   Default value   */
+ctrx_d_cag_hcit_flg=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).hcit_flg,0));
+
+/*   Default value   */
+ctrx_d_cag_rx_bin=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).rx_bin,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_client_nm=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_client_nm,'-'));
+
+/*   Default value   */
+ctrx_d_cag_client_affiliation=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).client_affiliation,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_clean_nm=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_clean_nm,'-'));
+
+/*   Default value   */
+ctrx_d_cag_adhc_user_flg=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).adhc_user_flg,0));
+
+/*   Default value   */
+ctrx_d_cag_carrier_nm=fail_if_error((if ((is_null(bzt_45_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).carrier_nm) || is_blank(bzt_45_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).carrier_nm)))
+   bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).carrier_nm
+ else
+   bzt_45_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner).carrier_nm));
+
+/*   Default value   */
+ctrx_d_cag_clncl_client_rollup_nm=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_client_rollup_nm,'-'));
+
+/*   Default value   */
+ctrx_d_cag_bseg_clt_typ=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).bseg_clt_typ,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_acct_lvl=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_acct_lvl,'-'));
+
+/*   Default value   */
+ctrx_d_cag_rx_pcn=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).rx_pcn,'-'));
+
+/*   Default value   */
+ctrx_d_cag_rx_grp_nbr=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).rx_grp_nbr,'-'));
+
+/*   Default value   */
+ctrx_d_cag_inr_user_flg=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).inr_user_flg,0));
+
+/*   Default value   */
+ctrx_d_cag_segment=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).segment,'-'));
+
+/*   Default value   */
+ctrx_d_cag_clncl_user_flg=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_user_flg,0));
+
+/*   Default value   */
+ctrx_d_cag_account_nm=fail_if_error((if (sql_or((is_null(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).acct_nm) || is_blank(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).acct_nm)),(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).acct_nm=='-')))
+   bzt_55_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner).account_nm
+ else
+   bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).acct_nm));
+
+/*   Default value   */
+ctrx_d_cag_bseg_srv_typ=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).bseg_srv_typ,'-'));
+
+/*   Default value   */
+ctrx_d_cag_coalition_nm=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).coalition_nm,'-'));
+
+/*   Default value   */
+ctrx_d_cag_malvl=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).malvl,'-'));
+
+/*   Default value   */
+ctrx_d_cag_cag_grp=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).cag_grp,'-'));
+
+/*   Default value   */
+ctrx_d_cag_prd_grp=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).prd_grp,'-'));
+
+/*   Default value   */
+ctrx_d_cag_test_flg=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).test_flg,0));
+
+/*   Default value   */
+ctrx_d_cag_reb_payeeid=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).reb_payeeid,'-'));
+
+/*   Default value   */
+ctrx_d_cag_geography=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).geography,'-'));
+
+/*   Default value   */
+ctrx_d_cag_coalition_eff_dt=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).coalition_eff_dt,low_date()));
+
+/*   Default value   */
+ctrx_d_cag_coalition_trmntn_dt=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).coalition_trmntn_dt,(date("YYYYMMDD"))"20391231"));
+
+/*   Default value   */
+ctrx_d_cag_cag_actv_flg=fail_if_error(first_defined(bzt_56_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).cag_actv_flg,"N"));
+
+/*   Default value   */
+ctrx_d_cag_lob=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).lob,'-'));
+
+/*   Default value   */
+ctrx_d_cag_account_id=fail_if_error(bzt_1_97d014ac_5756b186_bcc4_2.inner);
+
+/*   Default value   */
+ctrx_d_cag_clncl_trans_dt=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).clncl_trans_dt,low_date()));
+
+/*   Default value   */
+ctrx_d_cag_employer_group_nm=fail_if_error((if (sql_or((is_null(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).employer_group_nm) || is_blank(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).employer_group_nm)),(bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).employer_group_nm=='-')))
+   in0.acattx
+ else
+   bzt_51_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).employer_group_nm));
+
+/*   Default value   */
+ctrx_d_cag_mdm_cageid=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).mdm_cageid,'-'));
+
+/*   Default value   */
+ctrx_d_cag_carve_typ=fail_if_error(first_defined(bzt_46_97d014ac_5756b186_bcc4_2(string_upcase(bzt_0_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_1_97d014ac_5756b186_bcc4_2.inner),string_upcase(bzt_2_97d014ac_5756b186_bcc4_2.inner)).carve_typ,'-'));
+
+/*   Rule:Compute cag_ind_lkp  (#1)   */
+if(first_defined(fail_if_error((is_defined( bzt_57_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).carrier_id))),0))begin
+  bzt_58=0;
+  bzt_59=fail_if_error(first_defined( bzt_57_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).hm_dlvry_only_ind, "N"));
+  if(is_defined(bzt_59))begin
+     cag_ind_lkp=vector_append(cag_ind_lkp,bzt_59);
+     if(!bzt_58)begin
+       bzt_58=1;
+       bzt_31=1;
+     end
+  end
+  bzt_58=0;
+  bzt_59=fail_if_error(first_defined( bzt_57_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).hm_dlvry_stat_ind, "N"));
+  if(is_defined(bzt_59))begin
+     cag_ind_lkp=vector_append(cag_ind_lkp,bzt_59);
+     if(!bzt_58)begin
+       bzt_58=1;
+       bzt_31=1;
+     end
+  end
+  bzt_58=0;
+  bzt_59=fail_if_error(first_defined( bzt_57_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).rebates_only_ind, "N"));
+  if(is_defined(bzt_59))begin
+     cag_ind_lkp=vector_append(cag_ind_lkp,bzt_59);
+     if(!bzt_58)begin
+       bzt_58=1;
+       bzt_31=1;
+     end
+  end
+  bzt_58=0;
+  bzt_59=fail_if_error(first_defined( bzt_57_97d014ac_5756b186_bcc4_2(bzt_0_97d014ac_5756b186_bcc4_2.inner,bzt_1_97d014ac_5756b186_bcc4_2.inner,bzt_2_97d014ac_5756b186_bcc4_2.inner).rebates_stat_ind, "N"));
+  if(is_defined(bzt_59))begin
+     cag_ind_lkp=vector_append(cag_ind_lkp,bzt_59);
+     if(!bzt_58)begin
+       bzt_58=1;
+       bzt_31=1;
+     end
+  end
+end
+
+/*   Default value   */
+if(!bzt_31)begin
+  if(is_defined(cag_ind_lkp) && length_of(cag_ind_lkp) == 0)begin
+     cag_ind_lkp=[vector  'N', 'N', 'N', 'N'];
+  end
+end
+
+/*   Default value   */
+ctrx_d_cag_hm_dlvry_stat_ind=fail_if_error(cag_ind_lkp[1]);
+
+/*   Default value   */
+ctrx_d_cag_rebates_stat_ind=fail_if_error(cag_ind_lkp[3]);
+
+/*   Default value   */
+ctrx_d_cag_rebates_only_ind=fail_if_error(cag_ind_lkp[2]);
+
+/*   Default value   */
+ctrx_d_cag_hm_dlvry_only_ind=fail_if_error(cag_ind_lkp[0]);
+
+/*   Default value   */
+ctrx_d_cag_transaction_ts=fail_if_error(low_date());
+
+/*   Default value   */
+ctrx_d_cag_gps_plan_cd=fail_if_error(if(!is_null(bzt_61_97d014ac_5756b186_bcc4_2(in0.acaacd,in0.acaccd,in0.acadcd).gps_plan_code)) bzt_61_97d014ac_5756b186_bcc4_2(in0.acaacd,in0.acaccd,in0.acadcd).gps_plan_code else 'UNK');
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.ctrx_d_cag.cag_sk::ctrx_d_cag_cag_sk;
+  out0.ctrx_d_cag.dar_lob_sk::ctrx_d_cag_dar_lob_sk;
+  out0.ctrx_d_cag.acctg_lob_sk::ctrx_d_cag_acctg_lob_sk;
+  out0.ctrx_d_cag.client_sk::ctrx_d_cag_client_sk;
+  out0.ctrx_d_cag.carrier_sk::ctrx_d_cag_carrier_sk;
+  out0.ctrx_d_cag.carrier_acct_sk::ctrx_d_cag_carrier_acct_sk;
+  out0.ctrx_d_cag.client_id::ctrx_d_cag_client_id;
+  out0.ctrx_d_cag.carrier_id::ctrx_d_cag_carrier_id;
+  out0.ctrx_d_cag.account_id::ctrx_d_cag_account_id;
+  out0.ctrx_d_cag.employer_group_id::ctrx_d_cag_employer_group_id;
+  out0.ctrx_d_cag.client_nm::ctrx_d_cag_client_nm;
+  out0.ctrx_d_cag.carrier_nm::ctrx_d_cag_carrier_nm;
+  out0.ctrx_d_cag.account_nm::ctrx_d_cag_account_nm;
+  out0.ctrx_d_cag.employer_group_nm::ctrx_d_cag_employer_group_nm;
+  out0.ctrx_d_cag.pvcy_excl_ind::ctrx_d_cag_pvcy_excl_ind;
+  out0.ctrx_d_cag.pa_site_nm::ctrx_d_cag_pa_site_nm;
+  out0.ctrx_d_cag.carrier_category_id::ctrx_d_cag_carrier_category_id;
+  out0.ctrx_d_cag.carrier_category_desc::ctrx_d_cag_carrier_category_desc;
+  out0.ctrx_d_cag.carrier_state_cd::ctrx_d_cag_carrier_state_cd;
+  out0.ctrx_d_cag.acct_client_type_id::ctrx_d_cag_acct_client_type_id;
+  out0.ctrx_d_cag.acct_client_type_desc::ctrx_d_cag_acct_client_type_desc;
+  out0.ctrx_d_cag.acct_product_type_id::ctrx_d_cag_acct_product_type_id;
+  out0.ctrx_d_cag.acct_product_type_desc::ctrx_d_cag_acct_product_type_desc;
+  out0.ctrx_d_cag.acct_product_line_id::ctrx_d_cag_acct_product_line_id;
+  out0.ctrx_d_cag.acct_product_line_desc::ctrx_d_cag_acct_product_line_desc;
+  out0.ctrx_d_cag.contract_num::ctrx_d_cag_contract_num;
+  out0.ctrx_d_cag.pbp_id::ctrx_d_cag_pbp_id;
+  out0.ctrx_d_cag.gps_plan_cd::ctrx_d_cag_gps_plan_cd;
+  out0.ctrx_d_cag.oracle_client_cd::ctrx_d_cag_oracle_client_cd;
+  out0.ctrx_d_cag.claim_suffix_cd::ctrx_d_cag_claim_suffix_cd;
+  out0.ctrx_d_cag.custom_no::ctrx_d_cag_custom_no;
+  out0.ctrx_d_cag.funding_arrangment_cd::ctrx_d_cag_funding_arrangment_cd;
+  out0.ctrx_d_cag.plan_variation_cd::ctrx_d_cag_plan_variation_cd;
+  out0.ctrx_d_cag.policy_no::ctrx_d_cag_policy_no;
+  out0.ctrx_d_cag.reporting_cd::ctrx_d_cag_reporting_cd;
+  out0.ctrx_d_cag.product_cd::ctrx_d_cag_product_cd;
+  out0.ctrx_d_cag.segment_ind::ctrx_d_cag_segment_ind;
+  out0.ctrx_d_cag.hmo_acct_dvsn_cd::ctrx_d_cag_hmo_acct_dvsn_cd;
+  out0.ctrx_d_cag.claim_account_cd::ctrx_d_cag_claim_account_cd;
+  out0.ctrx_d_cag.sold_market_site_cd::ctrx_d_cag_sold_market_site_cd;
+  out0.ctrx_d_cag.situs_state_cd::ctrx_d_cag_situs_state_cd;
+  out0.ctrx_d_cag.platform_ind::ctrx_d_cag_platform_ind;
+  out0.ctrx_d_cag.client_carrier_id::ctrx_d_cag_client_carrier_id;
+  out0.ctrx_d_cag.shared_arrangement_ind::ctrx_d_cag_shared_arrangement_ind;
+  out0.ctrx_d_cag.sales_office_cd::ctrx_d_cag_sales_office_cd;
+  out0.ctrx_d_cag.accumulator_ind::ctrx_d_cag_accumulator_ind;
+  out0.ctrx_d_cag.erisa_id::ctrx_d_cag_erisa_id;
+  out0.ctrx_d_cag.renewal_dt::ctrx_d_cag_renewal_dt;
+  out0.ctrx_d_cag.iplan_ind::ctrx_d_cag_iplan_ind;
+  out0.ctrx_d_cag.legal_entity_cd::ctrx_d_cag_legal_entity_cd;
+  out0.ctrx_d_cag.franchise_no::ctrx_d_cag_franchise_no;
+  out0.ctrx_d_cag.lead_partner_cd::ctrx_d_cag_lead_partner_cd;
+  out0.ctrx_d_cag.coc_cd::ctrx_d_cag_coc_cd;
+  out0.ctrx_d_cag.migration_ind::ctrx_d_cag_migration_ind;
+  out0.ctrx_d_cag.migration_effective_dt::ctrx_d_cag_migration_effective_dt;
+  out0.ctrx_d_cag.product_classifier_id::ctrx_d_cag_product_classifier_id;
+  out0.ctrx_d_cag.pharmacy_rider_cd::ctrx_d_cag_pharmacy_rider_cd;
+  out0.ctrx_d_cag.cob_ind::ctrx_d_cag_cob_ind;
+  out0.ctrx_d_cag.cob_effective_dt::ctrx_d_cag_cob_effective_dt;
+  out0.ctrx_d_cag.transaction_ts::ctrx_d_cag_transaction_ts;
+  out0.ctrx_d_cag.obligor_cd::ctrx_d_cag_obligor_cd;
+  out0.ctrx_d_cag.speciality_ind::ctrx_d_cag_speciality_ind;
+  out0.ctrx_d_cag.spclty_eff_dt::ctrx_d_cag_spclty_eff_dt;
+  out0.ctrx_d_cag.pick_lob_cd::ctrx_d_cag_pick_lob_cd;
+  out0.ctrx_d_cag.gl_product_cd::ctrx_d_cag_gl_product_cd;
+  out0.ctrx_d_cag.gl_customer_cd::ctrx_d_cag_gl_customer_cd;
+  out0.ctrx_d_cag.product_id::ctrx_d_cag_product_id;
+  out0.ctrx_d_cag.hm_dlvry_only_ind::ctrx_d_cag_hm_dlvry_only_ind;
+  out0.ctrx_d_cag.hm_dlvry_stat_ind::ctrx_d_cag_hm_dlvry_stat_ind;
+  out0.ctrx_d_cag.rebates_only_ind::ctrx_d_cag_rebates_only_ind;
+  out0.ctrx_d_cag.rebates_stat_ind::ctrx_d_cag_rebates_stat_ind;
+  out0.ctrx_d_cag.src_env_sk::ctrx_d_cag_src_env_sk;
+  out0.ctrx_d_cag.bseg_srv_typ::ctrx_d_cag_bseg_srv_typ;
+  out0.ctrx_d_cag.bseg_bus_typ::ctrx_d_cag_bseg_bus_typ;
+  out0.ctrx_d_cag.bseg_clt_typ::ctrx_d_cag_bseg_clt_typ;
+  out0.ctrx_d_cag.busns_typ::ctrx_d_cag_busns_typ;
+  out0.ctrx_d_cag.group_addr1::ctrx_d_cag_group_addr1;
+  out0.ctrx_d_cag.group_addr2::ctrx_d_cag_group_addr2;
+  out0.ctrx_d_cag.group_city_nm::ctrx_d_cag_group_city_nm;
+  out0.ctrx_d_cag.group_state_cd_sk::ctrx_d_cag_group_state_cd_sk;
+  out0.ctrx_d_cag.group_st_cd::ctrx_d_cag_group_st_cd;
+  out0.ctrx_d_cag.group_zip_cd::ctrx_d_cag_group_zip_cd;
+  out0.ctrx_d_cag.group_cntry::ctrx_d_cag_group_cntry;
+  out0.ctrx_d_cag.cag_actv_flg::ctrx_d_cag_cag_actv_flg;
+  out0.ctrx_d_cag.mbr_group_id::ctrx_d_cag_mbr_group_id;
+  out0.ctrx_d_cag.plan_option_id::ctrx_d_cag_plan_option_id;
+  out0.ctrx_d_cag.pcmt_mbr_group_contrct_id::ctrx_d_cag_pcmt_mbr_group_contrct_id;
+  out0.ctrx_d_cag.pcmt_plan_id::ctrx_d_cag_pcmt_plan_id;
+  out0.ctrx_d_cag.legacy_group_id::ctrx_d_cag_legacy_group_id;
+  out0.ctrx_d_cag.legacy_csp::ctrx_d_cag_legacy_csp;
+  out0.ctrx_d_cag.revn_ind::ctrx_d_cag_revn_ind;
+  out0.ctrx_d_cag.orignl_src_sys_typ::ctrx_d_cag_orignl_src_sys_typ;
+  out0.ctrx_d_cag.grp_renewal_dt::ctrx_d_cag_grp_renewal_dt;
+  out0.ctrx_d_cag.cag_sense_sk::ctrx_d_cag_cag_sense_sk;
+  out0.ctrx_d_cag.test_flg::ctrx_d_cag_test_flg;
+  out0.ctrx_d_cag.legacy_org::ctrx_d_cag_legacy_org;
+  out0.ctrx_d_cag.pricing_type::ctrx_d_cag_pricing_type;
+  out0.ctrx_d_cag.segment::ctrx_d_cag_segment;
+  out0.ctrx_d_cag.lob::ctrx_d_cag_lob;
+  out0.ctrx_d_cag.hospice_tier::ctrx_d_cag_hospice_tier;
+  out0.ctrx_d_cag.malvl::ctrx_d_cag_malvl;
+  out0.ctrx_d_cag.suppress::ctrx_d_cag_suppress;
+  out0.ctrx_d_cag.prd_grp::ctrx_d_cag_prd_grp;
+  out0.ctrx_d_cag.funding_arrangment_desc::ctrx_d_cag_funding_arrangment_desc;
+  out0.ctrx_d_cag.mod_custid::ctrx_d_cag_mod_custid;
+  out0.ctrx_d_cag.reb_payeeid::ctrx_d_cag_reb_payeeid;
+  out0.ctrx_d_cag.geography::ctrx_d_cag_geography;
+  out0.ctrx_d_cag.client_affiliation::ctrx_d_cag_client_affiliation;
+  out0.ctrx_d_cag.fdm_client_id::ctrx_d_cag_fdm_client_id;
+  out0.ctrx_d_cag.mdm_cageid::ctrx_d_cag_mdm_cageid;
+  out0.ctrx_d_cag.carve_typ::ctrx_d_cag_carve_typ;
+  out0.ctrx_d_cag.rx_bin::ctrx_d_cag_rx_bin;
+  out0.ctrx_d_cag.rx_pcn::ctrx_d_cag_rx_pcn;
+  out0.ctrx_d_cag.rx_grp_nbr::ctrx_d_cag_rx_grp_nbr;
+  out0.ctrx_d_cag.clncl_acct_lvl::ctrx_d_cag_clncl_acct_lvl;
+  out0.ctrx_d_cag.clncl_client_nm::ctrx_d_cag_clncl_client_nm;
+  out0.ctrx_d_cag.clncl_clean_nm::ctrx_d_cag_clncl_clean_nm;
+  out0.ctrx_d_cag.clncl_client_rollup_nm::ctrx_d_cag_clncl_client_rollup_nm;
+  out0.ctrx_d_cag.clncl_st::ctrx_d_cag_clncl_st;
+  out0.ctrx_d_cag.clncl_rgn::ctrx_d_cag_clncl_rgn;
+  out0.ctrx_d_cag.clncl_eff_dt::ctrx_d_cag_clncl_eff_dt;
+  out0.ctrx_d_cag.clncl_trmntn_dt::ctrx_d_cag_clncl_trmntn_dt;
+  out0.ctrx_d_cag.clncl_trans_dt::ctrx_d_cag_clncl_trans_dt;
+  out0.ctrx_d_cag.inr_user_flg::ctrx_d_cag_inr_user_flg;
+  out0.ctrx_d_cag.clncl_user_flg::ctrx_d_cag_clncl_user_flg;
+  out0.ctrx_d_cag.adhc_user_flg::ctrx_d_cag_adhc_user_flg;
+  out0.ctrx_d_cag.sec_flg::ctrx_d_cag_sec_flg;
+  out0.ctrx_d_cag.coalition_nm::ctrx_d_cag_coalition_nm;
+  out0.ctrx_d_cag.coalition_eff_dt::ctrx_d_cag_coalition_eff_dt;
+  out0.ctrx_d_cag.coalition_trmntn_dt::ctrx_d_cag_coalition_trmntn_dt;
+  out0.ctrx_d_cag.rx_client_id::ctrx_d_cag_rx_client_id;
+  out0.ctrx_d_cag.cag_grp::ctrx_d_cag_cag_grp;
+  out0.ctrx_d_cag.hcit_flg::ctrx_d_cag_hcit_flg;
+  out0.c_d_carr_acc.carrier_id::c_d_carr_acc_carrier_id;
+  out0.c_d_carr_acc.account_id::c_d_carr_acc_account_id;
+  out0.ctrx_d_carr.carrier_id::ctrx_d_carr_carrier_id;
+  out0.*::in0.*;
+end;

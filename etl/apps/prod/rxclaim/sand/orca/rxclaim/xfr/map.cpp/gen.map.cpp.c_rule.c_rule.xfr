@@ -1,0 +1,42 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a12d03b_45b7_0 = $RUN_ID;
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_rule_cpp_rule_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_rule_rule_id = fail_if_error(in0.rule_id);
+let string("\x01",charset="iso-8859-15", maximum_length=25) c_rule_template_type_cd = fail_if_error(in0.template_type_cd);
+let decimal("\x01",0) c_rule_cpp_template_type_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_rule_rule_num = fail_if_error(in0.rule_num);
+let string("\x01",charset="iso-8859-15", maximum_length=32) c_rule_rule_cd = fail_if_error(in0.rule_cd);
+let utf8 string("\x01", maximum_length=1020) c_rule_rule_criteria = fail_if_error(in0.rule_criteria);
+let utf8 string("\x01", maximum_length=1020) c_rule_rule_criteria_descr = fail_if_error(in0.rule_criteria_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rule_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_rule_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rule_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_rule_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_rule_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_rule_cpp_template_type_sk=fail_if_error(first_defined(lookup("c_rules_template",in0.template_type_cd).dxf_sk,-1));
+
+  out0.c_rule.cpp_rule_sk::c_rule_cpp_rule_sk;
+  out0.c_rule.rule_id::c_rule_rule_id;
+  out0.c_rule.template_type_cd::c_rule_template_type_cd;
+  out0.c_rule.cpp_template_type_sk::c_rule_cpp_template_type_sk;
+  out0.c_rule.rule_num::c_rule_rule_num;
+  out0.c_rule.rule_cd::c_rule_rule_cd;
+  out0.c_rule.rule_criteria::c_rule_rule_criteria;
+  out0.c_rule.rule_criteria_descr::c_rule_rule_criteria_descr;
+  out0.c_rule.cpp_update_ts::c_rule_cpp_update_ts;
+  out0.c_rule.cpp_updated_by::c_rule_cpp_updated_by;
+  out0.c_rule.cpp_create_ts::c_rule_cpp_create_ts;
+  out0.c_rule.cpp_created_by::c_rule_cpp_created_by;
+  out0.c_rule.src_env_sk::c_rule_src_env_sk;
+  out0.*::in0.*;
+
+end;

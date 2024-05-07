@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="DM" description="This job perform housekeeping for Clinical dm intermediate files" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="A7416CA1-90D2-EC64-7E88-5FE2EB9E6237" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Clinical Reporting Housekeeping" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/dm" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/housekeep.clinical_reporting_clinical.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="432000" isEnabled="true" isNotification="false"/>
+
+  <expirationEnd durationSec="435600" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint mode="WEEKLY" startDate="2016-12-14Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfWeekDay dayOfWeek="SAT" nonOperationalOffset="0"/>
+      </days>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="3A9FCF11-13C6-BD94-6728-09BA8CFDB1A8"/>
+      <predecessor jobDefinitionGuid="9242ED00-0680-9046-4D4E-09C45B27387A"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

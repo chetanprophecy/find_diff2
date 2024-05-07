@@ -1,0 +1,105 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_ddc.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.ctrx_ddc.ddc_key,[passthrough],in0.ddcreckey]
+  [out0.ctrx_ddc.user_defd_fld3,[passthrough],in0.ddcundef3]
+  [out0.ctrx_ddc.user_defd_fld2,[passthrough],in0.ddcundef2]
+  [out0.ctrx_ddc.ddc_chg_dt,[transform],in0.ddcchgdate]
+  [out0.ctrx_ddc.ddc_ref_cd,[passthrough],in0.ddcrefcd]
+  [out0.ctrx_ddc.freq_admin_cd,[passthrough],in0.ddcsigcode]
+  [out0.ctrx_ddc.user_defd_fld1,[passthrough],in0.ddcundef1]
+  [out0.ctrx_ddc.usual_dly_dose,[passthrough],in0.ddcusualdu]
+  [out0.ctrx_ddc.usual_thrpy_days,[passthrough],in0.ddcusudays]
+  [out0.ctrx_ddc.max_thrpy_days,[passthrough],in0.ddcmaxdays]
+  [out0.ctrx_ddc.min_dly_dose,[passthrough],in0.ddcmindu]
+  [out0.ctrx_ddc.min_thrpy_days,[passthrough],in0.ddcmindays]
+  [out0.ctrx_ddc.max_dly_dose,[passthrough],in0.ddcmaxdu]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_ddc.src_env_sk,'ctrx_ddc.src_env_sk',1,0]
+     [out0.ctrx_ddc.ddc_key,'ctrx_ddc.ddc_key',1,0]
+     [out0.ctrx_ddc.user_defd_fld3,'ctrx_ddc.user_defd_fld3',1,0]
+     [out0.ctrx_ddc.user_defd_fld2,'ctrx_ddc.user_defd_fld2',1,0]
+     [out0.ctrx_ddc.ddc_chg_dt,'ctrx_ddc.ddc_chg_dt',3,2]
+     [out0.ctrx_ddc.ddc_ref_cd,'ctrx_ddc.ddc_ref_cd',1,0]
+     [out0.ctrx_ddc.freq_admin_cd,'ctrx_ddc.freq_admin_cd',1,0]
+     [out0.ctrx_ddc.user_defd_fld1,'ctrx_ddc.user_defd_fld1',1,0]
+     [out0.ctrx_ddc.usual_dly_dose,'ctrx_ddc.usual_dly_dose',1,0]
+     [out0.ctrx_ddc.usual_thrpy_days,'ctrx_ddc.usual_thrpy_days',1,0]
+     [out0.ctrx_ddc.max_thrpy_days,'ctrx_ddc.max_thrpy_days',1,0]
+     [out0.ctrx_ddc.min_dly_dose,'ctrx_ddc.min_dly_dose',1,0]
+     [out0.ctrx_ddc.min_thrpy_days,'ctrx_ddc.min_thrpy_days',1,0]
+     [out0.ctrx_ddc.max_dly_dose,'ctrx_ddc.max_dly_dose',1,0]
+  ]
+  impacts:
+  [
+     [in0.ddcmaxdays,'ddcmaxdays',1,1]
+     [in0.ddcundef3,'ddcundef3',1,1]
+     [in0.ddcrefcd,'ddcrefcd',1,1]
+     [in0.ddcmindu,'ddcmindu',1,1]
+     [in0.ddcsigcode,'ddcsigcode',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.ddcundef1,'ddcundef1',1,1]
+     [in0.ddcreckey,'ddcreckey',1,1]
+     [in0.ddcusualdu,'ddcusualdu',1,1]
+     [in0.ddcmindays,'ddcmindays',1,1]
+     [in0.ddcusudays,'ddcusudays',1,1]
+     [in0.ddcchgdate,'ddcchgdate',6,3]
+     [in0.ddcmaxdu,'ddcmaxdu',1,1]
+     [in0.ddcundef2,'ddcundef2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=19) ctrx_ddc_ddc_key = fail_if_error(in0.ddcreckey);
+let decimal("\x01",maximum_length=6) ctrx_ddc_min_dly_dose = fail_if_error(in0.ddcmindu);
+let decimal("\x01",maximum_length=6) ctrx_ddc_usual_dly_dose = fail_if_error(in0.ddcusualdu);
+let decimal("\x01",maximum_length=6) ctrx_ddc_max_dly_dose = fail_if_error(in0.ddcmaxdu);
+let decimal("\x01",maximum_length=3) ctrx_ddc_min_thrpy_days = fail_if_error(in0.ddcmindays);
+let decimal("\x01",maximum_length=3) ctrx_ddc_usual_thrpy_days = fail_if_error(in0.ddcusudays);
+let decimal("\x01",maximum_length=3) ctrx_ddc_max_thrpy_days = fail_if_error(in0.ddcmaxdays);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_ddc_user_defd_fld1 = fail_if_error(in0.ddcundef1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_ddc_user_defd_fld2 = fail_if_error(in0.ddcundef2);
+let string("\x01",charset="iso-8859-15", maximum_length=15) ctrx_ddc_freq_admin_cd = fail_if_error(in0.ddcsigcode);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_ddc_ddc_ref_cd = fail_if_error(in0.ddcrefcd);
+let string("\x01",charset="iso-8859-15", maximum_length=18) ctrx_ddc_user_defd_fld3 = fail_if_error(in0.ddcundef3);
+let date("YYYYMMDD")("\x01") ctrx_ddc_ddc_chg_dt = 00010101;
+let decimal("\x01",0) ctrx_ddc_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Rule:Compute ctrx_ddc.ddc_chg_dt  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.ddcchgdate) member [vector 6,7])) && (is_valid(YYYYMMDD(19000000+(date("YYYYMMDD"))in0.ddcchgdate)))),0))begin
+  ctrx_ddc_ddc_chg_dt=YYYYMMDD(19000000+(date("YYYYMMDD"))in0.ddcchgdate);
+end
+else if(first_defined(fail_if_error(((length_of(in0.ddcchgdate)) ==8) && ((is_valid(YYYYMMDD(in0.ddcchgdate))) ==1)),0))begin
+  ctrx_ddc_ddc_chg_dt=(date("YYYYMMDD"))in0.ddcchgdate;
+end
+
+  out0.ctrx_ddc.ddc_key::ctrx_ddc_ddc_key;
+  out0.ctrx_ddc.min_dly_dose::ctrx_ddc_min_dly_dose;
+  out0.ctrx_ddc.usual_dly_dose::ctrx_ddc_usual_dly_dose;
+  out0.ctrx_ddc.max_dly_dose::ctrx_ddc_max_dly_dose;
+  out0.ctrx_ddc.min_thrpy_days::ctrx_ddc_min_thrpy_days;
+  out0.ctrx_ddc.usual_thrpy_days::ctrx_ddc_usual_thrpy_days;
+  out0.ctrx_ddc.max_thrpy_days::ctrx_ddc_max_thrpy_days;
+  out0.ctrx_ddc.user_defd_fld1::ctrx_ddc_user_defd_fld1;
+  out0.ctrx_ddc.user_defd_fld2::ctrx_ddc_user_defd_fld2;
+  out0.ctrx_ddc.freq_admin_cd::ctrx_ddc_freq_admin_cd;
+  out0.ctrx_ddc.ddc_ref_cd::ctrx_ddc_ddc_ref_cd;
+  out0.ctrx_ddc.user_defd_fld3::ctrx_ddc_user_defd_fld3;
+  out0.ctrx_ddc.ddc_chg_dt::ctrx_ddc_ddc_chg_dt;
+  out0.ctrx_ddc.src_env_sk::ctrx_ddc_src_env_sk;
+  out0.*::in0.*;
+
+end;

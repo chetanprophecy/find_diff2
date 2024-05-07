@@ -1,0 +1,35 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_refill_refill_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_refill_refill_cd;
+let decimal("\x01",0) l_refill_refill_flg;
+let string("\x01",charset="iso-8859-15", maximum_length=25) l_refill_refill_flg_desc;
+let decimal("\x01",0) l_refill_src_env_sk = -1;
+let datetime("YYYYMMDDHH24MISS")("\x01") l_refill_insert_ts = fail_if_error(now1());
+let datetime("YYYYMMDDHH24MISS")("\x01") l_refill_update_ts = fail_if_error(now1());
+
+
+
+/*   Default value   */
+l_refill_refill_cd=fail_if_error(str_nk(in0.refill_cd));
+
+/*   Default value   */
+l_refill_refill_flg_desc=fail_if_error(trim_no_null_default(in0.refill_flg_desc));
+
+/*   Default value   */
+l_refill_refill_flg=fail_if_error(no_null_default_zero(in0.refill_flg));
+
+  out0.l_refill.refill_sk::l_refill_refill_sk;
+  out0.l_refill.refill_cd::l_refill_refill_cd;
+  out0.l_refill.refill_flg::l_refill_refill_flg;
+  out0.l_refill.refill_flg_desc::l_refill_refill_flg_desc;
+  out0.l_refill.src_env_sk::l_refill_src_env_sk;
+  out0.l_refill.insert_ts::l_refill_insert_ts;
+  out0.l_refill.update_ts::l_refill_update_ts;
+  out0.*::in0.*;
+
+end;

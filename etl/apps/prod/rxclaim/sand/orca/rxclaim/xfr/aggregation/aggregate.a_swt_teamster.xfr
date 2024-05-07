@@ -1,0 +1,20 @@
+type temporary_type =
+record
+    decimal("") amt_pd;
+end;
+
+temp :: initialize(in) =
+begin
+  temp.amt_pd :: 0;
+end;
+
+out :: rollup(temp, in) =
+begin
+  out.amt_pd :: temp.amt_pd + (decimal("")) in.amount_pd;
+end;
+
+out :: finalize(temp, in) =
+begin
+  out.amount_pd :: temp.amt_pd;
+  out.* :: in.*;
+end;

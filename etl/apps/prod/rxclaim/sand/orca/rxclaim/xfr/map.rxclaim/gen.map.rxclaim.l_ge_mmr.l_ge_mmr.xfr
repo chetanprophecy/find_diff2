@@ -1,0 +1,79 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_ge_mmr.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_ge_mmr.binary_adherence,'l_ge_mmr.binary_adherence',1,0]
+     [out0.l_ge_mmr.pat_first,'l_ge_mmr.pat_first',1,0]
+     [out0.l_ge_mmr.disease_state,'l_ge_mmr.disease_state',1,0]
+     [out0.l_ge_mmr.mbr_id,'l_ge_mmr.mbr_id',1,0]
+     [out0.l_ge_mmr.pat_last,'l_ge_mmr.pat_last',1,0]
+     [out0.l_ge_mmr.emp_ssn_nbr,'l_ge_mmr.emp_ssn_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_ge_mmr.pat_dob,'l_ge_mmr.pat_dob',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_ge_mmr.src_env_sk,'l_ge_mmr.src_env_sk',1,0]
+     [out0.l_ge_mmr.cag_sk,'l_ge_mmr.cag_sk',1,0]
+     [out0.l_ge_mmr.mpr,'l_ge_mmr.mpr',1,0]
+     [out0.l_ge_mmr.gender,'l_ge_mmr.gender',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.mpr,'mpr',1,1]
+     [in0.pat_last,'pat_last',1,1]
+     [in0.binary_adherence,'binary_adherence',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.gender,'gender',1,1]
+     [in0.emp_ssn_nbr,'emp_ssn_nbr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.mbr_id,'mbr_id',1,1]
+     [in0.pat_first,'pat_first',1,1]
+     [in0.pat_dob,'pat_dob',1,1]
+     [in0.disease_state,'disease_state',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_ge_mmr_emp_ssn_nbr = fail_if_error(in0.emp_ssn_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=200) l_ge_mmr_pat_dob = fail_if_error(in0.pat_dob);
+let string("\x01",charset="iso-8859-15", maximum_length=15) l_ge_mmr_pat_first = fail_if_error(in0.pat_first);
+let string("\x01",charset="iso-8859-15", maximum_length=25) l_ge_mmr_pat_last = fail_if_error(in0.pat_last);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_ge_mmr_gender = fail_if_error(in0.gender);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_ge_mmr_disease_state = fail_if_error(in0.disease_state);
+let decimal("\x01",0) l_ge_mmr_binary_adherence = fail_if_error(in0.binary_adherence);
+let decimal("\x01".2, maximum_length=37, sign_reserved) l_ge_mmr_mpr = fail_if_error(in0.mpr);
+let little endian integer(8) l_ge_mmr_cag_sk = fail_if_error(in0.cag_sk);
+let string(unsigned integer(1),charset="iso-8859-15", maximum_length=20) l_ge_mmr_mbr_id = fail_if_error(in0.mbr_id);
+let decimal("\x01",0) l_ge_mmr_src_env_sk = 800;
+
+
+
+  out0.l_ge_mmr.emp_ssn_nbr::l_ge_mmr_emp_ssn_nbr;
+  out0.l_ge_mmr.pat_dob::l_ge_mmr_pat_dob;
+  out0.l_ge_mmr.pat_first::l_ge_mmr_pat_first;
+  out0.l_ge_mmr.pat_last::l_ge_mmr_pat_last;
+  out0.l_ge_mmr.gender::l_ge_mmr_gender;
+  out0.l_ge_mmr.disease_state::l_ge_mmr_disease_state;
+  out0.l_ge_mmr.binary_adherence::l_ge_mmr_binary_adherence;
+  out0.l_ge_mmr.mpr::l_ge_mmr_mpr;
+  out0.l_ge_mmr.cag_sk::l_ge_mmr_cag_sk;
+  out0.l_ge_mmr.mbr_id::l_ge_mmr_mbr_id;
+  out0.l_ge_mmr.src_env_sk::l_ge_mmr_src_env_sk;
+  out0.*::in0.*;
+
+end;

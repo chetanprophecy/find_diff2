@@ -1,0 +1,52 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_57fdede8_5b8b_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cli_prd.client_prod_cd,[transform],in0.flpkc2]
+  [out0.cli_prd.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.cli_prd.client_prod_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cli_prd.client_prod_cd,'cli_prd.client_prod_cd',1,0]
+     [out0.cli_prd.src_env_sk,'cli_prd.src_env_sk',1,0]
+     [out0.cli_prd.client_prod_sk,'cli_prd.client_prod_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.flpkc2,'flpkc2',2,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let little endian integer(4) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) cli_prd_client_prod_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) cli_prd_client_prod_cd = fail_if_error(if(in0.flpkc2=='-')NULL else in0.flpkc2);
+let decimal("\x01",0) cli_prd_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.cli_prd.client_prod_sk::cli_prd_client_prod_sk;
+  out0.cli_prd.client_prod_cd::cli_prd_client_prod_cd;
+  out0.cli_prd.src_env_sk::cli_prd_src_env_sk;
+  out0.*::in0.*;
+
+end;

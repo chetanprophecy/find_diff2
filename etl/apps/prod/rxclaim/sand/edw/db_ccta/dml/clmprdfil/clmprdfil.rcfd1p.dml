@@ -1,0 +1,316 @@
+record
+  string("\x01", maximum_length=20) fgyhhn /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Product ID"
+ BizComment:"Product ID :P. The Product ID is the external identifier that represents drugs and health-related products."
+@*/;
+  string("\x01", maximum_length=2) fgrhis /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Product Type Code"
+ BizComment:"Product Type :P. The Product Type corresponds to the Product ID to make a unique product record.  This identifies the type of format the 11-byte Product ID represents."
+@*/;
+  string("\x01", maximum_length=1) fguyaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Record Status"
+ BizComment:"Record Status :P. The status of the product record is determined by the input file. :P. Incremental Update: 'D'-Delete records (not included with any 'A'-Add or 'C'-Change records for the same Product ID/Type within the same input file) will inactivate a product record. :P. Full Database: If Product ID/Type record on system is absent from full file, then the record will be inactivated. :LINES. A - Active I - Inactive :ELINES."
+@*/;
+  string("\x01", maximum_length=6) fgrais /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Labeler Identifier"
+ BizComment:"Labeler Identifier :P. A Labeler Identifier is an FDB code assigned to a product to represent the product labeler (manufacturer, distributor, or repackager). The first character represents a division within a company. The last five characters are numeric and represent the parent company. Products that are distributed from different divisions of the same company usually will have unique alphabetic characters preceding the shared numeric code. :P. Do not confuse with five-digit labeler code assigned by FDA that comprises first five digits of an NDC."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) fgncal /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 GCN Sequence"
+ BizComment:"Clinical Formulation ID :P. This value represents a drug formulation identifier that groups together drug products by the following criteria and is stored in the following fields: :P. Ingredient List Identifier (HICL_SEQNO) - (formerly called the Hierarchical Ingredient Code List Sequence Number) represents the list or set of ingredients in a drug formulation. This includes only active ingredients. :P. Route of Administration (GCRT) - represents a common or representative site or method by which the drug is administered, such as oral, injection, or topical. :P. Dosage Form (GCDF) - represents a dosage form of the clinical formulation, such as tablet or capsule. :P. Strength of Drug (STR) - describes the drug potency in metric units. :P. A unique GCN_SEQNO is assigned to each different combination of ingredient(s), strength, dosage form, and route of administration for a drug formulation. The GCN_SEQNO aggregates drug products that share like ingredient sets, route of admin, dosage form, and strength of drug but are marketed by multiple manufacturers. However,  it may be manufactured, packaged, and sold in literally hundreds of variations ranging from bottles of 500 to blister packs."
+@*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) fgm4al /*DECIMAL(11,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Package Size"
+ BizComment:"Package Size :P. This package size value indentifies the number of billing units in the labeled quantity from which the pharmacist dispenses. Use with Drug Form Code."
+@*/;
+  string("\x01", maximum_length=1) fgt4aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Drug Form Code"
+ BizComment:"Drug Form Code :P. This code indicates the type of billing unit to be used for a product.  Use with Package Size. :P. :LINES. 1 - Each (tablets, kits, etc.) 2 - Milliliters (liquids) 3 - Grams (solids) :ELINES."
+@*/;
+  string("\x01", maximum_length=20) fgrfis /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Additional Descriptor"
+ BizComment:"Additional Descriptor :P. This descriptor provides additional information used to distinguish a drug product, such as trademarked dosage forms, special packaging, and other unique characteristics. This information is provided on the product labeling; when no such distinguishing information exists, this field is blank."
+@*/;
+  string("\x01", maximum_length=30) fgrdis /*CHAR(30) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Label Name 30"
+ BizComment:"Label Name :P. This label name contains a combination of the drug name appearing on the package label, the strength description, and the dosage for a specified product. :P. The information in this field might include abbreviations considered inappropriate by the Joint Commission on Accreditation of Healthcare Organizations (JCAHO) and Institute for Safe Medical Practices (ISMP)."
+@*/;
+  string("\x01", maximum_length=30) fgreis /*CHAR(30) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Brand Name"
+ BizComment:"Brand Name :P. This is the name that appears on the package label provided by the manufacturer.  This is populated for all products."
+@*/;
+  string("\x01", maximum_length=11) fgrjis /*CHAR(11) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Previous ID"
+ BizComment:"Previous ID :P. This identifier contains the ID previously used for a given product.  This field is only populated when the record is for a product identified by the manufacturer as replacing an obsolete (discontinued) ID. :P. All Previous IDs are structured in the 11-digit format.  This value is usually used in conjunction with the Obsolete Date and the Replacement ID. :P. The Brand Name, formulation, and package size may differ between the old and new ID."
+@*/;
+  string("\x01", maximum_length=11) fgrkis /*CHAR(11) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Replacement ID"
+ BizComment:"Replacement ID :P. This identifier contains the new ID that has replaced the obsolete ID for a given product. This field is populated for products that have been identified by the manufacturer as being replaced by a new ID. :P. All Replacement IDs are structured in the 11-digit format. This field is usually used in conjunction with the Obsolete Date and the Previous ID. :P. The Brand Name, formulation, and package size may differ between the old and new ID."
+@*/;
+  string("\x01", maximum_length=1) fguzaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 NDC Format Indicator"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfuce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Added to FDB"
+ BizComment:"Added to FDB; NDC Level :P. This field contains the date on which a drug record was added to the First DataBank NDC Table. (CCYYMMDD)"
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfvce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Updated by FDB"
+ BizComment:"Updated by FDB; NDC Level :P. This field contains the date on which any changes to the drug record were last made by First DataBank on NDC Table. (CCYYMMDD)"
+@*/;
+  string("\x01", maximum_length=1) fguoaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 DESI Drug Indicator"
+ BizComment:"DESI Drug Indicator :P. This indicator identifies a particular drug as declared less than effective by the Food and Drug Administration (FDA) Drug Product Efficacy Study and Implementation program (DESI). :P. Effective November 2007, First DataBank began populating the DESI field based upon the product's HCFA_DESI1 value. :P. :LINES.BLANK - Product never declared DESI 0 - DESI at one point in time, but no longer 1 - DESI :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfxce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 DESI Change Eff Date"
+ BizComment:"DESI Status Change Effective Date :P. This field contains the date on which the product was given DESI status or removed from DESI status by the FDA. (CCYYMMDD) :P. This field is used in conjunction with the DESI to indicate either the beginning or the end of DESI status."
+@*/;
+  string("\x01", maximum_length=1) fgupaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 DESI2 Drug Indicator"
+ BizComment:"DESI2 Drug Indicator :P. This indicator identifies a particular drug as declared less than effective by the Food and Drug Administration (FDA) Drug Product Efficacy Study and Implementation program (DESI). :P. In 1990, HCFA (now CMS) appended the listing of DESI drugs to include a  "similar and related" category. Drugs in this category that were not previously flagged as DESI are assigned a DESI2 of 1. :P. Effective November 2007, First DataBank began populating the DESI2 field based upon the product's HCFA_DESI1 value. :P. BLANK - Product never declared DESI :P. 0 - DESI at one point in time, but no longer :P. 1 - DESI"
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfyce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 DESI2 Chg Eff Date"
+ BizComment:"DESI2 Status Change Effective Date :P. This field contains the date on which the product was given DESI2 status or removed from DESI2 status by the FDA. (CCYYMMDD) :P. This field is used in conjunction with the DESI2 to indicate either the beginning or the end of DESI2 status."
+@*/;
+  string("\x01", maximum_length=1) fgt1aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 DEA"
+ BizComment:"Drug Enforcement Administration Code :P. The DEA denotes the degree of potential abuse and federal control of a drug. This code is subject to change by federal regulation. :P. 0 - No control  :P. 1 - LSD, Heroin, Marijuana - Research only :P. 2 - Morphine, Meperidine, Amphetamines, etc., most potential for abuse :P. 3 - Aspirin/Codeine, etc., less abused :P. 4 - Diazepam, etc., potential abuse :P. 5 - Controlled sale by pharmacy only"
+@*/;
+  string("\x01", maximum_length=1) fgt0aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Drug Class (Rx/OTC)"
+ BizComment:"Drug Class  :P. The Drug Class classifies a product by its availability to the consumer according to labeling :P. O - Over-the-counter. A prescription is not required per the product labeling. :P. F - Prescription required per the product labeling."
+@*/;
+  string("\x01", maximum_length=1) fguvaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Gen Price Ind"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) fgukaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Hospital Selection"
+ BizComment:"Hospital Selection Indicator :P. This indicator identifies those products that are most likely to be found in hospital pharmacies. Injectables, unit-dose, and large sizes are all included. :P. First DataBank assigns this indicator based upon the product's applicability in the hospital market. :P. :LINES. 0 - Not on hospital subset 1 - On hospital subset :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fguiaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Innovator"
+ BizComment:"Innovator Indicator :P. This indicator identifies products that are first-to-market within a Clinical Formulation ID (GCN_SEQNO).  More than one product may appear to be the innovator, because the indicator is assigned for multiple package sizes and replacement NDCs. :P. Usually an innovator product will have a New Drug Application (NDA) or Biologic License Application (BLA). However, when there are multiple NDA-associated or BLA-associated products linked to a common Clinical Formulation ID (GCN_SEQNO), the innovator indicator is only assigned to the first-to-market product. Note that many GCN_SEQNOs span a group of NDCs, none of which has an NDA required or reported, (e.g. OTC products). In these cases, the first-to-market product receives the Innovator code. :P. :LINES. 0 - Default; non-innovator drug 1 - Innovator-held original patent :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgunaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Institutional Product"
+ BizComment:"Institutional Product Indicator :P. This indicator identifies products sold only to selected customers, usually at a discounted price. Institutional products are manufacturer-specified; customers must meet the manufacturer's definition of an institution (e.g. nursing homes, the Veteran's Administration). :P. :LINES. 0 - Not institutional 1 - Institutional :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgumaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Mini Selection"
+ BizComment:"Mini Selection Indicator :P. This indicator identifies those products most likely to be found in community pharmacies. :P. First DataBank assigns this indicator based upon the product's applicability in the retail and community pharmacy market. :P. :LINES. 0 - Not on MINI subset 1 - On MINI subset :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgt3aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Maintenance Drug"
+ BizComment:"Maintenance Drug Indicator :P. A maintenance drug is one that has the following characteristics: :P. 1. Has a common indication for the treatment of a chronic disease state. Indications are obtained from the product labeling. :P. 2. Is used for diseases when the duration of therapy can reasonably be expected to exceed one year. :P. :LINES. Blank - Not a maintenance drug 1 - Maintenance drug :ELINES."
+@*/;
+  string("\x01", maximum_length=2) fgufaj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Orange Book Code-2"
+ BizComment:"Orange Book Code :P. This code identifies the equivalency ratings assigned to an approved prescription product according to the FDA's Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book). :P. The Orange Book is the leading authority for basing substitution decisions at the pharmacy level. The FDA has stated that the Orange Book is advisory only; many states use its data to regulate product selection. :P. A-rated Orange Book Codes are defined by the FDA as drug products that FDA considers to be therapeutically equivalent to other pharmaceutically equivalent products. :P. AA - Products with no known bioequivalence problems in conventional dosage forms. :P. AB - Products meeting necessary bioequivalence requirements. :P. AN - Solutions and powders for aerosolization that are marketed for use in any of several delivery systems. Drugs that are marketed for only a single delivery system or are a component of a specific delivery system are not included.:P. AO - Injectable oils with identical active ingredients, concentration, and type of oil.:P. AP - Injectable aqueous solutions including dry powders, concentrated solutions, or ready-to-use solutions are considered pharmaceutically and therapeutically equivalent if they produce the same concentration and are labeled similarly. :P. AT - Topical products therapeutically equivalent in same dosage form. :P. B-rated Orange Book Codes are defined by the FDA as drug products that the FDA, at this time, considers not to be therapeutically equivalent to other pharmaceutically equivalent products. :P. B - Products with A or B codes previously assigned; new information raised significant questions which require further FDA investigation and review to determine therapeutic equivalence. :P. BC - Controlled-release tablets, controlled-release capsules, and controlled-release injectables unless specifically proven to be equivalent. :P. BD - Active ingredients and dosage forms with documented bioequivalence problems. :P. BE - Enteric coated dosage forms unless proven otherwise to be equivalent. :P. BN - Products in aerosol-nebulizer drug delivery systems that are marketed as a component of or specifically for a particular delivery system. :P. BP - Active ingredients and dosage forms with potential bioequivalence problems. :P. BR - Suppositories or enemas for systemic use unless proven to be equivalent. :P. BS - Products having drug standard deficiencies. :P. BT - Topical products with bioequivalence problems. :P. BX - Insufficient data to determine therapeutic equivalence. :P. Codes added by First DataBank: :P. ZA - Particular pharmaceutical entity looked at but particular labeler was not evaluated. :P. ZB - Particular pharmaceutical entity was not evaluated. :P. ZC - Pharmaceutical entity and labeler evaluated but no therapeutic equivalence rating given. Usually applies to single source drugs."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfwce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Obsoleted by FDB"
+ BizComment:"Obsolete Date :P. This field contains the date or estimated date (per manufacturer or FDA notification) on which an ID is discontinued, no longer marketed, no longer produced, no longer distributed, or otherwise made unavailable to the marketplace. (CCYYMMDD) :P. The Obsolete Date is unrelated to the expiration date present on a product's label."
+@*/;
+  string("\x01", maximum_length=1) fgt6aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Patient Pkg Insert"
+ BizComment:"Patient Package Insert Indicator :P. This indicator identifies drug products that require, under FDA regulations, a Patient Package Insert to be included with the drug product at the time of dispensing. :P. :LINES. Blank - Not required 1 - Patient Package Insert Required :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgt7aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Standard Package"
+ BizComment:"Standard Package Indicator :P. This indicates whether the product package size is the standard package size. FDB uses the following criteria: :P. 1. Standard package size for non-unit dose, non-prepack tablets and capsules is 100. :P. 2. Standard package size for liquids is 473 or 480ML (one pint). :P. 3. There is no standard package size for grams. :P. :LINES. 1 - Standard package 2 - All Other Package Sizes :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgt8aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Repackaged"
+ BizComment:"Repackaged Indicator :P. This indicator identifies a product as repackaged or not repackaged. FDB assigns REPACK to all products distributed by companies that repackage products, usually into dispensable quantities. :P. Products with a REPACK of 1 may be listed in the NDC Table with brand or generic names, based on the information provided by the repackaging company. :P. :LINES.0 - Not Repackaged 1 - Repackaged :ELINES."
+@*/;
+  string("\x01", maximum_length=3) fgueaj /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Top 200 Drugs"
+ BizComment:"Top 200 Drugs Indicator :P. This indicator identifies the 200 drug products most frequently dispensed in community pharmacies. The ranking reflects the top 200 prescription drugs (Drug Class=F) of the previous calendar year. :P. Different package sizes and dose forms of the same drug will have the same number. :P. The ranking is changed annually, based on pharmaceutical market research surveys conducted by IMS. :P. 001-200 - Top 200 Drugs in order of rank :P. 000 - All other drugs"
+@*/;
+  string("\x01", maximum_length=1) fgt9aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Unit Dose"
+ BizComment:"Unit Dose Indicator :P. This indicator identifies products that are packaged in individual unit doses.  Products are labeled as Unit Dose by the manufacturer; these products contain the NDC, product name, dosage form, strength, and manufacturer on each individual unit's label.  This indicator does not apply to injectable products, suppositories, or powder packets.  Products labeled as Unit Dose are not sold as individual unit doses, rather, the product is sold in a package that contains several Unit Doses. :P. :LINES.0 - All Other Products 1 - Unit Dose :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) fgm5al /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Case Pack"
+ BizComment:"Case Pack :P. This value provides the number of salable units in the shipping container. FDB uses this number as a divisor to calculate the single package price when case pricing for the NDC is reported; customers can use it as a multiplier to determine the case price from the single package price. When case pricing for the NDC is not reported, the default for the column is 1."
+@*/;
+  decimal("\x01".3, maximum_length=7, sign_reserved) fgm9al /*DECIMAL(5,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Needle Gauge"
+ BizComment:"Needle Gauge  :P. This numeric value is provided as described in the catalog or other source document supplied by the manufacturer."
+@*/;
+  decimal("\x01".3, maximum_length=7, sign_reserved) fgnaal /*DECIMAL(5,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Needle Length"
+ BizComment:"Needle Length :P. This numeric value is provided as described in the catalog or other source document supplied by the manufacturer."
+@*/;
+  decimal("\x01".3, maximum_length=7, sign_reserved) fgnbal /*DECIMAL(5,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Syringe Capacity"
+ BizComment:"Syringe Capacity :P. This numeric value provides the volume capacity of a specified syringe (in milliliters)."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) fgm6al /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Shelf Pack"
+ BizComment:"Shelf Pack :P. This value provides the number of bundled salable units in the shipping container."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) fgm8al /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Shipper Quantity"
+ BizComment:"Shipper Quantity :P. This value provides the number of salable units in the minimum order quantity available from the distributor; it is usually a multiple of the Shelf Pack or Case Pack."
+@*/;
+  string("\x01", maximum_length=2) fguqaj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA FDA Thera Equiv"
+ BizComment:"HCFA FDA Therapeutic Equivalency Code :P. This field provides equivalency ratings from the FDA's Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book). :P. First DataBank obtains the HCFA_FDA from the Centers for Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. :P. A-rated Orange Book Codes are defined by the FDA as drug products that FDA considers to be therapeutically equivalent to other pharmaceutically equivalent products. :P. AA - Products with no known bioequivalence problems in conventional dosage forms. :P. AB - Products meeting necessary bioequivalence requirements. :P. AN - Solutions and powders for aerosolization that are marketed for use in any of several delivery systems. Drugs that are marketed for only a single delivery system or are a component of a specific delivery system are not included. :P. AO - Injectable oils with identical active ingredients, concentration, and type of oil. :P. AP - Injectable aqueous solutions including dry powders, concentrated solutions, or ready-to-use solutions are considered pharmaceutically and therapeutically equivalent if they produce the same concentration and are labeled similarly. :P. AT - Topical products therapeutically equivalent in same dosage form. :P. B-rated Orange Book Codes are defined by the FDA as drug products that the FDA, at this time, considers not to be therapeutically equivalent to other pharmaceutically equivalent products. :P. B - Products with A or B codes previously assigned; new information raised significant questions which require further FDA investigation and review to determine therapeutic equivalence. :P. BC - Controlled-release tablets, controlled-release capsules, and controlled-release injectables unless specifically proven to be equivalent. :P. BD - Active ingredients and dosage forms with documented bioequivalence problems. :P. BE - Enteric coated dosage forms unless proven otherwise to be equivalent. :P. BN - Products in aerosol-nebulizer drug delivery systems that are marketed as a component of or specifically for a particular delivery system. :P. BP - Active ingredients and dosage forms with potential bioequivalence problems. :P. BR - Suppositories or enemas for systemic use unless proven to be equivalent. :P. BS - Products having drug standard deficiencies. :P. BT - Topical products with bioequivalence problems. :P. BX - Insufficient data to determine therapeutic equivalence. :P. NR - Not Rated by Orange Book"
+@*/;
+  string("\x01", maximum_length=3) fguraj /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Unit"
+ BizComment:"HCFA Unit Type Indicator :P. This value indicates a product's unit of measure, as supplied on the Centers of Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. These units represent the standard measurements used by CMS for determining rebate quantities. Information in this field is provided by CMS and may vary from the First DataBank Drug Form Code (DF). :P. :LINES.AHF - Antihemophilic Factor CAP - Capsule EA - Each GM - Gram ML - Milliliter SUP - Suppository TAB - Tablet TDP - Transdermal Patch :ELINES. :P. Obsolete values not listed in the table above can be found in the data. Those older values remain in the data for historical purposes."
+@*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) fgndal /*DECIMAL(11,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Units Per Pkg"
+ BizComment:"HCFA Units Per Package Size :P. This value indicates the number of units per package as supplied on the Centers of Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. This field must be used in conjunction with the HCFA Unit Type Indicator (HCFA_UNIT) to determine the appropriate number of units. Information in this field is provided by CMS and may vary from the First DataBank Package Size (PS) and Drug Form Code (DF)."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgfzce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA FDA Approval Dt"
+ BizComment:"HCFA FDA Approval Date :P. This field contains the date the FDA approves a product for sale in the marketplace, for products introduced after 09/30/90 (the date the Rebate program started). Products introduced prior to this date will contain 19900930 in this column in lieu of the actual market entry date. This data is supplied on the Centers of Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. The date is supplied to CMS by the drug labeler."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgf0ce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Market Entry Dt"
+ BizComment:"HCFA Market Entry Date :P. This field contains the date a manufacturer releases the drug product to the marketplace, for products introduced after 9/30/90 (the date the Rebate program started). Products introduced prior to this date will contain 19900930 in this column in lieu of the actual market entry date. This data is supplied on the Centers of Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. The date is supplied to CMS by the drug labeler."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgf1ce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Termination Date"
+ BizComment:"HCFA Termination Date :P. This field contains the shelf-life expiration date of the last batch of product produced, as supplied on the Centers for Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. The date is supplied to CMS from the drug labeler."
+@*/;
+  string("\x01", maximum_length=1) fgusaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Drug Type Code"
+ BizComment:"HCFA Drug Type Code :P. This code identifies the prescription or over-the-counter status of a product, as supplied on the Centers for Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. :P. :LINES.*BLANK - Not Provided by CMS 1 - Designated by FDA as Rx-only 2 - Over the Counter :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgf2ce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA DESI Eff Date"
+ BizComment:"HCFA DESI Effective Date :P. This field contains the date on which DESI status was applied or removed. DESI status is supplied on the Centers for Medicare and Medicaid Services (CMS, formerly HCFA) website. :P. The HCFA DESI Effective Date coincides with the CMS publish date. :P. This field is used in conjunction with the HCFA DESI Code (HCFA_DES1) to indicate either the beginning or the end of DESI status."
+@*/;
+  string("\x01", maximum_length=1) fgutaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA DESI Code"
+ BizComment:"HCFA DESI Code :P. This code indicates the DESI status of a drug, as supplied on the Centers for Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. :P. One current and up to two previous values are included. The historical information contains non-zero values when a drug's DESI status changes, and the HCFA DESI Effective Date (HCFA_DESC1) is used to indicate when the status changed. :P. 0 - NDC not on HCFA tape (no information submitted by manufacturer) :P. 2 - Safe and Effective or non-DESI :P. 3 - DESI/IRS Drugs Under Review (no Notice of Opportunity for a Hearing [NOOH] issued) :P. 4 - Less than effective DESI/IRS Drugs for Some Indications :P. 5 - Less than effective DESI/IRS Drugs for All Indications :P. 6 - Less than effective DESI/IRS Drugs Removed from the Market"
+@*/;
+  string("\x01", maximum_length=1) fguaaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Unit of Use"
+ BizComment:"Unit of Use Indicator :P. This indicator identifies products that are packaged per course of therapy. Products are labeled as Unit of Use by the manufacturer. These products are supplied with appropriate labeling and (usually) child resistant closures, and thus are appropriate to dispense as a unit. When Unit of Use products are dispensed, the pharmacy label is placed directly on the package from the manufacturer. :P. :LINES.0 - All Other Products 1 - Unit of Use :ELINES."
+@*/;
+  string("\x01", maximum_length=10) fgt5aj /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Package Description"
+ BizComment:"Package Description :P. This description provides the text description of the container that is in direct contact with the product.  FDB obtains the Package Description from the product package insert, and the following rules are used for consistency: :P. 1. Abbreviations are used to keep package description terms within 10 characters. :P. 2. Terms may be combined to describe certain packages. :P. :LINES.N/A - Not Applicable AER BR.ACT - Aerosol, Breath Activated AER W/ADAP - Aerosol with Adapter AER REF - Aerosol, Refill Unit AMP W/DEV - Ampul with Device AMPUL - Ampul AMPUL/KIT - Ampul/Kit PF APPLI - Applicator, Pre-filled BAG - Bag BLIST PACK - Blister Pack BOTTLE - Bottle BOX - Box CAN - Can CANISTER - Canister CANIT RFU - Canister, Refill Unit CARTRIDGE - Cartridge CUP - Cup DOSE-PACK - Dispensing Pack DROP BTL - Dropper Bottle DRUM - Drum FLEX CONT - Flexible Container GLASS CONT - Glass Container JAR - Jar KIT - Kit KIT-REFILL - Kit-Refill PACKET - Packet ROLL - Roll SQUEEZ BTL - Squeeze Bottle SYRINGE - Syringe TUBE - Tube TUBE KIT - Tube/Kit TUBE STICK - Tube Stick VIAL - Vial VIAL/KIT - Vial/Kit :ELINES."
+@*/;
+  string("\x01", maximum_length=25) fgrgis /*CHAR(25) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Label Name-25"
+ BizComment:"Label Name-25  :P. This label name identifies the name, strength, dosage form, and manufacturer of a specified product in a structured 25-byte format. :P. This is programmatically generated based on the product's brand or generic name, dosage form, and labeler name. :P. 1.  18-byte description is a combination of a brand name or generic name and strength. The Label Name 25/Generic Use Indicator is used to differentiate brand and generic names. :P. 2.  3-byte dosage form description. :P. 3.  4-byte manufacturer name. :P. The information in this field might include abbreviations considered inappropriate by the Joint Commission on Accreditation of Healthcare Organizations (JCAHO) and Institute for Safe Medical Practices (ISMP)."
+@*/;
+  string("\x01", maximum_length=1) fgriis /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Brand/GenericName Ind"
+ BizComment:"Label Name-25/Generic Name Use Indicator :P. This indicator defines whether a particular Label Name-25 represents a generic or a brand name. :P. 0 - Brand name abbreviation up to 12 bytes within Label Name-25 :P. 1 - Generic name abbreviation up to 12 bytes within Label Name-25"
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgneal /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 GPIDC"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) fgf5ce /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Date of Last AWP Chg"
+ BizComment:"Date of Last AWP Change :P. This field contains the date on which the product's AWP was changed on the NDC Price Table. This is not an effective date."
+@*/;
+  string("\x01", maximum_length=1) fgulaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Home Health Selection"
+ BizComment:"Home Health Selection Indicator :P. This indicator identifies those products that are most likely to be used by home healthcare providers. :P. :LINES. 0 - Not on HOME subset 1 - On HOME subset :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgubaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Inner Package"
+ BizComment:"Inner Package Indicator :P. This indicator specifies NDCs assigned to packages contained in a larger unit. :P. The outer package NDC is listed in the product catalog. Generally, inner and outer NDCs have the same first nine digits and only differ in the last two. For example, many injectables have one NDC on the outer package and another NDC on the inner package. :P. Note that the inner package will have the same price as the outer, because only the outer is listed in price catalogs and the two must be updated simultaneously. :P. :LINES.0 - All Others 1 - Inner Package :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fgucaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Outer Package"
+ BizComment:"Outer Package Indicator :P. This indicator specifies NDCs assigned to packages containing smaller units inside. :P. The outer package NDC is listed in the product catalog. Generally, inner and outer NDCs have the same first nine digits and only differ in the last two. For example, many injectables have one NDC on the outer package and another NDC on the inner package. :P. :LINES.0 - All Others 1 - Outer Package :ELINES."
+@*/;
+  string("\x01", maximum_length=2) fgujaj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Exp Orange Book Code"
+ BizComment:"Expanded Orange Book Code :P. This code identifies the equivalency ratings assigned to an approved prescription product according to the FDA's Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book). :P. This code is populated with the HCFA_FDA value when HCFA_FDA is not NR or blank, and the product has a valid rebate manufacturer and an Orange Book Code of ZA. Otherwise, this code is populated with the Orange Book Code value. :P. A-rated Orange Book Codes are defined by the FDA as drug products that FDA considers to be therapeutically equivalent to other pharmaceutically equivalent products. :P. AA - Products with no known bioequivalence problems in conventional dosage forms. :P. AB - Products meeting necessary bioequivalence requirements  :P. AN - Solutions and powders for aerosolization that are marketed for use in any of several delivery systems. Drugs that are marketed for only a single delivery system or are a component of a specific delivery system are not included. :P. AO - Injectable oils with identical active ingredients, concentration, and type of oil. :P. AP - Injectable aqueous solutions including dry powders, concentrated solutions, or ready-to-use solutions are considered pharmaceutically and therapeutically equivalent if they produce the same concentration and are labeled similarly. :P. AT - Topical products therapeutically equivalent in same dosage form. :P. B-rated Orange Book Codes are defined by the FDA as drug products that the FDA, at this time, considers not to be therapeutically equivalent to other pharmaceutically equivalent products. :P. B - Products with A or B codes previously assigned; new information raised significant questions which require further FDA investigation and review to determine therapeutic equivalence. :P. BC - Controlled-release tablets, controlled-release capsules, and controlled-release injectables unless specifically proven to be equivalent. :P. BD - Active ingredients and dosage forms with documented bioequivalence problems. :P. BE - Enteric coated dosage forms unless proven otherwise to be equivalent. :P. BN - Products in aerosol-nebulizer drug delivery systems that are marketed as a component of or specifically for a particular delivery system. :P. BP - Active ingredients and dosage forms with potential bioequivalence problems. :P. BR - Suppositories or enemas for systemic use unless proven to be equivalent. :P. BS - Products having drug standard deficiencies. :P. BT - Topical products with bioequivalence problems. :P. BX - Insufficient data to determine therapeutic equivalence."
+@*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) fgm7al /*DECIMAL(11,3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Pkg Size Equivalent"
+ BizComment:"Package Size Equivalent Value :P. This value provides the non-metric or most commonly used package size for non-injectable products whose actual package size measurements are metric or non-standard.  PS_EQUIV makes it easier to group together records with essentially equal package sizes. :P. For most standard operations, this value is not a substitute for the Package Size value."
+@*/;
+  string("\x01", maximum_length=1) fgrbis /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Private Labeler"
+ BizComment:"Private Labeler Indicator :P. The Private Labeler Indicator identifies products labeled for exclusive distribution by specific businesses, usually store brand non-prescription products sold at retail pharmacies."
+@*/;
+  string("\x01", maximum_length=2) fgugaj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Top 50 Generics"
+ BizComment:"Top 50 Generics Indicator :P. This indicator identifies the 50 most frequently dispensed generic drugs, ranked in order from one through 50, of the previous calendar year. :P. This data is based on total prescriptions dispensed. The products are manufacturer-specific and may appear on both the Top 200 prescription products and the Top 50 generic products. :P. Different package sizes and dose forms of the same drug will have the same number. :P. The ranking is changed annually, based on pharmaceutical market research surveys conducted by IMS. :P. :LINES. 0 - Not in the top 50 1-50 - Ranking within the top 50 :ELINES."
+@*/;
+  string("\x01", maximum_length=3) fguhaj /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Orange Book Code-3"
+ BizComment:"Orange Book Code; 3-Byte Version :P. This code identifies the equivalency ratings assigned to approved prescription products according to the FDA's Approved Drug Products with Therapeutic Equivalence Evaluations (Orange Book) :P. In certain instances, the FDA adds a number to the end of the AB code to make a three character code.  These three-character codes are assigned only in situations when more than one reference listed drug of the same strength has been designated under the same heading.  Two or more reference listed drugs are generally selected only when there are at least two potential reference drug products which are not bioequivalent to each other. If a study is submitted that demonstrates bioequivalence to a specific listed drug product, the generic product will be given the same three-character code as the reference listed drug it was compared against. Drugs coded with this indicator are considered therapeutically equivalent only to other drugs coded with same value. :P. At present, the database is limited to allowing a single value assignment per NDC. In situations where multiple therapeutically equivalent dispensing candidates for a given NDC exist, a representative OBC3 is chosen and assigned in the data. :P. When there is not a 3-byte code, the default is a 2-byte code with trailing blank. :P. A-rated Orange Book Codes are defined by the FDA as drug products that FDA considers to be therapeutically equivalent to other pharmaceutically equivalent products. :P. AA - Products with no known bioequivalence problems in conventional dosage forms. :P. AB, AB1, AB2, AB3 - Products meeting necessary bioequivalence requirements. :P. AN - Solutions and powders for aerosolization that are marketed for use in any of several delivery systems. Drugs that are marketed for only a single delivery system or are a component of a specific delivery system are not included.:P. AO - Injectable oils with identical active ingredients, concentration, and type of oil. :P. AP - Injectable aqueous solutions including dry powders, concentrated solutions, or ready-to-use solutions are considered pharmaceutically and therapeutically equivalent if they produce the same concentration and are labeled similarly. :P. AT - Topical products therapeutically equivalent in same dosage form. :P. B - Products with A or B codes previously assigned; new information raised significant questions which require further FDA investigation and review to determine therapeutic equivalence.:P. BC - Controlled-release tablets, controlled-release capsules, and controlled-release injectables unless specifically proven to be equivalent. :P. BD - Active ingredients and dosage forms with documented bioequivalence problems.:P. BE - Enteric coated dosage forms unless proven otherwise to be equivalent. :P. BN - Products in aerosol-nebulizer drug delivery systems that are marketed as a component of or specifically for a particular delivery system. :P. BP - Active ingredients and dosage forms with potential bioequivalence problems. :P. BR - Suppositories or enemas for systemic use unless proven to be equivalent :P. BS - Products having drug standard deficiencies. :P. BT - Topical products with bioequivalence problems. :P. BX - Insufficient data to determine therapeutic equivalence. :P. Codes added by First DataBank: :P. ZA - Particular pharmaceutical entity looked at but particular labeler was not evaluated.:P. ZB - Particular pharmaceutical entity was not evaluated.:P. ZC - Pharmaceutical entity and labeler evaluated but no therapeutic equivalence rating given. Usually applies to single source drugs."
+@*/;
+  string("\x01", maximum_length=1) fgtzaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Generic Manufacturer"
+ BizComment:"Generic Manufacturer Indicator :P. The Generic Manufacturer Indicator specifies whether a product is distributed by a brand manufacturer, a generic manufacturer, a niche manufacturer or a labeler that distributes BOTH brand and generically named products :P. 0 - Non-drug item, such as medical supplies and bulk chemicals :P. 1 - Generic manufacturer :P. 2 - Brand manufacturer :P. 3 - Alternative (niche) manufacturer (no longer being actively applied to new products) :P. 4 - Indeterminate (Labelers that are not otherwise classified, including labelers that distribute BOTH brand and generically named products.)"
+@*/;
+  string("\x01", maximum_length=1) fgf6ce /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Generic Name Ind"
+ BizComment:"Generic Name Indicator :P. This indicator specifies whether a product is a brand named product or a generically named product using the product name as the criteria. A GNI value of '0' is assigned to all non-drug items, such as medical supplies and bulk chemicals. :P. When discussing drug products with respect to their manufacturers, generically named drug products are products without a proprietary name. Typically in the United States, these products are named consistent with the United States Adopted Names (USAN). :P. First DataBank does not recommend the GNI over any other Generic Classification Indicator for purposes of determining "generic" status, but provides several indicators to meet a variety of needs. :P. 0 - Non-drug item :P. 1 - Generically named :P. 2 - Brand named"
+@*/;
+  string("\x01", maximum_length=1) fguwaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Gen Price Spread-GSI"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) fgudaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Thera Equivalency"
+ BizComment:"Therapeutic Equivalence Indicator :P. This identifier specifies a product's Orange Book code status.  This value is generated based upon an algorithm utilizing the Orange Book Code and HCFA FDA Therapeutic Equivalency Code. :P. First DataBank does not recommend the Therapeutic Equivalence Indicator over any other Generic Classification Indicator for purposes of determining "generic" status, but provides several indicators to meet a variety of needs. :P. 0 - Non-drug item, such as medical supplies and bulk chemicals :P. 1 - Orange Book B-rated drug product :P. 2 - Single source :P. 3 - Orange Book A-rated drug product :P. 4 - Product not listed in the Orange Book :P. The Orange Book is the leading authority for basing substitution decisions at the pharmacy level. The FDA has stated that the Orange Book is advisory only; many states use its data to regulate product selection. :P. A-rated Orange Book Codes are defined by the FDA as drug products that FDA considers to be therapeutically equivalent to other pharmaceutically equivalent products. :P. B-rated Orange Book Codes are defined by the FDA as drug products that the FDA, at this time, considers not to be therapeutically equivalent to other pharmaceutically equivalent products."
+@*/;
+  string("\x01", maximum_length=1) fgt2aj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Multi-Src/Single-Src"
+ BizComment:"Multi-Source/Single-Source Indicator :P. This indicator differentiates single-source from multiple-source packaged products. :P. :LINES. 1 - Multiple source 2 - Single source :ELINES."
+@*/;
+  string("\x01", maximum_length=1) fguuaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 HCFA Drug Category"
+ BizComment:"HCFA Drug Category :P. This field identifies single-source, multi-source, or innovator status as supplied on the Centers of Medicare and Medicaid Services (CMS, formerly HCFA) quarterly update. The data is supplied to CMS by the drug labeler. :P. Blank - Unspecified :P. S - Single Source :P. I - Innovator Multi-source :P. N - Non-Innovator Multi-source"
+@*/;
+  string("\x01", maximum_length=60) fgrcis /*CHAR(60) NOT NULL*/ /*@
+BizName:"RCFD1P: FD1 Label Name 60"
+ BizComment:"Label Name - 60 :P. This label name contains a combination of the drug name appearing on the package label, the strength description, and the dosage form description for a specified product. :P. These values comply with the Joint Commission on Accreditation of Healthcare Organizations (JCAHO) and Institute for Safe Medical Practices (ISMP) requirements to avoid inappropriate abbreviations."
+@*/;
+  string("\x01", maximum_length=10) fgakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD1P: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) fgc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD1P: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) fgadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD1P: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) fgalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD1P: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) fgadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD1P: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) fgbmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD1P: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) fgabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD1P: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) fgaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD1P: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

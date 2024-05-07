@@ -1,0 +1,119 @@
+DROP TABLE ${STAGING_SCHEMA}.d_plan_refill_limits_i;
+
+CREATE TABLE ${STAGING_SCHEMA}.d_plan_refill_limits_i
+( pln_option_refill_limit_sk       BIGINT NOT NULL
+, pln_sk                           BIGINT NOT NULL
+, ntwk_sk                          BIGINT NOT NULL
+, super_ntwk_sk                    BIGINT NOT NULL
+, rfl_pln_cd                       VARCHAR(10) NOT NULL
+, rfl_pln_eff_dt                   DATE NOT NULL
+, rfl_max_refill                   INTEGER NOT NULL
+, rfl_period_fill_type             VARCHAR(1) NOT NULL
+, rfl_period_fill_day              INTEGER NOT NULL
+, rfl_period_fill_max              INTEGER NOT NULL
+, rfl_period_fill_eff_dt           DATE NOT NULL
+, rfl_nbr_of_day_sppl_1            INTEGER NOT NULL
+, rfl_day_sppl_used_1              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_2            INTEGER NOT NULL
+, rfl_day_sppl_used_2              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_3            INTEGER NOT NULL
+, rfl_day_sppl_used_3              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_4            INTEGER NOT NULL
+, rfl_day_sppl_used_4              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_5            INTEGER NOT NULL
+, rfl_day_sppl_used_5              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_6            INTEGER NOT NULL
+, rfl_day_sppl_used_6              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_7            INTEGER NOT NULL
+, rfl_day_sppl_used_7              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_8            INTEGER NOT NULL
+, rfl_day_sppl_used_8              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_9            INTEGER NOT NULL
+, rfl_day_sppl_used_9              INTEGER NOT NULL
+, rfl_nbr_of_day_sppl_10           INTEGER NOT NULL
+, rfl_day_sppl_used_10             INTEGER NOT NULL
+, rfl_prequal_min_age              INTEGER NOT NULL
+, rfl_prequal_max_age              INTEGER NOT NULL
+, rfl_prequal_gen_ind_m            VARCHAR(1) NOT NULL
+, rfl_prequal_gen_ind_n            VARCHAR(1) NOT NULL
+, rfl_prequal_gen_ind_o            VARCHAR(1) NOT NULL
+, rfl_prequal_gen_ind_y            VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_0             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_1             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_2             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_3             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_4             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_5             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_6             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_7             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_8             VARCHAR(1) NOT NULL
+, rfl_prequal_psc_cd_9             VARCHAR(1) NOT NULL
+, rfl_prequal_max_refill           INTEGER NOT NULL
+, rfl_prequal_per_fill_type        VARCHAR(1) NOT NULL
+, rfl_prequal_per_fill_day         INTEGER NOT NULL
+, rfl_prequal_per_fill_max         INTEGER NOT NULL
+, rfl_prequal_per_fill_eff_dt      DATE NOT NULL
+, rfl_refill_lvl                   VARCHAR(1) NOT NULL
+, phr_ntwrk_id                     VARCHAR(6) NOT NULL
+, phr_ntwrk_seq_no                 INTEGER NOT NULL
+, ds1_drug_stat_list_nm            VARCHAR(10) NOT NULL
+, rfl_inc_exc_drug_sts_lst         VARCHAR(1) NOT NULL
+, rfl_generic_ind_i_e_for_y        VARCHAR(1) NOT NULL
+, rfl_generic_ind_i_e_for_m        VARCHAR(1) NOT NULL
+, rfl_generic_ind_i_e_for_n        VARCHAR(1) NOT NULL
+, rfl_generic_ind_i_e_for_o        VARCHAR(1) NOT NULL
+, rfl_accum                        VARCHAR(1) NOT NULL
+, rfl_fill_limit_period            VARCHAR(1) NOT NULL
+, rfl_fill_limit_day               INTEGER NOT NULL
+, rfl_fill_limit_nbr               INTEGER NOT NULL
+, rfl_fill_accum_msg_send          VARCHAR(1) NOT NULL
+, rfl_fill_accum_track             VARCHAR(1) NOT NULL
+, rfl_msg_cd                       VARCHAR(10) NOT NULL
+, rfl_msg_type                     VARCHAR(1) NOT NULL
+, rfl_prd_fill_qlfr                VARCHAR(1) NOT NULL
+, rfl_prd_wild_card                VARCHAR(2) NOT NULL
+, rfl_prd_fill_limit_period        VARCHAR(1) NOT NULL
+, rfl_prd_fill_limit_day           INTEGER NOT NULL
+, rfl_prd_fill_limit_nbr           INTEGER NOT NULL
+, rfl_prod_lvl_msg_cd              VARCHAR(10) NOT NULL
+, rfl_prod_lvl_msg_type            VARCHAR(1) NOT NULL
+, phr_super_ntwrk_id               VARCHAR(6) NOT NULL
+, phr_super_ntwrk_seq_no           INTEGER NOT NULL
+, rfl_prd_tc_fill_qual             VARCHAR(1) NOT NULL
+, rfl_prd_tc_rx_otc                VARCHAR(1) NOT NULL
+, rfl_prd_tc_fill_lmt_period       VARCHAR(1) NOT NULL
+, rfl_prd_tc_fill_limit_day        INTEGER NOT NULL
+, rfl_prd_tc_fill_limit_nbr        INTEGER NOT NULL
+, rfl_prd_tc_msg_cd                VARCHAR(10) NOT NULL
+, rfl_prd_tc_msg_type              VARCHAR(1) NOT NULL
+, rfl_sur_fill_qlfr                VARCHAR(1) NOT NULL
+, rfl_sur_wild_card                VARCHAR(2) NOT NULL
+, rfl_sur_fill_period              VARCHAR(1) NOT NULL
+, rfl_sur_fill_day                 INTEGER NOT NULL
+, rfl_sur_eff_dt                   DATE NOT NULL
+, rfl_sur_limit                    INTEGER NOT NULL
+, rfl_all_prod_msg_cd              VARCHAR(10) NOT NULL
+, rfl_all_prod_msg_type            VARCHAR(1) NOT NULL
+, rfl_ds_used_gpi_list_1           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_2           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_3           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_4           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_5           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_6           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_7           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_8           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_9           VARCHAR(10) NOT NULL
+, rfl_ds_used_gpi_list_10          VARCHAR(10) NOT NULL
+, rfl_allw_scc_ovrd                VARCHAR(1) NOT NULL
+, sc1_list                         VARCHAR(10) NOT NULL
+, src_env_sk                       BIGINT NOT NULL
+, insert_ts                        TIMESTAMP NOT NULL
+, update_ts                        TIMESTAMP NOT NULL
+, insert_uid                       VARCHAR(20)
+, update_uid                       VARCHAR(20)
+, run_id                           BIGINT
+, rec_stat_cd                      BYTEINT
+, sec_flg                          SMALLINT
+)
+DISTRIBUTE ON (PLN_OPTION_REFILL_LIMIT_SK);
+

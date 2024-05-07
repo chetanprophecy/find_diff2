@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This job creates a list of client ids for running 5 instances of execution frameworks" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="5AF2242B-F7A1-0A09-AD1E-EAC80929D49E" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework Create List" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_MP}/exec_frwrk_create_list.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-04-26Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="46E5AAB9-DBAA-1AFB-429B-DFD642CF35F9"/>
+      <predecessor jobDefinitionGuid="90AA0D85-CBA6-49E0-4ACE-23F3BFB48498"/>
+      <predecessor jobDefinitionGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF"/>
+      <predecessor jobDefinitionGuid="D94555DD-4E45-5D7C-7550-F188D1C64799"/>
+      <predecessor jobDefinitionGuid="79F06907-D41C-DAA9-B1FB-E52F7C482788"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

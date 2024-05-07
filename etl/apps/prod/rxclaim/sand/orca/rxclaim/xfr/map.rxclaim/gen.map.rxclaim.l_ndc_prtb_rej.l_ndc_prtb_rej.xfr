@@ -1,0 +1,58 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ndc_prtb.ndc_prtb_rej_sk,[transform],]
+  [out0.ndc_prtb.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.ndc_prtb.gpi_id,[passthrough],in0.gpi_number]
+  [out0.ndc_prtb.ndc_id,[passthrough],in0.ndc]
+  [out0.ndc_prtb.part_b_flg,[passthrough],in0.part_b_flag]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ndc_prtb.ndc_prtb_rej_sk,'ndc_prtb.ndc_prtb_rej_sk',1,0]
+     [out0.ndc_prtb.src_env_sk,'ndc_prtb.src_env_sk',1,0]
+     [out0.ndc_prtb.gpi_id,'ndc_prtb.gpi_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ndc_prtb.ndc_id,'ndc_prtb.ndc_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ndc_prtb.part_b_flg,'ndc_prtb.part_b_flg',1,0]
+  ]
+  impacts:
+  [
+     [in0.ndc,'ndc',1,1]
+     [in0.gpi_number,'gpi_number',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.part_b_flag,'part_b_flag',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) ndc_prtb_ndc_prtb_rej_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=11) ndc_prtb_ndc_id = fail_if_error(in0.ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=14) ndc_prtb_gpi_id = fail_if_error(in0.gpi_number);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ndc_prtb_part_b_flg = fail_if_error(in0.part_b_flag);
+let decimal("\x01",0) ndc_prtb_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.ndc_prtb.ndc_prtb_rej_sk::ndc_prtb_ndc_prtb_rej_sk;
+  out0.ndc_prtb.ndc_id::ndc_prtb_ndc_id;
+  out0.ndc_prtb.gpi_id::ndc_prtb_gpi_id;
+  out0.ndc_prtb.part_b_flg::ndc_prtb_part_b_flg;
+  out0.ndc_prtb.src_env_sk::ndc_prtb_src_env_sk;
+  out0.*::in0.*;
+
+end;

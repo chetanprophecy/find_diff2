@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/plan_qlfr_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_plan_qlfr_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_plan_qlfr.dat';
+end;
+
+/************************************************/
+/* Therapeutic Class Lookup (ids natural key) */
+/************************************************/
+
+type plan_qlfr_lkup_t =
+record
+  lookup_identifier_type      id             = -1; 
+  plan_qualifier_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                  key()          = {plan_qualifier.plan_qlfr_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let plan_qlfr_lkup_t GLKUP_PLAN_QLFR = allocate_with_nulls();
+
+plan_qlfr_lkup_t out :: load_plan_qlfr_lkup() inline =
+begin
+  if (GLKUP_PLAN_QLFR.id == lookup_not_loaded())
+    GLKUP_PLAN_QLFR = lookup_load(this_partition_path(get_plan_qlfr_lkup_path()));
+  
+  out :: GLKUP_PLAN_QLFR;
+end;
+
+plan_qlfr_t out :: get_plan_qlfr(plan_qlfr_cd) inline =
+begin
+  let plan_qlfr_lkup_t lkup = load_plan_qlfr_lkup();
+  out :: lookup(lkup, plan_qlfr_cd).plan_qualifier;
+end;

@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil_bk1.rcmd8p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmd8p                  m8qubt,m8hwvi,m8hxvi,m8jqax,m8akvn,m8c2dt,m8adtm,m8alvn,m8advn,m8bmdt,m8abtm,m8aevn,newline\nclmprdfil_bk1 rcmd7p                  m7huvi
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdfil_bk1 clmp02fil_bk2', SOURCE_SYSTEM, SOURCE_LOWER)]
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE RCMD8P.M8HWVI = RCMD7P.M7HTVI AND\n  RCMD8P.M8BMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND RCMD8P.M8BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " \nOPTIMIZE FOR ALL ROWS"\n else \n    "WHERE RCMD8P.M8HWVI = RCMD7P.M7HTVI AND \n  RCMD8P.M8BMDT >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND RCMD8P.M8BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " \nOPTIMIZE FOR ALL ROWS"\n]
+DO_CLEAN||||1
+DO_SOURCE||||0

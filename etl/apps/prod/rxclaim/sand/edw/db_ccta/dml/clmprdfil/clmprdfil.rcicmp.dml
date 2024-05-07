@@ -1,0 +1,60 @@
+record
+  string("\x01", maximum_length=7) imurhj /*CHAR(7) NOT NULL*/ /*@
+BizName:"RCICMP: MC1 Medical Condition Cde"
+ BizComment:"The Medical Condition Code is a 7-digit number assigned to a unique medical condition.  The Medical Condition Code is not hierarchical-the hierarchy of medical conditions is supplied in the Medical Condition Classification Hierarchy File. The following codes in the Medical Condition Master File are reserved for some general cases applicable to this field: 0000000-None Use in associated databases when information relating to a medical medical condition does not exist. (For example, diarrhea due to Ceftin is not restricted to a certain population or medical condition.) 9999997-Unspecified Assigned in associated databases to represent situations for which as concept is not linked to a specific condition.  For example, the Therapeutic Range for digoxin (serum) is a 0.8 to 1.5 ng/ml for Congestive Heart Failure Medical Condition Code "95", and 3.0 or greater ng/ml for Unspecified Medical Condition Code "9999997". 9999998- Not Yet Available Medi-Span has not yet reviewed this drug. 9999999-Not Applicable Primarily used for devices and non-drug items.  It is used in associated databases when information relating to a medical condition is not appropriate or is beyond the scope of the associated databases.  (For example, insulin syringes, considered to be devices, are not expected to have adverse effects or indications.)"
+@*/;
+  string("\x01", maximum_length=20) imuuhj /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCICMP: ICD Internal ICD-9 Code"
+ BizComment:"This is the primary key for the ICD-9 Master.  This value is given to us in the inbound file and then translated into an external view. :P. The ICD-9 Code identifies the specific ICD-9 Code within the Medical Condition Master Database that is related to a medical condition. :P. The following is the breakdown of the ICD-9 Code sections. :P. :LINES.1. ICD-9-CM Prefix Code:    = ICD-9 CM E = supplementary classification of external causes of injury and     poisoning V = supplementary classification of factors influencing health     status and contact with health services M = morphology of neoplasm N = procedural code :ELINES. :P. :LINES.2. ICD-9-CM Core: Zero-filled 4-digit number to the left of the decimal :ELINES. :P. :LINES.3. ICD-9-CM Suffix Code : 3-character number to the right of the decimal (left-justified with trailing blanks) :ELINES. :P. :LINES.4. Remainder of field: Filled with blanks (  ) :ELINES."
+@*/;
+  string("\x01", maximum_length=20) imuvhj /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCICMP: ICD External ICD-9 Code"
+ BizComment:"This is not a key but a display of the translated version of the ICD-9 Code, per MediSpan's documented translation table. The ICD-9 Code identifies the specific ICD-9 Code within the Medical Condition Master Database that is related to a medical condition."
+@*/;
+  string("\x01", maximum_length=1) imxjie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCICMP: ICM Med Cond-to-ICD9 Flag"
+ BizComment:"The Medical Condition to ICD-9 Flag identifies Medical Condition Codes to which at least one ICD-9 Code is cross-referenced, enabling conversion of Medical Condition Code to the ICD-9 Code. The following are the current values: N-Conversion Not Possible Y-Conversion Possible"
+@*/;
+  string("\x01", maximum_length=1) imxkie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCICMP: ICM ICD9-to-Med Cond Flag"
+ BizComment:"The ICD-9 to Medical Condition Flag identifies cross-references that should be used when starting with and ICD-9 Code and looking for matching Medical Condition Codes. The following are the current values: N-Conversion Not Possible Y-Conversion Possible"
+@*/;
+  string("\x01", maximum_length=1) imxlie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCICMP: ICM Status"
+ BizComment:"Status of displayed record: :P. :LINES.A - Active I - Inactive :ELINES."
+@*/;
+  string("\x01", maximum_length=10) imakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCICMP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) imc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCICMP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) imadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCICMP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) imalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCICMP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) imadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCICMP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) imbmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCICMP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) imabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCICMP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) imaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCICMP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rccpdp_ndc
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmprdfil_bk1 rccpdp_ndc              awq7hb,awx9vg,awv3hc,newline
+SOURCE_DB_LIST||||$[ \r\nbegin\r\nlet string("\\n")[int] DB_GROUPS = re_split_no_empty(AI_SOURCE_DB_GROUPS, "[\\r\\n]+");\r\nlet string("\\n")[int] CUSTOM_DB_GROUPS = [vector];\r\nlet string("") new_line;\r\n\r\nfor( let line in DB_GROUPS) \r\n        if (SOURCE_SYSTEM == string_split_no_empty(line," ")[0])\r\n                begin\r\n                        new_line = string_replace(line,"clmp02fil","");\r\n                        //new_line = string_join(vector_difference(string_split_no_empty(line," "),string_split_no_empty("clmm21fil,clmazmfil,clmvahfil",","))," ");\r\n                        CUSTOM_DB_GROUPS =  vector_append(CUSTOM_DB_GROUPS,new_line);\r\n                end\r\n        else\r\n                CUSTOM_DB_GROUPS =  vector_append(CUSTOM_DB_GROUPS,line);\r\n\r\nresult :: get_matching_db_list(AI_SOURCE_DB_LIST, string_join(CUSTOM_DB_GROUPS,"\\n"), SOURCE_SYSTEM, SOURCE_LOWER) ;\r\nend]
+SQL||||select awq7hb,awx9vg,awv3hc from clmprdfil.rccpdp where awx9vg != '' and awqph9='A'
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_LOOKUP||||0
+LOOKUP_NAME_OVERRIDE||||
+LOOKUP_FIELDS||||awq7hb,awx9vg,newline
+LOOKUP_KEY||||{awq7hb;awx9vg}
+EXTRA_DEDUP_SORT_KEY||||{awq7hb;awx9vg descending}
+RUN_ID||||20171113000000

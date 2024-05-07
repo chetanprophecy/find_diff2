@@ -1,0 +1,117 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a0d6783_5689_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_hospice.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_hospice.cpp_hospice_sk,[transform],]
+  [out0.c_hospice.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_hospice.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_hospice.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_hospice.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_hospice.reported_yr,'c_hospice.reported_yr',1,0]
+     [out0.c_hospice.last_name,'c_hospice.last_name',1,0]
+     [out0.c_hospice.month_6,'c_hospice.month_6',1,0]
+     [out0.c_hospice.hospice_id,'c_hospice.hospice_id',1,0]
+     [out0.c_hospice.cpp_created_by,'c_hospice.cpp_created_by',1,0]
+     [out0.c_hospice.month_5,'c_hospice.month_5',1,0]
+     [out0.c_hospice.first_name,'c_hospice.first_name',1,0]
+     [out0.c_hospice.hospice_flag,'c_hospice.hospice_flag',1,0]
+     [out0.c_hospice.cpp_hospice_sk,'c_hospice.cpp_hospice_sk',1,0]
+     [out0.c_hospice.cpp_create_ts,'c_hospice.cpp_create_ts',1,0]
+     [out0.c_hospice.cpp_update_ts,'c_hospice.cpp_update_ts',1,0]
+     [out0.c_hospice.month_2,'c_hospice.month_2',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_hospice.month_4,'c_hospice.month_4',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_hospice.month_3,'c_hospice.month_3',1,0]
+     [out0.c_hospice.hicn_num,'c_hospice.hicn_num',1,0]
+     [out0.c_hospice.cpp_updated_by,'c_hospice.cpp_updated_by',1,0]
+     [out0.c_hospice.src_env_sk,'c_hospice.src_env_sk',1,0]
+     [out0.c_hospice.reported_month,'c_hospice.reported_month',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_hospice.month_1,'c_hospice.month_1',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.month_5,'month_5',1,1]
+     [in0.hicn_num,'hicn_num',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.first_name,'first_name',1,1]
+     [in0.reported_yr,'reported_yr',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.hospice_id,'hospice_id',1,1]
+     [in0.last_name,'last_name',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.month_3,'month_3',1,1]
+     [in0.month_2,'month_2',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.reported_month,'reported_month',1,1]
+     [in0.month_4,'month_4',1,1]
+     [in0.month_1,'month_1',1,1]
+     [in0.hospice_flag,'hospice_flag',1,1]
+     [in0.month_6,'month_6',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_hospice_cpp_hospice_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_hospice_hospice_id = fail_if_error(in0.hospice_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_hospice_hicn_num = fail_if_error(in0.hicn_num);
+let utf8 string("\x01", maximum_length=200) c_hospice_last_name = fail_if_error(in0.last_name);
+let utf8 string("\x01", maximum_length=200) c_hospice_first_name = fail_if_error(in0.first_name);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_hospice_hospice_flag = fail_if_error(in0.hospice_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_1 = fail_if_error(in0.month_1);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_2 = fail_if_error(in0.month_2);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_3 = fail_if_error(in0.month_3);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_4 = fail_if_error(in0.month_4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_5 = fail_if_error(in0.month_5);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_hospice_month_6 = fail_if_error(in0.month_6);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_hospice_reported_month = fail_if_error(in0.reported_month);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_hospice_reported_yr = fail_if_error(in0.reported_yr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_hospice_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_hospice_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_hospice_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_hospice_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_hospice_src_env_sk = 710;
+
+
+
+  out0.c_hospice.cpp_hospice_sk::c_hospice_cpp_hospice_sk;
+  out0.c_hospice.hospice_id::c_hospice_hospice_id;
+  out0.c_hospice.hicn_num::c_hospice_hicn_num;
+  out0.c_hospice.last_name::c_hospice_last_name;
+  out0.c_hospice.first_name::c_hospice_first_name;
+  out0.c_hospice.hospice_flag::c_hospice_hospice_flag;
+  out0.c_hospice.month_1::c_hospice_month_1;
+  out0.c_hospice.month_2::c_hospice_month_2;
+  out0.c_hospice.month_3::c_hospice_month_3;
+  out0.c_hospice.month_4::c_hospice_month_4;
+  out0.c_hospice.month_5::c_hospice_month_5;
+  out0.c_hospice.month_6::c_hospice_month_6;
+  out0.c_hospice.reported_month::c_hospice_reported_month;
+  out0.c_hospice.reported_yr::c_hospice_reported_yr;
+  out0.c_hospice.cpp_update_ts::c_hospice_cpp_update_ts;
+  out0.c_hospice.cpp_updated_by::c_hospice_cpp_updated_by;
+  out0.c_hospice.cpp_create_ts::c_hospice_cpp_create_ts;
+  out0.c_hospice.cpp_created_by::c_hospice_cpp_created_by;
+  out0.c_hospice.src_env_sk::c_hospice_src_env_sk;
+  out0.*::in0.*;
+
+end;

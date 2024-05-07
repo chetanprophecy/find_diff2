@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdext2_bk1.rcex6p
+SOURCE_TABLE_LIST||||# Schema Name  Unqualified Table Name  Fields\nclmprdext2_bk1 rcex6p                  abp2nb,aboinb,abdkhs,abpch9,abpdh9,abxyhc,abxzhc,abx0hc,abphh9,abpeh9,abylhc,abymhc,abynhc,abykhc,abpfh9,abwnhc,abc2hk,abpgh9,abwohc,abwphc,abpih9,abwqhc,abdlhs,abdmhs,abpjh9,abwshc,abwthc,abwuhc,abs4al,abs5al,abs6al,abwvhc,abwwhc,abwxhc,abyfal,abygal,abr8an,abkcbj,abmace,abbotz,abkdbj,abkebj,abmbce,abbptz,abkfbj,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdext2_bk1", "rcex6p")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||\n$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcex6p.abmbce >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcex6p.abmbce <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcex6p.abmbce >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcex6p.abmbce <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+ENABLE_DEFAULT_RULES||||True

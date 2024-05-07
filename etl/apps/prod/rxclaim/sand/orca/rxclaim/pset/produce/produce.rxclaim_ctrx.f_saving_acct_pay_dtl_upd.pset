@@ -1,0 +1,16 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.ctrx_f_saving_acct_pay_dtl_upd.ids_rxclaim.f_saving_acct_pay_dtl.${RUN_ID}.dat.gz
+NORM_XFR||||$AI_XFR/produce/produce.rxclaim_ctrx.f_saving_acct_pay_dtl_upd_normalize.xfr
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rxclaim_ctrx.f_saving_acct_pay_dtl_upd_rfmt.xfr
+USE_SORT||||False
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$AI_MFS/split/split.ctrx_f_saving_acct_pay_dtl_upd.ids_rxclaim.w_saving_acct_pay_dtl.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.w_saving_acct_pay_dtl.dml
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.f_saving_acct_pay_dtl.dml
+USE_NORM||||True
+NORM_FILE_DML|$|||${AI_DML}/split.ids_rxclaim/split.ids_rxclaim.f_saving_acct_pay_dtl.dml
+FILTER_EXPR|$|||length_of(claim_stat_id) >=1
+AB_CATALOG|$|||$AI_CAT/produce/produce.rxclaim_ctrx.f_saving_acct_pay_dtl_upd.cat
+ACE_CATALOG_CONTENTS|$|||LKP:D_CAG,{dxf_sk},/~$AI_SERIAL_LOOKUP/lookup.ids_common/lookup.ids_common.d_cag.dat,/~$AI_DML/lookup.ids_common/lookup.ids_common.d_cag.dml\n

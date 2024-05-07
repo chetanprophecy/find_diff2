@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rc15rp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rc15rp                  amnxcd,amnkcd,amf5bs,amh8au,amdqvg,amf8bs,amk2bs,ammwav,amkkaw,amk9aw,amakvn,amc2dt,amadtm,amalvn,amadvn,ambmdt,amabtm,amaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rc15rp')]
+DO_LOOKUP||||1
+DO_SOURCE||||0
+LOOKUP_KEY||||{amnxcd; amnkcd; amh8au; amkkaw; amk9aw; dxf_src_sys_id}
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ if (START_CHANGES_TIME != '')    "WHERE rc15rp.ambmdt >= " +     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +    " AND rc15rp.ambmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"else    "WHERE rc15rp.ambmdt >= " +     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +    " AND rc15rp.ambmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +    " OPTIMIZE FOR ALL ROWS"]
+SQL||||SELECT rc15rp.amnxcd\n     , rc15rp.amnkcd\n     , rc15rp.amf5bs\n     , rc15rp.amh8au\n     , rc15rp.amdqvg\n     , rc15rp.amf8bs\n     , rc15rp.amk2bs\n     , rc15rp.ammwav\n     , rc15rp.amkkaw\n     , rc15rp.amk9aw\n     , rc15rp.amakvn\n     , rc15rp.amc2dt\n     , rc15rp.amadtm\n     , rc15rp.amalvn\n     , rc15rp.amadvn\n     , rc15rp.ambmdt\n     , rc15rp.amabtm\n     , rc15rp.amaevn\n  FROM clmprdfil.rc15rp  rc15rp\n  where (rc15rp.amnxcd,rc15rp.amnkcd,rc15rp.amf5bs,rc15rp.amh8au,rc15rp.amkkaw,rc15rp.amk9aw) in (select rc15rp_subquery.amnxcd,\n                rc15rp_subquery.amnkcd,\n                min(rc15rp_subquery.amf5bs),\n                rc15rp_subquery.amh8au,\n\t\t\t\trc15rp_subquery.amkkaw,\n\t\t\t\trc15rp_subquery.amk9aw\nfrom clmprdfil.rc15rp rc15rp_subquery\ngroup by rc15rp_subquery.amnxcd,\n                rc15rp_subquery.amnkcd,\n                rc15rp_subquery.amh8au,\n\trc15rp_subquery.amkkaw,\n\t\t\t\trc15rp_subquery.amk9aw)
+LOOKUP_FIELDS||||
+EXTRA_DEDUP_SORT_KEY||||

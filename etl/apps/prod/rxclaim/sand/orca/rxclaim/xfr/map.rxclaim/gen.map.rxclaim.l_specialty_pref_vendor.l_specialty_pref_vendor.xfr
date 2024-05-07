@@ -1,0 +1,94 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a7d9004_b189_0
+    BizHidden:true
+@*/
+/*   lookup d_phrm   */
+out0::bzt_2_6c54cc0a_5a7d9004_b189_0(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) phr_sk = NULL(""), phr_dispnsr_type_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL(""), phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) phr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_affl_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) phr_zip_cd = NULL("");
+  decimal("\x01",0) phr_phone_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) dispr_typ_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_phrm",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a7d9004_b189_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_spc_pf_vn.phr_nm,[passthrough],in0.PHARMACY_NAME]
+  [out0.l_spc_pf_vn.pref_start_dt,[transform],in0.PREF_START_DT]
+  [out0.l_spc_pf_vn.phr_nabp,[passthrough],in0.PHARMACY_NABP]
+  [out0.l_spc_pf_vn.pref_end_dt,[transform],in0.PREF_END_DT]
+  [out0.l_spc_pf_vn.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_spc_pf_vn.splty_phr_sk,[transform],in0.PHARMACY_NABP,
+     'lookup("d_phrm").phr_sk']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_spc_pf_vn.phr_nm,'l_spc_pf_vn.phr_nm',1,0]
+     [out0.l_spc_pf_vn.pref_start_dt,'l_spc_pf_vn.pref_start_dt',1,0]
+     [out0.l_spc_pf_vn.phr_nabp,'l_spc_pf_vn.phr_nabp',1,0]
+     [out0.l_spc_pf_vn.pref_end_dt,'l_spc_pf_vn.pref_end_dt',1,0]
+     [out0.l_spc_pf_vn.src_env_sk,'l_spc_pf_vn.src_env_sk',1,0]
+     [out0.l_spc_pf_vn.splty_phr_sk,'l_spc_pf_vn.splty_phr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.PREF_END_DT,'PREF_END_DT',1,1]
+     [in0.PHARMACY_NABP,'PHARMACY_NABP',3,3]
+     [in0.PHARMACY_NAME,'PHARMACY_NAME',1,1]
+     ['lookup("d_phrm").phr_sk','phr_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.PREF_START_DT,'PREF_START_DT',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_spc_pf_vn_splty_phr_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=14) l_spc_pf_vn_phr_nabp = fail_if_error(in0.PHARMACY_NABP);
+let date("YYYYMMDD")("\x01") l_spc_pf_vn_pref_start_dt = fail_if_error((date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")) in0.PREF_START_DT);
+let date("YYYYMMDD")("\x01") l_spc_pf_vn_pref_end_dt = fail_if_error((date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")) in0.PREF_END_DT);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_spc_pf_vn_phr_nm = fail_if_error(in0.PHARMACY_NAME);
+let decimal("\x01",0) l_spc_pf_vn_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+l_spc_pf_vn_splty_phr_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_5a7d9004_b189_0(in0.PHARMACY_NABP).phr_sk,-1));
+
+  out0.l_spc_pf_vn.splty_phr_sk::l_spc_pf_vn_splty_phr_sk;
+  out0.l_spc_pf_vn.phr_nabp::l_spc_pf_vn_phr_nabp;
+  out0.l_spc_pf_vn.pref_start_dt::l_spc_pf_vn_pref_start_dt;
+  out0.l_spc_pf_vn.pref_end_dt::l_spc_pf_vn_pref_end_dt;
+  out0.l_spc_pf_vn.phr_nm::l_spc_pf_vn_phr_nm;
+  out0.l_spc_pf_vn.src_env_sk::l_spc_pf_vn_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,102 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5818773c_71ec_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_pt_pro_crd.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_pt_pro_crd.cpp_crrspdnce_sk,[transform],in0.crrspdnce_id,
+     'lookup("c_crrspdnce").dxf_sk']
+  [out0.c_pt_pro_crd.case_id,[passthrough],in0.case_identifer]
+  [out0.c_pt_pro_crd.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_pt_pro_crd.provider_id,[passthrough],in0.provider_id]
+  [out0.c_pt_pro_crd.cpp_partcptng_provider_crrspdnce_sk,[transform],]
+  [out0.c_pt_pro_crd.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_pt_pro_crd.vendor_id,[passthrough],in0.vendor_id]
+  [out0.c_pt_pro_crd.src_env_sk,[transform],]
+  [out0.c_pt_pro_crd.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_pt_pro_crd.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_pt_pro_crd.crrspdnce_id,[passthrough],in0.crrspdnce_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_pt_pro_crd.cpp_update_ts,'c_pt_pro_crd.cpp_update_ts',1,0]
+     [out0.c_pt_pro_crd.cpp_crrspdnce_sk,'c_pt_pro_crd.cpp_crrspdnce_sk',1,0]
+     [out0.c_pt_pro_crd.case_id,'c_pt_pro_crd.case_id',1,0]
+     [out0.c_pt_pro_crd.cpp_create_ts,'c_pt_pro_crd.cpp_create_ts',1,0]
+     [out0.c_pt_pro_crd.provider_id,'c_pt_pro_crd.provider_id',1,0]
+     [out0.c_pt_pro_crd.cpp_partcptng_provider_crrspdnce_sk,'c_pt_pro_crd.cpp_partcptng_provider_crrspdnce_sk',1,0]
+     [out0.c_pt_pro_crd.cpp_provider_sk,'c_pt_pro_crd.cpp_provider_sk',1,0]
+     [out0.c_pt_pro_crd.vendor_id,'c_pt_pro_crd.vendor_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_pt_pro_crd.src_env_sk,'c_pt_pro_crd.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_pt_pro_crd.cpp_created_by,'c_pt_pro_crd.cpp_created_by',1,0]
+     [out0.c_pt_pro_crd.cpp_updated_by,'c_pt_pro_crd.cpp_updated_by',1,0]
+     [out0.c_pt_pro_crd.crrspdnce_id,'c_pt_pro_crd.crrspdnce_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     ['lookup("c_crrspdnce").dxf_sk','dxf_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.case_identifer,'case_identifer',1,1]
+     [in0.crrspdnce_id,'crrspdnce_id',2,2]
+     [in0.vendor_id,'vendor_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_pt_pro_crd_cpp_partcptng_provider_crrspdnce_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_pt_pro_crd_case_id = fail_if_error(in0.case_identifer);
+let utf8 string("\x01", maximum_length=60) c_pt_pro_crd_crrspdnce_id = fail_if_error(in0.crrspdnce_id);
+let decimal("\x01",0) c_pt_pro_crd_cpp_crrspdnce_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_pt_pro_crd_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) c_pt_pro_crd_cpp_provider_sk;
+let utf8 string("\x01", maximum_length=100) c_pt_pro_crd_vendor_id = fail_if_error(in0.vendor_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_pt_pro_crd_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let utf8 string("\x01", maximum_length=80) c_pt_pro_crd_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_pt_pro_crd_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_pt_pro_crd_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_pt_pro_crd_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_pt_pro_crd_cpp_crrspdnce_sk=fail_if_error(first_defined(lookup("c_crrspdnce",in0.crrspdnce_id).dxf_sk,-1));
+
+/*   Default value   */
+c_pt_pro_crd_cpp_provider_sk=fail_if_error(first_defined(lookup("c_provider",in0.provider_id).dxf_sk,-1));
+
+  out0.c_pt_pro_crd.cpp_partcptng_provider_crrspdnce_sk::c_pt_pro_crd_cpp_partcptng_provider_crrspdnce_sk;
+  out0.c_pt_pro_crd.case_id::c_pt_pro_crd_case_id;
+  out0.c_pt_pro_crd.crrspdnce_id::c_pt_pro_crd_crrspdnce_id;
+  out0.c_pt_pro_crd.cpp_crrspdnce_sk::c_pt_pro_crd_cpp_crrspdnce_sk;
+  out0.c_pt_pro_crd.provider_id::c_pt_pro_crd_provider_id;
+  out0.c_pt_pro_crd.cpp_provider_sk::c_pt_pro_crd_cpp_provider_sk;
+  out0.c_pt_pro_crd.vendor_id::c_pt_pro_crd_vendor_id;
+  out0.c_pt_pro_crd.cpp_update_ts::c_pt_pro_crd_cpp_update_ts;
+  out0.c_pt_pro_crd.cpp_updated_by::c_pt_pro_crd_cpp_updated_by;
+  out0.c_pt_pro_crd.cpp_create_ts::c_pt_pro_crd_cpp_create_ts;
+  out0.c_pt_pro_crd.cpp_created_by::c_pt_pro_crd_cpp_created_by;
+  out0.c_pt_pro_crd.src_env_sk::c_pt_pro_crd_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,777 @@
+<AppConfTempl name="Map Claim History" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all">/Projects/orca/rxclaim</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  
+ let dot_vec = string_split(appconf_name, ".");
+ let client_nm = first_without_error(dot_vec[2], "");
+
+
+ set_metadata_value("proj.map.CLIENT_NM", client_nm);
+
+
+out :1: if ( not starts_with(appconf_name, "process.") )
+    "This application configuration must be named: process.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "process.<i>claim.history</i>.<i>client_name</i>,\n" +
+    "where <i>claim history</i> and <i>Client Name</i>\n" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_obj" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+      </ListVariable>
+      <Variable name="lookup_problem" type="string"/>
+      <Variable name="mapping_ruleset" type="ruleset"/>
+      <Variable name="net_paid_logic" type="boolean"/>
+      <Variable name="claim_stat_col_logic" type="string"/>
+      <Variable name="custom_net_paid_logic" type="string"/>
+      <Variable name="claim_paid_status_logic" type="string"/>
+      <Variable name="claim_paid_status_column" type="string"/>
+      <Variable name="net_logic" type="string"/>
+      <Variable name="ext_format" type="string"/>
+      <Variable name="output_dml_file_path" type="string"/>
+    </Variables>
+    <Project name="proj">
+      <Pset name="map" prototype_path="${AI_PSET}/process.claims.history.interim.pset">
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <FlowData name="RLP_DAY_OUT" source_port="/Custom_Profiling/RLP_Day/out" dest_port="/Custom_Profiling/Gather/in"/>
+        <FlowData name="RLP_WEEK_OUT" source_port="/Custom_Profiling/RLP_Week/out" dest_port="/Custom_Profiling/Gather/in"/>
+        <FlowData name="RLP_MONTH_OUT" source_port="/Custom_Profiling/RLP_Month/out" dest_port="/Custom_Profiling/Gather/in"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="project_rpath" expression="$AI_RPATH/$AI_REL_LOC"/>
+        <PdlExpression name="proj_name" expression="$[ re_replace(AI_REL_LOC, '^.*/', '') ]"/>
+      </Pset>
+    </Project>
+    <SharedFile name="input_dml" path="" auto_lock="true"/>
+    <Eme name="eme"/>
+    <SharedFile name="catalog" path="" auto_lock="true"/>
+    <SharedFile name="bre_xfr" path="" auto_lock="true"/>
+    <SharedFile name="output_dml" path="" auto_lock="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment name="SOURCE_DML_FILE">
+      <SourceValue is_expression="true">string_concat($AI_DML,"/",vars.ext_format,"_formulary.dml")</SourceValue>
+      <TargetValue reference="input_dml" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">expand_type(read_type(string_concat($AI_DML,"/",vars.ext_format,"_formulary.dml")))</SourceValue>
+      <TargetValue reference="input_dml" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.map" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" +  built_in + ".cat"</SourceValue>
+      <TargetValue reference="proj.map.AB_CATALOG"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let long[int] is_valid_vec = vars.lookups.eme_obj.is_valid;
+        let string(int)[int] dml_vec = vars.lookups.eme_obj.parameterized_record_format_rpath;
+        let string(int)[int] name_vec =  vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int) lookup_problem = "";
+        for ( let long i, i &lt; length_of(is_valid_vec) and lookup_problem == "" ) begin
+          if ( not is_valid_vec[i] )
+            lookup_problem = printf("Lookup #%d: Please select a valid dataset", i+1);
+          else if ( not ends_with(dml_vec[i], ".dml") )
+            lookup_problem = printf("Lookup #%d: Invalid DML: %s.  Please select a valid dataset.", i+1, dml_vec[i]);
+          else if ( is_blank(name_vec[i]) )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup name.", i+1);
+          else if ( is_blank(key_vec[i]) )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup key.", i+1);
+        end
+        result :: lookup_problem;
+      end</SourceValue>
+      <TargetValue reference="vars.lookup_problem"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        /*Build the mapping's lookup catalog, but only if we all the lookups keyed.*/
+        let string(int)[int] name_vec = vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int)[int] file_vec = vars.lookups.eme_obj.parameterized_rpath;
+        let string(int)[int] dml_vec = vars.lookups.eme_obj.parameterized_record_format_rpath;
+        result :: string_join(
+          for ( let long i, i &lt; length_of(name_vec) ) :
+            printf("%s,%s,/~%s,/~%s\n", name_vec[i],
+              key_vec[i],
+              re_replace(file_vec[i], "[{}]", ""), /* Remove curly braces from parameters.*/
+              re_replace( dml_vec[i], "[{}]", "")),
+          "");
+      end</SourceValue>
+      <TargetValue reference="catalog" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_obj" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map.project_rpath" property="resolved_value"/>
+      <TargetValue reference="vars.mapping_ruleset" property="project_rpath"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map"/>
+      <TargetValue reference="vars.mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map.SOURCE_DML" property="resolved_value"/>
+      <TargetValue reference="vars.mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map.TARGET_DML"/>
+      <TargetValue reference="vars.mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"file:$AI_SERIAL_TEMP/baseline." + built_in + ".dat"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="baseline_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="resolved_path"/>
+      <TargetValue reference="vars.mapping_ruleset" property="package_catalog_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.claim_stat_col_logic"/>
+      <TargetValue reference="proj.map.LOGIC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+let str= vars.net_logic ;
+let string(int) v_result = 'unknown';
+
+switch(str)
+
+    case "Null_check":   v_result = 'is_null(in.' + vars.claim_paid_status_column + ')';
+    case "Blank_check": v_result = 'is_blank(in.' + vars.claim_paid_status_column + ')';    
+    case "Equals_to_value": v_result= 'string_lrtrim(in.' + vars.claim_paid_status_column + ')'+ '=="P"';
+    case "Custom_defined": v_result =  vars.custom_net_paid_logic;
+   
+end
+ 
+
+
+result ::  v_result ; 
+end;</SourceValue>
+      <TargetValue reference="vars.claim_paid_status_logic"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        /* Take advantage of resolved_value to expand parameters in the catalog, such as the path of the file.*/
+        let string(int) cat = proj.map.AB_CATALOG.resolved_value;
+        let cat_vec = string_split_no_empty(cat, "\n");
+        result :: for ( let c in cat_vec ) :
+          string_replace_first(string_split(c, ",")[2], /* The data directory is the 3rd field in the catalog.*/
+            "/~", "");  /* Strip off the /~ we added when writing the catalog.*/
+      end</SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map.MAP_XFR" property="resolved_value"/>
+      <TargetValue reference="bre_xfr" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_ruleset"/>
+      <TargetValue reference="bre_xfr"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Map Claim History to Client : " + proj.map.CLIENT_NM</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="ruleset_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.ext_format"/>
+      <TargetValue reference="proj.map.EXT_FORMAT"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_DML/" + vars.ext_format + "_formulary.dml"</SourceValue>
+      <TargetValue reference="proj.map.SOURCE_DML_FILE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.custom_net_paid_logic"/>
+      <TargetValue reference="proj.map.CUSTOM_NET_PAID_LOGIC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.net_logic"/>
+      <TargetValue reference="proj.map.LOGIC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.net_paid_logic"/>
+      <TargetValue reference="proj.map.NET_PAID_LOGIC"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Bank Information Number"</SourceValue>
+      <TargetValue reference="proj.map.BIN" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"string(20)"</SourceValue>
+      <TargetValue reference="proj.map.BIN" property="business_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Group"</SourceValue>
+      <TargetValue reference="proj.map.SBMT_GROUP" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Process Control Number"</SourceValue>
+      <TargetValue reference="proj.map.PCN" property="business_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">[vector "proj.map.BIN", "proj.map.SBMT_GROUP", "proj.map.PCN"]</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="output_dml" property="path"/>
+      <TargetValue reference="vars.output_dml_file_path" property="value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_DML/" + string_substring(vars.output_dml_file_path, string_index(vars.output_dml_file_path,"/dml/") + 5, 99)</SourceValue>
+      <TargetValue reference="proj.map.TARGET_DML_FILE"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Map Claims History</Label>
+      <Column>
+        <Box>
+          <Label>App Config Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>"&lt;font color='#FF0000'&gt;" + vars.errors + "&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Define Input File and Layout</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Text</ConstantValue>
+                <ConstantValue>Excel</ConstantValue>
+                <ConstantValue>XML</ConstantValue>
+              </Choices>
+              <Label>Source File Type</Label>
+              <SourceTargetValue reference="proj.map.SOURCE_FILE_TYPE"/>
+            </ComboBox>
+            <CheckBox>
+              <Label>Is Source File Compressed?</Label>
+              <SourceTargetValue reference="proj.map.IS_COMPRESSED"/>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>medco_2300</ConstantValue>
+                <ConstantValue>RXCLAIM_8.0</ConstantValue>
+                <ConstantValue>optum7.0</ConstantValue>
+                <ConstantValue>Caremark_950</ConstantValue>
+                <ConstantValue>AETNA_798</ConstantValue>
+                <ConstantValue>Custom(Create New DML)</ConstantValue>
+              </Choices>
+              <Label>Mention Input Layout</Label>
+              <SourceTargetValue reference="vars.ext_format"/>
+              <ChoiceDisplayNames/>
+            </RadioButtons>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>Define Input Record Format</Label>
+              <Title/>
+              <UIElements>
+                <FileBrowser>
+                  <Label>Browse DML</Label>
+                  <SourceTargetValue reference="input_dml" source_property="resolved_path" target_property="path"/>
+                </FileBrowser>
+                <RecordFormat>
+                  <Label>Browse Record Format</Label>
+                  <Style>mapping</Style>
+                  <SampleDataPath is_expression="true">proj.map.INPUT_FILE</SampleDataPath>
+                  <ShowRecordFormat>true</ShowRecordFormat>
+                  <ShowSampleDataArea>true</ShowSampleDataArea>
+                  <SourceIsCompressed is_expression="true">proj.map.IS_COMPRESSED</SourceIsCompressed>
+                  <SourceValue reference="input_dml"/>
+                  <TargetValue reference="input_dml"/>
+                </RecordFormat>
+                <DataProfilerPopup>
+                  <Label is_expression="true">"&lt;b&gt;" + "Profile Source Data" + "&lt;/b&gt;"</Label>
+                  <RecordFormat/>
+                  <Title/>
+                </DataProfilerPopup>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Input File :&lt;/b&gt;\n" + proj.map.INPUT_FILE</Label>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>Define Output Layout</Label>
+              <Title>Target DML Layout</Title>
+              <UIElements>
+                <FileBrowser>
+                  <Label>Browse DML</Label>
+                  <AssociatedSharedFile reference="output_dml"/>
+                  <SourceTargetValue reference="output_dml" source_property="path" target_property="path"/>
+                </FileBrowser>
+                <RecordFormat>
+                  <Label>Browse Record Format</Label>
+                  <Style>mapping</Style>
+                  <ShowRecordFormat>true</ShowRecordFormat>
+                  <ShowSampleDataArea>false</ShowSampleDataArea>
+                  <AssociatedSharedFile reference="output_dml"/>
+                  <SourceTargetValue reference="output_dml"/>
+                  <CanModifyFields>true</CanModifyFields>
+                  <CanModifyTechnicalAttributes>true</CanModifyTechnicalAttributes>
+                  <CanModifyBusinessAttributes>all</CanModifyBusinessAttributes>
+                  <CanAddFields>true</CanAddFields>
+                  <AutoRefresh>true</AutoRefresh>
+                  <CanCreate>true</CanCreate>
+                  <CanRemoveFields>true</CanRemoveFields>
+                  <CanReorderFields>true</CanReorderFields>
+                  <ContextPset reference="proj.map"/>
+                  <CanSelect>true</CanSelect>
+                  <CanClear>true</CanClear>
+                </RecordFormat>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label>Please select BIN, PCN , GROUP and Recs per File count</Label>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>Define BIN PCN and Group Information</Label>
+              <Title/>
+              <UIElements>
+                <TextInput>
+                  <Label>BIN</Label>
+                  <SourceTargetValue reference="proj.map.BIN"/>
+                </TextInput>
+                <TextInput>
+                  <Label>Group</Label>
+                  <SourceTargetValue reference="proj.map.SBMT_GROUP"/>
+                </TextInput>
+                <TextInput>
+                  <Label>PCN</Label>
+                  <SourceTargetValue reference="proj.map.PCN"/>
+                </TextInput>
+                <TextInput>
+                  <Label>Records per Output File</Label>
+                  <SourceTargetValue reference="proj.map.RECS_PER_FILE"/>
+                </TextInput>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style/>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target File Details</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>"&lt;font color='#FF0000'&gt;" Target Output File name should be 8 or less characters "&lt;/font&gt;"</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Output File :&lt;/b&gt;\n" + proj.map.OUTPUT_FILE</Label>
+              <WordWrap/>
+              <MinWidth/>
+              <MaxWidth/>
+            </TextLabel>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextInput>
+              <Label>Target Library Name</Label>
+              <SourceTargetValue reference=""/>
+            </TextInput>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>dev</ConstantValue>
+                <ConstantValue>qa</ConstantValue>
+                <ConstantValue>uat</ConstantValue>
+              </Choices>
+              <Label>choose Enviornment to move the Output File</Label>
+              <SourceTargetValue reference=""/>
+              <Width>50</Width>
+            </ComboBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <MaxWidth/>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional: Lookups</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Any Lookups</Label>
+              <Title>Choose the Lookups (lookup.*.dat)</Title>
+              <UIElements>
+                <EmeBrowser>
+                  <Label>Select Lookups needed</Label>
+                  <SourceTargetValue reference="vars.lookups.eme_obj"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <Taxonomies is_expression="true">get_lookup_vec(proj.map.ACE_LOOKUP_PROJECT_LIST)</Taxonomies>
+                </EmeBrowser>
+              </UIElements>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <TextLabel>
+                  <Label>Before you go , please select the look up name and key details</Label>
+                </TextLabel>
+                <TextInput>
+                  <Label>Lookup Name</Label>
+                  <SourceTargetValue reference="lkp.lookup_name"/>
+                </TextInput>
+                <Popup>
+                  <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_obj.name) + "..."</Label>
+                  <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_obj.name)</Title>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Lookup Name</Label>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <KeyPicker>
+                      <Label>Pick the Lookup Key</Label>
+                      <RecordFormat reference="lkp.eme_obj" property="record_format"/>
+                      <SourceTargetValue reference="lkp.key"/>
+                      <ContextPset reference="proj.map"/>
+                      <ShowSpecialColumn>true</ShowSpecialColumn>
+                      <ShowOrderColumn>false</ShowOrderColumn>
+                    </KeyPicker>
+                  </UIElements>
+                  <Style>key</Style>
+                </Popup>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Lookup Configuration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_problem"/>
+              <Width>300</Width>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.lookup_problem != ""</Visible>
+          <Width>200</Width>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Input Filter Expression</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Filter Records</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter By Expression</Label>
+                  <RecordFormat reference="input_dml"/>
+                  <ContextPset reference="proj.map"/>
+                  <SourceValue>1</SourceValue>
+                  <TargetValue reference="proj.map.INP_FBE"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Description>Provide the Input Filter Condition</Description>
+            </Popup>
+            <Box>
+              <Label>Filter Expression</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.map.INP_FBE</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Edit Source to Target Mapping</Label>
+          <UIElements>
+            <BusinessRulesPopup>
+              <Label>Edit Mapping Rules</Label>
+              <SourceTargetValue reference="vars.mapping_ruleset"/>
+              <Title>Mapping Rules</Title>
+              <Style>processing</Style>
+            </BusinessRulesPopup>
+          </UIElements>
+          <Style>mapping</Style>
+          <MinWidth/>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Net Paid Logic</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Select Sort Key for Input</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat reference="input_dml"/>
+                  <SourceTargetValue reference="proj.map.INPUT_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Optional : Select Sort Key for Output</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat reference="proj.map.TARGET_DML"/>
+                  <SourceTargetValue reference="proj.map.OUTPUT_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <CheckBox>
+              <Label>Run Net Paid Logic</Label>
+              <SourceTargetValue reference="vars.net_paid_logic"/>
+            </CheckBox>
+            <Popup>
+              <Label>Pick Rollup Key</Label>
+              <Title>Pick Key to Perform Rollup</Title>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Select Rollup Key</Label>
+                  <RecordFormat is_expression="true">proj.map.TARGET_DML</RecordFormat>
+                  <SourceTargetValue reference="proj.map.ROLLUP_KEY"/>
+                </FieldPicker>
+              </UIElements>
+              <Visible is_expression="true">vars.net_paid_logic == 1</Visible>
+            </Popup>
+            <Popup>
+              <Label>Pick Claim Status Column</Label>
+              <Title>Pick Key</Title>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Field Picker</Label>
+                  <RecordFormat is_expression="true">proj.map.TARGET_DML</RecordFormat>
+                  <SourceTargetValue reference="vars.claim_paid_status_column"/>
+                </FieldPicker>
+              </UIElements>
+              <Visible is_expression="true">vars.net_paid_logic == 1</Visible>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#FF0000'&gt;" + "Rollup Key:"  + "&lt;/font&gt;"  + proj.map.ROLLUP_KEY</Label>
+              <Visible is_expression="true">vars.net_paid_logic == 1</Visible>
+            </TextLabel>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Equals_to_value</ConstantValue>
+                <ConstantValue>Null_check</ConstantValue>
+                <ConstantValue>Blank_check</ConstantValue>
+                <ConstantValue>Custom_defined</ConstantValue>
+              </Choices>
+              <Label>Select Appropriate Logic for Claim Status Column</Label>
+              <SourceTargetValue reference="vars.net_logic"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>Equals to Value</ConstantValue>
+                <ConstantValue>Check for Null Value</ConstantValue>
+                <ConstantValue>Check for Blank Value</ConstantValue>
+                <ConstantValue>Custom Logic</ConstantValue>
+              </ChoiceDisplayNames>
+              <BlankValueDisplayName/>
+              <Visible is_expression="true">vars.net_paid_logic == 1</Visible>
+            </ComboBox>
+            <TextLabel>
+              <Label is_expression="true">"Claim Status Logic :  "  +  vars.claim_paid_status_logic</Label>
+              <Visible is_expression="true">vars.net_paid_logic == 1 &amp;&amp; vars.net_logic != 'Custom_defined'</Visible>
+            </TextLabel>
+            <TextInput>
+              <Label>Mention Custom Claim Status Logic</Label>
+              <SourceTargetValue reference="vars.custom_net_paid_logic"/>
+              <Visible is_expression="true">vars.net_paid_logic == 1 &amp;&amp; vars.net_logic  == 'Custom_defined'</Visible>
+            </TextInput>
+            <TextLabel>
+              <Label is_expression="true">"Claim Status Logic :  "  +  vars.custom_net_paid_logic</Label>
+              <Visible is_expression="true">vars.net_paid_logic == 1 &amp;&amp; vars.net_logic == 'Custom_defined'</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>processing</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Output Filter Expression</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Filter Records</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter By Expression</Label>
+                  <RecordFormat reference="proj.map.TARGET_DML"/>
+                  <SourceTargetValue reference="proj.map.OUT_FBE"/>
+                  <ContextPset reference="proj.map"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Description>Provide the Input Filter Condition</Description>
+            </Popup>
+            <Box>
+              <Label>Filter Expression</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.map.OUT_FBE</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Execute Map Process</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>Please Save before you Execute</Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Execute Button</Label>
+              <SourceValue reference="proj.map"/>
+            </ExecuteButton>
+            <Popup>
+              <Label>View Skipped Records File</Label>
+              <Title>Error Summary File</Title>
+              <UIElements>
+                <ViewData>
+                  <Label>View Data</Label>
+                  <RecordFormat is_expression="true">proj.map.ERROR_SUMMARY_DML</RecordFormat>
+                  <SourceValue reference="proj.map.ERROR_SUMMARY_LOG_FILE"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>View Formatted Input/Map Reports</Label>
+              <Title>Error Summary File</Title>
+              <UIElements>
+                <ViewData>
+                  <Label>View Data</Label>
+                  <RecordFormat is_expression="true">proj.map.COMP_SUMMARY_DML</RecordFormat>
+                  <SourceValue reference="proj.map.COMP_SUMMARY_LOG_FILE"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <FileDownloader>
+              <DefaultLocalFileName/>
+              <Label>Download Formatted Profile Data File(Output File)</Label>
+              <LocalFileName/>
+              <ServerPath reference="proj.map.XLS_OUT_FILE"/>
+              <ButtonLabel>Download Excel</ButtonLabel>
+              <ButtonType>button</ButtonType>
+            </FileDownloader>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Email Summary File</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>Please Save before you Execute</Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Execute Button</Label>
+              <SourceValue reference="proj.map"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>FTP Output File to Target</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>Please Save before you Execute</Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Execute Button</Label>
+              <SourceValue reference="proj.map"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Test</Label>
+      <UIElements/>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

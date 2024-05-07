@@ -1,0 +1,63 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.aud_job_nbrs.audit_add_tm,[transform],in0.add_time]
+  [out0.aud_job_nbrs.audit_claim_number,[transform],in0.claim_number]
+  [out0.aud_job_nbrs.audit_add_dt,[transform],in0.add_date]
+  [out0.aud_job_nbrs.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.aud_job_nbrs.audit_job_number,[passthrough],in0.job_number]
+  [out0.aud_job_nbrs.audit_job_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.aud_job_nbrs.audit_add_tm,'aud_job_nbrs.audit_add_tm',1,0]
+     [out0.aud_job_nbrs.audit_claim_number,'aud_job_nbrs.audit_claim_number',1,0]
+     [out0.aud_job_nbrs.audit_add_dt,'aud_job_nbrs.audit_add_dt',1,0]
+     [out0.aud_job_nbrs.src_env_sk,'aud_job_nbrs.src_env_sk',1,0]
+     [out0.aud_job_nbrs.audit_job_number,'aud_job_nbrs.audit_job_number',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.aud_job_nbrs.audit_job_sk,'aud_job_nbrs.audit_job_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.add_time,'add_time',1,1]
+     [in0.claim_number,'claim_number',1,1]
+     [in0.job_number,'job_number',1,1]
+     [in0.add_date,'add_date',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) aud_job_nbrs_audit_job_sk = -1;
+let decimal("\x01",0) aud_job_nbrs_audit_job_number = fail_if_error(in0.job_number);
+let string("\x01",charset="iso-8859-15", maximum_length=20) aud_job_nbrs_audit_claim_number = fail_if_error(string_lrtrim(in0.claim_number));
+let string("\x01",charset="iso-8859-15", maximum_length=8) aud_job_nbrs_audit_add_dt = fail_if_error(string_lrtrim(in0.add_date));
+let string("\x01",charset="iso-8859-15", maximum_length=6) aud_job_nbrs_audit_add_tm = fail_if_error(string_lrtrim(in0.add_time));
+let decimal("\x01",0) aud_job_nbrs_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.aud_job_nbrs.audit_job_sk::aud_job_nbrs_audit_job_sk;
+  out0.aud_job_nbrs.audit_job_number::aud_job_nbrs_audit_job_number;
+  out0.aud_job_nbrs.audit_claim_number::aud_job_nbrs_audit_claim_number;
+  out0.aud_job_nbrs.audit_add_dt::aud_job_nbrs_audit_add_dt;
+  out0.aud_job_nbrs.audit_add_tm::aud_job_nbrs_audit_add_tm;
+  out0.aud_job_nbrs.src_env_sk::aud_job_nbrs_src_env_sk;
+  out0.*::in0.*;
+
+end;

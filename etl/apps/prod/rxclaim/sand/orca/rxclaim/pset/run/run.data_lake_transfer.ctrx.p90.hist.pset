@@ -1,0 +1,7 @@
+!prototype|P|||$PUB_DATAHUB_PLAN/run.data_lake_transfer.plan
+SOURCE_SYSTEM_TO_RUN||||clmprdfil.rcpmnp\r\nclmprdfil.rcgp2p\r\nclmprdfil.rcnd2p\r\nclmprdfil.rcpgtp\r\nclmprdfil.rcpntp\r\nclmprdfil.rcprxp\r\nclmprdfil.rcrx3p\r\nclmprdfil.rcrx4p\r\nclmprdfil.rcrx5p\r\nclmprdfil.rcsn1p
+END_CHANGES_TIME||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+RUN_QUALIFIER||||CTRX_P90
+RUN_ID_FILE||||$[PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase(RUN_QUALIFIER) + ".hist."+ AI_PHASE + ".run_id.dat" ]
+START_CHANGES_FILE||||$[ if (RUN_QUALIFIER !="") \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE + ".hist." + string_downcase(RUN_QUALIFIER) + ".prev_end_changes_time.txt"\r\n   else \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE +"." + string_downcase(RUN_QUALIFIER) + ".prev_end_changes_time.txt"\r\n// You must make sure that this file exists before running this plan.  Initialize it with:\r\n// echo "" > "$AI_SERIAL/../dev.prev_end_changes_time.txt"\r\n// where dev, qa, uat, or prod are the AI_PHASE for this execution\r\n]
+START_CHANGES_TIME||||$[ \r\nre_replace(read_file(AI_SERIAL +"/plan_time/" + AI_PHASE + ".hist." + string_downcase(RUN_QUALIFIER) + ".prev_end_changes_time.txt"), "\\\\n", "")\r\n]

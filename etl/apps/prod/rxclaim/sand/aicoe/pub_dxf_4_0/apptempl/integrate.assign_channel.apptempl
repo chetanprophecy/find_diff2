@@ -1,0 +1,119 @@
+<AppConfTempl name="zz[DEPRECATED] Assign Channel (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage>out :: check_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  out :1: if(length_of(words) == 2 and words[0] == "assign" and re_replace(words[1], "[A-Za-z0-9_]", "") == "") "";
+  out :: "Please name this configuration in the format:\n[assign].[source]\nwhere source is a valid identifier without an embedded dot";
+end;
+
+out :: get_source_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  out :: string_downcase(words[1]);
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="name_error" type="string"/>
+      <ListVariable name="assignments" type="compound">
+        <Variable name="table" type="string"/>
+        <Variable name="channel" type="integer"/>
+      </ListVariable>
+    </Variables>
+    <Project name="proj">
+      <Pset name="assign_channel" prototype_path="${PUB_DXF_MP}/assign_channel.mp">
+        <ProjectParameter name="PUB_DXF_DML" parameter="PUB_DXF_DML"/>
+        <PdlExpression name="PUB_DXF_META" expression="$PUB_DXF_META"/>
+      </Pset>
+    </Project>
+    <SharedFile name="channel_assignments" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check appconf name">
+      <SourceValue is_expression="true">check_name(built_in)</SourceValue>
+      <TargetValue reference="vars.name_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_source_name(built_in)</SourceValue>
+      <TargetValue reference="proj.assign_channel.SOURCE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.assign_channel.PUB_DXF_META + "/channel_assign." + proj.assign_channel.SOURCE + ".dat"</SourceValue>
+      <TargetValue reference="channel_assignments" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"# This file was generated from configuration " + built_in + ". Do not edit it manually.\n" +
+"# SOURCE|TABLE|CHANNEL\n" +
+string_join(
+  for(let asg in vars.assignments): (proj.assign_channel.SOURCE + "|" + asg.table + "|" + (string(""))(decimal(""))asg.channel),
+  "\n"
+)</SourceValue>
+      <TargetValue reference="channel_assignments"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label>Configuration Name Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.name_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.name_error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Channel Assignments List</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Channel Assigments</Label>
+              <Title/>
+              <UIElements>
+                <DataGrid>
+                  <ColumnMetadata>
+                    <Column data_field="table">
+                      <HeaderText>Source Table Name</HeaderText>
+                    </Column>
+                    <Column data_field="channel">
+                      <HeaderText>Event Channel</HeaderText>
+                      <DefaultValue>1</DefaultValue>
+                      <ReadOnly>true</ReadOnly>
+                    </Column>
+                  </ColumnMetadata>
+                  <Label>Edit Channel Assignments</Label>
+                  <SourceTargetValue reference="vars.assignments"/>
+                </DataGrid>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA["<b>Existing channel assignments:</b>\n" +
+if(length_of(vars.assignments) == 0)
+  "[None]"
+else
+  string_join(for(let asg in vars.assignments): (asg.table + " --> Channel " + (string(""))(decimal(""))asg.channel), "\n")
+]]></Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.name_error == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>File Contents</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + channel_assignments.resolved_path + "</b>"]]></Label>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="channel_assignments"/>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

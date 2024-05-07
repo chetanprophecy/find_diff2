@@ -1,0 +1,268 @@
+<AppConfTempl name="Source Rank Override (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath>/Projects/aicoe/pub_dxf_4_0</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "/~$PUB_DXF_DML/generic_data_types.dml";
+
+out :: get_original_sorted_ranks(master_file_path)=
+begin
+  let string("\x01")[] file_lines = string_split_no_empty(read_file(master_file_path), "\n");
+  let ids_src_envrt_lookup_type[] recs = for(let line in file_lines): reinterpret(line);
+  let record string("\x01") source; decimal("\x01") rank; end[] ranks = [vector];
+
+  for(let rec in recs)
+    ranks = vector_append(ranks, [record source rec.src_env_nm rank rec.src_env_rnk]);
+  ranks = vector_sort(ranks, {rank});
+
+  out :: ranks;
+end;
+
+out :: format_master_file(master_file_path)=
+begin
+  let string("\x01")[] file_lines = string_split_no_empty(read_file(master_file_path), "\n");
+  let ids_src_envrt_lookup_type[] recs = for(let line in file_lines): reinterpret(line);
+
+  for(let rec in recs)
+  begin
+    rec.src_env_nm = bold(rec.src_env_nm);
+    rec.src_env_rnk = bold(rec.src_env_rnk);
+    file_lines[index_of(rec)] = reinterpret(rec);
+  end
+
+  out :: string_join(file_lines, "\n");
+end;
+
+out :: check_appconf(appconf_name) =
+begin
+let string("")[]  word_vec = string_split_no_empty(appconf_name,".") ;
+     
+  out :1: if ( re_index(appconf_name, "[A-Z]") )
+    "This configuration name must be all lowercase.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != "." or not starts_with(appconf_name, "rank_overrides") )
+    "This application configuration must be named:\n" +
+    "rank_overrides.<group>, where group\n" +
+    "must not contain a period (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+out :: color(str)=
+begin
+  out :: "<font color='#0000AA'>" + str + "</font>";
+end;
+
+out :: get_rank(src, orig)=
+begin
+  out :: orig[vector_search(orig, [record source src rank -1], {source})].rank;
+end;]]></TemplateExpressionPackage>
+  <Metadata>
+    <SharedFile name="overrides_file" path="" is_appconf_owned="true"/>
+    <Variables name="vars">
+      <Variable name="master_file_path" type="string"/>
+      <Variable name="errors" type="string"/>
+      <ListVariable name="original_ranks" type="compound">
+        <Variable name="source" type="string"/>
+        <Variable name="rank" type="integer"/>
+      </ListVariable>
+      <ListVariable name="override_ranks" type="compound">
+        <Variable name="source" type="string"/>
+        <Variable name="rank" type="integer"/>
+      </ListVariable>
+      <ListVariable name="ranks" type="compound">
+        <Variable name="source" type="string"/>
+        <Variable name="original_rank" type="integer"/>
+        <Variable name="override_rank" type="integer"/>
+      </ListVariable>
+      <Variable name="dummy_for_watch_value" type="integer"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Path of main source envrt id file">
+      <SourceValue is_expression="true">$PUB_DXF_META + '/lookup.src_envrt_id.txt'</SourceValue>
+      <TargetValue reference="vars.master_file_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment name="Populate original ranks from file">
+      <SourceValue is_expression="true">get_original_sorted_ranks(vars.master_file_path)</SourceValue>
+      <TargetValue reference="vars.original_ranks"/>
+    </Assignment>
+    <Assignment name="Populate grid. Additonal source added in master file will get added, and old ones removed.">
+      <SourceValue is_expression="true">begin
+  let record string("\x01") source; int original_rank; int override_rank; end[] v_ranks = vars.ranks;
+  for(let orig in vars.original_ranks)
+    //if(vector_search(v_ranks, [record source orig.source original_rank -1 override_rank -1], {source}) == -1)
+    if(orig.source not member vars.ranks.source)
+      v_ranks = vector_append(v_ranks, [record source orig.source original_rank orig.rank override_rank orig.rank]);
+  result :: v_ranks;
+end</SourceValue>
+      <TargetValue reference="vars.ranks"/>
+    </Assignment>
+    <Assignment name="Assign total of override ranks to a dummy (for watch value used in sorting)">
+      <SourceValue is_expression="true">vector_sum(for(let rank in vars.ranks): rank.override_rank)</SourceValue>
+      <TargetValue reference="vars.dummy_for_watch_value"/>
+    </Assignment>
+    <Assignment name="Sort grid (only when an override is modified)">
+      <SourceValue is_expression="true">vector_sort(vars.ranks, {override_rank})</SourceValue>
+      <TargetValue reference="vars.ranks"/>
+      <WatchValueOverride reference="vars.dummy_for_watch_value"/>
+    </Assignment>
+    <Assignment name="Extract overrides">
+      <SourceValue is_expression="true">begin
+  let record string("\x01") source; decimal("\x01") rank; end[] overrides = [vector];
+  for(let rank in vars.ranks)
+    if(rank.original_rank != rank.override_rank)
+	  overrides = vector_append(overrides, [record source rank.source rank rank.override_rank]);
+
+  result :: overrides;
+end</SourceValue>
+      <TargetValue reference="vars.override_ranks"/>
+    </Assignment>
+    <Assignment name="Overrides File Path">
+      <SourceValue is_expression="true">$PUB_DXF_META + "/rank_overrides/lookup.src_" + built_in + ".dat"</SourceValue>
+      <TargetValue reference="overrides_file" property="path"/>
+    </Assignment>
+    <Assignment name="Overrides File Content">
+      <SourceValue is_expression="true">string_join(for(let override in vars.override_ranks): override.source + "|" + (string(""))(decimal(""))override.rank, "\n")</SourceValue>
+      <TargetValue reference="overrides_file"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <InitialAssignments/>
+  <UserInterface>
+    <Canvas>
+      <Label/>
+      <Column>
+        <Box>
+          <Label/>
+          <UIElements>
+            <TextLabel>
+              <Label>&lt;font color='#770000'&gt;This template is for use by Ab Initio COE. The configurations will be locked and owned by the COE.&lt;/font&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>outer</Style>
+          <LineIn>off</LineIn>
+          <LineOut>off</LineOut>
+        </Box>
+        <Box>
+          <Label>Define Source System Rank Overrides</Label>
+          <UIElements>
+            <DataGrid>
+              <ColumnMetadata>
+                <Column data_field="source">
+                  <HeaderText>Source System</HeaderText>
+                </Column>
+                <Column data_field="original_rank">
+                  <HeaderText>Original Rank</HeaderText>
+                </Column>
+                <Column data_field="override_rank">
+                  <MinValue>1</MinValue>
+                  <HeaderText>Override Rank</HeaderText>
+                </Column>
+              </ColumnMetadata>
+              <Label>Edit Last Column for Overriding</Label>
+              <SourceTargetValue reference="vars.ranks"/>
+            </DataGrid>
+          </UIElements>
+          <Style>recval</Style>
+          <Height>450</Height>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.errors"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Overridden Ranks</Label>
+          <UIElements>
+            <Box>
+              <Label/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">string_join(
+  for(let entry in vars.ranks):
+    if(entry.original_rank != entry.override_rank)
+      entry.source + ": \t" + (string(""))(decimal(""))entry.override_rank + " (Originally " + (string(""))(decimal(""))entry.original_rank + ")",
+  "\n")</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Popup>
+              <Label>Compare Source Ranking Order</Label>
+              <Title/>
+              <UIElements>
+                <Box>
+                  <Label>Ordering of Sources</Label>
+                  <UIElements>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">"&lt;b&gt;&lt;i&gt;By Original Ranks:&lt;/i&gt;&lt;/b&gt;\n" +
+            string_join(
+              for(let orig in vars.original_ranks):
+                if(orig.source member vars.override_ranks.source)
+                  "&lt;font color='#AAAAAA'&gt;" + orig.source + "&lt;/font&gt;"
+                else
+                  orig.source
+              ,
+              "\n")</Label>
+                        </TextLabel>
+                        <TextLabel>
+                          <Label is_expression="true">"&lt;b&gt;&lt;i&gt;By Overridden Ranks:&lt;/i&gt;&lt;/b&gt;\n" +
+            string_join(
+              for(let entry in vars.ranks):
+                if(entry.original_rank != entry.override_rank)
+                  "&lt;b&gt;" + entry.source + "&lt;/b&gt;"
+                else
+                  entry.source
+              ,
+              "\n")</Label>
+                        </TextLabel>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                  <Style>inner</Style>
+                </Box>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == "" and overrides_file != ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Override File</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(overrides_file.resolved_path)</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="overrides_file"/>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Master File</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(vars.master_file_path)</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">format_master_file(vars.master_file_path)</Label>
+          <Width>700</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

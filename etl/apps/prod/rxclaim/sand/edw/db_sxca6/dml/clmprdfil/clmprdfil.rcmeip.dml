@@ -1,0 +1,84 @@
+record
+  string("\x01", maximum_length=18) alabcd /*CHAR(18) NOT NULL*/ /*@
+BizName:"RCMEIP: MBR Member ID"
+ BizComment:"Identification assigned to the member."
+@*/;
+  string("\x01", maximum_length=9) alaacd /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCMEIP: CAR Carrier ID"
+ BizComment:"Type the nine character identifier of the owner of the accounts, groups, and members."
+@*/;
+  string("\x01", maximum_length=15) alaccd /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCMEIP: ACC Account ID"
+ BizComment:"Type the unique identifier that is associated with this account throughout the RxCLAIM system.  15 alpha-numeric characters. :P. When *ALL is used during dynamic eligibility, the account will be identified by referencing the group specified in the group field to find the first corresponding Account."
+@*/;
+  string("\x01", maximum_length=15) aladcd /*CHAR(15) NOT NULL*/ /*@
+BizName:"RCMEIP: GRP Group ID"
+ BizComment:"Type the unique identifier that is associated with the group throughout the RxClaim system.  15 alpha-numeric characters."
+@*/;
+  decimal("\x01",0, maximum_length=6, sign_reserved) alznal /*DECIMAL(5) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Seq Nbr"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) almkce /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI From Date"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) almlce /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Thru Date"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) alvpak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Status"
+ BizComment:"The current status of the Member External Alternate Insurance (MEI). :P. A = Active :P. I = Inactive"
+@*/;
+  string("\x01", maximum_length=1) alvqak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Alt Insurance Flag"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) alm0ho /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Alt Insurance Code"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=18) alm1ho /*CHAR(18) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI Alt Insurance Mbr ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) alvrak /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCMEIP: MEI COB Pricing Type"
+ BizComment:"The COB Pricing Type defines the pricing structure used for Secondary claims. Valid values: 00 = No COB Pricing F1 : No COB Pricing used.  Normal pricing protocols are      used. 01 = CD-P,FT=DFT,DFT-CC=AD F1 F1 : Calculate pricing in the following order:      Ingredient Cost    - Other Amount Paid    + Fee    + Tax    - Patient Pay    = Amount Due 02 = DFT-CC=CAD, CAD-P=AD F1 F1 : Calculate pricing in the following order:      Ingredient Cost    + Fee    + Tax    - Patient Pay    - Other Payor Amount    = Amount Due 03 = AD=L(CDFT-P)|(CDFT-CC) F1 F1 : Calculate amount due in the following order:      Ingredient Cost    + Fee    + Tax    - Other Payer Amount    = X      Ingredient Cost    + Fee    + Tax    - Patient Pay    = Y      If X is less than or equal to Y,      Approved amount due = X and Approved      Patient Pay = 0      If X is greater than Y,      Approved amount due = Y and Approved      Patient Pay = Calculated patient pay -      other payer amount 04 = Approve Submitted Patient Pay F1 : For v5.1, Approve Submitted Patient Pay      For vD.0, Approve OPRA; Submitted Patient Pay    For OPRA, if "Submitted Other Payer Patient Responsibility    Qualifier" is '06' (Patient Pay Amount), then only amount    corresponding to this qualifer is used. Otherwise, amount    corresponding to other qualifiers is used. 05 = $0 Patient Pay 06 = Approve Submitted Other Amount Claimed 07 = L(CFT-P)|(CFT-CPP)|SPP F1 : Calculate amount due in the following order:      For v5.1, Submitted Patient Pay = Z      For vD.0, OPRA; Submitted Patient Pay = Z    For OPRA, if "Submitted Other Payer Patient Responsibility    Qualifier" is '06' (Patient Pay Amount), then only amount    corresponding to this qualifer is used. Otherwise, amount    corresponding to other qualifiers is used.    Ingredient Cost    + Fee    + Tax    - Other Amount Paid    = X    Ingredient Cost    + Fee    + Tax    - Calc Patient Pay    = Y    If Z is the lowest,    Price using Z as Amount Due, Patient Pay = 0    If X is the lowest,    Price using X as Amount Due, Patient Pay = 0    If Y is the lowest,    Price using Y as Amount Due, Patient Pay = X-Y 08 = CDFT-P=CAD, CAD-CC=AD F1 : Calculate pricing in the following order:    Ingredient Cost    - Other Payer Amount    + Fee    + Tax    - Patient Pay    = Amount Due      Calculated Amount Due    - Calculated Patient Pay    = Amount Due 09 = DFT-APP=AAD, AAD-P=FAD F1 : Calculate pricing in the following order:      Ingredient Cost    + Fee    + Tax    - Approved Patient Pay    = Approved Amount Due      Approved Amount Due                                            e +    - COB Other Payer Amount    = Final Amount Due 10 = CFT<P:AD/PP=0;AD=CFT-P-PP F1 : If CFT is less than the Other Payer Amount, then the Approved      Amount Due and Approved Patient Pay are equal to zero.      Otherwise, the amount due is equal to the CFT minus the other      payer minus the patient pay. 11 = AD=CFT-P-L[PP|(CFT-P)] F1:  Calculated Patient Pay = lower of the Patient Pay or (Cost + Fee      + Tax - Submitted Other Payer Amount Paid).      If the Calculated Patient Pay < 0.00, the Patient Pay = $0.00.      Amount Due = (Cost + Fee + Tax) - Other Payer Paid Amount -      Calculated Patient Pay. 12 = CDFT=OthAmt, DFT-PP=AD F1:  Determines the patient pay based upon the submitted other amount      claimed on the secondary claim. The new COB Price Type is not      meant to be used in conjunction with Medicare Part D claims.      If used with Medicare Part D claims the user will receive        e      unexpected results. 13 = Rx Price - P - PP = AD F1 : Calculate the pricing in the following order:      RxPrice    - Other Payer Amount    - Patient Pay    = Amount Due    Rx Price is defined as the total price of the script after the price    comparison. The new COB Price type will not be used in conjunction    with Medicare Part D claims. 14 = AD=L DFT | OthAmt F1:  Amount Due = lower of (Drug Cost + Fee + Tax)      or Submitted Other Amount Claimed. Other Amount Claimed      must be submitted with a qualifier of 99-Other. This COB      Price Type does not apply to Medicare Part D claims. 15 = AD=L CDFT-P|CDFT-CC F1: Drug +Fee +Tax -Other Payer = X Drug +Fee +Tax -Calculated Patient Pay = Y If X is the lowest and greater than zero, then Amount Due = CDFT - Other Payer.  Approved Patient Pay = zero. Client Patient Pay is retained and not reduced to zero. If X is the lowest and less than or equal to zero, then approved amount due and patient pay = zero and message "No secondary payment due" is returned to the pharmacy. Client Patient Pay is retained and not reduced to zero. If Y is the lowest, then Amount Due = CDFT - Patient Pay. Approved Patient Pay = Patient Pay - Other Payer. 16 = L(SCFT-P)|(CCFT-PP) F1 F1 : Calculate the pricing in the following order:      1. If Submitted COB Amount is greater than (Submitted Drug         Cost + Fee + Tax), claim will be rejected.      2. Compares and selects the higher of:         (Calculated + Fee + Tax) OR (Submitted Cost + Fee + Tax)         Set highest value equal to X.      3. Takes value of X and subtracts the submitted COB amount.         If delta is a negative value, claim is rejected.         If delta is a positive value, sets the value to Y.      4. Takes the Calculated Cost and subtracts the Calculated         Patient Pay. Sets this value to Z .      5. Selects the lower of Y or Z, and enters it as Approved Due.      6. Sets Patient Pay and Deductible Amounts to zero.      7. Calculates Approved Cost:         Cost = Approved Due - Approved Fees - Approved Taxes                + Submitted COB This COB price type is not meant to be used in conjunction with Medicare part D claims. If used with Medicare part D claims, the user may receive unexpected results. 17 = DFT - L(SPP|CPP) - P=AD F1: Ingredient Cost + Fee + Tax - lower of the Submitted Patient Pay or Calculated Patient Pay - Other Payer Amount = Amount Due For v5.1, use Submitted Patient Pay If Patient Pay is not submitted, Submitted Patient Pay = 0.00. For vD.0, use OPRA; Submitted Patient Pay If OPRA and Patient Pay is not submitted, Submiited Patient Pay = 0.00. For OPRA, if "Submitted Other Payer Patient Responsibility Qualifier" is '06' (Patient Pay Amount), then only amount corresponding to this qualifer is used. Otherwise, amount corresponding to other qualifiers is used. This Pricing Type is not intended to be used for Part D claims. 18=AD=H(CCFT|SCFT) - P F1: 1. If Submitted COB Amount is greater than Submitted Drug Cost    + Fee + Tax, reject claim. 2. Compare and select the higher of:    (Calculated Cost + Fee + Tax) OR    (Submitted Cost + Fee + Tax) 3. Set the amount due to the higher value in Step 2 minus    the other insurance payment. 4. Set Patient Pay, Deductible Amounts and Accumulators Send Log    to zero. This COB Pricing Type is not meant to be used in conjunction with Medicare Part D claims. If used with Medicare Part D claims, the user may receive unexpected results."
+@*/;
+  string("\x01", maximum_length=10) alakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMEIP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) alc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMEIP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aladtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMEIP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) alalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMEIP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) aladvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMEIP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) albmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCMEIP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) alabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCMEIP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) alaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCMEIP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

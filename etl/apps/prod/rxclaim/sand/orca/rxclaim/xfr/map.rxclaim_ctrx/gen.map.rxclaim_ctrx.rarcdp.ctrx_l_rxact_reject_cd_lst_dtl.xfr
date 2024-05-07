@@ -1,0 +1,84 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5af29fca_958a_0
+    BizHidden:true
+@*/
+/*   lookup rarclp_ctrx.sxca4   */
+out0::bzt_2_6c54cc0a_5af29fca_958a_0(in0)=
+begin
+let record
+  string("\x01", maximum_length=10) a3mhhd = NULL("");
+  string("\x01", maximum_length=25) a3ajij = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rarclp_ctrx.sxca4",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5af29fca_958a_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rejectcdlst.rarcd_rejct_cd_sk,[transform],]
+  [out0.rejectcdlst.rarcd_rejct_cd,[passthrough],in0.a4mihd]
+  [out0.rejectcdlst.rarcl_rejct_cd_list_nm,[passthrough],in0.a4mhhd]
+  [out0.rejectcdlst.rarcd_rejct_cd_desc,[passthrough],in0.a4aoij]
+  [out0.rejectcdlst.rarcl_rejct_cd_list_nm_desc,[transform],in0.a4mhhd,
+     'lookup("rarclp_ctrx.sxca4").a3ajij']
+  [out0.rejectcdlst.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rejectcdlst.rarcd_rejct_cd_sk,'rejectcdlst.rarcd_rejct_cd_sk',1,0]
+     [out0.rejectcdlst.rarcd_rejct_cd,'rejectcdlst.rarcd_rejct_cd',1,0]
+     [out0.rejectcdlst.rarcl_rejct_cd_list_nm,'rejectcdlst.rarcl_rejct_cd_list_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rejectcdlst.rarcd_rejct_cd_desc,'rejectcdlst.rarcd_rejct_cd_desc',1,0]
+     [out0.rejectcdlst.rarcl_rejct_cd_list_nm_desc,'rejectcdlst.rarcl_rejct_cd_list_nm_desc',1,0]
+     [out0.rejectcdlst.src_env_sk,'rejectcdlst.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.a4mihd,'a4mihd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.a4aoij,'a4aoij',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.a4mhhd,'a4mhhd',2,2]
+     ['lookup("rarclp_ctrx.sxca4").a3ajij','a3ajij',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) rejectcdlst_rarcd_rejct_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=3) rejectcdlst_rarcd_rejct_cd = fail_if_error(in0.a4mihd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) rejectcdlst_rarcl_rejct_cd_list_nm = fail_if_error(in0.a4mhhd);
+let string("\x01",charset="iso-8859-15", maximum_length=25) rejectcdlst_rarcd_rejct_cd_desc = fail_if_error(in0.a4aoij);
+let string("\x01",charset="iso-8859-15", maximum_length=100) rejectcdlst_rarcl_rejct_cd_list_nm_desc;
+let decimal("\x01",0) rejectcdlst_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+rejectcdlst_rarcl_rejct_cd_list_nm_desc=fail_if_error(bzt_2_6c54cc0a_5af29fca_958a_0(in0.a4mhhd).a3ajij);
+
+  out0.rejectcdlst.rarcd_rejct_cd_sk::rejectcdlst_rarcd_rejct_cd_sk;
+  out0.rejectcdlst.rarcd_rejct_cd::rejectcdlst_rarcd_rejct_cd;
+  out0.rejectcdlst.rarcl_rejct_cd_list_nm::rejectcdlst_rarcl_rejct_cd_list_nm;
+  out0.rejectcdlst.rarcd_rejct_cd_desc::rejectcdlst_rarcd_rejct_cd_desc;
+  out0.rejectcdlst.rarcl_rejct_cd_list_nm_desc::rejectcdlst_rarcl_rejct_cd_list_nm_desc;
+  out0.rejectcdlst.src_env_sk::rejectcdlst_src_env_sk;
+  out0.*::in0.*;
+
+end;

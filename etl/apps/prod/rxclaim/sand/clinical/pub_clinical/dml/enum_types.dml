@@ -1,0 +1,80 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/enum_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/07/06  Paul Thompson           Initial version
+ *  2016/10/01  Paul Thompson           Updated mbr_enum_t - changed scagm_vec_t -> cagm_vec_t
+ *  2016/10/14  Srikant Sunkara         Added clt_prgm_freq_t, clt_cag_prgm_freq_t types
+ *  2016/10/23  Paul Thompson           Code cleanup
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+type cag_enum_t =
+utf8 record
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cag_filter_id;
+  cag_t                            cag;
+  
+  cli_boolean_t                    excl_flag;
+  cli_plan_cd_t                    plan_cd      = NULL('');
+  cli_contract_nbr_t               contract_nbr = NULL('');
+  cli_pbp_id_t                     pbp_id       = NULL('');
+end;
+type cag_enum_vec_t = cag_enum_t[int];
+
+type mbr_elig_dt_t=
+record
+  cli_date_t                       mel_eff_dt   = NULL('') /* DATE                  */;
+  cli_date_t                       mel_thru_dt  = NULL('') /* DATE                  */;
+end;
+type mbr_elig_dt_vec_t = mbr_elig_dt_t[int];
+
+type mbr_enum_t =
+utf8 record
+  cli_pega_id_t                    cli_clt_id;
+  mbr_t                            clt_mbr;
+  cagm_vec_t                       ptnt_mbr_vec;
+  cli_pega_id_t                    cag_filter_id = NULL('');
+end;
+type mbr_enum_vec_t = mbr_enum_t[int];
+
+// Sort file by clt_mbr {SCAGM}
+type clt_mbr_pharma_claim_hist_t =
+record
+  cli_pega_id_t                    cli_clt_id;
+  mbr_t                            clt_mbr;
+  pharma_claim_vec_t               pharma_claim_vec = [vector]; // Sort by {filled_dt}
+end;
+
+// Sort file by clt_mbr {SCAGM}
+type clt_mbr_med_claim_hist_t =
+record
+  cli_pega_id_t                    cli_clt_id;
+  mbr_t                            clt_mbr;
+  med_claim_vec_t                  med_claim_vec = [vector]; // Sort by {svc_start_dt}
+end;
+
+type clt_prgm_freq_t =
+record
+  cli_program_id_t                 program_id;
+  string(int, maximum_length=100)  program_nm        = NULL('');
+  cli_job_freq_t                   idntfn_job_freq   = NULL('');
+  cli_program_type_cd_t            program_type_cd;
+end;
+
+type clt_cag_prgm_freq_t =
+record
+  cli_pega_id_t                    cli_clt_id;
+  mbr_t                            clt_mbr;
+  clt_prgm_freq_t[int]             clt_prgm_freq;
+  cagm_nk_vec_t                    ptnt_cagm_vec   = [vector];
+  mbr_elig_dt_vec_t                mbr_elig_dt_vec = [vector];
+  cli_plan_cd_t                    plan_cd       = NULL('');
+  cli_contract_nbr_t               contract_nbr  = NULL('');
+  cli_pbp_id_t                     pbp_id        = NULL('');
+end;

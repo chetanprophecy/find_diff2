@@ -1,0 +1,361 @@
+!project_type|P|||public
+!template_version|P|||3
+!rel_loc_param|P|||DB_CCTA_REL_LOC
+DB_CCTA_DIR|ELn||Project Location|
+PROJECT_DIR|||Back compatible way to reference this project|$DB_CCTA_DIR
+Environment|C|||
+PREFIX|Rn|||DB_CCTA
+DB_CCTA_REL_LOC|d|||AB_PARAMETER_ENV
+DB_CCTA_REL_LOC:sandbox||||edw/db_ccta
+DB_CCTA_REL_LOC:eme||||$[re_replace(DB_CCTA_DIR,AI_RPATH+"/*","")]
+DB_CCTA_DML|REn|||$DB_CCTA_DIR/dml
+DB_CCTA_XFR|REn|||$DB_CCTA_DIR/xfr
+DB_CCTA_RUN|REn|||$DB_CCTA_DIR/run
+DB_CCTA_DB|REn|||$DB_CCTA_DIR/db
+DB_CCTA_MP|Rn|||$DB_CCTA_DIR/mp
+DB_CCTA_PLAN|Rn|||$DB_CCTA_DIR/plan
+DB_CCTA_SQL|Rn|||$DB_CCTA_DIR/sql
+DB_CCTA_BIN|REn|||$DB_CCTA_DIR/bin
+DB_CCTA_PSET|Rn|||$DB_CCTA_DIR/pset
+DB_CCTA_RESOURCE|Rn|||$DB_CCTA_DIR/resource
+DB_CCTA_COMPONENTS|Rn|||$DB_CCTA_DIR/components
+DB_CCTA_META|Rn|||$DB_CCTA_DIR/meta
+RUN|REn|||$DB_CCTA_DIR/run
+DB_CCTA_DATA_MOUNT|RFKd|||AB_PARAMETER_ENV
+DB_CCTA_DATA_MOUNT:eme||||$AI_RPATH
+DB_CCTA_DATA_MOUNT:sandbox||||$AI_DATA_MOUNT
+DB_CCTA_MFS_DEPTH|RFK|||4
+DB_CCTA_MFS_NAME|R|||mfs_${DB_CCTA_MFS_DEPTH}way
+DB_CCTA_MFS_BASE|RFKd|||AB_PARAMETER_ENV
+DB_CCTA_MFS_BASE:eme||||$DB_CCTA_DATA_MOUNT/$DB_CCTA_REL_LOC/data/mfs
+DB_CCTA_MFS_BASE:sandbox||||$DB_CCTA_DATA_MOUNT/mfs/$DB_CCTA_MFS_NAME
+DB_CCTA_MFS_HOME|RFKd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_HOME:eme||||$DB_CCTA_MFS_BASE
+DB_CCTA_MFS_HOME:sandbox||||$DB_CCTA_MFS_BASE/$DB_CCTA_REL_LOC
+DB_CCTA_SERIAL_BASE|RFKd|||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_BASE:eme||||$DB_CCTA_DATA_MOUNT/$DB_CCTA_REL_LOC/data
+DB_CCTA_SERIAL_BASE:sandbox||||$DB_CCTA_DATA_MOUNT/serial
+DB_CCTA_SERIAL_HOME|RFKd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_HOME:eme||||$DB_CCTA_SERIAL_BASE/serial
+DB_CCTA_SERIAL_HOME:sandbox||||$DB_CCTA_SERIAL_BASE/$DB_CCTA_REL_LOC
+DB_CCTA_TEST_FLAG|RFK|||$AI_TEST_FLAG
+DB_CCTA_MFS_LOOKUP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_LOOKUP:eme||||$DB_CCTA_MFS_HOME/lookup
+DB_CCTA_MFS_LOOKUP:sandbox||||$DB_CCTA_MFS_HOME/lookup/$DB_CCTA_TEST_FLAG
+DB_CCTA_MFS|REnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS:eme||||$DB_CCTA_MFS_HOME/main
+DB_CCTA_MFS:sandbox||||$DB_CCTA_MFS_HOME/main/$DB_CCTA_TEST_FLAG
+DB_CCTA_MFS_PENDING|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_PENDING:eme||||$DB_CCTA_MFS_HOME/pending
+DB_CCTA_MFS_PENDING:sandbox||||$DB_CCTA_MFS_HOME/pending/$DB_CCTA_TEST_FLAG
+DB_CCTA_MFS_QUEUE|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_QUEUE:eme||||$DB_CCTA_MFS_HOME/queue
+DB_CCTA_MFS_QUEUE:sandbox||||$DB_CCTA_MFS_HOME/queue/$DB_CCTA_TEST_FLAG
+DB_CCTA_MFS_REJECT|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_REJECT:eme||||$DB_CCTA_MFS_HOME/reject
+DB_CCTA_MFS_REJECT:sandbox||||$DB_CCTA_MFS_HOME/reject/$DB_CCTA_TEST_FLAG
+DB_CCTA_MFS_TEMP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_CCTA_MFS_TEMP:eme||||$DB_CCTA_MFS_HOME/temp
+DB_CCTA_MFS_TEMP:sandbox||||$DB_CCTA_MFS_HOME/temp/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_ERROR|REnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_ERROR:eme||||$DB_CCTA_SERIAL_HOME/error
+DB_CCTA_SERIAL_ERROR:sandbox||||$DB_CCTA_SERIAL_HOME/error/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_LOG|REnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_LOG:eme||||$DB_CCTA_SERIAL_HOME/log
+DB_CCTA_SERIAL_LOG:sandbox||||$DB_CCTA_SERIAL_HOME/log/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_LOOKUP|Rnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_LOOKUP:eme||||$DB_CCTA_SERIAL_HOME/lookup
+DB_CCTA_SERIAL_LOOKUP:sandbox||||$DB_CCTA_SERIAL_HOME/lookup/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL|REnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL:eme||||$DB_CCTA_SERIAL_HOME/main
+DB_CCTA_SERIAL:sandbox||||$DB_CCTA_SERIAL_HOME/main/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_PENDING|Rnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_PENDING:eme||||$DB_CCTA_SERIAL_HOME/pending
+DB_CCTA_SERIAL_PENDING:sandbox||||$DB_CCTA_SERIAL_HOME/pending/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_QUEUE|Rnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_QUEUE:eme||||$DB_CCTA_SERIAL_HOME/queue
+DB_CCTA_SERIAL_QUEUE:sandbox||||$DB_CCTA_SERIAL_HOME/queue/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_REJECT|Rnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_REJECT:eme||||$DB_CCTA_SERIAL_HOME/reject
+DB_CCTA_SERIAL_REJECT:sandbox||||$DB_CCTA_SERIAL_HOME/reject/$DB_CCTA_TEST_FLAG
+DB_CCTA_SERIAL_TEMP|Rnd|directory||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_TEMP:eme||||$DB_CCTA_SERIAL_HOME/temp
+DB_CCTA_SERIAL_TEMP:sandbox||||$DB_CCTA_SERIAL_HOME/temp/$DB_CCTA_TEST_FLAG
+PUB_DB|C|||
+__DBC_Parameters__|n||Parameters related to selecting or populating the DBC file(s) themselves.|
+DB_CCTA_PHASE|REFK|{dev,qa,uat,prod}|The environment to connect to for this database.  Defaults to the same as $AI_PHASE, but can be overridden.  Set other parameters that vary between environments to be dependent on this as necessary, so that when you promote your applications|$AI_PHASE
+DB_CCTA_DBMS|REFK||The DBMS of the database.|odbc
+DB_CCTA_DBC|RFK||The DBC file to use when accessing the main database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_CCTA_DB/$DB_CCTA_DBMS.db_ccta.dbc
+DB_CCTA_GATEWAY_DBC|FK||The DBC file to use when accessing the main database/schema/user via the gateway, if any.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_CCTA_DB/$DB_CCTA_DBMS.db_ccta.gateway.dbc
+DB_CCTA_STAGING_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_CCTA_DB/$DB_CCTA_DBMS.db_ccta.staging.dbc
+DB_CCTA_STAGING_GATEWAY_DBC|FK||The DBC file to use when accessing the staging database/schema/user via the gateway, if any.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_CCTA_DB/$DB_CCTA_DBMS.db_ccta.staging.gateway.dbc
+DB_CCTA_DB_HOME|REFK||The value for the db_home tag in the DBC file.|$AB_HOME/lib/postgresql$[ ""\n// For Teradata: /opt/teradata/client/14.00\n// For Oracle: /opt/oracle/product/client/11203\n]
+DB_CCTA_DB_NAME_REPO|REFK||The name of this database in the EME.  All schemas share this value so that SQL involving multiple schemas produces the same lineage.  Normally, this is the same as the Prod DB Name, unless "everyone" know the DB by another name.|$[ string_downcase(string_replace(PREFIX, "DB_", "")) ]
+DB_CCTA_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_CCTA_PHASE
+DB_CCTA_DB_NAME:dev||||sxcdt
+DB_CCTA_DB_NAME:qa||||sxcdt
+DB_CCTA_DB_NAME:uat||||ccta
+DB_CCTA_DB_NAME:prod||||ccta
+DB_CCTA_DB_VERSION|REFK||The value for the db_version tag in the DBC file.|8.4.2
+DB_CCTA_CHARSET|REFK||The value for the charset tag in the DBC file.|WIN1252
+DB_CCTA_DB_NODES|REFK||The value for the db_nodes tag in the DBC file.  For most databases, this should be a real hostname, not localhost.  However, some databases, such as Postgres, have an unusual security model that may require localhost.|localhost
+DB_FA_CCTA_DB_NODES|REFK|||localhost
+DB_CCTA_ODBC_DATA_SOURCE_NAME|REFK||The value for the  odbc_data_source_name tag in the DBC file for a dabase gateway.|$DB_CCTA_DB_NAME
+DB_CCTA_LOGTABLE_DATABASE|REFK||The value for the logtable_database tag in the DBC file.|TBD
+DB_CCTA_WORKTABLE_DATABASE|REFK||The value for the worktable_database tag in the DBC file.|TBD
+DB_CCTA_ERRORTABLES_DATABASE|REFK||The value for the errortables_database tag in the DBC file.|TBD
+DB_CCTA_DB_SERVER_HOST|REFK||The value for the db_server_host tag in the DBC file.|localhost
+DB_CCTA_DB_SERVER_PORT|REFK||The value for the db_server_port tag in the DBC file.|5445
+DB_CCTA_USER|REFKd||The user name to use when connecting to the database.  It is dependent on DB_CCTA_PHASE so that it can vary between environments.|DB_CCTA_PHASE
+DB_CCTA_USER:dev||||EDMSRV
+DB_CCTA_USER:qa||||EDMSRV
+DB_CCTA_USER:uat||||EDMSRV
+DB_CCTA_USER:prod||||EDMSRV
+DB_CCTA_ENCRYPTED_PASSWORD|REFKd||The encrypted password to use when connecting to the main database.  It is dependent on DB_CCTA_PHASE so that it can vary between environments.|DB_CCTA_PHASE
+DB_CCTA_ENCRYPTED_PASSWORD:dev||||1zIJMkf1CRpBIU1Bd-i1ZH
+DB_CCTA_ENCRYPTED_PASSWORD:qa||||1zIJMkf1CRpBIU1Bd-i1ZH
+DB_CCTA_ENCRYPTED_PASSWORD:uat||||1zIJMkf1CRpBIU1Bd-i1ZH
+DB_CCTA_ENCRYPTED_PASSWORD:prod||||1zIJMkf1CRpBIU1Bd-i1ZH
+DB_CCTA_STAGE_USER|REFK||The user name to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_CCTA_PHASE.|$DB_CCTA_USER
+DB_CCTA_STAGE_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_CCTA_PHASE.|$DB_CCTA_ENCRYPTED_PASSWORD
+__Schema_Parameters__|n||By default, we provide parameters for a main schema and a staging schema.  However, your setup may differ.  If there are multiple, related schemas, then copy these parameters and replace "MAIN" with the appropriate names.|
+DB_CCTA_PRD_CLIENT_ENV_EME|RFK|||prd
+DB_CCTA_PRD_CLIENT_ENV|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_CLMPRDEXT_SCHEMA_EME|RFK|||clmprdext
+DB_CCTA_CLMPRDEXT_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMPRDEXT_SCHEMA:eme||||$DB_CCTA_CLMPRDEXT_SCHEMA_EME
+DB_CCTA_CLMPRDEXT_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMPRDEXT_SCHEMA:sandbox:dev||||clm${DB_CCTA_PRD_CLIENT_ENV}ext
+DB_CCTA_CLMPRDEXT_SCHEMA:sandbox:qa||||clm${DB_CCTA_PRD_CLIENT_ENV}ext
+DB_CCTA_CLMPRDEXT_SCHEMA:sandbox:uat||||clm${DB_CCTA_PRD_CLIENT_ENV}ext
+DB_CCTA_CLMPRDEXT_SCHEMA:sandbox:prod||||clm${DB_CCTA_PRD_CLIENT_ENV}ext
+__Project_Parameters__|n||These are the parameters that are not tied to a schema/database/user or DBC file.|
+DB_CCTA_CLMPRDFIL_SCHEMA_EME|RFK|||clmprdfil
+DB_CCTA_CLMPRDFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMPRDFIL_SCHEMA:eme||||$DB_CCTA_CLMPRDFIL_SCHEMA_EME
+DB_CCTA_CLMPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMPRDFIL_SCHEMA:sandbox:dev||||clm${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_CLMPRDFIL_SCHEMA:sandbox:qa||||clm${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_CLMPRDFIL_SCHEMA:sandbox:uat||||clm${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_CLMPRDFIL_SCHEMA:sandbox:prod||||clm${DB_CCTA_PRD_CLIENT_ENV}fil
+__Project_Parameters__|n||These are the parameters that are not tied to a schema/database/user or DBC file.|
+__Project_Parameters__|n||These are the parameters that are not tied to a schema/database/user or DBC file.|
+DB_CCTA_RXAPRDFIL_SCHEMA_EME|RFK|||rxaprdfil
+DB_CCTA_RXAPRDFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXAPRDFIL_SCHEMA:eme||||$DB_CCTA_RXAPRDFIL_SCHEMA_EME
+DB_CCTA_RXAPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXAPRDFIL_SCHEMA:sandbox:dev||||rxa${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXAPRDFIL_SCHEMA:sandbox:qa||||rxa${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXAPRDFIL_SCHEMA:sandbox:uat||||rxa${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXAPRDFIL_SCHEMA:sandbox:prod||||rxa${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_CLMPRDOBJ_SCHEMA_EME|REFK|||clmprdobj
+DB_CCTA_CLMPRDOBJ_SCHEMA|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_RXKPRDFIL_SCHEMA_EME|EFK|||rxkprdfil
+DB_CCTA_RXKPRDFIL_SCHEMA|EFKd|||AB_PARAMETER_ENV
+DB_CCTA_RXUPRDFIL_SCHEMA_EME|RFK|||rxuprdfil
+DB_CCTA_RXUPRDFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXUPRDFIL_SCHEMA:eme||||$DB_CCTA_RXUPRDFIL_SCHEMA_EME
+DB_CCTA_RXUPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXUPRDFIL_SCHEMA:sandbox:dev||||rxu${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXUPRDFIL_SCHEMA:sandbox:qa||||rxu${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXUPRDFIL_SCHEMA:sandbox:uat||||rxu${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXUPRDFIL_SCHEMA:sandbox:prod||||rxu${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_COMPRDFIL_SCHEMA_EME|RFK|||comprdfil
+DB_CCTA_COMPRDFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_COMPRDFIL_SCHEMA:eme||||$DB_CCTA_COMPRDFIL_SCHEMA_EME
+DB_CCTA_COMPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_COMPRDFIL_SCHEMA:sandbox:dev||||com${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_COMPRDFIL_SCHEMA:sandbox:qa||||com${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_COMPRDFIL_SCHEMA:sandbox:uat||||com${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_COMPRDFIL_SCHEMA:sandbox:prod||||com${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXBPRDFIL_SCHEMA_EME|RFK|||rxbprdfil
+DB_CCTA_RXBPRDFIL_SCHEMA|RFKd|||AB_PARAMETER_ENV
+DB_CCTA_SERIAL_LAYOUT|RFK||The layout used for access to the database for running SQL and for accessing single records.  This should be a serial layout, but it can be located locally or on a database gateway server, if any.\n|file:$AI_SERIAL
+DB_CCTA_MFS_LAYOUT|RFK||The layout used for large volume data access to the database.  This can have a different degree of parallelism than $AI_MFS, and it can be local or on a database gateway server.\n|mfile:$DB_CCTA_MFS
+DB_CCTA_MFS_LOCAL_LAYOUT|RFK||The layout on the local machine(s) that has the same degree of parallelism as DB_CCTA_MFS_LAYOUT.  This is used to ensure that any flows between the local machine and the gateway are straight flows.\n|mfile:$DB_CCTA_MFS
+DB_CCTA_NATIVE_OPTIONS|FK||Options for utility loads.|$[ ""\r\n// For Netezza, use:  -dateDelim '' -ctrlChars -ignoreZero\r\n// For Oracle, use:   unrecoverable skip_unusable_indexes=true skip_index_maintenance=true\r\n// For Postgresql, this is blank.\r\n]
+DB_CCTA_COMMIT_TABLE|FK||Optional: The fully qualified name of the commit table to use for DB updates.|$[ "" // DB_CCTA_MAIN_SCHEMA.ab_initio_commit_table ]
+DB_CCTA_COMMIT_NUMBER|FK||Optional: The number of records to commit in one transaction.|$[ "" // 10000 ]
+DB_CCTA_BOOKKEEPING_FIELDS|Rn||A list of all the bookkeeping or "physical" fields used in tables in this DB.|db_ccta_create_dttm\r\ndb_ccta_create_run_id\r\ndb_ccta_create_user\r\ndb_ccta_current_record_ind\r\ndb_ccta_record_placeholder_ind\r\ndb_ccta_record_status_cd\r\ndb_ccta_update_dttm\r\ndb_ccta_update_run_id\r\ndb_ccta_update_user\r\nnewline\r\n$[ "" // Keep this in sync with the list in $AI_XFR/logical_types.xfr ]
+DB_CCTA_UPDATE_BOOKKEEPING_FIELDS|Rn||A list of all the bookkeeping or "physical" fields that can be changed during and update.|db_ccta_current_record_ind\r\ndb_ccta_record_status_cd\r\ndb_ccta_update_dttm\r\ndb_ccta_update_run_id\r\ndb_ccta_update_user
+DB_CCTA_PLACEHOLDER_FIELD_NAME|O||Optional: The name of the placholder indicator field in the target table.  It may be a separate field, or it may just be a status code in a status field.|$[ "" // db_ccta_record_placeholder_ind ]
+DB_CCTA_PLACEHOLDER_VALUE|O||Optional: The SQL value of the placholder indicator field when the record is a placeholder.  Note that you need to use quotes (') around string values.|$[ "" // 'Y' ]
+DB_CCTA_MIN_DATETIME|RFK||YYYY-MM-DD HH:MM:SS: The earliest date expected in the DB.  Used to indicate an unknown start time.|1800-01-01 00:00:00
+DB_CCTA_MAX_DATETIME|RFK||YYYY-MM-DD HH:MM:SS: The latest datetime expected in the DB.  Used to indicate an unknown end time.|9999-12-31 23:59:59
+DB_CCTA_ADJACENT_INTERVAL_SECONDS|RFK|integer|#: The number of seconds between adjacent effective and end dates.  Typically either 1 or 86400 (a day).|1
+AI_REL_LOC@ABENV||||edw/db_ccta
+DB_CCTA_CLMPRDOBJ_SCHEMA:eme||||$DB_CCTA_CLMPRDOBJ_SCHEMA_EME
+DB_CCTA_CLMPRDOBJ_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXKPRDFIL_SCHEMA:eme||||$DB_CCTA_RXKPRDFIL_SCHEMA_EME
+DB_CCTA_RXKPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_PRD_CLIENT_ENV:eme||||$DB_CCTA_PRD_CLIENT_ENV_EME
+DB_CCTA_PRD_CLIENT_ENV:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_PRD_CLIENT_ENV:sandbox:dev||||ha4
+DB_CCTA_PRD_CLIENT_ENV:sandbox:qa||||ha4
+DB_CCTA_PRD_CLIENT_ENV:sandbox:uat||||prd
+DB_CCTA_PRD_CLIENT_ENV:sandbox:prod||||$DB_CCTA_PRD_CLIENT_ENV_EME
+DB_CCTA_MYTESTNEW_SCHEMA_EME|E|||mytestnew
+DB_CCTA_MYTESTNEW_SCHEMA|End|||AB_PARAMETER_ENV
+DB_CCTA_MYTESTNEW_SCHEMA:eme||||$DB_CCTA_MYTESTNEW_SCHEMA_EME
+DB_CCTA_MYTESTNEW_SCHEMA:sandbox|d|||AI_PHASE
+DB_CCTA_MYTESTNEW_SCHEMA:sandbox:dev||||mytestnew
+DB_CCTA_MYTESTNEW_SCHEMA:sandbox:qa||||mytestnew
+DB_CCTA_MYTESTNEW_SCHEMA:sandbox:uat||||mytestnew
+DB_CCTA_MYTESTNEW_SCHEMA:sandbox:prod||||$DB_CCTA_MYTESTNEW_SCHEMA_EME
+DB_CCTA_RXKPRDFIL_SCHEMA:sandbox:dev|$|||rxk${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXKPRDFIL_SCHEMA:sandbox:qa|$|||rxk${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXKPRDFIL_SCHEMA:sandbox:uat|$|||rxk${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXKPRDFIL_SCHEMA:sandbox:prod|$|||rxk${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_CLMPRDOBJ_SCHEMA:sandbox:dev|$|||clm${DB_CCTA_PRD_CLIENT_ENV}obj
+DB_CCTA_CLMPRDOBJ_SCHEMA:sandbox:qa|$|||clm${DB_CCTA_PRD_CLIENT_ENV}obj
+DB_CCTA_CLMPRDOBJ_SCHEMA:sandbox:uat|$|||clm${DB_CCTA_PRD_CLIENT_ENV}obj
+DB_CCTA_CLMPRDOBJ_SCHEMA:sandbox:prod|$|||clm${DB_CCTA_PRD_CLIENT_ENV}obj
+__Schema_Parameters_For_M21|n||By default, we provide parameters for a main schema and a staging schema.  However, your setup may differ.  If there are multiple, related schemas, then copy these parameters and replace "MAIN" with the appropriate names.|
+DB_CCTA_M21_CLIENT_ENV_EME|RFK|||m21
+DB_CCTA_M21_CLIENT_ENV|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_M21_CLIENT_ENV:eme||||$DB_CCTA_M21_CLIENT_ENV_EME
+DB_CCTA_M21_CLIENT_ENV:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_M21_CLIENT_ENV:sandbox:dev||||m21
+DB_CCTA_M21_CLIENT_ENV:sandbox:qa||||m21
+DB_CCTA_M21_CLIENT_ENV:sandbox:uat||||$DB_CCTA_M21_CLIENT_ENV_EME
+DB_CCTA_M21_CLIENT_ENV:sandbox:prod||||$DB_CCTA_M21_CLIENT_ENV_EME
+DB_CCTA_CLMM21EXT_SCHEMA_EME|RFK|||clmm21ext
+DB_CCTA_CLMM21EXT_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMM21EXT_SCHEMA:eme||||$DB_CCTA_CLMM21EXT_SCHEMA_EME
+DB_CCTA_CLMM21EXT_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMM21EXT_SCHEMA:sandbox:dev||||clm${DB_CCTA_M21_CLIENT_ENV}ext
+DB_CCTA_CLMM21EXT_SCHEMA:sandbox:qa||||clm${DB_CCTA_M21_CLIENT_ENV}ext
+DB_CCTA_CLMM21EXT_SCHEMA:sandbox:uat||||clm${DB_CCTA_M21_CLIENT_ENV}ext
+DB_CCTA_CLMM21EXT_SCHEMA:sandbox:prod||||clm${DB_CCTA_M21_CLIENT_ENV}ext
+DB_CCTA_CLMM21FIL_SCHEMA_EME|RFK|||clmm21fil
+DB_CCTA_CLMM21FIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMM21FIL_SCHEMA:eme||||$DB_CCTA_CLMM21FIL_SCHEMA_EME
+DB_CCTA_CLMM21FIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMM21FIL_SCHEMA:sandbox:dev||||clm${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_CLMM21FIL_SCHEMA:sandbox:qa||||clm${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_CLMM21FIL_SCHEMA:sandbox:uat||||clm${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_CLMM21FIL_SCHEMA:sandbox:prod||||clm${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXAM21FIL_SCHEMA_EME|RFK|||rxam21fil
+DB_CCTA_RXAM21FIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXAM21FIL_SCHEMA:eme||||$DB_CCTA_RXAM21FIL_SCHEMA_EME
+DB_CCTA_RXAM21FIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXAM21FIL_SCHEMA:sandbox:dev||||rxa${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXAM21FIL_SCHEMA:sandbox:qa||||rxa${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXAM21FIL_SCHEMA:sandbox:uat||||rxa${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXAM21FIL_SCHEMA:sandbox:prod||||rxa${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_CLMM21OBJ_SCHEMA_EME|REFK|||clmm21obj
+DB_CCTA_CLMM21OBJ_SCHEMA|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_CLMM21OBJ_SCHEMA:eme||||$DB_CCTA_CLMM21OBJ_SCHEMA_EME
+DB_CCTA_CLMM21OBJ_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMM21OBJ_SCHEMA:sandbox:dev|$|||clm${DB_CCTA_M21_CLIENT_ENV}obj
+DB_CCTA_CLMM21OBJ_SCHEMA:sandbox:qa|$|||clm${DB_CCTA_M21_CLIENT_ENV}obj
+DB_CCTA_CLMM21OBJ_SCHEMA:sandbox:uat|$|||clm${DB_CCTA_M21_CLIENT_ENV}obj
+DB_CCTA_CLMM21OBJ_SCHEMA:sandbox:prod|$|||clm${DB_CCTA_M21_CLIENT_ENV}obj
+DB_CCTA_RXKM21FIL_SCHEMA_EME|EFK|||rxkm21fil
+DB_CCTA_RXKM21FIL_SCHEMA|EFKd|||AB_PARAMETER_ENV
+DB_CCTA_RXKM21FIL_SCHEMA:eme||||$DB_CCTA_RXKM21FIL_SCHEMA_EME
+DB_CCTA_RXKM21FIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXKM21FIL_SCHEMA:sandbox:dev|$|||rxk${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXKM21FIL_SCHEMA:sandbox:qa|$|||rxk${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXKM21FIL_SCHEMA:sandbox:uat|$|||rxk${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXKM21FIL_SCHEMA:sandbox:prod|$|||rxk${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXUM21FIL_SCHEMA_EME|RFK|||rxum21fil
+DB_CCTA_RXUM21FIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXUM21FIL_SCHEMA:eme||||$DB_CCTA_RXUM21FIL_SCHEMA_EME
+DB_CCTA_RXUM21FIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXUM21FIL_SCHEMA:sandbox:dev||||rxu${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXUM21FIL_SCHEMA:sandbox:qa||||rxu${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXUM21FIL_SCHEMA:sandbox:uat||||rxu${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_RXUM21FIL_SCHEMA:sandbox:prod||||rxu${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_COMM21FIL_SCHEMA_EME|RFK|||comm21fil
+DB_CCTA_COMM21FIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_COMM21FIL_SCHEMA:eme||||$DB_CCTA_COMM21FIL_SCHEMA_EME
+DB_CCTA_COMM21FIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_COMM21FIL_SCHEMA:sandbox:dev||||com${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_COMM21FIL_SCHEMA:sandbox:qa||||com${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_COMM21FIL_SCHEMA:sandbox:uat||||com${DB_CCTA_M21_CLIENT_ENV}fil
+DB_CCTA_COMM21FIL_SCHEMA:sandbox:prod||||com${DB_CCTA_M21_CLIENT_ENV}fil
+__Schema_Parameters_For_OMC|n||By default, we provide parameters for a main schema and a staging schema.  However, your setup may differ.  If there are multiple, related schemas, then copy these parameters and replace "MAIN" with the appropriate names.|
+DB_CCTA_OMC_CLIENT_ENV_EME|RFK|||omc
+DB_CCTA_OMC_CLIENT_ENV|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_OMC_CLIENT_ENV:eme||||$DB_CCTA_OMC_CLIENT_ENV_EME
+DB_CCTA_OMC_CLIENT_ENV:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_OMC_CLIENT_ENV:sandbox:dev||||omc
+DB_CCTA_OMC_CLIENT_ENV:sandbox:qa||||omc
+DB_CCTA_OMC_CLIENT_ENV:sandbox:uat||||$DB_CCTA_OMC_CLIENT_ENV_EME
+DB_CCTA_OMC_CLIENT_ENV:sandbox:prod||||$DB_CCTA_OMC_CLIENT_ENV_EME
+DB_CCTA_CLMOMCEXT_SCHEMA_EME|RFK|||clmomcext
+DB_CCTA_CLMOMCEXT_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMOMCEXT_SCHEMA:eme||||$DB_CCTA_CLMOMCEXT_SCHEMA_EME
+DB_CCTA_CLMOMCEXT_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMOMCEXT_SCHEMA:sandbox:dev||||clm${DB_CCTA_OMC_CLIENT_ENV}ext
+DB_CCTA_CLMOMCEXT_SCHEMA:sandbox:qa||||clm${DB_CCTA_OMC_CLIENT_ENV}ext
+DB_CCTA_CLMOMCEXT_SCHEMA:sandbox:uat||||clm${DB_CCTA_OMC_CLIENT_ENV}ext
+DB_CCTA_CLMOMCEXT_SCHEMA:sandbox:prod||||clm${DB_CCTA_OMC_CLIENT_ENV}ext
+DB_CCTA_CLMOMCFIL_SCHEMA_EME|RFK|||clmomcfil
+DB_CCTA_CLMOMCFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_CLMOMCFIL_SCHEMA:eme||||$DB_CCTA_CLMOMCFIL_SCHEMA_EME
+DB_CCTA_CLMOMCFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMOMCFIL_SCHEMA:sandbox:dev||||clm${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_CLMOMCFIL_SCHEMA:sandbox:qa||||clm${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_CLMOMCFIL_SCHEMA:sandbox:uat||||clm${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_CLMOMCFIL_SCHEMA:sandbox:prod||||clm${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXAOMCFIL_SCHEMA_EME|RFK|||rxaomcfil
+DB_CCTA_RXAOMCFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXAOMCFIL_SCHEMA:eme||||$DB_CCTA_RXAOMCFIL_SCHEMA_EME
+DB_CCTA_RXAOMCFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXAOMCFIL_SCHEMA:sandbox:dev||||rxa${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXAOMCFIL_SCHEMA:sandbox:qa||||rxa${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXAOMCFIL_SCHEMA:sandbox:uat||||rxa${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXAOMCFIL_SCHEMA:sandbox:prod||||rxa${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_CLMOMCOBJ_SCHEMA_EME|REFK|||clmomcobj
+DB_CCTA_CLMOMCOBJ_SCHEMA|REFKd|||AB_PARAMETER_ENV
+DB_CCTA_CLMOMCOBJ_SCHEMA:eme||||$DB_CCTA_CLMOMCOBJ_SCHEMA_EME
+DB_CCTA_CLMOMCOBJ_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_CLMOMCOBJ_SCHEMA:sandbox:dev|$|||clm${DB_CCTA_OMC_CLIENT_ENV}obj
+DB_CCTA_CLMOMCOBJ_SCHEMA:sandbox:qa|$|||clm${DB_CCTA_OMC_CLIENT_ENV}obj
+DB_CCTA_CLMOMCOBJ_SCHEMA:sandbox:uat|$|||clm${DB_CCTA_OMC_CLIENT_ENV}obj
+DB_CCTA_CLMOMCOBJ_SCHEMA:sandbox:prod|$|||clm${DB_CCTA_OMC_CLIENT_ENV}obj
+DB_CCTA_RXKOMCFIL_SCHEMA_EME|EFK|||rxkomcfil
+DB_CCTA_RXKOMCFIL_SCHEMA|EFKd|||AB_PARAMETER_ENV
+DB_CCTA_RXKOMCFIL_SCHEMA:eme||||$DB_CCTA_RXKOMCFIL_SCHEMA_EME
+DB_CCTA_RXKOMCFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXKOMCFIL_SCHEMA:sandbox:dev|$|||rxk${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXKOMCFIL_SCHEMA:sandbox:qa|$|||rxk${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXKOMCFIL_SCHEMA:sandbox:uat|$|||rxk${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXKOMCFIL_SCHEMA:sandbox:prod|$|||rxk${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXUOMCFIL_SCHEMA_EME|RFK|||rxuomcfil
+DB_CCTA_RXUOMCFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_RXUOMCFIL_SCHEMA:eme||||$DB_CCTA_RXUOMCFIL_SCHEMA_EME
+DB_CCTA_RXUOMCFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXUOMCFIL_SCHEMA:sandbox:dev||||rxu${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXUOMCFIL_SCHEMA:sandbox:qa||||rxu${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXUOMCFIL_SCHEMA:sandbox:uat||||rxu${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXUOMCFIL_SCHEMA:sandbox:prod||||rxu${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_COMOMCFIL_SCHEMA_EME|RFK|||comomcfil
+DB_CCTA_COMOMCFIL_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_CCTA_COMOMCFIL_SCHEMA:eme||||$DB_CCTA_COMOMCFIL_SCHEMA_EME
+DB_CCTA_COMOMCFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_COMOMCFIL_SCHEMA:sandbox:dev||||com${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_COMOMCFIL_SCHEMA:sandbox:qa||||com${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_COMOMCFIL_SCHEMA:sandbox:uat||||com${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_COMOMCFIL_SCHEMA:sandbox:prod||||com${DB_CCTA_OMC_CLIENT_ENV}fil
+DB_CCTA_RXBSYSFIL_SCHEMA_EME|FK|||rxbsysfil_ccta_asp
+DB_CCTA_RXBSYSFIL_SCHEMA|FKd|||AB_PARAMETER_ENV
+AB_AIR_ROOT|REn|||/etl/var/eme/dev/tr
+DB_CCTA_RXBSYSFIL_SCHEMA:eme||||$DB_CCTA_RXBSYSFIL_SCHEMA_EME
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox|d|||AI_PHASE
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:dev||||rxbsysfil
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:qa||||rxbsysfil
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:integration||||rxbsysfil
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:uat||||rxbsysfil
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:prod||||rxbsysfil
+DB_CCTA_RXBSYSFIL_SCHEMA:sandbox:stage||||rxbsysfil
+DB_CCTA_TSUPRDFIL_SCHEMA|REFK|||tsuprdfil
+DB_CCTA_RXBPRDFIL_SCHEMA:eme||||$DB_CCTA_RXBPRDFIL_SCHEMA_EME
+DB_CCTA_RXBPRDFIL_SCHEMA:sandbox|d|||DB_CCTA_PHASE
+DB_CCTA_RXBPRDFIL_SCHEMA:sandbox:dev||||rxb${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXBPRDFIL_SCHEMA:sandbox:qa||||rxb${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXBPRDFIL_SCHEMA:sandbox:uat||||rxb${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_CCTA_RXBPRDFIL_SCHEMA:sandbox:prod||||rxb${DB_CCTA_PRD_CLIENT_ENV}fil
+DB_RXCL1_DBC|REFK|||$DB_CCTA_DB/$DB_CCTA_DBMS.fa_db_ccta.dbc

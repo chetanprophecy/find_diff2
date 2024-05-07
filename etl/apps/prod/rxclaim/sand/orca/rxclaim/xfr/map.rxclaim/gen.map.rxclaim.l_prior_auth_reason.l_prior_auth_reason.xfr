@@ -1,0 +1,35 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_prior_oath_reason_prior_auth_reason_sk = -1;
+let decimal("\x01",0) l_prior_oath_reason_common_reason_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_prior_oath_reason_prior_auth_reason;
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_prior_oath_reason_reason_desc;
+let decimal("\x01",0) l_prior_oath_reason_src_env_sk = -1;
+let datetime("YYYYMMDDHH24MISS")("\x01") l_prior_oath_reason_insert_ts = fail_if_error(now1());
+let datetime("YYYYMMDDHH24MISS")("\x01") l_prior_oath_reason_update_ts = fail_if_error(now1());
+
+
+
+/*   Default value   */
+l_prior_oath_reason_prior_auth_reason=fail_if_error(trim_no_null_default(in0.prior_auth_reason));
+
+/*   Default value   */
+l_prior_oath_reason_reason_desc=fail_if_error(trim_no_null_default(in0.reason_desc));
+
+/*   Default value   */
+l_prior_oath_reason_common_reason_ind=fail_if_error(numeric_nk(in0.common_reason_ind));
+
+  out0.l_prior_oath_reason.prior_auth_reason_sk::l_prior_oath_reason_prior_auth_reason_sk;
+  out0.l_prior_oath_reason.common_reason_ind::l_prior_oath_reason_common_reason_ind;
+  out0.l_prior_oath_reason.prior_auth_reason::l_prior_oath_reason_prior_auth_reason;
+  out0.l_prior_oath_reason.reason_desc::l_prior_oath_reason_reason_desc;
+  out0.l_prior_oath_reason.src_env_sk::l_prior_oath_reason_src_env_sk;
+  out0.l_prior_oath_reason.insert_ts::l_prior_oath_reason_insert_ts;
+  out0.l_prior_oath_reason.update_ts::l_prior_oath_reason_update_ts;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,65 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.aud_viol_rsn.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.aud_viol_rsn.audit_violation_reason_desc,[transform],in0.audit_nonfraud_violation_reason_description]
+  [out0.aud_viol_rsn.audit_violation_reason_sort_order,[passthrough],in0.audit_nonfraud_violation_reason_sort_order]
+  [out0.aud_viol_rsn.audit_violation_reason_sk,[transform],]
+  [out0.aud_viol_rsn.audit_violation_reason_id,[passthrough],in0.audit_nonfraud_violation_reason_id]
+  [out0.aud_viol_rsn.audit_fraud_nonfraud_ind,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.aud_viol_rsn.src_env_sk,'aud_viol_rsn.src_env_sk',1,0]
+     [out0.aud_viol_rsn.audit_violation_reason_desc,'aud_viol_rsn.audit_violation_reason_desc',1,0]
+     [out0.aud_viol_rsn.audit_violation_reason_sort_order,'aud_viol_rsn.audit_violation_reason_sort_order',1,0]
+     [out0.aud_viol_rsn.audit_violation_reason_sk,'aud_viol_rsn.audit_violation_reason_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.aud_viol_rsn.audit_violation_reason_id,'aud_viol_rsn.audit_violation_reason_id',1,0]
+     [out0.aud_viol_rsn.audit_fraud_nonfraud_ind,'aud_viol_rsn.audit_fraud_nonfraud_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.audit_nonfraud_violation_reason_sort_order,'audit_nonfraud_violation_reason_sort_order',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.audit_nonfraud_violation_reason_id,'audit_nonfraud_violation_reason_id',1,1]
+     [in0.audit_nonfraud_violation_reason_description,'audit_nonfraud_violation_reason_description',3,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) aud_viol_rsn_audit_violation_reason_sk = -1;
+let decimal("\x01",0) aud_viol_rsn_audit_violation_reason_id = fail_if_error(in0.audit_nonfraud_violation_reason_id);
+let decimal("\x01",0) aud_viol_rsn_audit_violation_reason_sort_order = fail_if_error(in0.audit_nonfraud_violation_reason_sort_order);
+let string("\x01",charset="iso-8859-15", maximum_length=50) aud_viol_rsn_audit_violation_reason_desc = fail_if_error((if (sql_or(is_null(string_lrtrim(in0.audit_nonfraud_violation_reason_description)),is_blank(string_lrtrim(in0.audit_nonfraud_violation_reason_description))))
+   "Not Specified"
+ else
+   string_lrtrim(in0.audit_nonfraud_violation_reason_description)));
+let string("\x01",charset="iso-8859-15", maximum_length=1) aud_viol_rsn_audit_fraud_nonfraud_ind = "N";
+let decimal("\x01",0) aud_viol_rsn_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.aud_viol_rsn.audit_violation_reason_sk::aud_viol_rsn_audit_violation_reason_sk;
+  out0.aud_viol_rsn.audit_violation_reason_id::aud_viol_rsn_audit_violation_reason_id;
+  out0.aud_viol_rsn.audit_violation_reason_sort_order::aud_viol_rsn_audit_violation_reason_sort_order;
+  out0.aud_viol_rsn.audit_violation_reason_desc::aud_viol_rsn_audit_violation_reason_desc;
+  out0.aud_viol_rsn.audit_fraud_nonfraud_ind::aud_viol_rsn_audit_fraud_nonfraud_ind;
+  out0.aud_viol_rsn.src_env_sk::aud_viol_rsn_src_env_sk;
+  out0.*::in0.*;
+
+end;

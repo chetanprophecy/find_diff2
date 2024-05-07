@@ -1,0 +1,97 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a8fdf0f_24a3_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.s_clm_c632.sequnnbr,[transform],in0.sequnnbr]
+  [out0.s_clm_c632.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.s_clm_c632.sequnnbr,'s_clm_c632.sequnnbr',1,0]
+     [out0.s_clm_c632.delg_ind,'s_clm_c632.delg_ind',1,0]
+     [out0.s_clm_c632.sdpp_ind,'s_clm_c632.sdpp_ind',1,0]
+     [out0.s_clm_c632.src_env_sk,'s_clm_c632.src_env_sk',1,0]
+     [out0.s_clm_c632.planflag,'s_clm_c632.planflag',1,0]
+     [out0.s_clm_c632.claimsta,'s_clm_c632.claimsta',1,0]
+     [out0.s_clm_c632.fomlryst,'s_clm_c632.fomlryst',1,0]
+     [out0.s_clm_c632.carierid,'s_clm_c632.carierid',1,0]
+     [out0.s_clm_c632.tcd_tier,'s_clm_c632.tcd_tier',1,0]
+     [out0.s_clm_c632.acontnbr,'s_clm_c632.acontnbr',1,0]
+     [out0.s_clm_c632.tiercrct,'s_clm_c632.tiercrct',1,0]
+     [out0.s_clm_c632.claimnbr,'s_clm_c632.claimnbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.s_clm_c632.submdate,'s_clm_c632.submdate',1,0]
+     [out0.s_clm_c632.plancode,'s_clm_c632.plancode',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.s_clm_c632.groupnbr,'s_clm_c632.groupnbr',1,0]
+  ]
+  impacts:
+  [
+     [in0.delg_ind,'delg_ind',1,1]
+     [in0.sdpp_ind,'sdpp_ind',1,1]
+     [in0.fomlryst,'fomlryst',1,1]
+     [in0.carierid,'carierid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.acontnbr,'acontnbr',1,1]
+     [in0.plancode,'plancode',1,1]
+     [in0.submdate,'submdate',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.planflag,'planflag',1,1]
+     [in0.tiercrct,'tiercrct',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.sequnnbr,'sequnnbr',3,1]
+     [in0.claimnbr,'claimnbr',1,1]
+     [in0.claimsta,'claimsta',1,1]
+     [in0.tcd_tier,'tcd_tier',1,1]
+     [in0.groupnbr,'groupnbr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) s_clm_c632_claimnbr = fail_if_error(in0.claimnbr);
+let decimal("\x01",0) s_clm_c632_sequnnbr = fail_if_error(if(in0.sequnnbr < 0)in0.sequnnbr else 1000 - in0.sequnnbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) s_clm_c632_claimsta = fail_if_error(in0.claimsta);
+let string("\x01", maximum_length=9) s_clm_c632_carierid = fail_if_error(in0.carierid);
+let string("\x01", maximum_length=15) s_clm_c632_acontnbr = fail_if_error(in0.acontnbr);
+let string("\x01", maximum_length=15) s_clm_c632_groupnbr = fail_if_error(in0.groupnbr);
+let string("\x01", maximum_length=10) s_clm_c632_plancode = fail_if_error(in0.plancode);
+let decimal("\x01",0, maximum_length=3, sign_reserved) s_clm_c632_tcd_tier = fail_if_error(in0.tcd_tier);
+let decimal("\x01",0, maximum_length=3, sign_reserved) s_clm_c632_fomlryst = fail_if_error(in0.fomlryst);
+let decimal("\x01",0, maximum_length=9, sign_reserved) s_clm_c632_submdate = fail_if_error(in0.submdate);
+let string("\x01", maximum_length=1) s_clm_c632_sdpp_ind = fail_if_error(in0.sdpp_ind);
+let string("\x01", maximum_length=1) s_clm_c632_delg_ind = fail_if_error(in0.delg_ind);
+let string("\x01", maximum_length=1) s_clm_c632_tiercrct = fail_if_error(in0.tiercrct);
+let string("\x01", maximum_length=1) s_clm_c632_planflag = fail_if_error(in0.planflag);
+let decimal("\x01",0) s_clm_c632_src_env_sk = 490;
+
+
+
+  out0.s_clm_c632.claimnbr::s_clm_c632_claimnbr;
+  out0.s_clm_c632.sequnnbr::s_clm_c632_sequnnbr;
+  out0.s_clm_c632.claimsta::s_clm_c632_claimsta;
+  out0.s_clm_c632.carierid::s_clm_c632_carierid;
+  out0.s_clm_c632.acontnbr::s_clm_c632_acontnbr;
+  out0.s_clm_c632.groupnbr::s_clm_c632_groupnbr;
+  out0.s_clm_c632.plancode::s_clm_c632_plancode;
+  out0.s_clm_c632.tcd_tier::s_clm_c632_tcd_tier;
+  out0.s_clm_c632.fomlryst::s_clm_c632_fomlryst;
+  out0.s_clm_c632.submdate::s_clm_c632_submdate;
+  out0.s_clm_c632.sdpp_ind::s_clm_c632_sdpp_ind;
+  out0.s_clm_c632.delg_ind::s_clm_c632_delg_ind;
+  out0.s_clm_c632.tiercrct::s_clm_c632_tiercrct;
+  out0.s_clm_c632.planflag::s_clm_c632_planflag;
+  out0.s_clm_c632.src_env_sk::s_clm_c632_src_env_sk;
+  out0.*::in0.*;
+
+end;

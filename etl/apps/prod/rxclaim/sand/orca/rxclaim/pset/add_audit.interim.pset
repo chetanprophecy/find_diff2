@@ -1,0 +1,13 @@
+!prototype|P|||$PUB_DATAHUB_MP/add_audit_fields.mp
+START_DATE||||$[(date("YYYY-MM-DD")) (today() - 0)]
+END_DATE||||$[START_DATE]
+ECG_FILE_NAME||||$[ string_concat(ECG_LANDING_DIR,"/",SOURCE_CODE,"_",SOURCE_SCHEMA_NAME,"_",SOURCE_ENTITY_NAME,"_",FILE_TIMESTAMP,".dat.gz") ]
+CONTROL_FILE_NAME||||$[ string_concat(CTL_LANDING_DIR,"/",SOURCE_CODE,"_",SOURCE_SCHEMA_NAME,"_",SOURCE_ENTITY_NAME,"_",FILE_TIMESTAMP,".ctl") ]
+AUDIT_XFR||||$[\r\nAI_XFR + "/add_audit.all.xfr"\r\n]
+ETL_LANDING_DIRECTORY||||$SFTP_LOCATION
+MAP_REJECT_LIMIT||||$[ if ( AB_APPCONF_EXECUTION ) "0" else AI_REJECT_LIMIT ]
+MAP_REJECT_RAMP||||$[ if ( AB_APPCONF_EXECUTION ) "-1" else AI_REJECT_RAMP ]
+CLEAN_FILE_NAME||||$[begin\r\n\r\n        let string("")[int] v_read_files = [vector];\r\n\r\n        v_read_files = vector_append(v_read_files, AI_MFS_PENDING + "/clean." + string_downcase(SOURCE_SCHEMA_NAME) + "/clean." + SOURCE_SYSTEM + "." + RUN_ID + ".dat.gz");\r\n\r\n        result :: v_read_files;\r\nend]
+LOAD_TYPE||||Daily
+CLEAN_DIRS||||$[RXTRACK_COMBO_ND_SLA_MFS_PATH + "rxtrack_combo_nd_sla_"]
+CTL_LANDING_DIR||||$[AI_SERIAL + "/rxclaim_ctl"]

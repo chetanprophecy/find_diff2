@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="OTHER" approveEnum1X170="APPROVED" description="This job will create daily updates to sql server" durationDefaultSec1X80="0" isEnabled="true" isManuallyGeneratedOnly1X130="false" isNoMatchAnError1X60="true" isOperatorVisible1X150="false" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="26CB12C9-88A4-5751-8183-00000A8FFA80" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="EPIM Daily Update for Provider" objectVersion="1.200" sandbox="${FILESYSTEM_ROOT}/EPIM" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PLAN}/Daily_update_process.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="NAS_RUN_DATES" mode="DAILY" startDate="2019-09-29Z" startDate1X180="2019-09-29T18:30:00.000000Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="04:00:00"/>
+      </startTimes>
+    </timeConstraint>
+  </constraintSet>
+
+</jobDefinition>

@@ -1,0 +1,305 @@
+record
+  string("\x01", maximum_length=20) acobhf /*CHAR(20) NOT NULL*/ /*@
+BizName:"RCCSPP: CTS Cont Ther Sched ID"
+ BizComment:"Schedule   Display Only Schedule ID of the selected Contingent Therapy Schedule"
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acjuht /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Seq Nbr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acpeib /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Sequence Qualifier"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acnns2 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP ContingentTherapyType"
+ BizComment:"The type of contingency established. :P. E = Exclusion :PC. The drug in the NDC field, GPI field, or the submitted product (Level/Wildcard field) must not have been used by the member for a certain number of days and a certain percentage of the drug must have already been consumed before the new drug will be approved. :P. F = Formulary Prerequisite :PC. This contingency type has the same functionality as the Prerequisite type above, except that the specified product must have been a preferred, covered (any drug status that equals preferred, such as F, H, f, or g) product used by the member, for a certain period of time, in order to receive the drug on the claim. :P. I = Inclusive :PC. The drug in the NDC field, GPI field, or the submitted product (Level/Wildcard field) must be in use concurrently by the member, within the specified time frame, in order to receive the drug on the claim. :P. N = Not in History :PC. The drug in the NDC field, GPI field, or the submitted product (Level/Wildcard field) must not be found in the claim history, for the period and duration specified, in order to receive the drug on the claim. If the drug is found in history, then the CT protocol is not met and the next protocol is examined. This type references the fill date on the claim. If the fill date is within the period window (below), then the protocol is not met. :P. P = Prerequisite :PC. The drug in the NDC field, GPI field, or the submitted product (Level/Wildcard field) must have been used by the member, for a certain period of time, in order to receive the drug on the claim. :P. U = % Usage :PC. A certain percentage (based on days supply) of a previous prescription for the specified NDC/GPI that must be consumed in the specified time period before being allowed to receive a new prescription. :P. X = % Usage Most Recent :PC. A certain percentage (based on days supply) of a previous prescription for the specified NDC/GPI that must be consumed in the specified time period before being allowed to receive a new prescription.  The % Usage Most Recent refers to the most recent paid claim and calculates the percentage used of the new prescription with the Days Supply to determine how much has been consumed based on the number of days from the most recent paid claim to the submitted claim before the member is allowed to receive a new prescription. :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acnlht /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Fulfillment Number"
+ BizComment:"The Number is used to indicate the number of elements that are to be met on the protocol schedule. :P. If qualifier is a 'G', the elements will be Subgroups. :P. If qualifier is a 'P', the elements will be Protocols."
+@*/;
+  string("\x01", maximum_length=10) acvkc2 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: ACL Account List Name"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acy9s3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Clm Generic Indicator"
+ BizComment:""
+@*/;
+  decimal("\x01".6, maximum_length=13, sign_reserved) acfqqt /*DECIMAL(11,6) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Daily Dose Minimum"
+ BizComment:"The Minimum Daily Dose field is input capable and supports a value between 0.000000 and 99999.999999."
+@*/;
+  decimal("\x01".6, maximum_length=13, sign_reserved) acfrqt /*DECIMAL(11,6) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Daily Dose Maximum"
+ BizComment:"The Maximum Daily Dose field defines the value to which the Maximum Daily Dose field on the Prior Authorization will be set."
+@*/;
+  string("\x01", maximum_length=1) acnqs2 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Drug Status Override"
+ BizComment:"Flag used to tell the system whether a particular edit is to be invoked by the transaction processor during claim adjudication.  This flag is the default drug status used if all other edits are passed. :P. When the override drug status is set to '*', no override, and the protocol is met then the other specified override details are used but the current drug status is not changed. :P. * = No Override :PC. A = 1 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. B = No Prescrptn Drug Benefit :PC. C = Paid Non-Formulary w/ Msg :PC. D = 15 Form;Pd Non-Form w/MSG(Unavailable for Drug Status User Messages) :PC. E = 1 Form;Non-Form Reject :PC. F = Formulary :PC. G = Paid Non-Formulary w/oMsg :PC. H = Capture Claim :PC. I = 15 Form;Non-Form Reject :PC. J = 1 F;Non-F(NoDed/BenAccum)(Unavailable for Drug Status User Messages) :PC. K = Formulary(SkipDed/BenMax) :PC. L = Non-Form (SkipDed/BenMax) :PC. M = Message :PC. N = Non-Formulary Reject :PC. O = Override :PC. P = Prior Authorization :PC. Q = F:Don't use GPI Price Dtl :PC. R = Reject :PC. S = Formulary(NoDed/BenAccum) :PC. T = Non-Form (NoDed/BenAccum) :PC. U = 5 Formulary; Prior Auth :PC. V = 05 Paid Non-Form; Reject :PC. W = Negative Pharmacy List; R :PC. X = Preferred Product :PC. Y = Diag Cde Mismatch, Bypass :PC. Z = Formulary Alternative :PC. a = Plan Default :PC. b = Non-Formulary (Skip OOP) :PC. c = Diag Cde Mismatch, next list :PC. e = NFrm(NoDed/Ben;Apply OOP) :PC. f = Form(NoDed/Ben;Apply OOP) :PC. g = Form(NoOOP;apply Ded/Ben) :PC. h = Override-List/PA Dtls  2 :PC. x = O Non-Form w/msg; Form :PC. y = Y Form; Non-Form w/Msg :PC. z = Y Form; Non-Form Reject :PC. 3 = Override-Use List/PA Dtls :PC. 5 = Formulary 5 :PC. 6 = Formulary 6 :PC. 7 = Non-Formulary Captured :PC. 8 = Non-Preferred Form Reject :PC. 9 = Y Pd NFw/oMSG; Pd NFw/MSG :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) acusia /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Exclude Claims"
+ BizComment:"Exclude Claims allows certain claims to not be read when reviewing history to determine if contingent therapy has been met. :P. C - Copay Schedule will not include any claim from history that did not use the copay schedule specified on the contingent therapy protocol. :P. T - Transitional Benefit O/R will ignore any claim with a Transitional Benefit it Override Schedule from the CT history check. :P. N - NonTB & NOT New Enrollee will ignore claim that adjudicated without TB and with TB without New Enrollee stamp. :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) acgsda /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP From Date"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) acgtda /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Thru Date"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acavcj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP GPI Generic Indicator"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) acwuc2 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: GRL Group List Name"
+ BizComment:"ID of a list of groups."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aclrn2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Last Fill OldThanDays"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) actvh9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code M"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) actwh9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code N"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) actxh9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code O"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) actuh9 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code Y"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aclsn2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Minimum"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acltn2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Maximum"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) acbbpc /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Percentage Usage"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) acb1hk /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Period From"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acl7n1 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Duration"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=14) aclwhb /*CHAR(14) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol GPI"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=5) aclthb /*CHAR(5) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Labeler Cde"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=4) acluhb /*CHAR(4) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Product Cde"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) aclvhb /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Package Cde"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acnps2 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Modifier"
+ BizComment:"A      - And value indicates that all protocols must be met in order to          satisfy the contingency; O      - Or value indicates that one of the protocols must be met in          order to satisfy the contingency; M      - Or Any X of value indicates how "any X of" protocol(s) can          relate to another protocol(s) that need to be met in order to          satisfy contingency (X=indicates a number). If the modifier 'M'          is used in conjunction with the Number field, the number must          be > 0; N      - And Any X of value indicates how "any X of" protocol(s) can          relate to another protocol(s) that need to be met in order to          satisfy contingency (X=indicates a number). If the modifier 'N'          is used in conjunction with the Number field, the number must          be > 0; *Blank - Indicates it is one of the protocols in a select list, no          logical connection (and/or) with the prior protocol."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acl6n1 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Protocol Period"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) acgrcd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CSC Copay Schedule Name"
+ BizComment:"The name of the copay schedule used during claim adjudication. :P. Special note for Copay Schedule '*ZERO': :PC. If Rebill processing IS NOT being used within pricing, then Copay Schedule '*ZERO' has no effect whatsoever on the claim's adjudication.  The claim processes as if there was no Copay Schedule '*ZERO' specified. :P. If Rebill processing IS being used within pricing but the Patient Pay Comparison Code on the Pharmacy Price Table has a value NOT = 'A' or '5', then Copay Schedule '*ZERO' has no effect whatsoever on the claim's adjudication.  The claim processes as if there was no Copay Schedule '*ZERO' specified. :P. If Rebill processing IS being used within pricing and the Patient Pay Comparison Code on the Pharmacy Price Table has a value = 'A' or '5', then the claim processes as follows: :P. The Pharmacy Price Table's determination for approved (and response) Patient Pay is set to $.00, the Patient Pay $ amount as determined within the Rebill Price Table (including another Copay Schedule which may be present) is added to the Pharmacy Price Table's determination for the approved (and response) Amount Due."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) acy6n1 /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Step Nbr in Copay Sch"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acpxs3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Specialty List O/R"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acp6s3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Min O/R"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acp7s3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Max O/R"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acqis3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP PerToDate Quantiy O/R"
+ BizComment:"Period to Date Quantity Type :P. Indicates whether to override the Quantity field in the Period to Date section of the Plan GPI/NDC with or without new specified days limits on RCCSP013. :P. Valid Values: :PC. Y=Yes.  Override the Quantity field in the Period to Date section of the Plan GPI/NDC. :P. N=No.  Do not override the Quantity field in the Period to Date section of the Plan GPI/NDC. :P. D=Specified Days.  Override the Quantity field in the Period to Date section of the Plan GPI/NDC with the limits on RCCSP013. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) acqjs3 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP PerToDate DaysSup O/R"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acb4cj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP PerToDate Qty/DS O/R"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) acofhf /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Pharmacy Patient Pay"
+ BizComment:"The pharmacy patient pay schedule override is the patient pay used for this member."
+@*/;
+  string("\x01", maximum_length=10) acoghf /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Client Patient Pay"
+ BizComment:"The client patient pay schedule override is the patient pay used for this member."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) acl6ht /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Minimum Fill #"
+ BizComment:"The minimum number of fills indicates the minimum number of times the member attempts the same product by a minimum number of unique manufacturers.  In this field, the default is zero.  This field is optional."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) acl7ht /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Minimum Manufacturer#"
+ BizComment:"The manufacturer field indicates the minimum number of unique manufacturers. In this field, the default is zero.  This field is optional."
+@*/;
+  string("\x01", maximum_length=1) acqaib /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP GPI/NDC Level"
+ BizComment:"Valid Values: :PC. N=NDC :PC. G=GPI :P. It indicates that the examination should be done for the NDC or GPI (full or partial based on Wildcards) specified on the claim.  The Level field is optional, but the Level and Wildcard fields must be both filled or both blank. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=2) acqbib /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP GPI/NDC Wildcard"
+ BizComment:"Valid Values: :PC. 0, 2, or 6: Values only used with Level N :PC. 0, 2, 4, 6, 8, 10, or 12 Values only used with Level G :P. It indicates how many digits of the NDC or GPI can be wildcards and defines the degree of specificity the examination is made.  This field is optional, but is required only if the user specifies a value in the Level field."
+@*/;
+  string("\x01", maximum_length=1) aczrai /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP PerToDate Fills O/R"
+ BizComment:"Y = Yes Override Max fill Limit on NDC/GPI List after Contingent Therapy Protocol Seq is met N = No Do not Override Max fill Limit on NDC/GPI List after Contingent Therapy Protocol Seq is met"
+@*/;
+  string("\x01", maximum_length=1) aceeaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Max Unit"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acefaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Patient Age Min Unit"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) acheak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code X"
+ BizComment:"Price as N, Report as Y"
+@*/;
+  string("\x01", maximum_length=1) achfak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Multi-Source Code Z"
+ BizComment:"O/R MSC; Price as 'N'"
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acynal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Period Qty Days 1"
+ BizComment:"Period to Date Quantity Days :P. The Period to Date Quantity Days field defines the number of days within the period. :LINES. :ELINES."
+@*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) acipqu /*DECIMAL(11,3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Period Qty Maximum 1"
+ BizComment:"Period to Date Quantity Maximum :P. The Period to Date Quantity Maximum field defines the maximum quantity allowed during the period of time identified. :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acyoal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Period Qty Days 2"
+ BizComment:"Period to Date Quantity Days :P. The Period to Date Quantity Days field defines the number of days within the period. :LINES. :ELINES."
+@*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) aciqqu /*DECIMAL(11,3) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Period Qty Maximum 2"
+ BizComment:"Period to Date Quantity Maximum :P. The Period to Date Quantity Maximum field defines the maximum quantity allowed during the period of time identified. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=10) acnbho /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP GPI List ID"
+ BizComment:"GPI List :P. ID of the GPI List containing product IDs to be included in historical claims checked to sum the total quantity and apply the limits. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=10) acncho /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP NDC List Name"
+ BizComment:"NDC List :P. ID of the NDC List containing product IDs to be included in historical claims checked to sum the total quantity and apply the limits. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=13) acg6hp /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCCSPP: CSP Drug Status Table ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) accxan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achqan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achran /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achsan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achtan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achuan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) achvan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2) acwdao /*CHAR(2) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acz8ap /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=10) acgpil /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) acacaq /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acadaq /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) actcaq /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) aciliv /*DECIMAL(2) NOT NULL*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) acimiv /*DECIMAL(2) NOT NULL*/;
+  string("\x01", maximum_length=1) acy5at /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acf8au /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acf9au /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) aczeav /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acavbt /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acawbt /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=2) aczfav /*CHAR(2) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acaxbt /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acaybt /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) acazbt /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=1) acozaw /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2) aco0aw /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=5) acbevi /*CHAR(5) NOT NULL*/;
+  string("\x01", maximum_length=4) acbfvi /*CHAR(4) NOT NULL*/;
+  string("\x01", maximum_length=2) acbgvi /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=14) acbhvi /*CHAR(14) NOT NULL*/;
+  string("\x01", maximum_length=1) acb9ax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) accaax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) accbax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acccax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) accdax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acceax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) accfax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acciax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) acchax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) accgax /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) acakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) acc2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCSPP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) acadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCCSPP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) acalvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) acadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) acbmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCSPP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) acabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCCSPP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) acaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCSPP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

@@ -1,0 +1,43 @@
+/* DML for an event entry. All event entries go into the event log,
+   which is partitioned by table name. That is, in the physical
+   form event log will be a collection of multiple files, one for
+   each IDS table.
+*/
+
+type event_type =
+record
+  decimal("\x01", maximum_length=3) channel_id;
+  string("\x01", maximum_length=100) ids_table_name;  // subject_area.table
+  datetime("YYYYMMDD HH24:MI:SS.NNNNNN")("\x01") created;
+  date("YYYYMMDD")("\x01") data_date = "19000101";
+  string("\x01") insert_file;
+  string("\x01") update_file = NULL("");
+  string("\x01") delete_file = NULL("");
+  decimal("\x01", maximum_length=5)  dxf_src_sys_id =  0;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)  ids_create_run_id =  0;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)  ids_updt_run_id =  0;
+  string("\x01",maximum_length=2)  ids_rec_stat_cd = NULL("");
+  string("1")  newline =  "\n";
+end;
+
+type raw_event_type =
+record
+  decimal("\x01", maximum_length=3) channel_id = 1;
+  string("\x01", maximum_length=100) entity_name;                               //source_name (e.g. clmprdfil.rcmbrp)
+  datetime("YYYYMMDDHH24MISS")("\x01") watermark;                               //The time at which the entry was added
+  string("\x01") raw_file;                                                      //Full path of the raw file to be published
+  decimal("\x01", maximum_length=10)  record_count;                             //
+  datetime("YYYYMMDDHH24MISS")("\x01") start_dttm = "19000101000000";
+  datetime("YYYYMMDDHH24MISS")("\x01") end_dttm = "19000101000000";
+  string("\x01") sql = NULL("");                                                //Applicable only for table-based get processes. Example- get.iseries.mp or get.database.mp
+  string("\x01") file_list = NULL("");                                          //Applicable only for file-based get processes
+  string("\x01", maximum_length=20)  user_id;
+  decimal("\x01",maximum_length=20)  run_id;
+  string(1)  newline =  "\n";
+end;
+
+metadata type = event_type;

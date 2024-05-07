@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/history/map.map_create_clean.interim.pset
+SOURCE_NAME||||rxclaim_ctrx.rcmddp_add_feild_enrich
+ILM_NAME||||ctrx_f_mpd_pde_hist_recent
+AB_CATALOG||||$AI_CAT/map.rxclaim_ctrx/map.rxclaim_ctrx.rcmddp_enrich.ctrx_f_mpd_pde_hist_recent_create_clean.cat
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{cms_contract_id; cms_pbp_id; cms_phr_npi_id; prod_directory_dt_sk}
+ADJUSTED_SORT_KEY_EXPR_LIST|||||||||||||
+ADJUSTED_DEDUP_KEY_EXPR_LIST|||||||||||||
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\r\n\r\n/*@\r\ndependency_analysis:\r\n[\r\n  [out0.prod_directory_dt_sk,[passthrough],in0.prod_directory_dt_sk]\r\n  [out0.cms_contract_id,[passthrough],in0.asvwhc]\r\n  [out0.cms_pbp_id,[passthrough],in0.asvyhc]\r\n  [out0.cms_phr_npi_id,[passthrough],in0.phr_npi_no]\r\n  [out0.*,in0.*]\r\n]\r\nmetrics:\r\n{\r\n  dependencies:\r\n  [\r\n     [out0.prod_directory_dt_sk,'prod_directory_dt_sk',1,0]\r\n     [out0.cms_contract_id,'cms_contract_id',1,0]\r\n     [out0.cms_pbp_id,'cms_pbp_id',1,0]\r\n     [out0.cms_phr_npi_id,'cms_phr_npi_id',1,0]\r\n  ]\r\n  impacts:\r\n  [\r\n     [in0.asvwhc,'asvwhc',1,1]\r\n     [in0.phr_npi_no,'phr_npi_no',1,1]\r\n     [in0.prod_directory_dt_sk,'prod_directory_dt_sk',1,1]\r\n     [in0.asvyhc,'asvyhc',1,1]\r\n  ]\r\n}\r\n@*/\r\n\r\nout0::reformat(in0)=\r\nbegin\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=5) cms_contract_id = fail_if_error(in0.asvwhc);\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=3) cms_pbp_id = fail_if_error(in0.asvyhc);\r\nlet string("\\x01",charset="iso-8859-15", maximum_length=10) cms_phr_npi_id = fail_if_error(in0.phr_npi_no);\r\n\r\n\r\n\r\n  out0.cms_contract_id::cms_contract_id;\r\n  out0.cms_pbp_id::cms_pbp_id;\r\n  out0.cms_phr_npi_id::cms_phr_npi_id;\r\n  out0.*::in0.*;\r\n\r\nend;\r\n\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;\r\n\r\n|out :: reformat(in) = begin out.* :: in.*; end;
+ACE_CATALOG_CONTENTS|c|||d_cms_pharmacy_cost,{cms_contract_id; cms_pbp_id; cms_phr_npi_id; prod_directory_dt_sk},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rcmddp_add_feild_enrich.d_cms_pharmacy_cost.reduced.dat,/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.d_cms_pharmacy_cost.reduced.dml
+REDUCED_ICFF_IDS_LIST||||ids_rxclaim.d_cms_pharmacy_cost.reduced
+RUN_ID||||20180506000000
+MAPPING_XFR_MANUAL||||$AI_XFR/map.rxclaim_orx/gen.map.rxclaim_orx.rcmddp_enrich.orx_f_mpd_pde_hist_recent_create_clean.xfr
+MAPPING_XFR_BRE||||$AI_XFR/map.rxclaim_orx/gen.map.rxclaim_orx.rcmddp_enrich.orx_f_mpd_pde_hist_recent_create_clean.xfr
+TARGET_SYSTEM||||rxclaim_ctrx.rcmddp_d_cms_pharmacy_cost
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim

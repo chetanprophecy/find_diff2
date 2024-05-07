@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdext2_bk1.rcex4p_count
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name  Unqualified Table Name  Fields\nclmprdext2_bk1 rcex4p                  \ndwxtract_bk1   rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext2_bk1', 'clmprdext2_bk1.rcex4p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p')]
+SQL||||select count(*) from clmprdext2_bk1.rcex4p rcex4p LEFT JOIN dwxtract_bk1.rcex1p  rcex1p on rcex4p.amp2nb=rcex1p.rxclaimnbr and rcex4p.ams6nb=rcex1p.clmseqnbr and rcex4p.amzsst=rcex1p.claimsts   $[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcex4p.ambmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcex4p.ambmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcdc6p.ahbmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcdc6p.ahbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+DO_CLEAN||||1
+DO_SOURCE||||0

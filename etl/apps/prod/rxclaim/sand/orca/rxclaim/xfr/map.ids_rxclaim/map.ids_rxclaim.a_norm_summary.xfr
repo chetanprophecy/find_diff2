@@ -1,0 +1,293 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_7_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup d_pharmacy_lkp   */
+out0::bzt_7_6c54cc0a_580f2a5c_c1c_4(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) phr_sk = NULL(""), phr_dispnsr_type_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL(""), phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) phr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_affl_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) phr_zip_cd = NULL("");
+  decimal("\x01",0) phr_phone_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) dispr_typ_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_pharmacy_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_11_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup l_norm_2key_lkp   */
+out0::bzt_11_6c54cc0a_580f2a5c_c1c_4(in0,in1)=
+begin
+let record
+   record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] norm_key_vec;
+
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_norm_2key_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+
+/*@
+    Name:bzt_12_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup l_norm_1key_lkp   */
+out0::bzt_12_6c54cc0a_580f2a5c_c1c_4(in0)=
+begin
+let record
+   record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] norm_key_vec;
+
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_norm_1key_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_10_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup l_norm_3key_lkp   */
+out0::bzt_10_6c54cc0a_580f2a5c_c1c_4(in0,in1,in2)=
+begin
+let record
+   record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] norm_key_vec;
+
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) group_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_norm_3key_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_8_6c54cc0a_580f2a5c_c1c_4
+    BizHidden:true
+@*/
+/*   lookup l_generic_medispan_ind_lkp   */
+out0::bzt_8_6c54cc0a_580f2a5c_c1c_4(in0)=
+begin
+let record
+  decimal("\x01",0) gnrc_mdspn_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_ind = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_generic_medispan_ind_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+out0::length(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] norm_summ_norm_key_vec=allocate_with_defaults();
+out0:: length_of(fail_if_error(first_defined( bzt_10_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, in0.orig_account_id, in0.orig_employer_group_id).norm_key_vec , bzt_11_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, in0.orig_account_id).norm_key_vec, bzt_12_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id).norm_key_vec,norm_summ_norm_key_vec)));
+end
+
+
+out0::normalize(in0,index)=
+begin
+let date("YYYYMMDD")("\x01") norm_summ_processing_month_start_dt = fail_if_error(in0.processing_month_start_dt);
+let integer(8) norm_summ_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) norm_summ_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let  record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  end[int] norm_summ_norm_key_vec;
+let decimal("\x01",0) norm_summ_norm_key;
+let decimal("\x01",0) norm_summ_claim_stat_sk = fail_if_error(in0.claim_stat_sk);
+let decimal("\x01",0) norm_summ_sbm_mn_id = fail_if_error(if(is_null(in0.sbm_dt))
+0
+else
+(decimal(""))(string(""))string_substring(str=in0.sbm_dt , start_index= 1, length=6 ));
+let decimal("\x01",0) norm_summ_tier_level = fail_if_error(in0.tier_level);
+let decimal("\x01",0) norm_summ_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) norm_summ_drug_rx_otc_ind_sk = fail_if_error(in0.drug_rx_otc_ind_sk);
+let decimal("\x01",0) norm_summ_gnrc_ind_sk = fail_if_error(in0.gnrc_ind_sk);
+let decimal("\x01",0) norm_summ_gnrc_mdspn_ind_sk = fail_if_error(in0.gnrc_mdspn_ind_sk);
+let decimal("\x01",0) norm_summ_daw_cd_sk = fail_if_error(in0.daw_cd_sk);
+let decimal("\x01",0) norm_summ_prod_sk = fail_if_error(in0.prod_sk);
+let decimal("\x01",0) norm_summ_phr_disp_class;
+let decimal("\x01",0) norm_summ_claim_cntr = fail_if_error(in0.claim_cntr);
+let decimal("\x01".3, maximum_length=17, sign_reserved) norm_summ_drg_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_drg_spend_amt = fail_if_error(in0.drg_spend_amt);
+let decimal("\x01",0) norm_summ_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_troop_amt = fail_if_error(in0.troop_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_dispensing_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_sales_tax_paid = fail_if_error(in0.app_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_due_amt = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_copay_amt = fail_if_error(in0.app_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_app_prof_svc_fee = fail_if_error(in0.app_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_ingred_cost_paid = fail_if_error(in0.clt_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_dispensing_fee = fail_if_error(in0.clt_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_sales_tax_paid = fail_if_error(in0.clt_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_patient_pay_amt = fail_if_error(in0.clt_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_copay_amt = fail_if_error((if (sql_or((in0.orig_carrier_id=="PSI2405"),sql_and(sql_or(sql_or((in0.orig_carrier_id=="PSI2560"),(in0.orig_carrier_id=="PSI2565")),(in0.orig_carrier_id=="PSI2570")),(in0.filled_dt<"20050101"))))
+   in0.app_copay_amt
+ else
+   in0.clt_copay_amt));
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_clt_prof_svc_fee = fail_if_error(in0.clt_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_ingred_cost_paid = fail_if_error(in0.sbm_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_dispensing_fee = fail_if_error(in0.sbm_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_sales_tax_paid = fail_if_error(in0.sbm_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_patient_pay_amt = fail_if_error(in0.sbm_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_due_amt = fail_if_error(in0.sbm_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_usual_customary_amt = fail_if_error(in0.sbm_usual_customary_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_sbm_prof_svc_fee = fail_if_error(in0.sbm_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_ingred_cost_paid = fail_if_error(in0.cal_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_dispensing_fee = fail_if_error(in0.cal_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_sales_tax_paid = fail_if_error(in0.cal_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_patient_pay_amt = fail_if_error(in0.cal_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_due_amt = fail_if_error(in0.cal_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cal_prof_svc_fee = fail_if_error(in0.cal_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_ingred_cost_paid = fail_if_error(in0.pst_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_dispensing_fee = fail_if_error(in0.pst_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_sales_tax_paid = fail_if_error(in0.pst_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_patient_pay_amt = fail_if_error(in0.pst_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_due_amt = fail_if_error(in0.pst_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_copay_amt = fail_if_error(in0.pst_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_pst_prof_svc_fee = fail_if_error(in0.pst_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_ingred_cost_paid = fail_if_error(in0.rsp_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_dispensing_fee = fail_if_error(in0.rsp_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_sales_tax_paid = fail_if_error(in0.rsp_sales_tax_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_patient_pay_amt = fail_if_error(in0.rsp_patient_pay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_due_amt = fail_if_error(in0.rsp_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_copay_amt = fail_if_error(in0.rsp_copay_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_rsp_prof_svc_fee = fail_if_error(in0.rsp_prof_svc_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_admin_fee = fail_if_error(in0.cal_admin_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_ancillary_amt = fail_if_error(in0.clt_attrib_prod_sel_amt);
+let decimal("\x01".5, maximum_length=17, sign_reserved) norm_summ_awp_amt = fail_if_error(in0.extd_awp_cost);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_coins_amt = fail_if_error(in0.co_insurance_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_cov_gap_amt = fail_if_error(in0.clt_amt_covrg_gap);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_ded_amt = fail_if_error(in0.clt_attrib_to_ded_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_disallowed_amt = fail_if_error(in0.sbm_ingred_cost_paid-in0.cal_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_gnrc_scripts_cnt;
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_mac_amt = fail_if_error((if (sql_or((in0.basis_of_reim_cd=='06'),(in0.basis_of_reim_cd=='07')))
+   in0.sbm_ingred_cost_paid
+ else
+   0));
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_other_payer_paid_amt = fail_if_error(in0.clt_other_payer_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_paid_amt = fail_if_error(in0.clt_due_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_reduct_amt = fail_if_error(in0.adherence_incnt_reduction_amt);
+let decimal("\x01".2, maximum_length=17, sign_reserved) norm_summ_zbl_amt = fail_if_error(if(in0.zero_balance_ind == 'Y') (in0.clt_ingred_cost_paid-in0.cal_ingred_cost_paid) else 0);
+let decimal("\x01",0) norm_summ_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+
+/*   Default value   */
+norm_summ_phr_disp_class=fail_if_error(bzt_7_6c54cc0a_580f2a5c_c1c_4(in0.phr_sk).phr_dispnsr_type_sk);
+
+
+/*   Default value   */
+norm_summ_gnrc_scripts_cnt=fail_if_error(if(bzt_8_6c54cc0a_580f2a5c_c1c_4(in0.gnrc_mdspn_ind_sk).gnrc_mdspn_ind == 'Y') 1 else 0);
+
+/*   Default value   */
+ norm_summ_norm_key_vec=fail_if_error(first_defined( bzt_10_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, in0.orig_account_id, in0.orig_employer_group_id).norm_key_vec , bzt_11_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id, in0.orig_account_id).norm_key_vec, bzt_12_6c54cc0a_580f2a5c_c1c_4(in0.orig_carrier_id).norm_key_vec));
+//norm_summ_norm_key=fail_if_error(norm_summ_norm_key_vec[index].dxf_sk)
+  out0.processing_month_start_dt::norm_summ_processing_month_start_dt;
+  out0.dxf_sk::norm_summ_dxf_sk;
+  out0.claim_stat_id::norm_summ_claim_stat_id;
+  out0.norm_key::norm_summ_norm_key_vec[index].dxf_sk;
+  out0.claim_stat_sk::norm_summ_claim_stat_sk;
+  out0.sbm_mn_id::norm_summ_sbm_mn_id;
+  out0.tier_level::norm_summ_tier_level;
+  out0.compound_sk::norm_summ_compound_sk;
+  out0.drug_rx_otc_ind_sk::norm_summ_drug_rx_otc_ind_sk;
+  out0.gnrc_ind_sk::norm_summ_gnrc_ind_sk;
+  out0.gnrc_mdspn_ind_sk::norm_summ_gnrc_mdspn_ind_sk;
+  out0.daw_cd_sk::norm_summ_daw_cd_sk;
+  out0.prod_sk::norm_summ_prod_sk;
+  out0.phr_disp_class::norm_summ_phr_disp_class;
+  out0.claim_cntr::norm_summ_claim_cntr;
+  out0.drg_qty::norm_summ_drg_qty;
+  out0.drg_spend_amt::norm_summ_drg_spend_amt;
+  out0.days_sply::norm_summ_days_sply;
+  out0.troop_amt::norm_summ_troop_amt;
+  out0.app_ingred_cost_paid::norm_summ_app_ingred_cost_paid;
+  out0.app_dispensing_fee::norm_summ_app_dispensing_fee;
+  out0.app_sales_tax_paid::norm_summ_app_sales_tax_paid;
+  out0.app_patient_pay_amt::norm_summ_app_patient_pay_amt;
+  out0.app_due_amt::norm_summ_app_due_amt;
+  out0.app_copay_amt::norm_summ_app_copay_amt;
+  out0.app_prof_svc_fee::norm_summ_app_prof_svc_fee;
+  out0.clt_ingred_cost_paid::norm_summ_clt_ingred_cost_paid;
+  out0.clt_dispensing_fee::norm_summ_clt_dispensing_fee;
+  out0.clt_sales_tax_paid::norm_summ_clt_sales_tax_paid;
+  out0.clt_patient_pay_amt::norm_summ_clt_patient_pay_amt;
+  out0.clt_due_amt::norm_summ_clt_due_amt;
+  out0.clt_copay_amt::norm_summ_clt_copay_amt;
+  out0.clt_prof_svc_fee::norm_summ_clt_prof_svc_fee;
+  out0.sbm_ingred_cost_paid::norm_summ_sbm_ingred_cost_paid;
+  out0.sbm_dispensing_fee::norm_summ_sbm_dispensing_fee;
+  out0.sbm_sales_tax_paid::norm_summ_sbm_sales_tax_paid;
+  out0.sbm_patient_pay_amt::norm_summ_sbm_patient_pay_amt;
+  out0.sbm_due_amt::norm_summ_sbm_due_amt;
+  out0.sbm_usual_customary_amt::norm_summ_sbm_usual_customary_amt;
+  out0.sbm_prof_svc_fee::norm_summ_sbm_prof_svc_fee;
+  out0.cal_ingred_cost_paid::norm_summ_cal_ingred_cost_paid;
+  out0.cal_dispensing_fee::norm_summ_cal_dispensing_fee;
+  out0.cal_sales_tax_paid::norm_summ_cal_sales_tax_paid;
+  out0.cal_patient_pay_amt::norm_summ_cal_patient_pay_amt;
+  out0.cal_due_amt::norm_summ_cal_due_amt;
+  out0.cal_prof_svc_fee::norm_summ_cal_prof_svc_fee;
+  out0.pst_ingred_cost_paid::norm_summ_pst_ingred_cost_paid;
+  out0.pst_dispensing_fee::norm_summ_pst_dispensing_fee;
+  out0.pst_sales_tax_paid::norm_summ_pst_sales_tax_paid;
+  out0.pst_patient_pay_amt::norm_summ_pst_patient_pay_amt;
+  out0.pst_due_amt::norm_summ_pst_due_amt;
+  out0.pst_copay_amt::norm_summ_pst_copay_amt;
+  out0.pst_prof_svc_fee::norm_summ_pst_prof_svc_fee;
+  out0.rsp_ingred_cost_paid::norm_summ_rsp_ingred_cost_paid;
+  out0.rsp_dispensing_fee::norm_summ_rsp_dispensing_fee;
+  out0.rsp_sales_tax_paid::norm_summ_rsp_sales_tax_paid;
+  out0.rsp_patient_pay_amt::norm_summ_rsp_patient_pay_amt;
+  out0.rsp_due_amt::norm_summ_rsp_due_amt;
+  out0.rsp_copay_amt::norm_summ_rsp_copay_amt;
+  out0.rsp_prof_svc_fee::norm_summ_rsp_prof_svc_fee;
+  out0.admin_fee::norm_summ_admin_fee;
+  out0.ancillary_amt::norm_summ_ancillary_amt;
+  out0.awp_amt::norm_summ_awp_amt;
+  out0.coins_amt::norm_summ_coins_amt;
+  out0.cov_gap_amt::norm_summ_cov_gap_amt;
+  out0.ded_amt::norm_summ_ded_amt;
+  out0.disallowed_amt::norm_summ_disallowed_amt;
+  out0.gnrc_scripts_cnt::norm_summ_gnrc_scripts_cnt;
+  out0.mac_amt::norm_summ_mac_amt;
+  out0.other_payer_paid_amt::norm_summ_other_payer_paid_amt;
+  out0.paid_amt::norm_summ_paid_amt;
+  out0.reduct_amt::norm_summ_reduct_amt;
+  out0.zbl_amt::norm_summ_zbl_amt;
+  out0.src_env_sk::norm_summ_src_env_sk;
+  out0.*::in0.*;
+
+end;

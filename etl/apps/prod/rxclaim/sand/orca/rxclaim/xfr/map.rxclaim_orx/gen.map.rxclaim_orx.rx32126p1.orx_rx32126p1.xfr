@@ -1,0 +1,109 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_595a2c10_202f_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.op_rx32126p1.p1claimseq,[transform],in0.p1claimseq]
+  [out0.op_rx32126p1.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.op_rx32126p1.p1reimburs,'op_rx32126p1.p1reimburs',1,0]
+     [out0.op_rx32126p1.p1clmorgn,'op_rx32126p1.p1clmorgn',1,0]
+     [out0.op_rx32126p1.p1groupid,'op_rx32126p1.p1groupid',1,0]
+     [out0.op_rx32126p1.p1clientd3,'op_rx32126p1.p1clientd3',1,0]
+     [out0.op_rx32126p1.p1amc5ai,'op_rx32126p1.p1amc5ai',1,0]
+     [out0.op_rx32126p1.p1claimseq,'op_rx32126p1.p1claimseq',1,0]
+     [out0.op_rx32126p1.p1acountid,'op_rx32126p1.p1acountid',1,0]
+     [out0.op_rx32126p1.p1ambkqu,'op_rx32126p1.p1ambkqu',1,0]
+     [out0.op_rx32126p1.p1amc4ai,'op_rx32126p1.p1amc4ai',1,0]
+     [out0.op_rx32126p1.p1ambiqu,'op_rx32126p1.p1ambiqu',1,0]
+     [out0.op_rx32126p1.p1carierid,'op_rx32126p1.p1carierid',1,0]
+     [out0.op_rx32126p1.src_env_sk,'op_rx32126p1.src_env_sk',1,0]
+     [out0.op_rx32126p1.p1ambjqu,'op_rx32126p1.p1ambjqu',1,0]
+     [out0.op_rx32126p1.p1status,'op_rx32126p1.p1status',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.op_rx32126p1.p1amc6ai,'op_rx32126p1.p1amc6ai',1,0]
+     [out0.op_rx32126p1.p1claimnbr,'op_rx32126p1.p1claimnbr',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.op_rx32126p1.p1memberid,'op_rx32126p1.p1memberid',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.op_rx32126p1.p1sbmdate,'op_rx32126p1.p1sbmdate',1,0]
+  ]
+  impacts:
+  [
+     [in0.p1reimburs,'p1reimburs',1,1]
+     [in0.p1clmorgn,'p1clmorgn',1,1]
+     [in0.p1clientd3,'p1clientd3',1,1]
+     [in0.p1ambjqu,'p1ambjqu',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.p1claimseq,'p1claimseq',3,1]
+     [in0.p1claimnbr,'p1claimnbr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.p1ambiqu,'p1ambiqu',1,1]
+     [in0.p1amc6ai,'p1amc6ai',1,1]
+     [in0.p1amc4ai,'p1amc4ai',1,1]
+     [in0.p1memberid,'p1memberid',1,1]
+     [in0.p1status,'p1status',1,1]
+     [in0.p1acountid,'p1acountid',1,1]
+     [in0.p1ambkqu,'p1ambkqu',1,1]
+     [in0.p1groupid,'p1groupid',1,1]
+     [in0.p1amc5ai,'p1amc5ai',1,1]
+     [in0.p1carierid,'p1carierid',1,1]
+     [in0.p1sbmdate,'p1sbmdate',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01", maximum_length=17) op_rx32126p1_p1claimnbr = fail_if_error(in0.p1claimnbr);
+let decimal("\x01", maximum_length=5) op_rx32126p1_p1claimseq = fail_if_error(if(in0.p1claimseq < 0) in0.p1claimseq else (1000 - in0.p1claimseq));
+let string("\x01", maximum_length=1) op_rx32126p1_p1status = fail_if_error(in0.p1status);
+let decimal("\x01", maximum_length=10) op_rx32126p1_p1sbmdate = fail_if_error(in0.p1sbmdate);
+let string("\x01", maximum_length=10) op_rx32126p1_p1clientd3 = fail_if_error(in0.p1clientd3);
+let string("\x01", maximum_length=1) op_rx32126p1_p1reimburs = fail_if_error(in0.p1reimburs);
+let string("\x01", maximum_length=1) op_rx32126p1_p1clmorgn = fail_if_error(in0.p1clmorgn);
+let string("\x01", maximum_length=20) op_rx32126p1_p1memberid = fail_if_error(in0.p1memberid);
+let string("\x01", maximum_length=9) op_rx32126p1_p1carierid = fail_if_error(in0.p1carierid);
+let string("\x01", maximum_length=15) op_rx32126p1_p1acountid = fail_if_error(in0.p1acountid);
+let string("\x01", maximum_length=15) op_rx32126p1_p1groupid = fail_if_error(in0.p1groupid);
+let decimal("\x01".2, maximum_length=11) op_rx32126p1_p1ambiqu = fail_if_error(in0.p1ambiqu);
+let decimal("\x01".2, maximum_length=11) op_rx32126p1_p1ambjqu = fail_if_error(in0.p1ambjqu);
+let string("\x01", maximum_length=1) op_rx32126p1_p1amc4ai = fail_if_error(in0.p1amc4ai);
+let string("\x01", maximum_length=1) op_rx32126p1_p1amc5ai = fail_if_error(in0.p1amc5ai);
+let string("\x01", maximum_length=1) op_rx32126p1_p1amc6ai = fail_if_error(in0.p1amc6ai);
+let decimal("\x01".2, maximum_length=11) op_rx32126p1_p1ambkqu = fail_if_error(in0.p1ambkqu);
+let decimal("\x01",0) op_rx32126p1_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.op_rx32126p1.p1claimnbr::op_rx32126p1_p1claimnbr;
+  out0.op_rx32126p1.p1claimseq::op_rx32126p1_p1claimseq;
+  out0.op_rx32126p1.p1status::op_rx32126p1_p1status;
+  out0.op_rx32126p1.p1sbmdate::op_rx32126p1_p1sbmdate;
+  out0.op_rx32126p1.p1clientd3::op_rx32126p1_p1clientd3;
+  out0.op_rx32126p1.p1reimburs::op_rx32126p1_p1reimburs;
+  out0.op_rx32126p1.p1clmorgn::op_rx32126p1_p1clmorgn;
+  out0.op_rx32126p1.p1memberid::op_rx32126p1_p1memberid;
+  out0.op_rx32126p1.p1carierid::op_rx32126p1_p1carierid;
+  out0.op_rx32126p1.p1acountid::op_rx32126p1_p1acountid;
+  out0.op_rx32126p1.p1groupid::op_rx32126p1_p1groupid;
+  out0.op_rx32126p1.p1ambiqu::op_rx32126p1_p1ambiqu;
+  out0.op_rx32126p1.p1ambjqu::op_rx32126p1_p1ambjqu;
+  out0.op_rx32126p1.p1amc4ai::op_rx32126p1_p1amc4ai;
+  out0.op_rx32126p1.p1amc5ai::op_rx32126p1_p1amc5ai;
+  out0.op_rx32126p1.p1amc6ai::op_rx32126p1_p1amc6ai;
+  out0.op_rx32126p1.p1ambkqu::op_rx32126p1_p1ambkqu;
+  out0.op_rx32126p1.src_env_sk::op_rx32126p1_src_env_sk;
+  out0.*::in0.*;
+
+end;

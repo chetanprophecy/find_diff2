@@ -1,0 +1,66 @@
+type logical_ids_common_c_ivr_response_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cpp_ivr_response_sk = NULL("");
+  utf8 string("\x01", maximum_length=60) case_id = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) sequence_num = NULL("");
+  utf8 string("\x01", maximum_length=80) case_fulfillment_id = NULL("");
+  decimal("\x01",0) cpp_case_fulfillment_sk = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) call_id = NULL("");
+  utf8 string("\x01", maximum_length=200) sirf_id = NULL("");
+  utf8 string("\x01", maximum_length=80) type_cd = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) queue_id = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) row_num = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) attempt = NULL("");
+  utf8 string("\x01", maximum_length=200) process_time = NULL("");
+  utf8 string("\x01", maximum_length=200) stts = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) return_pin = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) user_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) optout_ind = NULL("");
+  utf8 string("\x01", maximum_length=200) dt_of_birth_auth = NULL("");
+  utf8 string("\x01", maximum_length=200) cycle_id = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) call_priority = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) spanish_ind = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) call_duration = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) transfer_duration = NULL("");
+  utf8 string("\x01", maximum_length=200) participation_response = NULL("");
+  utf8 string("\x01", maximum_length=200) did_you_receive_letter = NULL("");
+  utf8 string("\x01", maximum_length=200) receive_education_materials = NULL("");
+  utf8 string("\x01", maximum_length=200) second_chance_transfer = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") dt_file_received_back = NULL("");
+  utf8 string("\x01", maximum_length=200) property1 = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_update_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_updated_by = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_create_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_created_by = NULL("");
+  utf8 string("\x01", maximum_length=400) completion_stts = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) dt_of_birth = NULL("");
+  utf8 string("\x01", maximum_length=400) groupname = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) primarykey = NULL("");
+  utf8 string("\x01", maximum_length=200) firstname = NULL("");
+  utf8 string("\x01", maximum_length=200) lastname = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) phone = NULL("");
+  utf8 string("\x01", maximum_length=400) recipientaddress = NULL("");
+  utf8 string("\x01", maximum_length=400) recipientaddress2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) recipientcity = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) recipientstate = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) zip = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) recipientgender = NULL("");
+  utf8 string("\x01", maximum_length=400) planname = NULL("");
+  utf8 string("\x01", maximum_length=400) clientname = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) planphone = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) optoutpin = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_c_ivr_response_t c_ivr_respns  /*@ BizName:'c ivr respns' */;
+end;

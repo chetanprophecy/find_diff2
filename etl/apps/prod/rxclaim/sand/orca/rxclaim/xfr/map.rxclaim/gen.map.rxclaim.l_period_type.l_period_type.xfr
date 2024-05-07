@@ -1,0 +1,55 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_prd_typ.perd_type_sk,[transform],]
+  [out0.l_prd_typ.perd_type_nbr,[transform],in0.perd_typ_nbr]
+  [out0.l_prd_typ.perd_type_nm,[passthrough],in0.perd_typ_nm]
+  [out0.l_prd_typ.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_prd_typ.perd_type_sk,'l_prd_typ.perd_type_sk',1,0]
+     [out0.l_prd_typ.perd_type_nbr,'l_prd_typ.perd_type_nbr',1,0]
+     [out0.l_prd_typ.perd_type_nm,'l_prd_typ.perd_type_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_prd_typ.src_env_sk,'l_prd_typ.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.perd_typ_nbr,'perd_typ_nbr',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.perd_typ_nm,'perd_typ_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) l_prd_typ_perd_type_sk = -1;
+let decimal("\x01",0) l_prd_typ_perd_type_nbr = fail_if_error(string_lrtrim(in0.perd_typ_nbr));
+let string("\x01",charset="iso-8859-15", maximum_length=35) l_prd_typ_perd_type_nm = fail_if_error(in0.perd_typ_nm);
+let decimal("\x01",0) l_prd_typ_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.l_prd_typ.perd_type_sk::l_prd_typ_perd_type_sk;
+  out0.l_prd_typ.perd_type_nbr::l_prd_typ_perd_type_nbr;
+  out0.l_prd_typ.perd_type_nm::l_prd_typ_perd_type_nm;
+  out0.l_prd_typ.src_env_sk::l_prd_typ_src_env_sk;
+  out0.*::in0.*;
+
+end;

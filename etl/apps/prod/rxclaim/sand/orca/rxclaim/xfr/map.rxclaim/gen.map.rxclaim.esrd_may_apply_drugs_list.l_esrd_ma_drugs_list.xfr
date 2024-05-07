@@ -1,0 +1,68 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a8ec09e_9592_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rec_esrd_ma.esrd_ma_gpi_id,[transform],in0.gpi_14]
+  [out0.rec_esrd_ma.esrd_ma_add_dt,[transform],in0.gpi_add_date]
+  [out0.rec_esrd_ma.esrd_ma_gpi_name,[transform],in0.gpi_14_name]
+  [out0.rec_esrd_ma.esrd_ma_thrpc_class_nm,[transform],in0.therapeutic_class]
+  [out0.rec_esrd_ma.esrd_ma_flag,[transform],in0.esrd_may_apply]
+  [out0.rec_esrd_ma.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rec_esrd_ma.esrd_ma_gpi_id,'rec_esrd_ma.esrd_ma_gpi_id',1,0]
+     [out0.rec_esrd_ma.esrd_ma_add_dt,'rec_esrd_ma.esrd_ma_add_dt',1,0]
+     [out0.rec_esrd_ma.esrd_ma_gpi_name,'rec_esrd_ma.esrd_ma_gpi_name',1,0]
+     [out0.rec_esrd_ma.esrd_ma_thrpc_class_nm,'rec_esrd_ma.esrd_ma_thrpc_class_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.rec_esrd_ma.esrd_ma_flag,'rec_esrd_ma.esrd_ma_flag',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rec_esrd_ma.src_env_sk,'rec_esrd_ma.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.esrd_may_apply,'esrd_may_apply',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi_add_date,'gpi_add_date',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.gpi_14_name,'gpi_14_name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.gpi_14,'gpi_14',1,1]
+     [in0.therapeutic_class,'therapeutic_class',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=14) rec_esrd_ma_esrd_ma_gpi_id;
+let string("\x01",charset="iso-8859-15", maximum_length=1) rec_esrd_ma_esrd_ma_flag = fail_if_error(string_lrtrim(in0.esrd_may_apply));
+let string("\x01",charset="iso-8859-15", maximum_length=100) rec_esrd_ma_esrd_ma_gpi_name = fail_if_error(string_lrtrim(in0.gpi_14_name));
+let string("\x01",charset="iso-8859-15", maximum_length=80) rec_esrd_ma_esrd_ma_thrpc_class_nm = fail_if_error(string_lrtrim(in0.therapeutic_class));
+let date("YYYYMMDD")("\x01") rec_esrd_ma_esrd_ma_add_dt = fail_if_error((date("YYYYMMDD"))string_lrtrim(string_replace(in0.gpi_add_date,"-", "")));
+let decimal("\x01",0) rec_esrd_ma_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+rec_esrd_ma_esrd_ma_gpi_id=fail_if_error(str_nk(string_lrtrim(in0.gpi_14)));
+
+  out0.rec_esrd_ma.esrd_ma_gpi_id::rec_esrd_ma_esrd_ma_gpi_id;
+  out0.rec_esrd_ma.esrd_ma_flag::rec_esrd_ma_esrd_ma_flag;
+  out0.rec_esrd_ma.esrd_ma_gpi_name::rec_esrd_ma_esrd_ma_gpi_name;
+  out0.rec_esrd_ma.esrd_ma_thrpc_class_nm::rec_esrd_ma_esrd_ma_thrpc_class_nm;
+  out0.rec_esrd_ma.esrd_ma_add_dt::rec_esrd_ma_esrd_ma_add_dt;
+  out0.rec_esrd_ma.src_env_sk::rec_esrd_ma_src_env_sk;
+  out0.*::in0.*;
+
+end;

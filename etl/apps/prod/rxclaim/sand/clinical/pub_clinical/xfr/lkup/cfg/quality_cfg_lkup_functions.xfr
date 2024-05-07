@@ -1,0 +1,60 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/cfg/quality_cfg_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/18  Paul Thompson           Initial version
+ *  2016/10/18  Paul Thompson           Added structured comments
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_CONFIG  parameter /*@ BizHidden @*/;
+constant cli_date_t    BIZ_DT                      parameter /*@ BizHidden @*/;
+
+/*@ BizHidden @*/
+cli_string_t out :: get_quality_cfg_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_SERIAL_CONFIG + '/' + cli_string(BIZ_DT) + '/quality_cfg.dat';
+end;
+
+/************************************************/
+/* GPI Lookup (ids surrogate key) */
+/************************************************/
+
+/*@ BizHidden @*/
+type quality_cfg_by_idntfn_cd_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  quality_cfg_t           RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {idntfn_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let quality_cfg_by_idntfn_cd_lkup_t GLKUP_QUALITY_CFG_BY_IDNTFN_CD = allocate_with_nulls() /*@ BizHidden @*/;
+
+/*@ BizHidden @*/
+quality_cfg_by_idntfn_cd_lkup_t out :: load_quality_cfg_by_idntfn_cd_lkup() inline =
+begin
+  if (GLKUP_QUALITY_CFG_BY_IDNTFN_CD.id == lookup_not_loaded())
+    GLKUP_QUALITY_CFG_BY_IDNTFN_CD = lookup_load(get_quality_cfg_lkup_path());
+  
+  out :: GLKUP_QUALITY_CFG_BY_IDNTFN_CD;
+end;
+
+/*@ BizName:"Get Quality Config by Identification Code"
+    BizCategory:"Config Reference Data"
+    Arguments: [{ Name:idntfn_cd BizType:String BizComment:"Identification Code"}]
+    BizComment:"Get Quality Configuration by Identification Code"
+@*/
+quality_cfg_t out :: get_quality_cfg_by_idntfn_cd(idntfn_cd) inline =
+begin
+  let quality_cfg_by_idntfn_cd_lkup_t lkup = load_quality_cfg_by_idntfn_cd_lkup();
+  out :: lookup(lkup, idntfn_cd);
+end;

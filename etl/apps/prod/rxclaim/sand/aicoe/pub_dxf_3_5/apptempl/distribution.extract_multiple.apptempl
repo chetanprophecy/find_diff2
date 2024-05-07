@@ -1,0 +1,267 @@
+<AppConfTempl name="Extract Into Multiple Files" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "extract.") )
+    "This application configuration must be named: extract.&lt;i&gt;something&lt;/i&gt;.&lt;i&gt;something&lt;/i&gt;.\n" +
+    "Please close and rename it.";
+  out :2: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "get.&lt;i&gt;subjectarea&lt;/i&gt;.&lt;i&gt;something&lt;/i&gt;\n" +
+    "Please close and rename it.";
+  out :: "";
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="extract_ids_to_files" prototype_path="$AI_PSET/extract.ids_to_files.interim.pset">
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="extract_name" type="string"/>
+      <Variable name="mapping" type="ruleset"/>
+      <Variable name="error" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">string_substring(built_in, string_index(built_in, ".") + 1, 9999)</SourceValue>
+      <TargetValue reference="vars.extract_name"/>
+    </Assignment>
+    <Assignment name="Pset Physcial Path">
+      <SourceValue is_expression="true">"pset/extract." + string_split_no_empty(vars.extract_name,".")[0] + "/extract." + vars.extract_name + ".pset"</SourceValue>
+      <TargetValue reference="proj.extract_ids_to_files" property="relative_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.extract_ids_to_files.IDS_ENTITY_DML"/>
+      <TargetValue reference="vars.mapping" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.extract_ids_to_files.EXTRACT_FILE_DML_WITH_FILENAME"/>
+      <TargetValue reference="vars.mapping" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping"/>
+      <TargetValue reference="proj.extract_ids_to_files.MAPPING_XFR"/>
+    </Assignment>
+    <Assignment name="Configuration Name Check">
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label>Application Configuration Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label/>
+            </TextLabel>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+          <Width>400</Width>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>IDS Entities/Table</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;List of tables to extract data from:&lt;/b&gt;\n" +
+"&lt;i&gt;(All the selected entities should have the same DML)&lt;/i&gt;\n\n" +
+"&lt;font color='#0000dd'&gt;" + 
+  if(is_blank(proj.extract_ids_to_files.IDS_ENTITIES)) "[None selected]"
+  else string_replace(proj.extract_ids_to_files.IDS_ENTITIES, ",", "\n") +
+"&lt;/font&gt;"</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit IDS entity list...</Label>
+              <Title/>
+              <UIElements>
+                <MultiChoiceList>
+                  <Choices is_expression="true">vector_sort(get_ids_table_list())</Choices>
+                  <Label>Select one of more IDS entities</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.IDS_ENTITIES" list_conversion_format="comma"/>
+                </MultiChoiceList>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Output File(s)</Label>
+          <UIElements>
+            <Popup>
+              <Label>Choose DML...</Label>
+              <Title/>
+              <UIElements>
+                <FileBrowser>
+                  <Label>DML File</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.EXTRACT_FILE_DML_PATH" target_property="parameterized_path_expression"/>
+                  <BrowsingStartDirectory is_expression="true">proj.extract_ids_to_files.PROJECT_DIR + "/dml"</BrowsingStartDirectory>
+                </FileBrowser>
+                <RecordFormat>
+                  <Label>Record Format (Read Only)</Label>
+                  <ReadOnly>true</ReadOnly>
+                  <SourceValue reference="proj.extract_ids_to_files.EXTRACT_FILE_DML"/>
+                  <CanMatch>false</CanMatch>
+                </RecordFormat>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">string_replace(proj.extract_ids_to_files.EXTRACT_FILE_DML_PATH, proj.extract_ids_to_files.PROJECT_DIR, "$PROJECT_DIR")</Label>
+            </TextLabel>
+            <CheckBox>
+              <Label>Compress Output Files</Label>
+              <SourceTargetValue reference="proj.extract_ids_to_files.DO_COMPRESS"/>
+            </CheckBox>
+            <CheckBox>
+              <Label>Write File Header</Label>
+              <SourceTargetValue reference="proj.extract_ids_to_files.WRITE_FILE_HEADER"/>
+              <Description>File header will contain the names of all fields, separated by a configurable character</Description>
+            </CheckBox>
+            <Popup>
+              <Label>Header options...</Label>
+              <Title/>
+              <UIElements>
+                <TextInput>
+                  <Label>Field name separator (for header row)</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.HEADER_FIELD_SEPARATOR"/>
+                </TextInput>
+                <CheckBox>
+                  <Label>Quoted Field Names</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.HEADER_QUOTED_FIELDS"/>
+                </CheckBox>
+                <CheckBox>
+                  <Label>Exclude Newline Field</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.HEADER_EXCLUDE_NEWLINE_FIELD"/>
+                </CheckBox>
+                <RadioButtons>
+                  <Choices>
+                    <ConstantValue>upper</ConstantValue>
+                    <ConstantValue>lower</ConstantValue>
+                    <ConstantValue>default</ConstantValue>
+                  </Choices>
+                  <Label>Header Field Names Case</Label>
+                  <SourceTargetValue reference="proj.extract_ids_to_files.HEADER_CASE"/>
+                  <ColumnCount>3</ColumnCount>
+                </RadioButtons>
+                <Spacer>
+                  <Width>100%</Width>
+                  <Height>25</Height>
+                </Spacer>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Header:&lt;/b&gt;\n(" + (string(""))(decimal(""))length_of(string_split_no_empty(proj.extract_ids_to_files.FILE_HEADER, proj.extract_ids_to_files.HEADER_FIELD_SEPARATOR)) + " fields)\n" +
+"&lt;font color='#0000dd'&gt;" + proj.extract_ids_to_files.FILE_HEADER + "&lt;/font&gt;"</Label>
+                </TextLabel>
+              </UIElements>
+              <Visible reference="proj.extract_ids_to_files.WRITE_FILE_HEADER"/>
+            </Popup>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Map to Extract</Label>
+          <UIElements>
+            <BusinessRulesPopup>
+              <Label>Edit mapping rules...</Label>
+              <SourceTargetValue reference="vars.mapping"/>
+              <Title>IDS to Extract File Transform Ruleset</Title>
+            </BusinessRulesPopup>
+            <TextLabel>
+              <Label>&lt;font color="#dd0000"&gt;The file name for extract(s) should be computed in this ruleset&lt;/font&gt;</Label>
+              <Visible is_expression="true">string_index(vars.mapping, "filename = ") == 0</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Note:&lt;/b&gt; Output extract file(s) will be created in the location " + proj.extract_ids_to_files.EXTRACT_FILE_LOCATION.pdl_expression</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label>&lt;b&gt;Note:&lt;/b&gt; For compressed output, the preferred file extension is .dat.gz</Label>
+              <Visible reference="proj.extract_ids_to_files.DO_COMPRESS"/>
+            </TextLabel>
+            <Box>
+              <Label/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;b&gt;Filter Expression:&lt;/b&gt;\n" +
+proj.extract_ids_to_files.FILTER_EXPRESSION</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>Edit...</Label>
+                  <Title/>
+                  <UIElements>
+                    <ExpressionEditor>
+                      <Label>Edit Filter Expression</Label>
+                      <RecordFormat reference="proj.extract_ids_to_files.IDS_ENTITY_DML"/>
+                      <SourceTargetValue reference="proj.extract_ids_to_files.FILTER_EXPRESSION"/>
+                    </ExpressionEditor>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style/>
+            </Box>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Execute</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Execute and Test</Label>
+              <SourceValue reference="proj.extract_ids_to_files"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>processing</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Mapping XFR</Label>
+      <Visible is_expression="true">vars.error == ""</Visible>
+      <UIElements>
+        <TextLabel>
+          <Label reference="vars.mapping"/>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Extract Pset</Label>
+      <Visible is_expression="true">vars.error == ""</Visible>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + proj.extract_ids_to_files.PROJECT_DIR + "/" + proj.extract_ids_to_files.relative_path + "</b>"]]></Label>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.extract_ids_to_files.PROJECT_DIR + "/" + proj.extract_ids_to_files.relative_path)</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

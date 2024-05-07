@@ -1,0 +1,40 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  lt_list_rule_id /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  lt_rule_type_cd /*SMALLINT NOT NULL*/;
+  decimal("\x01",0)  lt_rule_cat_priority /*SMALLINT NOT NULL*/;
+  decimal("\x01",0)  lt_rule_cat_sub_priority /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  lt_rule_seq /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=11)  lt_list_id /*CHAR(11) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  eff_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  term_dt /*DATE NOT NULL*/;
+  string("\x01", maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0)  audit_no /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=35)  lt_list_name /*VARCHAR(35) NOT NULL*/;
+  string("\x01", maximum_length=1)  lt_load_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  lt_ndc_based_ind /*CHAR(1) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  list_def_rd_rec_create_ts /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  list_def_rd_rec_create_userid /*VARCHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  list_def_rd_last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  list_def_rd_last_upd_userid /*VARCHAR(16) NOT NULL*/;
+  decimal("\x01",0)  lt_list_applied_rule_id /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  lt_inclusion_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=50)  lt_qualifier_cd /*CHAR(50) NOT NULL*/;
+  string("\x01", maximum_length=2)  lt_operator /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=60)  lt_compare_value /*VARCHAR(60) NOT NULL*/;
+  string("\x01", maximum_length=1)  lt_conjunction_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=100)  lt_field_parameters /*VARCHAR(100) NOT NULL*/;
+  string("\x01", maximum_length=25)  drug_label_name /*VARCHAR(25) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  fill_date_before = NULL("") /*DATE*/;
+  date("YYYY-MM-DD")("\x01")  fill_date_on_or_after = NULL("") /*DATE*/;
+  date("YYYY-MM-DD")("\x01")  orig_paid_date_before = NULL("") /*DATE*/;
+  date("YYYY-MM-DD")("\x01")  orig_paid_date_on_or_after = NULL("") /*DATE*/;
+  decimal("\x01")  flat_pct_calc_price = NULL("") /*DOUBLE*/;
+  string("\x01", maximum_length=100)  adjust_claim_qty_by_ucf /*VARCHAR(100) NOT NULL*/;
+  decimal("\x01")  flat_pct_calc_price_list_lvl = NULL("") /*DOUBLE*/;
+  string("\x01", maximum_length=100)  adjust_clm_qty_by_ucf_list_lvl /*VARCHAR(100) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  newline =  "\n";
+end

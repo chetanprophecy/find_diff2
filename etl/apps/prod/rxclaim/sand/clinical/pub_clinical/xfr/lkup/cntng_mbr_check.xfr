@@ -1,0 +1,62 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/job_exec_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/24  Mohd Shadab          Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_LOOKUP  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_LOOKUP  parameter;
+constant cli_date_t    BIZ_DT                      parameter;
+
+
+type prev_mtm_contract_t=
+record
+cli_integer_id_t   ptnt_id;
+cli_contract_nbr_t contract_id;
+end;
+
+type prev_mtm_contract_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  prev_mtm_contract_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {ptnt_id;contract_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+
+cli_string_t out :: get_prev_mtm_contract_lkup_path() inline =
+begin
+  out :: if(this_partition()==-1) PUB_CLINICAL_SERIAL_LOOKUP + '/prev_mtm_contract.dat' else this_partition_path(PUB_CLINICAL_MFS_LOOKUP) + '/pev_mtm_contract_eoya.lkp';
+end;
+
+/*************************************************/
+/* Job Execution Lookup - Constant and Functions */
+/*************************************************/
+
+let prev_mtm_contract_lkup_t GLKP_PREV_MTM_CONTRACT = allocate_with_nulls();
+
+prev_mtm_contract_lkup_t out :: load_prev_mtm_contract_lkup() inline =
+begin
+  if (GLKP_PREV_MTM_CONTRACT.id == lookup_not_loaded())
+    GLKP_PREV_MTM_CONTRACT = lookup_load(get_prev_mtm_contract_lkup_path());
+  
+  out :: GLKP_PREV_MTM_CONTRACT;
+end;
+
+cli_boolean_t out :: prev_mtm_contract_chck(cli_integer_id_t ptnt_id,cli_contract_nbr_t contract_id) inline =
+begin
+  let lkup = load_prev_mtm_contract_lkup();
+  out :: lookup_match(lkup,ptnt_id,contract_id );
+end;

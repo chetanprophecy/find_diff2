@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim_orx/clean.rxclaim_orx.rcmddp_enrich.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_orx/clean.rxclaim_orx.rcmddp_enrich.dml
+USE_ROLLUP||||False
+OUTPUT_FILE_LOCATION||||$INPUT_FILE_PATH
+OUTPUT_FILE_DML|$|||$INPUT_FILE_DML
+USE_SORT||||True
+USE_SCAN||||True
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rcmddp_enrich_cdc_rfmt.xfr
+SCAN_XFR||||$AI_XFR/produce/produce.rcmddp_enrich_cdc_scan.xfr
+USE_DEDUP||||False
+SORT_KEY||||{dxf_hk_part1}
+LOOKUP_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_rxclaim/one/f_mpd_pde_recent.reduced.dat.gz
+LOOKUP_FILE_DML||||$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.f_mpd_pde_recent.reduced.dml
+DO_IDS_ICFF_LOOKUP||||True

@@ -1,0 +1,14 @@
+include "/~$AB_HOME/include/common/translate.xfr";
+include "/~$PUB_DXF_XFR/idw_encr_constants.xfr";
+
+//Encryption funtion using AES-OFB implementation and PKCS7 Padding
+out :: encrypt_idwdata(str) = 
+begin
+ out ::  (utf8 string(int)) string_to_hex(aes_encrypt((void(16)) string_from_hex(HEX_ENCRYPTION_KEY), (utf8 string(int))string_lrtrim(str), 2, 3,(utf8 string(int))IDW_IV));
+end;
+
+//decryption funtion using AES-OFB implementation and PKCS7 Padding
+out :: decrypt_idwdata(str) = 
+begin
+ out ::  string_from_hex(string_to_hex(aes_decrypt(string_from_hex(HEX_ENCRYPTION_KEY), string_from_hex((utf8 string(int))str), 2, 3,(utf8 string(int))IDW_IV)));
+end;

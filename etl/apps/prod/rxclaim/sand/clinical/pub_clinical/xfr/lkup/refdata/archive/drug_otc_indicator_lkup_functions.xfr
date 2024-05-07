@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/drug_otc_indicator_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_drug_otc_indicator_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_drug_otc_indicator.dat';
+end;
+
+/************************************************/
+/* Drug_otc_indicator Lookup (ids natural key) */
+/************************************************/
+
+type drug_otc_indicator_lkup_t =
+record
+  lookup_identifier_type          id             = -1; 
+  drug_otc_indicator_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                      key()          = {drug_otc_indicator.drug_rx_otc_ind};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let drug_otc_indicator_lkup_t GLKUP_DRUG_OTC_INDICATOR = allocate_with_nulls();
+
+drug_otc_indicator_lkup_t out :: load_drug_otc_indicator_lkup() inline =
+begin
+  if (GLKUP_DRUG_OTC_INDICATOR.id == lookup_not_loaded())
+    GLKUP_DRUG_OTC_INDICATOR = lookup_load(this_partition_path(get_drug_otc_indicator_lkup_path()));
+  
+  out :: GLKUP_DRUG_OTC_INDICATOR;
+end;
+
+drug_otc_indicator_t out :: get_drug_otc_indicator(drug_rx_otc_ind) inline =
+begin
+  let drug_otc_indicator_lkup_t lkup = load_drug_otc_indicator_lkup();
+  out :: lookup(lkup, drug_rx_otc_ind).drug_otc_indicator;
+end;

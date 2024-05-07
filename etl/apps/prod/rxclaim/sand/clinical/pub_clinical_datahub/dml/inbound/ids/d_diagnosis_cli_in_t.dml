@@ -1,0 +1,18 @@
+type d_diagnosis_cli_in_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=4)    legacy_src_env_id               /*VARCHAR(4) NOT NULL*/;
+  decimal("\x01",0)   diag_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   diag_qualifier = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)   diag_typ_cd = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)   diag_cd = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   diag_desc = NULL("") /*VARCHAR(50)*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline = NULL("");
+end;
+
+type d_diagnosis_cli_in_vec_t = d_diagnosis_cli_in_t[int];
+
+metadata type = d_diagnosis_cli_in_t;
+

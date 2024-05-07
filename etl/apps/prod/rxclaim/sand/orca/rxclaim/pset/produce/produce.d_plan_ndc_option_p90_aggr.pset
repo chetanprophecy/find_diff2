@@ -1,0 +1,16 @@
+!prototype|P|||$PUB_DXF_MP/produce.mp
+INPUT_FILE_PATH||||$AI_SERIAL_LOOKUP/lookup.ids_common/lookup.ids_common.d_product_p90.dat
+INPUT_FILE_DML|$|||$AI_DML/lookup.ids_common/lookup.ids_common.d_product_p90.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.ids_rxclaim/lookup.ids_rxclaim.d_plan_ndc_option_p90_aggr.dat
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.ids_rxclaim/lookup.ids_rxclaim.d_plan_ndc_option_p90_aggr.dml
+RUN_ID||||$[(string(""))(datetime("YYYYMMDDHH24MISS"))now1()]
+USE_ROLLUP||||True
+LOOKUP_KEY||||{ndc_lst_nm}
+USE_DEDUP||||True
+ROLLUP_XFR||||$AI_XFR/produce/produce.d_plan_ndc_option_p90_aggr.xfr
+SORT_KEY||||{ndc_lst_nm}
+ROLLUP_KEY||||{ndc_lst_nm}
+MAPPING_XFR|$|||$AI_XFR/produce/produce.d_plan_ndc_option_p90.xfr
+DO_IDS_ICFF_LOOKUP||||True
+LOOKUP_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_rxclaim/one/d_plan_ndc_option.reduced.dat.gz
+LOOKUP_FILE_DML||||$[PUB_DATAHUB_DML + '/ids_rxclaim/ids_rxclaim.d_plan_ndc_option.reduced.dml']

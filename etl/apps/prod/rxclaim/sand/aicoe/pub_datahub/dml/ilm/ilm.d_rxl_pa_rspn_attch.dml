@@ -1,0 +1,32 @@
+type logical_pcms_d_rxl_pa_rspn_attch_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) pa_rspn_attch_id;
+  string("\x01",charset="iso-8859-15", maximum_length=100) fl_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) fl_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=200) fl_pth_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8000) fl_cntn = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) rxl_create_uid;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rxl_create_dttm;
+  string("\x01",charset="iso-8859-15", maximum_length=100) rxl_update_uid;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rxl_update_dttm;
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) insert_uid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) update_uid = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") insert_ts = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts = NULL("");
+  decimal("\x01",0) run_id = NULL("");
+  decimal("\x01",0) rec_stat_cd = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_pcms_d_rxl_pa_rspn_attch_t pa_rp_atch  /*@ BizName:'pa rp atch' */;
+end;

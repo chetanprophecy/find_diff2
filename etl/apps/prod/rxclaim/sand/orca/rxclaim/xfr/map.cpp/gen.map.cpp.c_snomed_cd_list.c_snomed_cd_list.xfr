@@ -1,0 +1,100 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5818773c_71ec_8 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_snmd_cd_ls.end_dt,[passthrough],in0.end_dt]
+  [out0.c_snmd_cd_ls.snomed_cd_list_descr,[passthrough],in0.snomed_cd_list_descr]
+  [out0.c_snmd_cd_ls.eff_dt,[passthrough],in0.eff_dt]
+  [out0.c_snmd_cd_ls.stts,[passthrough],in0.stts]
+  [out0.c_snmd_cd_ls.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_snmd_cd_ls.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_snmd_cd_ls.snomed_cd_list_id,[passthrough],in0.snomed_cd_list_id]
+  [out0.c_snmd_cd_ls.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_snmd_cd_ls.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_snmd_cd_ls.src_env_sk,[transform],]
+  [out0.c_snmd_cd_ls.cpp_snomed_cd_list_sk,[transform],]
+  [out0.c_snmd_cd_ls.snomed_cd_list_version,[passthrough],in0.snomed_cd_list_version]
+  [out0.c_snmd_cd_ls.snomed_cd_list_name,[passthrough],in0.snomed_cd_list_name]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_snmd_cd_ls.end_dt,'c_snmd_cd_ls.end_dt',1,0]
+     [out0.c_snmd_cd_ls.snomed_cd_list_descr,'c_snmd_cd_ls.snomed_cd_list_descr',1,0]
+     [out0.c_snmd_cd_ls.eff_dt,'c_snmd_cd_ls.eff_dt',1,0]
+     [out0.c_snmd_cd_ls.stts,'c_snmd_cd_ls.stts',1,0]
+     [out0.c_snmd_cd_ls.cpp_create_ts,'c_snmd_cd_ls.cpp_create_ts',1,0]
+     [out0.c_snmd_cd_ls.cpp_update_ts,'c_snmd_cd_ls.cpp_update_ts',1,0]
+     [out0.c_snmd_cd_ls.snomed_cd_list_id,'c_snmd_cd_ls.snomed_cd_list_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_snmd_cd_ls.cpp_updated_by,'c_snmd_cd_ls.cpp_updated_by',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_snmd_cd_ls.cpp_created_by,'c_snmd_cd_ls.cpp_created_by',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_snmd_cd_ls.src_env_sk,'c_snmd_cd_ls.src_env_sk',1,0]
+     [out0.c_snmd_cd_ls.cpp_snomed_cd_list_sk,'c_snmd_cd_ls.cpp_snomed_cd_list_sk',1,0]
+     [out0.c_snmd_cd_ls.snomed_cd_list_version,'c_snmd_cd_ls.snomed_cd_list_version',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_snmd_cd_ls.snomed_cd_list_name,'c_snmd_cd_ls.snomed_cd_list_name',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.snomed_cd_list_version,'snomed_cd_list_version',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.end_dt,'end_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.snomed_cd_list_descr,'snomed_cd_list_descr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.eff_dt,'eff_dt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.snomed_cd_list_name,'snomed_cd_list_name',1,1]
+     [in0.stts,'stts',1,1]
+     [in0.snomed_cd_list_id,'snomed_cd_list_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_snmd_cd_ls_cpp_snomed_cd_list_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_snmd_cd_ls_snomed_cd_list_id = fail_if_error(in0.snomed_cd_list_id);
+let decimal("\x01",0) c_snmd_cd_ls_snomed_cd_list_version = fail_if_error(in0.snomed_cd_list_version);
+let utf8 string("\x01", maximum_length=200) c_snmd_cd_ls_snomed_cd_list_name = fail_if_error(in0.snomed_cd_list_name);
+let utf8 string("\x01", maximum_length=8192) c_snmd_cd_ls_snomed_cd_list_descr = fail_if_error(in0.snomed_cd_list_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_snmd_cd_ls_eff_dt = fail_if_error(in0.eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_snmd_cd_ls_end_dt = fail_if_error(in0.end_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_snmd_cd_ls_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_snmd_cd_ls_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_snmd_cd_ls_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_snmd_cd_ls_cpp_created_by = fail_if_error(in0.created_by);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_snmd_cd_ls_stts = fail_if_error(in0.stts);
+let decimal("\x01",0) c_snmd_cd_ls_src_env_sk = 710;
+
+
+
+  out0.c_snmd_cd_ls.cpp_snomed_cd_list_sk::c_snmd_cd_ls_cpp_snomed_cd_list_sk;
+  out0.c_snmd_cd_ls.snomed_cd_list_id::c_snmd_cd_ls_snomed_cd_list_id;
+  out0.c_snmd_cd_ls.snomed_cd_list_version::c_snmd_cd_ls_snomed_cd_list_version;
+  out0.c_snmd_cd_ls.snomed_cd_list_name::c_snmd_cd_ls_snomed_cd_list_name;
+  out0.c_snmd_cd_ls.snomed_cd_list_descr::c_snmd_cd_ls_snomed_cd_list_descr;
+  out0.c_snmd_cd_ls.eff_dt::c_snmd_cd_ls_eff_dt;
+  out0.c_snmd_cd_ls.end_dt::c_snmd_cd_ls_end_dt;
+  out0.c_snmd_cd_ls.cpp_update_ts::c_snmd_cd_ls_cpp_update_ts;
+  out0.c_snmd_cd_ls.cpp_updated_by::c_snmd_cd_ls_cpp_updated_by;
+  out0.c_snmd_cd_ls.cpp_create_ts::c_snmd_cd_ls_cpp_create_ts;
+  out0.c_snmd_cd_ls.cpp_created_by::c_snmd_cd_ls_cpp_created_by;
+  out0.c_snmd_cd_ls.stts::c_snmd_cd_ls_stts;
+  out0.c_snmd_cd_ls.src_env_sk::c_snmd_cd_ls_src_env_sk;
+  out0.*::in0.*;
+
+end;

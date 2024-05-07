@@ -1,0 +1,132 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+out0::Untitled_Ruleset_documentation(in)=
+begin
+
+out0.contract2::depends_on(
+         in.contract
+         );
+
+
+out0.pcrecord::depends_on(
+         in.brandfee90,
+         in.longtermcarepharmacy,
+         in.priceid,
+         in.floorprice,
+         in.brandfee30,
+         in.contract,
+         in.segment,
+         in.preferredstatusretail,
+         in.pbp,
+         in.retailpharmacy,
+         in.pharmacynpi,
+         in.genericfee30,
+         in.genericfee60,
+         in.preferredstatusmail,
+         in.brandfee60,
+         in.homeinfusionpharmacy,
+         in.genericfee90,
+         in.specialitypharmacy,
+         in.mailpharmacy,
+         in.vaccinefee
+         );
+
+
+out0.pharmid::depends_on(
+         in.pharmacyid
+         );
+
+
+out0.planyear2::depends_on(
+         in.planyear
+         );
+
+
+out0.pbpid2::depends_on(
+         in.pbp
+         );
+
+
+out0.cmspstdte2::depends_on(
+         in.cmspostdate
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Untitled_Ruleset_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.contract2,'contract2',1,0]
+     [out0.pcrecord,'pcrecord',1,0]
+     [out0.pharmid,'pharmid',1,0]
+     [out0.planyear2,'planyear2',1,0]
+     [out0.pbpid2,'pbpid2',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cmspstdte2,'cmspstdte2',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.newline,'newline',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.brandfee90,'brandfee90',1,1]
+     [in0.longtermcarepharmacy,'longtermcarepharmacy',1,1]
+     [in0.priceid,'priceid',1,1]
+     [in0.floorprice,'floorprice',1,1]
+     [in0.brandfee30,'brandfee30',1,1]
+     [in0.planyear,'planyear',1,1]
+     [in0.cmspostdate,'cmspostdate',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.segment,'segment',1,1]
+     [in0.contract,'contract',2,2]
+     [in0.preferredstatusretail,'preferredstatusretail',1,1]
+     [in0.pbp,'pbp',2,2]
+     [in0.retailpharmacy,'retailpharmacy',1,1]
+     [in0.pharmacynpi,'pharmacynpi',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.newline,'newline',1,1]
+     [in0.genericfee30,'genericfee30',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.genericfee60,'genericfee60',1,1]
+     [in0.preferredstatusmail,'preferredstatusmail',1,1]
+     [in0.brandfee60,'brandfee60',1,1]
+     [in0.homeinfusionpharmacy,'homeinfusionpharmacy',1,1]
+     [in0.pharmacyid,'pharmacyid',1,1]
+     [in0.genericfee90,'genericfee90',1,1]
+     [in0.specialitypharmacy,'specialitypharmacy',1,1]
+     [in0.mailpharmacy,'mailpharmacy',1,1]
+     [in0.vaccinefee,'vaccinefee',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0, maximum_length=9) cmspstdte2 = fail_if_error((decimal('\x01'))(string(''))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in0.cmspostdate);
+let string("\x01", maximum_length=4) planyear2 = fail_if_error(in0.planyear);
+let string("\x01", maximum_length=5) contract2 = fail_if_error(in0.contract);
+let string("\x01", maximum_length=3) pbpid2 = fail_if_error(in0.pbp);
+let string("\x01", maximum_length=12) pharmid = fail_if_error(in0.pharmacyid);
+let string("\x01", maximum_length=150) pcrecord = fail_if_error(string_concat(in0.contract,in0.pbp,in0.segment,'10',in0.pharmacynpi,in0.priceid,
+ string_lpad(((string(""))(decimal("\x01"))(in0.brandfee30*10000)),12,"0") , string_lpad(((string(""))(decimal("\x01"))(in0.genericfee30*10000)),12,"0"),
+ string_lpad(((string(""))(decimal("\x01"))(in0.vaccinefee*10000)),12,"0"),in0.preferredstatusretail,in0.retailpharmacy, in0.mailpharmacy,in0.specialitypharmacy,in0.homeinfusionpharmacy,in0.longtermcarepharmacy,in0.preferredstatusmail,string_lpad(((string(""))(decimal("\x01"))(in0.floorprice*10000)),12,"0"), string_lpad(((string(""))(decimal("\x01"))(in0.brandfee60*10000)),12,"0"), string_lpad(((string(""))(decimal("\x01"))(in0.genericfee60*10000)),12,"0"),
+ string_lpad(((string(""))(decimal("\x01"))(in0.brandfee90*10000)),12,"0"), string_lpad(((string(""))(decimal("\x01"))(in0.genericfee90*10000)),12,"0")
+ ));
+
+
+
+  out0.cmspstdte2::cmspstdte2;
+  out0.planyear2::planyear2;
+  out0.contract2::contract2;
+  out0.pbpid2::pbpid2;
+  out0.pharmid::pharmid;
+  out0.pcrecord::pcrecord;
+  out0.*::in0.*;
+end;

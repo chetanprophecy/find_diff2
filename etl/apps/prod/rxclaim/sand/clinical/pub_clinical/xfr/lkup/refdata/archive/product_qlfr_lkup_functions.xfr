@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/product_qlfr_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_product_qlfr_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_product_qlfr.dat';
+end;
+
+/************************************************/
+/* Therapeutic Class Lookup (ids surrogate key) */
+/************************************************/
+
+type product_qlfr_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  prod_qlfr_hash_lkup_t   RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {prod_qlfr.product_id_qlfr_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let product_qlfr_lkup_t GLKUP_PRODUCT_QLFR = allocate_with_nulls();
+
+product_qlfr_lkup_t out :: load_product_qlfr_lkup() inline =
+begin
+  if (GLKUP_PRODUCT_QLFR.id == lookup_not_loaded())
+    GLKUP_PRODUCT_QLFR = lookup_load(this_partition_path(get_product_qlfr_lkup_path()));
+  
+  out :: GLKUP_PRODUCT_QLFR;
+end;
+
+product_qlfr_t out :: get_product_qlfr(product_id_qlfr_cd) inline =
+begin
+  let product_qlfr_lkup_t lkup = load_product_qlfr_lkup();
+  out :: lookup(lkup, product_id_qlfr_cd).prod_qlfr;
+end;

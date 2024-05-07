@@ -1,0 +1,81 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.c_job_dtl.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_job_dtl.job_dtl_id,[transform],in0.job_dtl_id]
+  [out0.c_job_dtl.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_job_dtl.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_job_dtl.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_job_dtl.job_id,[transform],in0.job_id]
+  [out0.c_job_dtl.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_job_dtl.cpp_created_by,'c_job_dtl.cpp_created_by',1,0]
+     [out0.c_job_dtl.job_dtl_id,'c_job_dtl.job_dtl_id',1,0]
+     [out0.c_job_dtl.job_stts_start_dt,'c_job_dtl.job_stts_start_dt',1,0]
+     [out0.c_job_dtl.run_stts,'c_job_dtl.run_stts',1,0]
+     [out0.c_job_dtl.cpp_create_ts,'c_job_dtl.cpp_create_ts',1,0]
+     [out0.c_job_dtl.cpp_update_ts,'c_job_dtl.cpp_update_ts',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_job_dtl.job_stts_end_dt,'c_job_dtl.job_stts_end_dt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_job_dtl.cpp_updated_by,'c_job_dtl.cpp_updated_by',1,0]
+     [out0.c_job_dtl.job_id,'c_job_dtl.job_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_job_dtl.src_env_sk,'c_job_dtl.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.job_stts_start_dt,'job_stts_start_dt',1,1]
+     [in0.run_stts,'run_stts',1,1]
+     [in0.job_dtl_id,'job_dtl_id',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.job_stts_end_dt,'job_stts_end_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.job_id,'job_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_job_dtl_job_dtl_id = fail_if_error(decimal_strip(in0.job_dtl_id));
+let decimal("\x01",0) c_job_dtl_job_id = fail_if_error(decimal_strip(in0.job_id));
+let string("\x01",charset="iso-8859-15", maximum_length=5) c_job_dtl_run_stts = fail_if_error(in0.run_stts);
+let date("YYYYMMDD")("\x01") c_job_dtl_job_stts_start_dt = fail_if_error(in0.job_stts_start_dt);
+let date("YYYYMMDD")("\x01") c_job_dtl_job_stts_end_dt = fail_if_error(in0.job_stts_end_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_job_dtl_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_job_dtl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_job_dtl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_job_dtl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_job_dtl_src_env_sk = 710;
+
+
+
+  out0.c_job_dtl.job_dtl_id::c_job_dtl_job_dtl_id;
+  out0.c_job_dtl.job_id::c_job_dtl_job_id;
+  out0.c_job_dtl.run_stts::c_job_dtl_run_stts;
+  out0.c_job_dtl.job_stts_start_dt::c_job_dtl_job_stts_start_dt;
+  out0.c_job_dtl.job_stts_end_dt::c_job_dtl_job_stts_end_dt;
+  out0.c_job_dtl.cpp_update_ts::c_job_dtl_cpp_update_ts;
+  out0.c_job_dtl.cpp_updated_by::c_job_dtl_cpp_updated_by;
+  out0.c_job_dtl.cpp_create_ts::c_job_dtl_cpp_create_ts;
+  out0.c_job_dtl.cpp_created_by::c_job_dtl_cpp_created_by;
+  out0.c_job_dtl.src_env_sk::c_job_dtl_src_env_sk;
+  out0.*::in0.*;
+
+end;

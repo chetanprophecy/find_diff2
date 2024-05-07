@@ -1,0 +1,18 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_prc_typ_clt_prc_typ_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_prc_typ_client_price_type = fail_if_error(in0.cltprctype);
+let decimal("\x01",0) l_prc_typ_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.l_prc_typ.clt_prc_typ_sk::l_prc_typ_clt_prc_typ_sk;
+  out0.l_prc_typ.client_price_type::l_prc_typ_client_price_type;
+  out0.l_prc_typ.src_env_sk::l_prc_typ_src_env_sk;
+  out0.*::in0.*;
+
+end;

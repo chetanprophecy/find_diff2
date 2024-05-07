@@ -1,0 +1,70 @@
+//home_delivery_fills.xfr
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.DRUG_REVENUE               :: first_defined(in.TOTAL_SALE_AMT,0) - first_defined((decimal(""))in.TAX,0) - first_defined(in.FEE,0);
+  out.CLAIM_STS                  :: if(is_null(in.CLAIM_STS) or in.CLAIM_STS == '') '0' else in.CLAIM_STS;
+  out.PROD_CODE_PRESC            :: if(is_null(in.PROD_CODE_PRESC) or in.PROD_CODE_PRESC == '') in.PROD_CODE_PRESC else '0';
+  out.PROD_CODE_QUAL_PRESC       :: if(is_null(in.PROD_CODE_QUAL_PRESC) or in.PROD_CODE_QUAL_PRESC == '') '0' else in.PROD_CODE_QUAL_PRESC;
+  out.DAW                        :: if(is_null(in.DAW) or in.DAW =='') '0' else in.DAW;
+  out.SIG                        :: if(is_null(in.SIG) or in.SIG == '') '0' else in.SIG;
+  out.RX_ORIG_CODE               :: if(is_null(in.RX_ORIG_CODE) or in.RX_ORIG_CODE == '') '0' else in.RX_ORIG_CODE;
+  out.AWP_MEDISPAN               :: "";//AWP_UNITCOST (Lookup Query 2)
+  out.WAC_MEDISPAN               :: "";//WAC_UNITCOST (Lookup Query 3)
+  out.MEDISPAN_INACT_DT          :: "";//MEDISPAN_INACT_DT (Lookup Query 2)
+  out.ALT_PATIENT_ID             :: "";
+  out.TIME_FILLED                :: "0";
+  out.SHIPPED_ADDRESS1           :: string_upcase(in.SHIPPED_ADDRESS1);
+  out.SHIPPED_ADDRESS2           :: string_upcase(in.SHIPPED_ADDRESS2);
+  out.SHIPPED_ZIP                :: if(string_length(string_filter_out(in.SHIPPED_ZIP,"-,"))<5 or string_length(string_filter_out(in.SHIPPED_ZIP,"-,"))>9)'' else in.SHIPPED_ZIP;//Remove ',' and '-' from SHIPPED_ZIP. Then check length of  remaining SHIPPED_ZIP.   If length is < 5 or >9, then '' else remaining SHIPPED_ZIP
+  out.MEDSPAN_MULTI_SRC_CD       :: '';//AAD0SU (Lookup Query 4)
+  out.ACQUISITION_COST           :: in.COST;
+  out.AWP_SRC                    :: in.ALTERNATE_ID;
+  out.DISP_FEE                   :: in.FEE;
+  out.SALES_TAX                  :: in.TAX;
+  out.PROD_MFR_DISP              :: "";//if(is_null(in.AADXC5) or in.AADXC5 == '') in.MANUFACTURER else AADXC5 (Lookup Query 4)
+  out.CVG_TYPE                   :: in.COVERAGE_TYPE;
+  out.CLT_PAID_TTL               :: first_defined(in.TOTAL_SALE_AMT,0) - first_defined(in.PATIENT_COPAY_COINS,0);
+  out.BRAND_GNRC_ID              :: if(is_null(in.GENERIC_INDICATOR_MEDISPAN) or in.GENERIC_INDICATOR_MEDISPAN == '') '0' else in.GENERIC_INDICATOR_MEDISPAN;
+  out.BRAND_GNRC_OVRRID          :: if(is_null(in.PRODUCT_SELECTION_OVERRIDE) or in.PRODUCT_SELECTION_OVERRIDE == '') '0' else in.PRODUCT_SELECTION_OVERRIDE;
+  out.ACQUISITION_COST_LAST_ACQ  :: in.ACTUAL_COST_ACQUIRED;
+  out.ACQUiSITION_COST_AVG       :: in.AVG_ACTUAL_COST;
+  out.DRUG_LBL_NAME_DISP         :: "";//if(is_null(in.DRUG_LBL_NAME_DISP) or DRUG_LBL_NAME_DISP == '') in.LABEL_NAME else DRUG_LBL_NAME_DISP (Lookup Query 4)
+  out.GPI_DISP                   :: "";//if AAD0C5 = '' then GPI else AAD0C5 (Lookup Query 4)
+  out.DT_ADJUDICATED             :: if(is_null(in.PRIMARY_PLAN_TRANSACT_DT) or (string(""))in.PRIMARY_PLAN_TRANSACT_DT == '')  0 else in.PRIMARY_PLAN_TRANSACT_DT;
+  out.PRIMARY_PLAN_CLM_REF_NBR   :: if (is_null(in.PRIMARY_PLAN_CLM_REF_NBR) or in.PRIMARY_PLAN_CLM_REF_NBR == '') '0' else in.PRIMARY_PLAN_CLM_REF_NBR;
+  out.PHARMACY_NABP              :: ""; //NABP( Lookup Query 1)
+  out.RXTRK_SRC_LIB              :: in.RXTRK_SRC_SLIB;
+  out.SECONDARY_PLAN_ID          :: lookup("SECONDARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).SECONDARY_PLAN_ID;
+  out.SECONDARY_PLAN_PAID        :: lookup("SECONDARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).SECONDARY_PLAN_PAID;
+  out.SECONDARY_PLAN_TRANSACT_DT :: lookup("SECONDARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).SECONDARY_PLAN_TRANSACT_DT;
+  out.SECONDARY_PLAN_CLM_REF_NBR :: lookup("SECONDARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).SECONDARY_PLAN_CLM_REF_NBR;
+  out.SECONDARY_PLAN_AUTH_CODE   :: lookup("SECONDARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).SECONDARY_PLAN_AUTH_CODE;
+  out.TERTIARY_PLAN_ID           :: lookup("TERTIARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).TERTIARY_PLAN_ID;
+  out.TERTIARY_PLAN_PAID         :: lookup("TERTIARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).TERTIARY_PLAN_PAID;
+  out.TERTIARY_PLAN_TRANSACT_DT  :: lookup("TERTIARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).TERTIARY_PLAN_TRANSACT_DT;
+  out.TERTIARY_PLAN_CLM_REF_NBR  :: lookup("TERTIARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).TERTIARY_PLAN_CLM_REF_NBR;
+  out.TERTIARY_PLAN_AUTH_CODE    :: lookup("TERTIARY", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).TERTIARY_PLAN_AUTH_CODE;
+  out.OTHER_PLAN_PAID            :: lookup("OTHERS", in.FILL_NBR, in.RX_NBR, in.PHARMACY_NPI).OTHER_PLANS_PAID;
+  out.PATIENT_PAY_TTL            :: " "; //NABP( Lookup Query 1)
+  out.RXCLM_NBR                  :: in.PRIMARY_PLAN_CLM_REF_NBR;
+  out.DISP_UNITS                 :: "0";
+  out.PATIENT_PAY_OTHER          :: "0.00";
+  out.FILL_STS                   :: "1";
+  out.CLAIM_TYPE                 :: "0";
+  out.FILL_CNTR                  :: if(first_defined(in.CLAIM_STS,'#$#$#')=='P') 1 else 0;
+  out.SALES_PERSON               :: "";
+  out.CLIENT_TYPE                :: "";//if(first_defined(in.RXCLM_CAR_ID,'') <> '' and first_defined(in.COVERAGE_TYPE,'$%#%#^#%') <> 'CSH') 'CTRX' else if(is_defined(in.COVERAGE_TYPE) and in.COVERAGE_TYPE == 'CSH') 'CASH' else COVERAGE_TYPE = 'OTHR';
+  /*out.SRC_RUN_NBR                :: "0";
+  out.SRC_UPDT_DT_RX             :: "0";
+  out.SRC_UPDT_TIME_RX           :: "0";
+  out.SRC_UPDT_DT_FILL           :: "0";
+  out.SRC_UPDT_TIME_FILL         :: "0";
+  out.rxt_src_envrt_id           :: "";//(decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm           :: "";//system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm            :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid             :: 'app_orca_rxclaim';
+  out.rxt_create_run_id          :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd            :: '';*/
+  out.*                          :: in.*;
+end;

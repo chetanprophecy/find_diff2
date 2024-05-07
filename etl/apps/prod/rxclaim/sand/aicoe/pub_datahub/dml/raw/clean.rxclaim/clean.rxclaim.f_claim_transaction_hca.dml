@@ -1,0 +1,34 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string("\x01",charset="iso-8859-15", maximum_length=50)  client_id /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)  account_id /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_ssn_nbr = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_relshp_cd = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01")  mbr_dt_of_brth = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)  mb_first_nm = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=70)  mb_last_nm = NULL("") /*VARCHAR(70)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  mb_mid_init_nm = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)  cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  mbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)  clt_copay_amt = NULL("") /*DECIMAL(9,2)*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)  clt_due_amt = NULL("") /*DECIMAL(9,2)*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)  sbm_due_amt = NULL("") /*DECIMAL(9,2)*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)  app_due_amt = NULL("") /*DECIMAL(9,2)*/;
+  decimal("\x01",0)  claim_cntr = NULL("") /*SMALLINT*/;
+  date("YYYYMMDD")("\x01")  sbm_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")  orig_pmt_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")  filled_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  recent_clm_flg = NULL("") /*VARCHAR(1)*/;
+  decimal("\x01",0)  claim_nbr = NULL("") /*BIGINT*/;
+  decimal("\x01",0)  claim_seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  claim_stat_id = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  claim_origin_cd = NULL("") /*CHAR(1)*/;
+  string(1)  newline =  "\n";
+end

@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5821bea5_1eef_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_gpsplncd.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_gpsplncd.gps_plan_cd_sk,[transform],]
+  [out0.l_gpsplncd.gps_plan_cd,[transform],in0.gps_plan_code]
+  [out0.l_gpsplncd.gps_brand_desc,[passthrough],in0.gps_brand_name]
+  [out0.l_gpsplncd.gps_plan_cd_desc,[transform],in0.gps_plan_description,
+     in0.gps_plan_code]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_gpsplncd.src_env_sk,'l_gpsplncd.src_env_sk',1,0]
+     [out0.l_gpsplncd.gps_plan_cd_sk,'l_gpsplncd.gps_plan_cd_sk',1,0]
+     [out0.l_gpsplncd.gps_plan_cd,'l_gpsplncd.gps_plan_cd',1,0]
+     [out0.l_gpsplncd.gps_brand_desc,'l_gpsplncd.gps_brand_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_gpsplncd.gps_plan_cd_desc,'l_gpsplncd.gps_plan_cd_desc',1,0]
+  ]
+  impacts:
+  [
+     [in0.gps_plan_code,'gps_plan_code',2,2]
+     [in0.gps_plan_description,'gps_plan_description',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.gps_brand_name,'gps_brand_name',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_gpsplncd_gps_plan_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_gpsplncd_gps_plan_cd = fail_if_error(string_lrtrim(in0.gps_plan_code));
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_gpsplncd_gps_plan_cd_desc = fail_if_error(if(lookup_match("d_cag_lkp",string_lrtrim(in0.gps_plan_code)))in0.gps_plan_description else 'Not Applicable to GPS');
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_gpsplncd_gps_brand_desc = fail_if_error(in0.gps_brand_name);
+let decimal("\x01",0) l_gpsplncd_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_gpsplncd.gps_plan_cd_sk::l_gpsplncd_gps_plan_cd_sk;
+  out0.l_gpsplncd.gps_plan_cd::l_gpsplncd_gps_plan_cd;
+  out0.l_gpsplncd.gps_plan_cd_desc::l_gpsplncd_gps_plan_cd_desc;
+  out0.l_gpsplncd.gps_brand_desc::l_gpsplncd_gps_brand_desc;
+  out0.l_gpsplncd.src_env_sk::l_gpsplncd_src_env_sk;
+  out0.*::in0.*;
+
+end;

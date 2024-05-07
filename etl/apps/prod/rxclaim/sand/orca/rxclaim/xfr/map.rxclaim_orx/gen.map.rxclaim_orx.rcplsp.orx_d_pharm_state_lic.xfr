@@ -1,0 +1,86 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.phr_st_lic.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_pharmacy.phr_id,[passthrough],in0.lsavcd]
+  [out0.phr_st_lic.st_lic_nbr,[passthrough],in0.lsa0iu]
+  [out0.phr_st_lic.st_lic_exp_dt,[transform],in0.lstbce]
+  [out0.phr_st_lic.phr_st_cd,[passthrough],in0.lsi1an]
+  [out0.phr_st_lic.phr_sk,[transform],]
+  [out0.phr_st_lic.chg_dt,[transform],in0.lsbmdt]
+  [out0.phr_st_lic.del_dt,[transform],in0.lstcce]
+  [out0.phr_st_lic.phr_st_lic_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phr_st_lic.src_env_sk,'phr_st_lic.src_env_sk',1,0]
+     [out0.d_pharmacy.phr_id,'d_pharmacy.phr_id',1,0]
+     [out0.phr_st_lic.st_lic_nbr,'phr_st_lic.st_lic_nbr',1,0]
+     [out0.phr_st_lic.st_lic_exp_dt,'phr_st_lic.st_lic_exp_dt',1,0]
+     [out0.phr_st_lic.phr_st_cd,'phr_st_lic.phr_st_cd',1,0]
+     [out0.phr_st_lic.phr_sk,'phr_st_lic.phr_sk',1,0]
+     [out0.phr_st_lic.chg_dt,'phr_st_lic.chg_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phr_st_lic.del_dt,'phr_st_lic.del_dt',1,0]
+     [out0.phr_st_lic.phr_st_lic_sk,'phr_st_lic.phr_st_lic_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.lsbmdt,'lsbmdt',1,1]
+     [in0.lstbce,'lstbce',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.lstcce,'lstcce',1,1]
+     [in0.lsi1an,'lsi1an',1,1]
+     [in0.lsavcd,'lsavcd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.lsa0iu,'lsa0iu',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) phr_st_lic_phr_st_lic_sk = -1;
+let decimal("\x01",0) phr_st_lic_phr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) phr_st_lic_phr_st_cd = fail_if_error(in0.lsi1an);
+let decimal("\x01",0) phr_st_lic_st_lic_nbr = fail_if_error(in0.lsa0iu);
+let date("YYYYMMDD")("\x01") phr_st_lic_st_lic_exp_dt;
+let date("YYYYMMDD")("\x01") phr_st_lic_del_dt;
+let date("YYYYMMDD")("\x01") phr_st_lic_chg_dt;
+let decimal("\x01",0) phr_st_lic_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_pharmacy_phr_id = fail_if_error(in0.lsavcd);
+
+
+
+/*   Default value   */
+phr_st_lic_st_lic_exp_dt=fail_if_error(date_check(in0.lstbce));
+
+/*   Default value   */
+phr_st_lic_chg_dt=fail_if_error(date_check(in0.lsbmdt));
+
+/*   Default value   */
+phr_st_lic_del_dt=fail_if_error(date_check(in0.lstcce));
+
+  out0.phr_st_lic.phr_st_lic_sk::phr_st_lic_phr_st_lic_sk;
+  out0.phr_st_lic.phr_sk::phr_st_lic_phr_sk;
+  out0.phr_st_lic.phr_st_cd::phr_st_lic_phr_st_cd;
+  out0.phr_st_lic.st_lic_nbr::phr_st_lic_st_lic_nbr;
+  out0.phr_st_lic.st_lic_exp_dt::phr_st_lic_st_lic_exp_dt;
+  out0.phr_st_lic.del_dt::phr_st_lic_del_dt;
+  out0.phr_st_lic.chg_dt::phr_st_lic_chg_dt;
+  out0.phr_st_lic.src_env_sk::phr_st_lic_src_env_sk;
+  out0.d_pharmacy.phr_id::d_pharmacy_phr_id;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxclaim.psa_entry
+SOURCE_DB_PROJECT||||DB_RXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+SQL||||SELECT \n ENT.REQUEST_ID,\nent.CLIENT_ID as ent_client_id,\nent.MEMBERSHIP_COUNT, \nent.END_DATE,\nent.start_date,\nent.BENCHMARK,\nent.FORMULARY,\n CLM.CLIENT_ID ,\n clm.INGREDIENT_COST,\n clm.RX_COUNT,\n clm.DAY_SUPPLY ,\n clm.MAIL_RETAIL_FLG,\n ndc.SPCLTY_PROD_CORP_IND,\n ndc.GNRC_MDSPN_IND,\n 800 as f1,\n CURRENT_TIMESTAMP as f2,\n CURRENT_TIMESTAMP as f3,\n 'ALFRED' as f4,\n 'ALFRED' as f5,\n '2018030112344' as f6,\n  1 as f7\n   FROM ORX_IDW_DM_INTR_VIEW_PRD.ADMIN.V_F_REPRICED_CLAIMS CLM\n inner join ORX_IDW_DM_INTR_VIEW_PRD.ADMIN.V_D_PRODUCT NDC ON (clm.prod_ID = ndc.PROD_ID and clm.PROD_ID_QLFR_CD = ndc.PROD_ID_QLFR_CD)\n inner join SANDBOX..ALF_090_PSA_ENTRY_FORM  ENT ON CLM.CLIENT_ID = ENT.CLIENT_ID and ENT.REC_STAT_CD='P'
+DO_CLEAN||||1

@@ -1,0 +1,104 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58185ec6_1e02_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mb_shg_hst.src_env_sk,[transform],]
+  [out0.c_mb_shg_hst.cpp_member_scheduling_sk,[transform],in0.member_scheduling_id,
+     'lookup("c_member_scheduling").dxf_sk']
+  [out0.c_mb_shg_hst.member_scheduling_id,[passthrough],in0.member_scheduling_id]
+  [out0.c_mb_shg_hst.cpp_member_scheduling_call_hist_sk,[transform],]
+  [out0.c_mb_shg_hst.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mb_shg_hst.member_call_in_flag,[passthrough],in0.member_call_in_flag]
+  [out0.c_mb_shg_hst.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mb_shg_hst.member_scheduling_call_hist_id,[passthrough],in0.member_scheduling_call_hist_id]
+  [out0.c_mb_shg_hst.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mb_shg_hst.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mb_shg_hst.member_call_stts,[passthrough],in0.member_call_stts]
+  [out0.c_mb_shg_hst.cmmt,[passthrough],in0.cmmt]
+  [out0.c_mb_shg_hst.member_not_responded_reason,[passthrough],in0.member_not_responded_reason]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mb_shg_hst.src_env_sk,'c_mb_shg_hst.src_env_sk',1,0]
+     [out0.c_mb_shg_hst.cpp_member_scheduling_sk,'c_mb_shg_hst.cpp_member_scheduling_sk',1,0]
+     [out0.c_mb_shg_hst.member_scheduling_id,'c_mb_shg_hst.member_scheduling_id',1,0]
+     [out0.c_mb_shg_hst.cpp_member_scheduling_call_hist_sk,'c_mb_shg_hst.cpp_member_scheduling_call_hist_sk',1,0]
+     [out0.c_mb_shg_hst.cpp_created_by,'c_mb_shg_hst.cpp_created_by',1,0]
+     [out0.c_mb_shg_hst.member_call_in_flag,'c_mb_shg_hst.member_call_in_flag',1,0]
+     [out0.c_mb_shg_hst.cpp_updated_by,'c_mb_shg_hst.cpp_updated_by',1,0]
+     [out0.c_mb_shg_hst.member_scheduling_call_hist_id,'c_mb_shg_hst.member_scheduling_call_hist_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mb_shg_hst.cpp_update_ts,'c_mb_shg_hst.cpp_update_ts',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mb_shg_hst.cpp_create_ts,'c_mb_shg_hst.cpp_create_ts',1,0]
+     [out0.c_mb_shg_hst.member_call_stts,'c_mb_shg_hst.member_call_stts',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mb_shg_hst.cmmt,'c_mb_shg_hst.cmmt',1,0]
+     [out0.c_mb_shg_hst.member_not_responded_reason,'c_mb_shg_hst.member_not_responded_reason',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_scheduling_call_hist_id,'member_scheduling_call_hist_id',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.member_call_stts,'member_call_stts',1,1]
+     [in0.member_scheduling_id,'member_scheduling_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cmmt,'cmmt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.member_call_in_flag,'member_call_in_flag',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     ['lookup("c_member_scheduling").dxf_sk','dxf_sk',1,1]
+     [in0.member_not_responded_reason,'member_not_responded_reason',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mb_shg_hst_cpp_member_scheduling_call_hist_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_mb_shg_hst_member_scheduling_call_hist_id = fail_if_error(in0.member_scheduling_call_hist_id);
+let utf8 string("\x01", maximum_length=60) c_mb_shg_hst_member_scheduling_id = fail_if_error(in0.member_scheduling_id);
+let decimal("\x01",0) c_mb_shg_hst_cpp_member_scheduling_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mb_shg_hst_member_call_stts = fail_if_error(in0.member_call_stts);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mb_shg_hst_member_call_in_flag = fail_if_error(in0.member_call_in_flag);
+let utf8 string("\x01", maximum_length=180) c_mb_shg_hst_member_not_responded_reason = fail_if_error(in0.member_not_responded_reason);
+let utf8 string("\x01", maximum_length=8192) c_mb_shg_hst_cmmt = fail_if_error(in0.cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mb_shg_hst_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mb_shg_hst_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mb_shg_hst_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mb_shg_hst_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mb_shg_hst_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mb_shg_hst_cpp_member_scheduling_sk=fail_if_error(first_defined(lookup("c_member_scheduling",in0.member_scheduling_id).dxf_sk,-1));
+
+  out0.c_mb_shg_hst.cpp_member_scheduling_call_hist_sk::c_mb_shg_hst_cpp_member_scheduling_call_hist_sk;
+  out0.c_mb_shg_hst.member_scheduling_call_hist_id::c_mb_shg_hst_member_scheduling_call_hist_id;
+  out0.c_mb_shg_hst.member_scheduling_id::c_mb_shg_hst_member_scheduling_id;
+  out0.c_mb_shg_hst.cpp_member_scheduling_sk::c_mb_shg_hst_cpp_member_scheduling_sk;
+  out0.c_mb_shg_hst.member_call_stts::c_mb_shg_hst_member_call_stts;
+  out0.c_mb_shg_hst.member_call_in_flag::c_mb_shg_hst_member_call_in_flag;
+  out0.c_mb_shg_hst.member_not_responded_reason::c_mb_shg_hst_member_not_responded_reason;
+  out0.c_mb_shg_hst.cmmt::c_mb_shg_hst_cmmt;
+  out0.c_mb_shg_hst.cpp_update_ts::c_mb_shg_hst_cpp_update_ts;
+  out0.c_mb_shg_hst.cpp_updated_by::c_mb_shg_hst_cpp_updated_by;
+  out0.c_mb_shg_hst.cpp_create_ts::c_mb_shg_hst_cpp_create_ts;
+  out0.c_mb_shg_hst.cpp_created_by::c_mb_shg_hst_cpp_created_by;
+  out0.c_mb_shg_hst.src_env_sk::c_mb_shg_hst_src_env_sk;
+  out0.*::in0.*;
+
+end;

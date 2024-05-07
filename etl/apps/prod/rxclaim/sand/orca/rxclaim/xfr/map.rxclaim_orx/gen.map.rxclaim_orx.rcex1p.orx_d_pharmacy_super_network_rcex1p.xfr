@@ -1,0 +1,69 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.phar_supntwk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.phar_supntwk.phr_super_ntwrk_typ_cd,[passthrough],in0.srxnettype]
+  [out0.phar_supntwk.phr_super_ntwrk_rgn_nm,[passthrough],in0.regioncde]
+  [out0.phar_supntwk.phr_super_ntwrk_carr_nm,[passthrough],in0.scarrierid]
+  [out0.phar_supntwk.phr_super_ntwrk_id,[passthrough],in0.srxnetwrk]
+  [out0.phar_supntwk.super_ntwk_sk,[transform],]
+  [out0.phar_supntwk.phr_super_ntwrk_seq_no,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phar_supntwk.src_env_sk,'phar_supntwk.src_env_sk',1,0]
+     [out0.phar_supntwk.phr_super_ntwrk_typ_cd,'phar_supntwk.phr_super_ntwrk_typ_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phar_supntwk.phr_super_ntwrk_rgn_nm,'phar_supntwk.phr_super_ntwrk_rgn_nm',1,0]
+     [out0.phar_supntwk.phr_super_ntwrk_carr_nm,'phar_supntwk.phr_super_ntwrk_carr_nm',1,0]
+     [out0.phar_supntwk.phr_super_ntwrk_id,'phar_supntwk.phr_super_ntwrk_id',1,0]
+     [out0.phar_supntwk.super_ntwk_sk,'phar_supntwk.super_ntwk_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.phar_supntwk.phr_super_ntwrk_seq_no,'phar_supntwk.phr_super_ntwrk_seq_no',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.regioncde,'regioncde',1,1]
+     [in0.scarrierid,'scarrierid',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.srxnetwrk,'srxnetwrk',1,1]
+     [in0.srxnettype,'srxnettype',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) phar_supntwk_super_ntwk_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) phar_supntwk_phr_super_ntwrk_id = fail_if_error(in0.srxnetwrk);
+let decimal("\x01",0) phar_supntwk_phr_super_ntwrk_seq_no = 1;
+let string("\x01",charset="iso-8859-15", maximum_length=9) phar_supntwk_phr_super_ntwrk_carr_nm = fail_if_error(in0.scarrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phar_supntwk_phr_super_ntwrk_rgn_nm = fail_if_error(in0.regioncde);
+let string("\x01",charset="iso-8859-15", maximum_length=2) phar_supntwk_phr_super_ntwrk_typ_cd = fail_if_error(in0.srxnettype);
+let decimal("\x01",0) phar_supntwk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.phar_supntwk.super_ntwk_sk::phar_supntwk_super_ntwk_sk;
+  out0.phar_supntwk.phr_super_ntwrk_id::phar_supntwk_phr_super_ntwrk_id;
+  out0.phar_supntwk.phr_super_ntwrk_seq_no::phar_supntwk_phr_super_ntwrk_seq_no;
+  out0.phar_supntwk.phr_super_ntwrk_carr_nm::phar_supntwk_phr_super_ntwrk_carr_nm;
+  out0.phar_supntwk.phr_super_ntwrk_rgn_nm::phar_supntwk_phr_super_ntwrk_rgn_nm;
+  out0.phar_supntwk.phr_super_ntwrk_typ_cd::phar_supntwk_phr_super_ntwrk_typ_cd;
+  out0.phar_supntwk.src_env_sk::phar_supntwk_src_env_sk;
+  out0.*::in0.*;
+
+end;

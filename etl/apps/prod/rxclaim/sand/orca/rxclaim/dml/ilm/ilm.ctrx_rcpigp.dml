@@ -1,0 +1,25 @@
+type logical_ids_common_rcpigp_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  unsigned integer(8) dxf_sk = 0;
+  decimal("\x01",maximum_length=9) prod_key;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_ing_type_cd;
+  decimal("\x01",maximum_length=9) pig_ing_id;
+  string("\x01",charset="iso-8859-15", maximum_length=40) pig_gnrc_nm;
+  decimal("\x01",maximum_length=18) pig_strngth;
+  string("\x01",charset="iso-8859-15", maximum_length=11) pig_strngth_uom_cd;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_ing_flg;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pig_rec_stat_cd;
+  datetime("YYYYMMDDHH24MISS")("\x01") pig_inactive_dt;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_rcpigp_t ctrx_rcpigp  /*@ BizName:'ctrx rcpigp' */;
+end;

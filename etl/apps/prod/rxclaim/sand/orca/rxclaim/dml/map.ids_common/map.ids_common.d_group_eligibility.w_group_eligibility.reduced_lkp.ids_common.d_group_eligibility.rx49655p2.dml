@@ -1,0 +1,25 @@
+record
+  unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+  string("\001", maximum_length=1) cdc_flag = NULL("");
+  datetime("YYYY-MM-DD HH24:MI:SS.nnn")("\001") cdc_ts = NULL("");
+  string("\001", maximum_length=10) p2plncde = NULL("");
+  string("\001", maximum_length=10) p2plneffdt = NULL("");
+  string("\001", maximum_length=10) p2plnthrdt = NULL("");
+  string("\001", maximum_length=10) p2frmcde = NULL("");
+  string("\001", maximum_length=25) p2frmdes = NULL("");
+  string("\001", maximum_length=7) p2extdat = NULL("");
+  string("\001", maximum_length=6) p2exttim = NULL("");
+  string("\001", maximum_length=50) p2filler = NULL("");
+  decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  decimal("\x01", maximum_length=5)   dxf_src_sys_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end

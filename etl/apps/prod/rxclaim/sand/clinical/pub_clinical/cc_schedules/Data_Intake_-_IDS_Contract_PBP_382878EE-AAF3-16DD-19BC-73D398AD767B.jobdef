@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="382878EE-AAF3-16DD-19BC-73D398AD767B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Contract PBP" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_PSET/p_optimization/ids_to_cli_cdc_plan.contract_pbp.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-05Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="11:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_contract_pbp_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+    </fileAndEventConstraints>
+    <predecessors>
+      <predecessor jobDefinitionGuid="2993CA10-E4FA-8BEA-A865-DB5ADA905998"/>
+      <predecessor jobDefinitionGuid="C6D43B2B-904A-8D8F-FC4B-1EAEA280CE50"/>
+      <predecessor jobDefinitionGuid="395F4E34-6029-6F29-F03A-231AB86691D6"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

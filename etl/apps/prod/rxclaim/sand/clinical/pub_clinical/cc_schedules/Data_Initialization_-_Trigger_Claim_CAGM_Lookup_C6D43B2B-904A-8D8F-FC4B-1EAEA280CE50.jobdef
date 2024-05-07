@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="C6D43B2B-904A-8D8F-FC4B-1EAEA280CE50" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Initialization - Trigger Claim CAGM Lookup" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_MP/p_optimization/trigger_claim_cagm_lkp_gen.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-11-03Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="11:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="60" fileURL="${PUB_CLINICAL_DATAHUB_MFS_INBOUND}/ids/${BIZ_DT}/incoming/f_claim_transaction_${BIZ_DT}_??????.dat.gz" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+    </fileAndEventConstraints>
+    <predecessors>
+      <predecessor jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D"/>
+      <predecessor jobDefinitionGuid="ECD9F7E8-BD0C-C283-1B3A-18C314DDE1C0"/>
+      <predecessor jobDefinitionGuid="6EA78FC7-2CB2-584C-D5CF-DFC89DCE6568"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

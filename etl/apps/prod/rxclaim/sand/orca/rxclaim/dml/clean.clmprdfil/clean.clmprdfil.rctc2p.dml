@@ -1,0 +1,164 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  little endian integer(8)  qnp2nb /*DECIMAL(15) NOT NULL */ /*@
+BizName:"RCTC2P: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  little endian integer(2)  qnoinb /*DECIMAL(3) NOT NULL */ /*@
+BizName:"RCTC2P: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  qnz5hm /*CHAR(10) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 NDC List ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnaqai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Maint List Sts I/E"
+ BizComment:"The value of 'X' indicates the following: :PC. The product (NDC or GPI) is found within the drug list and the drug list status = Include, therefore this product is a maintenance product. :P. A <blank> value with an NDC or GPI List specified indicates the following: :PC. The product (NDC or GPI) is found within the drug list and the drug list status = Exclude, therefore this product is a non-maintenance product. :P. A <blank> value without an NDC or GPI List specified indicates the following: :PC. The product (NDC or GPI) is not found within the drug list.  Additional information is required to determine if this is a maintenance product."
+@*/;
+  little endian integer(4)  qnance /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Next Refill Date"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qndcai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Generic Drug Cov"
+ BizComment:"This field is used to indicate if the claim is eligible for Generic Drug Coverage."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnevai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 NDA Flag"
+ BizComment:"FDA New Drug Application status. :P. Only in GAP phase or Crossover in/out Gap phase, the presence of this value is being considered to calculate the Gap Discount. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnetai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 NDA Override"
+ BizComment:"Only in GAP phase or Crossover in/out Gap phase, the presence of this value is being considered to calculate the Gap Discount. :P. Blank = Manufacturer Discount is NOT based on NDA status or NDA Product Override. :P. 1 = Presence of NDA Product Override value of '1 = Yes' forced the claim to calculate Manufacturer Discount on the Brand Drug. :P. 0 = Presence of NDA Product Override value '0 = No' forced the claim to NOT calculate Manufacturer Discount on the Brand Drug, even though NDA status on Product File  is '1 = Yes'. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnewai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 BLA Flag"
+ BizComment:"FDA Biologic License Application status. :P. Only in GAP phase or Crossover in/out Gap phase, the presence of this value is being considered to calculate the Gap Discount. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qneuai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 BLA Override"
+ BizComment:"Only in GAP phase or Crossover in/out Gap phase, the presence of this value is being considered to calculate the Gap Discount. :P. Blank = Manufacturer Discount is NOT based on BLA status or BLA Product Override. :P. 1 = Presence of BLA Product Override value of '1 = Yes' forced the claim to calculate Manufacturer Discount on the Brand Drug. :P. 0 = Presence of BLA Product Override value '0 = No' forced the claim to NOT calculate Manufacturer Discount on the Brand Drug, even though BLA status on Product File is '1 = Yes'. :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qne0ai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 PDE Form/Non-Form Sts"
+ BizComment:"Indicates if the claim is Formulary or Non-Formulary for PDE."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnjgai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 HIC3 Override"
+ BizComment:"Indicates HIC3 Class code of a product that was override on Carrier Product Override screen. This field is populated only when system uses the value on HIC3 Carrier Product Override to adjudicate the claim. Valid Value: Blank - The value blank indicates HIC3 Override does not exist. *     - No Override.  The value '*' indicates there is no HIC3         Override. X     - Override.  The value 'X' indicates there is a HIC3 Override."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnkvai /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Rx OTC Indicator"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnejaj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Pharm X-Ref Vldn"
+ BizComment:"A flag indicating this claim is being captured, because client specific Pharmacy ID is missing for submitted pharmacy in Pharmacy Cross-Reference File."
+@*/;
+  string(unsigned integer(1),maximum_length=12)  qnxihn /*CHAR(12) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Sbm Original RxNumber"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qntpaj /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Cost Override Ind"
+ BizComment:"Indicates if Cost Override is used. If Cost Override is used, system populates the flag with 'Y'.  Else, the flag is set to 'N'."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  qnzbaj /*CHAR(2) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Std Therapeutic Class"
+ BizComment:"Indicates the FDB Standard Therapeutic Class of the product on the product file."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnbgak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Passed TB Prequal"
+ BizComment:"A Flag to indicate if the claim has passed the TB Pre-Qualification check or  not. :P. Y - If claim passes the TB period check and PTD DS limits check. :PC. N - If claim does not pass the TB period check and PTD DS limits check. :PC."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnhgak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Medicaid Subrogation"
+ BizComment:"Indicates if batch file is due to Medicaid subrogation. :P. Default value is spaces (blank)."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qno9ak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Unauthorizd Prescribr"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnrlak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Member TB Eligibility"
+ BizComment:"This field indicates 'N' if the member is not TB eligible at the time of the claim's fill date. :P. This field indicates 'Y' if the member is TB eligible at the time of the claim's fill date. :P. Valid Values: :PC. N = No :PC. Y = Yes :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnsaak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Suppress Letter"
+ BizComment:"This field indicates if the Transitional Benefit Letter should be suppressed. :P. N - No :PC. Y - Yes :LINES. :ELINES."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnwmak /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 COB Data Flag"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  qnshho /*CHAR(10) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Trans Reference ID"
+ BizComment:"The Transaction Reference Number (ID) is submitted via the Batch Claim Load in NCPDP field 88 -K5 in position 4-13 in the G1 Detail data record and returned on the Reply File.  The use of this field varies by client."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qngwam /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Claim Pricing"
+ BizComment:"Claim Pricing is used to return either Client or Pharmacy pricing on the Rep ly File generated by the claim load. This option impacts the Response Pricin g fields within a claim."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  qntaho /*CHAR(10) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 GPPC ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=10)  qntbho /*CHAR(10) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Incentive Sched ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=6)  qnvmho /*CHAR(6) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Diagnosis List"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnl5am /*CHAR(1) NOT NULL */ /*@
+BizName:"RCTC2P: TC2 Diagnosis List Qual"
+ BizComment:"Indicates the corresponding qualifier for the Diagnosis List. D - Member Diagnosis"
+@*/;
+  string(unsigned integer(1),maximum_length=1)  qnxfam /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnxgam /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnxham /*CHAR(1) NOT NULL*/;
+  little endian integer(2)  qnggan /*DECIMAL(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qng6an /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2)  qng7an /*CHAR(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnj6hp /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnk6hp /*CHAR(10) NOT NULL*/;
+  little endian integer(2)  qnkaan /*DECIMAL(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnk7hp /*CHAR(10) NOT NULL*/;
+  little endian integer(2)  qnkban /*DECIMAL(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qng8an /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qng9an /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhaan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhban /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhcan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhdan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhean /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhfan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhgan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhhan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhian /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhjan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhkan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhlan /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnhman /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnj7hp /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnj8hp /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  qnj9hp /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnikao /*CHAR(1) NOT NULL*/;
+  decimal("".6, sign_reserved)  qnobqu /*DECIMAL(7,6) NOT NULL*/;
+  decimal("".4, sign_reserved)  qnp7ap /*DECIMAL(11,4) NOT NULL*/;
+  little endian integer(4)  qnehaq /*DECIMAL(5) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=5)  qnkrhr /*CHAR(5) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2)  qneiaq /*CHAR(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=3)  qnkshr /*CHAR(3) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=4)  qnkthr /*CHAR(4) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2)  qnecaq /*CHAR(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnedaq /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2)  qneeaq /*CHAR(2) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  qnefaq /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=2)  qnegaq /*CHAR(2) NOT NULL*/;
+end

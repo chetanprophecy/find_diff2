@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcsn1p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcsn1p                  ddoohb,ddn4hr,ddozhb,ddeqh7,ddp8hu,dderh7,ddo0hb,ddo1hb,ddo2hb,ddo3hb,ddo4hb,ddo5hb,ddesh7,ddbjhd,ddbvhd,ddbkhd,ddbwhd,ddblhd,ddbxhd,ddbmhd,ddbyhd,ddhqhh,ddhrhh,ddz2id,ddhuhn,ddhvhn,ddr1aq,ddsxho,ddsyho,ddzchq,ddzdhq,ddkqva,ddknva,ddkova,ddkpva,ddkmva,ddklva,ddgrbr,ddkrbr,ddakvn,ddc2dt,ddadtm,ddalvn,ddadvn,ddbmdt,ddabtm,ddaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]
+WHERE_CLAUSE||||$["WHERE ddbmdt between " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) ]

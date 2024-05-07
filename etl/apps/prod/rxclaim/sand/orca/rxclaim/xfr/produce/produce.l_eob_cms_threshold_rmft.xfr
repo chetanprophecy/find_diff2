@@ -1,0 +1,41 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+type tmp =
+record
+        string(int) carrier_id;
+        string(int) account_id;
+        string(int) group_id;
+end ;
+
+
+out :: reformat(in) =
+begin
+
+let tmp var = [ record carrier_id string_upcase(in.carrier_id)
+                       account_id string_upcase(in.account_id)
+                       group_id string_upcase(in.group_id)
+              ] ;
+                        
+let hash_key_combine_type dxf_hk = reinterpret(hash_value(var, {carrier_id;account_id;group_id }, "murmur"));
+
+out.thres.* :1: var.*;
+out.thres.* :: in.*;
+out.fsk_sub_rec.* :: in.*;
+
+
+
+out.thres.mmd_copay_category_cd :: in.mmd_copay_category;
+out.thres.exception_flg         :: (string_like(in.dxf_src_file_name,'%non_cms%'))? 'Y' : 'N';
+out.thres.initial_covrg_amt     :: is_valid(in.initial_coverage)? in.initial_coverage : 0;
+out.thres.plan_deductible_amt   :: is_valid(in.plan_deductible)?in.plan_deductible   : 0 ;
+out.thres.initial_covrg_typ     :: in.initial_coverage_type;
+out.thres.covrg_gap_amt         :: is_valid(in.coverage_gap)? in.coverage_gap : 0 ;
+out.thres.covrg_gap_flg         :: in.coverage_gap_flag;
+out.thres.catastrophic_covrg_amt:: is_valid(in.catastrophic_coverage)?in.catastrophic_coverage : 0;
+out.thres.dxf_hk_part1          :: dxf_hk.dxf_hk_part1;
+out.thres.dxf_hk_part2          :: dxf_hk.dxf_hk_part2;
+out.thres.plan_year             :: string_prefix($'RUN_ID',4);
+out.thres.src_env_sk            :: 480;
+
+ 
+end;

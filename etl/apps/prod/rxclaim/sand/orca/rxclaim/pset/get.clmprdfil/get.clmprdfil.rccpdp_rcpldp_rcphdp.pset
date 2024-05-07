@@ -1,0 +1,7 @@
+!prototype|P|||$AI_PSET/get.db_multi.pset
+SOURCE_NAME||||clmprdfil.rccpdp_rcpldp_rcphdp
+SOURCE_TABLE_LIST||||# Unqualified Table Name  Fields\r\nrcpldp                    "1"\r\nrcphdp                    asavcd\r\nrccpdp                    awzwc3,awv3hc
+WHERE_CLAUSE||||$["WHERE \r\n  RCCPDP.AWZWC3 = RCPLDP.GRZWC3\r\n  AND RCPLDP.GRZZC3 = RCPHDP.ASEYCD\r\n  AND ( AWQPH9 = 'A'\r\n  AND ASFHST = 'A'\r\n  AND ASGPDT <= 1"+string_substring(datetime_add((date("YYYYMMDD"))string_filter_out(string_substring(END_CHANGES_TIME,1,10),"-"), -1),3,6) +\r\n  " AND ASGQDT >= 1"+string_substring(datetime_add((date("YYYYMMDD"))string_filter_out(string_substring(START_CHANGES_TIME,1,10),"-"), -6),3,6) +\r\n  " AND RCPHDP.ASBMDT <= 1"+string_substring(datetime_add((date("YYYYMMDD"))string_filter_out(string_substring(END_CHANGES_TIME,1,10),"-"), -1),3,6) + ")"\r\n] OPTIMIZE FOR ALL ROWS
+DO_CLEAN||||1
+DO_SOURCE||||0
+SELECT_HINT||||DISTINCT

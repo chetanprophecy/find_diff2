@@ -1,0 +1,230 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59d3985d_5bd2_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_phr_clm.phrmcy_claim_id,[passthrough],in0.phrmcy_claim_id]
+  [out0.c_phr_clm.total_claim_amount,[passthrough],in0.total_claim_amt]
+  [out0.c_phr_clm.daw_cd,[passthrough],in0.daw_cd]
+  [out0.c_phr_clm.mail_srvc_ind,[passthrough],in0.mail_service_ind]
+  [out0.c_phr_clm.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_phr_clm.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_phr_clm.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_phr_clm.src_env_sk,[transform],]
+  [out0.c_phr_clm.claim_stts_id,[passthrough],in0.claim_stts_id]
+  [out0.c_phr_clm.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_phr_clm.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_phr_clm.gpi_num,'c_phr_clm.gpi_num',1,0]
+     [out0.c_phr_clm.provider_id,'c_phr_clm.provider_id',1,0]
+     [out0.c_phr_clm.cli_member_id,'c_phr_clm.cli_member_id',1,0]
+     [out0.c_phr_clm.dt_of_fill,'c_phr_clm.dt_of_fill',1,0]
+     [out0.c_phr_clm.phrmcy_claim_id,'c_phr_clm.phrmcy_claim_id',1,0]
+     [out0.c_phr_clm.total_claim_amount,'c_phr_clm.total_claim_amount',1,0]
+     [out0.c_phr_clm.ndc_num,'c_phr_clm.ndc_num',1,0]
+     [out0.c_phr_clm.gpi_prvcy_flag,'c_phr_clm.gpi_prvcy_flag',1,0]
+     [out0.c_phr_clm.drug_quantity,'c_phr_clm.drug_quantity',1,0]
+     [out0.c_phr_clm.emplyr_group_id,'c_phr_clm.emplyr_group_id',1,0]
+     [out0.c_phr_clm.app_due_amount,'c_phr_clm.app_due_amount',1,0]
+     [out0.c_phr_clm.daw_cd,'c_phr_clm.daw_cd',1,0]
+     [out0.c_phr_clm.rxclaim_sequence_num,'c_phr_clm.rxclaim_sequence_num',1,0]
+     [out0.c_phr_clm.thrptc_class,'c_phr_clm.thrptc_class',1,0]
+     [out0.c_phr_clm.mail_srvc_ind,'c_phr_clm.mail_srvc_ind',1,0]
+     [out0.c_phr_clm.cli_acct_id,'c_phr_clm.cli_acct_id',1,0]
+     [out0.c_phr_clm.rx_num,'c_phr_clm.rx_num',1,0]
+     [out0.c_phr_clm.carrier_id,'c_phr_clm.carrier_id',1,0]
+     [out0.c_phr_clm.cli_carrier_id,'c_phr_clm.cli_carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_phr_clm.days_of_supply,'c_phr_clm.days_of_supply',1,0]
+     [out0.c_phr_clm.cpp_created_by,'c_phr_clm.cpp_created_by',1,0]
+     [out0.c_phr_clm.refill_remaining,'c_phr_clm.refill_remaining',1,0]
+     [out0.c_phr_clm.phrmcy_id,'c_phr_clm.phrmcy_id',1,0]
+     [out0.c_phr_clm.cpp_update_ts,'c_phr_clm.cpp_update_ts',1,0]
+     [out0.c_phr_clm.app_copay_amount,'c_phr_clm.app_copay_amount',1,0]
+     [out0.c_phr_clm.cli_emplyr_group_id,'c_phr_clm.cli_emplyr_group_id',1,0]
+     [out0.c_phr_clm.dt_submitted,'c_phr_clm.dt_submitted',1,0]
+     [out0.c_phr_clm.rx_written_dt,'c_phr_clm.rx_written_dt',1,0]
+     [out0.c_phr_clm.cli_received_dt,'c_phr_clm.cli_received_dt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_phr_clm.cpp_member_sk,'c_phr_clm.cpp_member_sk',1,0]
+     [out0.c_phr_clm.src_env_sk,'c_phr_clm.src_env_sk',1,0]
+     [out0.c_phr_clm.res_cd,'c_phr_clm.res_cd',1,0]
+     [out0.c_phr_clm.member_id,'c_phr_clm.member_id',1,0]
+     [out0.c_phr_clm.claim_stts_id,'c_phr_clm.claim_stts_id',1,0]
+     [out0.c_phr_clm.src_env_id,'c_phr_clm.src_env_id',1,0]
+     [out0.c_phr_clm.prescriber_id,'c_phr_clm.prescriber_id',1,0]
+     [out0.c_phr_clm.acct_id,'c_phr_clm.acct_id',1,0]
+     [out0.c_phr_clm.rxclaim_num,'c_phr_clm.rxclaim_num',1,0]
+     [out0.c_phr_clm.cpp_create_ts,'c_phr_clm.cpp_create_ts',1,0]
+     [out0.c_phr_clm.drug_product_id,'c_phr_clm.drug_product_id',1,0]
+     [out0.c_phr_clm.drug_partd_ind,'c_phr_clm.drug_partd_ind',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_phr_clm.cpp_updated_by,'c_phr_clm.cpp_updated_by',1,0]
+     [out0.c_phr_clm.vendor_id,'c_phr_clm.vendor_id',1,0]
+     [out0.c_phr_clm.cli_src_env_id,'c_phr_clm.cli_src_env_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.drug_partd_ind,'drug_partd_ind',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     [in0.vendor_id,'vendor_id',1,1]
+     [in0.refill_remaining,'refill_remaining',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.dt_of_fill,'dt_of_fill',1,1]
+     [in0.prescriber_id,'prescriber_id',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.res_cd,'res_cd',1,1]
+     [in0.gpi_prvcy_flag,'gpi_prvcy_flag',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.daw_cd,'daw_cd',1,1]
+     [in0.phrmcy_id,'phrmcy_id',1,1]
+     [in0.mail_service_ind,'mail_service_ind',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.rx_written_dt,'rx_written_dt',1,1]
+     [in0.ndc_num,'ndc_num',1,1]
+     [in0.gpi_num,'gpi_num',1,1]
+     [in0.days_of_supply,'days_of_supply',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.drug_product_id,'drug_product_id',1,1]
+     [in0.drug_quantity,'drug_quantity',1,1]
+     [in0.rxclaim_num,'rxclaim_num',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+     [in0.rxclaim_sequence_num,'rxclaim_sequence_num',1,1]
+     [in0.app_copay_amount,'app_copay_amount',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.app_due_amount,'app_due_amount',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cli_received_dt,'cli_received_dt',1,1]
+     [in0.thrptc_class,'thrptc_class',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dt_submitted,'dt_submitted',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.claim_stts_id,'claim_stts_id',1,1]
+     [in0.provider_id,'provider_id',1,1]
+     [in0.total_claim_amt,'total_claim_amt',1,1]
+     [in0.phrmcy_claim_id,'phrmcy_claim_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.rx_num,'rx_num',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_phrmcy_claim_id = fail_if_error(in0.phrmcy_claim_id);
+let decimal("\x01",0, maximum_length=20, sign_reserved) c_phr_clm_rxclaim_num = fail_if_error(in0.rxclaim_num);
+let decimal("\x01",0) c_phr_clm_rxclaim_sequence_num = fail_if_error(in0.rxclaim_sequence_num);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_cli_member_id = fail_if_error(in0.cli_member_id);
+let utf8 string("\x01", maximum_length=16) c_phr_clm_src_env_id = fail_if_error(in0.src_env_id);
+let utf8 string("\x01", maximum_length=120) c_phr_clm_carrier_id = fail_if_error(in0.carrier_id);
+let utf8 string("\x01", maximum_length=160) c_phr_clm_acct_id = fail_if_error(in0.acct_id);
+let utf8 string("\x01", maximum_length=120) c_phr_clm_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let utf8 string("\x01", maximum_length=80) c_phr_clm_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_phr_clm_cpp_member_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_dt_submitted = fail_if_error(in0.dt_submitted);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_dt_of_fill = fail_if_error(in0.dt_of_fill);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_phr_clm_mail_srvc_ind = fail_if_error(in0.mail_service_ind);
+let utf8 string("\x01", maximum_length=48) c_phr_clm_rx_num = fail_if_error(in0.rx_num);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_phr_clm_claim_stts_id = fail_if_error(in0.claim_stts_id);
+let utf8 string("\x01", maximum_length=48) c_phr_clm_phrmcy_id = fail_if_error(in0.phrmcy_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_drug_product_id = fail_if_error(in0.drug_product_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_phr_clm_provider_id = fail_if_error(in0.provider_id);
+let utf8 string("\x01", maximum_length=44) c_phr_clm_ndc_num = fail_if_error(in0.ndc_num);
+let utf8 string("\x01", maximum_length=56) c_phr_clm_gpi_num = fail_if_error(in0.gpi_num);
+let decimal("\x01".3, maximum_length=13, sign_reserved) c_phr_clm_drug_quantity = fail_if_error(in0.drug_quantity);
+let decimal("\x01",0) c_phr_clm_days_of_supply = fail_if_error(in0.days_of_supply);
+let utf8 string("\x01", maximum_length=60) c_phr_clm_prescriber_id = fail_if_error(in0.prescriber_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_phr_clm_drug_partd_ind = fail_if_error(in0.drug_partd_ind);
+let utf8 string("\x01", maximum_length=100) c_phr_clm_vendor_id = fail_if_error(in0.vendor_id);
+let decimal("\x01".2, maximum_length=11, sign_reserved) c_phr_clm_app_due_amount = fail_if_error(in0.app_due_amount);
+let decimal("\x01".2, maximum_length=11, sign_reserved) c_phr_clm_app_copay_amount = fail_if_error(in0.app_copay_amount);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_phr_clm_gpi_prvcy_flag = fail_if_error(in0.gpi_prvcy_flag);
+let utf8 string("\x01", maximum_length=400) c_phr_clm_thrptc_class = fail_if_error(in0.thrptc_class);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_phr_clm_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_phr_clm_cpp_created_by = fail_if_error(in0.created_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_cli_received_dt = fail_if_error(in0.cli_received_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_phr_clm_daw_cd = fail_if_error(in0.daw_cd);
+let decimal("\x01".2, maximum_length=40, sign_reserved) c_phr_clm_total_claim_amount = fail_if_error(in0.total_claim_amt);
+let decimal("\x01",0) c_phr_clm_src_env_sk = 710;
+let decimal("\x01",0, maximum_length=11, sign_reserved) c_phr_clm_refill_remaining = fail_if_error(in0.refill_remaining);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_phr_clm_rx_written_dt = fail_if_error(in0.rx_written_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_phr_clm_res_cd = fail_if_error(in0.res_cd);
+
+
+
+/*   Default value   */
+c_phr_clm_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_phr_clm.phrmcy_claim_id::c_phr_clm_phrmcy_claim_id;
+  out0.c_phr_clm.rxclaim_num::c_phr_clm_rxclaim_num;
+  out0.c_phr_clm.rxclaim_sequence_num::c_phr_clm_rxclaim_sequence_num;
+  out0.c_phr_clm.cli_src_env_id::c_phr_clm_cli_src_env_id;
+  out0.c_phr_clm.cli_carrier_id::c_phr_clm_cli_carrier_id;
+  out0.c_phr_clm.cli_acct_id::c_phr_clm_cli_acct_id;
+  out0.c_phr_clm.cli_emplyr_group_id::c_phr_clm_cli_emplyr_group_id;
+  out0.c_phr_clm.cli_member_id::c_phr_clm_cli_member_id;
+  out0.c_phr_clm.src_env_id::c_phr_clm_src_env_id;
+  out0.c_phr_clm.carrier_id::c_phr_clm_carrier_id;
+  out0.c_phr_clm.acct_id::c_phr_clm_acct_id;
+  out0.c_phr_clm.emplyr_group_id::c_phr_clm_emplyr_group_id;
+  out0.c_phr_clm.member_id::c_phr_clm_member_id;
+  out0.c_phr_clm.cpp_member_sk::c_phr_clm_cpp_member_sk;
+  out0.c_phr_clm.dt_submitted::c_phr_clm_dt_submitted;
+  out0.c_phr_clm.dt_of_fill::c_phr_clm_dt_of_fill;
+  out0.c_phr_clm.mail_srvc_ind::c_phr_clm_mail_srvc_ind;
+  out0.c_phr_clm.rx_num::c_phr_clm_rx_num;
+  out0.c_phr_clm.claim_stts_id::c_phr_clm_claim_stts_id;
+  out0.c_phr_clm.phrmcy_id::c_phr_clm_phrmcy_id;
+  out0.c_phr_clm.drug_product_id::c_phr_clm_drug_product_id;
+  out0.c_phr_clm.provider_id::c_phr_clm_provider_id;
+  out0.c_phr_clm.ndc_num::c_phr_clm_ndc_num;
+  out0.c_phr_clm.gpi_num::c_phr_clm_gpi_num;
+  out0.c_phr_clm.drug_quantity::c_phr_clm_drug_quantity;
+  out0.c_phr_clm.days_of_supply::c_phr_clm_days_of_supply;
+  out0.c_phr_clm.prescriber_id::c_phr_clm_prescriber_id;
+  out0.c_phr_clm.drug_partd_ind::c_phr_clm_drug_partd_ind;
+  out0.c_phr_clm.vendor_id::c_phr_clm_vendor_id;
+  out0.c_phr_clm.app_due_amount::c_phr_clm_app_due_amount;
+  out0.c_phr_clm.app_copay_amount::c_phr_clm_app_copay_amount;
+  out0.c_phr_clm.gpi_prvcy_flag::c_phr_clm_gpi_prvcy_flag;
+  out0.c_phr_clm.thrptc_class::c_phr_clm_thrptc_class;
+  out0.c_phr_clm.cpp_update_ts::c_phr_clm_cpp_update_ts;
+  out0.c_phr_clm.cpp_updated_by::c_phr_clm_cpp_updated_by;
+  out0.c_phr_clm.cpp_create_ts::c_phr_clm_cpp_create_ts;
+  out0.c_phr_clm.cpp_created_by::c_phr_clm_cpp_created_by;
+  out0.c_phr_clm.cli_received_dt::c_phr_clm_cli_received_dt;
+  out0.c_phr_clm.daw_cd::c_phr_clm_daw_cd;
+  out0.c_phr_clm.total_claim_amount::c_phr_clm_total_claim_amount;
+  out0.c_phr_clm.src_env_sk::c_phr_clm_src_env_sk;
+  out0.c_phr_clm.refill_remaining::c_phr_clm_refill_remaining;
+  out0.c_phr_clm.rx_written_dt::c_phr_clm_rx_written_dt;
+  out0.c_phr_clm.res_cd::c_phr_clm_res_cd;
+  out0.*::in0.*;
+
+end;

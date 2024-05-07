@@ -1,0 +1,88 @@
+record // PDFS-RESPONSE-REPORT-LAYOUT
+  record // PDR-HDR-1
+    string(17) Filler_1;
+    string(7) Filler_2;
+    string(34) PDR_TITLE_1;
+    string(22) Filler_3;
+    string("\n") Filler_36;
+  end PDR_HDR_1;
+  record // PDR-HDR-2
+    string(10) Filler_4;
+    string(8) PDR_DATE;
+    string(12) Filler_5;
+    string(20) PDR_TITLE_2;
+    string(30) Filler_6;
+    string("\n") Filler_37;
+  end PDR_HDR_2;
+  record // PDR-HDR-3
+    string(11) Filler_7;
+    string(8) PDR_PROC_DATE;
+    string(7) Filler_8;
+    string(1) PDR_CYCLE;
+    string(53) Filler_9;
+    string("\n") Filler_38;
+  end PDR_HDR_3;
+  record // BLANK_LINE
+    string("\n") Filler_45;
+  end BLANK_LINE;
+  record // PDR-SUBMITTER-RECORD
+    string(14) Filler_10;
+    string(6) PDR_SUBMITTER_ID;
+    string(60) Filler_11;
+    string("\n") Filler_39;
+  end PDR_SUBMITTER_RECORD;
+  record // PDR-FILEID-RECORD
+    string(9) Filler_12;
+    string(10) PDR_FILE_ID;
+    string(7) Filler_13;
+    string(8) PDR_ACCEPT_REJECT;
+    string(2) Filler_14;
+    string(4) PDR_PROD_TEST_IND;
+    string(40) Filler_15;
+    string("\n") Filler_40;
+  end PDR_FILEID_RECORD;
+  record // BLANK_LINE
+    string("\n") Filler_46;
+  end BLANK_LINE_2;
+  record // PDR-COL-HDR-1
+    string(6) Filler_16;
+    string(2) Filler_17;
+    string(3) Filler_18;
+    string(5) Filler_19;
+    string(5) Filler_20;
+    string(59) Filler_21;
+    string("\n") Filler_41;
+  end PDR_COL_HDR_1;
+  record // PDR-COL-HDR-2
+    string(6) Filler_22;
+    string(2) Filler_23;
+    string(3) Filler_24;
+    string(5) Filler_25;
+    string(5) Filler_26;
+    string(3) Filler_27;
+    string(17) Filler_28;
+    string(39) Filler_29;
+        string("\n") Filler_42;
+  end PDR_COL_HDR_2;
+  record // PDR-ERROR-RECORD
+  if(PDR_FILEID_RECORD.PDR_ACCEPT_REJECT == "REJECTED")
+       begin
+           string(2) Filler_30;
+           string(3) PDR_RECORD_TYPE;
+           string(2) Filler_31;
+           string(7) PDR_SEQ_NO;
+           string(2) Filler_32;
+           string(3) PDR_ERROR_NO;
+           string(1) Filler_33;
+           string(60) PDR_ERROR_DESC;
+           string(81) filler_47;
+           string("\n") PDR_END_OF_RPT;
+           int is_valid_PDR_RECORD_TYPE() = PDR_RECORD_TYPE == "HDR" or PDR_RECORD_TYPE == "BHD" or PDR_RECORD_TYPE == "DET" or PDR_RECORD_TYPE == "BTR" or PDR_RECORD_TYPE == "TLR";
+        end
+     else
+        begin
+           string("\n") PDR_END_OF_RPT_1;
+        end
+  end PDR_ERROR_RECORD;
+end
+

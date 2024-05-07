@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcpucp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpucp                  s7iin2,s7e8c4,s7e9c4,s7ipn2,s7qqs3,s7n3dt,s7jqhg,s7kbp1,s7qrs3,s7akvn,s7c2dt,s7adtm,s7alvn,s7advn,s7bmdt,s7abtm,s7aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ \nif(DAILY_FLAG != "Y") \n  "WHERE rcpucp.s7bmdt between " +    string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((date('YYYYMMDD'))START_DATE, days=-31))-19000000) + " and " + \n   string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+ " OPTIMIZE FOR ALL ROWS" \nelse \n  if (START_CHANGES_TIME != '') \n    "WHERE rcpucp.s7bmdt >= " +      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME, days=-31))-19000000)  + \n    " AND rcpucp.s7bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS" \n  else \n    "WHERE rcpucp.s7bmdt >= " +      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME, days=-31))-19000000-1)+ \n    " AND rcpucp.s7bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"  \n]
+DO_PUBLISH_CLEAN_FILE||||1

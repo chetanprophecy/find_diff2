@@ -1,0 +1,20 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_prs_spl_pbr_spclty_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) l_prs_spl_pbr_spclty_cd = fail_if_error(in0.byflcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_prs_spl_pbr_spclty_desc = fail_if_error(in0.byabcz);
+let decimal("\x01",0) l_prs_spl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_prs_spl.pbr_spclty_sk::l_prs_spl_pbr_spclty_sk;
+  out0.l_prs_spl.pbr_spclty_cd::l_prs_spl_pbr_spclty_cd;
+  out0.l_prs_spl.pbr_spclty_desc::l_prs_spl_pbr_spclty_desc;
+  out0.l_prs_spl.src_env_sk::l_prs_spl_src_env_sk;
+  out0.*::in0.*;
+
+end;

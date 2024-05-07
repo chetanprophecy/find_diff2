@@ -1,0 +1,62 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.packageprice,[passthrough],in0.packageprice]
+  [out0.unitprice,[transform],in0.unitprice]
+  [out0.eff_dt,[passthrough],in0.effectivedate]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.packageprice,'packageprice',1,0]
+     [out0.costtypecode,'costtypecode',1,0]
+     [out0.unitprice,'unitprice',1,0]
+     [out0.eff_dt,'eff_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.costtypecodesub,'costtypecodesub',1,0]
+     [out0.productid,'productid',1,0]
+  ]
+  impacts:
+  [
+     [in0.costtypecodesub,'costtypecodesub',1,1]
+     [in0.packageprice,'packageprice',1,1]
+     [in0.costtypecode,'costtypecode',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.unitprice,'unitprice',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.effectivedate,'effectivedate',1,1]
+     [in0.productid,'productid',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="windows-1252", maximum_length=11) productid = fail_if_error(in0.productid);
+let string("\x01",charset="windows-1252", maximum_length=7) costtypecodesub = fail_if_error(in0.costtypecodesub);
+let string("\x01",charset="windows-1252", maximum_length=10) costtypecode = fail_if_error(in0.costtypecode);
+let decimal("\x01") packageprice = fail_if_error(in0.packageprice);
+let decimal("\x01".5, maximum_length=15, sign_reserved) unitprice = fail_if_error((decimal("|"))in0.unitprice);
+let datetime("YYYY-MM-DD HH24:MI:SS")("\x01") eff_dt = fail_if_error(in0.effectivedate);
+
+
+
+  out0.productid::productid;
+  out0.costtypecodesub::costtypecodesub;
+  out0.costtypecode::costtypecode;
+  out0.packageprice::packageprice;
+  out0.unitprice::unitprice;
+  out0.eff_dt::eff_dt;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcplnp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcplnp                  adaecd,adakdt,ada1dt,adbotx,adcrst,adczst,adc1st,adcsst,adctst,adc5st,adcust,adcvst,adcwst,adcxst,adc0st,adcyst,addzst,adhtst,adhust,adhvst,adhwst,adhxst,adhyst,adhzst,adh0st,adh1st,adj6st,adj7st,adj8st,adj9st,adkast,adkbst,adr5h6,adr3h6,adr4h6,adr6h6,adnxcd,adcct3,admkh6,adr7h6,adr8h6,adr9h6,adsah6,adbihb,adbjhb,adakvn,adc2dt,adadtm,adalvn,adadvn,adbmdt,adabtm,adaevn,newline\nclmprdfil     rcrflp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcplnp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcrflp')]
+WHERE_CLAUSE||||$[\n "WHERE ADBMDT >= " +\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n " AND ADBMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)\n ]
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_PUBLISH_CLEAN_FILE||||1
+SQL||||select rcplnp.*,rcrflp.ebonak,rcrflp.ebooak,rcrflp.ebopak,rcrflp.ebxsal,rcrflp.ebjqce,rcrflp.ebxtal from \nclmprdfil.rcplnp rcplnp left join clmprdfil.rcrflp rcrflp on rcplnp.adaecd=rcrflp.ebaecd and rcplnp.adakdt=rcrflp.ebakdt

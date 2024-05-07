@@ -1,0 +1,199 @@
+/*Do computation*/
+
+type temp_data_input=record
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string("\x01", maximum_length=10) awx9vg= NULL(""); //from rccpdp
+  string(unsigned integer(1),maximum_length=11)  proxy_ndc /*CHAR(11) NOT NULL*/; //RCND2P
+  record
+  string("\x01", maximum_length=5) contract_no = NULL("");
+  string(unsigned integer(1),maximum_length=11)  altr_ndc /*CHAR(11) NOT NULL*/;
+  little endian integer(4)  rxcui /*INTEGER NOT NULL*/;
+  //string("\x01", maximum_length=5) contract_no = NULL("");
+  string(unsigned integer(1),maximum_length=1)  msc /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  partd_ind /*CHAR(1) NOT NULL*/;
+  date("YYYY-MM-DD")  eff_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")  term_dt /*DATE NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  rxcui_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) unit_cost_amt = NULL("") /*DECIMAL(13,5)*/;
+  string("\x01", maximum_length=10) afq7hb = NULL("");
+  string("\x01", maximum_length=5) afq8hb = NULL("");
+  string("\x01", maximum_length=30) aftwig = NULL("");
+  string("\x01", maximum_length=25) aetvig = NULL("");//from rcnd1p
+  string("\x01", maximum_length=30)  rxt_src_envrt_nm = NULL("");
+  string("\x01", maximum_length=10) alt_ndc_desc = NULL("");
+  decimal("\x01".3, maximum_length=11) package_size = NULL("");
+  string("\x01", maximum_length=2) alt_ndc_uom = NULL("");
+  decimal("\x01",0, maximum_length=6) qty = NULL("");
+  decimal("\x01".3, maximum_length=15) total_qty = NULL("");
+  decimal("\x01") claim_count=0;
+  decimal("\x01".11) claim_qty_percent=0;
+  decimal("\x01".11) claim_qty_cuml_percentage=0;
+  end[int] data;
+  integer(4) alter_ndc_count=0;
+  integer(4) alter_ndc_claim_count_sum=0;
+  integer(4) proxy_ndc_count=0;
+  integer(4) proxy_ndc_claim_count_sum=0;
+  decimal("\x01".11) weight_mean_all_awp=0;
+  decimal("\x01".11) threshold_price=0;
+  decimal("\x01".11) threshold_price_percent=0;
+  decimal("\x01".11) weighted_std_dev=0;
+  string(1) threshold_price_ind= NULL("");
+  decimal("\x01".11) first_rec_price=0;
+  decimal("\x01".11) second_rec_price=0;
+  decimal("\x01".11) all_awp_ceil=0;
+  decimal("\x01".11) final_price=0;
+  string("\n") newline='\n';
+end;
+
+  type temp_data=record
+  string(unsigned integer(1),maximum_length=11)  altr_ndc /*CHAR(11) NOT NULL*/;
+  little endian integer(4)  rxcui /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=5) contract_no = NULL("");
+  string(unsigned integer(1),maximum_length=1)  msc /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  partd_ind /*CHAR(1) NOT NULL*/;
+  date("YYYY-MM-DD")  eff_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")  term_dt /*DATE NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  rxcui_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) unit_cost_amt = NULL("") /*DECIMAL(13,5)*/;
+  string("\x01", maximum_length=10) afq7hb = NULL("");
+  string("\x01", maximum_length=5) afq8hb = NULL("");
+  string("\x01", maximum_length=30) aftwig = NULL("");
+  string("\x01", maximum_length=25) aetvig = NULL("");//from rcnd1p
+  //string("\x01", maximum_length=10) awx9vg= NULL(""); //from rccpdp
+  string("\x01", maximum_length=30)  rxt_src_envrt_nm = NULL("");
+  string("\x01", maximum_length=10) alt_ndc_desc = NULL("");
+  decimal("\x01".3, maximum_length=11) package_size = NULL("");
+  string("\x01", maximum_length=2) alt_ndc_uom = NULL("");
+  decimal("\x01",0, maximum_length=6) qty = NULL("");
+  decimal("\x01".3, maximum_length=15) total_qty = NULL("");
+  decimal("\x01") claim_count=0;
+  decimal("\x01".11) claim_qty_percent=0;
+  decimal("\x01".11) claim_qty_cuml_percentage=0;
+  end  ;
+  let temp_data_input temp_input=allocate_with_defaults();
+temp_input :: algorithm(in) =
+begin
+ let int claim_count_sum=0;
+let decimal("\x01".11) threshold_price=NULL;
+let decimal("\x01".11) cost_count_sumproduct=0.0;
+let decimal("\x01".11) v_weighted_std_dev=0;
+let decimal("\x01".11)  weight_mean_all_awp=0;
+let temp_data[int] dedup_vec=allocate_with_defaults();
+let decimal("\x01".11)[int] v_first_rec_price=allocate_with_defaults();//=if(in.unit_cost_amt>in.weight_mean_all_awp and in.unit_cost_amt < (temp.v_weighted_std_dev+in.weight_mean_all_awp)) in.unit_cost_amt else 0;//awp unit cost > weighted mean of all awp and awp unit cost < allAWPCeil. If none found then return 0
+let decimal("\x01".11)[int] v_second_rec_price=allocate_with_defaults();//=if(in.unit_cost_amt>in.threshold_price and in.unit_cost_amt<=in.threshold_price_percent)in.unit_cost_amt else in.threshold_price;//awp_price>threshold price and awp_price<=threshold price percent then awp_price else threshold price
+ let decimal("\x01".11) v_final_price=0;
+ let decimal("\x01".11)[int] v_prxy_ndc_price=allocate_with_defaults();
+ 
+dedup_vec=vector_sort_dedup_first(in.data,{contract_no;altr_ndc; rxcui; msc; active_ind; partd_ind; unit_cost_amt; afq7hb; afq8hb; aftwig; aetvig; claim_count});
+
+dedup_vec=vector_sort(dedup_vec,{altr_ndc});
+
+
+for( let int i=1 , i< length_of(dedup_vec))
+ if ( length_of(dedup_vec)!=1  and dedup_vec[i].altr_ndc == dedup_vec[i-1].altr_ndc)
+ begin
+        dedup_vec[i].claim_count=dedup_vec[i].claim_count + dedup_vec[i-1].claim_count;
+        if ( dedup_vec[i-1].altr_ndc == in.proxy_ndc)  dedup_vec[i ].altr_ndc =  in.proxy_ndc;
+  end;
+  dedup_vec=vector_sort_dedup_last(dedup_vec,{altr_ndc ascending});
+
+
+
+
+
+dedup_vec=vector_sort(dedup_vec,{unit_cost_amt});
+
+
+for( let int i=1 , i< length_of(dedup_vec))
+ if ( length_of(dedup_vec)!=1  and dedup_vec[i].unit_cost_amt == dedup_vec[i-1].unit_cost_amt)
+ begin
+        dedup_vec[i].claim_count=dedup_vec[i].claim_count + dedup_vec[i-1].claim_count;
+        if ( dedup_vec[i-1].altr_ndc == in.proxy_ndc)  dedup_vec[i ].altr_ndc =  in.proxy_ndc;
+  end;
+  dedup_vec=vector_sort_dedup_last(dedup_vec,{unit_cost_amt ascending});
+  
+  for (let int i=0, i<length_of(dedup_vec)) 
+  begin 
+        claim_count_sum = claim_count_sum + dedup_vec[i].claim_count;
+        cost_count_sumproduct = cost_count_sumproduct + (dedup_vec[i].claim_count*dedup_vec[i].unit_cost_amt);
+  end;
+ 
+  for (let int i=0, i<length_of(dedup_vec)) 
+  begin 
+        dedup_vec[i].claim_qty_percent = if(claim_count_sum !=0) dedup_vec[i].claim_count/claim_count_sum else 0;
+        dedup_vec[i].claim_qty_cuml_percentage = dedup_vec[i].claim_qty_percent + (if(i==0) 0 else first_defined(dedup_vec[i-1].claim_qty_cuml_percentage,0));
+        threshold_price= if(dedup_vec[i].claim_qty_cuml_percentage >= 0.85 and is_null(threshold_price) ) dedup_vec[i].unit_cost_amt else threshold_price;
+       
+  end;
+  
+  dedup_vec[length_of(dedup_vec)-1].claim_qty_cuml_percentage=if(dedup_vec[length_of(dedup_vec)-1].claim_qty_cuml_percentage>=0.999) 1.00 
+                                                                else dedup_vec[length_of(dedup_vec)-1].claim_qty_cuml_percentage;//rounding up the claim qty percent for last record within group
+   threshold_price = if( is_null(threshold_price)) 0 else threshold_price;
+  weight_mean_all_awp=if(claim_count_sum !=0 ) cost_count_sumproduct/claim_count_sum else 0;
+  
+    for (let int i=0, i<length_of(dedup_vec)) 
+  begin 
+        v_weighted_std_dev=(dedup_vec[i].claim_count*(math_pow((dedup_vec[i].unit_cost_amt-weight_mean_all_awp),2)))+ v_weighted_std_dev;
+  end;
+  //v_weighted_std_dev =  math_sqrt((v_weighted_std_dev/claim_count_sum)*((decimal("x01".11))length_of( dedup_vec)/(vector_max([vector length_of( dedup_vec)-1,1]))));
+  v_weighted_std_dev = if(claim_count_sum !=0 ) math_sqrt((v_weighted_std_dev/claim_count_sum)) else 0;
+  
+     for (let int i=0, i<length_of(dedup_vec)) 
+  begin 
+       v_first_rec_price= if ( dedup_vec[i].unit_cost_amt  > weight_mean_all_awp and  dedup_vec[i].unit_cost_amt < (weight_mean_all_awp + v_weighted_std_dev )) 
+                                       vector_append(v_first_rec_price, dedup_vec[i].unit_cost_amt )
+                          else 
+                                        v_first_rec_price;
+       v_second_rec_price = if ( dedup_vec[i].unit_cost_amt  > threshold_price and  dedup_vec[i].unit_cost_amt < (threshold_price*1.01 ) ) 
+                                         vector_append(v_second_rec_price, dedup_vec[i].unit_cost_amt )
+                          else 
+                                        v_second_rec_price;
+  end;
+  
+        for (let int i=0, i<length_of(dedup_vec)) 
+        begin
+          v_prxy_ndc_price= if(  dedup_vec[i ].altr_ndc == in.proxy_ndc  ) 
+                             vector_append(v_prxy_ndc_price, dedup_vec[i].unit_cost_amt )
+                             else
+                                        v_prxy_ndc_price;
+        end;
+  
+  v_first_rec_price=if(length_of(v_first_rec_price)==0) [vector 0] else v_first_rec_price;
+  v_second_rec_price=if(length_of(v_second_rec_price)==0) [vector threshold_price] else v_second_rec_price;
+
+    //v_final_price=vector_max(v_first_rec_price)== vector_max(v_second_rec_price) ? vector_max(v_first_rec_price) :vector_max(v_second_rec_price);
+  v_final_price= if(vector_max(v_first_rec_price)== vector_max(v_second_rec_price)) vector_max(v_first_rec_price) else if ((vector_max(v_first_rec_price) >  vector_max(v_second_rec_price))) vector_max(v_first_rec_price) else vector_max(v_second_rec_price);
+
+    v_final_price=if(v_final_price < vector_max(v_prxy_ndc_price)) vector_max(v_prxy_ndc_price) else v_final_price;
+
+temp_input.* :: in.*;
+temp_input.data :: dedup_vec;
+temp_input.alter_ndc_count :: length_of( dedup_vec);
+temp_input.alter_ndc_claim_count_sum :: claim_count_sum;
+temp_input.proxy_ndc_count :: 1;
+temp_input.proxy_ndc_claim_count_sum :: claim_count_sum;
+temp_input.weight_mean_all_awp :: weight_mean_all_awp;
+temp_input.threshold_price :: threshold_price;
+temp_input.threshold_price_ind :: if (threshold_price > 0) 'Y' else 'N';
+temp_input.threshold_price_percent :: threshold_price*1.01;
+temp_input.weighted_std_dev ::v_weighted_std_dev;
+temp_input.first_rec_price :: vector_max(v_first_rec_price);
+temp_input.second_rec_price :: vector_max(v_second_rec_price);
+temp_input.final_price :: v_final_price;
+temp_input.all_awp_ceil::(v_weighted_std_dev+weight_mean_all_awp);
+end;
+out :: length(in) =
+begin
+temp_input = algorithm(in);
+  out :: length_of(temp_input.data);
+end;
+
+out::normalize(in,index)=
+begin
+out.* :1: temp_input.*;
+out.* :2: temp_input.data[index].*;
+out.threshold_price_ind :: if(temp_input.data[index].unit_cost_amt == temp_input.threshold_price) 'Y' else 'N';
+
+end;

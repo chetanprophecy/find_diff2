@@ -1,0 +1,54 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/cfg_for_pdl/med_cd_list_cfg_lkup_pdl_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/18  Paul Thompson           Initial version
+ *  2016/10/19  Paul Thompson           Removed infinite loop - lookup() -> lookup_next() inside loop in get_all_med_cd_list_cfg_vec()
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_lkup_types.dml";
+
+cli_string_t out :: get_med_cd_list_cfg_lkup_path(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + cli_string(biz_dt) + '/med_cd_list_cfg.dat';
+end;
+
+/*******************************************************/
+/* All GPI List Config Lookup - Constant and Functions */
+/*******************************************************/
+
+all_gpi_list_cfg_lkup_t out :: load_all_med_cd_list_cfg_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_med_cd_list_cfg_lkup_path(lookup_dir, biz_dt));
+end;
+
+list_cfg_t[int] out :: get_all_med_cd_list_cfg_vec(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  let lkup = load_all_med_cd_list_cfg_lkup(lookup_dir, biz_dt);
+  
+  let list_cfg_t[int] vec   = [vector];
+  let list_cfg_t      match = lookup(lkup);
+  
+  while (is_defined(match))
+  begin
+    vec = vector_append(vec, match);
+    match = lookup_next(lkup);
+  end;
+  
+  out :: vector_sort(vec, {list_nm});
+end;
+
+list_cfg_id_nm_t[int] out :: get_all_med_cd_list_cfg_id_nm_vec(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  // Note that this casts the vector of records from this function to list_cfg_id_nm_t[int]
+  out :: get_all_med_cd_list_cfg_vec(lookup_dir, biz_dt);
+end;
+
+cli_list_nm_t[int] out :: get_all_med_cd_list_cfg_nm_vec(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: for (let list in get_all_med_cd_list_cfg_vec(lookup_dir, biz_dt)) : list.list_nm;
+end;

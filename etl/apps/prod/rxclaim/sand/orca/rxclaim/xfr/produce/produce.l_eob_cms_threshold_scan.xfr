@@ -1,0 +1,32 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+
+let string("") datafile=this_partition_path($"PUB_DATAHUB_MFS_LOOKUP"+'/ids/ids_common/xref/xref.d_cag.dat');
+let string("") indexfile=(string_replace(datafile,".dat", ".idx"));
+
+type lookup_type_t = record
+    lookup_identifier_type id = -1;
+    xref_serial_lookup_type RecordFormat() = allocate();
+    string ('') key() ={dxf_hk};
+    int keep_on_disk() = 0; 
+    int block_compressed() = 0;
+    int cache() = 0; 
+    int load_once() = 1; 
+    int only_last_key_instance() = 0; 
+    int direct_addressed() = 0; 
+    end;
+
+let lookup_type_t cag_sk_lkp_identifier = lookup_load(datafile , indexfile ) ;
+
+out :: scan(in) =
+begin
+        
+        let hash_key_combine_type cag_sk_hash_key=reinterpret_as(hash_key_combine_type, hash_value(in.thres, '{carrier_id;account_id;group_id}', 'murmur')); 
+        out.thres.cag_sk :: first_defined(lookup(cag_sk_lkp_identifier,  cag_sk_hash_key).dxf_sk, -1);
+
+out.thres.* :: in.thres.*;
+out.* :: in.*;
+
+
+end;
+

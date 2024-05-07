@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.pbpt1p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     pbpt1p                  t1ptid,t1f7nb,t1trfc,t1trfa,t1trfg,t1tref,t1ptnm,t1tshn,t1t1ty,t1orgn,t1tsts,t1t1ht,t1t1hr,t1rapt,t1rapg,t1raof,t1raol,t1fbst,t1baid,t1bacn,t1tad1,t1tad2,t1luio,t1tcty,t1ajst,t1t1zp,t1dmcd,t1hvcd,t1o6cd,t1t1co,t1t1ct,t1tpho,t1tphx,t1t1fa,t1pdt1,t1pet1,t1lvio,t1pat1,t1kps2,t1pbt1,t1pct1,t1pft1,t1wcc2,t1szt1,t1s0t1,t1k6n1,t1k7n1,t1k8n1,t1eeie,t1cwce,t1akvn,t1c2dt,t1adtm,t1alvn,t1advn,t1bmdt,t1abtm,t1aevn,newline
+SOURCE_DB_LIST||||$[ get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)  // This must be evaluated in the intermediate pset. ]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE pbpt1p.t1bmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND pbpt1p.t1bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE pbpt1p.t1bmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND pbpt1p.t1bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx

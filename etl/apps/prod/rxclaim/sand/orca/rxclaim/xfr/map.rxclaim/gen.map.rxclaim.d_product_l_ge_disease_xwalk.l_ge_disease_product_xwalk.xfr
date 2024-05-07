@@ -1,0 +1,111 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ge_dis_xwalk.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ge_dis_xwalk.gpi_from_date,'ge_dis_xwalk.gpi_from_date',1,0]
+     [out0.ge_dis_xwalk.gpi_no,'ge_dis_xwalk.gpi_no',1,0]
+     [out0.ge_dis_xwalk.gpi_thru_date,'ge_dis_xwalk.gpi_thru_date',1,0]
+     [out0.ge_dis_xwalk.description,'ge_dis_xwalk.description',1,0]
+     [out0.ge_dis_xwalk.prod_id,'ge_dis_xwalk.prod_id',1,0]
+     [out0.ge_dis_xwalk.status,'ge_dis_xwalk.status',1,0]
+     [out0.ge_dis_xwalk.xwalk_group,'ge_dis_xwalk.xwalk_group',1,0]
+     [out0.ge_dis_xwalk.medication_subclass,'ge_dis_xwalk.medication_subclass',1,0]
+     [out0.ge_dis_xwalk.message_code,'ge_dis_xwalk.message_code',1,0]
+     [out0.ge_dis_xwalk.medication_class,'ge_dis_xwalk.medication_class',1,0]
+     [out0.ge_dis_xwalk.disease,'ge_dis_xwalk.disease',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ge_dis_xwalk.reason_for_removal,'ge_dis_xwalk.reason_for_removal',1,0]
+     [out0.ge_dis_xwalk.removed_by,'ge_dis_xwalk.removed_by',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ge_dis_xwalk.src_env_sk,'ge_dis_xwalk.src_env_sk',1,0]
+     [out0.ge_dis_xwalk.added_by,'ge_dis_xwalk.added_by',1,0]
+     [out0.ge_dis_xwalk.date_added,'ge_dis_xwalk.date_added',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ge_dis_xwalk.date_removed,'ge_dis_xwalk.date_removed',1,0]
+     [out0.ge_dis_xwalk.message_type,'ge_dis_xwalk.message_type',1,0]
+     [out0.ge_dis_xwalk.prod_sk,'ge_dis_xwalk.prod_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.gpi_from_date,'gpi_from_date',1,1]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.date_removed,'date_removed',1,1]
+     [in0.date_added,'date_added',1,1]
+     [in0.disease,'disease',1,1]
+     [in0.status,'status',1,1]
+     [in0.xwalk_group,'xwalk_group',1,1]
+     [in0.removed_by,'removed_by',1,1]
+     [in0.description,'description',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.medication_class,'medication_class',1,1]
+     [in0.gpi_no,'gpi_no',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.reason_for_removal,'reason_for_removal',1,1]
+     [in0.message_code,'message_code',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.added_by,'added_by',1,1]
+     [in0.prod_id,'prod_id',1,1]
+     [in0.medication_subclass,'medication_subclass',1,1]
+     [in0.message_type,'message_type',1,1]
+     [in0.gpi_thru_date,'gpi_thru_date',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=50) ge_dis_xwalk_disease = fail_if_error(in0.disease);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ge_dis_xwalk_xwalk_group = fail_if_error(in0.xwalk_group);
+let string("\x01",charset="iso-8859-15", maximum_length=25) ge_dis_xwalk_gpi_no = fail_if_error(in0.gpi_no);
+let decimal("\x01",0) ge_dis_xwalk_prod_sk = fail_if_error(in0.prod_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ge_dis_xwalk_prod_id = fail_if_error(in0.prod_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) ge_dis_xwalk_medication_class = fail_if_error(in0.medication_class);
+let string("\x01",charset="iso-8859-15", maximum_length=100) ge_dis_xwalk_medication_subclass = fail_if_error(in0.medication_subclass);
+let string("\x01",charset="iso-8859-15", maximum_length=250) ge_dis_xwalk_description = fail_if_error(in0.description);
+let date("YYYYMMDD")("\x01") ge_dis_xwalk_gpi_from_date = fail_if_error(in0.gpi_from_date);
+let date("YYYYMMDD")("\x01") ge_dis_xwalk_gpi_thru_date = fail_if_error(in0.gpi_thru_date);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ge_dis_xwalk_message_type = fail_if_error(in0.message_type);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ge_dis_xwalk_message_code = fail_if_error(in0.message_code);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ge_dis_xwalk_status = fail_if_error(in0.status);
+let date("YYYYMMDD")("\x01") ge_dis_xwalk_date_added = fail_if_error(in0.date_added);
+let string("\x01",charset="iso-8859-15", maximum_length=25) ge_dis_xwalk_added_by = fail_if_error(in0.added_by);
+let date("YYYYMMDD")("\x01") ge_dis_xwalk_date_removed = fail_if_error(in0.date_removed);
+let string("\x01",charset="iso-8859-15", maximum_length=25) ge_dis_xwalk_removed_by = fail_if_error(in0.removed_by);
+let string("\x01",charset="iso-8859-15", maximum_length=250) ge_dis_xwalk_reason_for_removal = fail_if_error(in0.reason_for_removal);
+let decimal("\x01",0) ge_dis_xwalk_src_env_sk = 800;
+
+
+
+  out0.ge_dis_xwalk.disease::ge_dis_xwalk_disease;
+  out0.ge_dis_xwalk.xwalk_group::ge_dis_xwalk_xwalk_group;
+  out0.ge_dis_xwalk.gpi_no::ge_dis_xwalk_gpi_no;
+  out0.ge_dis_xwalk.prod_sk::ge_dis_xwalk_prod_sk;
+  out0.ge_dis_xwalk.prod_id::ge_dis_xwalk_prod_id;
+  out0.ge_dis_xwalk.medication_class::ge_dis_xwalk_medication_class;
+  out0.ge_dis_xwalk.medication_subclass::ge_dis_xwalk_medication_subclass;
+  out0.ge_dis_xwalk.description::ge_dis_xwalk_description;
+  out0.ge_dis_xwalk.gpi_from_date::ge_dis_xwalk_gpi_from_date;
+  out0.ge_dis_xwalk.gpi_thru_date::ge_dis_xwalk_gpi_thru_date;
+  out0.ge_dis_xwalk.message_type::ge_dis_xwalk_message_type;
+  out0.ge_dis_xwalk.message_code::ge_dis_xwalk_message_code;
+  out0.ge_dis_xwalk.status::ge_dis_xwalk_status;
+  out0.ge_dis_xwalk.date_added::ge_dis_xwalk_date_added;
+  out0.ge_dis_xwalk.added_by::ge_dis_xwalk_added_by;
+  out0.ge_dis_xwalk.date_removed::ge_dis_xwalk_date_removed;
+  out0.ge_dis_xwalk.removed_by::ge_dis_xwalk_removed_by;
+  out0.ge_dis_xwalk.reason_for_removal::ge_dis_xwalk_reason_for_removal;
+  out0.ge_dis_xwalk.src_env_sk::ge_dis_xwalk_src_env_sk;
+  out0.*::in0.*;
+
+end;

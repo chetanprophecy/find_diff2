@@ -1,0 +1,56 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_rxsol_form.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_rxsol_form.rxsol_formulary_sk,[transform],]
+  [out0.l_rxsol_form.rxsol_formulary_flg,[passthrough],in0.rxsol_formulary_flg]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_rxsol_form.rxsol_formulary_desc,'l_rxsol_form.rxsol_formulary_desc',1,0]
+     [out0.l_rxsol_form.src_env_sk,'l_rxsol_form.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_rxsol_form.rxsol_formulary_id,'l_rxsol_form.rxsol_formulary_id',1,0]
+     [out0.l_rxsol_form.rxsol_formulary_sk,'l_rxsol_form.rxsol_formulary_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_rxsol_form.rxsol_formulary_flg,'l_rxsol_form.rxsol_formulary_flg',1,0]
+  ]
+  impacts:
+  [
+     [in0.rxsol_formulary_id,'rxsol_formulary_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxsol_formulary_flg,'rxsol_formulary_flg',1,1]
+     [in0.rxsol_formulary_desc,'rxsol_formulary_desc',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_rxsol_form_rxsol_formulary_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_rxsol_form_rxsol_formulary_flg = fail_if_error(in0.rxsol_formulary_flg);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_rxsol_form_rxsol_formulary_id = fail_if_error(in0.rxsol_formulary_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) l_rxsol_form_rxsol_formulary_desc = fail_if_error(in0.rxsol_formulary_desc);
+let decimal("\x01",0) l_rxsol_form_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_rxsol_form.rxsol_formulary_sk::l_rxsol_form_rxsol_formulary_sk;
+  out0.l_rxsol_form.rxsol_formulary_flg::l_rxsol_form_rxsol_formulary_flg;
+  out0.l_rxsol_form.rxsol_formulary_id::l_rxsol_form_rxsol_formulary_id;
+  out0.l_rxsol_form.rxsol_formulary_desc::l_rxsol_form_rxsol_formulary_desc;
+  out0.l_rxsol_form.src_env_sk::l_rxsol_form_src_env_sk;
+  out0.*::in0.*;
+
+end;

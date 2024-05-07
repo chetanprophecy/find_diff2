@@ -1,0 +1,6 @@
+!prototype|P|||$AI_MP/home_delivery_data_processing.mp
+OUTPUT_DML||||$AI_DML/home_delivery_orders.dml
+SORT_KEY||||{PATIENT_NBR}
+MAPPING_XFR||||$AI_XFR/home_delivery_orders.xfr
+OUTPUT_FILE_PATH||||$AI_SERIAL_PENDING/home_delivery.orders.dat.gz
+DUPLICATING_CONDITION||||out :: output_indexes(in) =\r\nbegin\r\n  out :: if(first_defined((decimal(""))in.ORDER_NUMBER,-1)>0)  [vector 0] else [vector -1];\r\nend;

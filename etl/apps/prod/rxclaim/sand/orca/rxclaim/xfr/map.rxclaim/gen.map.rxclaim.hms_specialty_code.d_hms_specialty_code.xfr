@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a8d3ff5_93a8_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.hms_sp_cd.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.hms_sp_cd.src_last_update_dt,[passthrough],in0.date_last_updated]
+  [out0.hms_sp_cd.hms_specialty_desc,[passthrough],in0.hms_specialty_desc]
+  [out0.hms_sp_cd.hms_specialty_cd,[passthrough],in0.hms_specialty_code]
+  [out0.hms_sp_cd.chng_flg,[passthrough],in0.chng_flag]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.hms_sp_cd.src_env_sk,'hms_sp_cd.src_env_sk',1,0]
+     [out0.hms_sp_cd.src_last_update_dt,'hms_sp_cd.src_last_update_dt',1,0]
+     [out0.hms_sp_cd.hms_specialty_desc,'hms_sp_cd.hms_specialty_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.hms_sp_cd.hms_specialty_cd,'hms_sp_cd.hms_specialty_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.hms_sp_cd.chng_flg,'hms_sp_cd.chng_flg',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.hms_specialty_code,'hms_specialty_code',1,1]
+     [in0.chng_flag,'chng_flag',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.date_last_updated,'date_last_updated',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.hms_specialty_desc,'hms_specialty_desc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=10) hms_sp_cd_hms_specialty_cd = fail_if_error(in0.hms_specialty_code);
+let string("\x01",charset="iso-8859-15", maximum_length=100) hms_sp_cd_hms_specialty_desc = fail_if_error(in0.hms_specialty_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) hms_sp_cd_chng_flg = fail_if_error(in0.chng_flag);
+let date("YYYYMMDD")("\x01") hms_sp_cd_src_last_update_dt = fail_if_error(in0.date_last_updated);
+let decimal("\x01",0) hms_sp_cd_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.hms_sp_cd.hms_specialty_cd::hms_sp_cd_hms_specialty_cd;
+  out0.hms_sp_cd.hms_specialty_desc::hms_sp_cd_hms_specialty_desc;
+  out0.hms_sp_cd.chng_flg::hms_sp_cd_chng_flg;
+  out0.hms_sp_cd.src_last_update_dt::hms_sp_cd_src_last_update_dt;
+  out0.hms_sp_cd.src_env_sk::hms_sp_cd_src_env_sk;
+  out0.*::in0.*;
+
+end;

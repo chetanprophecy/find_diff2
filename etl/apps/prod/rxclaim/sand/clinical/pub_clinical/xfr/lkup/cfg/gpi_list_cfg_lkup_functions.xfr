@@ -1,0 +1,91 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/cfg/gpi_list_cfg_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/18  Paul Thompson           Initial version
+ *  2016/10/19  Paul Thompson           Removed infinite loop - lookup() -> lookup_next() inside loop in get_all_gpi_list_cfg_vec()
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_CONFIG  parameter;
+constant cli_date_t    BIZ_DT                      parameter;
+
+cli_string_t out :: get_gpi_list_cfg_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_SERIAL_CONFIG + '/' + cli_string(BIZ_DT) + '/gpi_list_cfg.dat';
+end;
+
+/*********************************************************/
+/* GPI List Config by ID Lookup - Constant and Functions */
+/*********************************************************/
+
+let gpi_list_cfg_by_id_lkup_t GLKUP_GPI_LIST_CFG_BY_ID = allocate_with_nulls();
+
+gpi_list_cfg_by_id_lkup_t out :: load_gpi_list_cfg_by_id_lkup() inline =
+begin
+  if (GLKUP_GPI_LIST_CFG_BY_ID.id == lookup_not_loaded())
+    GLKUP_GPI_LIST_CFG_BY_ID = lookup_load(get_gpi_list_cfg_lkup_path());
+  
+  out :: GLKUP_GPI_LIST_CFG_BY_ID;
+end;
+
+list_cfg_t out :: get_gpi_list_cfg_by_id(list_id) inline =
+begin
+  let lkup = load_gpi_list_cfg_by_id_lkup();
+  out :: lookup(lkup, list_id);
+end;
+
+/***********************************************************/
+/* GPI List Config by Name Lookup - Constant and Functions */
+/***********************************************************/
+
+let gpi_list_cfg_by_nm_lkup_t GLKUP_GPI_LIST_CFG_BY_NM = allocate_with_nulls();
+
+gpi_list_cfg_by_nm_lkup_t out :: load_gpi_list_cfg_by_nm_lkup() inline =
+begin
+  if (GLKUP_GPI_LIST_CFG_BY_NM.id == lookup_not_loaded())
+    GLKUP_GPI_LIST_CFG_BY_NM = lookup_load(get_gpi_list_cfg_lkup_path());
+  
+  out :: GLKUP_GPI_LIST_CFG_BY_NM;
+end;
+
+list_cfg_t out :: get_gpi_list_cfg_by_nm(list_nm) inline =
+begin
+  let lkup = load_gpi_list_cfg_by_nm_lkup();
+  out :: lookup(lkup, list_nm);
+end;
+
+/*******************************************************/
+/* All GPI List Config Lookup - Constant and Functions */
+/*******************************************************/
+
+let all_gpi_list_cfg_lkup_t GLKUP_ALL_GPI_LIST_CFG = allocate_with_nulls();
+
+all_gpi_list_cfg_lkup_t out :: load_all_gpi_list_cfg_lkup() inline =
+begin
+  if (GLKUP_ALL_GPI_LIST_CFG.id == lookup_not_loaded())
+    GLKUP_ALL_GPI_LIST_CFG = lookup_load(get_gpi_list_cfg_lkup_path());
+  
+  out :: GLKUP_ALL_GPI_LIST_CFG;
+end;
+
+list_cfg_t[int] out :: get_all_gpi_list_cfg_vec() inline =
+begin
+  let lkup = load_all_gpi_list_cfg_lkup();
+  
+  let list_cfg_t[int] vec   = [vector];
+  let list_cfg_t      match = lookup(lkup);
+  
+  while (is_defined(match))
+  begin
+    vec = vector_append(vec, match);
+    match = lookup_next(lkup);
+  end;
+  
+  out :: vec;
+end;

@@ -1,0 +1,571 @@
+!project_type|P|||public
+!template_version|P|||3
+!rel_loc_param|P|||DB_RXCLAIM_REL_LOC
+DB_RXCLAIM_DIR|ELn||Project Location|
+PROJECT_DIR|||Back compatible way to reference this project|$DB_RXCLAIM_DIR
+Environment|C|||
+PREFIX|Rn|||DB_RXCLAIM
+DB_RXCLAIM_REL_LOC|d|||AB_PARAMETER_ENV
+DB_RXCLAIM_REL_LOC:sandbox||||orca/db_rxclaim
+DB_RXCLAIM_REL_LOC:eme||||$[re_replace(DB_RXCLAIM_DIR,AI_RPATH+"/*","")]
+DB_RXCLAIM_DML|REn|||$DB_RXCLAIM_DIR/dml
+DB_RXCLAIM_N24_DML|n|||$DB_RXCLAIM_DML
+DB_RXCLAIM_XFR|REn|||$DB_RXCLAIM_DIR/xfr
+DB_RXCLAIM_RUN|REn|||$DB_RXCLAIM_DIR/run
+DB_RXCLAIM_DB|REn|||$DB_RXCLAIM_DIR/db
+DB_RXCLAIM_MP|Rn|||$DB_RXCLAIM_DIR/mp
+DB_RXCLAIM_PLAN|Rn|||$DB_RXCLAIM_DIR/plan
+DB_RXCLAIM_SQL|Rn|||$DB_RXCLAIM_DIR/sql
+DB_RXCLAIM_BIN|REn|||$DB_RXCLAIM_DIR/bin
+DB_RXCLAIM_PSET|Rn|||$DB_RXCLAIM_DIR/pset
+DB_RXCLAIM_RESOURCE|Rn|||$DB_RXCLAIM_DIR/resource
+DB_RXCLAIM_COMPONENTS|Rn|||$DB_RXCLAIM_DIR/components
+DB_RXCLAIM_META|Rn|||$DB_RXCLAIM_DIR/meta
+RUN|REn|||$DB_RXCLAIM_DIR/run
+DB_RXCLAIM_DATA_MOUNT|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_DATA_MOUNT:eme||||$AI_RPATH
+DB_RXCLAIM_DATA_MOUNT:sandbox||||$AI_DATA_MOUNT
+DB_RXCLAIM_MFS_DEPTH|RFK|||$AI_MFS_DEPTH
+DB_RXCLAIM_MFS_NAME|R|||mfs_${DB_RXCLAIM_MFS_DEPTH}way
+DB_RXCLAIM_MFS_BASE|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_BASE:eme||||$DB_RXCLAIM_DATA_MOUNT/$DB_RXCLAIM_REL_LOC/data/mfs
+DB_RXCLAIM_MFS_BASE:sandbox||||$DB_RXCLAIM_DATA_MOUNT/mfs/$DB_RXCLAIM_MFS_NAME
+DB_RXCLAIM_MFS_HOME|RFKd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_HOME:eme||||$DB_RXCLAIM_MFS_BASE
+DB_RXCLAIM_MFS_HOME:sandbox||||$DB_RXCLAIM_MFS_BASE/$DB_RXCLAIM_REL_LOC
+DB_RXCLAIM_SERIAL_BASE|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_BASE:eme||||$DB_RXCLAIM_DATA_MOUNT/$DB_RXCLAIM_REL_LOC/data
+DB_RXCLAIM_SERIAL_BASE:sandbox||||$DB_RXCLAIM_DATA_MOUNT/serial
+DB_RXCLAIM_SERIAL_HOME|RFKd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_HOME:eme||||$DB_RXCLAIM_SERIAL_BASE/serial
+DB_RXCLAIM_SERIAL_HOME:sandbox||||$DB_RXCLAIM_SERIAL_BASE/$DB_RXCLAIM_REL_LOC
+DB_RXCLAIM_TEST_FLAG|RFK|||$AI_TEST_FLAG
+DB_RXCLAIM_MFS_LOOKUP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_LOOKUP:eme||||$DB_RXCLAIM_MFS_HOME/lookup
+DB_RXCLAIM_MFS_LOOKUP:sandbox||||$DB_RXCLAIM_MFS_HOME/lookup/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_MFS|REnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS:eme||||$DB_RXCLAIM_MFS_HOME/main
+DB_RXCLAIM_MFS:sandbox||||$DB_RXCLAIM_MFS_HOME/main/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_MFS_PENDING|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_PENDING:eme||||$DB_RXCLAIM_MFS_HOME/pending
+DB_RXCLAIM_MFS_PENDING:sandbox||||$DB_RXCLAIM_MFS_HOME/pending/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_MFS_QUEUE|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_QUEUE:eme||||$DB_RXCLAIM_MFS_HOME/queue
+DB_RXCLAIM_MFS_QUEUE:sandbox||||$DB_RXCLAIM_MFS_HOME/queue/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_MFS_REJECT|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_REJECT:eme||||$DB_RXCLAIM_MFS_HOME/reject
+DB_RXCLAIM_MFS_REJECT:sandbox||||$DB_RXCLAIM_MFS_HOME/reject/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_MFS_TEMP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_TEMP:eme||||$DB_RXCLAIM_MFS_HOME/temp
+DB_RXCLAIM_MFS_TEMP:sandbox||||$DB_RXCLAIM_MFS_HOME/temp/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_ERROR|REnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_ERROR:eme||||$DB_RXCLAIM_SERIAL_HOME/error
+DB_RXCLAIM_SERIAL_ERROR:sandbox||||$DB_RXCLAIM_SERIAL_HOME/error/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_LOG|REnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_LOG:eme||||$DB_RXCLAIM_SERIAL_HOME/log
+DB_RXCLAIM_SERIAL_LOG:sandbox||||$DB_RXCLAIM_SERIAL_HOME/log/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_LOOKUP|Rnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_LOOKUP:eme||||$DB_RXCLAIM_SERIAL_HOME/lookup
+DB_RXCLAIM_SERIAL_LOOKUP:sandbox||||$DB_RXCLAIM_SERIAL_HOME/lookup/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL|REnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL:eme||||$DB_RXCLAIM_SERIAL_HOME/main
+DB_RXCLAIM_SERIAL:sandbox||||$DB_RXCLAIM_SERIAL_HOME/main/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_PENDING|Rnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_PENDING:eme||||$DB_RXCLAIM_SERIAL_HOME/pending
+DB_RXCLAIM_SERIAL_PENDING:sandbox||||$DB_RXCLAIM_SERIAL_HOME/pending/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_QUEUE|Rnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_QUEUE:eme||||$DB_RXCLAIM_SERIAL_HOME/queue
+DB_RXCLAIM_SERIAL_QUEUE:sandbox||||$DB_RXCLAIM_SERIAL_HOME/queue/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_REJECT|Rnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_REJECT:eme||||$DB_RXCLAIM_SERIAL_HOME/reject
+DB_RXCLAIM_SERIAL_REJECT:sandbox||||$DB_RXCLAIM_SERIAL_HOME/reject/$DB_RXCLAIM_TEST_FLAG
+DB_RXCLAIM_SERIAL_TEMP|Rnd|directory||AB_PARAMETER_ENV
+DB_RXCLAIM_SERIAL_TEMP:eme||||$DB_RXCLAIM_SERIAL_HOME/temp
+DB_RXCLAIM_SERIAL_TEMP:sandbox||||$DB_RXCLAIM_SERIAL_HOME/temp/$DB_RXCLAIM_TEST_FLAG
+PUB_DB|C|||
+__DBC_Parameters__|n||Parameters related to selecting or populating the DBC file(s) themselves.|
+DB_RXCLAIM_PHASE|REFK|{dev,qa,uat,prod}|The environment to connect to for this database.  Defaults to the same as $AI_PHASE, but can be overridden.  Set other parameters that vary between environments to be dependent on this as necessary, so that when you promote your applications|$AI_PHASE
+DB_RXCLAIM_DBMS|REFK||The DBMS of the database.|netezza
+DB_RXCLAIM_DBC|RFK||The DBC file to use when accessing the main database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim.main.dbc
+DB_RXCLAIM_N24_DBC|REn|||$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim_n24.main.dbc
+DB_RXCLAIM_GATEWAY_DBC|FK||The DBC file to use when accessing the main database/schema/user via the gateway, if any.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim.gateway.main.dbc
+DB_RXCLAIM_NEXTGEN_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/rxclaim.nextgen.dbc
+DB_RXCLAIM_STAGING_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim.stg.dbc
+DB_RXCLAIM_STAGING_N24_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim_n24.stg.dbc
+DB_RXCLAIM_STAGING_GATEWAY_DBC|FK||The DBC file to use when accessing the staging database/schema/user via the gateway, if any.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim.gateway.stg.dbc
+DB_RXCLAIM_DB_VERSION|REFKd||The value for the db_version tag in the DBC file.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_DB_HOME|REFKd||The value for the db_home tag in the DBC file.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_DB_NAME:dev||||ORX_IDW_DM_DEV_GNF
+DB_RXCLAIM_DB_NAME:qa||||ORX_IDW_DM_QA_CLM
+DB_RXCLAIM_DB_NAME:uat||||ORX_IDW_DM_UAT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_DB_NAME:prod||||ORX_IDW_DM_PRD${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_STAGING_DB_NAME|REFK|||$[ re_replace(DB_RXCLAIM_DB_NAME, string_split(DB_RXCLAIM_DB_NAME, "_")[2], string_split(DB_RXCLAIM_DB_NAME, "_")[2] + "_ETL") ]
+DB_RXCLAIM_CHARSET|REFK||The value for the charset tag in the DBC file.|WIN1252
+DB_RXCLAIM_DB_NODES|REFK||The value for the db_nodes tag in the DBC file.  For most databases, this should be a real hostname, not localhost.  However, some databases, such as Postgres, have an unusual security model that may require localhost.|localhost
+DB_RXCLAIM_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_ODBC_DSN:dev||||TwinFin6
+DB_RXCLAIM_N24_ODBC_DSN:qa||||TwinFin6
+DB_RXCLAIM_N24_ODBC_DSN:uat||||TwinFin6
+DB_RXCLAIM_N24_ODBC_DSN:prod||||TwinFin24
+DB_RXCLAIM_GATEWAY_DB_NODES|REFK||The value for the db_home tag in the DBC file for a dabase gateway.|TBD
+DB_RXCLAIM_LOGTABLE_DATABASE|REFK||The value for the logtable_database tag in the DBC file.|TBD
+DB_RXCLAIM_WORKTABLE_DATABASE|REFK||The value for the worktable_database tag in the DBC file.|TBD
+DB_RXCLAIM_ERRORTABLES_DATABASE|REFK||The value for the errortables_database tag in the DBC file.|TBD
+DB_RXCLAIM_DB_SERVER_HOST|REFK||The value for the db_server_host tag in the DBC file.|localhost
+DB_RXCLAIM_DB_SERVER_PORT|REFKd||The value for the db_server_port tag in the DBC file.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_CONNECTION_NAME|REFK|||db_rxclaim.netezza_rxclaim
+DB_RXCLAIM_USER|REFK||The user name to use when connecting to the database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the main database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_STAGE_USER|REFK||The user name to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_USER
+DB_RXCLAIM_N24_USER|REFK||The user name to use when connecting to the database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$DB_RXCLAIM_USER
+DB_RXCLAIM_STAGE_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_ENCRYPTED_PASSWORD
+DB_RXCLAIM_N24_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the main database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$DB_RXCLAIM_ENCRYPTED_PASSWORD
+DB_RXCLAIM_N24_STAGE_USER|REFK||The user name to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_N24_USER
+DB_RXCLAIM_N24_STAGE_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_N24_ENCRYPTED_PASSWORD
+__Schema_Parameters__|n||By default, we provide parameters for a main schema and a staging schema.  However, your setup may differ.  If there are multiple, related schemas, then copy these parameters and replace "MAIN" with the appropriate names.|
+DB_RXCLAIM_NEXTGEN_EME|RFK|||rxclaim_nextgen
+DB_RXCLAIM_NEXTGEN_SCHEMA|RFK|||elgprdfil
+DB_RXCLAIM_MAIN_SCHEMA_EME|RFK|||rxclaim
+DB_RXCLAIM_N24_MAIN_SCHEMA_EME|RFK|||rxclaim_n24
+DB_RXCLAIM_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_MAIN_SCHEMA:eme||||$DB_RXCLAIM_MAIN_SCHEMA_EME
+DB_RXCLAIM_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_N24_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_N24_MAIN_SCHEMA:eme||||$DB_RXCLAIM_N24_MAIN_SCHEMA_EME
+DB_RXCLAIM_N24_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_N24_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_N24_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_N24_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_STAGING_SCHEMA_EME|RFK|||rxclaim_stg
+DB_RXCLAIM_N24_STAGING_SCHEMA_EME|RFK|||rxclaim_n24_stg
+DB_RXCLAIM_STAGING_SCHEMA|RFKd||The staging database/schema/user for the main staging database.|AB_PARAMETER_ENV
+DB_RXCLAIM_N24_STAGING_SCHEMA|RFKd||The staging database/schema/user for the main staging database.|AB_PARAMETER_ENV
+DB_RXCLAIM_N24_STAGING_SCHEMA:eme||||rxclaim_stg
+DB_RXCLAIM_N24_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_STAGING_SCHEMA:sandbox:dev||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_N24_STAGING_SCHEMA:sandbox:qa||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_N24_STAGING_SCHEMA:sandbox:uat||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_N24_STAGING_SCHEMA:sandbox:prod||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_N24_ADMIN_SCHEMA_EME|RFK|||admin_nz
+DB_RXCLAIM_ADMIN_SCHEMA_EME|RFK|||admin_nz
+__Project_Parameters__|n||These are the parameters that are not tied to a schema/database/user or DBC file.|
+DB_RXCLAIM_SERIAL_LAYOUT|REFKd||The layout used for access to the database for running SQL and for accessing single records.  This should be a serial layout, but it can be located locally or on a database gateway server, if any.\n|AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_LAYOUT|REFKd||The layout used for large volume data access to the database.  This can have a different degree of parallelism than $AI_MFS, and it can be local or on a database gateway server.\n|AB_PARAMETER_ENV
+DB_RXCLAIM_MFS_LOCAL_LAYOUT|RFK||The layout on the local machine(s) that has the same degree of parallelism as DB_RXCLAIM_MFS_LAYOUT.  This is used to ensure that any flows between the local machine and the gateway are straight flows.\n|mfile:$DB_RXCLAIM_MFS
+DB_RXCLAIM_NATIVE_OPTIONS|FK||Options for utility loads.|-ctrlChars -crInString -nullValue '' -dateDelim '' -ignoreZero true
+DB_RXCLAIM_NATIVE_OPTIONS_EXT_TBL|FK||Options for utility loads.|-nullValue '' -commandTail escapeChar '\\'
+DB_RXCLAIM_COMMIT_TABLE|FK||Optional: The fully qualified name of the commit table to use for DB updates.|$[ "" // DB_RXCLAIM_MAIN_SCHEMA.ab_initio_commit_table ]
+DB_RXCLAIM_COMMIT_NUMBER|FK||Optional: The number of records to commit in one transaction.|$[ "" // 10000 ]
+DB_RXCLAIM_BOOKKEEPING_FIELDS|Rn||A list of all the bookkeeping or "physical" fields used in tables in this DB.|/*lgcy_rxt_db_cd\r\nnewline\r\nrxt_create_dbuid\r\nrxt_create_dttm\r\nrxt_create_run_id\r\nrxt_create_uid\r\nrxt_rec_stat_cd\r\nrxt_src_envrt_id\r\nrxt_src_envrt_nm\r\nrxt_updt_dbuid\r\nrxt_updt_dttm\r\nrxt_updt_run_id\r\nrxt_updt_uid\r\nrecord_load_datetime\r\nrecord_update_datetime*/\r\n$[ "" // Keep this in sync with the list in $AI_XFR/logical_types.xfr ]
+DB_RXCLAIM_UPDATE_BOOKKEEPING_FIELDS|Rn||A list of all the bookkeeping or "physical" fields that can be changed during and update.|dxf_src_sys_id\r\nids_create_dttm\r\nids_create_uid\r\nids_create_run_id\r\nids_updt_dttm\r\nids_updt_uid\r\nids_updt_run_id\r\nids_rec_stat_cd\r\n//[string_join(record_info_item(expand_type('include "~$PUB_DXF_DML/generic_data_types.dml"; metadata type = ids_audit_type;'),"name"),"\\n")]
+DB_RXCLAIM_PLACEHOLDER_FIELD_NAME|O||Optional: The name of the placholder indicator field in the target table.  It may be a separate field, or it may just be a status code in a status field.|$[ "" // db_rxclaim_record_placeholder_ind ]
+DB_RXCLAIM_PLACEHOLDER_VALUE|O||Optional: The SQL value of the placholder indicator field when the record is a placeholder.  Note that you need to use quotes (') around string values.|$[ "" // 'Y' ]
+DB_RXCLAIM_MIN_DATETIME|RFK||YYYY-MM-DD HH:MM:SS: The earliest date expected in the DB.  Used to indicate an unknown start time.|1800-01-01 00:00:00
+DB_RXCLAIM_MAX_DATETIME|RFK||YYYY-MM-DD HH:MM:SS: The latest datetime expected in the DB.  Used to indicate an unknown end time.|9999-12-31 23:59:59
+DB_RXCLAIM_ADJACENT_INTERVAL_SECONDS|RFK|integer|#: The number of seconds between adjacent effective and end dates.  Typically either 1 or 86400 (a day).|1
+REMOTESERIALDIR|FK|||$AI_SERIAL
+REMOTEMFSDIR|FK|||$AI_MFS
+DB_RXCLAIM_STAGING_SCHEMA:eme||||rxclaim_stg
+DB_RXCLAIM_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_STAGING_SCHEMA:sandbox:dev||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_STAGING_SCHEMA:sandbox:qa||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_STAGING_SCHEMA:sandbox:uat||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_STAGING_SCHEMA:sandbox:prod||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+AI_REL_LOC@ABENV||||orca/db_rxclaim
+DB_RXCLAIM_ODBC_DSN:dev||||TwinFin6
+DB_RXCLAIM_ODBC_DSN:qa||||TwinFin6
+DB_RXCLAIM_ODBC_DSN:uat||||TwinFin6
+DB_RXCLAIM_ODBC_DSN:prod||||MAKO
+DB_RXCLAIM_REMOTE_SERIAL|REFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_REMOTE_SERIAL:eme||||$AI_SERIAL
+DB_RXCLAIM_REMOTE_SERIAL:sandbox||||$AI_SERIAL
+DB_RXCLAIM_REMOTE_MFS|EFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_REMOTE_MFS:eme||||$DB_RXCLAIM_MFS_HOME/main
+DB_RXCLAIM_REMOTE_MFS:sandbox||||$AI_MFS
+DB_RXCLAIM_SERIAL_LAYOUT:eme||||$AI_SERIAL
+DB_RXCLAIM_SERIAL_LAYOUT:sandbox||||$[if (DB_RXCLAIM_GATEWAY_DB_NODES == 'abinitioapp01.sxc.com') REMOTESERIALDIR   else AI_SERIAL ]
+DB_RXCLAIM_MFS_LAYOUT:eme||||$AI_MFS
+DB_RXCLAIM_MFS_LAYOUT:sandbox||||$[if (DB_RXCLAIM_GATEWAY_DB_NODES == 'abinitioapp01.sxc.com') REMOTEMFSDIR else AI_MFS ]
+DB_RXCLAIM_DB_HOME:dev||||/usr/local/nz
+DB_RXCLAIM_DB_HOME:qa||||/usr/local/nz
+DB_RXCLAIM_DB_HOME:uat||||/usr/local/nz
+DB_RXCLAIM_DB_HOME:prod||||/usr/local/nz
+DB_RXCLAIM_DB_VERSION:dev||||7.2.0
+DB_RXCLAIM_DB_VERSION:qa||||7.2.0
+DB_RXCLAIM_DB_VERSION:uat||||7.2.0
+DB_RXCLAIM_DB_VERSION:prod||||7.2.0
+DB_RXCLAIM_DB_SERVER_PORT:dev||||5480
+DB_RXCLAIM_DB_SERVER_PORT:qa||||5480
+DB_RXCLAIM_DB_SERVER_PORT:uat||||5480
+DB_RXCLAIM_DB_SERVER_PORT:prod||||5480
+comment|n|||************** SQL SERVER PARAMETERS **********************
+DB_RXCLAIM_MSSQL_DBMS|EFK|||mssql
+DB_RXCLAIM_MSSQL_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_MSSQL_DBMS.rxclaim.main.dbc
+DB_RXCLAIM_MSSQL_DB_VERSION|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_DB_HOME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA_EME|RFK|||rxclaim_mssql
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:eme||||$DB_RXCLAIM_MSSQL_MAIN_SCHEMA_EME
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_MSSQL_DB_NAME}.dbo
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_MSSQL_DB_NAME}.dbo
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_MSSQL_DB_NAME}.dbo
+DB_RXCLAIM_MSSQL_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_MSSQL_DB_NAME}.dbo
+DB_RXCLAIM_MSSQL_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_CLIENT_TYPE|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MSSQL_DB_NODES|EFK|||localhost
+DB_RXCLAIM_MSSQL_CONNECTION_NAME|REFK|||db_rxclaim.mssql
+DB_RXCLAIM_MSSQL_USER|EFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_MSSQL_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_MSSQL_ENCRYPTED_PASSWORD|EFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_MSSQL_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+orchard_comment|n|||************** ORCHARD NETEZZA PARAMETERS **********************
+DB_RXCLAIM_ORCHARD_DBMS|EFK|||netezza
+DB_RXCLAIM_ORCHARD_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_ORCHARD_DBMS.rxclaim.orchard.main.dbc
+DB_RXCLAIM_ORCHARD_DB_VERSION|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_DB_HOME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA_EME|RFK|||orchard
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_ORCHARD_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_DB_NODES|EFK|||localhost
+DB_RXCLAIM_ORCHARD_CONNECTION_NAME|REFK|||db_rxclaim.orchard
+DB_RXCLAIM_ORCHARD_USER|EFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_ORCHARD_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_ORCHARD_ENCRYPTED_PASSWORD|EFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_ORCHARD_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+orchard_hist_comment|n|||************** ORCHARD HIST NETEZZA PARAMETERS **********************
+DB_RXCLAIM_ORCHARD_HIST_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_ORCHARD_DBMS.rxclaim.orchard_hist.main.dbc
+DB_RXCLAIM_ORCHARD_HIST_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_HIST_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA_EME|RFK|||orchard_hist
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+mysql_comment|n|||************** MYSQL SERVER PARAMETERS **********************
+DB_RXCLAIM_MYSQL_DBMS|EFK|||mysql
+DB_RXCLAIM_MYSQL_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_MYSQL_DBMS.rxclaim.main.dbc
+DB_RXCLAIM_MYSQL_STAGING_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_MYSQL_DBMS.rxclaim.stg.dbc
+DB_RXCLAIM_MYSQL_DB_VERSION|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_DB_HOME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_STAGING_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA_EME|RFK|||rxclaim_mysql
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA_EME|RFK|||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_MYSQL_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_CLIENT_TYPE|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_DB_NODES|EFK|||localhost
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST|REFKd||The value for the db_server_host tag in the DBC file.|AB_PARAMETER_ENV
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT|EFKd|||AI_PHASE
+DB_RXCLAIM_MYSQL_CONFIG_FILE|EFKd|||AI_PHASE
+DB_RXCLAIM_MYSQL_CONNECTION_NAME|REFK|||db_rxclaim.mysql
+DB_RXCLAIM_MYSQL_USER|EFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_MYSQL_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_MSSQL_DB_VERSION:dev||||11
+DB_RXCLAIM_MSSQL_DB_VERSION:qa||||11
+DB_RXCLAIM_MSSQL_DB_VERSION:uat||||11
+DB_RXCLAIM_MSSQL_DB_VERSION:prod||||11
+DB_RXCLAIM_MSSQL_DB_HOME:dev||||/opt/microsoft/msodbcsql
+DB_RXCLAIM_MSSQL_DB_HOME:qa||||/opt/microsoft/msodbcsql
+DB_RXCLAIM_MSSQL_DB_HOME:uat||||/opt/microsoft/msodbcsql
+DB_RXCLAIM_MSSQL_DB_HOME:prod||||/opt/microsoft/msodbcsql
+DB_RXCLAIM_MSSQL_DB_NAME:dev||||AUDIT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MSSQL_DB_NAME:qa||||AUDIT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MSSQL_DB_NAME:uat||||AUDIT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MSSQL_DB_NAME:prod||||AUDIT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MSSQL_ODBC_DSN:dev||||SQLServerAuditDev
+DB_RXCLAIM_MSSQL_ODBC_DSN:qa||||SQLServerAuditQa
+DB_RXCLAIM_MSSQL_ODBC_DSN:uat||||SQLServerAuditUat
+DB_RXCLAIM_MSSQL_ODBC_DSN:prod||||SQLServerAuditProdNew
+DB_RXCLAIM_MSSQL_CLIENT_TYPE:dev||||odbc
+DB_RXCLAIM_MSSQL_CLIENT_TYPE:qa||||odbc
+DB_RXCLAIM_MSSQL_CLIENT_TYPE:uat||||odbc
+DB_RXCLAIM_MSSQL_CLIENT_TYPE:prod||||odbc
+DB_RXCLAIM_ORCHARD_DB_VERSION:dev||||7.2.0
+DB_RXCLAIM_ORCHARD_DB_VERSION:qa||||7.2.0
+DB_RXCLAIM_ORCHARD_DB_VERSION:uat||||7.2.0
+DB_RXCLAIM_ORCHARD_DB_VERSION:prod||||7.2.0
+DB_RXCLAIM_ORCHARD_DB_HOME:dev||||/usr/local/nz
+DB_RXCLAIM_ORCHARD_DB_HOME:qa||||/usr/local/nz
+DB_RXCLAIM_ORCHARD_DB_HOME:uat||||/usr/local/nz
+DB_RXCLAIM_ORCHARD_DB_HOME:prod||||/usr/local/nz
+DB_RXCLAIM_ORCHARD_DB_NAME:dev||||ORX_ORCHARD_DEV${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_ORCHARD_DB_NAME:qa||||ORX_ORCHARD_UAT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_ORCHARD_DB_NAME:uat||||ORX_ORCHARD_UAT${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_ORCHARD_DB_NAME:prod||||ORX_ORCHARD_PRD
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:eme||||$DB_RXCLAIM_ORCHARD_MAIN_SCHEMA_EME
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:sandbox:dev||||$DB_RXCLAIM_ORCHARD_DB_NAME.PDE
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:sandbox:qa||||$DB_RXCLAIM_ORCHARD_DB_NAME.PDE
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:sandbox:uat||||$DB_RXCLAIM_ORCHARD_DB_NAME.PDE
+DB_RXCLAIM_ORCHARD_MAIN_SCHEMA:sandbox:prod||||$DB_RXCLAIM_ORCHARD_DB_NAME.PDE
+DB_RXCLAIM_ORCHARD_ODBC_DSN:dev||||Netezza07
+DB_RXCLAIM_ORCHARD_ODBC_DSN:qa||||Netezza08
+DB_RXCLAIM_ORCHARD_ODBC_DSN:uat||||Netezza08
+DB_RXCLAIM_ORCHARD_ODBC_DSN:prod||||Netezza09
+DB_RXCLAIM_ORCHARD_HIST_ODBC_DSN:dev||||Netezza08
+DB_RXCLAIM_ORCHARD_HIST_ODBC_DSN:qa||||Netezza08
+DB_RXCLAIM_ORCHARD_HIST_ODBC_DSN:uat||||Netezza08
+DB_RXCLAIM_ORCHARD_HIST_ODBC_DSN:prod||||Netezza09
+DB_RXCLAIM_ORCHARD_HIST_DB_NAME:dev||||RX_CLM_MON_DEV
+DB_RXCLAIM_ORCHARD_HIST_DB_NAME:qa||||RX_CLM_MON_STG
+DB_RXCLAIM_ORCHARD_HIST_DB_NAME:uat||||RX_CLM_MON_UAT
+DB_RXCLAIM_ORCHARD_HIST_DB_NAME:prod||||RX_CLM_MON_PRD
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:eme||||$DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA_EME
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:sandbox:dev||||$DB_RXCLAIM_ORCHARD_HIST_DB_NAME.DWCLMS_MON
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:sandbox:qa||||$DB_RXCLAIM_ORCHARD_HIST_DB_NAME.DWCLMS_MON
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:sandbox:uat||||$DB_RXCLAIM_ORCHARD_HIST_DB_NAME.DWCLMS_MON
+DB_RXCLAIM_ORCHARD_HIST_MAIN_SCHEMA:sandbox:prod||||$DB_RXCLAIM_ORCHARD_HIST_DB_NAME.DWCLMS_MON
+DB_RXCLAIM_MYSQL_DB_VERSION:dev||||3-2-6-4-e11-1
+DB_RXCLAIM_MYSQL_DB_VERSION:qa||||3-2-6-4-e11-1
+DB_RXCLAIM_MYSQL_DB_VERSION:uat||||3-2-6-4-e11-1
+DB_RXCLAIM_MYSQL_DB_VERSION:prod||||3-2-6-4-e11-1
+DB_RXCLAIM_MYSQL_DB_HOME:dev||||/etl/opt/mysql_client/mysql-8.0.0-dmr-linux-glibc2.12-x86_64
+DB_RXCLAIM_MYSQL_DB_HOME:qa||||/etl/opt/mysql_client/mysql-8.0.0-dmr-linux-glibc2.12-x86_64
+DB_RXCLAIM_MYSQL_DB_HOME:uat||||/etl/opt/mysql_client/mysql-8.0.0-dmr-linux-glibc2.12-x86_64
+DB_RXCLAIM_MYSQL_DB_HOME:prod||||/etl/opt/mysql_client/mysql-8.0.0-dmr-linux-glibc2.12-x86_64
+DB_RXCLAIM_MYSQL_DB_NAME:dev||||DATAPUSH${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MYSQL_DB_NAME:qa||||DATAPUSH${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MYSQL_DB_NAME:uat||||DATAPUSH${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MYSQL_DB_NAME:prod||||DATAPUSH${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MYSQL_STAGING_DB_NAME:dev||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_DB_NAME:qa||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_DB_NAME:uat||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_DB_NAME:prod||||DATAPUSH${AI_BRANCH_SUFFIX}
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:eme||||$DB_RXCLAIM_MYSQL_MAIN_SCHEMA_EME
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_MYSQL_DB_NAME}
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_MYSQL_DB_NAME}
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_MYSQL_DB_NAME}
+DB_RXCLAIM_MYSQL_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_MYSQL_DB_NAME}
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:eme||||$DB_RXCLAIM_MYSQL_STAGING_SCHEMA_EME
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:sandbox:dev||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:sandbox:qa||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:sandbox:uat||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_STAGING_SCHEMA:sandbox:prod||||orx_idw_dm_etl_rxinsight
+DB_RXCLAIM_MYSQL_ODBC_DSN:dev||||apsrd4027-datapush
+DB_RXCLAIM_MYSQL_ODBC_DSN:qa||||apsrs2027-datapush
+DB_RXCLAIM_MYSQL_ODBC_DSN:uat||||apsrs2027-datapush
+DB_RXCLAIM_MYSQL_ODBC_DSN:prod||||apsrp02861-datapush
+DB_RXCLAIM_MYSQL_CLIENT_TYPE:dev||||odbc
+DB_RXCLAIM_MYSQL_CLIENT_TYPE:qa||||odbc
+DB_RXCLAIM_MYSQL_CLIENT_TYPE:uat||||odbc
+DB_RXCLAIM_MYSQL_CLIENT_TYPE:prod||||odbc
+DB_RXCLAIM_MYSQL_ENCRYPTED_PASSWORD|EFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_MYSQL_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_MYSQL_STG_CONNECTION_NAME|REFK|||db_rxclaim.mysql_stg
+DB_RXCLAIM_MYSQL_STAGE_USER|EFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_MYSQL_STG_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_MYSQL_STAGE_ENCRYPTED_PASSWORD|EFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_MYSQL_STG_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:eme||||localhost
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox|d|||AI_PHASE
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:dev||||apsrd4027.uhc.com
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:qa||||apsrs2027.uhc.com
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:integration||||to be set
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:uat||||to be set
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:prod||||apsrp02861.uhc.com
+DB_RXCLAIM_MYSQL_DB_SERVER_HOST:sandbox:stage||||to be set
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:dev||||3306
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:qa||||3306
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:integration||||3306
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:uat||||3306
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:prod||||3306
+DB_RXCLAIM_MYSQL_DB_SERVER_PORT:stage||||3306
+DB_RXCLAIM_MYSQL_CONFIG_FILE:dev||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+DB_RXCLAIM_MYSQL_CONFIG_FILE:qa||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+DB_RXCLAIM_MYSQL_CONFIG_FILE:integration||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+DB_RXCLAIM_MYSQL_CONFIG_FILE:uat||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+DB_RXCLAIM_MYSQL_CONFIG_FILE:prod||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+DB_RXCLAIM_MYSQL_CONFIG_FILE:stage||||/etl/etc/mysql_client/rxclaim_mysql/.my.cnf
+hpms_comments|n|||************** HPMS NETEZZA PARAMETERS **********************
+DB_RXCLAIM_HPMS_DBMS|REFK||The DBMS of the database.|netezza
+DB_RXCLAIM_DB_HPMS_NODES|REFK||The value for the db_nodes tag in the DBC file.  For most databases, this should be a real hostname, not localhost.  However, some databases, such as Postgres, have an unusual security model that may require localhost.|localhost
+DB_RXCLAIM_DB_HPMS_VERSION|REFKd||The value for the db_version tag in the DBC file.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_DB_HPMS_HOME|REFKd||The value for the db_home tag in the DBC file.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_ODBC_HPMS_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HPMS_CONNECTION_NAME|REFK|||db_rxclaim.n24_hpms
+DB_RXCLAIM_N24_HPMS_USER|REFK||The user name to use when connecting to the database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_HPMS_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_N24_HPMS_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the main database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_HPMS_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_HPMS_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_HPMS_DB_NAME:dev||||ORX_IDW_DM_DEV
+DB_RXCLAIM_HPMS_DB_NAME:qa||||ORX_IDW_DM_QA
+DB_RXCLAIM_HPMS_DB_NAME:uat||||ORX_IDW_DM_UAT
+DB_RXCLAIM_HPMS_DB_NAME:prod||||ORX_IDW_DM_PRD
+DB_RXCLAIM_N24_ODBC_HPMS_DSN:dev||||TwinFin6
+DB_RXCLAIM_N24_ODBC_HPMS_DSN:qa||||TwinFin6
+DB_RXCLAIM_N24_ODBC_HPMS_DSN:uat||||TwinFin6
+DB_RXCLAIM_N24_ODBC_HPMS_DSN:prod||||TwinFin24
+DB_RXCLAIM_DB_HPMS_VERSION:dev||||7.2.0
+DB_RXCLAIM_DB_HPMS_VERSION:qa||||7.2.0
+DB_RXCLAIM_DB_HPMS_VERSION:uat||||7.2.0
+DB_RXCLAIM_DB_HPMS_VERSION:prod||||7.2.0
+DB_RXCLAIM_DB_HPMS_HOME:dev||||/usr/local/nz
+DB_RXCLAIM_DB_HPMS_HOME:qa||||/usr/local/nz
+DB_RXCLAIM_DB_HPMS_HOME:uat||||/usr/local/nz
+DB_RXCLAIM_DB_HPMS_HOME:prod||||/usr/local/nz
+DB_RXCLAIM_HPMS_PAS_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_HPMS_PAS_DB_NAME:dev||||ORX_IDW_PAS_DEV
+DB_RXCLAIM_HPMS_PAS_DB_NAME:qa||||ORX_IDW_PAS_QA
+DB_RXCLAIM_HPMS_PAS_DB_NAME:uat||||ORX_IDW_PAS_UAT
+DB_RXCLAIM_HPMS_PAS_DB_NAME:prod||||ORX_IDW_PAS_PRD
+DB_RXCLAIM_HPMS_RXAUTH_VIEW_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_HPMS_RXAUTH_VIEW_DB_NAME:dev||||ORX_IDW_DM_INTR_VIEW_DEV
+DB_RXCLAIM_HPMS_RXAUTH_VIEW_DB_NAME:qa||||ORX_IDW_DM_INTR_VIEW_QA
+DB_RXCLAIM_HPMS_RXAUTH_VIEW_DB_NAME:uat||||ORX_IDW_DM_INTR_VIEW_UAT
+DB_RXCLAIM_HPMS_RXAUTH_VIEW_DB_NAME:prod||||ORX_IDW_DM_INTR_VIEW_PRD
+calpers_comment|Rn|||***************Calpers Netezza Parameters ************************
+DB_RXCLAIM_N24_CALP_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_CALP_ODBC_DSN:dev||||TwinFin6
+DB_RXCLAIM_N24_CALP_ODBC_DSN:qa||||TwinFin6
+DB_RXCLAIM_N24_CALP_ODBC_DSN:uat||||TwinFin6
+DB_RXCLAIM_N24_CALP_ODBC_DSN:prod||||TwinFin24
+DB_RXCLAIM_N24_CALP_CONNECTION_NAME|REFK|||db_rxclaim.n24_calp
+DB_RXCLAIM_N24_CALP_USER|REFK||The user name to use when connecting to the database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_N24_CALP_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_N24_CALP_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the main database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_N24_CALP_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_N24_CALP_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_N24_CALP_DB_NAME:dev||||ORX_IDW_EXTRCT_DEV_CALP
+DB_RXCLAIM_N24_CALP_DB_NAME:qa||||ORX_IDW_EXTRCT_QA_CALP
+DB_RXCLAIM_N24_CALP_DB_NAME:uat||||ORX_IDW_EXTRCT_UAT_CALP
+DB_RXCLAIM_N24_CALP_DB_NAME:prod||||ORX_IDW_EXTRCT_PRD
+DB_RXCLAIM_CALP_STAGING_DB_NAME|REFK|||$[ re_replace(DB_RXCLAIM_N24_CALP_DB_NAME, string_split(DB_RXCLAIM_N24_CALP_DB_NAME, "_")[2], string_split(DB_RXCLAIM_N24_CALP_DB_NAME, "_")[2] + "_ETL") ]
+DB_RXCLAIM_N24_CALP_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim_n24.calp.main.dbc
+DB_RXCLAIM_N24_STAGING_CALP_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim_n24.calp.stg.dbc
+DB_RXCLAIM_CALP_MAIN_SCHEMA_EME|RFK|||calpers
+DB_RXCLAIM_CALP_MAIN_SCHEMA|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_CALP_STAGING_SCHEMA_EME|RFK|||calpers_stg
+DB_RXCLAIM_CALP_STAGING_SCHEMA|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_CALP_MAIN_SCHEMA:eme||||DB_RXCLAIM_CALP_MAIN_SCHEMA_EME
+DB_RXCLAIM_CALP_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_CALP_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_N24_CALP_DB_NAME}.admin
+DB_RXCLAIM_CALP_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_N24_CALP_DB_NAME}.admin
+DB_RXCLAIM_CALP_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_N24_CALP_DB_NAME}.admin
+DB_RXCLAIM_CALP_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_N24_CALP_DB_NAME}.admin
+DB_RXCLAIM_CALP_STAGING_SCHEMA:eme||||$DB_RXCLAIM_CALP_STAGING_DB_NAME
+DB_RXCLAIM_CALP_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_CALP_STAGING_SCHEMA:sandbox:dev||||${DB_RXCLAIM_CALP_STAGING_DB_NAME}.admin
+DB_RXCLAIM_CALP_STAGING_SCHEMA:sandbox:qa||||${DB_RXCLAIM_CALP_STAGING_DB_NAME}.admin
+DB_RXCLAIM_CALP_STAGING_SCHEMA:sandbox:uat||||${DB_RXCLAIM_CALP_STAGING_DB_NAME}.admin
+DB_RXCLAIM_CALP_STAGING_SCHEMA:sandbox:prod||||${DB_RXCLAIM_CALP_STAGING_DB_NAME}.admin
+DB_RXCLAIM_CALP_DML|RFK|||$DB_RXCLAIM_DML
+DB_CALPERS_USER|REK|||$DB_RXCLAIM_N24_CALP_USER
+DB_RXCLAIM_N24_CALP_MAIN_SCHEMA_EME|RFK|||calpers_n24
+DB_RXCLAIM_N24_CALP_DML|Rn|||$DB_RXCLAIM_DML
+DB_CALPERS_N24_USER|Rn|||$DB_RXCLAIM_N24_CALP_USER
+DB_RXCLAIM_MAIN_CALP_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_MAIN_CALP_ODBC_DSN:dev||||TwinFin6
+DB_RXCLAIM_MAIN_CALP_ODBC_DSN:qa||||TwinFin6
+DB_RXCLAIM_MAIN_CALP_ODBC_DSN:uat||||TwinFin6
+DB_RXCLAIM_MAIN_CALP_ODBC_DSN:prod||||MAKO
+DB_RXCLAIM_MAIN_CALP_CONNECTION_NAME|REFK|||db_rxclaim.main_calp
+DB_RXCLAIM_MAIN_CALP_USER|REFK||The user name to use when connecting to the database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_MAIN_CALP_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_MAIN_CALP_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the main database.  It is dependent on DB_RXCLAIM_PHASE so that it can vary between environments.|$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_MAIN_CALP_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_MAIN_CALP_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXCLAIM_MAIN_CALP_DB_NAME:dev||||ORX_IDW_EXTRCT_DEV_CALP
+DB_RXCLAIM_MAIN_CALP_DB_NAME:qa||||ORX_IDW_EXTRCT_QA_CALP
+DB_RXCLAIM_MAIN_CALP_DB_NAME:uat||||ORX_IDW_EXTRCT_UAT_CALP
+DB_RXCLAIM_MAIN_CALP_DB_NAME:prod||||ORX_IDW_EXTRCT_PRD
+DB_RXCLAIM_SANDBOX_SCHEMA|REnd|||AB_PARAMETER_ENV
+DB_RXCLAIM_SANDBOX_SCHEMA_EME|REn|||rxclaim_sandbox
+DB_RXCLAIM_SANDBOX_SCHEMA:eme||||SANDBOX
+DB_RXCLAIM_SANDBOX_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_SANDBOX_SCHEMA:sandbox:dev||||SANDBOX
+DB_RXCLAIM_SANDBOX_SCHEMA:sandbox:qa||||SANDBOX
+DB_RXCLAIM_SANDBOX_SCHEMA:sandbox:uat||||SANDBOX
+DB_RXCLAIM_SANDBOX_SCHEMA:sandbox:prod||||SANDBOX
+DB_RXCLAIM_SANDBOX_DML|Rn|||$DB_RXCLAIM_DIR/dml/
+DB_RXCLAIM_SANDBOX_PSET|Rn|||$DB_RXCLAIM_DIR/pset
+DB_RXCLAIM_SANDBOX_DBMS|REn|||netezza
+DB_RXCLAIM_SANDBOX_DB_VERSION|REnd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_SANDBOX_DB_VERSION:dev||||7.2.0
+DB_RXCLAIM_SANDBOX_DB_VERSION:qa||||7.2.0
+DB_RXCLAIM_SANDBOX_DB_VERSION:uat||||7.2.0
+DB_RXCLAIM_SANDBOX_DB_VERSION:prod||||7.2.0
+DB_RXCLAIM_SANDBOX_DB_NAME|REnd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_SANDBOX_DB_NAME:dev||||SANDBOX
+DB_RXCLAIM_SANDBOX_DB_NAME:qa||||SANDBOX
+DB_RXCLAIM_SANDBOX_DB_NAME:uat||||SANDBOX
+DB_RXCLAIM_SANDBOX_DB_NAME:prod||||SANDBOX
+DB_RXCLAIM_SANDBOX_ODBC_DSN|REnd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_SANDBOX_DB_NODES|REn|||localhost
+DB_RXCLAIM_SANDBOX_ODBC_DSN:dev||||TwinFin6
+DB_RXCLAIM_SANDBOX_ODBC_DSN:qa||||TwinFin6
+DB_RXCLAIM_SANDBOX_ODBC_DSN:uat||||TwinFin6
+DB_RXCLAIM_SANDBOX_ODBC_DSN:prod||||TwinFin24
+DB_RXCLAIM_SANDBOX_DBC|REn|||$DB_RXCLAIM_DB/netezza.rxclaim_sandbox.main.dbc
+RXCLAIM_EXTRACT_comment|Rn|||***************RxClaim Extract Netezza Parameters ************************
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA_EME|RFK|||rxclaim_extrct_n24
+DB_RXCLAIM_N24_EXTRACT_CONNECTION_NAME|REFK|||db_rxclaim.n24_extract
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA_EME|RFK|||rxclaim_extrct_n24_stg
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA|RFKd||The staging database/schema/user for the main staging database.|AB_PARAMETER_ENV
+DB_RXCLAIM_EXTRCT_N24_ADMIN_SCHEMA_EME|RFK|||admin_nz
+DB_RXCLAIM_N24_EXTRACT_USER|REFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_N24_EXTRACT_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_N24_EXTRACT_ENCRYPTED_PASSWORD|REFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_N24_EXTRACT_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_EXTRCT_N24_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_DBMS.rxclaim_n24.extract.dbc
+HT2_comment|n|||************** Netezza HT2 PARAMETERS **********************
+DB_RXCLAIM_HT2_DBMS|EFK|||netezza
+DB_RXCLAIM_HT2_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_HT2_DBMS.rxclaim.ht2.main.dbc
+DB_RXCLAIM_HT2_DB_VERSION|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_DB_VERSION:dev||||7.2.0
+DB_RXCLAIM_HT2_DB_VERSION:qa||||7.2.0
+DB_RXCLAIM_HT2_DB_VERSION:uat||||7.2.0
+DB_RXCLAIM_HT2_DB_VERSION:prod||||7.2.0
+DB_RXCLAIM_HT2_DB_HOME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_DB_HOME:dev||||/usr/local/nz
+DB_RXCLAIM_HT2_DB_HOME:qa||||/usr/local/nz
+DB_RXCLAIM_HT2_DB_HOME:uat||||/usr/local/nz
+DB_RXCLAIM_HT2_DB_HOME:prod||||/usr/local/nz
+DB_RXCLAIM_HT2_DB_NAME|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_DB_NAME:dev||||ORX_IDW_DM_HT2_DEV
+DB_RXCLAIM_HT2_DB_NAME:qa||||ORX_IDW_DM_HT2_UAT
+DB_RXCLAIM_HT2_DB_NAME:uat||||ORX_IDW_DM_HT2_UAT
+DB_RXCLAIM_HT2_DB_NAME:prod||||ORX_IDW_DM_HT2_PRD
+DB_RXCLAIM_HT2_STAGING_DB_NAME|REFK|||$[ re_replace(DB_RXCLAIM_HT2_DB_NAME, string_split(DB_RXCLAIM_HT2_DB_NAME, "_")[3], string_split(DB_RXCLAIM_HT2_DB_NAME, "_")[3] + "_ETL") ]
+DB_RXCLAIM_HT2_MAIN_SCHEMA_EME|RFK|||rxclaim
+DB_RXCLAIM_HT2_MAIN_SCHEMA|RFKd||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|AB_PARAMETER_ENV
+DB_RXCLAIM_HT2_MAIN_SCHEMA:eme||||$DB_RXCLAIM_HT2_MAIN_SCHEMA_EME
+DB_RXCLAIM_HT2_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_MAIN_SCHEMA:sandbox:dev||||$DB_RXCLAIM_HT2_DB_NAME.admin
+DB_RXCLAIM_HT2_MAIN_SCHEMA:sandbox:qa||||$DB_RXCLAIM_HT2_DB_NAME.admin
+DB_RXCLAIM_HT2_MAIN_SCHEMA:sandbox:uat||||$DB_RXCLAIM_HT2_DB_NAME.admin
+DB_RXCLAIM_HT2_MAIN_SCHEMA:sandbox:prod||||$DB_RXCLAIM_HT2_DB_NAME.admin
+DB_RXCLAIM_HT2_ODBC_DSN|EFKd|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_ODBC_DSN:dev||||Netezza07
+DB_RXCLAIM_HT2_ODBC_DSN:qa||||Netezza08
+DB_RXCLAIM_HT2_ODBC_DSN:uat||||Netezza08
+DB_RXCLAIM_HT2_ODBC_DSN:prod||||Netezza09
+DB_RXCLAIM_HT2_DB_NODES|EFK|||localhost
+DB_RXCLAIM_HT2_CONNECTION_NAME|REFK|||db_rxclaim.ht2
+DB_RXCLAIM_HT2_USER|EFK|||$($LOGINUTIL_PATH/loginutil userid ${DB_RXCLAIM_HT2_CONNECTION_NAME}.${DB_RXCLAIM_PHASE})
+DB_RXCLAIM_HT2_ENCRYPTED_PASSWORD|EFK|||$($LOGINUTIL_PATH/loginutil password ${DB_RXCLAIM_HT2_CONNECTION_NAME}.${DB_RXCLAIM_PHASE} decrypt)
+DB_RXCLAIM_HT2_STAGING_SCHEMA_EME|RFK|||ht2_stg
+DB_RXCLAIM_HT2_STAGING_SCHEMA|RFKd|||AB_PARAMETER_ENV
+DB_RXCLAIM_HT2_STAGING_SCHEMA:eme||||$DB_RXCLAIM_HT2_STAGING_DB_NAME
+DB_RXCLAIM_HT2_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_HT2_STAGING_SCHEMA:sandbox:dev||||${DB_RXCLAIM_HT2_STAGING_DB_NAME}.admin
+DB_RXCLAIM_HT2_STAGING_SCHEMA:sandbox:qa||||${DB_RXCLAIM_HT2_STAGING_DB_NAME}.admin
+DB_RXCLAIM_HT2_STAGING_SCHEMA:sandbox:uat||||${DB_RXCLAIM_HT2_STAGING_DB_NAME}.admin
+DB_RXCLAIM_HT2_STAGING_SCHEMA:sandbox:prod||||${DB_RXCLAIM_HT2_STAGING_DB_NAME}.admin
+DB_RXCLAIM_HT2_STAGE_USER|REFK||The user name to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_HT2_USER
+DB_RXCLAIM_HT2_STAGE_ENCRYPTED_PASSWORD|REFK||The encrypted password to use when connecting to the staging database.  If this is different from the main database, then this parameter may need to be made dependent on DB_RXCLAIM_PHASE.|$DB_RXCLAIM_HT2_ENCRYPTED_PASSWORD
+DB_RXCLAIM_HT2_STAGING_DBC|FK|||$DB_RXCLAIM_DB/$DB_RXCLAIM_HT2_DBMS.rxclaim.ht2.stg.dbc
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:eme||||$DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA_EME
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:sandbox:dev||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:sandbox:qa||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:sandbox:uat||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_MAIN_SCHEMA:sandbox:prod||||${DB_RXCLAIM_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:eme||||$DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA_EME
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:sandbox|d|||DB_RXCLAIM_PHASE
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:sandbox:dev||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:sandbox:qa||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:sandbox:uat||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXCLAIM_EXTRCT_N24_STAGING_SCHEMA:sandbox:prod||||${DB_RXCLAIM_STAGING_DB_NAME}.admin
+DB_RXMAX_DB_NAME|REFKd||The name of the database at run time.  You will need to set these manually, unless your DBA happens to follow this naming convention.|DB_RXCLAIM_PHASE
+DB_RXMAX_DB_NAME:dev||||ORX_IDW_RXMAX_DEV
+DB_RXMAX_DB_NAME:qa||||ORX_IDW_RXMAX_QA
+DB_RXMAX_DB_NAME:uat||||ORX_IDW_RXMAX_UAT
+DB_RXMAX_DB_NAME:prod||||ORX_IDW_RXMAX_PRD

@@ -1,0 +1,393 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup f_claim_transaction.reduced   */
+out0::bzt_3_6c54cc0a_596c6c4b_7337_4(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL(""), carrier_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("f_claim_transaction.reduced",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup f_claim_transaction.reduced   */
+out0::bzt_2_6c54cc0a_596c6c4b_7337_4(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL(""), carrier_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("f_claim_transaction.reduced",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_rx32126p1_enrich_to_the_f_claim_trx_month_ILM_documentation(in)=
+begin
+
+out0.f_clm_trx_mn.rxsol_formulary_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.cst_clnt_ind.custom_client_ind::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.prior_auth.prior_auth_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.ntpn_ind::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.claim_nbr::depends_on(
+         in.p1claimnbr
+         );
+
+
+out0.f_clm_trx_mn.mbr_sk::depends_on(
+         in.p1claimnbr,
+         in.p1claimseq,
+         in.dxf_src_sys_id,
+         in.p1status,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').mbr_sk  
+         );
+
+
+out0.injct_ind.injectable_ind::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.risk_pool_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.prior_auth_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.dmr_ind::depends_on(
+         in.p1reimburs
+         );
+
+
+out0.f_clm_trx_mn.prior_auth_id_encrp::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.clt_formulary_flg::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.reported_gap_discount_amt::depends_on(
+         in.p1ambkqu
+         );
+
+
+out0.clm_orgn_cd.clam_origin_cd::depends_on(
+         in.p1clmorgn
+         );
+
+
+out0.risk_pool.risk_pool_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.carrier_sk::depends_on(
+         in.p1claimnbr,
+         in.p1claimseq,
+         in.dxf_src_sys_id,
+         in.p1status,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').carrier_sk  
+         );
+
+
+out0.dmrind.dmr_ind::depends_on(
+         in.p1reimburs
+         );
+
+
+out0.f_clm_trx_mn.claim_origin_cd::depends_on(
+         in.p1clmorgn
+         );
+
+
+out0.f_clm_trx_mn.cag_sk::depends_on(
+         in.p1claimnbr,
+         in.p1claimseq,
+         in.dxf_src_sys_id,
+         in.p1status,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').cag_sk  
+         );
+
+
+out0.frmlry.formulary_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.claim_seq_nbr::depends_on(
+         in.p1claimseq
+         );
+
+
+out0.f_clm_trx_mn.claim_stat_id::depends_on(
+         in.p1status
+         );
+
+
+out0.rxsol_frmlry.rxsol_formulary_id::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.injectable_ind::depends_on(
+         in.p1clientd3
+         );
+
+
+out0.f_clm_trx_mn.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.f_clm_trx_mn.sbm_dt::depends_on(
+         in.p1claimnbr,
+         in.p1claimseq,
+         in.dxf_src_sys_id,
+         in.p1status,
+         lookup("f_claim_transaction.reduced",'keystr','keystr','keystr','keystr').sbm_dt  
+         );
+
+
+out0.f_clm_trx_mn.claim_nbr_encrp::depends_on(
+         in.p1claimnbr
+         );
+
+
+out0.f_clm_trx_mn.custom_client_ind::depends_on(
+         in.p1clientd3
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_rx32126p1_enrich_to_the_f_claim_trx_month_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_clm_trx_mn.rxsol_formulary_id,'f_clm_trx_mn.rxsol_formulary_id',1,0]
+     [out0.cst_clnt_ind.custom_client_ind,'cst_clnt_ind.custom_client_ind',1,0]
+     [out0.prior_auth.prior_auth_id,'prior_auth.prior_auth_id',1,0]
+     [out0.f_clm_trx_mn.custom_client_ind_sk,'f_clm_trx_mn.custom_client_ind_sk',1,0]
+     [out0.f_clm_trx_mn.ntpn_ind,'f_clm_trx_mn.ntpn_ind',1,0]
+     [out0.f_clm_trx_mn.claim_nbr,'f_clm_trx_mn.claim_nbr',1,0]
+     [out0.f_clm_trx_mn.sec_flg,'f_clm_trx_mn.sec_flg',1,0]
+     [out0.f_clm_trx_mn.mbr_sk,'f_clm_trx_mn.mbr_sk',1,1]
+     [out0.injct_ind.injectable_ind,'injct_ind.injectable_ind',1,0]
+     [out0.f_clm_trx_mn.risk_pool_id,'f_clm_trx_mn.risk_pool_id',1,0]
+     [out0.f_clm_trx_mn.prior_auth_id,'f_clm_trx_mn.prior_auth_id',1,0]
+     [out0.f_clm_trx_mn.dmr_ind,'f_clm_trx_mn.dmr_ind',1,0]
+     [out0.f_clm_trx_mn.clt_formulary_sk,'f_clm_trx_mn.clt_formulary_sk',1,0]
+     [out0.f_clm_trx_mn.prior_auth_id_encrp,'f_clm_trx_mn.prior_auth_id_encrp',1,0]
+     [out0.f_clm_trx_mn.clt_formulary_flg,'f_clm_trx_mn.clt_formulary_flg',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_clm_trx_mn.reported_gap_discount_amt,'f_clm_trx_mn.reported_gap_discount_amt',1,0]
+     [out0.clm_orgn_cd.clam_origin_cd,'clm_orgn_cd.clam_origin_cd',1,0]
+     [out0.risk_pool.risk_pool_id,'risk_pool.risk_pool_id',1,0]
+     [out0.f_clm_trx_mn.carrier_sk,'f_clm_trx_mn.carrier_sk',1,1]
+     [out0.dmrind.dmr_ind,'dmrind.dmr_ind',1,0]
+     [out0.f_clm_trx_mn.claim_origin_cd,'f_clm_trx_mn.claim_origin_cd',1,0]
+     [out0.f_clm_trx_mn.cag_sk,'f_clm_trx_mn.cag_sk',1,1]
+     [out0.frmlry.formulary_id,'frmlry.formulary_id',1,0]
+     [out0.f_clm_trx_mn.claim_seq_nbr,'f_clm_trx_mn.claim_seq_nbr',1,1]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_clm_trx_mn.claim_stat_id,'f_clm_trx_mn.claim_stat_id',1,0]
+     [out0.f_clm_trx_mn.risk_pool_sk,'f_clm_trx_mn.risk_pool_sk',1,0]
+     [out0.rxsol_frmlry.rxsol_formulary_id,'rxsol_frmlry.rxsol_formulary_id',1,0]
+     [out0.f_clm_trx_mn.injectable_ind_sk,'f_clm_trx_mn.injectable_ind_sk',1,0]
+     [out0.f_clm_trx_mn.rxsol_formulary_sk,'f_clm_trx_mn.rxsol_formulary_sk',1,0]
+     [out0.f_clm_trx_mn.prior_auth_sk,'f_clm_trx_mn.prior_auth_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_clm_trx_mn.dmr_ind_sk,'f_clm_trx_mn.dmr_ind_sk',1,0]
+     [out0.f_clm_trx_mn.injectable_ind,'f_clm_trx_mn.injectable_ind',1,0]
+     [out0.f_clm_trx_mn.src_env_sk,'f_clm_trx_mn.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_clm_trx_mn.claim_origination_code_sk,'f_clm_trx_mn.claim_origination_code_sk',1,0]
+     [out0.f_clm_trx_mn.sbm_dt,'f_clm_trx_mn.sbm_dt',1,1]
+     [out0.f_clm_trx_mn.claim_nbr_encrp,'f_clm_trx_mn.claim_nbr_encrp',1,0]
+     [out0.f_clm_trx_mn.custom_client_ind,'f_clm_trx_mn.custom_client_ind',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.p1clientd3,'p1clientd3',28,14]
+     [in0.p1claimnbr,'p1claimnbr',10,6]
+     [in0.dxf_src_sys_id,'DXF Source System ID',6,6]
+     [in0.p1status,'p1status',5,5]
+     [in0.p1reimburs,'p1reimburs',2,2]
+     [in0.p1clmorgn,'p1clmorgn',3,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.p1claimseq,'p1claimseq',3,6]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.p1ambkqu,'p1ambkqu',1,1]
+     ['lookup("f_claim_transaction.reduced").sbm_dt','sbm_dt',1,1]
+     ['lookup("f_claim_transaction.reduced").carrier_sk','carrier_sk',1,1]
+     ['lookup("f_claim_transaction.reduced").cag_sk','cag_sk',1,1]
+     ['lookup("f_claim_transaction.reduced").mbr_sk','mbr_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) f_clm_trx_mn_claim_nbr = fail_if_error(in0.p1claimnbr);
+let decimal("\x01",0) f_clm_trx_mn_claim_seq_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_claim_stat_id = fail_if_error(in0.p1status);
+let decimal("\x01",0) f_clm_trx_mn_cag_sk;
+let decimal("\x01",0) f_clm_trx_mn_mbr_sk;
+let decimal("\x01",0) f_clm_trx_mn_injectable_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_clt_formulary_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_risk_pool_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_prior_auth_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_rxsol_formulary_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_dmr_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_custom_client_ind_sk = -1;
+let decimal("\x01",0) f_clm_trx_mn_claim_origination_code_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_injectable_ind = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 6, 1) == " ") 'Z' 
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 6, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_clt_formulary_flg = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 2, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 2, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_risk_pool_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 3, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 3, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_prior_auth_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_rxsol_formulary_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 7, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 7, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_claim_origin_cd = fail_if_error(in0.p1clmorgn);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_ntpn_ind = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 5, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 5, 1), 'Z'));
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_clm_trx_mn_reported_gap_discount_amt = fail_if_error(in0.p1ambkqu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_dmr_ind = fail_if_error(in0.p1reimburs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_custom_client_ind = fail_if_error(first_defined(if(string_filter_out(in0.p1clientd3,"*") == 'PS1245')
+string_substring(string_filter_out(in0.p1clientd3,"*"), 1, 1)
+else
+'Z', 'Z'));
+let date("YYYYMMDD")("\x01") f_clm_trx_mn_sbm_dt;
+let decimal("\x01",0) f_clm_trx_mn_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) f_clm_trx_mn_carrier_sk;
+let decimal("\x01",0) f_clm_trx_mn_claim_nbr_encrp;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_trx_mn_prior_auth_id_encrp;
+let decimal("\x01",0) f_clm_trx_mn_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=1) clm_orgn_cd_clam_origin_cd = fail_if_error(in0.p1clmorgn);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cst_clnt_ind_custom_client_ind = fail_if_error(first_defined(if(string_filter_out(in0.p1clientd3,"*") == 'PS1245')
+string_substring(string_filter_out(in0.p1clientd3,"*"), 1, 1)
+else
+'Z', 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) dmrind_dmr_ind = fail_if_error(in0.p1reimburs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) frmlry_formulary_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 2, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 2, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) injct_ind_injectable_ind = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 6, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 6, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) prior_auth_prior_auth_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) risk_pool_risk_pool_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 3, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 3, 1), 'Z'));
+let string("\x01",charset="iso-8859-15", maximum_length=1) rxsol_frmlry_rxsol_formulary_id = fail_if_error(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 7, 1) == " ") 'Z'
+else string_substring(string_filter_out(in0.p1clientd3,"*"), 7, 1), 'Z'));
+let unicode string(int) v_claim_seq_nbr = fail_if_error(if(in0.p1claimseq<0)in0.p1claimseq else (1000 - in0.p1claimseq));
+
+
+
+/*   Default value   */
+f_clm_trx_mn_carrier_sk=fail_if_error(bzt_2_6c54cc0a_596c6c4b_7337_4(in0.p1claimnbr, v_claim_seq_nbr
+, in0.p1status, in0.dxf_src_sys_id).carrier_sk);
+
+/*   Default value   */
+f_clm_trx_mn_sbm_dt=fail_if_error(bzt_3_6c54cc0a_596c6c4b_7337_4(in0.p1claimnbr, v_claim_seq_nbr
+, in0.p1status, in0.dxf_src_sys_id).sbm_dt);
+
+/*   Default value   */
+f_clm_trx_mn_mbr_sk=fail_if_error(bzt_3_6c54cc0a_596c6c4b_7337_4(in0.p1claimnbr, v_claim_seq_nbr
+, in0.p1status, in0.dxf_src_sys_id).mbr_sk);
+
+/*   Default value   */
+f_clm_trx_mn_cag_sk=fail_if_error(bzt_3_6c54cc0a_596c6c4b_7337_4(in0.p1claimnbr, v_claim_seq_nbr
+, in0.p1status, in0.dxf_src_sys_id).cag_sk);
+
+/*   Default value   */
+f_clm_trx_mn_claim_seq_nbr=fail_if_error((decimal(''))(v_claim_seq_nbr));
+
+/*   Default value   */
+f_clm_trx_mn_prior_auth_id_encrp=fail_if_error(ff3_encrypt_idwdata(first_defined(if(string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1) == "") 'Z' else string_substring(string_filter_out(in0.p1clientd3,"*"), 4, 1), 'Z')));
+
+/*   Default value   */
+f_clm_trx_mn_claim_nbr_encrp=fail_if_error(if(in0.p1claimnbr>0) (decimal(''))(string_concat(string_substring((decimal(''))in0.p1claimnbr,1,2),ff3_encrypt_idwdata((decimal(''))in0.p1claimnbr)))
+else (decimal(''))(string_concat(string_substring((decimal(''))in0.p1claimnbr,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs((decimal(''))in0.p1claimnbr))))));
+
+  out0.f_clm_trx_mn.claim_nbr::f_clm_trx_mn_claim_nbr;
+  out0.f_clm_trx_mn.claim_seq_nbr::f_clm_trx_mn_claim_seq_nbr;
+  out0.f_clm_trx_mn.claim_stat_id::f_clm_trx_mn_claim_stat_id;
+  out0.f_clm_trx_mn.cag_sk::f_clm_trx_mn_cag_sk;
+  out0.f_clm_trx_mn.mbr_sk::f_clm_trx_mn_mbr_sk;
+  out0.f_clm_trx_mn.injectable_ind_sk::f_clm_trx_mn_injectable_ind_sk;
+  out0.f_clm_trx_mn.clt_formulary_sk::f_clm_trx_mn_clt_formulary_sk;
+  out0.f_clm_trx_mn.risk_pool_sk::f_clm_trx_mn_risk_pool_sk;
+  out0.f_clm_trx_mn.prior_auth_sk::f_clm_trx_mn_prior_auth_sk;
+  out0.f_clm_trx_mn.rxsol_formulary_sk::f_clm_trx_mn_rxsol_formulary_sk;
+  out0.f_clm_trx_mn.dmr_ind_sk::f_clm_trx_mn_dmr_ind_sk;
+  out0.f_clm_trx_mn.custom_client_ind_sk::f_clm_trx_mn_custom_client_ind_sk;
+  out0.f_clm_trx_mn.claim_origination_code_sk::f_clm_trx_mn_claim_origination_code_sk;
+  out0.f_clm_trx_mn.injectable_ind::f_clm_trx_mn_injectable_ind;
+  out0.f_clm_trx_mn.clt_formulary_flg::f_clm_trx_mn_clt_formulary_flg;
+  out0.f_clm_trx_mn.risk_pool_id::f_clm_trx_mn_risk_pool_id;
+  out0.f_clm_trx_mn.prior_auth_id::f_clm_trx_mn_prior_auth_id;
+  out0.f_clm_trx_mn.rxsol_formulary_id::f_clm_trx_mn_rxsol_formulary_id;
+  out0.f_clm_trx_mn.claim_origin_cd::f_clm_trx_mn_claim_origin_cd;
+  out0.f_clm_trx_mn.ntpn_ind::f_clm_trx_mn_ntpn_ind;
+  out0.f_clm_trx_mn.reported_gap_discount_amt::f_clm_trx_mn_reported_gap_discount_amt;
+  out0.f_clm_trx_mn.dmr_ind::f_clm_trx_mn_dmr_ind;
+  out0.f_clm_trx_mn.custom_client_ind::f_clm_trx_mn_custom_client_ind;
+  out0.f_clm_trx_mn.sbm_dt::f_clm_trx_mn_sbm_dt;
+  out0.f_clm_trx_mn.src_env_sk::f_clm_trx_mn_src_env_sk;
+  out0.f_clm_trx_mn.carrier_sk::f_clm_trx_mn_carrier_sk;
+  out0.f_clm_trx_mn.claim_nbr_encrp::f_clm_trx_mn_claim_nbr_encrp;
+  out0.f_clm_trx_mn.prior_auth_id_encrp::f_clm_trx_mn_prior_auth_id_encrp;
+  out0.f_clm_trx_mn.sec_flg::f_clm_trx_mn_sec_flg;
+  out0.clm_orgn_cd.clam_origin_cd::clm_orgn_cd_clam_origin_cd;
+  out0.cst_clnt_ind.custom_client_ind::cst_clnt_ind_custom_client_ind;
+  out0.dmrind.dmr_ind::dmrind_dmr_ind;
+  out0.frmlry.formulary_id::frmlry_formulary_id;
+  out0.injct_ind.injectable_ind::injct_ind_injectable_ind;
+  out0.prior_auth.prior_auth_id::prior_auth_prior_auth_id;
+  out0.risk_pool.risk_pool_id::risk_pool_risk_pool_id;
+  out0.rxsol_frmlry.rxsol_formulary_id::rxsol_frmlry_rxsol_formulary_id;
+  out0.*::in0.*;
+end;

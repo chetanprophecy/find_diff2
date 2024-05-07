@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rctadp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rctadp                  \nclmprdext     rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctadp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex1p')]
+SQL||||SELECT \nrctadp.*,\nrcex1p.rxclaimnbr,\nrcex1p.clmseqnbr,\nrcex1p.claimsts,\nrcex1p.carrierid,\nrcex1p.accountid,\nrcex1p.groupid,\nrcex1p.groupnbr,\nrcex1p.memberid,\nrcex1p.cardholder,\nrcex1p.datesbm,\nrcex1p.dtefilled\nFROM clmprdfil.rctadp  rctadp, \n     clmprdext.rcex1p  rcex1p\nWHERE rctadp.ACP2NB = rcex1p.rxclaimnbr \nAND rctadp.ACKEHS = rcex1p.clmseqnbr \nAND rctadp.ACMXI1 = (CASE WHEN rcex1p.claimsts='X' THEN 'P' ELSE rcex1p.claimsts END)
+DO_CLEAN||||1
+RUN_ID||||20190809000000
+DO_SOURCE||||0
+ENABLE_DEFAULT_RULES||||True

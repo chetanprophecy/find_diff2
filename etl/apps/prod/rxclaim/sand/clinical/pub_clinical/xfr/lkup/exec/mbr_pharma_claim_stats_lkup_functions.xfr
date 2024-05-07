@@ -1,0 +1,71 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/mbr_pharma_claim_stats_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/12/15  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_LOOKUP  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_LOOKUP     parameter;
+
+cli_string_t out :: get_mbr_pharma_claim_stats_lkup_path() inline =
+begin
+  out :: this_partition_path( PUB_CLINICAL_MFS_LOOKUP + '/experimental/mbr_pharma_claim_stats.dat.gz' );
+end;
+
+cli_string_t out :: get_mbr_pharma_claim_stats_indx_path(cli_string_t lkup_path) =
+begin
+  out :1: re_replace(lkup_path, '\\.dat\\.gz$', '.idx');
+end;
+
+/**************************************/
+/* Member Pharmacy Claim Stats Lookup */
+/**************************************/
+
+type mbr_pharma_claim_stats_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  mbr_pharma_claim_stats_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {cagm_hash};
+  
+  // ICFF variables
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 1;
+  int load_once()              = 1;
+  int only_last_key_instance() = 0;
+  int direct_addressed()       = 0;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let mbr_pharma_claim_stats_lkup_t GLKUP_MBR_PHARMA_CLAIM_STATS = allocate_with_nulls();
+
+mbr_pharma_claim_stats_lkup_t out :: load_mbr_pharma_claim_stats_lkup() =
+begin
+  if (GLKUP_MBR_PHARMA_CLAIM_STATS.id == lookup_not_loaded())
+  begin
+    let cli_string_t lkup_path = get_mbr_pharma_claim_stats_lkup_path();
+    let cli_string_t indx_path = get_mbr_pharma_claim_stats_indx_path(lkup_path);
+    
+    GLKUP_MBR_PHARMA_CLAIM_STATS = lookup_load(lkup_path, indx_path);
+  end;
+  
+  out :: GLKUP_MBR_PHARMA_CLAIM_STATS;
+end;
+
+mbr_pharma_claim_stats_t out :: get_mbr_pharma_claim_stats(cagm_hash) =
+begin
+  let lkup = load_mbr_pharma_claim_stats_lkup();
+  out :: lookup(lkup, cagm_hash);
+//out :: allocate_with_nulls();
+end;

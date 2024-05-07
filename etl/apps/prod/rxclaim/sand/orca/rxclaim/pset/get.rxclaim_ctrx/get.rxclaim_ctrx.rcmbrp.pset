@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcmbrp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmbrp                  ababcd,abaacd,abaccd,abadcd,abaqtx,abartx,abastx,abaast,abajdt,aba1tx,aba2tx,ablqio,abaytx,abaztx,aba0tx,abhkt1,abhlt1,abpzc2,ababnb,abaxtx,abasdt,abaist,aba0nb,abodst,aboest,abqbcd,abogst,abqgcd,abofst,abqccd,abqdcd,abd2dt,abb5s2,abb7s2,abdmn1,abgddt,abc4s2,abe1hj,abancd,abakvn,abc2dt,abadtm,abalvn,abadvn,abbmdt,ababtm,abaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcmbrp')]
+WHERE_CLAUSE||||$[if (DAILY_FLAG != "Y")   if (CARRIER_ID_MIN == "*")    "WHERE rcmbrp.abbmdt  between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS"   else    "WHERE  rcmbrp.abaacd between '" + CARRIER_ID_MIN + "' AND '" + CARRIER_ID_MAX + "'  and rcmbrp.abbmdt  between " +      string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS" else  if (START_CHANGES_TIME != '')     "WHERE rcmbrp.abbmdt >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +     " AND rcmbrp.abbmdt  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"   else     "WHERE rcmbrp.abbmdt >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +     " AND rcmbrp.abbmdt  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"  ]
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1
+OBFUSCATE_FIELDS_LIST||||aba1tx,aba2tx,ablqio,abaytx,abaztx,aba0tx,abhkt1,abhlt1,ababnb,abe1hj
+ENABLE_DEFAULT_RULES||||True

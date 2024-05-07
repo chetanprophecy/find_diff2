@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcdc6p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcdc6p                  ahnehc,ahaihs,ahh5h9,ahh6h9,ahnnhc,ahh7h9,aho2h9,ahc8hv,ahizh9,ahhuh9,ahhxh9,ahskhy,ahe4hi,aht4ht,ahtnaj,ahn9ak,ahdehp,ahzjqu,ahslar,ahqdvg,ahakvn,ahc2dt,ahadtm,ahalvn,ahadvn,ahbmdt,ahabtm,ahaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_LOOKUP||||0
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rcdc6p.ahnnhc IS NOT NULL AND rcdc6p.ahnnhc NOT IN ("+ $CARRIER_EXCL +") AND rcdc6p.ahbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \r\n    " AND rcdc6p.ahbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rcdc6p.ahnnhc IS NOT NULL AND rcdc6p.ahnnhc NOT IN ("+ $CARRIER_EXCL +") AND rcdc6p.ahbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \r\n    " AND rcdc6p.ahbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

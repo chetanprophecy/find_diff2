@@ -1,0 +1,7 @@
+!prototype|P|||$AI_PLAN/run/run.all.plan
+RUN_GROUP||||ctrx_dim.generated_datalake
+RUN_ID_FILE||||$[begin\r\nlet string("") v_run_group=string_split(RUN_GROUP,".")[0];\r\nresult :: PUB_DATAHUB_SERIAL + "/" + "run.rxclaim.integration."+ string_downcase(v_run_group) + "."+ AI_PHASE + ".run_id.dat" ;\r\nend ]
+CTL_PROCESSED_LIST_FILE_NM||||$["processed.ctl." + RUN_GROUP_DATALAKE + "." + (string("")) RUN_ID + ".dat" ]
+START_CHANGES_TIME||||$[ string_filter_out(read_file(START_CHANGES_FILE),"\\r\\n") ]
+START_CHANGES_FILE||||$[ if (RUN_GROUP !="") \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE + "." + RUN_GROUP + ".prev_end_changes_time.txt"\r\n   else \r\n      AI_SERIAL +"/plan_time/" + AI_PHASE +"." + RUN_GROUP + ".prev_end_changes_time.txt"\r\n// You must make sure that this file exists before running this plan.  Initialize it with:\r\n// echo "" > "$AI_SERIAL/../dev.prev_end_changes_time.txt"\r\n// where dev, qa, uat, or prod are the AI_PHASE for this execution\r\n]
+RUN_PLAN||||$[AI_PLAN + "/run/run." +RUN_GROUP + ".plan" ]

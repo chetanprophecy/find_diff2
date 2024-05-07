@@ -1,0 +1,117 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.phmcy_prnt_o.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.phmcy_prnt_o.parent_org_st,[passthrough],in0.ogosia]
+  [out0.phmcy_prnt_o.parent_org_addr_ln2,[passthrough],in0.ognqij]
+  [out0.phmcy_prnt_o.parent_org_addr_ln1,[passthrough],in0.ognpij]
+  [out0.phmcy_prnt_o.parent_org_id,[passthrough],in0.ogz1he]
+  [out0.phmcy_prnt_o.parent_org_obsol_dt,[transform],in0.ogxkhg]
+  [out0.phmcy_prnt_o.parent_org_sk,[transform],]
+  [out0.phmcy_prnt_o.parent_org_city,[passthrough],in0.ognrij]
+  [out0.phmcy_prnt_o.parent_org_prov_id,[passthrough],in0.ogz8he]
+  [out0.phmcy_prnt_o.parent_org_phn_ext,[passthrough],in0.ogz3he]
+  [out0.phmcy_prnt_o.parent_org_zip_cd,[passthrough],in0.ogotij]
+  [out0.phmcy_prnt_o.parent_org_stat_cd,[passthrough],in0.ogotia]
+  [out0.phmcy_prnt_o.parent_org_phn_no,[passthrough],in0.ogz2he]
+  [out0.phmcy_prnt_o.parent_org_fax,[passthrough],in0.ogz4he]
+  [out0.phmcy_prnt_o.parent_org_nm,[passthrough],in0.ognoij]
+  [out0.phmcy_prnt_o.parent_org_email,[passthrough],in0.ogz7he]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.phmcy_prnt_o.src_env_sk,'phmcy_prnt_o.src_env_sk',1,0]
+     [out0.phmcy_prnt_o.parent_org_st,'phmcy_prnt_o.parent_org_st',1,0]
+     [out0.phmcy_prnt_o.parent_org_addr_ln2,'phmcy_prnt_o.parent_org_addr_ln2',1,0]
+     [out0.phmcy_prnt_o.parent_org_addr_ln1,'phmcy_prnt_o.parent_org_addr_ln1',1,0]
+     [out0.phmcy_prnt_o.parent_org_id,'phmcy_prnt_o.parent_org_id',1,0]
+     [out0.phmcy_prnt_o.parent_org_obsol_dt,'phmcy_prnt_o.parent_org_obsol_dt',1,0]
+     [out0.phmcy_prnt_o.parent_org_sk,'phmcy_prnt_o.parent_org_sk',1,0]
+     [out0.phmcy_prnt_o.parent_org_city,'phmcy_prnt_o.parent_org_city',1,0]
+     [out0.phmcy_prnt_o.parent_org_prov_id,'phmcy_prnt_o.parent_org_prov_id',1,0]
+     [out0.phmcy_prnt_o.parent_org_phn_ext,'phmcy_prnt_o.parent_org_phn_ext',1,0]
+     [out0.phmcy_prnt_o.parent_org_zip_cd,'phmcy_prnt_o.parent_org_zip_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.phmcy_prnt_o.parent_org_stat_cd,'phmcy_prnt_o.parent_org_stat_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.phmcy_prnt_o.parent_org_phn_no,'phmcy_prnt_o.parent_org_phn_no',1,0]
+     [out0.phmcy_prnt_o.parent_org_fax,'phmcy_prnt_o.parent_org_fax',1,0]
+     [out0.phmcy_prnt_o.parent_org_nm,'phmcy_prnt_o.parent_org_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.phmcy_prnt_o.parent_org_email,'phmcy_prnt_o.parent_org_email',1,0]
+  ]
+  impacts:
+  [
+     [in0.ogotia,'ogotia',1,1]
+     [in0.ogxkhg,'ogxkhg',1,1]
+     [in0.ogz4he,'ogz4he',1,1]
+     [in0.ognqij,'ognqij',1,1]
+     [in0.ognoij,'ognoij',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.ogz2he,'ogz2he',1,1]
+     [in0.ogz7he,'ogz7he',1,1]
+     [in0.ogotij,'ogotij',1,1]
+     [in0.ogosia,'ogosia',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.ogz3he,'ogz3he',1,1]
+     [in0.ogz8he,'ogz8he',1,1]
+     [in0.ognpij,'ognpij',1,1]
+     [in0.ognrij,'ognrij',1,1]
+     [in0.ogz1he,'ogz1he',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) phmcy_prnt_o_parent_org_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) phmcy_prnt_o_parent_org_id = fail_if_error(in0.ogz1he);
+let string("\x01",charset="iso-8859-15", maximum_length=35) phmcy_prnt_o_parent_org_nm = fail_if_error(in0.ognoij);
+let string("\x01",charset="iso-8859-15", maximum_length=55) phmcy_prnt_o_parent_org_addr_ln1 = fail_if_error(in0.ognpij);
+let string("\x01",charset="iso-8859-15", maximum_length=55) phmcy_prnt_o_parent_org_addr_ln2 = fail_if_error(in0.ognqij);
+let string("\x01",charset="iso-8859-15", maximum_length=30) phmcy_prnt_o_parent_org_city = fail_if_error(in0.ognrij);
+let string("\x01",charset="iso-8859-15", maximum_length=2) phmcy_prnt_o_parent_org_st = fail_if_error(in0.ogosia);
+let string("\x01",charset="iso-8859-15", maximum_length=9) phmcy_prnt_o_parent_org_zip_cd = fail_if_error(in0.ogotij);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phmcy_prnt_o_parent_org_phn_no = fail_if_error(in0.ogz2he);
+let string("\x01",charset="iso-8859-15", maximum_length=5) phmcy_prnt_o_parent_org_phn_ext = fail_if_error(in0.ogz3he);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phmcy_prnt_o_parent_org_fax = fail_if_error(in0.ogz4he);
+let string("\x01",charset="iso-8859-15", maximum_length=50) phmcy_prnt_o_parent_org_email = fail_if_error(in0.ogz7he);
+let string("\x01",charset="iso-8859-15", maximum_length=10) phmcy_prnt_o_parent_org_prov_id = fail_if_error(in0.ogz8he);
+let date("YYYYMMDD")("\x01") phmcy_prnt_o_parent_org_obsol_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) phmcy_prnt_o_parent_org_stat_cd = fail_if_error(in0.ogotia);
+let decimal("\x01",0) phmcy_prnt_o_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Default value   */
+phmcy_prnt_o_parent_org_obsol_dt=fail_if_error(date_check(in0.ogxkhg));
+
+  out0.phmcy_prnt_o.parent_org_sk::phmcy_prnt_o_parent_org_sk;
+  out0.phmcy_prnt_o.parent_org_id::phmcy_prnt_o_parent_org_id;
+  out0.phmcy_prnt_o.parent_org_nm::phmcy_prnt_o_parent_org_nm;
+  out0.phmcy_prnt_o.parent_org_addr_ln1::phmcy_prnt_o_parent_org_addr_ln1;
+  out0.phmcy_prnt_o.parent_org_addr_ln2::phmcy_prnt_o_parent_org_addr_ln2;
+  out0.phmcy_prnt_o.parent_org_city::phmcy_prnt_o_parent_org_city;
+  out0.phmcy_prnt_o.parent_org_st::phmcy_prnt_o_parent_org_st;
+  out0.phmcy_prnt_o.parent_org_zip_cd::phmcy_prnt_o_parent_org_zip_cd;
+  out0.phmcy_prnt_o.parent_org_phn_no::phmcy_prnt_o_parent_org_phn_no;
+  out0.phmcy_prnt_o.parent_org_phn_ext::phmcy_prnt_o_parent_org_phn_ext;
+  out0.phmcy_prnt_o.parent_org_fax::phmcy_prnt_o_parent_org_fax;
+  out0.phmcy_prnt_o.parent_org_email::phmcy_prnt_o_parent_org_email;
+  out0.phmcy_prnt_o.parent_org_prov_id::phmcy_prnt_o_parent_org_prov_id;
+  out0.phmcy_prnt_o.parent_org_obsol_dt::phmcy_prnt_o_parent_org_obsol_dt;
+  out0.phmcy_prnt_o.parent_org_stat_cd::phmcy_prnt_o_parent_org_stat_cd;
+  out0.phmcy_prnt_o.src_env_sk::phmcy_prnt_o_src_env_sk;
+  out0.*::in0.*;
+
+end;

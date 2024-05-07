@@ -1,0 +1,67 @@
+include "/~$PUB_DXF_XFR/dataset_id.xfr";
+include "/~$PUB_DXF_XFR/sys_id.xfr";
+include "/~$PUB_DXF_XFR/standardize.xfr";
+include "/~$PUB_DXF_DML/dxf_job_event_text.dml";
+
+let string("") run_user_id = "aiorcrxc";/*$(echo '"'`whoami`'"')  ;*/
+let start_time = now();
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") v_START_CHANGES_TIME=if(is_blank($"START_CHANGES_TIME") or is_null($"START_CHANGES_TIME")) (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS")) now()
+                      else (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME" ;
+                      
+                      
+
+out :: reformat(in) =
+begin
+
+let decimal("") dxf_src_sys_id=in.src_env_sk;
+  out.* :: in.*;
+  
+  out.(*, name == "cdc_ts" ) :5: (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  v_START_CHANGES_TIME ;
+  out.(*, name == "cdc_flag"):6: "N";
+  out.(*, name == "rxt_src_envrt_id") :7: (string(""))(decimal(""))dxf_src_sys_id;   // Added for LCTRX direct access migration.
+  out.(*, name == "rxt_src_envrt_nm") :8:  system_number_to_name(dxf_src_sys_id);
+  out.(*, name == "rxt_create_uid") :9: run_user_id;
+  out.(*, name == "rxt_create_run_id") :10: (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS")) $"END_CHANGES_TIME";
+  out.(*, name == "rxt_create_dttm") :11: (datetime("YYYYMMDDHH24MISS"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME";
+  
+  out.dxf_src_sys_id :: dxf_src_sys_id;
+  
+out.g3gtp4::in.gel_copay_8;
+out.g3pgc2::in.gel_client_benefit_code;
+out.g3bws2::in.gel_status;
+out.g3l5pr::in.gel_copay_3;
+out.g3grp4::in.gel_copay_6;
+
+out.g3cnda :: (decimal("\x01,0"))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.gel_thru_date;
+
+out.g3accd::in.acc_account_id;
+out.rxt_src_envrt_id::in.src_env_sk;
+
+
+
+out.g3c0n1::in.gel_seq_nbr;
+out.g3cmda::(decimal("\x01,0"))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.gel_eff_date;
+out.g3l4pr::in.gel_copay_generic;
+
+
+out.g3aacd::in.car_carrier_id;
+
+out.g3aecd::in.plan_code;
+out.g3l6pr::in.gel_copay_4;
+out.g3gqp4::in.gel_copay_5;
+out.g3l3pr::in.gel_copay_brand;
+
+out.g3akdt :: (decimal("\x01,0"))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.plan_eff_date;
+out.g3gsp4::in.gel_copay_7;
+out.g3adcd ::in.grp_group_id;
+
+
+out.g3c2dt :: (decimal("\x01,0"))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.add_time;
+
+
+out.g3advn :: in.chg_user_name;
+out.g3bmdt :: (decimal("\x01,0"))(string(""))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in.chg_date;
+out.g3abtm :: (decimal("\x01,0"))(string(""))(datetime("HH24MISS"))(datetime("HH24:MI:SS"))in.chg_time;
+out.g3aevn :: in.chg_program_name;
+
+end;

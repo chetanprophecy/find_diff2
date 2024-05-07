@@ -1,0 +1,58 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+out.cpp_pricing_schedule_name :: string_filter_out(in.awv3hc," ");
+out.cpd_price_id :: in.awylhx;
+out.cpd_seq_nbr :: in.awd0hs;
+out.cpd_record_status :: in.awqph9;
+out.cpd_from_date :: in.awnyhg;
+out.cpd_thru_date :: in.awnzhg;
+out.dc3_drug_cost_sched_name :: in.awnchc;
+out.dc3_schd_brnd_90day_spply :: in.awxchc;
+out.dc3_schd_gen_30_day_spply :: in.awxdhc;
+out.dc3_schd_gen_90_day_spply :: in.awxehc;
+out.nd1_ndc_list_name :: string_filter_out(in.awq7hb," ");
+out.pll_pharm_netwk_list_name :: in.awzwc3;
+out.snh_super_network_id :: in.awoohb;
+out.snh_seq_nbr :: in.awn4hr;
+out.phn_pharmacy_networkid :: in.aweycd;
+out.phn_seq_nbr :: in.awfsnb;
+out.cpd_brand_dispense_fee :: in.awymhx;
+out.cpd_gen_dispensing_fee :: in.awynhx;
+out.cpd_preferred_status_rtl :: in.awqqh9;
+out.cpd_pharmacy_search_type :: in.awqrh9;
+out.cpd_vaccine_admin_fee :: in.aweahz;
+out.dc3_schd_brnd_60day_spply :: in.awycho;
+out.dc3_schd_gen_60_day_spply :: string_filter_out(in.awydho," ");
+out.dc3_schd_brnd_30ds_mail :: string_filter_out(in.awyeho," ");
+out.dc3_schd_brnd_60ds_mail :: string_filter_out(in.awyfho," ");
+out.dc3_schd_brnd_90ds_mail :: string_filter_out(in.awygho," ");
+out.dc3_schd_gen_30ds_mail :: string_filter_out(in.awyhho," ");
+out.dc3_schd_gen_60ds_mail :: string_filter_out(in.awyiho," ");
+out.dc3_schd_gen_90ds_mail :: string_filter_out(in.awyjho," ");
+out.cpd_preferred_status_mail :: in.awqsam;
+out.cpd_floor_pricing :: in.awk4qu;
+out.cnl_list_id :: in.awylho;
+out.add_time :: in.awadtm;
+out.add_program_name :: in.awalvn;
+out.chg_time :: in.awabtm;
+out.chg_program_name :: in.awaevn;
+out.add_user_name :: in.awakvn;
+out.add_date :: in.awc2dt;
+out.chg_user_name :: in.awadvn;
+out.chg_date :: in.awbmdt;
+/*out.record_load_datetime :: 'current_timestamp()';
+out.record_update_datetime :: 'current_timestamp()';
+out.record_load_reason :: '00';
+out.record_update_reason :: '00';
+out.record_load_crm_ref_id :: 'undefined';
+out.record_update_crm_ref_id :: 'undefined'; */
+out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+out.rxt_create_uid :: 'app_orca_rxclaim';
+out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+out.rxt_rec_stat_cd :: '';
+out.* :: in.*;
+end;
+

@@ -1,0 +1,736 @@
+<AppConfTempl name="Publish File (Distribution)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+out :: get_partitioning_scheme_code(partitioning_scheme) = 
+begin
+      out :: switch(partitioning_scheme)
+        case "No re-partitioning" : "NPNS";
+        case "Partition by Round Robin" : "PBRR";
+        case "Partition by Key" : "PBK";
+        case "Partition by Key and Sort" : "PBKS";
+        case "Sort" : "SORT";
+        default : "";
+      end;
+end
+
+out :: check_dml_ends_in_newline(dml)=
+begin
+  let fields = record_info(dml);
+  let string("|") result = "";
+  if(length_of(fields) &gt; 0)
+  begin
+    let field = fields[length_of(fields)-1];
+    let delim = field.dml_type;
+    if(not string_index(delim, "\\n")) result = "Last field of DML (" + field.name + ") is not newline delimited";
+  end
+  else
+    result = "No fields in DML!";
+  out :: result;
+end
+
+/* This function had to be added because some of the boolean graph parameters are being treated as
+   string by express it - probably a bug. This happens in some components and not in others.
+   */
+out :: is_false(str)=
+begin
+  out :: string_prefix(str, 1) member [vector "0", "F", "f"];
+end
+
+out :: is_true(str)=
+begin
+  out :: not is_false(str);
+end
+
+out :: check_excel_dml(dml) =
+begin
+  let fields = record_info(dml);
+  let string("") result = "";
+  let i = 0;
+  let num_of_fields = length_of(fields) - 1;
+  while(i &lt; num_of_fields - 1)
+  begin
+     if(string_index(fields[i].dml_type, "\\t") == 0 &amp;&amp; result == "")
+        result = "Field Delimiter is not set to '\\t'";
+     i = i + 1;
+  end
+out :: if(result=="" &amp;&amp; string_index(fields[num_of_fields].dml_type, "\\0") == 0) "Last field Delimiter is not set to '\\0'" else result;
+end</TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="publish" prototype_path="${AI_PSET}/distribute.publish.file.interim.pset">
+        <PdlExpression name="AI_PSET" expression="$AI_PSET"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <FlowData name="xls_bre_out" source_port="/Write_EXCEL_file_s_Sheet_s_/EXCEL_BRE_Default_Mapping/out0" dest_port="/Write_EXCEL_file_s_Sheet_s_/Sort_on_filename_sheetname/in"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="error" type="string"/>
+      <Variable name="registration_file_error" type="string"/>
+      <Variable name="paritioning_scheme" type="string"/>
+      <Variable name="configuration_valid" type="string"/>
+      <Variable name="create_header" type="boolean"/>
+      <Variable name="header_ruleset" type="ruleset"/>
+      <Variable name="trailer_ruleset" type="ruleset"/>
+      <Variable name="do_serial_sort" type="boolean"/>
+      <Variable name="target_file_type" type="string"/>
+      <Variable name="xls_mapping_ruleset" type="ruleset"/>
+    </Variables>
+    <Eme name="eme"/>
+    <SharedFile name="load_ready_dml" path="" is_appconf_owned="true"/>
+    <Variables name="checks">
+      <Variable name="header_dml_error" type="string"/>
+      <Variable name="trailer_dml_error" type="string"/>
+      <Variable name="target_dml_error" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check Configuration Name">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in.configuration_name,".")) not member [vector 4, 5, 6, 7])
+        "Configuration should be named like &lt;i&gt;publish.file.target_system.target_entity&lt;/i&gt;\n" +
+        "or &lt;i&gt;publish.file.target_system.target_entity.ids_source_name&lt;/i&gt;\n" + 
+        "or &lt;i&gt;publish.file.target_system.target_entity.ilm.ilm_name&lt;/i&gt;\n" + 
+        "or &lt;i&gt;publish.file.target_system.target_entity.ilm.ilm_name.variation&lt;/i&gt;\n" +
+        "Close and recreate configuration"
+      else if(!starts_with(built_in, "publish.file."))
+        "Configuration name should begin with &lt;i&gt;publish.file.&lt;/i&gt;\n" +
+        "Close and recreate configuration"
+      else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[2], "[A-Za-z0-9_]", "") != "" )
+        "Please remove invalid characters from datamart name\n" +
+        "Close and recreate configuration"
+      else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" )
+        "Please remove invalid characters from table name\n" +
+        "Close and recreate configuration"
+      else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 5 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "ilm")
+        "Please remove invalid characters from ids source name.\n" +
+        "Close and recreate configuration"
+      else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 6 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[4] == "ilm") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from ilm name\n" +
+        "Close and recreate configuration"
+      else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 7 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[4] == "ilm" )&amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[6], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from variation\n" +
+        "Close and recreate configuration"
+      else
+        ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.publish.DO_PROCESS_ILM_EVENTS == "0" and length_of(string_split(built_in, ".")) == 4)
+        "pset/publish.file." + proj.publish.TARGET_SYSTEM + "/publish.file." + proj.publish.TARGET_NAME + ".pset"
+      else if(proj.publish.DO_PROCESS_ILM_EVENTS == "0" and length_of(string_split(built_in, ".")) == 5)
+        "pset/publish.file." + proj.publish.TARGET_SYSTEM + "/publish.file." + proj.publish.TARGET_NAME + "." + string_split(proj.publish.FINAL_IDS_SOURCE_NAME, ".")[1] + ".pset"
+      else if(proj.publish.DO_PROCESS_ILM_EVENTS == "0" &amp;&amp; proj.publish.VARIATION != "")
+        "pset/publish.file." + proj.publish.TARGET_SYSTEM + "/publish.file." + proj.publish.TARGET_NAME + "." + proj.publish.ILM_NAME + "." + proj.publish.VARIATION + ".pset"
+      else 
+        "pset/publish.file." + proj.publish.TARGET_SYSTEM + "/publish.file." + proj.publish.TARGET_NAME + "." + proj.publish.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.publish" property="relative_path"/>
+      <Condition is_expression="true">vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[2] + "." + string_split(built_in, ".")[3]</SourceValue>
+      <TargetValue reference="proj.publish.TARGET_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[4], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.publish.DO_PROCESS_ILM_EVENTS"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[5], "")</SourceValue>
+      <TargetValue reference="proj.publish.ILM_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[6], "")</SourceValue>
+      <TargetValue reference="proj.publish.VARIATION"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(string_split(built_in, ".")) &gt; 4)
+            (string_split(built_in, ".")[4])            
+      else string_split(built_in, ".")[3]</SourceValue>
+      <TargetValue reference="proj.publish.IDS_SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.publish.DO_PARTITION == "1") get_partitioning_scheme_code(vars.paritioning_scheme) 
+else if(vars.do_serial_sort) "SORT"
+else "GTHR"</SourceValue>
+      <TargetValue reference="proj.publish.PARTITIONING_SCHEME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.error != "") vars.error
+else if(vars.registration_file_error != "") vars.registration_file_error
+else if(proj.publish.DO_PARTITION == "1" and vars.paritioning_scheme == "") "Partitioning Scheme not selected"
+else if(proj.publish.OUTPUT_FILE_TYPE == "") "Output File Type is not supported"
+else ""</SourceValue>
+      <TargetValue reference="vars.configuration_valid"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.publish.LR_FILE_DML</SourceValue>
+      <TargetValue reference="load_ready_dml"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.publish.AI_DML + "/" + proj.publish.TARGET_SYSTEM + "/publish/load_ready." + proj.publish.TARGET_ENTITY + ".dml"</SourceValue>
+      <TargetValue reference="load_ready_dml"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"rollup"</SourceValue>
+      <TargetValue reference="vars.header_ruleset" property="ruleset_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">expand_type(read_type(proj.publish.TARGET_DML))</SourceValue>
+      <TargetValue reference="vars.header_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.publish.HEADER_DML"/>
+      <TargetValue reference="vars.header_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.header_ruleset"/>
+      <TargetValue reference="proj.publish.HEADER_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"rollup"</SourceValue>
+      <TargetValue reference="vars.trailer_ruleset" property="ruleset_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">expand_type(read_type(proj.publish.TARGET_DML))</SourceValue>
+      <TargetValue reference="vars.trailer_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.publish.TRAILER_DML"/>
+      <TargetValue reference="vars.trailer_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.trailer_ruleset"/>
+      <TargetValue reference="proj.publish.TRAILER_XFR"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">check_dml_ends_in_newline(proj.publish.HEADER_DML)</SourceValue>
+      <TargetValue reference="checks.header_dml_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">check_dml_ends_in_newline(proj.publish.TRAILER_DML)</SourceValue>
+      <TargetValue reference="checks.trailer_dml_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.publish.OUTPUT_FILE_TYPE != "xls_file")
+    check_dml_ends_in_newline(expand_type(read_type(proj.publish.TARGET_DML)))
+else
+    check_excel_dml(expand_type(read_type(proj.publish.TARGET_DML)))</SourceValue>
+      <TargetValue reference="checks.target_dml_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.publish.REGISTRATION_DETAILS_VEC == "[vector]") "Registration Entry is missing." else ""</SourceValue>
+      <TargetValue reference="vars.registration_file_error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.publish.TARGET_LAYOUT == "mfs") "mfs_file"
+else if(proj.publish.TARGET_LAYOUT == "serial" &amp;&amp; vars.target_file_type == "flat_file") "flat_file"
+else if(proj.publish.TARGET_LAYOUT == "serial" &amp;&amp; vars.target_file_type == "csv_file") "csv_file"
+else if(proj.publish.TARGET_LAYOUT == "serial" &amp;&amp; vars.target_file_type == "multi_csv_files") "multi_csv_files"
+else if(proj.publish.TARGET_LAYOUT == "serial" &amp;&amp; vars.target_file_type == "xls_file") "xls_file"
+else ""</SourceValue>
+      <TargetValue reference="proj.publish.OUTPUT_FILE_TYPE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">read_file(proj.publish.TARGET_DML)</SourceValue>
+      <TargetValue reference="vars.xls_mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.publish.xls_bre_out" property="record_format"/>
+      <TargetValue reference="vars.xls_mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(is_true(proj.publish.DO_XLS_MAPPING)) vars.xls_mapping_ruleset else ""</SourceValue>
+      <TargetValue reference="proj.publish.XLS_MAPPING_XFR_BRE"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.publish"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.error == "" and vars.configuration_valid == ""</Enabled>
+        <ErrorMessage>You must save this configuration before running it. The run button will be disabled if Appconf naming errors are found or if partitioning scheme is not selected for mfs target.</ErrorMessage>
+        <Description is_expression="true">if(not (vars.error == ""))
+        "You must SAVE AND REFRESH this configuration before running it. The run button will be disabled if Appconf naming errors are found or if partitioning scheme is not selected for mfs target." 
+        else "Map load ready file to target and publish target file."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+        <Box>
+          <Label>Registration File Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff00000'&gt;** Note: File Registration entry is missing... Please add to proceed.&lt;/font&gt;"</Label>
+              <Description is_expression="true">"Please add entry to \"register.file." + proj.publish.TARGET_SYSTEM + "\" configuration of Template - \"Register Distribution File Targets (Distribution IDS Events)\""</Description>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.registration_file_error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>10</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Target System:&lt;/b&gt; " + proj.publish.TARGET_SYSTEM</Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Entity:</b> " + proj.publish.TARGET_ENTITY]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Dataset Type:</b> " + proj.publish.TARGET_DATASET_TYPE]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Layout:</b> " + proj.publish.TARGET_LAYOUT]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Compression:</b> " + (proj.publish.TARGET_IS_COMPRESSED == "1" ? "True" : "False")]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Publish Server Type:</b> " + proj.publish.PUBLISH_SERVER_TYPE]]></Label>
+              <Style>inner</Style>
+              <UIElements/>
+            </Box>
+            <CheckBox>
+              <Label>Create Control File</Label>
+              <SourceTargetValue reference="proj.publish.DO_CNTL"/>
+            </CheckBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; vars.registration_file_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label/>
+          <UIElements>
+            <TextLabel>
+              <Label>&lt;font color='#ff0000'&gt; ** Note: Before you go on, please choose Output File Type. **&lt;/font&gt;</Label>
+              <Description>Without a output file type, configuration won't understand which format you are planning to generate output.</Description>
+              <Visible is_expression="true">vars.target_file_type not member [vector "flat_file", "csv_file", "multi_csv_files", "xls_file"]</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;** NOTE: Limit TARGET_DML with fields to display in EXCEL. \nfilename, sheet are added by ETL automatically.**&lt;/b&gt;"</Label>
+              <Description>Excel File Name is represented using "filename" and Excel Sheet Name is represented using "sheet". These fields are added by ETL if we choose EXCEL as target. Developer should write necessary logic for these fields in BRE mapping provided. Refer Help section of the template on how to write code for these two fields.</Description>
+              <Visible is_expression="true">proj.publish.OUTPUT_FILE_TYPE == "xls_file"</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff0000'&gt;** Validate TARGET_DML - " + checks.target_dml_error + ". ** &lt;/font&gt;"</Label>
+              <Visible is_expression="true">proj.publish.OUTPUT_FILE_TYPE == "xls_file" &amp;&amp; checks.target_dml_error != ""</Visible>
+            </TextLabel>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>flat_file</ConstantValue>
+                <ConstantValue>csv_file</ConstantValue>
+                <ConstantValue>multi_csv_files</ConstantValue>
+                <ConstantValue>xls_file</ConstantValue>
+              </Choices>
+              <Label>Choose Output File Type</Label>
+              <SourceTargetValue reference="vars.target_file_type"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>Serial File</ConstantValue>
+                <ConstantValue>CSV File</ConstantValue>
+                <ConstantValue>Multiple CSV Files</ConstantValue>
+                <ConstantValue>Excel File</ConstantValue>
+              </ChoiceDisplayNames>
+              <BlankValueDisplayName>Please Select</BlankValueDisplayName>
+            </ComboBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">proj.publish.DO_PARTITION != "1" &amp;&amp; vars.error == "" &amp;&amp; vars.registration_file_error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Partitioning Information</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>No re-partitioning</ConstantValue>
+                <ConstantValue>Partition by Round Robin</ConstantValue>
+                <ConstantValue>Partition by Key</ConstantValue>
+                <ConstantValue>Partition by Key and Sort</ConstantValue>
+                <ConstantValue>Sort</ConstantValue>
+              </Choices>
+              <Label>Pick the partitioning scheme</Label>
+              <SourceTargetValue reference="vars.paritioning_scheme"/>
+            </RadioButtons>
+            <Popup>
+              <Label>Optional: Pick Partitioning Key</Label>
+              <Title>Pick Partitioning Key...</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Pick Partitioning Key</Label>
+                  <RecordFormat is_expression="true">read_file(proj.publish.TARGET_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.publish.PARTITIONING_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Description>By default patitioning key is the same as IDS natural key; please modify if required.</Description>
+              <Style>key</Style>
+              <Visible is_expression="true">proj.publish.PARTITIONING_SCHEME member [vector "PBK", "PBKS"]</Visible>
+            </Popup>
+            <Popup>
+              <Label>Optional: Pick Sort Key</Label>
+              <Title>Pick Sort Key...</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Pick Sort Key</Label>
+                  <RecordFormat is_expression="true">read_file(proj.publish.TARGET_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.publish.SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Description>By default sort key is the same as the partitioning; please modify if required.</Description>
+              <Style>key</Style>
+              <Visible is_expression="true">proj.publish.PARTITIONING_SCHEME member [vector "SORT", "PBKS"]</Visible>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">proj.publish.DO_PARTITION == "1" and vars.error == "" and vars.registration_file_error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Serial Information</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Sort Data (Optional)</Label>
+              <SourceTargetValue reference="vars.do_serial_sort"/>
+              <Style>options</Style>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Popup>
+              <Label>Pick Sort Key</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat is_expression="true">read_file(proj.publish.TARGET_DML)</RecordFormat>
+                  <SourceTargetValue reference="proj.publish.SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Visible reference="vars.do_serial_sort"/>
+              <Style>key</Style>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">proj.publish.DO_PARTITION != "1" and vars.error == "" and vars.registration_file_error == "" and vars.target_file_type member [vector "flat_file", "csv_file", "multi_csv_files", "xls_file"]</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Create a CSV file</Label>
+          <UIElements>
+            <Popup>
+              <Label>Write PDL for Target File Name</Label>
+              <UIElements>
+                <TextArea>
+                  <SourceTargetValue reference="proj.publish.TARGET_FILE_NAME" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible reference="proj.publish.CREATE_CSV"/>
+            </Spacer>
+            <List>
+              <Choices reference="proj.publish.CSV_FIELD_DELIMITER" property="choices"/>
+              <Label>Select field delimiter</Label>
+              <SourceTargetValue reference="proj.publish.CSV_FIELD_DELIMITER"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>Comma delimited</ConstantValue>
+                <ConstantValue>Pipe delimited</ConstantValue>
+              </ChoiceDisplayNames>
+              <MaxHeight>80</MaxHeight>
+            </List>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label>Create a header for CSV file</Label>
+              <SourceTargetValue reference="vars.create_header"/>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible reference="vars.create_header"/>
+            </Spacer>
+            <TextInput>
+              <Label>Enter your header row</Label>
+              <SourceTargetValue reference="proj.publish.CSV_HEADER"/>
+              <Visible reference="vars.create_header"/>
+            </TextInput>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; vars.registration_file_error == "" &amp;&amp; proj.publish.OUTPUT_FILE_TYPE member [vector "csv_file", "multi_csv_files"]</Visible>
+        </Box>
+        <Box>
+          <Label>Create an Excel file</Label>
+          <UIElements>
+            <Box>
+              <Label>Single Excel with Single Sheet (Pass through Mapping)</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"TARGET_FILE_NAME - " + proj.publish.TARGET_FILE_NAME + "\nEXCEL_SHEET_NAME - " + proj.publish.XLS_SHEET_NAME</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>Edit/Modify PDL for Target File Name and Excel Sheet Name</Label>
+                  <UIElements>
+                    <TextArea>
+                      <SourceTargetValue reference="proj.publish.TARGET_FILE_NAME" source_property="expression"/>
+                    </TextArea>
+                    <TextArea>
+                      <SourceTargetValue reference="proj.publish.XLS_SHEET_NAME"/>
+                    </TextArea>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Description>Please use this option to rename file/sheet name for Pass through mappings</Description>
+            </Box>
+            <Spacer>
+              <Width/>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label>Do Excel Mapping</Label>
+              <SourceTargetValue reference="proj.publish.DO_XLS_MAPPING"/>
+              <Description>Use this option to enable writing data to - 
+one excel (single sheet/multiple sheets)
+multiple excel (single sheet/multiple sheet)</Description>
+            </CheckBox>
+            <BusinessRulesPopup>
+              <Label>Write Excel Mapping Rules...</Label>
+              <SourceTargetValue reference="vars.xls_mapping_ruleset"/>
+              <Title/>
+              <Visible reference="proj.publish.DO_XLS_MAPPING"/>
+            </BusinessRulesPopup>
+            <Spacer>
+              <Width/>
+              <Height>25</Height>
+            </Spacer>
+            <List>
+              <Choices reference="proj.publish.XLS_WRITE_MODE" property="choices"/>
+              <Label>Select Write Mode</Label>
+              <SourceTargetValue reference="proj.publish.XLS_WRITE_MODE"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>New Workbook</ConstantValue>
+                <ConstantValue>Append Records</ConstantValue>
+              </ChoiceDisplayNames>
+              <MaxHeight>80</MaxHeight>
+            </List>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label>Create header with Excel DML field names</Label>
+              <SourceTargetValue reference="proj.publish.DO_HEADER"/>
+            </CheckBox>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; vars.registration_file_error == "" &amp;&amp; proj.publish.OUTPUT_FILE_TYPE member [vector "xls_file"]</Visible>
+        </Box>
+        <Box>
+          <Label>Header and Trailer (Serial File)</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Create a header</Label>
+              <SourceTargetValue reference="proj.publish.DO_HEADER"/>
+            </CheckBox>
+            <CheckBox>
+              <Label>Create a trailer</Label>
+              <SourceTargetValue reference="proj.publish.DO_TRAILER"/>
+            </CheckBox>
+            <TextLabel>
+              <Label>&lt;font color='#ff0000'&gt;For using header/trailer functionality the last field in the target DML should be delimited by newline.&lt;/font&gt;</Label>
+              <Visible is_expression="true">(is_true(proj.publish.DO_HEADER) or is_true(proj.publish.DO_TRAILER))
+and checks.target_dml_error != ""</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">proj.publish.OUTPUT_FILE_TYPE == "flat_file"</Visible>
+        </Box>
+        <Box>
+          <Label>Target Dataset Name</Label>
+          <UIElements>
+            <Popup>
+              <Label>Write PDL for Target File Name</Label>
+              <UIElements>
+                <TextArea>
+                  <SourceTargetValue reference="proj.publish.TARGET_FILE_NAME" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>dataset</Style>
+          <Visible is_expression="true">proj.publish.DO_PARTITION == "1" and vars.error == "" and vars.registration_file_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Create Header Record</Label>
+          <UIElements>
+            <Popup>
+              <Label>Header Record Format</Label>
+              <Title/>
+              <UIElements>
+                <TextLabel>
+                  <Label>&lt;b&gt;Hint:&lt;/b&gt; You can import an existing DML by clicking 'Browse'</Label>
+                </TextLabel>
+                <RecordFormat>
+                  <Label>Header Record Format</Label>
+                  <SourceTargetValue reference="proj.publish.HEADER_DML"/>
+                </RecordFormat>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff0000'&gt;" + checks.header_dml_error + "&lt;/font&gt;"</Label>
+              <Visible is_expression="true">checks.header_dml_error != ""</Visible>
+            </TextLabel>
+            <BusinessRulesPopup>
+              <Label>Header Creation Rules</Label>
+              <SourceTargetValue reference="vars.header_ruleset"/>
+              <Title/>
+              <Visible is_expression="true">checks.header_dml_error == ""</Visible>
+              <Style>rollup</Style>
+            </BusinessRulesPopup>
+            <TextLabel>
+              <Label>&lt;b&gt;Hint:&lt;/b&gt; In BRE, use functions like rollup_count() instead of count().</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">is_true(proj.publish.DO_HEADER) and checks.target_dml_error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Create Trailer Record</Label>
+          <UIElements>
+            <Popup>
+              <Label>Trailer Record Format</Label>
+              <Title/>
+              <UIElements>
+                <TextLabel>
+                  <Label>&lt;b&gt;Hint:&lt;/b&gt; You can import an existing DML by clicking 'Browse'</Label>
+                </TextLabel>
+                <RecordFormat>
+                  <Label>Trailer Record Format</Label>
+                  <SourceTargetValue reference="proj.publish.TRAILER_DML"/>
+                </RecordFormat>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff0000'&gt;" + checks.trailer_dml_error + "&lt;/font&gt;"</Label>
+              <Visible is_expression="true">checks.trailer_dml_error != ""</Visible>
+            </TextLabel>
+            <BusinessRulesPopup>
+              <Label>Trailer Creation Rules</Label>
+              <SourceTargetValue reference="vars.trailer_ruleset"/>
+              <Title/>
+              <Visible is_expression="true">checks.trailer_dml_error == ""</Visible>
+            </BusinessRulesPopup>
+            <TextLabel>
+              <Label>&lt;b&gt;Hint:&lt;/b&gt; In BRE, use functions like rollup_count() instead of count().</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>options</Style>
+          <Visible is_expression="true">is_true(proj.publish.DO_TRAILER) and checks.target_dml_error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Publish</Label>
+          <Style>executable</Style>
+          <UIElements>
+            <ExecuteButton>
+              <Label/>
+              <SourceValue reference="proj.publish"/>
+            </ExecuteButton>
+          </UIElements>
+          <Visible is_expression="true">vars.error == "" and vars.configuration_valid == "" &amp;&amp; vars.registration_file_error == "" &amp;&amp; ((proj.publish.TARGET_LAYOUT == "serial" &amp;&amp; vars.target_file_type member [vector "flat_file", "csv_file", "multi_csv_files", "xls_file"]) || proj.publish.TARGET_LAYOUT == "mfs")</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Publish Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + proj.publish.PROJECT_DIR + "/" + proj.publish.relative_path + "</b>"]]></Label>
+          <Width>900</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="proj.publish" property="contents"/>
+          <Width>1000</Width>
+          <MaxHeight>800</MaxHeight>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Target DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt; TARGET_DML - " + proj.publish.TARGET_DML + "&lt;/b&gt;"</Label>
+          <Width>900</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.publish.TARGET_DML)</Label>
+          <Width>1000</Width>
+          <MaxHeight>800</MaxHeight>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label>&lt;b&gt;Publish File Template has the option of publishing following set of files.&lt;/b&gt;
+1. Serial/Flat File
+2. Multi File
+3. CSV File
+4. Multiple CSV Files
+5. Excel (Does publish to Single book Single Sheet, Single book Multiple Sheets, Multiple Books Single sheet and Multiple Books Multiple Sheets)
+
+Excel Configuration options are listed as below.
+1. Use option "Edit/Modify PDL for Target File Name and Excel Sheet Name" to publish data to Single Book Single Sheet.
+2. Use option "Do Excel MApping --&gt; Write Excel Mapping Rules..." for other three types of excel publish.
+3. Use option "Create header with Excel DML field names" for producing header record.
+
+For publishing data to multiple books can be done by setting "filename" mapping in BRE as below
+if(first_defined(in.pdfs_curr_status, "XXX") != "ACCEPTED") "${TARGET_LOWER}_${RUN_ID}.xlsx" else "${TARGET_FILE_NAME}"
+
+Similary publishing data to multiple sheets can be done by setting "sheet" mapping in BRE as below
+if(first_defined(in.pdfs_curr_status, "XXX") != "ACCEPTED") "NO_STATUS" else "WITH_STATUS"
+
+Kindly note we can publish data to multiple books and sheets by setting "filename" and "sheet" values in BRE.
+
+Note
+- Header and trailer BRE mappings are available only for serial output, not for MFS output.</Label>
+          <Width>1000</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

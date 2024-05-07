@@ -1,0 +1,23 @@
+!prototype|P|||${AI_PSET}/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_ctrx.rcex1p
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+TARGET_NAME||||rxclaim_ctrx.rcex1p_rcdpsp
+DRIVER_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58a3e3f5_3570_2 = $DRIVER_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58a3e3f5_3570_2 = $DRIVER_END_DATE;\n\n\nout0::reformat(in0)=\nbegin\nlet string("\\x01", maximum_length=1) claim_match_ind = "N";\nlet decimal("\\x01",0) src_env_sk = fail_if_error(in0.rxt_src_envrt_id);\n\n\n\n  out0.claim_match_ind::claim_match_ind;\n  out0.src_env_sk::src_env_sk;\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_1_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58a3e3f5_3570_3 = $NON_DRIVER_1_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58a3e3f5_3570_3 = $NON_DRIVER_1_END_DATE;\n\n\nout0::reformat(in0)=\nbegin\nlet decimal("\\x01", maximum_length=18) rxclaimnbr = fail_if_error(in0.aop2nb);\nlet decimal("\\x01", maximum_length=6) clmseqnbr = fail_if_error(in0.aooinb);\nlet string("\\x01", maximum_length=1) claim_match_ind = "N";\nlet string("\\x01", maximum_length=5) rxt_src_envrt_id = fail_if_error(in0.src_env_sk);\n\n\n\n  out0.rxclaimnbr::rxclaimnbr;\n  out0.clmseqnbr::clmseqnbr;\n  out0.claim_match_ind::claim_match_ind;\n  out0.rxt_src_envrt_id::rxt_src_envrt_id;\n  out0.*::in0.*;\n\nend;\n
+OVERRIDE_JOIN_KEY||||{rxclaimnbr; clmseqnbr; rxt_src_envrt_id}
+LOOKUP_FIELDS_KEY||||{}
+DRIVER_FILE_TYPE||||Clean
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.rcdpsp
+NON_DRIVER_1_OUTPUT_FIELDS||||dxf_sk,aop2nb,aooinb,aor5n2,aolast,aolbst,aolcst,aoi1cj,aoi2cj,aor7c4,src_env_sk
+JOIN_TYPE||||Left Outer Join
+JOIN_KEY||||{rxclaimnbr; clmseqnbr; rxt_src_envrt_id}
+DO_CLEAN||||1
+DRIVER_OUTPUT_FIELDS||||rxclaimnbr,clmseqnbr,claimsts,carrierid,accountid,groupid,datesbm,dtefilled,rejcde1,rejcde2,rejcde3,phringrcst,phrdispfee,phrslstax,phrpatpay,phrdueamt,cltingrcst,cltdispfee,cltslstax,cltpatpay,cltdueamt,dayssupply,decimalqty,gpinumber,prescriber,prescridql,prsstate,memberid,cardholder,compoundcd,productid,prodtypcde,srvprovid,groupnbr,rxt_src_envrt_id
+ADDITIONAL_FIELDS_DML||||record\n  decimal("\\x01", maximum_length=18) rxclaimnbr;\n  decimal("\\x01", maximum_length=6) clmseqnbr;\n  string("\\x01", maximum_length=1) claim_match_ind;\n  string("\\x01", maximum_length=5) rxt_src_envrt_id;\nend
+NON_DRIVER_2_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58ad3190_5841_2 = $NON_DRIVER_2_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58ad3190_5841_2 = $NON_DRIVER_2_END_DATE;\n\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_3_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58ad3190_5841_1 = $NON_DRIVER_3_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58ad3190_5841_1 = $NON_DRIVER_3_END_DATE;\n\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+OVERRIDE_JOIN_LEVEL_2_KEY||||{}
+OVERRIDE_JOIN_LEVEL_3_KEY||||{}
+NON_DRIVER_1_FILE_TYPE||||IDS
+JOIN_XFR:sandbox||||out::join(in0, in1)=\nbegin\n  out.claim_match_ind :: if(is_defined(in0) && is_defined(in1)) 'Y' else 'N';\n  out.* :1: in0.*;\n  out.* :2: in1.*;\nend;\n
+NON_DRIVER_1_FILTER_EXPR||||1

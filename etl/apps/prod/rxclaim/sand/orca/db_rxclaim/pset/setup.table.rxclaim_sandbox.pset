@@ -1,0 +1,6 @@
+!prototype|P|||$PUB_DB_PLAN/setup.table.plan
+NORMALIZE_FIELDS_XFR|n|||$PUB_DB_XFR/normalize_fields.netezza.xfr
+TARGET_ALL_LOGICAL_FIELDS_KEY||||{$[\r\n  string_join(\r\n    for ( let n in record_info_item(TARGET_GENDML, "name") ) :\r\n      if ( "{" + n + "}" != SURROGATE_KEY and n != "newline" and not starts_with(n, "db_rxclaim_") and not ends_with(n, "_sk") )\r\n        n,\r\n    "; ")\r\n]}
+analysis_level|Pl|||none
+DB_LIST||||$DB_RXCLAIM_SANDBOX_SCHEMA_EME      $DB_RXCLAIM_SANDBOX_SCHEMA     $DB_RXCLAIM_SANDBOX_DML    $DB_RXCLAIM_SANDBOX_DBMS  DB_RXCLAIM       $DB_RXCLAIM_DB/netezza.rxclaim_sandbox.main.dbc
+TABLE_NAME||||spe_180_gpi08_xwalk

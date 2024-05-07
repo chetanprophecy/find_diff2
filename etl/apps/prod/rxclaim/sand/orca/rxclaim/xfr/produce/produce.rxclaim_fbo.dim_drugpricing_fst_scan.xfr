@@ -1,0 +1,23 @@
+type temporary_type = 
+  record   
+    decimal("\x01") rec_counter;
+  end;
+  
+ temp :: initialize(in) =
+begin
+  temp.rec_counter :: 0;
+end;
+
+
+out :: scan(temp, in) =
+begin
+  out.rec_counter :: temp.rec_counter + 1;
+end;
+
+out :: finalize(temp, in) =
+begin
+  
+  out.* ::in.*;
+  out.is_fst_dt :: if (temp.rec_counter == 1) 1 else NULL;
+  
+end;

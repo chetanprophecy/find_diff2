@@ -1,0 +1,114 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5ad9bdf5_c1ea_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_aud_fil.file_date,[passthrough],in0.file_date]
+  [out0.c_aud_fil.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_aud_fil.updated_by,[passthrough],in0.updated_by]
+  [out0.c_aud_fil.cpp_update_ts,[passthrough],in0.update_timestamp]
+  [out0.c_aud_fil.file_type,[passthrough],in0.file_type]
+  [out0.c_aud_fil.batch_job_sk,[transform],]
+  [out0.c_aud_fil.additional_cmmt,[passthrough],in0.additional_cmmt]
+  [out0.c_aud_fil.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_aud_fil.num_of_record_rejected,[passthrough],in0.num_of_record_rejected]
+  [out0.c_aud_fil.file_name,[passthrough],in0.file_name]
+  [out0.c_aud_fil.file_end_dt,[passthrough],in0.file_end_dt]
+  [out0.c_aud_fil.file_start_dt,[passthrough],in0.file_start_dt]
+  [out0.c_aud_fil.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_aud_fil.file_category,[passthrough],in0.file_category]
+  [out0.c_aud_fil.num_of_record_file,[passthrough],in0.num_of_record_file]
+  [out0.c_aud_fil.batch_job_id,[passthrough],in0.batch_job_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_aud_fil.file_date,'c_aud_fil.file_date',1,0]
+     [out0.c_aud_fil.src_env_sk,'c_aud_fil.src_env_sk',1,0]
+     [out0.c_aud_fil.updated_by,'c_aud_fil.updated_by',1,0]
+     [out0.c_aud_fil.cpp_update_ts,'c_aud_fil.cpp_update_ts',1,0]
+     [out0.c_aud_fil.file_type,'c_aud_fil.file_type',1,0]
+     [out0.c_aud_fil.batch_job_sk,'c_aud_fil.batch_job_sk',1,0]
+     [out0.c_aud_fil.additional_cmmt,'c_aud_fil.additional_cmmt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_aud_fil.cpp_create_ts,'c_aud_fil.cpp_create_ts',1,0]
+     [out0.c_aud_fil.num_of_record_rejected,'c_aud_fil.num_of_record_rejected',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_aud_fil.file_name,'c_aud_fil.file_name',1,0]
+     [out0.c_aud_fil.file_end_dt,'c_aud_fil.file_end_dt',1,0]
+     [out0.c_aud_fil.file_start_dt,'c_aud_fil.file_start_dt',1,0]
+     [out0.c_aud_fil.cpp_created_by,'c_aud_fil.cpp_created_by',1,0]
+     [out0.c_aud_fil.file_category,'c_aud_fil.file_category',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_aud_fil.num_of_record_file,'c_aud_fil.num_of_record_file',1,0]
+     [out0.c_aud_fil.batch_job_id,'c_aud_fil.batch_job_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.file_start_dt,'file_start_dt',1,1]
+     [in0.num_of_record_file,'num_of_record_file',1,1]
+     [in0.file_name,'file_name',1,1]
+     [in0.file_date,'file_date',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.additional_cmmt,'additional_cmmt',1,1]
+     [in0.num_of_record_rejected,'num_of_record_rejected',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.batch_job_id,'batch_job_id',1,1]
+     [in0.file_end_dt,'file_end_dt',1,1]
+     [in0.file_category,'file_category',1,1]
+     [in0.file_type,'file_type',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_aud_fil_batch_job_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_aud_fil_batch_job_id = fail_if_error(in0.batch_job_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_aud_fil_file_name = fail_if_error(in0.file_name);
+let string("\x01",charset="iso-8859-15", maximum_length=3) c_aud_fil_file_type = fail_if_error(in0.file_type);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_aud_fil_file_category = fail_if_error(in0.file_category);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_aud_fil_file_date = fail_if_error(in0.file_date);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_aud_fil_file_start_dt = fail_if_error(in0.file_start_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_aud_fil_file_end_dt = fail_if_error(in0.file_end_dt);
+let decimal("\x01",0) c_aud_fil_num_of_record_file = fail_if_error(in0.num_of_record_file);
+let decimal("\x01",0) c_aud_fil_num_of_record_rejected = fail_if_error(in0.num_of_record_rejected);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_aud_fil_cpp_update_ts = fail_if_error(in0.update_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_aud_fil_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_aud_fil_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_aud_fil_cpp_created_by = fail_if_error(in0.created_by);
+let utf8 string("\x01", maximum_length=2000) c_aud_fil_additional_cmmt = fail_if_error(in0.additional_cmmt);
+let decimal("\x01",0) c_aud_fil_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.c_aud_fil.batch_job_sk::c_aud_fil_batch_job_sk;
+  out0.c_aud_fil.batch_job_id::c_aud_fil_batch_job_id;
+  out0.c_aud_fil.file_name::c_aud_fil_file_name;
+  out0.c_aud_fil.file_type::c_aud_fil_file_type;
+  out0.c_aud_fil.file_category::c_aud_fil_file_category;
+  out0.c_aud_fil.file_date::c_aud_fil_file_date;
+  out0.c_aud_fil.file_start_dt::c_aud_fil_file_start_dt;
+  out0.c_aud_fil.file_end_dt::c_aud_fil_file_end_dt;
+  out0.c_aud_fil.num_of_record_file::c_aud_fil_num_of_record_file;
+  out0.c_aud_fil.num_of_record_rejected::c_aud_fil_num_of_record_rejected;
+  out0.c_aud_fil.cpp_update_ts::c_aud_fil_cpp_update_ts;
+  out0.c_aud_fil.updated_by::c_aud_fil_updated_by;
+  out0.c_aud_fil.cpp_create_ts::c_aud_fil_cpp_create_ts;
+  out0.c_aud_fil.cpp_created_by::c_aud_fil_cpp_created_by;
+  out0.c_aud_fil.additional_cmmt::c_aud_fil_additional_cmmt;
+  out0.c_aud_fil.src_env_sk::c_aud_fil_src_env_sk;
+  out0.*::in0.*;
+
+end;

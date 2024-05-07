@@ -1,0 +1,204 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.mbr_phr_ovrd.phr_ovrd_qlfr_cd,[passthrough],in0.abwfh8]
+  [out0.mbr_phr_ovrd.src_chg_dttm,[transform],in0.ababtm,
+     in0.abbmdt]
+  [out0.d_pharmacy.phr_id,[passthrough],in0.abavcd]
+  [out0.mbr_phr_ovrd.mbr_sk,[transform],]
+  [out0.mbr_phr_ovrd.phr_id,[passthrough],in0.abavcd]
+  [out0.d_mbr.employer_group_id,[passthrough],in0.abadcd]
+  [out0.mbr_phr_ovrd.seq_nbr,[passthrough],in0.abh5hs]
+  [out0.mbr_phr_ovrd.eff_frm_dt,[transform],in0.abqohg]
+  [out0.mbr_phr_ovrd.account_id,[passthrough],in0.abaccd]
+  [out0.mbr_phr_ovrd.clt_prc_sched_ovrd_nm,[passthrough],in0.abdfhc]
+  [out0.mbr_phr_ovrd.mbr_id,[passthrough],in0.ababcd]
+  [out0.mbr_phr_ovrd.copay_sched_step_nbr,[passthrough],in0.abelnb]
+  [out0.d_mbr.account_id,[passthrough],in0.abaccd]
+  [out0.d_cag.carrier_id,[passthrough],in0.abaacd]
+  [out0.mbr_phr_ovrd.clt_pat_pay_ovrd_cd,[passthrough],in0.abdehc]
+  [out0.mbr_phr_ovrd.employer_group_id,[passthrough],in0.abadcd]
+  [out0.mbr_phr_ovrd.eff_thru_dt,[transform],in0.abqphg]
+  [out0.mbr_phr_ovrd.phr_sk,[transform],]
+  [out0.mbr_phr_ovrd.src_add_dttm,[transform],in0.abadtm,
+     in0.abc2dt]
+  [out0.mbr_phr_ovrd.cag_sk,[transform],]
+  [out0.d_cag.account_id,[passthrough],in0.abaccd]
+  [out0.mbr_phr_ovrd.mbr_phr_ovrd_sk,[transform],]
+  [out0.mbr_phr_ovrd.carrier_id,[passthrough],in0.abaacd]
+  [out0.d_mbr.mbr_id,[passthrough],in0.ababcd]
+  [out0.d_mbr.carrier_id,[passthrough],in0.abaacd]
+  [out0.mbr_phr_ovrd.phr_pat_pay_ovrd_cd,[passthrough],in0.abdghc]
+  [out0.mbr_phr_ovrd.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.mbr_phr_ovrd.msg_typ_ovrd_cd,[passthrough],in0.abweh8]
+  [out0.mbr_phr_ovrd.stat_cd,[passthrough],in0.abc2i1]
+  [out0.mbr_phr_ovrd.phr_prc_sched_ovrd_nm,[passthrough],in0.abdhhc]
+  [out0.mbr_phr_ovrd.msg_cd,[passthrough],in0.abcqhc]
+  [out0.mbr_phr_ovrd.copay_sched_nm,[passthrough],in0.abgrcd]
+  [out0.d_cag.employer_group_id,[passthrough],in0.abadcd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mbr_phr_ovrd.phr_ovrd_qlfr_cd,'mbr_phr_ovrd.phr_ovrd_qlfr_cd',1,0]
+     [out0.mbr_phr_ovrd.src_chg_dttm,'mbr_phr_ovrd.src_chg_dttm',1,0]
+     [out0.d_pharmacy.phr_id,'d_pharmacy.phr_id',1,0]
+     [out0.mbr_phr_ovrd.mbr_sk,'mbr_phr_ovrd.mbr_sk',1,0]
+     [out0.mbr_phr_ovrd.phr_id,'mbr_phr_ovrd.phr_id',1,0]
+     [out0.d_mbr.employer_group_id,'d_mbr.employer_group_id',1,0]
+     [out0.mbr_phr_ovrd.seq_nbr,'mbr_phr_ovrd.seq_nbr',1,0]
+     [out0.mbr_phr_ovrd.eff_frm_dt,'mbr_phr_ovrd.eff_frm_dt',1,0]
+     [out0.mbr_phr_ovrd.account_id,'mbr_phr_ovrd.account_id',1,0]
+     [out0.mbr_phr_ovrd.clt_prc_sched_ovrd_nm,'mbr_phr_ovrd.clt_prc_sched_ovrd_nm',1,0]
+     [out0.mbr_phr_ovrd.mbr_id,'mbr_phr_ovrd.mbr_id',1,0]
+     [out0.mbr_phr_ovrd.copay_sched_step_nbr,'mbr_phr_ovrd.copay_sched_step_nbr',1,0]
+     [out0.d_mbr.account_id,'d_mbr.account_id',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.mbr_phr_ovrd.clt_pat_pay_ovrd_cd,'mbr_phr_ovrd.clt_pat_pay_ovrd_cd',1,0]
+     [out0.mbr_phr_ovrd.employer_group_id,'mbr_phr_ovrd.employer_group_id',1,0]
+     [out0.mbr_phr_ovrd.eff_thru_dt,'mbr_phr_ovrd.eff_thru_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.mbr_phr_ovrd.phr_sk,'mbr_phr_ovrd.phr_sk',1,0]
+     [out0.mbr_phr_ovrd.src_add_dttm,'mbr_phr_ovrd.src_add_dttm',1,0]
+     [out0.mbr_phr_ovrd.cag_sk,'mbr_phr_ovrd.cag_sk',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.mbr_phr_ovrd.mbr_phr_ovrd_sk,'mbr_phr_ovrd.mbr_phr_ovrd_sk',1,0]
+     [out0.mbr_phr_ovrd.carrier_id,'mbr_phr_ovrd.carrier_id',1,0]
+     [out0.d_mbr.mbr_id,'d_mbr.mbr_id',1,0]
+     [out0.d_mbr.carrier_id,'d_mbr.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mbr_phr_ovrd.phr_pat_pay_ovrd_cd,'mbr_phr_ovrd.phr_pat_pay_ovrd_cd',1,0]
+     [out0.mbr_phr_ovrd.src_env_sk,'mbr_phr_ovrd.src_env_sk',1,0]
+     [out0.mbr_phr_ovrd.msg_typ_ovrd_cd,'mbr_phr_ovrd.msg_typ_ovrd_cd',1,0]
+     [out0.mbr_phr_ovrd.stat_cd,'mbr_phr_ovrd.stat_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.mbr_phr_ovrd.phr_prc_sched_ovrd_nm,'mbr_phr_ovrd.phr_prc_sched_ovrd_nm',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.mbr_phr_ovrd.msg_cd,'mbr_phr_ovrd.msg_cd',1,0]
+     [out0.mbr_phr_ovrd.copay_sched_nm,'mbr_phr_ovrd.copay_sched_nm',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.abbmdt,'abbmdt',1,1]
+     [in0.abgrcd,'abgrcd',1,1]
+     [in0.abdghc,'abdghc',1,1]
+     [in0.abc2i1,'abc2i1',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.abavcd,'abavcd',2,2]
+     [in0.abh5hs,'abh5hs',1,1]
+     [in0.abaccd,'abaccd',3,3]
+     [in0.abadcd,'abadcd',3,3]
+     [in0.abelnb,'abelnb',1,1]
+     [in0.abdhhc,'abdhhc',1,1]
+     [in0.abadtm,'abadtm',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.abqphg,'abqphg',1,1]
+     [in0.abaacd,'abaacd',3,3]
+     [in0.abdfhc,'abdfhc',1,1]
+     [in0.abqohg,'abqohg',1,1]
+     [in0.abweh8,'abweh8',1,1]
+     [in0.abc2dt,'abc2dt',1,1]
+     [in0.ababtm,'ababtm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ababcd,'ababcd',2,2]
+     [in0.abcqhc,'abcqhc',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.abwfh8,'abwfh8',1,1]
+     [in0.abdehc,'abdehc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) mbr_phr_ovrd_mbr_phr_ovrd_sk = -1;
+let decimal("\x01",0) mbr_phr_ovrd_cag_sk = -1;
+let decimal("\x01",0) mbr_phr_ovrd_mbr_sk = -1;
+let decimal("\x01",0) mbr_phr_ovrd_phr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_phr_ovrd_carrier_id = fail_if_error(in0.abaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) mbr_phr_ovrd_account_id = fail_if_error(in0.abaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_phr_ovrd_employer_group_id = fail_if_error(in0.abadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) mbr_phr_ovrd_mbr_id = fail_if_error(in0.ababcd);
+let string("\x01",charset="iso-8859-15", maximum_length=12) mbr_phr_ovrd_phr_id = fail_if_error(in0.abavcd);
+let decimal("\x01",0) mbr_phr_ovrd_seq_nbr = fail_if_error(in0.abh5hs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) mbr_phr_ovrd_stat_cd = fail_if_error(in0.abc2i1);
+let date("YYYYMMDD")("\x01") mbr_phr_ovrd_eff_frm_dt;
+let date("YYYYMMDD")("\x01") mbr_phr_ovrd_eff_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_copay_sched_nm = fail_if_error(in0.abgrcd);
+let decimal("\x01",0) mbr_phr_ovrd_copay_sched_step_nbr = fail_if_error(in0.abelnb);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_clt_prc_sched_ovrd_nm = fail_if_error(in0.abdfhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_phr_prc_sched_ovrd_nm = fail_if_error(in0.abdhhc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_clt_pat_pay_ovrd_cd = fail_if_error(in0.abdehc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_phr_pat_pay_ovrd_cd = fail_if_error(in0.abdghc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mbr_phr_ovrd_msg_cd = fail_if_error(in0.abcqhc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) mbr_phr_ovrd_msg_typ_ovrd_cd = fail_if_error(in0.abweh8);
+let string("\x01",charset="iso-8859-15", maximum_length=1) mbr_phr_ovrd_phr_ovrd_qlfr_cd = fail_if_error(in0.abwfh8);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") mbr_phr_ovrd_src_add_dttm;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") mbr_phr_ovrd_src_chg_dttm;
+let decimal("\x01",0) mbr_phr_ovrd_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.abaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.abaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.abadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_carrier_id = fail_if_error(in0.abaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_account_id = fail_if_error(in0.abaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_employer_group_id = fail_if_error(in0.abadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_mbr_id = fail_if_error(in0.ababcd);
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_pharmacy_phr_id = fail_if_error(in0.abavcd);
+
+
+
+/*   Default value   */
+mbr_phr_ovrd_src_chg_dttm=fail_if_error((datetime("YYYYMMDDHH24MISS"))string_concat(date_check(in0.abbmdt), time_check(in0.ababtm) ));
+
+/*   Default value   */
+mbr_phr_ovrd_eff_frm_dt=fail_if_error(date_check(in0.abqohg));
+
+/*   Default value   */
+mbr_phr_ovrd_eff_thru_dt=fail_if_error(date_check(in0.abqphg));
+
+/*   Default value   */
+mbr_phr_ovrd_src_add_dttm=fail_if_error((datetime("YYYYMMDDHH24MISS"))string_concat(date_check(in0.abc2dt), time_check(in0.abadtm) ));
+
+  out0.mbr_phr_ovrd.mbr_phr_ovrd_sk::mbr_phr_ovrd_mbr_phr_ovrd_sk;
+  out0.mbr_phr_ovrd.cag_sk::mbr_phr_ovrd_cag_sk;
+  out0.mbr_phr_ovrd.mbr_sk::mbr_phr_ovrd_mbr_sk;
+  out0.mbr_phr_ovrd.phr_sk::mbr_phr_ovrd_phr_sk;
+  out0.mbr_phr_ovrd.carrier_id::mbr_phr_ovrd_carrier_id;
+  out0.mbr_phr_ovrd.account_id::mbr_phr_ovrd_account_id;
+  out0.mbr_phr_ovrd.employer_group_id::mbr_phr_ovrd_employer_group_id;
+  out0.mbr_phr_ovrd.mbr_id::mbr_phr_ovrd_mbr_id;
+  out0.mbr_phr_ovrd.phr_id::mbr_phr_ovrd_phr_id;
+  out0.mbr_phr_ovrd.seq_nbr::mbr_phr_ovrd_seq_nbr;
+  out0.mbr_phr_ovrd.stat_cd::mbr_phr_ovrd_stat_cd;
+  out0.mbr_phr_ovrd.eff_frm_dt::mbr_phr_ovrd_eff_frm_dt;
+  out0.mbr_phr_ovrd.eff_thru_dt::mbr_phr_ovrd_eff_thru_dt;
+  out0.mbr_phr_ovrd.copay_sched_nm::mbr_phr_ovrd_copay_sched_nm;
+  out0.mbr_phr_ovrd.copay_sched_step_nbr::mbr_phr_ovrd_copay_sched_step_nbr;
+  out0.mbr_phr_ovrd.clt_prc_sched_ovrd_nm::mbr_phr_ovrd_clt_prc_sched_ovrd_nm;
+  out0.mbr_phr_ovrd.phr_prc_sched_ovrd_nm::mbr_phr_ovrd_phr_prc_sched_ovrd_nm;
+  out0.mbr_phr_ovrd.clt_pat_pay_ovrd_cd::mbr_phr_ovrd_clt_pat_pay_ovrd_cd;
+  out0.mbr_phr_ovrd.phr_pat_pay_ovrd_cd::mbr_phr_ovrd_phr_pat_pay_ovrd_cd;
+  out0.mbr_phr_ovrd.msg_cd::mbr_phr_ovrd_msg_cd;
+  out0.mbr_phr_ovrd.msg_typ_ovrd_cd::mbr_phr_ovrd_msg_typ_ovrd_cd;
+  out0.mbr_phr_ovrd.phr_ovrd_qlfr_cd::mbr_phr_ovrd_phr_ovrd_qlfr_cd;
+  out0.mbr_phr_ovrd.src_add_dttm::mbr_phr_ovrd_src_add_dttm;
+  out0.mbr_phr_ovrd.src_chg_dttm::mbr_phr_ovrd_src_chg_dttm;
+  out0.mbr_phr_ovrd.src_env_sk::mbr_phr_ovrd_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_mbr.carrier_id::d_mbr_carrier_id;
+  out0.d_mbr.account_id::d_mbr_account_id;
+  out0.d_mbr.employer_group_id::d_mbr_employer_group_id;
+  out0.d_mbr.mbr_id::d_mbr_mbr_id;
+  out0.d_pharmacy.phr_id::d_pharmacy_phr_id;
+  out0.*::in0.*;
+
+end;

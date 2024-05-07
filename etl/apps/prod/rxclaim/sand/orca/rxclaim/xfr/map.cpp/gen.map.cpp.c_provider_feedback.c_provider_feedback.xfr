@@ -1,0 +1,174 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a548a16_1672_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_prov_fed.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_prov_fed.medication_therapy_plan,[passthrough],in0.medication_therapy_plan]
+  [out0.c_prov_fed.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_prov_fed.attachment_flag,[passthrough],in0.attachment_flag]
+  [out0.c_prov_fed.patient_ltc_use_flag,[passthrough],in0.ltc_residing_flag]
+  [out0.c_prov_fed.palliative_care_flag,[passthrough],in0.palliative_care_flag]
+  [out0.c_prov_fed.cpp_provider_feedback_sk,[transform],]
+  [out0.c_prov_fed.src_env_sk,[transform],]
+  [out0.c_prov_fed.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_prov_fed.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_prov_fed.hospice_entrollment_flag,[passthrough],in0.hospice_entrollment_flag]
+  [out0.c_prov_fed.provider_id,[passthrough],in0.provider_id]
+  [out0.c_prov_fed.reviewed_by,[passthrough],in0.reviewed_by]
+  [out0.c_prov_fed.parent_case_id,[passthrough],in0.parent_case_id]
+  [out0.c_prov_fed.end_care_receive_flag,[passthrough],in0.end_of_care_receiving_flag]
+  [out0.c_prov_fed.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_prov_fed.discharge_dt,[passthrough],in0.discharge_dt]
+  [out0.c_prov_fed.feedback_type,[passthrough],in0.feedback_type]
+  [out0.c_prov_fed.assessment_descr,[passthrough],in0.assessment_descr]
+  [out0.c_prov_fed.assigned_pharmacist,[passthrough],in0.assigned_pharmacist]
+  [out0.c_prov_fed.case_id,[passthrough],in0.case_id]
+  [out0.c_prov_fed.provider_feedback_id,[passthrough],in0.provider_feedback_id]
+  [out0.c_prov_fed.icd_diagnosis_cd,[passthrough],in0.icd_diagnosis_cd]
+  [out0.c_prov_fed.provider_lock_type,[passthrough],in0.provdr_lockin_edit_type]
+  [out0.c_prov_fed.decision_verbiage_comment,[passthrough],in0.decision_verbiage_cmmt]
+  [out0.c_prov_fed.review_dt,[passthrough],in0.review_dt]
+  [out0.c_prov_fed.cancer_diagnosis_flag,[passthrough],in0.cancer_diagnosis_flag]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_prov_fed.cpp_updated_by,'c_prov_fed.cpp_updated_by',1,0]
+     [out0.c_prov_fed.medication_therapy_plan,'c_prov_fed.medication_therapy_plan',1,0]
+     [out0.c_prov_fed.cpp_provider_sk,'c_prov_fed.cpp_provider_sk',1,0]
+     [out0.c_prov_fed.attachment_flag,'c_prov_fed.attachment_flag',1,0]
+     [out0.c_prov_fed.patient_ltc_use_flag,'c_prov_fed.patient_ltc_use_flag',1,0]
+     [out0.c_prov_fed.palliative_care_flag,'c_prov_fed.palliative_care_flag',1,0]
+     [out0.c_prov_fed.cpp_provider_feedback_sk,'c_prov_fed.cpp_provider_feedback_sk',1,0]
+     [out0.c_prov_fed.src_env_sk,'c_prov_fed.src_env_sk',1,0]
+     [out0.c_prov_fed.cpp_create_ts,'c_prov_fed.cpp_create_ts',1,0]
+     [out0.c_prov_fed.cpp_created_by,'c_prov_fed.cpp_created_by',1,0]
+     [out0.c_prov_fed.hospice_entrollment_flag,'c_prov_fed.hospice_entrollment_flag',1,0]
+     [out0.c_prov_fed.provider_id,'c_prov_fed.provider_id',1,0]
+     [out0.c_prov_fed.reviewed_by,'c_prov_fed.reviewed_by',1,0]
+     [out0.c_prov_fed.parent_case_id,'c_prov_fed.parent_case_id',1,0]
+     [out0.c_prov_fed.end_care_receive_flag,'c_prov_fed.end_care_receive_flag',1,0]
+     [out0.c_prov_fed.cpp_update_ts,'c_prov_fed.cpp_update_ts',1,0]
+     [out0.c_prov_fed.discharge_dt,'c_prov_fed.discharge_dt',1,0]
+     [out0.c_prov_fed.feedback_type,'c_prov_fed.feedback_type',1,0]
+     [out0.c_prov_fed.assessment_descr,'c_prov_fed.assessment_descr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_prov_fed.assigned_pharmacist,'c_prov_fed.assigned_pharmacist',1,0]
+     [out0.c_prov_fed.case_id,'c_prov_fed.case_id',1,0]
+     [out0.c_prov_fed.provider_feedback_id,'c_prov_fed.provider_feedback_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_prov_fed.icd_diagnosis_cd,'c_prov_fed.icd_diagnosis_cd',1,0]
+     [out0.c_prov_fed.provider_lock_type,'c_prov_fed.provider_lock_type',1,0]
+     [out0.c_prov_fed.decision_verbiage_comment,'c_prov_fed.decision_verbiage_comment',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_prov_fed.review_dt,'c_prov_fed.review_dt',1,0]
+     [out0.c_prov_fed.cancer_diagnosis_flag,'c_prov_fed.cancer_diagnosis_flag',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.assigned_pharmacist,'assigned_pharmacist',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.medication_therapy_plan,'medication_therapy_plan',1,1]
+     [in0.ltc_residing_flag,'ltc_residing_flag',1,1]
+     [in0.icd_diagnosis_cd,'icd_diagnosis_cd',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.hospice_entrollment_flag,'hospice_entrollment_flag',1,1]
+     [in0.discharge_dt,'discharge_dt',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.provdr_lockin_edit_type,'provdr_lockin_edit_type',1,1]
+     [in0.reviewed_by,'reviewed_by',1,1]
+     [in0.feedback_type,'feedback_type',1,1]
+     [in0.parent_case_id,'parent_case_id',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.case_id,'case_id',1,1]
+     [in0.provider_feedback_id,'provider_feedback_id',1,1]
+     [in0.review_dt,'review_dt',1,1]
+     [in0.palliative_care_flag,'palliative_care_flag',1,1]
+     [in0.cancer_diagnosis_flag,'cancer_diagnosis_flag',1,1]
+     [in0.assessment_descr,'assessment_descr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.attachment_flag,'attachment_flag',1,1]
+     [in0.decision_verbiage_cmmt,'decision_verbiage_cmmt',1,1]
+     [in0.end_of_care_receiving_flag,'end_of_care_receiving_flag',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_prov_fed_cpp_provider_feedback_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prov_fed_provider_feedback_id = fail_if_error(in0.provider_feedback_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_prov_fed_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) c_prov_fed_cpp_provider_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prov_fed_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_prov_fed_parent_case_id = fail_if_error(in0.parent_case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=5) c_prov_fed_feedback_type = fail_if_error(in0.feedback_type);
+let utf8 string("\x01", maximum_length=240) c_prov_fed_assessment_descr = fail_if_error(in0.assessment_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_fed_discharge_dt = fail_if_error(in0.discharge_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_cancer_diagnosis_flag = fail_if_error(in0.cancer_diagnosis_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_hospice_entrollment_flag = fail_if_error(in0.hospice_entrollment_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_palliative_care_flag = fail_if_error(in0.palliative_care_flag);
+let utf8 string("\x01", maximum_length=240) c_prov_fed_icd_diagnosis_cd = fail_if_error(in0.icd_diagnosis_cd);
+let utf8 string("\x01", maximum_length=400) c_prov_fed_medication_therapy_plan = fail_if_error(in0.medication_therapy_plan);
+let utf8 string("\x01", maximum_length=4096) c_prov_fed_decision_verbiage_comment = fail_if_error(in0.decision_verbiage_cmmt);
+let utf8 string("\x01", maximum_length=80) c_prov_fed_reviewed_by = fail_if_error(in0.reviewed_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_fed_review_dt = fail_if_error(in0.review_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_attachment_flag = fail_if_error(in0.attachment_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_prov_fed_assigned_pharmacist = fail_if_error(in0.assigned_pharmacist);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_fed_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_prov_fed_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_prov_fed_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_prov_fed_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_prov_fed_src_env_sk = 710;
+let utf8 string("\x01", maximum_length=440) c_prov_fed_provider_lock_type = fail_if_error(in0.provdr_lockin_edit_type);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_patient_ltc_use_flag = fail_if_error(in0.ltc_residing_flag);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_prov_fed_end_care_receive_flag = fail_if_error(in0.end_of_care_receiving_flag);
+
+
+
+/*   Default value   */
+c_prov_fed_cpp_provider_sk=fail_if_error(lookup("c_provider",in0.provider_id).dxf_sk);
+
+  out0.c_prov_fed.cpp_provider_feedback_sk::c_prov_fed_cpp_provider_feedback_sk;
+  out0.c_prov_fed.provider_feedback_id::c_prov_fed_provider_feedback_id;
+  out0.c_prov_fed.provider_id::c_prov_fed_provider_id;
+  out0.c_prov_fed.cpp_provider_sk::c_prov_fed_cpp_provider_sk;
+  out0.c_prov_fed.case_id::c_prov_fed_case_id;
+  out0.c_prov_fed.parent_case_id::c_prov_fed_parent_case_id;
+  out0.c_prov_fed.feedback_type::c_prov_fed_feedback_type;
+  out0.c_prov_fed.assessment_descr::c_prov_fed_assessment_descr;
+  out0.c_prov_fed.discharge_dt::c_prov_fed_discharge_dt;
+  out0.c_prov_fed.cancer_diagnosis_flag::c_prov_fed_cancer_diagnosis_flag;
+  out0.c_prov_fed.hospice_entrollment_flag::c_prov_fed_hospice_entrollment_flag;
+  out0.c_prov_fed.palliative_care_flag::c_prov_fed_palliative_care_flag;
+  out0.c_prov_fed.icd_diagnosis_cd::c_prov_fed_icd_diagnosis_cd;
+  out0.c_prov_fed.medication_therapy_plan::c_prov_fed_medication_therapy_plan;
+  out0.c_prov_fed.decision_verbiage_comment::c_prov_fed_decision_verbiage_comment;
+  out0.c_prov_fed.reviewed_by::c_prov_fed_reviewed_by;
+  out0.c_prov_fed.review_dt::c_prov_fed_review_dt;
+  out0.c_prov_fed.attachment_flag::c_prov_fed_attachment_flag;
+  out0.c_prov_fed.assigned_pharmacist::c_prov_fed_assigned_pharmacist;
+  out0.c_prov_fed.cpp_update_ts::c_prov_fed_cpp_update_ts;
+  out0.c_prov_fed.cpp_updated_by::c_prov_fed_cpp_updated_by;
+  out0.c_prov_fed.cpp_create_ts::c_prov_fed_cpp_create_ts;
+  out0.c_prov_fed.cpp_created_by::c_prov_fed_cpp_created_by;
+  out0.c_prov_fed.src_env_sk::c_prov_fed_src_env_sk;
+  out0.c_prov_fed.provider_lock_type::c_prov_fed_provider_lock_type;
+  out0.c_prov_fed.patient_ltc_use_flag::c_prov_fed_patient_ltc_use_flag;
+  out0.c_prov_fed.end_care_receive_flag::c_prov_fed_end_care_receive_flag;
+  out0.*::in0.*;
+
+end;

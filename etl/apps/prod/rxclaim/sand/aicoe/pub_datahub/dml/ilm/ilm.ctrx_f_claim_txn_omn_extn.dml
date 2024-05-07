@@ -1,0 +1,138 @@
+type logical_ids_rxclaim_f_claim_txn_omn_extn_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) carrier_sk = NULL("");
+  decimal("\x01",0) cag_sk = NULL("");
+  decimal("\x01",0) mbr_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  decimal("\x01",0) sbm_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL("");
+  decimal("\x01",0) filled_dt_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=32) hdr_wrapper = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) invtry_catgy_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) ptnt_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_dea_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pay_plan_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) bt_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) btp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) payr_seq_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) orig_wrtn_ndc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) subst_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) actul_acqstion_cost = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) disp_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) comp_nbr = NULL("");
+  decimal("\x01",0) written_dt_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) cost_basis = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pmt_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pay_plan = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) ptnt_loc_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) orig_of_rx_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) chain_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) diag_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) facility = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) return_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prn_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) additional_fld_3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) additional_fld_4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) nabp_nbr = NULL("");
+  decimal("\x01".2, maximum_length=9, sign_reserved) dose_freq = NULL("");
+  decimal("\x01".2, maximum_length=9, sign_reserved) dose_qty = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) filler = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) orig_sbm_bin = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) orig_sbm_pcn = NULL("");
+  decimal("\x01".3, maximum_length=12, sign_reserved) orig_prescbd_qty = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_3 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_4 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_5 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_6 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_7 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_8 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_9 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) client_defind_fld_10 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) elig_clarif_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prscrptn_orig_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) srvc_level = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) orif_cust_loc_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) filler_2 = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01",0) claim_nbr_encrp = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_cag_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d cag: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+type nk_ids_common_d_cag_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_carrier_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d carrier: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+type nk_ids_common_d_carrier_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d sbm dt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type opt_nk_ids_common_d_member_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d mbr: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+type nk_ids_common_d_member_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_f_claim_txn_omn_extn_t omc  /*@ BizName:'omc' */;
+  opt_nk_ids_common_d_cag_t d_cag  /*@ BizName:'d cag' */;
+  opt_nk_ids_common_d_carrier_t d_carrier  /*@ BizName:'d carrier' */;
+  opt_nk_ids_common_d_date_t d_fil_dt  /*@ BizName:'d fil dt' */;
+  opt_nk_ids_common_d_member_t d_mbr  /*@ BizName:'d mbr' */;
+  opt_nk_ids_common_d_date_t d_sbm_dt  /*@ BizName:'d sbm dt' */;
+  opt_nk_ids_common_d_date_t d_wrt_dt  /*@ BizName:'d wrt dt' */;
+end;

@@ -1,0 +1,172 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a1f8c50_5f17_8 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.msms_smry.hd_utilizing_mbr_cnt_no,[transform],in0.mbr_sk,
+     in0.claim_stat_id,
+     in0.hm_dlvry_ind,
+     in0.recent_clm_flg]
+  [out0.msms_smry.active_days_elig_mbr_cnt_no,[transform],]
+  [out0.msms_smry.msms_utilizing_mbr_cnt_no,[transform],in0.mbr_sk,
+     in0.claim_stat_id,
+     in0.day_90_prog_type,
+     in0.recent_clm_flg]
+  [out0.msms_smry.claim_cntr_msms_retail_30,[transform],in0.claim_stat_id,
+     in0.days_sply,
+     in0.hm_dlvry_ind,
+     in0.day_90_prog_type,
+     in0.claim_cntr,
+     in0.recent_clm_flg]
+  [out0.msms_smry.claim_cntr_retail_90,[transform],in0.claim_cntr,
+     in0.days_sply,
+     in0.recent_clm_flg,
+     in0.claim_stat_id,
+     in0.hm_dlvry_ind]
+  [out0.msms_smry.msms_mbr_opt_out_cnt_no,[transform],in0.mbr_sk,
+     in0.sbm_dt,
+     in0.claim_stat_id,
+     in0.day_90_prog_type,
+     'lookup("member_consent").mep_eff_dt']
+  [out0.msms_smry.after_15th_elig_mbr_cnt_no,[transform],]
+  [out0.msms_smry.claim_cntr_msms_hd,[transform],in0.claim_cntr,
+     in0.claim_stat_id,
+     in0.recent_clm_flg,
+     in0.day_90_prog_type,
+     in0.hm_dlvry_ind]
+  [out0.msms_smry.claim_cntr_hd,[transform],in0.claim_cntr,
+     in0.claim_stat_id,
+     in0.recent_clm_flg,
+     in0.hm_dlvry_ind]
+  [out0.msms_smry.claim_cntr_msms_retail_90,[transform],in0.claim_stat_id,
+     in0.days_sply,
+     in0.hm_dlvry_ind,
+     in0.day_90_prog_type,
+     in0.claim_cntr,
+     in0.recent_clm_flg]
+  [out0.msms_smry.sbm_mn_id,[passthrough],in0.subm_yr_mnth]
+  [out0.msms_smry.claim_cntr_retail_30,[transform],in0.claim_cntr,
+     in0.days_sply,
+     in0.recent_clm_flg,
+     in0.claim_stat_id,
+     in0.hm_dlvry_ind]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.msms_smry.hd_utilizing_mbr_cnt_no,'msms_smry.hd_utilizing_mbr_cnt_no',1,0]
+     [out0.msms_smry.active_days_elig_mbr_cnt_no,'msms_smry.active_days_elig_mbr_cnt_no',1,0]
+     [out0.msms_smry.cag_sk,'msms_smry.cag_sk',1,0]
+     [out0.msms_smry.msms_utilizing_mbr_cnt_no,'msms_smry.msms_utilizing_mbr_cnt_no',1,0]
+     [out0.msms_smry.claim_cntr_msms_retail_30,'msms_smry.claim_cntr_msms_retail_30',1,0]
+     [out0.msms_smry.claim_cntr_retail_90,'msms_smry.claim_cntr_retail_90',1,0]
+     [out0.msms_smry.msms_mbr_opt_out_cnt_no,'msms_smry.msms_mbr_opt_out_cnt_no',1,2]
+     [out0.msms_smry.after_15th_elig_mbr_cnt_no,'msms_smry.after_15th_elig_mbr_cnt_no',1,0]
+     [out0.msms_smry.claim_cntr_msms_hd,'msms_smry.claim_cntr_msms_hd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.msms_smry.src_env_sk,'msms_smry.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.msms_smry.claim_cntr_hd,'msms_smry.claim_cntr_hd',1,0]
+     [out0.msms_smry.claim_cntr_msms_retail_90,'msms_smry.claim_cntr_msms_retail_90',1,0]
+     [out0.msms_smry.sbm_mn_id,'msms_smry.sbm_mn_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.msms_smry.claim_cntr_retail_30,'msms_smry.claim_cntr_retail_30',1,0]
+  ]
+  impacts:
+  [
+     [in0.mbr_sk,'mbr_sk',5,3]
+     [in0.sbm_dt,'sbm_dt',1,3]
+     [in0.subm_yr_mnth,'subm_yr_mnth',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.claim_stat_id,'claim_stat_id',9,9]
+     [in0.days_sply,'days_sply',4,4]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.hm_dlvry_ind,'hm_dlvry_ind',7,7]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.day_90_prog_type,'day_90_prog_type',5,5]
+     ['lookup("member_consent").mep_eff_dt','mep_eff_dt',2,1]
+     [in0.claim_cntr,'claim_cntr',6,6]
+     [in0.recent_clm_flg,'recent_clm_flg',8,8]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) msms_smry_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) msms_smry_sbm_mn_id = fail_if_error(in0.subm_yr_mnth);
+let decimal("\x01",0) msms_smry_active_days_elig_mbr_cnt_no = 0;
+let decimal("\x01",0) msms_smry_after_15th_elig_mbr_cnt_no = 0;
+let decimal("\x01",0) msms_smry_msms_utilizing_mbr_cnt_no = fail_if_error((if (sql_and(sql_and((in0.recent_clm_flg=='Y'),(in0.day_90_prog_type=='M')),(in0.claim_stat_id member [vector'C','P'])))
+   in0.mbr_sk
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_retail_30 = fail_if_error((if (sql_and(sql_and(sql_and((in0.hm_dlvry_ind=='N'),(in0.claim_stat_id member [vector'C','P'])),(in0.recent_clm_flg=='Y')),(in0.days_sply<84)))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_retail_90 = fail_if_error((if (sql_and(sql_and(sql_and((in0.hm_dlvry_ind=='N'),(in0.claim_stat_id member [vector'C','P'])),(in0.recent_clm_flg=='Y')),(in0.days_sply>=84)))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_hd = fail_if_error((if (sql_and(sql_and((in0.hm_dlvry_ind=='Y'),(in0.recent_clm_flg=='Y')),(in0.claim_stat_id member [vector'C','P'])))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_msms_retail_30 = fail_if_error((if (sql_and(sql_and(sql_and(sql_and((in0.hm_dlvry_ind=='N'),(in0.day_90_prog_type=='M')),(in0.recent_clm_flg=='Y')),(in0.claim_stat_id member [vector'C','P'])),(in0.days_sply<84)))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_msms_retail_90 = fail_if_error((if (sql_and(sql_and(sql_and(sql_and((in0.hm_dlvry_ind=='N'),(in0.day_90_prog_type=='M')),(in0.recent_clm_flg=='Y')),(in0.claim_stat_id member [vector'C','P'])),(in0.days_sply>=84)))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_claim_cntr_msms_hd = fail_if_error((if (sql_and(sql_and(sql_and((in0.hm_dlvry_ind=='Y'),(in0.day_90_prog_type=='M')),(in0.recent_clm_flg=='Y')),(in0.claim_stat_id member [vector'C','P'])))
+   in0.claim_cntr
+ else
+   0));
+let decimal("\x01",0) msms_smry_hd_utilizing_mbr_cnt_no = fail_if_error((if (sql_and(sql_and((in0.recent_clm_flg=='Y'),(in0.hm_dlvry_ind=='Y')),(in0.claim_stat_id member [vector'C','P'])))
+   in0.mbr_sk
+ else
+   0));
+let decimal("\x01",0) msms_smry_msms_mbr_opt_out_cnt_no;
+let decimal("\x01",0) msms_smry_src_env_sk = fail_if_error(in0.src_env_sk);
+let unicode date('YYYY-MM-DD') sbm_start_dt = fail_if_error((date("YYYYMMDD")) string_concat(in0.sbm_dt,"01"));
+let unicode date('YYYY-MM-DD') sbm_end_dt;
+
+
+
+/*   Default value   */
+sbm_end_dt=fail_if_error((date("YYYYMMDD")) date_add_months(sbm_start_dt,1));
+
+/*   Default value   */
+msms_smry_msms_mbr_opt_out_cnt_no=fail_if_error((if (sql_and(sql_and(sql_and((in0.claim_stat_id member [vector'C','P']),(in0.day_90_prog_type=='M')),(lookup("member_consent",in0.mbr_sk).mep_eff_dt>=sbm_start_dt)),(lookup("member_consent",in0.mbr_sk).mep_eff_dt<sbm_end_dt)))
+   in0.mbr_sk
+ else
+   0));
+
+  out0.msms_smry.cag_sk::msms_smry_cag_sk;
+  out0.msms_smry.sbm_mn_id::msms_smry_sbm_mn_id;
+  out0.msms_smry.active_days_elig_mbr_cnt_no::msms_smry_active_days_elig_mbr_cnt_no;
+  out0.msms_smry.after_15th_elig_mbr_cnt_no::msms_smry_after_15th_elig_mbr_cnt_no;
+  out0.msms_smry.msms_utilizing_mbr_cnt_no::msms_smry_msms_utilizing_mbr_cnt_no;
+  out0.msms_smry.claim_cntr_retail_30::msms_smry_claim_cntr_retail_30;
+  out0.msms_smry.claim_cntr_retail_90::msms_smry_claim_cntr_retail_90;
+  out0.msms_smry.claim_cntr_hd::msms_smry_claim_cntr_hd;
+  out0.msms_smry.claim_cntr_msms_retail_30::msms_smry_claim_cntr_msms_retail_30;
+  out0.msms_smry.claim_cntr_msms_retail_90::msms_smry_claim_cntr_msms_retail_90;
+  out0.msms_smry.claim_cntr_msms_hd::msms_smry_claim_cntr_msms_hd;
+  out0.msms_smry.hd_utilizing_mbr_cnt_no::msms_smry_hd_utilizing_mbr_cnt_no;
+  out0.msms_smry.msms_mbr_opt_out_cnt_no::msms_smry_msms_mbr_opt_out_cnt_no;
+  out0.msms_smry.src_env_sk::msms_smry_src_env_sk;
+  out0.*::in0.*;
+
+end;

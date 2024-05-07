@@ -1,0 +1,27 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+type rec_t = record
+  string("\x01") carrier_id = NULL("");
+  string("\x01") account_id = NULL("");
+  string("\x01") group_id = NULL("");
+end;
+
+out::length(in)=
+begin
+let cnt = lookup_count("l_eob_cag_deductible_list",in.cag_status);
+out:: (cnt==0) ? 1 : cnt;
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+
+let rec_t lkp_rec = lookup_next("l_eob_cag_deductible_list");
+                  
+out.*             :1: lkp_rec.*;
+
+out.*             :2: in.*;
+out.*             :: allocate_with_defaults();
+end;
+
+

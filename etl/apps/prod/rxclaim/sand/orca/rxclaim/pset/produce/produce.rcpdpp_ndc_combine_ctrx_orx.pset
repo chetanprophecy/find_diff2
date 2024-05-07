@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcpdpp_ndc*.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_ctrx/clean.rxclaim_ctrx.rcpdpp_ndc.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.rcpdpp_ndc.dat
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.rxclaim/lookup.rxclaim.rcpdpp_ndc.dml
+LOOKUP_KEY||||$SORT_KEY
+SORT_KEY||||{dxf_src_sys_id;mpvwhc;mpvyhc;mpalhr;mpv3hc}
+USE_DEDUP||||True
+RUN_ID||||20171113000000
+FILTER_EXPR||||$[\r\nbegin\r\n//type exclude_data_vec_t =\r\n// ;\r\n\r\n\r\n\r\n\r\nlet  exclude_data_vec = reinterpret_as(record\r\n  string("|") mpvwhc = NULL("");\r\n  string("|") mpaacd = NULL("");\r\n string("|") mpv0hc = NULL("");\r\n  string("|") mpv1hc = NULL("");\r\n  string("|") mpaecd = NULL("");\r\n string("|") mpxli1 = NULL("");\r\n  string("|\\n") mpv3hc = NULL("");\r\nend[] ,  read_file("$AI_SERIAL/ndc_cag_exclusion_list.dat"),4);\r\n\r\nlet string("") filtr_cond="";\r\nlet string("")[int]  x  = allocate_with_defaults();\r\nlet string("")[int] y = allocate_with_defaults();\r\nlet dml_expression_info expression_record = allocate_with_defaults();\r\nfor(let j in exclude_data_vec) \r\nbegin\r\ny= allocate_with_defaults();\r\n\r\n    for ( let k in record_info_item(type_of(j), item="name"))\r\n      begin  \r\n\r\n    if ( ! is_null ( (string("")) eval( [ record in1 j ] ,"in1." + k )) )\r\nbegin\r\n        expression_record =   [record\r\n                                form "field"\r\n                                dml_type ""\r\n                                operator "!="\r\n                                parenthesized "1"\r\n                                operands [vector 'string_lrtrim(' + k +')', '"' + string_lrtrim((string("")) eval( [ record in1 j ] ,"in1." + k )) + '"'  ]] ;\r\n                        \r\n y =  vector_append (y,  string_concat('(!is_null(',k,') and ') + make_expression(expression_record) + ')');\r\n end\r\n        end\r\n\r\nx=vector_append (x, '(' + string_join(y, " and ") + ')' );\r\nend\r\nfiltr_cond=if (file_information(AI_SERIAL+"/mpxli1_exclusion.dat").found and  length_of( string_split_no_empty(read_file("$AI_SERIAL/mpxli1_exclusion.dat"),"\\n")) > 0) '!is_null(mpxli1) and (mpxli1 not member ' + string_representation(string_split_no_empty(read_file("$AI_SERIAL/mpxli1_exclusion.dat"),"\\n")) + ')' else '1';\r\nresult :: '( ' + filtr_cond +' ) and ('  + ( length_of(x)>0 ? string_join(x, "\\n  or ") : '1' ) + ') and (mpbkpp >= (decimal(""))string_substring($RUN_ID,1,4)  and mpnihg > (decimal(""))(string(""))(date("CYYMMDD"))(date("YYYYMMDD"))string_substring($RUN_ID,1,8))' ;\r\nend]
+ROLLUP_KEY||||{dxf_src_sys_id;mpvwhc;mpvyhc;mpalhr;mpv3hc}
+ROLLUP_XFR||||$AI_XFR/produce/produce.rcpdpp_ndc_rollup.xfr
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rcpdpp_ndc_rfmt.xfr
+EXTRA_SORT_KEY||||{mpaacd;mpv1hc;mpv0hc;mpaecd;mpnhhg;mpnihg;mpakdt;mpbkpp;mpxli1}

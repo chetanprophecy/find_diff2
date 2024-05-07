@@ -1,0 +1,54 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_admn_rt.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.l_admn_rt.admin_rte_desc,[passthrough],in0.tkdut3]
+  [out0.l_admn_rt.admin_rte_sk,[transform],]
+  [out0.l_admn_rt.admin_rte_id,[passthrough],in0.tkgxc4]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_admn_rt.src_env_sk,'l_admn_rt.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_admn_rt.admin_rte_desc,'l_admn_rt.admin_rte_desc',1,0]
+     [out0.l_admn_rt.admin_rte_sk,'l_admn_rt.admin_rte_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_admn_rt.admin_rte_id,'l_admn_rt.admin_rte_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.tkdut3,'tkdut3',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.tkgxc4,'tkgxc4',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_admn_rt_admin_rte_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=2) l_admn_rt_admin_rte_id = fail_if_error(in0.tkgxc4);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_admn_rt_admin_rte_desc = fail_if_error(in0.tkdut3);
+let decimal("\x01",0) l_admn_rt_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.l_admn_rt.admin_rte_sk::l_admn_rt_admin_rte_sk;
+  out0.l_admn_rt.admin_rte_id::l_admn_rt_admin_rte_id;
+  out0.l_admn_rt.admin_rte_desc::l_admn_rt_admin_rte_desc;
+  out0.l_admn_rt.src_env_sk::l_admn_rt_src_env_sk;
+  out0.*::in0.*;
+
+end;

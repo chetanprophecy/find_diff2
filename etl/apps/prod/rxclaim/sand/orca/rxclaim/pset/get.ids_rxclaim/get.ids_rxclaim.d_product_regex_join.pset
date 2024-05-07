@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_common.d_product
+JOIN_TYPE|l|||Regex Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+DO_CLEAN||||1
+ADDITIONAL_FIELDS_DML||||
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend;
+JOIN_KEY||||{gpi_no}
+NON_DRIVER_1_OUTPUT_FIELDS||||speclty_list_nm,speclty_list_type_id,gpi_id,dxf_sk,ids_updt_dttm
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.d_client_corp_speclty_list_gpi
+DRIVER_OUTPUT_FIELDS||||gpi_no,dxf_sk,ids_updt_dttm
+NON_DRIVER_1_FILTER_EXPR||||speclty_list_type_id == "CLIENT"
+OVERRIDE_JOIN_KEY||||{gpi_id}
+TARGET_NAME||||ids_rxclaim.d_product_regex_join

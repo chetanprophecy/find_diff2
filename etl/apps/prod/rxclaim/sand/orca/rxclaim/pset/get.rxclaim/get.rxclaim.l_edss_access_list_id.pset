@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.csv.interim.pset
+TARGET_NAME||||rxclaim.l_edss_access_list_id
+RFMT_TRANSFORM||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.account,'account',1,0]\n     [out0.access_id_curr,'access_id_curr',1,0]\n     [out0.access_id_prev,'access_id_prev',1,0]\n  ]\n  impacts:\n  [\n     [in0.carrier_id,'carrier_id',1,1]\n     [in0.account,'account',1,1]\n     [in0.access_id_prev,'access_id_prev',1,1]\n     [in0.access_id_curr,'access_id_curr',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+LOOKUP_FIELDS_KEY||||{carrier_id;account;access_id_prev;access_id_curr}
+SOURCE_FILE_CLEAN_FLAG|$|||True
+INPUT_FILE_PATTERN||||edss_access_list.csv
+LOOKUP_KEY||||{carrier_id; account}
+DO_CLEAN||||0
+DO_LOOKUP||||1

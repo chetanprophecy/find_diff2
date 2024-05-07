@@ -1,0 +1,121 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/eoya_flag_check.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/26  Sarani Bhattacharya     Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_types/client_product_subscrp_and_product_t.dml";
+
+
+type c_eoya_chk_lkp_t =
+record
+  lookup_identifier_type id                               = -1;
+  c_client_product_subscrp_and_product             RecordFormat() = allocate_with_defaults();
+  string('')                                       key()          = {cli_clt_id; product_type_cd};
+  
+end;
+
+
+cli_string_t out :: get_eoya_lkup_path(cli_string_t lookup_dir,cli_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + (cli_string_t)biz_dt + '/client_product_subscrp_and_product.dat';
+end;
+
+/*************************************************/
+/*  Lookup - Constant and Functions : with product_type */
+/*************************************************/
+
+//let c_eoya_chk_lkp_t GLKP_EOYA_CHK = allocate_with_nulls();
+
+c_eoya_chk_lkp_t out :: load_eoya_lkup(cli_string_t lookup_dir,cli_date_t biz_dt) inline =
+begin
+ 
+  out :: lookup_load(get_eoya_lkup_path(lookup_dir,biz_dt));
+end;
+
+cli_flag_t out :: eoya_flag_chk(cli_string_t lookup_dir,cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_product_type_cd_t cli_product_type_cd) inline =
+begin
+  let lkup = load_eoya_lkup(lookup_dir,biz_dt);
+  let cli_flag_t eoya_flag;
+  let cli_date_t eff_dt = lookup(lkup,cli_clt_id,cli_product_type_cd).eff_dt;
+  eoya_flag = if ( !is_null(eff_dt) and eff_dt == biz_dt ) 'Y' else 'N' ;
+  out :: eoya_flag;
+end;
+
+/*************************************************/
+/*  Lookup - Constant and Functions : without product_type */
+/*************************************************/
+
+type c_eoya_chk_with_client_lkp_t =
+record
+  lookup_identifier_type id                               = -1;
+  c_client_product_subscrp_and_product             RecordFormat() = allocate_with_defaults();
+  string('')                                       key()          = {cli_clt_id};
+  
+end;
+
+c_eoya_chk_with_client_lkp_t out :: load_eoya_with_client_lkup(cli_string_t lookup_dir,cli_date_t biz_dt) inline =
+begin
+ 
+  out :: lookup_load(get_eoya_lkup_path(lookup_dir,biz_dt));
+end;
+
+
+cli_flag_t out :: eoya_flag_chk_for_client(cli_string_t lookup_dir,cli_date_t biz_dt, cli_pega_id_t cli_clt_id) inline =
+begin
+  let lkup = load_eoya_with_client_lkup(lookup_dir,biz_dt);
+  let cli_flag_t eoya_flag;
+  let int plan_yr_st_dt_match_count =0 ;
+  let int i = 0;
+  let int count = lookup_count(lkup,cli_clt_id);
+        for (i, i<count)
+        if(first_defined(lookup_next(lkup).eff_dt,'') == biz_dt )
+        plan_yr_st_dt_match_count = plan_yr_st_dt_match_count +1;
+   
+   if(plan_yr_st_dt_match_count == count && count >0)
+   eoya_flag = 'Y';
+   else
+   eoya_flag = 'N';
+        
+ 
+  out :: eoya_flag;
+end;
+
+/*************************************************/
+/*  Lookup - Constant and Functions : pull client_ids for biz_dt */
+/*************************************************/
+
+type eoya_for_today_lkp_t =
+record
+  lookup_identifier_type id                               = -1;
+  c_client_product_subscrp_and_product             RecordFormat() = allocate_with_defaults();
+  string('')                                       key()          = {eff_dt; product_type_cd};
+  
+end;
+
+eoya_for_today_lkp_t out :: load_eoya_client_today_lkup(cli_string_t lookup_dir,cli_date_t biz_dt,cli_product_type_cd_t cli_product_type_cd) inline =
+begin
+ 
+  out :: lookup_load(get_eoya_lkup_path(lookup_dir,biz_dt));
+end;
+
+cli_pega_id_t[int] out :: eoya_clients_for_today(cli_string_t lookup_dir,cli_date_t biz_dt, cli_product_type_cd_t cli_product_type_cd) inline =
+begin
+  let lkup= load_eoya_client_today_lkup(lookup_dir,biz_dt,cli_product_type_cd);
+  let cli_pega_id_t[int] client_list_vec =allocate_with_nulls();
+  let int i=0;
+  let int count = lookup_count(lkup,biz_dt,cli_product_type_cd);
+  client_list_vec = for (i, i<count): lookup_next(lkup).cli_clt_id;
+
+  
+  out :: vector_sort_dedup_first(client_list_vec);
+end;
+
+

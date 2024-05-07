@@ -1,0 +1,84 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5f197bc6_53b9_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.do_ppl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.do_ppl.pref_prod_lst_desc,[transform],in0.j5l0ih]
+  [out0.do_ppl.plan_yr,[transform],in0.j5eqht]
+  [out0.do_ppl.cov_class_typ_cd,[transform],in0.j5wdia]
+  [out0.do_ppl.qualfr_cd,[transform],in0.j5z5id]
+  [out0.do_ppl.pref_prod_lst_sk,[transform],]
+  [out0.do_ppl.pref_prod_lst_id,[transform],in0.j5vphc]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.do_ppl.src_env_sk,'do_ppl.src_env_sk',1,0]
+     [out0.do_ppl.pref_prod_lst_desc,'do_ppl.pref_prod_lst_desc',1,0]
+     [out0.do_ppl.plan_yr,'do_ppl.plan_yr',1,0]
+     [out0.do_ppl.cov_class_typ_cd,'do_ppl.cov_class_typ_cd',1,0]
+     [out0.do_ppl.qualfr_cd,'do_ppl.qualfr_cd',1,0]
+     [out0.do_ppl.pref_prod_lst_sk,'do_ppl.pref_prod_lst_sk',1,0]
+     [out0.do_ppl.pref_prod_lst_id,'do_ppl.pref_prod_lst_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.j5z5id,'j5z5id',1,1]
+     [in0.j5wdia,'j5wdia',1,1]
+     [in0.j5vphc,'j5vphc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.j5eqht,'j5eqht',1,1]
+     [in0.j5l0ih,'j5l0ih',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) do_ppl_pref_prod_lst_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) do_ppl_pref_prod_lst_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) do_ppl_pref_prod_lst_desc;
+let string("\x01",charset="iso-8859-15", maximum_length=1) do_ppl_cov_class_typ_cd;
+let decimal("\x01",0) do_ppl_plan_yr;
+let string("\x01",charset="iso-8859-15", maximum_length=1) do_ppl_qualfr_cd;
+let decimal("\x01",0) do_ppl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+do_ppl_pref_prod_lst_desc=fail_if_error(str_non_nk(in0.j5l0ih));
+
+/*   Default value   */
+do_ppl_plan_yr=fail_if_error(numeric_non_nk(in0.j5eqht));
+
+/*   Default value   */
+do_ppl_cov_class_typ_cd=fail_if_error(str_non_nk(in0.j5wdia));
+
+/*   Default value   */
+do_ppl_qualfr_cd=fail_if_error(str_non_nk(in0.j5z5id));
+
+/*   Default value   */
+do_ppl_pref_prod_lst_id=fail_if_error(str_nk(in0.j5vphc));
+
+  out0.do_ppl.pref_prod_lst_sk::do_ppl_pref_prod_lst_sk;
+  out0.do_ppl.pref_prod_lst_id::do_ppl_pref_prod_lst_id;
+  out0.do_ppl.pref_prod_lst_desc::do_ppl_pref_prod_lst_desc;
+  out0.do_ppl.cov_class_typ_cd::do_ppl_cov_class_typ_cd;
+  out0.do_ppl.plan_yr::do_ppl_plan_yr;
+  out0.do_ppl.qualfr_cd::do_ppl_qualfr_cd;
+  out0.do_ppl.src_env_sk::do_ppl_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_trx_month.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_claim_trx_month.dml
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_rxclaim/split.ids_rxclaim.f_claim_trx_month.dml
+OUTPUT_FILE_LOCATION||||$AI_MFS/split/split.f_claim_trx_month.ids_rxclaim.f_claim_trx_month.${RUN_ID}.dat.gz
+USE_ROLLUP||||False
+USE_DEDUP||||False
+USE_SORT||||False
+AB_CATALOG|$|||$AI_CAT/produce.ids_rxclaim/produce.f_claim_trx_month.cat
+FILTER_EXPR|l|||lookup_match("s_clm_c632", f_clm_trx_mn.dxf_hk_part1)
+MAPPING_XFR|$|||$AI_XFR/produce/produce.f_claim_trx_month.xfr
+POST_FILTER_EXPR||||f_clm_trx_mn.drop_record > 0

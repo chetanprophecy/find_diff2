@@ -1,0 +1,32 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/l_refill_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type l_refill_cli_in_t =
+record
+  decimal("\x01",0)   refill_sk /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   refill_cd /*VARCHAR(2) NOT NULL*/;
+  decimal("\x01",0)   refill_flg /*BYTEINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)   refill_flg_desc /*VARCHAR(25) NOT NULL*/;
+  decimal("\x01",0)   src_env_sk /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   insert_ts /*TIMESTAMP(6) NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   update_ts /*TIMESTAMP(6) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)   insert_uid = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)   update_uid = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0)   run_id = NULL("") /*BIGINT*/;
+  decimal("\x01",0)   rec_stat_cd = NULL("") /*BYTEINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type l_refill_cli_in_vec_t = l_refill_cli_in_t[int];
+
+metadata type = l_refill_cli_in_t;
+

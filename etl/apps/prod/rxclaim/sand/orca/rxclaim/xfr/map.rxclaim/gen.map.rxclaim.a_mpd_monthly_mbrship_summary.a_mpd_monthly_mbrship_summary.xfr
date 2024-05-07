@@ -1,0 +1,88 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a589b96_321d_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.a_mmm_sum.mmr_sum_sk,[transform],]
+  [out0.a_mmm_sum.sequest_adj_amt,[transform],in0.sequestration_adj]
+  [out0.a_mmm_sum.total_amt,[transform],in0.total]
+  [out0.a_mmm_sum.adj_start_dt,[passthrough],in0.adj_start_dt]
+  [out0.a_mmm_sum.carrier_id,[passthrough],in0.carrier]
+  [out0.a_mmm_sum.adj_end_dt,[passthrough],in0.adj_end_dt]
+  [out0.a_mmm_sum.late_penalty_amt,[transform],in0.net_late_enrollment_penalty_amount]
+  [out0.a_mmm_sum.cob,[transform],in0.cob]
+  [out0.a_mmm_sum.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.a_mmm_sum.education_fee_amt,[transform],in0.education]
+  [out0.a_mmm_sum.mmr_mnth,[transform],in0.adj_start_dt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.a_mmm_sum.mmr_sum_sk,'a_mmm_sum.mmr_sum_sk',1,0]
+     [out0.a_mmm_sum.sequest_adj_amt,'a_mmm_sum.sequest_adj_amt',1,0]
+     [out0.a_mmm_sum.total_amt,'a_mmm_sum.total_amt',1,0]
+     [out0.a_mmm_sum.adj_start_dt,'a_mmm_sum.adj_start_dt',1,0]
+     [out0.a_mmm_sum.carrier_id,'a_mmm_sum.carrier_id',1,0]
+     [out0.a_mmm_sum.adj_end_dt,'a_mmm_sum.adj_end_dt',1,0]
+     [out0.a_mmm_sum.late_penalty_amt,'a_mmm_sum.late_penalty_amt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.a_mmm_sum.cob,'a_mmm_sum.cob',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.a_mmm_sum.src_env_sk,'a_mmm_sum.src_env_sk',1,0]
+     [out0.a_mmm_sum.education_fee_amt,'a_mmm_sum.education_fee_amt',1,0]
+     [out0.a_mmm_sum.mmr_mnth,'a_mmm_sum.mmr_mnth',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.adj_start_dt,'adj_start_dt',2,2]
+     [in0.net_late_enrollment_penalty_amount,'net_late_enrollment_penalty_amount',1,1]
+     [in0.carrier,'carrier',1,1]
+     [in0.total,'total',1,1]
+     [in0.cob,'cob',1,1]
+     [in0.education,'education',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.sequestration_adj,'sequestration_adj',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.adj_end_dt,'adj_end_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) a_mmm_sum_mmr_sum_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_mmm_sum_carrier_id = fail_if_error(in0.carrier);
+let date("YYYYMMDD")("\x01") a_mmm_sum_adj_start_dt = fail_if_error(in0.adj_start_dt);
+let date("YYYYMMDD")("\x01") a_mmm_sum_adj_end_dt = fail_if_error(in0.adj_end_dt);
+let decimal("\x01",0) a_mmm_sum_mmr_mnth = fail_if_error(string_substring(in0.adj_start_dt ,0, 6 ));
+let decimal("\x01".2, maximum_length=16, sign_reserved) a_mmm_sum_education_fee_amt = fail_if_error((decimal("\x01".2, maximum_length=16, sign_reserved))( (decimal("\x01"))in0.education));
+let decimal("\x01".2, maximum_length=16, sign_reserved) a_mmm_sum_cob = fail_if_error((decimal("\x01".2, maximum_length=16, sign_reserved))( (decimal("\x01"))in0.cob));
+let decimal("\x01".2, maximum_length=16, sign_reserved) a_mmm_sum_sequest_adj_amt = fail_if_error((decimal("\x01".2, maximum_length=16, sign_reserved))( (decimal("\x01"))in0.sequestration_adj));
+let decimal("\x01".2, maximum_length=16, sign_reserved) a_mmm_sum_late_penalty_amt = fail_if_error((decimal("\x01".2, maximum_length=16, sign_reserved))( (decimal("\x01"))in0.net_late_enrollment_penalty_amount));
+let decimal("\x01".2, maximum_length=16, sign_reserved) a_mmm_sum_total_amt = fail_if_error((decimal("\x01".2, maximum_length=16, sign_reserved))( (decimal("\x01"))in0.total));
+let decimal("\x01",0) a_mmm_sum_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.a_mmm_sum.mmr_sum_sk::a_mmm_sum_mmr_sum_sk;
+  out0.a_mmm_sum.carrier_id::a_mmm_sum_carrier_id;
+  out0.a_mmm_sum.adj_start_dt::a_mmm_sum_adj_start_dt;
+  out0.a_mmm_sum.adj_end_dt::a_mmm_sum_adj_end_dt;
+  out0.a_mmm_sum.mmr_mnth::a_mmm_sum_mmr_mnth;
+  out0.a_mmm_sum.education_fee_amt::a_mmm_sum_education_fee_amt;
+  out0.a_mmm_sum.cob::a_mmm_sum_cob;
+  out0.a_mmm_sum.sequest_adj_amt::a_mmm_sum_sequest_adj_amt;
+  out0.a_mmm_sum.late_penalty_amt::a_mmm_sum_late_penalty_amt;
+  out0.a_mmm_sum.total_amt::a_mmm_sum_total_amt;
+  out0.a_mmm_sum.src_env_sk::a_mmm_sum_src_env_sk;
+  out0.*::in0.*;
+
+end;

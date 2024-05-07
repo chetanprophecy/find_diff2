@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.cli_rider.client_rdr_sk,[transform],]
+  [out0.cli_rider.client_rdr_cd,[transform],in0.clt_rdr_cd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cli_rider.src_env_sk,'cli_rider.src_env_sk',1,0]
+     [out0.cli_rider.dxf_hk_part2,'cli_rider.dxf_hk_part2',1,0]
+     [out0.cli_rider.dxf_hk_part1,'cli_rider.dxf_hk_part1',1,0]
+     [out0.cli_rider.client_rdr_sk,'cli_rider.client_rdr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cli_rider.client_rdr_cd,'cli_rider.client_rdr_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cli_rider.dxf_sk,'cli_rider.dxf_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.clt_rdr_cd,'clt_rdr_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) cli_rider_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) cli_rider_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) cli_rider_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) cli_rider_client_rdr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) cli_rider_client_rdr_cd = fail_if_error(string_lrtrim(in0.clt_rdr_cd));
+let decimal("\x01",0) cli_rider_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.cli_rider.dxf_hk_part1::cli_rider_dxf_hk_part1;
+  out0.cli_rider.dxf_hk_part2::cli_rider_dxf_hk_part2;
+  out0.cli_rider.dxf_sk::cli_rider_dxf_sk;
+  out0.cli_rider.client_rdr_sk::cli_rider_client_rdr_sk;
+  out0.cli_rider.client_rdr_cd::cli_rider_client_rdr_cd;
+  out0.cli_rider.src_env_sk::cli_rider_src_env_sk;
+  out0.*::in0.*;
+
+end;

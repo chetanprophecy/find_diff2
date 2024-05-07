@@ -1,0 +1,192 @@
+/////////////////////////////////////////////////////////////////////////
+//
+// This file was generated at Mon Jun 05 08:43:54 2023 by
+// $AB_HOME/bin/api-to-dml -s /etl/devel/appconf.rebates_idw_direct_v4/idw_direct/users/skadam9/aicoe/pub_dxf_4_0/meta/openapi-users.yaml -J /etl/devel/appconf.rebates_idw_direct_v4/idw_direct/users/skadam9/aicoe/pub_dxf_4_0/meta/openapi-users.yaml -sandbox /etl/devel/appconf.rebates_idw_direct_v4/idw_direct/users/skadam9/aicoe/pub_dxf_4_0
+//
+// !! WARNING: ANY EDITS WILL BE LOST UPON REGENERATION OF THIS FILE !!
+//
+// !! DO NOT EDIT !!
+//
+/////////////////////////////////////////////////////////////////////////
+
+package _api_table_name_get_sks_POST;
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/request/request.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/200.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/206.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/422.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/423.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/500.dml";
+
+include "/~$PUB_DXF_DML/api/table_name/get_sks/POST/responses/responses.dml";
+
+// ===============================================================================
+// ===================== Utility function and type definitions  ==================
+// ===============================================================================
+
+type request_t = request_t;
+
+type code200_t = code200_t;
+
+type code206_t = code206_t;
+
+type code422_t = code422_t;
+
+type code423_t = code423_t;
+
+type code500_t = code500_t;
+
+type responses_t = responses_t;
+
+type header_param_t = record utf8 string("\0") name; utf8 string("\0") value; end;
+
+type param_t = header_param_t;
+
+out::resolve_param_to_string(in) =
+begin
+  out::if (is_null(in)) "" else string_filter_out(string_representation(in), "\"");
+end;
+
+out::extend_headers(hdrs,hdrs_to_add) =
+begin
+  let new_headers = hdrs;
+  new_headers = if (is_null(hdrs_to_add)) hdrs else vector_concat(hdrs, hdrs_to_add);
+  new_headers = vector_sort_dedup_last(new_headers, {name});
+  out:: new_headers;
+end;
+
+out::extend_url_with_queries(url,queries_to_add) =
+begin
+  let utf8 string(integer(4)) res = url;
+  if (is_defined(queries_to_add)) begin
+    res = res + (if (string_index(url, "?")) "&" else "?");
+    for (let q in queries_to_add) begin
+      res = res + q.name + "=" + url_encode_escapes(q.value) + "&";
+    end;
+    res = string_substring(res, 1, length_of(res) - 1);
+  end;
+  out::res;
+end;
+
+// ===============================================================================
+// ======================= Functions for request building   ======================
+// ===============================================================================
+
+//// Building input formatting methods for build_url ////
+
+out::build_url_table_name(in) =
+begin
+  out::url_encode_escapes(resolve_param_to_string(in.path_parameters.table_name));
+end;
+
+out::build_url(in) =
+begin
+  let utf8 string(integer(4)) baseUrl = string_concat(in.server_url, "/api/", build_url_table_name(in), "/get_sks");
+  let utf8 string(integer(4)) queryString = "";
+  if (not is_blank(queryString)) queryString = "?" + string_substring(queryString, 1, string_length(queryString) - 1);
+  out::baseUrl + queryString;
+end;
+
+//// Building input formatting methods for build_headers ////
+
+out::build_headers(in) =
+begin
+  let header_param_t[] vect = [vector [record name "Content-Type" value "application/json"] ];
+  out::vect;
+end;
+
+
+
+//// Defining helpers for building up security params
+
+out::security_attach_headers(in,curr_headers) =
+begin
+  let param_t[] additional_headers = [vector];
+  out::extend_headers(curr_headers, additional_headers);
+end;
+
+out::security_attach_queries(in,curr_url) =
+begin
+  let param_t[] additional_queries = [vector];
+  out::extend_url_with_queries(curr_url, additional_queries);
+end;
+
+// ===============================================================================
+// ================= Piecing together the request  ===============================
+// ===============================================================================
+
+out::make_request(in) =
+begin
+  let call_http_payload_t payload = allocate_with_nulls();
+  let call_http_ssl_t sslopt = allocate_with_nulls();
+  let utf8 string(integer(4)) url = build_url(in);
+  payload.http_headers = build_headers(in);
+  payload.http_headers = security_attach_headers(in, payload.http_headers);
+  url = security_attach_queries(in, url);
+  payload.http_headers = extend_headers(payload.http_headers, in.headers._custom);
+  url = extend_url_with_queries(url, in.query._custom);
+  payload.body = to_json(in.body);
+  out::call_http(url, "POST", payload_info = payload, ssl_info = sslopt);
+end;
+
+// ===============================================================================
+// ================= Making the request and interpreting the response ============
+// ===============================================================================
+
+out::reformat(in) =
+begin
+  let call_http_response_t response = allocate_with_nulls();
+  let utf8 string (big endian integer(4)) body_as_string = NULL;
+  let code200_t code200 = NULL;
+  let code206_t code206 = NULL;
+  let code422_t code422 = NULL;
+  let code423_t code423 = NULL;
+  let code500_t code500 = NULL;
+  response = make_request(in);
+  if (response.status.code == 200)
+  begin
+    body_as_string = reinterpret(response.body);
+    code200 = first_without_error(from_json(body_as_string), NULL);
+    if (not is_defined(code200)) begin write_to_log_file("/~stdout", "DML schema provided for code 200 cannot be resolved!
+"); end;
+  end;
+  if (response.status.code == 206)
+  begin
+    body_as_string = reinterpret(response.body);
+    code206 = first_without_error(from_json(body_as_string), NULL);
+    if (not is_defined(code206)) begin write_to_log_file("/~stdout", "DML schema provided for code 206 cannot be resolved!
+"); end;
+  end;
+  if (response.status.code == 422)
+  begin
+    body_as_string = reinterpret(response.body);
+    code422 = first_without_error(from_json(body_as_string), NULL);
+    if (not is_defined(code422)) begin write_to_log_file("/~stdout", "DML schema provided for code 422 cannot be resolved!
+"); end;
+  end;
+  if (response.status.code == 423)
+  begin
+    body_as_string = reinterpret(response.body);
+    code423 = first_without_error(from_json(body_as_string), NULL);
+    if (not is_defined(code423)) begin write_to_log_file("/~stdout", "DML schema provided for code 423 cannot be resolved!
+"); end;
+  end;
+  if (response.status.code == 500)
+  begin
+    body_as_string = reinterpret(response.body);
+    code500 = first_without_error(from_json(body_as_string), NULL);
+    if (not is_defined(code500)) begin write_to_log_file("/~stdout", "DML schema provided for code 500 cannot be resolved!
+"); end;
+  end;
+  out.raw_response::response;
+  out.code200 :: code200;
+  out.code206 :: code206;
+  out.code422 :: code422;
+  out.code423 :: code423;
+  out.code500 :: code500;
+end;

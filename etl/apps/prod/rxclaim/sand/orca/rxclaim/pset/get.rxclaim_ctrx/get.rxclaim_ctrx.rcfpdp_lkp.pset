@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcfpdp_lkp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcfpdp                  fpiin2,fpybh9,fpych9,fpydh9,fpyeh9,fpyfh9,fpygh9,fpyhh9\nclmprdfil     rcprdp                  sziin2
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil", "rcfpdp") + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil", "rcprdp")]
+DO_SOURCE||||0
+DO_CLEAN||||0
+DO_LOOKUP||||1
+LOOKUP_KEY||||{fpiin2; rxt_src_envrt_id}
+DO_CONS_LOOKUP||||1
+WHERE_CLAUSE||||WHERE rcfpdp.fpiin2 = rcprdp.sziin2 \nOPTIMIZE FOR ALL ROWS\n

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Appconf version="2" templateRpath="/Projects/aicoe/pub_dxf_4_0/apptempl/get.iseries.apptempl" parameterizedTemplateRpath="${PUB_DXF_APPTEMPL}/get.iseries.apptempl">
+  <Metadata version="0">
+    <Variables name="vars">
+      <ListVariable name="table_choices">
+      </ListVariable>
+      <ListVariable name="source_list">
+          <CompoundVariableValue>
+            <StringVariableValue name="table_name" value="rxbsysqa3.rxcui_assignment"/>
+            <StringVariableValue name="dml" value="While executing transform (begin&#10;&#9;let directory_listing_type source_vec =[vector];&#10;&#9;let directory_listing_type source_dml_vec =[vector];&#10;&#9;let string(&quot;&quot;) logical_schema =&quot;&quot;;&#10;&#9;let int[int] index_vec =[vector];&#10;&#10;&#9;let schemas = (for (let line in string_split_no_empty( /* proj.get.AI_SOURCE_DB_GROUPS */ __ace_0,&quot;\r\n&quot;))&#10;                 : (if (!starts_with(line,&quot;#&quot;))&#10;                      re_split_no_empty(line,&quot;[ \t]+&quot;)[0])); &#10;&#9;let src_db_list = (for (let line in string_split_no_empty( /* proj.get.AI_SOURCE_DB_LIST */ __ace_1,&quot;\r\n&quot;))&#10;                     : (if (!starts_with(line,&quot;#&quot;))&#10;                          (((re_split_no_empty(line,&quot;[ \t]+&quot;)[2]+&quot;/&quot;)+re_split_no_empty(line,&quot;[ \t]+&quot;)[0])+&quot;/&quot;)));&#10;&#9;let string(&quot;&quot;) dml_dir_list =&quot;&quot;;&#10;&#10;&#9;let string(long)[int] source_dml_vec1 =[vector];&#10;&#10;&#9;if(( /* vars.query_type_id */ __ace_2==1)) &#10;        &#9;source_dml_vec=vector_concat(source_dml_vec,(for (let file in directory_listing((( /* proj.get.SOURCE_DB_DML */ __ace_3+&quot;/&quot;)+  /* proj.get.SOURCE_SYSTEM */ __ace_4),( /* proj.get.SOURCE_SYSTEM */ __ace_5+&quot;.*.dml&quot;)))&#10;         : (((( /* proj.get.SOURCE_DB_DML */ __ace_6+&quot;/&quot;)+  /* proj.get.SOURCE_SYSTEM */ __ace_7)+&quot;/&quot;)+file)));&#10;&#9;else begin&#10;&#9;&#9;for(let schema in schemas)&#10;&#9;&#9;  for(let dml_dir_info in src_db_list)&#10;    &#9;&#9;&#9;dml_dir_list=(if (ends_with(dml_dir_info,((&quot;/&quot;+schema)+&quot;/&quot;)))&#10;          ((dml_dir_list+dml_dir_info)+&quot;\n&quot;)&#10;        else&#10;          dml_dir_list);&#10;&#10;&#9;&#9;for(let line in string_split_no_empty(dml_dir_list,&quot;\n&quot;)) source_dml_vec=vector_concat(source_dml_vec,(for (let file in directory_listing(line,&quot;*.dml&quot;))&#10;         : (line+file)));&#10;&#9;end&#10;        &#10;&#9;source_vec= (for (let dml_nm in source_dml_vec)&#10;       : re_replace(string_split_no_empty(dml_nm,&quot;/&quot;)[(length_of(string_split_no_empty(dml_nm,&quot;/&quot;))-1)],&quot;[.]dml$&quot;,&quot;&quot;));&#10;&#9;index_vec= (for (let index, (index&lt;length_of( /* vars.source_list.table_name */ __ace_8)))&#10;       : vector_search(source_vec, /* vars.source_list.table_name */ __ace_9[index]));&#10;&#9;source_dml_vec1= (for (let cntr in index_vec)&#10;       : source_dml_vec[cntr]);&#10;&#10;&#9;result :: (for ( let dml_path in source_dml_vec1)&#10;     : read_type(dml_path));&#10;end):&#10;Index out of bounds in assignment for loop body of  (for (let cntr in index_vec)&#10;       : source_dml_vec[cntr]).&#10;Index is -1 but vector has no elements.&#10;Source is the value &quot;source_dml_vec&quot;.&#10;"/>
+            <StringVariableValue name="fields" value="ndc,product_key,active_ind,rxcui,partd_ind,override_level,ext_override_id,eff_dt,term_dt,rxcui_type_cd,subset_type_cd,frf_related_ndc_flag,frf_replace_ndc_flag,frf_proxy_ndc_ind,gpi,product_name,otc,msc,product_label,gpi_name,rec_create_userid,rec_create_timestamp,last_upd_userid,last_upd_timestamp,source_ndc,run_id,newline"/>
+            <BoolVariableValue name="no_select_fields" value="false"/>
+          </CompoundVariableValue>
+      </ListVariable>
+      <Variable name="errors">
+          <StringVariableValue/>
+      </Variable>
+      <Variable name="query_type_id">
+          <IntVariableValue value="1"/>
+      </Variable>
+      <Variable name="query_interface">
+          <StringVariableValue value="One Schema"/>
+      </Variable>
+      <Variable name="check_source_override">
+          <BoolVariableValue value="false"/>
+      </Variable>
+      <Variable name="source_system_override">
+          <StringVariableValue/>
+      </Variable>
+      <ListVariable name="custom_db_groups">
+      </ListVariable>
+      <ListVariable name="default_db_groups">
+      </ListVariable>
+      <ListVariable name="all_db_groups">
+      </ListVariable>
+    </Variables>
+    <Project name="proj">
+      <Pset name="get" rpath="/Projects/orca/rxclaim/pset/get.rxbsysqa3/get.rxbsysqa3.rxcui_assignment.pset" parameterizedRpath="${AI_PSET}/get.rxbsysqa3/get.rxbsysqa3.rxcui_assignment.pset" relative_path="pset/get.rxbsysqa3/get.rxbsysqa3.rxcui_assignment.pset"/>
+    </Project>
+    <SharedFile name="source_dml_file" rpath="/Projects/orca/rxclaim/dml/source.rxbsysqa3/source.rxbsysqa3.rxcui_assignment.dml" parameterizedRpath="${AI_DML}/source.rxbsysqa3/source.rxbsysqa3.rxcui_assignment.dml"/>
+    <SharedFile name="clean_dml_file" rpath="/Projects/orca/rxclaim/dml/clean.rxbsysqa3/clean.rxbsysqa3.rxcui_assignment.dml" parameterizedRpath="${AI_DML}/clean.rxbsysqa3/clean.rxbsysqa3.rxcui_assignment.dml"/>
+    <SharedFile name="lookup_dml_file" rpath="" parameterizedRpath=""/>
+    <SharedFile name="public_clean_dml_file" rpath="" parameterizedRpath=""/>
+  </Metadata>
+</Appconf>

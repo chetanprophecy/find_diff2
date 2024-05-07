@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcpd1040h2
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpd1040h2              cmspstdte2,planyear2,pdpcarr2,pdpacct2,pdpgrp2,pdpplan2,pdpplneff2,contract2,pbpid2,pharmid,pdpdate2,pcrecord,pcfileid,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcpd1040h2")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_DB_INFO_VEC||||$[begin\r\n//This PDL block was added by msing114 on 07/2017 to make progress on book1 & book2 project . However this process will be refined later to use more generic way of getting layout.\r\nresult ::  if (string_index(if(is_blank(SOURCE_SYSTEM_OVERRIDE))SOURCE_SYSTEM,"rxclaim_orx") || string_index(if(is_blank(SOURCE_SYSTEM_OVERRIDE))SOURCE_SYSTEM,"_bk1") || string_index(if(is_blank(SOURCE_SYSTEM_OVERRIDE))SOURCE_SYSTEM,"bk2") )\r\n                  get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS) \r\n                else \r\n             get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS) ;\r\n                \r\nend\r\n ]
+WHERE_CLAUSE||||where substr(cmspstdte2,1,4) = planyear2
+RUN_ID||||20171012080000

@@ -1,0 +1,54 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+    Name:bzt_72_97d014ac_578b109d_9129_0
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_alias_lkp   */
+out0::bzt_72_97d014ac_578b109d_9129_0(in0,in1,in2)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+    Name:bzt_71_97d014ac_578b109d_9129_0
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_alias   */
+out0::bzt_71_97d014ac_578b109d_9129_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) pbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_id_st_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_alias",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) f_c_tx_cdr_pbr_sk;
+
+/*   Default value   */
+f_c_tx_cdr_pbr_sk=fail_if_error(first_defined(bzt_71_97d014ac_578b109d_9129_0(in0.d_pres_adjud.pbr_id, in0.d_pres_adjud.pbr_id_qlfr_cd, in0.d_pres_adjud.pbr_id_st_cd,in0.d_pres_adjud.src_env_sk).pbr_sk,bzt_72_97d014ac_578b109d_9129_0(in0.d_pres_adjud.pbr_id, in0.d_pres_adjud.pbr_id_qlfr_cd, in0.d_pres_adjud.src_env_sk).pbr_sk,-1));
+
+  out0.f_c_tx_cdr.pbr_sk::f_c_tx_cdr_pbr_sk;
+  out0.*::in0.*;
+
+end;

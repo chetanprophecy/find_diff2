@@ -1,0 +1,124 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_97d014ac_5757fe9c_826c_8
+    BizHidden:true
+@*/
+/*   lookup rxafgrp_lkp   */
+out0::bzt_2_97d014ac_5757fe9c_826c_8(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\001", maximum_length=1) cdc_flag;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnn")("\001") cdc_ts;
+  decimal("\001", maximum_length=6) agafgp;
+  string("\001", maximum_length=30) agdesc;
+  string("\001", maximum_length=10) aguser;
+  decimal("\001", maximum_length=6) agdate;
+  decimal("\n", maximum_length=6) agtime;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rxafgrp_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_3_97d014ac_5757fe9c_826c_8
+    BizHidden:true
+@*/
+/*   lookup rxafcdp_lkp   */
+out0::bzt_3_97d014ac_5757fe9c_826c_8(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\001", maximum_length=1) cdc_flag;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnn")("\001") cdc_ts;
+  decimal("\001", maximum_length=6) acafgp;
+  string("\001", maximum_length=6) acajcd;
+  string("\001", maximum_length=10) acuser;
+  decimal("\001", maximum_length=6) acdate;
+  decimal("\n", maximum_length=6) actime;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rxafcdp_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.pharm_affl.phr_afflt_nm,[passthrough],in0.afa9tx]
+  [out0.pharm_affl.phr_afflt_cd,[passthrough],in0.afajcd]
+  [out0.pharm_affl.phr_afflt_grp_desc,[transform],in0.afajcd,
+     in0.dxf_src_sys_id,
+     'lookup("rxafcdp_lkp").acafgp',
+     'lookup("rxafgrp_lkp").agdesc']
+  [out0.pharm_affl.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.pharm_affl.phr_afflt_grp_id,[transform],in0.afajcd,
+     in0.dxf_src_sys_id,
+     'lookup("rxafcdp_lkp").acafgp']
+  [out0.pharm_affl.phr_afflt_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.pharm_affl.phr_afflt_nm,'pharm_affl.phr_afflt_nm',1,0]
+     [out0.pharm_affl.phr_afflt_cd,'pharm_affl.phr_afflt_cd',1,0]
+     [out0.pharm_affl.phr_afflt_grp_desc,'pharm_affl.phr_afflt_grp_desc',1,0]
+     [out0.pharm_affl.src_env_sk,'pharm_affl.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.pharm_affl.phr_afflt_grp_id,'pharm_affl.phr_afflt_grp_id',1,0]
+     [out0.pharm_affl.phr_afflt_sk,'pharm_affl.phr_afflt_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.afa9tx,'afa9tx',1,1]
+     ['lookup("rxafgrp_lkp").agdesc','agdesc',1,1]
+     ['lookup("rxafcdp_lkp").acafgp','acafgp',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',7,4]
+     [in0.afajcd,'afajcd',3,3]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) pharm_affl_phr_afflt_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) pharm_affl_phr_afflt_cd = fail_if_error(in0.afajcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) pharm_affl_phr_afflt_nm = fail_if_error(in0.afa9tx);
+let decimal("\x01",0) pharm_affl_phr_afflt_grp_id;
+let string("\x01",charset="iso-8859-15", maximum_length=100) pharm_affl_phr_afflt_grp_desc;
+let decimal("\x01",0) pharm_affl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+pharm_affl_phr_afflt_grp_desc=fail_if_error(bzt_2_97d014ac_5757fe9c_826c_8(bzt_3_97d014ac_5757fe9c_826c_8(in0.afajcd,in0.dxf_src_sys_id).acafgp,in0.dxf_src_sys_id).agdesc);
+
+/*   Default value   */
+pharm_affl_phr_afflt_grp_id=fail_if_error(bzt_3_97d014ac_5757fe9c_826c_8(in0.afajcd,in0.dxf_src_sys_id).acafgp);
+
+  out0.pharm_affl.phr_afflt_sk::pharm_affl_phr_afflt_sk;
+  out0.pharm_affl.phr_afflt_cd::pharm_affl_phr_afflt_cd;
+  out0.pharm_affl.phr_afflt_nm::pharm_affl_phr_afflt_nm;
+  out0.pharm_affl.phr_afflt_grp_id::pharm_affl_phr_afflt_grp_id;
+  out0.pharm_affl.phr_afflt_grp_desc::pharm_affl_phr_afflt_grp_desc;
+  out0.pharm_affl.src_env_sk::pharm_affl_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,110 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5ec64b56_8534_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt,[transform],in0.iwhodt]
+  [out0.d_prf_f_dg.diagnosys_list_qual,[passthrough],in0.iwtrax]
+  [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt,[transform],in0.iwhpdt]
+  [out0.d_prf_f_dg.gpi_sk,[transform],]
+  [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt_sk,[transform],]
+  [out0.d_gpi.gpi_id,[passthrough],in0.iwq6c2]
+  [out0.d_date_end.cal_day_dt,[transform],in0.iwhpdt]
+  [out0.d_date_start.cal_day_dt,[transform],in0.iwhodt]
+  [out0.d_prf_f_dg.gpi_list_sk,[transform],]
+  [out0.d_prf_f_dg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_prf_f_dg.dgl_diagnosis_list_cd,[passthrough],in0.iwlwcd]
+  [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt_sk,[transform],]
+  [out0.d_prf_f_dg.gpi_list_nm,[passthrough],in0.iwqyc2]
+  [out0.d_prf_f_dg.gpi_no,[passthrough],in0.iwq6c2]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt,'d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt',1,0]
+     [out0.d_prf_f_dg.diagnosys_list_qual,'d_prf_f_dg.diagnosys_list_qual',1,0]
+     [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt,'d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt',1,0]
+     [out0.d_prf_f_dg.gpi_sk,'d_prf_f_dg.gpi_sk',1,0]
+     [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt_sk,'d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt_sk',1,0]
+     [out0.d_gpi.gpi_id,'d_gpi.gpi_id',1,0]
+     [out0.d_date_end.cal_day_dt,'d_date_end.cal_day_dt',1,0]
+     [out0.d_date_start.cal_day_dt,'d_date_start.cal_day_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_prf_f_dg.gpi_list_sk,'d_prf_f_dg.gpi_list_sk',1,0]
+     [out0.d_prf_f_dg.src_env_sk,'d_prf_f_dg.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_prf_f_dg.dgl_diagnosis_list_cd,'d_prf_f_dg.dgl_diagnosis_list_cd',1,0]
+     [out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt_sk,'d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt_sk',1,0]
+     [out0.d_prf_f_dg.gpi_list_nm,'d_prf_f_dg.gpi_list_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_prf_f_dg.gpi_no,'d_prf_f_dg.gpi_no',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.iwq6c2,'iwq6c2',2,2]
+     [in0.iwtrax,'iwtrax',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.iwlwcd,'iwlwcd',1,1]
+     [in0.iwhpdt,'iwhpdt',2,2]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.iwhodt,'iwhodt',2,2]
+     [in0.iwqyc2,'iwqyc2',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_prf_f_dg_gpi_list_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prf_f_dg_gpi_list_nm = fail_if_error(in0.iwqyc2);
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_prf_f_dg_gpi_no = fail_if_error(in0.iwq6c2);
+let decimal("\x01",0) d_prf_f_dg_gpi_sk = -1;
+let decimal("\x01",0) d_prf_f_dg_frmlry_gpi_dtl_curr_start_dt_sk = -1;
+let date("YYYYMMDD")("\x01") d_prf_f_dg_frmlry_gpi_dtl_curr_start_dt;
+let decimal("\x01",0) d_prf_f_dg_frmlry_gpi_dtl_curr_end_dt_sk = -1;
+let date("YYYYMMDD")("\x01") d_prf_f_dg_frmlry_gpi_dtl_curr_end_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_prf_f_dg_dgl_diagnosis_list_cd = fail_if_error(in0.iwlwcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prf_f_dg_diagnosys_list_qual = fail_if_error(in0.iwtrax);
+let decimal("\x01",0) d_prf_f_dg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let date("YYYYMMDD")("\x01") d_date_end_cal_day_dt;
+let date("YYYYMMDD")("\x01") d_date_start_cal_day_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_gpi_gpi_id = fail_if_error(in0.iwq6c2);
+
+
+
+/*   Default value   */
+d_prf_f_dg_frmlry_gpi_dtl_curr_start_dt=fail_if_error(date_check(in0.iwhodt));
+
+/*   Default value   */
+d_prf_f_dg_frmlry_gpi_dtl_curr_end_dt=fail_if_error(date_check(in0.iwhpdt));
+
+/*   Default value   */
+d_date_end_cal_day_dt=fail_if_error(date_check(in0.iwhpdt));
+
+/*   Default value   */
+d_date_start_cal_day_dt=fail_if_error(date_check(in0.iwhodt));
+
+  out0.d_prf_f_dg.gpi_list_sk::d_prf_f_dg_gpi_list_sk;
+  out0.d_prf_f_dg.gpi_list_nm::d_prf_f_dg_gpi_list_nm;
+  out0.d_prf_f_dg.gpi_no::d_prf_f_dg_gpi_no;
+  out0.d_prf_f_dg.gpi_sk::d_prf_f_dg_gpi_sk;
+  out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt_sk::d_prf_f_dg_frmlry_gpi_dtl_curr_start_dt_sk;
+  out0.d_prf_f_dg.frmlry_gpi_dtl_curr_start_dt::d_prf_f_dg_frmlry_gpi_dtl_curr_start_dt;
+  out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt_sk::d_prf_f_dg_frmlry_gpi_dtl_curr_end_dt_sk;
+  out0.d_prf_f_dg.frmlry_gpi_dtl_curr_end_dt::d_prf_f_dg_frmlry_gpi_dtl_curr_end_dt;
+  out0.d_prf_f_dg.dgl_diagnosis_list_cd::d_prf_f_dg_dgl_diagnosis_list_cd;
+  out0.d_prf_f_dg.diagnosys_list_qual::d_prf_f_dg_diagnosys_list_qual;
+  out0.d_prf_f_dg.src_env_sk::d_prf_f_dg_src_env_sk;
+  out0.d_date_end.cal_day_dt::d_date_end_cal_day_dt;
+  out0.d_date_start.cal_day_dt::d_date_start_cal_day_dt;
+  out0.d_gpi.gpi_id::d_gpi_gpi_id;
+  out0.*::in0.*;
+
+end;

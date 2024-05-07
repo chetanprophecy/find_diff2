@@ -1,0 +1,10 @@
+!prototype|P|||$AI_MP/get.excel_and_ids_comparison.mp
+IDS_FILE_NAME||||ids_rxclaim.l_norm
+EXL_FILE_NAME||||L_NORM.xlsx
+TARGET_NAME||||rxclaim.l_norm
+JOIN_KEY||||{carrier;account}
+IDS_FILE_URL||||$[PUB_DATAHUB_MFS_LOOKUP+"/ids/"+string_split(IDS_FILE_NAME,".")[0]+"/"+string_split(IDS_FILE_NAME,".")[1]+".dat.gz"]
+DRIVER_DEDUP_ON_JOIN_KEY||||1
+USR_ID||||siva
+EMAIL_LIST||||$[string_join(string_split_no_empty(read_file(AI_META+"/sdi_email_list.dat"),"\\n"),",")]
+IGNORE_DELETED_RECORDS||||True

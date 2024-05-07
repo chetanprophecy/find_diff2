@@ -1,0 +1,696 @@
+record
+  decimal("\x01",0, maximum_length=16, sign_reserved) e0p2nb /*DECIMAL(15) NOT NULL*/ /*@
+BizName:"RCPDTP: RXS RxCLAIM Nbr"
+ BizComment:"A unique number identifying a claim."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0oinb /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: TCD Claim Seq# 999s Comp"
+ BizComment:"A sequence number assigned to captured, paid, and rejected claims."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0enpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Ingredient Cost"
+ BizComment:"Cost of the drug dispensed. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0eopr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Dispensing Fee"
+ BizComment:"Contracted dispensing fee. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0egpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Flat Sls Tax Amt"
+ BizComment:"Sales tax for the prescription dispensed. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ehpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Patient Pay Amt"
+ BizComment:"Amount to be collected from the patient.  This field includes co-pay amounts, any reductions for deductibles, etc. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0eipr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Total Amount"
+ BizComment:"Total amount to be paid by the claims processor (i.e.: pharmacy receivable). This field represents a sum of fields:   Calculated Ingredient Cost + Calculated Contract Fee                              + Calculated Sales Tax                              + Calculated Postage Amount                              - Calculated Patient Pay Amount. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ejpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Withhold Amount"
+ BizComment:"Sometimes the plan requires a fixed amount or a percentage held back from reimbursement to the pharmacy. This amount may or may not be reimbursed to the pharmacy. This is client specific. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ekpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Copay Amount"
+ BizComment:"Correct co-pay for plan billed. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0djp4 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Copay Flat $ Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0dkp4 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Copay Prcnt $ Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0elpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Atr Prod Sel Amt"
+ BizComment:"Amount attributed to product selection. Amount to be collected from the patient that is included in the "Patient Pay Amount" that is due to the patient's selection of the drug product. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0wop1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Amt Atr Sales Tax"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0empr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Exce Per Bft Amt"
+ BizComment:"Amount attributed to exceeding a periodic benefit maximum. Amount to be collected from the patient that is included in the "Patient Pay Amount" that is due to the patient's exceeding a periodic benefit maximum. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0eppr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Incentive Fee Amt"
+ BizComment:"Incentive dispensing fee included in the total amount. (Calculated during pre-adjudication.)"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0eqpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Amt Appl Per Dedu"
+ BizComment:"Amount to be collected from the patient that is included in the "Patient Pay Amount" that is attributed to sales tax. (Calculated during pre-adjudication.)"
+@*/;
+  string("\x01", maximum_length=1) e0lsst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Cost Source"
+ BizComment:"Identifies the price data base that was used. There are currently three data bases that can be used:                           F = First Data Bank                           M = Medi-Span                           P = Plan Itself. At present, only Medi-Span is available from ComCoTec."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0uup1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Total Other Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0uwp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal %Sls Tax Amt Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".4, maximum_length=9, sign_reserved) e0b0pc /*DECIMAL(7,4) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal %Sls Tax Rte Paid"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0k5cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal %Sls Tax Basis Pd"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0u6p1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Prof Srv Fee Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vgp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Oth Pyr Amt Recog"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lncj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Basis Cal-DispFee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0llcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Basis Cal-Copay"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lpcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Basis Cal-Flt Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lfcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Basis Cal-% Tax"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rnhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Amt Atr ProcsrFee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0bgod /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Basis Cal-Coinsur"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rshz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT CalHlthPlnFundAsstAmt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rthz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT CalAmtAtrPrvdrNtwkSel"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ruhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT CalAmtAtrPrdSlBrndDrg"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rvhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT CalAmtAtrPrdSlNPrfFrm"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rwhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT CalAmtAtrPrdSlBrndNPF"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0rxhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Amt Atr Cover Gap"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) e0sost /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Cost Source"
+ BizComment:"Identifies the price data base that was used. There are currently three data bases that can be used:                           F = First Data Bank                           M = Medi-Span                           P = Plan Itself. At present, only Medi-Span is available from ComCoTec."
+@*/;
+  string("\x01", maximum_length=10) e0uicd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Cost Type Cde"
+ BizComment:"A code indicating which type of cost was used for the unit cost.   Valid values are:     AAWP       = Average Average Wholesale Price     AVGBRAND   = Average Brand Cost     AVGGENERIC = Average Generic Cost     AWP        = Average Wholesale Price     GEAP       = Generic Equivalent Average Price     HCFA       = Health Care Finance Administration     MAC        = Maximum Allowed Cost     MAC01      = Maximum Allowed Cost 01     MAC02      = Maximum Allowed Cost 02     MAC03      = Maximum Allowed Cost 03     MAC04      = Maximum Allowed Cost 04     MAC05      = Maximum Allowed Cost 05     MAC06      = Maximum Allowed Cost 06     MAC07      = Maximum Allowed Cost 07     MAC08      = Maximum Allowed Cost 08     MAC09      = Maximum Allowed Cost 09     MAC10      = Maximum Allowed Cost 10     MAC11      = Maximum Allowed Cost 11     MAC12      = Maximum Allowed Cost 12     MAC13      = Maximum Allowed Cost 13     MAC14      = Maximum Allowed Cost 14     MAC15      = Maximum Allowed Cost 15     MAC16      = Maximum Allowed Cost 16     MAC17      = Maximum Allowed Cost 17     MAC18      = Maximum Allowed Cost 18     MAC19      = Maximum Allowed Cost 19     MAC20      = Maximum Allowed Cost 20     MAC21      = Maximum Allowed Cost 21     MAC22      = Maximum Allowed Cost 22     MAC23      = Maximum Allowed Cost 23     MAC24      = Maximum Allowed Cost 24     MAC25      = Maximum Allowed Cost 25     MAC26      = Maximum Allowed Cost 26     MAC27      = Maximum Allowed Cost 27     MAC28      = Maximum Allowed Cost 28     MAXBRAND   = Maximum Brand Cost     MAXGENERIC = Maximum Generic Cost     MINBRAND   = Minimum Brand Cost     MINGENERIC = Miniumum Generic Cost     WAC        = Warehouse Average Cost     PATPAY     = Submitted Patient Pay"
+@*/;
+  string("\x01", maximum_length=10) e0s1c4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Price Type"
+ BizComment:""
+@*/;
+  decimal("\x01".4, maximum_length=9, sign_reserved) e0b2pc /*DECIMAL(7,4) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App %Sls Tax Rte Paid"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0k7cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App %Sls Tax Basis Pd"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0u8p1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Prof Srv Fee Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vip1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Oth Pyr Amt Recog"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lvcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Basis Cal-DispFee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0ltcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Basis Cal-Copay"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lxcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Basis Cal-Flt Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lrcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Basis Cal-% Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0bhod /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT App Basis Cal-Coinsur"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) e0spst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Cost Source"
+ BizComment:"Post Adjudication: 1 = Adjust Response 2 = Rebill 3 = No Rebill 4 = Rebill Pricing - use w/5 5 = Pharmacy Pricing-use w/4"
+@*/;
+  string("\x01", maximum_length=10) e0s5c4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Cost Type Cde"
+ BizComment:"A code indicating which type of cost was used for the unit cost.   Valid values are:     AAWP       = Average Average Wholesale Price     AVGBRAND   = Average Brand Cost     AVGGENERIC = Average Generic Cost     AWP        = Average Wholesale Price     GEAP       = Generic Equivalent Average Price     HCFA       = Health Care Finance Administration     MAC        = Maximum Allowed Cost     MAC01      = Maximum Allowed Cost 01     MAC02      = Maximum Allowed Cost 02     MAC03      = Maximum Allowed Cost 03     MAC04      = Maximum Allowed Cost 04     MAC05      = Maximum Allowed Cost 05     MAC06      = Maximum Allowed Cost 06     MAC07      = Maximum Allowed Cost 07     MAC08      = Maximum Allowed Cost 08     MAC09      = Maximum Allowed Cost 09     MAC10      = Maximum Allowed Cost 10     MAC11      = Maximum Allowed Cost 11     MAC12      = Maximum Allowed Cost 12     MAC13      = Maximum Allowed Cost 13     MAC14      = Maximum Allowed Cost 14     MAC15      = Maximum Allowed Cost 15     MAC16      = Maximum Allowed Cost 16     MAC17      = Maximum Allowed Cost 17     MAC18      = Maximum Allowed Cost 18     MAC19      = Maximum Allowed Cost 19     MAC20      = Maximum Allowed Cost 20     MAC21      = Maximum Allowed Cost 21     MAC22      = Maximum Allowed Cost 22     MAC23      = Maximum Allowed Cost 23     MAC24      = Maximum Allowed Cost 24     MAC25      = Maximum Allowed Cost 25     MAC26      = Maximum Allowed Cost 26     MAC27      = Maximum Allowed Cost 27     MAC28      = Maximum Allowed Cost 28     MAXBRAND   = Maximum Brand Cost     MAXGENERIC = Maximum Generic Cost     MINBRAND   = Minimum Brand Cost     MINGENERIC = Miniumum Generic Cost     RBL LIMIT+ = Rebill Limit Increase     RBL LIMIT- = Rebill Limit Decrease     WAC        = Warehouse Average Cost"
+@*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) e0yfp1 /*DECIMAL(13,5) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Cst Typ Unit Cost"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0s3c4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Price Type"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0tcc4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Price Sched Name"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0i9hs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Price Sched Step"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=13) e0tdc4 /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Price Table Name"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0tec4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Fee Schedule Name"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0tyn2 /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Fee Schedule Stp#"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=6) e0tbc4 /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Tax Schedule Name"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0t1n2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Tax Schedule Stp#"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0tgc4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Patient Sched Nme"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=13) e0tjc4 /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Patient Sched Tbl"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0w2hu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Pat Pay Seq Nbr"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0uyp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl %Sls Tax Amt Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".4, maximum_length=9, sign_reserved) e0b4pc /*DECIMAL(7,4) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl %Sls Tax Rte Paid"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0k9cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl %Sls Tax Basis Pd"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vap1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Prof Srv Fee Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vkp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Oth Pyr Amt Recog"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0l3cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Basis Cal-DispFee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0l1cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Basis Cal-Copay"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0l5cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Basis Cal-Flt Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lzcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Basis Cal-% Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0biod /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Basis Cal-Coinsur"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0rhhb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Incnt Fee Sch Nme"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0o9hr /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Incnt Fee Sch Stp"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0jhhx /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Contrib Amt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=13) e0nxhc /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Drug Cost Sched"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0aths /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl DrugCostSched Seq"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=14) e0nyhc /*CHAR(14) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Drg Cst Comp Sch"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0auhs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl DrgCstCompSch Seq"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) e0e7hv /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rbl Drug Cost Percent"
+ BizComment:"The rate percentage field indicates what percentage of the cost code was used when the claim priced."
+@*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) e0e1pr /*DECIMAL(13,5) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT AWP Unit Cost"
+ BizComment:"The "Average Wholesale Price" unit cost."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e2pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Ind Accu Deduct PTD"
+ BizComment:"Individual accumulated deduction:  period-to-date."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0zvp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Ind Accu OOP Max PTD"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e3pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Ind Accu Benefit PTD"
+ BizComment:"Individual accumulated benefit:  period-to-date."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0i4p1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Ind Accu Lifetime Ben"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e4pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Fam Accu Deduct PTD"
+ BizComment:"Family accumulated deduction:  period-to-date."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0zwp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Fam Accu OOP Max PTD"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e5pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Fam Accu Benefit PTD"
+ BizComment:"Family accumulated benefit:  period-to-date."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0i5p1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Fam Accu Lifetime Ben"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0zxp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Remaining OOP Max Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0i6p1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RemainingLifetime Ben"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0jfhx /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT OOP Applied Amt"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=10, sign_reserved) e0isnb /*DECIMAL(9) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Payment Number"
+ BizComment:"The Accounts Payable transaction number."
+@*/;
+  string("\x01", maximum_length=9) e0itnb /*CHAR(9) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Check Nbr"
+ BizComment:"The number of the check in which payment for the claim was included."
+@*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) e0apda /*DECIMAL(8) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Check Date"
+ BizComment:"The date of the check in which payment for the claim was included."
+@*/;
+  string("\x01", maximum_length=10) e0thcd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Price Sched Name"
+ BizComment:"The name of the price schedule used in price calculations."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0jahs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Price Sched Step"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0tgcd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Fee Sched Nme"
+ BizComment:"The name of the fee schedule used in price calculations."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0ojnb /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Fee Sched Stp#"
+ BizComment:"The step number in the fee schedule used in price calculations."
+@*/;
+  string("\x01", maximum_length=6) e0tkc4 /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Tax Sched Name"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0t3n2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Tax Sched Stp#"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0s7c4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Patient Schd Nme"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0w3hu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Pat Pay Seq Nbr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=13) e0s5hj /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Patient Pay Tbl"
+ BizComment:""
+@*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved) e0nnhx /*DECIMAL(13,5) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Cst Typ Unit Cst"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0rihb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Incntv FeeSch Nm"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0pahr /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Inctv FeeSchStp#"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=13) e0nvhc /*CHAR(13) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Drug Cost Sched"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0arhs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT PharDrugCostSched Seq"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=14) e0nwhc /*CHAR(14) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Drg Cst Comp Sch"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0ashs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT PharDrgCstCompSch Seq"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=7, sign_reserved) e0e6hv /*DECIMAL(5,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Phar Drug Cost Percnt"
+ BizComment:"The rate percentage field indicates what percentage of the cost code was used when the claim priced."
+@*/;
+  string("\x01", maximum_length=8) e0oscd /*CHAR(8) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Plan ID"
+ BizComment:"This field is defined by the processor. It is used to identify benefits or plan design specifications."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0dypr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Patient Pay Amt"
+ BizComment:"Amount to be collected from the patient.  It includes co-pay amounts, any reductions for deductibles, etc."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0dzpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Ingred Cost Paid"
+ BizComment:"Cost of the drug dispensed."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d0pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Dispensing Fee Pd"
+ BizComment:"Contracted dispensing fee paid included in the total amount paid.  This field is the total of all dispensing fees and incentive fees that may be part of the plan design."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d1pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Flat Sls Tax Paid"
+ BizComment:"Sales tax paid included in the total amount."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d9pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Copay Amount Paid"
+ BizComment:"Amount of co-pay/co-insurance. Amount to be collected from a patient that is included in the "Patient Pay Amount" that is due to a per prescription co-pay/co-insurance."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0dpp4 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Copay Flat $ Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0dqp4 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Copay Prcnt $ Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d2pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Total Amount Paid"
+ BizComment:"Total amount to be paid by the claims processor (i.e.: pharmacy receivable). This field represents a sum of fields:   Ingredient Cost Paid + Dispensing Fee Paid                        + Incentive Amount Paid                        + Other Amount Paid                        + Flat Sales Tax Amount Paid                        + Percentage Sales Tax Amount Paid                        - Patient Pay Amount                        - Other Payer Amount Recognized."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d3pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Accum Deduct Amt"
+ BizComment:"The amount in dollars met by the patient/family in a deductible plan."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d4pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Remain Deduct Amt"
+ BizComment:"The amount in dollars not met by the patient/family in the deductible plan."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d5pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Remai Benefit Amt"
+ BizComment:"The amount in dollars for a patient/family in a plan with a periodic maximum benefit. Default value of "999999.99" means that there is no remaining benefit."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0d8pr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Amt Appl Per Dedu"
+ BizComment:"Amount applied to periodic deductible. Amount to be collected from a patient that is included in the "Patient Pay Amount" that is due to meeting a periodic deductible."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0eapr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Atrib Prod SelAmt"
+ BizComment:"Amount attributed to product selection. Amount to be collected from the patient that is included in the "Patient Pay Amount" that is due to the patient's selection of the drug product."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ebpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Exceed Per Ben"
+ BizComment:"Amount attributed to exceeding a periodic benefit maximum. Amount to be collected from the patient that is included in the "Patient Pay Amount" that is due to the patient's exceeding a periodic benefit maximum."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0edpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Atrib Sales TxAmt"
+ BizComment:"Amount attributed to sales tax. Amount to be collected from the patient that is included in the "Patient Pay Amount" that is attributed to sales tax."
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0ecpr /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Incentive Fee Pd"
+ BizComment:"Incentive dispensing fee paid included in the total amount paid."
+@*/;
+  string("\x01", maximum_length=2) e0s1st /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Reimb Deter"
+ BizComment:"Basis of reimbursement determination. This field provides the pharmacy with information on how the reimbursement amount was calculated. Valid values are:  00 = Not specified                    01 = Ingredient cost paid as submitted                    02 = Ingredient cost reduced to AWP pricing                    03 = Ingredient cost reduced to AWP                         less X% pricing                    04 = Usual and customary paid as submitted                    05 = Paid lower of ingredient cost plus fees                         versus usual and customary                    06 = MAC pricing                         ingredient cost paid                    07 = MAC pricing                         ingredient cost reduced to MAC pricing                    08 = Contract pricing                    09 = Acquisition Pricing                    10 = ASP(Average Sale Price)                    11 = AMP(Average Mfg Price)                    12 = 340B/Disp Share/PHS Price                    13 = WAC(Wholesale Aquis Cst)                    14 = Other Payer-Patient Responsibility                    15 = Patient Pay Amount                    16 = Coupon Payment                    20 = National Average Drug Acquisition Cost                         (NADAC) - The estimated average drug                         acquisition cost as defined by CMS                    21 = State Average Acquisition Cost (AAC) - The                         estimated average drug acquisition cost                         as defined by a state Medicaid"
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0uzp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp %Sls Tax Amt Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".4, maximum_length=9, sign_reserved) e0b6pc /*DECIMAL(7,4) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp %Sls Tax Rte Paid"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0lbcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp %Sls Tax Basis Pd"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vep1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Prof Srv Fee Paid"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0vmp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Oth Pyr Amt Recog"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0mbcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Cal-DispFee"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0l9cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Cal-Copay"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0mdcj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Cal-Flt Tax"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0l7cj /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Cal-% Tax"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0xsp1 /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Total Other Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r0hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Amt Atr ProcsrFee"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r1hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Patient SlsTaxAmt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0n8hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Plan Sls Tax Amt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) e0bjod /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Basis Cal-Coinsur"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r3hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp EstGenericSavings"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r4hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp SpndAcctAmtRemain"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r5hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspHlthPlnFundAsstAmt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r6hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspAmtAtrPrvdrNtwkSel"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r7hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspAmtAtrPrdSlBrndDrg"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r8hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspAmtAtrPrdSlNPrfFrm"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0r9hz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspAmtAtrPrdSlBrndNPF"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sahz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Amt Atr Cover Gap"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sbhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspIngCstContractdAmt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0schz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT RspDspFeeContractdAmt"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0txn2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Other Amount Paid Cnt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) e0mncj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Tax Exempt Indicator"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0amhb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Addtl PatPay Sched 1"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0i9hr /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Addtl PatPay 1 Step"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0b3ik /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Addtl PatPay1 Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e4hx /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Addtl PatPay1 Amt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0anhb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Addtl PatPay Sched 2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) e0jahr /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Addtl PatPay 2 Step"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0b6ik /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Cal Addtl PatPay2 Amt"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0e5hx /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Addtl PatPay2 Amt"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0w1hk /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use CDE 1"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0g4pp /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use Step 1"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) e0w2hk /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use CDE 2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) e0g5pp /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use Step 2"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sdhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Rsp Amt Over CopayMax"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sehz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use PRC 2"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sfhz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use PRC 3"
+ BizComment:""
+@*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) e0sghz /*DECIMAL(9,2) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use PRC 4"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) e0bkod /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use STS 1"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) e0blod /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDTP: PDT Future Use STS 2"
+ BizComment:""
+@*/;
+  string(1) newline = "\n";
+end
+

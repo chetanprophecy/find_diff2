@@ -1,0 +1,53 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5ba9cc05_6987_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_client_xrf.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_client_xrf.client_id,[passthrough],in0.client_id]
+  [out0.l_client_xrf.client_desc,[transform],]
+  [out0.l_client_xrf.client_xref_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_client_xrf.src_env_sk,'l_client_xrf.src_env_sk',1,0]
+     [out0.l_client_xrf.client_id,'l_client_xrf.client_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_client_xrf.client_desc,'l_client_xrf.client_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_client_xrf.client_xref_sk,'l_client_xrf.client_xref_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.client_id,'client_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_client_xrf_client_xref_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=7) l_client_xrf_client_id = fail_if_error(in0.client_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_client_xrf_client_desc = '-';
+let decimal("\x01",0) l_client_xrf_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_client_xrf.client_xref_sk::l_client_xrf_client_xref_sk;
+  out0.l_client_xrf.client_id::l_client_xrf_client_id;
+  out0.l_client_xrf.client_desc::l_client_xrf_client_desc;
+  out0.l_client_xrf.src_env_sk::l_client_xrf_src_env_sk;
+  out0.*::in0.*;
+
+end;

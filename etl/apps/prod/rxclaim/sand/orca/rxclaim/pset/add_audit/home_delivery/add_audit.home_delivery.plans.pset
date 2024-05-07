@@ -1,0 +1,7 @@
+!prototype|P|||$AI_PSET/add_audit.interim.pset
+SOURCE_SYSTEM||||home_delivery.plans
+CLEAN_DIRS||||$[AI_SERIAL_PENDING+"/../"]
+ECG_LANDING_DIR||||$AI_MFS/ecg
+AUDIT_XFR||||$[AI_XFR + "/eliza/add_audit_eliza.xfr"]
+CLEAN_FILE_NAME||||$[begin\r\n\r\nlet string("")[int] v_read_files = [vector];\r\n\r\n        for( let int i = 0, i < (int)date_difference_days((date("YYYY-MM-DD"))END_DATE, (date("YYYY-MM-DD"))START_DATE) + 1)\r\n                for( let int j = 0, j < length_of(CLEAN_DIR_VEC) )\r\n                        v_read_files = vector_append(v_read_files, CLEAN_DIR_VEC[j] + (string(""))(date("YYYY-MM-DD"))datetime_add((date("YYYY-MM-DD"))START_DATE, days = i) + "/" + SOURCE_SYSTEM + ".dat.gz");\r\nresult :: v_read_files;\r\nend]
+CLEAN_DML_FILE||||$[AI_DML + "/" + string_downcase(SOURCE_SCHEMA_NAME + "_" + SOURCE_ENTITY_NAME) + ".dml"]

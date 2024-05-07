@@ -1,0 +1,823 @@
+<AppConfTempl name="IDS Governance Properties (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath>/Projects/aicoe/pub_dxf</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[include "$PUB_DXF_DML/generic_data_types.dml";
+include "$PUB_DXF_XFR/ace_format.xfr";
+include "$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "$PUB_DXF_XFR/ids/ids_governance_properties.xfr";
+
+out :: get_header()=
+begin
+  let fields = record_info_item(type_of( (governance_properties_type)allocate_with_defaults() ), "name");
+  let string("") header = "#" + string_join(fields, "|");
+  out :: header;
+end;
+ 
+out :: get_record_representations(grid)=
+begin
+  let governance_properties_type properties;
+  let string("") content = "";
+  for(let prop in grid)
+  begin
+    properties = [record
+                     table  prop.table,
+                     type_of_data prop.type_of_data,
+                     proj_eme_path  prop.proj_eme_path,
+                     retention_type  prop.retention_type,
+                     no_of_days  prop.no_of_days,
+                     no_of_iterations  prop.no_of_iterations,
+                     frequency  prop.frequency,
+                     file_data_retention_period  prop.file_data_retention_period,
+                     file_retention_exception_flag prop.file_retention_exception_flag,
+                     data_retention_exception_flag prop.data_retention_exception_flag,
+                     excptn_justification prop.excptn_justification,
+                     is_truncate_and_load prop.is_truncate_and_load,
+                     comments  prop.comments
+                   ];
+    content = content + reinterpret_as(string("\n"), properties) + "\n";
+  end
+ 
+  out :: content;
+end;
+ 
+out :: get_dml_without_hash_key_type(dml)=
+begin
+  let dml_field_info_vec fields = record_info(dml);
+  fields = for(let field in fields):
+               if(first_defined(field.typename,"") == "hash_key_type" || first_defined(field.typename,"") == "hash_key_combine_type")  make_field(field.name, "string(16)", comment = "Field type of string(16) is dummy. Actual type is " + field.typename)
+               else field;
+  out :: add_fields("record end", fields);
+end;
+ 
+out :: get_dml_file_for_table(table)=
+begin
+  let string("\x01") subject_area = string_prefix(table, string_index(table, ".")-1);
+  out :: $PUB_DATAHUB_DML + "/" + subject_area + "/" + table + ".dml";
+end;
+ 
+out :: get_dup_entries(list,selected_tbl)=
+begin
+  let distinct_tables = vector_sort_dedup_first(list);
+  let string("")[] messages = [vector];
+  let string("") final = "";
+ 
+  let long[] indexes = vector_search_all(list, selected_tbl);
+
+  if(length_of(indexes) > 0)
+  begin
+       final = "Duplicates Found:\n" + string_join(messages, "\n");
+  end
+  out :: final;
+end;
+ 
+out :: search_table_rows(table, list)=
+begin
+  let long MAX_RESULTS = 15;
+  let string("")[] tables = list;
+  let string("")[] rows = [vector];
+  let decimal("") count;
+  let string("") result = "";
+ 
+  if(not is_blank(table))
+  begin
+    for(let int i, i < length_of(tables))
+    begin
+      if(string_index(tables[i], table) != 0)
+        rows = vector_append(rows, (decimal(""))(i+1));
+    end
+    count = length_of(rows);
+    result = if(count > MAX_RESULTS) "(" + (string(""))count + " found; refine your search)"
+             else if(count==0) "(not found)"
+             else string_join(rows, ", ");
+  end
+ 
+  out :: result;
+end;
+
+
+out :: delete_from_grid(table, list)=
+begin
+let governance_properties_type[] upd_gov_props = [vector];
+ 
+  for(let int i,i< length_of(list))
+  begin
+    if(list[i].table != table)
+    begin  
+      upd_gov_props=vector_append(upd_gov_props,list[i]);
+    end
+  end
+  out :: upd_gov_props;
+end;
+
+
+out :: modify_in_grid(upd_data, list)=
+begin
+let governance_properties_type[] upd_gov_props = [vector];
+ 
+  for(let int i,i< length_of(list))
+  begin
+    if(list[i].table != upd_data.table)
+    begin  
+      upd_gov_props=vector_append(upd_gov_props,list[i]);
+    end
+   else if(list[i].table == upd_data.table)
+   begin
+      upd_gov_props=vector_append(upd_gov_props,upd_data);
+   end
+  end
+  out :: upd_gov_props;
+end;
+
+
+out :: initialize_grid()=
+begin
+let governance_properties_type ui_fields_local;
+ui_fields_local = [record
+                     table  "",
+                     type_of_data "",
+                     proj_eme_path  "",
+                     retention_type  "",
+                     no_of_days  "14",
+                     no_of_iterations  "3",
+                     frequency  "",
+                     file_data_retention_period  "",
+                     file_retention_exception_flag "",
+                     data_retention_exception_flag "",
+                     excptn_justification "",
+                     is_truncate_and_load "",
+                     comments  ""
+                   ];
+  out :: ui_fields_local;
+end;
+
+
+out :: chk_entry_in_gov_props(list,selected_tbl)=
+begin
+  let distinct_tables = vector_sort_dedup_first(list);
+  let string("")[] messages = [vector];
+  let string("") final = "";
+ 
+  let long[] indexes = vector_search_all(list, selected_tbl);
+
+  if(length_of(indexes) == 0)
+  begin
+       final = "Required table do not exist, Please use Add option instead\n" + string_join(messages, "\n");
+  end
+  out :: final;
+end;]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="error" type="string"/>
+      <Variable name="dups" type="string"/>
+      <ListVariable name="props" type="compound">
+        <Variable name="table" type="string"/>
+      </ListVariable>
+      <Variable name="op_type" type="string"/>
+      <Variable name="eme_path" type="emeObject"/>
+      <Variable name="freq" type="string"/>
+      <Variable name="table_type" type="string"/>
+      <Variable name="retn_period_err" type="string"/>
+      <ListVariable name="avail_gov_props" type="compound">
+        <Variable name="table" type="string"/>
+        <Variable name="type_of_data" type="string"/>
+        <Variable name="proj_eme_path" type="string"/>
+        <Variable name="retention_type" type="string"/>
+        <Variable name="no_of_days" type="string"/>
+        <Variable name="no_of_iterations" type="string"/>
+        <Variable name="frequency" type="string"/>
+        <Variable name="file_data_retention_period" type="string"/>
+        <Variable name="file_retention_exception_flag" type="string"/>
+        <Variable name="data_retention_exception_flag" type="string"/>
+        <Variable name="excptn_justification" type="string"/>
+        <Variable name="is_truncate_and_load" type="string"/>
+        <Variable name="comments" type="string"/>
+      </ListVariable>
+      <Variable name="ui_data" type="compound">
+        <Variable name="table" type="string"/>
+        <Variable name="type_of_data" type="string"/>
+        <Variable name="proj_eme_path" type="string"/>
+        <Variable name="retention_type" type="string"/>
+        <Variable name="no_of_days" type="string"/>
+        <Variable name="no_of_iterations" type="string"/>
+        <Variable name="frequency" type="string"/>
+        <Variable name="file_data_retention_period" type="string"/>
+        <Variable name="file_retention_exception_flag" type="string"/>
+        <Variable name="data_retention_exception_flag" type="string"/>
+        <Variable name="excptn_justification" type="string"/>
+        <Variable name="is_truncate_and_load" type="string"/>
+        <Variable name="comments" type="string"/>
+      </Variable>
+      <Variable name="on_click_flag" type="string"/>
+      <Variable name="ui_modify" type="compound">
+        <Variable name="table" type="string"/>
+        <Variable name="type_of_data" type="string"/>
+        <Variable name="proj_eme_path" type="string"/>
+        <Variable name="retention_type" type="string"/>
+        <Variable name="no_of_days" type="string"/>
+        <Variable name="no_of_iterations" type="string"/>
+        <Variable name="frequency" type="string"/>
+        <Variable name="file_data_retention_period" type="string"/>
+        <Variable name="file_retention_exception_flag" type="string"/>
+        <Variable name="data_retention_exception_flag" type="string"/>
+        <Variable name="excptn_justification" type="string"/>
+        <Variable name="is_truncate_and_load" type="string"/>
+        <Variable name="comments" type="string"/>
+      </Variable>
+      <Variable name="if_exists" type="string"/>
+      <Variable name="iterations_to_days" type="string"/>
+    </Variables>
+    <SharedFile name="ids_governance_properties" path="" is_appconf_owned="true"/>
+    <Project name="proj">
+      <Pset name="empty" prototype_path="${PUB_DXF_MP}/empty.mp">
+        <PdlExpression name="AI_META" expression="$AI_META"/>
+        <ProjectParameter name="GLOBAL_IDS_FILE_RETENTION_PERIOD" parameter="GLOBAL_IDS_FILE_RETENTION_PERIOD"/>
+        <ProjectParameter name="GLOBAL_IDS_DATA_RETENTION_PERIOD" parameter="GLOBAL_IDS_DATA_RETENTION_PERIOD"/>
+      </Pset>
+    </Project>
+    <Variables name="ui_helper">
+      <Variable name="table_to_search" type="string"/>
+      <Variable name="found_table_indexes" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <ListItemReference name="prop_ref_avail" reference="vars.avail_gov_props" selection_mode="value" selection_field="table" default_label_field="table" save_reference="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.error == "") proj.empty.AI_META + "/ids_governance_properties.dat"
+else ""</SourceValue>
+      <TargetValue reference="ids_governance_properties" property="path"/>
+    </Assignment>
+    <Assignment on_load_only="true">
+      <SourceValue is_expression="true">if(built_in == "ids_governance_properties")
+  ""
+else
+  "The configuration can only be named &lt;i&gt;ids_table_housekeep_details&lt;/i&gt;.
+Close and rename it.
+ 
+Note that you can only have one configuration for this template."</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">search_table_rows(ui_helper.table_to_search, vars.avail_gov_props.table)</SourceValue>
+      <TargetValue reference="ui_helper.found_table_indexes"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_table_list()</SourceValue>
+      <TargetValue reference="vars.props.table"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_table_type(vars.ui_data.table)</SourceValue>
+      <TargetValue reference="vars.table_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.ui_data.frequency=="Daily" or vars.ui_data.frequency=="Adhoc") "Days" else "Iterations"</SourceValue>
+      <TargetValue reference="vars.ui_data.retention_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(!is_blank(vars.ui_data.no_of_days) and ((decimal("")) vars.ui_data.no_of_days &gt; (decimal("")) $GLOBAL_IDS_FILE_RETENTION_PERIOD)) "File or Data retention value exceeds global retention"
+else if(!is_blank(vars.ui_data.no_of_iterations) and ((decimal("")) vars.ui_data.no_of_iterations &gt; (decimal("")) "7"))"File or Data retention value exceeds global retention"
+else if(!is_blank(vars.ui_data.file_data_retention_period) and ((decimal("")) vars.ui_data.file_data_retention_period &gt; (decimal("")) $GLOBAL_IDS_DATA_RETENTION_PERIOD)) "File or Data retention value exceeds global retention" 
+else ""</SourceValue>
+      <TargetValue reference="vars.retn_period_err"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">0</SourceValue>
+      <TargetValue reference="proj.empty" property="save_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.eme_path"/>
+      <TargetValue reference="vars.ui_data.proj_eme_path"/>
+    </Assignment>
+    <Assignment on_change_only="true">
+      <SourceValue is_expression="true">if(vars.on_click_flag=="Add") vector_append(vars.avail_gov_props,vars.ui_data) 
+else if(vars.on_click_flag=="Delete") delete_from_grid(vars.ui_data.table,vars.avail_gov_props)
+else if(vars.on_click_flag=="Modify") modify_in_grid(vars.ui_data,vars.avail_gov_props)
+else vars.avail_gov_props</SourceValue>
+      <TargetValue reference="vars.avail_gov_props"/>
+      <WatchValueOverride reference="vars.on_click_flag" property="value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n" +
+"# This file was written by Express It configuration\n" +
+"# " + built_in + ". DO NOT edit it by hand.\n" +
+"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n" +
+"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n\n" +
+get_header() + "\n" +
+get_record_representations(vars.avail_gov_props)</SourceValue>
+      <TargetValue reference="ids_governance_properties"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_all_ids_governance_properties()</SourceValue>
+      <TargetValue reference="vars.avail_gov_props"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.ui_data.file_retention_exception_flag=="N" and vars.ui_data.data_retention_exception_flag=="N") "" else vars.ui_data.excptn_justification</SourceValue>
+      <TargetValue reference="vars.ui_data.excptn_justification"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if((vars.table_type!="fact" and vars.table_type!="aggregate") or vars.ui_data.retention_type=="Iterations") "" else vars.ui_data.no_of_days</SourceValue>
+      <TargetValue reference="vars.ui_data.no_of_days"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if((vars.table_type!="fact" and vars.table_type!="aggregate") or vars.ui_data.retention_type=="Days") "" else vars.ui_data.no_of_iterations</SourceValue>
+      <TargetValue reference="vars.ui_data.no_of_iterations"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">initialize_grid()</SourceValue>
+      <TargetValue reference="vars.ui_modify"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if (vars.op_type=="Add" and vars.on_click_flag=="") get_dup_entries(vars.avail_gov_props.table,vars.ui_data.table) else ""</SourceValue>
+      <TargetValue reference="vars.dups"/>
+      <WatchValueOverride reference="vars.on_click_flag" property="value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if((vars.op_type=="Modify" or vars.op_type=="Delete") and vars.on_click_flag=="") chk_entry_in_gov_props(vars.avail_gov_props.table,vars.ui_data.table) else ""</SourceValue>
+      <TargetValue reference="vars.if_exists"/>
+      <WatchValueOverride reference="vars.on_click_flag" property="value"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.retn_period_err!="" and (!is_blank(vars.ui_data.no_of_days) and ((decimal("")) vars.ui_data.no_of_days &gt; (decimal("")) $GLOBAL_IDS_FILE_RETENTION_PERIOD))) "Y"
+else if (vars.retn_period_err!="" and (!is_blank(vars.ui_data.no_of_iterations) and ((decimal("")) vars.ui_data.no_of_iterations &gt; (decimal("")) "7"))) "Y"
+else "N"</SourceValue>
+      <TargetValue reference="vars.ui_data.file_retention_exception_flag"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if((vars.table_type=="fact" or vars.table_type=="Aggregate")) "N"
+else if(vars.retn_period_err!="" and (!is_blank(vars.ui_data.file_data_retention_period) and ((decimal("")) vars.ui_data.file_data_retention_period &gt; (decimal("")) $GLOBAL_IDS_DATA_RETENTION_PERIOD))) "Y" 
+else "N"</SourceValue>
+      <TargetValue reference="vars.ui_data.data_retention_exception_flag"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.freq=="Weekly") 7 * (decimal("")) vars.ui_data.no_of_iterations
+else if(vars.freq=="Monthly") 31 * (decimal("")) vars.ui_data.no_of_iterations
+else if(vars.freq=="Quarterly") 93 * (decimal("")) vars.ui_data.no_of_iterations
+else if(vars.freq=="Yearly") 365 * (decimal("")) vars.ui_data.no_of_iterations
+else ""</SourceValue>
+      <TargetValue reference="vars.iterations_to_days"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <InitialAssignments/>
+  <UserInterface>
+    <Canvas>
+      <Label>main</Label>
+      <Column>
+        <Box>
+          <Label>Select Operation and Table</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Add</ConstantValue>
+                <ConstantValue>Modify</ConstantValue>
+                <ConstantValue>Delete</ConstantValue>
+              </Choices>
+              <Label>Operation Type</Label>
+              <ChoiceDisplayNames>
+                <ConstantValue>Add</ConstantValue>
+                <ConstantValue>Modify</ConstantValue>
+                <ConstantValue>Delete</ConstantValue>
+              </ChoiceDisplayNames>
+              <BlankValueDisplayName>Select Operation type</BlankValueDisplayName>
+              <SourceTargetValue reference="vars.op_type"/>
+            </ComboBox>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                                        "Select table" +
+                                        "&lt;/b&gt;&lt;/font&gt;"</Label>
+              <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+            </TextLabel>
+            <Popup>
+              <Label>Browse IDS table</Label>
+              <Title>Select Table</Title>
+              <UIElements>
+                <OrderedList>
+                  <Choices reference="vars.props.table"/>
+                  <Label>Select a table</Label>
+                  <SourceTargetValue reference="vars.ui_data.table"/>
+                  <ChoiceDisplayNames reference="vars.props.table"/>
+                  <MaxCount>1</MaxCount>
+                </OrderedList>
+              </UIElements>
+              <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                        "Selected Table" +
+                        "&lt;/b&gt;&lt;/font&gt;"</Label>
+              <Visible is_expression="true">if(vars.op_type!="") 1 else 0</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#006400' size='+0'&gt;&lt;b&gt;" +
+                                    vars.ui_data.table +
+                                    "&lt;/b&gt;&lt;/font&gt;"</Label>
+              <Visible is_expression="true">if(vars.op_type!="") 1 else 0</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                                                    "Table Type:" +
+                                                    "&lt;/b&gt;&lt;/font&gt;"</Label>
+              <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label reference="vars.table_type"/>
+              <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+        <Box>
+          <Label>Choose EME Path</Label>
+          <UIElements>
+            <Popup>
+              <Label>Choose eme path</Label>
+              <Title/>
+              <UIElements>
+                <EmeBrowser>
+                  <Label>Eme Browser</Label>
+                  <SourceTargetValue reference="vars.eme_path"/>
+                  <BrowseMode>directory</BrowseMode>
+                  <BrowsableRootRpaths>
+                    <ConstantValue>/Projects</ConstantValue>
+                  </BrowsableRootRpaths>
+                </EmeBrowser>
+              </UIElements>
+            </Popup>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                        "Selected EME Path" +
+                        "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#006400' size='+0'&gt;&lt;b&gt;" +
+                                    vars.ui_data.proj_eme_path +
+                                    "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if((vars.op_type=="Add" or vars.op_type=="Modify") and (vars.ui_data.table!="")) 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Type of Data</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Incremental</ConstantValue>
+                <ConstantValue>Full snapshot</ConstantValue>
+              </Choices>
+              <Label>Choose Incremental/Full</Label>
+              <SourceTargetValue reference=""/>
+              <BlankValueDisplayName>Choose Type</BlankValueDisplayName>
+              <ChoiceDisplayNames>
+                <ConstantValue>Incremental</ConstantValue>
+                <ConstantValue>Full Snapshot</ConstantValue>
+              </ChoiceDisplayNames>
+              <SourceValue reference="vars.ui_modify.type_of_data"/>
+              <TargetValue reference="vars.ui_data.type_of_data"/>
+            </ComboBox>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if((vars.op_type=="Add" or vars.op_type=="Modify") and (vars.ui_data.table!="")) 1 else 0</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">if(vars.op_type=="Add" &amp;&amp; vars.dups!="") 1 else if ((vars.op_type=="Modify" or vars.op_type=="Delete") and vars.if_exists!="") 1 else  0</Visible>
+        <Box>
+          <Label is_expression="true">"&lt;font color='#ff0000' size='+2'&gt;&lt;b&gt;" +
+        "Duplicate Entries !! You can only Modify/Delete an existing entry" +
+        "&lt;/b&gt;&lt;/font&gt;"</Label>
+          <UIElements/>
+          <Style>unstyled</Style>
+          <Visible is_expression="true">if(vars.op_type=="Add" &amp;&amp; vars.dups!="") 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label is_expression="true">"&lt;font color='#ff0000' size='+2'&gt;&lt;b&gt;" +
+        "Selected table does n't exist, Only Add operation is feasible on this table " +
+        "&lt;/b&gt;&lt;/font&gt;"</Label>
+          <UIElements/>
+          <Style>unstyled</Style>
+          <Visible is_expression="true">if ((vars.op_type=="Modify" or vars.op_type=="Delete") and vars.if_exists!="") 1 else  0</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">if((vars.op_type=="Add" or vars.op_type=="Modify") and (vars.ui_data.proj_eme_path!="")) 1 else 0</Visible>
+        <Box>
+          <Label>Define Frequency</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>Daily</ConstantValue>
+                <ConstantValue>Weekly</ConstantValue>
+                <ConstantValue>Monthly</ConstantValue>
+                <ConstantValue>Quarterly</ConstantValue>
+                <ConstantValue>Yearly</ConstantValue>
+                <ConstantValue>Adhoc</ConstantValue>
+              </Choices>
+              <Label>Frequency</Label>
+              <ChoiceDisplayNames>
+                <ConstantValue>Daily</ConstantValue>
+                <ConstantValue>Weekly</ConstantValue>
+                <ConstantValue>Monthly</ConstantValue>
+                <ConstantValue>Quarterly</ConstantValue>
+                <ConstantValue>Yearly</ConstantValue>
+                <ConstantValue>Adhoc</ConstantValue>
+              </ChoiceDisplayNames>
+              <SourceValue reference="vars.ui_modify.frequency"/>
+              <TargetValue reference="vars.ui_data.frequency"/>
+            </RadioButtons>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+        <Box>
+          <Label>Retention Type</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                        "Days/Iterations:" +
+                        "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#006400' size='+0'&gt;&lt;b&gt;" +
+                                    vars.ui_data.retention_type +
+                                    "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.ui_data.frequency!="") 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Is Truncate and Load?</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>Y</ConstantValue>
+                <ConstantValue>N</ConstantValue>
+              </Choices>
+              <Label>Choose flag(Y/N)?</Label>
+              <ChoiceDisplayNames>
+                <ConstantValue>Y</ConstantValue>
+                <ConstantValue>N</ConstantValue>
+              </ChoiceDisplayNames>
+              <BlankValueDisplayName>Choose flag</BlankValueDisplayName>
+              <SourceValue reference="vars.ui_modify.is_truncate_and_load"/>
+              <TargetValue reference="vars.ui_data.is_truncate_and_load"/>
+            </ComboBox>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">if((vars.op_type=="Add" or vars.op_type=="Modify")) 1 else 0</Visible>
+        <Box>
+          <Label>IDS File retention period (Days)- Fact/Aggregate only</Label>
+          <UIElements>
+            <TextInput>
+              <Label>No of Days</Label>
+              <SourceValue is_expression="true">if(vars.op_type=="Add") vars.ui_modify.no_of_days else vars.ui_data.no_of_days</SourceValue>
+              <TargetValue reference="vars.ui_data.no_of_days"/>
+            </TextInput>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.ui_data.retention_type=="Days" and (vars.table_type=="fact" or vars.table_type=="aggregate"))1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>IDS File Retention Period (Iterations)</Label>
+          <UIElements>
+            <TextInput>
+              <Label>No of Iterations</Label>
+              <SourceValue is_expression="true">if(vars.op_type=="Add") vars.ui_modify.no_of_iterations else vars.ui_data.no_of_iterations</SourceValue>
+              <TargetValue reference="vars.ui_data.no_of_iterations"/>
+            </TextInput>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.ui_data.retention_type=="Iterations" and (vars.table_type=="fact" or vars.table_type=="aggregate")) 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>IDS Data Retention Period</Label>
+          <UIElements>
+            <TextInput>
+              <Label>No of Days</Label>
+              <SourceValue is_expression="true">if(vars.op_type=="Add") vars.ui_modify.file_data_retention_period else vars.ui_data.file_data_retention_period</SourceValue>
+              <TargetValue reference="vars.ui_data.file_data_retention_period"/>
+            </TextInput>
+            <TextLabel>
+              <Label is_expression="true">if(vars.ui_data.file_data_retention_period !="") "&lt;font color='#006400' size='+0'&gt;&lt;b&gt;" + 
+                                    "Records in Main IDS where ids_updt_dttm  &lt; " + "above mentioned data retention period " + "will be retained during ICFF maintenance" +
+                                    "&lt;/b&gt;&lt;/font&gt;" else ""</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.table_type!="fact" and vars.table_type!="aggregate") 1 else 0</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Visible is_expression="true">if((vars.op_type=="Add" or vars.op_type=="Modify")) 1 else 0</Visible>
+        <Box>
+          <Label>Is Exception Dataset?</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#006400' size='+0'&gt;&lt;b&gt;" +
+                                            vars.ui_data.file_retention_exception_flag +
+                                            "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible>false</Visible>
+        </Box>
+        <Box>
+          <Label>Exception Justification</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#000000' size='+0'&gt;&lt;b&gt;" +
+                                                            "Warning" +
+                                                            "&lt;/b&gt;&lt;/font&gt;"</Label>
+              <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff0000' size='+2'&gt;&lt;b&gt;" +
+                                            vars.retn_period_err +
+                                            "&lt;/b&gt;&lt;/font&gt;"</Label>
+            </TextLabel>
+            <TextInput>
+              <Label>Provide Justification</Label>
+              <SourceValue is_expression="true">if(vars.op_type=="Add" or (vars.table_type=="fact" or vars.table_type=="aggregate")) vars.ui_modify.excptn_justification else vars.ui_data.excptn_justification</SourceValue>
+              <TargetValue reference="vars.ui_data.excptn_justification"/>
+            </TextInput>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.retn_period_err!="") 1 else 0</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Comments</Label>
+          <UIElements>
+            <TextInput>
+              <Label>Incident no</Label>
+              <SourceTargetValue reference="vars.ui_data.comments"/>
+            </TextInput>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify") 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Save entry</Label>
+          <UIElements>
+            <Button>
+              <Label>Save</Label>
+              <OnClick is_expression="true">begin 
+                                      set_metadata_value("vars.on_click_flag","");
+                                      result::1;
+                                    end;</OnClick>
+            </Button>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Add entry</Label>
+          <UIElements>
+            <Button>
+              <Label>Add entry</Label>
+              <OnClick is_expression="true">begin 
+                          set_metadata_value("vars.on_click_flag","Add");
+                          result::1;
+                        end;</OnClick>
+            </Button>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.op_type=="Add") 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Modify entry</Label>
+          <UIElements>
+            <Button>
+              <Label>Modify entry</Label>
+              <OnClick is_expression="true">begin 
+                          set_metadata_value("vars.on_click_flag","Modify");
+                          result::1;
+                        end;</OnClick>
+            </Button>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.op_type=='Modify') 1 else 0</Visible>
+        </Box>
+        <Box>
+          <Label>Delete entry</Label>
+          <UIElements>
+            <Button>
+              <Label>Delete entry</Label>
+              <OnClick is_expression="true">begin 
+                          set_metadata_value("vars.on_click_flag","Delete");
+                          result::1;
+                        end;</OnClick>
+            </Button>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">if(vars.op_type=='Delete') 1 else 0</Visible>
+        </Box>
+        <Visible is_expression="true">if(vars.op_type=="Add" or vars.op_type=="Modify" or vars.op_type=="Delete") 1 else 0</Visible>
+      </Column>
+    </Canvas>
+    <Canvas>
+      <Label>Details</Label>
+      <Column>
+        <Box>
+          <Label>Naming error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>IDS Table Housekeep Details</Label>
+          <UIElements>
+            <Box>
+              <Label>Duplicate Entries!</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;font color='#ff0000' size='+2'&gt;&lt;b&gt;" +
+        vars.dups +
+        "&lt;/b&gt;&lt;/font&gt;"</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>unstyled</Style>
+              <Visible is_expression="true">vars.dups != ""</Visible>
+            </Box>
+            <Box>
+              <Label>SEARCH: Locate a table/dataset</Label>
+              <UIElements>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Search term</Label>
+                      <SourceTargetValue reference="ui_helper.table_to_search"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Found at rows:</Label>
+                      <SourceTargetValue reference="ui_helper.found_table_indexes"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextInput>
+                  </UIElements>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>unstyled</Style>
+            </Box>
+            <DataGrid>
+              <ColumnMetadata>
+                <Column data_field="table">
+                  <HeaderText>IDS Table</HeaderText>
+                  <SortField>display_name</SortField>
+                  <SortOrder>ascending</SortOrder>
+                </Column>
+                <Column data_field="type_of_data">
+                  <HeaderText>Type of Data</HeaderText>
+                </Column>
+                <Column data_field="proj_eme_path">
+                  <HeaderText>Project EME Path</HeaderText>
+                </Column>
+                <Column data_field="retention_type">
+                  <HeaderText>Retention Type</HeaderText>
+                </Column>
+                <Column data_field="no_of_days">
+                  <HeaderText>No of Days</HeaderText>
+                </Column>
+                <Column data_field="no_of_iterations">
+                  <HeaderText>No of Iterations</HeaderText>
+                </Column>
+                <Column data_field="frequency">
+                  <HeaderText>Frequency</HeaderText>
+                </Column>
+                <Column data_field="file_data_retention_period">
+                  <HeaderText>File Data Retention Period</HeaderText>
+                </Column>
+                <Column data_field="file_retention_exception_flag">
+                  <HeaderText>File Retention Exception Flag</HeaderText>
+                </Column>
+                <Column data_field="data_retention_exception_flag">
+                  <HeaderText>Data Retention Exception Flag</HeaderText>
+                </Column>
+                <Column data_field="excptn_justification">
+                  <HeaderText>Exception Justification</HeaderText>
+                </Column>
+                <Column data_field="is_truncate_and_load">
+                  <HeaderText>Is_trunc_n_load</HeaderText>
+                </Column>
+                <Column data_field="comments">
+                  <HeaderText>Comments</HeaderText>
+                </Column>
+              </ColumnMetadata>
+              <Label>Edit</Label>
+              <SourceTargetValue reference="prop_ref_avail"/>
+              <ReadOnly>true</ReadOnly>
+            </DataGrid>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+    </Canvas>
+  </UserInterface>
+</AppConfTempl>

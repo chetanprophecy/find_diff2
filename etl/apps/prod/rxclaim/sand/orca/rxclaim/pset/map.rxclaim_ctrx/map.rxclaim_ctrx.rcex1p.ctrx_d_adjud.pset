@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/map.interim.pset
+SOURCE_NAME||||rxclaim_ctrx.rcex1p
+ILM_NAME||||ctrx_d_adjud
+AB_CATALOG||||$AI_CAT/map.rxclaim_ctrx/map.rxclaim_ctrx.rcex1p.ctrx_d_adjud.cat
+ACE_CATALOG_CONTENTS|$|||l_age_band_lkp,{age},/~$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.l_age_band.dat,/~$AI_DML/lookup.rxclaim/lookup.rxclaim.l_age_band.dml\nd_prod_disease_category_xwalk,{prod_id},/~$AI_SERIAL_LOOKUP/lookup.ids_common/lookup.ids_common.d_prod_disease_category_xwalk.dat,/~$AI_DML/lookup.ids_common/lookup.ids_common.d_prod_disease_category_xwalk.dml\nrelationship_lkp,{afajcd; rxt_src_envrt_id},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rcaffp_lkp.dat,/~$AI_DML/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rcaffp_lkp.dml\nrccesp_lkp,{niaacd; rxt_src_envrt_id},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rccesp_lkp.dat,/~$AI_DML/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rccesp_lkp.dml\nd_specialty_drug_lst_tbl,{drg_ndc_id; prod_id_qlfr_cd},/~$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.d_specialty_drug_lst_tbl.dat,/~$AI_DML/lookup.rxclaim/lookup.rxclaim.d_specialty_drug_lst_tbl.dml\n
+FILTER_EXPR||||is_defined(carrierid) && (((lookup_match("rccesp_lkp",carrierid,rxt_src_envrt_id) && first_defined(lookup("rccesp_lkp",carrierid,rxt_src_envrt_id).niiyc3," ")== "Y")) or\r\n(\r\n!(lookup_match("rccesp_lkp",carrierid,rxt_src_envrt_id)) && (lookup_match("rccesp_lkp","*DEFAULT",rxt_src_envrt_id) && first_defined(lookup("rccesp_lkp","*DEFAULT",rxt_src_envrt_id).niiyc3," ") == "Y"))\r\n)
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||
+ADJUSTED_SORT_KEY_EXPR_LIST|||||||||||||
+ADJUSTED_DEDUP_KEY_EXPR_LIST|||||||||||||
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+REDUCED_LOOKUP_RETAIN_FIELDS_LIST||||
+REDUCED_LOOKUP_FILTER_EXPR_LIST||||@#%@#%@#%@#%@#%@#%@#%@#%@#%
+RUN_ID||||20210625013044
+ENABLE_DEFAULT_RULES||||True

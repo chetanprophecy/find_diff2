@@ -1,0 +1,75 @@
+include '~$PUB_DATAHUB_DML/ids_common/ids_common.d_mmd_member_eligibility.reduced.dml';
+include "~$AI_DML/lookup.ids_common/lookup.ids_common.d_member_consent.dml";
+
+let string("") datafile=this_partition_path($"LOOKUP_FILE_PATH");
+let string("") indexfile=this_partition_path(string_replace($"LOOKUP_FILE_PATH",".dat.gz", ".idx"));
+
+let date("YYYYMMDD")      curr_dt          = today()  ;
+let rcmmdp_reduced_type[] rcmmdp_lkp_vec_var = [vector] ;
+
+
+//------------Define lookup template -------------
+type rcmmdp_lookup_type_t = 
+record
+     lookup_identifier_type id = -1;
+     rcmmdp_reduced_type RecordFormat() = allocate();   
+     int keep_on_disk() = 1;
+     int block_compressed() = 1;
+     int cache() = 0;
+     int load_once() = 1;
+     int only_last_key_instance() = 0;
+     int direct_addressed() = 0;
+     string ('') key() ={dxf_hk_part1};
+end;
+
+//----------End lookup template --------------
+
+// Lookup load globally
+let rcmmdp_lookup_type_t rcmmdp_lookup =lookup_load(datafile ,indexfile);
+
+out :: length(in) =
+begin
+        let rcmmdp_reduced_type rcmmdp_lkp_rec_var = allocate_with_defaults();
+        rcmmdp_lkp_vec_var = [ vector ] ; 
+
+    /* Loop over on all HK part 1 match and select only record with matching HK part 2* and valid mmd_thru and mmd_from dt */
+        for ( let k =0, k < lookup_count(rcmmdp_lookup,in.dxf_hk_part1))
+        begin
+                rcmmdp_lkp_rec_var = lookup_next(rcmmdp_lookup);
+                if( rcmmdp_lkp_rec_var.dxf_hk_part2==in.dxf_hk_part2 )
+                        rcmmdp_lkp_vec_var = vector_append(rcmmdp_lkp_vec_var,rcmmdp_lkp_rec_var);
+
+        end
+
+        /* vector sort on mmd_seq_nbr and ids_updt_dttm desc to bring all the recent insert to top*/
+        rcmmdp_lkp_vec_var = vector_sort(rcmmdp_lkp_vec_var,{mmd_seq_nbr ;ids_updt_dttm descending } ) ;
+
+        /* vector sort dedup first on mmd_seq_nbr to keep only latest instance of HK (CAGM) + SEQ_NBR*/
+        rcmmdp_lkp_vec_var = vector_sort_dedup_first(rcmmdp_lkp_vec_var,{mmd_seq_nbr} );
+
+        /* if rcmmdp_lkp_vec_var not empty ,fetch first element of vec {multiple active records , IDW Bug}*/
+        if (length_of(rcmmdp_lkp_vec_var))
+            rcmmdp_lkp_vec_var= for(let rec in rcmmdp_lkp_vec_var) : if( rec.mmd_thru_dt>=curr_dt && rec.mmd_from_dt<=curr_dt and rec.mmd_record_status=='A') rec ;
+              //[ vector vector_select(rcmmdp_lkp_vec_var, [ record mmd_record_status 'A' ] , {mmd_record_status} )[0] ];
+
+        /* if lkp type rec vec ==0 send one record else normlize to vector length */
+  out :: length_of(rcmmdp_lkp_vec_var)? length_of(rcmmdp_lkp_vec_var) : 1 ;
+end;
+
+out :: normalize(in, index) =
+begin
+
+                     
+           
+        out.mmd_copay_category  :1: if( length_of(rcmmdp_lkp_vec_var)) rcmmdp_lkp_vec_var[index].mmd_copay_category ;
+        /*Map fields & lrtrim NK to avoid duplicate issue in IDS*/
+        out.insert_datetime     ::  in.ids_create_dttm;
+        out.update_date         ::  in.ids_updt_dttm;
+        out.update_time         ::  in.ids_updt_dttm;
+        out.src_env_nm          ::  lookup("l_src_env",in.dxf_src_sys_id).src_env_nm;
+        out.carrier_id          ::  string_lrtrim ( in.carrier_id );
+        out.account_id          ::  string_lrtrim ( in.account_id );
+        out.employer_group_id   ::  string_lrtrim ( in.employer_group_id );
+        out.mbr_id              ::  string_lrtrim ( in.mbr_id ) ;
+        out.*                   ::  in.*;
+end;

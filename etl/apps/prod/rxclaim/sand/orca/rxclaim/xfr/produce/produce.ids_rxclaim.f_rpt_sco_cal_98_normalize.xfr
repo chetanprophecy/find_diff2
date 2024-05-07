@@ -1,0 +1,54 @@
+let string("") [int] vec_val =[vector];
+let string("") [int] vec_temp =[vector];
+
+out :: length(in) =
+begin
+vec_temp=[vector];
+vec_temp=if (((is_null(in.record_code) or in.record_code!=05)
+                or (is_null(in.claim_no) or in.claim_no!=01)
+                or (is_null(in.trlr_code) or in.trlr_code!=0)
+                or (is_null(in.detail_code) or in.detail_code!=1) 
+                or (is_null(in.header_code) or in.header_code!=0) 
+                or (!is_null(in.zip_code) and (length_of(in.zip_code)>9 or length_of(in.zip_code)<5 ) )
+                or  is_null(in.payee_id)
+                 or  is_null(in.seq_no)
+                or (is_null(in.line_no) or in.line_no!=98) 
+                or (in.claimsts=="P" and in.det_amt_ind!="1") 
+		or ( (first_defined(in.detail_ra_amt,0) <0 and in.claimsts != "X") or first_defined(in.detail_ra_amt,0) >99999999.99)
+                or  ( !first_defined(in.claim_type,"-") member [vector '01', '02', '03', '04', '05', '06', '07', '08', '09'])
+                or   (!first_defined(in.reimbursmt,"-") member [vector 'M', 'P'])
+                or  ( !first_defined(in.claimsts,"-") member [vector 'P', 'X', 'R'])
+                or (!first_defined(in.payment_type,"-") member [ vector 'P','R'])
+                or  ( first_defined(in.plan_type,"-")=="Unknown Category"))
+                and in.audit_data_start=="AUDITDATA" 
+                and (in.file_id member [vector "CAL7992AEP20190615","CAL7992APP20190615", "CAL7992AHP20190615"]))  vector_append(vec_temp,"Critical issue SCO Audit Positive Payment") else vec_temp ;
+       vec_temp=  if (((is_null(in.record_code) or in.record_code!=05)
+				or (is_null(in.claim_no) or in.claim_no!=01)
+				or (is_null(in.trlr_code) or in.trlr_code!=0)
+				or (is_null(in.detail_code) or in.detail_code!=1) 
+				or (is_null(in.header_code) or in.header_code!=0) 
+				or (!is_null(in.zip_code) and (length_of(in.zip_code)>9 or length_of(in.zip_code)<5) ) 
+				or  is_null(in.payee_id)
+				or  is_null(in.seq_no)
+				or (is_null(in.line_no) or in.line_no!=98) 
+				or ((in.claimsts=="P") and in.det_amt_ind!="1" and in.reimbursmt!="M") 
+				or (first_defined(in.detail_ra_amt,0) <0 and first_defined(in.detail_ra_amt,0) >99999999.99)
+				or  is_null(in.claim_schedule_number) 
+				or  (!first_defined(in.claim_type,"-") member [vector '01', '02', '03', '04', '05', '06', '07', '08', '09'])
+				or   (!first_defined(in.reimbursmt,"-") member [vector 'M', 'P'])
+                or  ( !first_defined(in.claimsts,"-") member [vector 'P', 'X', 'R'])
+                or (!first_defined(in.payment_type,"-") member [ vector 'P','R'])
+				or  (first_defined(in.plan_type,"-")=="Unknown Category"))
+                and in.audit_data_start=="AUDITDATA" 
+                and (in.file_id member [vector "CAL7992AEN20190615","CAL7992APN20190615", "CAL7992AHN20190615"]))       vector_append(vec_temp,"Critical issue SCO Audit Negative Payment") else vec_temp ;
+
+
+
+  out ::length_of(vec_temp);
+end;
+out :: normalize(in, index) =
+begin
+vec_val=vec_temp;
+out.*::in.*;
+  out.validation::vec_val[index];    
+end;

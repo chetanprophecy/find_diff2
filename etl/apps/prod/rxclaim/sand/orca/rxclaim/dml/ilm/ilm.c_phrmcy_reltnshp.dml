@@ -1,0 +1,55 @@
+type logical_ids_common_c_phrmcy_reltnshp_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cpp_phrmcy_reltnshp_sk = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) phrmcy_reltnshp_id = NULL("");
+  utf8 string("\x01", maximum_length=48) phrmcy_id = NULL("");
+  decimal("\x01",0) cpp_phrmcy_sk = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) phrmcy_reltnshp_sequence_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phrmcy_afflt_cd = NULL("");
+  utf8 string("\x01", maximum_length=48) phrmcy_pymt_ctr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phrmcy_reltnshp_stts_cd = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") phrmcy_reltnshp_eff_dt = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") phrmcy_reltnshp_end_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phrmcy_reltnshp_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) phrmcy_reltnshp_type_cd = NULL("");
+  utf8 string("\x01", maximum_length=140) phrmcy_reltnshp_name = NULL("");
+  utf8 string("\x01", maximum_length=220) phrmcy_reltnshp_addr_line_1 = NULL("");
+  utf8 string("\x01", maximum_length=220) phrmcy_reltnshp_addr_line_2 = NULL("");
+  utf8 string("\x01", maximum_length=120) city = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) st = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) zip_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) cntry_cd = NULL("");
+  utf8 string("\x01", maximum_length=220) mailg_addr_line_1 = NULL("");
+  utf8 string("\x01", maximum_length=220) mailg_addr_line_2 = NULL("");
+  utf8 string("\x01", maximum_length=120) mailg_addr_city = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) mailg_addr_st = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) mailg_zip_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) mailg_cntry_cd = NULL("");
+  utf8 string("\x01", maximum_length=160) contact_name = NULL("");
+  utf8 string("\x01", maximum_length=120) contact_title_name = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) phone_num = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) phone_extn_num = NULL("");
+  decimal("\x01",0, maximum_length=39, sign_reserved) fax_num = NULL("");
+  utf8 string("\x01", maximum_length=320) contact_email = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) afflt_stts_cd = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") afflt_end_dt = NULL("");
+  utf8 string("\x01", maximum_length=120) parent_org_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_update_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_updated_by = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") cpp_create_ts = NULL("");
+  utf8 string("\x01", maximum_length=80) cpp_created_by = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_c_phrmcy_reltnshp_t c_phr_rtnshp  /*@ BizName:'c phr rtnshp' */;
+end;

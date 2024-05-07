@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcgdtp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcgdtp                  kzodcd,kzepcd,kzuxao,kzu5aw,kzp0ap,kzevcf,kzewcf,kzvghq,kzp1ap,kzakvn,kzc2dt,kzadtm,kzalvn,kzadvn,kzbmdt,kzabtm,kzaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rcgdtp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+RUN_ID||||20200521000000
+WHERE_CLAUSE||||$[\n  if (START_CHANGES_TIME != '')\n    "WHERE rcgdtp.kzbmdt >= " +\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\n    " AND rcgdtp.kzbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\n    " OPTIMIZE FOR ALL ROWS"\nelse\n    "WHERE rcgdtp.kzbmdt >= " +\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +\n    " AND rcgdtp.kzbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\n    " OPTIMIZE FOR ALL ROWS"]

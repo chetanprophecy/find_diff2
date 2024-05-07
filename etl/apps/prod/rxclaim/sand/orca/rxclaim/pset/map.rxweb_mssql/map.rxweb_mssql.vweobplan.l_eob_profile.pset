@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/map.interim.pset
+SOURCE_NAME||||rxweb_mssql.vweobplan
+ILM_NAME||||l_eob_profile
+AB_CATALOG||||$AI_CAT/map.rxweb_mssql/map.rxweb_mssql.vweobplan.l_eob_profile.cat
+REDUCED_LOOKUP_RETAIN_FIELDS_LIST||||dxf_hk_part1,dxf_hk_part2,dxf_sk,cag_sk,carrier_id,account_id,employer_group_id
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{carrier_id; account_id; employer_group_id}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.employer_group_id,[passthrough],in0.group_id]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.employer_group_id,'employer_group_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.account_id,'account_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.account_id,'account_id',1,1]\n     [in0.carrier_id,'carrier_id',1,1]\n     [in0.group_id,'group_id',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) carrier_id = fail_if_error(in0.carrier_id);\nlet string("\\x01",charset="iso-8859-15", maximum_length=40) account_id = fail_if_error(in0.account_id);\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = fail_if_error(in0.group_id);\n\n\n\n  out0.carrier_id::carrier_id;\n  out0.account_id::account_id;\n  out0.employer_group_id::employer_group_id;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+ACE_CATALOG_CONTENTS|$|||lkp_d_cag,{carrier_id; account_id; employer_group_id},/~$AI_SERIAL_LOOKUP/lookup.rxweb_mssql/lookup.rxweb_mssql.vweobplan.d_cag.dat,/~$AI_DML/map.rxweb_mssql/map.rxweb_mssql.vweobplan.l_eob_profile.reduced_lkp.rxweb_mssql.vweobplan.d_cag.dml\n
+REDUCED_ICFF_IDS_LIST||||ids_common.d_cag
+RUN_ID||||20190211010101
+GET_ALL_RECORD_FROM_IDS_LIST||||0|0|0|0|0|0|0|0|0|0

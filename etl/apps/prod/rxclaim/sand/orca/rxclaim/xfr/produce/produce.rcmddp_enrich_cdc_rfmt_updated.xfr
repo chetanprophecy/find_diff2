@@ -1,0 +1,105 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+include "~$AI_XFR/bre_helper.map.xfr"; 
+  
+let ascii decimal("\x01",0, maximum_length=18) v_pde_claim_nbr=allocate_with_defaults();
+let  decimal("\x01",0, maximum_length=5) v_dxf_src_sys_id=allocate_with_defaults();
+let hash_key_combine_type dxf_hk=allocate_with_defaults();
+
+type f_mpd_pde_recent_type = /* DML Generated for SQL: SELECT * FROM f_mpd_pde_recent
+ * On: Tue Oct 10 03:57:21 2017
+ */
+record
+  unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0) cms_proxy_ndc_rxcui_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) prod_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) mbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) pde_claim_nbr = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) pde_proxy_prod_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) pde_brand_generic_cd = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100) pde_proxy_ndc_label_nm = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) pde_prod_id = NULL("") /*VARCHAR(20)*/;
+  date("YYYYMMDD")("\x01") pde_filled_dt = NULL("") /*DATE*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") mdd_add_ts = NULL("") /*TIMESTAMP(6)*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") mdd_chg_ts = NULL("") /*TIMESTAMP(6)*/;
+  decimal("\x01",0) src_env_sk /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  decimal("\x01",0) run_id = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rec_stat_cd = NULL("") /*BYTEINT*/;
+  string(1) newline = "\n";
+end;
+ 
+let f_mpd_pde_recent_type lookup_rec = allocate_with_defaults(); 
+let f_mpd_pde_recent_type output_record = allocate_with_defaults(); 
+
+let lookup_identifier_type lookup_id = lookup_not_loaded();
+let decimal("") match_flag = 0;
+
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") v_add_ts=allocate_with_defaults();
+//let datetime("YYYYMMDD HH24:MI:SS")("\x01") v_chg_ts=allocate_with_defaults();
+
+let string(1) v_rec_flg=allocate_with_defaults();
+let int match_count=0;
+
+out :: reformat(in) = 
+begin
+
+  //v_pde_claim_nbr = in.asp2nb;
+  //v_dxf_src_sys_id  = in.dxf_src_sys_id;
+  //dxf_hk = reinterpret_as(hash_key_combine_type, hash_value([record f1 v_pde_claim_nbr f2 v_dxf_src_sys_id],{f1;f2}, "murmur"));  
+  //out.dxf_hk_part1::in.dxf_hk_part1;
+  //out.dxf_hk_part2::in.dxf_hk_part2;
+  //out.*::in.*;
+    
+ 
+ 
+v_rec_flg=in.flg;
+match_flag = 0;
+lookup_rec = allocate_with_defaults(); 
+output_record = allocate_with_defaults(); 
+//v_add_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))string_concat(str1=(date("YYYYMMDD"))(string(""))(decimal(""))(in.asc2dt+19000000), str2=(datetime("HH24:MI:SS"))(datetime("YYYYMMDD HH24:MI:SS"))(string(""))string_lrtrim(in.asadtm)));
+v_add_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))string_concat((date("YYYYMMDD"))(in.asc2dt),time_check(in.asadtm)));
+//v_chg_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))string_concat(str1=(date("YYYYMMDD"))(string(""))(decimal(""))(in.asbmdt+19000000), str2=(datetime("HH24:MI:SS"))(datetime("YYYYMMDD HH24:MI:SS"))(string(""))string_lrtrim(in.asabtm)));
+if(lookup_id == lookup_not_loaded())
+    //lookup_id =  lookup_load(this_partition_path('/etl/data/qa//mfs/mfs_8way/aicoe/pub_datahub/lookup/vharsh/ids/ids_rxclaim/one/f_mpd_pde_recent.reduced.dat.gz'), this_partition_path(string_replace('/etl/data/qa//mfs/mfs_8way/aicoe/pub_datahub/lookup/vharsh/ids/ids_rxclaim/one/f_mpd_pde_recent.reduced.dat.gz', ".dat.gz", ".idx")), "IDS ICFF LKP");
+    lookup_id =  lookup_load(this_partition_path($'LOOKUP_FILE_PATH'), this_partition_path(string_replace($'LOOKUP_FILE_PATH', ".dat.gz", ".idx")), "IDS ICFF LKP");
+    
+match_count = if(v_rec_flg=="R")lookup_count(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1) else 0;   
+
+if(match_count != 0) 
+begin
+  
+    lookup_rec = lookup_last(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1);
+    
+    if(lookup_rec.dxf_hk_part2 != in.dxf_hk_part2)
+    begin block exact_match  
+      for(let int i = 1, i < match_count) 
+      begin
+        lookup_rec = lookup_previous(lookup_id, "IDS ICFF LKP");
+                if(lookup_rec.dxf_hk_part2 == in.dxf_hk_part2) 
+                begin
+
+                if(lookup_rec.mdd_add_ts>v_add_ts)
+                v_rec_flg="H";
+                
+                exit exact_match;
+                end
+      end
+
+    end block exact_match
+    else if(lookup_rec.mdd_add_ts>v_add_ts)
+        begin
+                v_rec_flg="H";
+        end;
+end;
+
+
+//out.dxf_hk_part1::in.dxf_hk_part1;
+//out.dxf_hk_part2::in.dxf_hk_part2;
+
+out.flg::v_rec_flg;
+out.*::in.*;
+
+ end;

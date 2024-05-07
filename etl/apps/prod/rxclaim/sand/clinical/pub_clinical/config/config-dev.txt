@@ -1,0 +1,41 @@
+
+##########################################################################################
+#  Clinical Product Platform -- Main Configuration File [development edition]
+#
+#  Change History:
+#
+#  Date         Name               Description
+# ---------------------------------------------------------------------------------------
+#  13/10/2016   Paul Thompson      Initial version
+##########################################################################################
+
+# Define the config version number
+CONFIG VERSION | 1
+
+# Define data directory parameters
+AI TEST FLAG               | $( whoami )
+DATA DIRECTORY PERMISSIONS | 2775
+DATA DIRECTORY GROUP       | abigrp
+
+####################
+# stdenv Overrides #
+####################
+
+OVERRIDE VALUE | stdenv | AI_PHASE@ABENV | dev
+
+######################
+# Database Overrides #
+######################
+
+#OVERRIDE VALUE | db_clinical_ods | DB_NAME               | @ABCDEFG
+#OVERRIDE VALUE | db_clinical_ods | DB_USER               | ${USER}
+#OVERRIDE VALUE | db_clinical_ods | DB_PASSWORD           | ${USER}
+#OVERRIDE VALUE | db_clinical_ods | DB_ENCRYPTED_PASSWORD | $( m_password -password ${USER} )
+
+###########################
+# Other Example Overrides #
+###########################
+
+#OVERRIDE VALUE | pub_clinical | CREDENTIALS_CONFIG_FILE  | \\$PUB_CLINICAL/config/credentials-config-dev.txt
+#OVERRIDE VALUE | pub_clinical | ENVIRONMENT              | dev
+

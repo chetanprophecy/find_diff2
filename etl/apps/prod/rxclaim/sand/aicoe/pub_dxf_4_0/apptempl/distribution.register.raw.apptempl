@@ -1,0 +1,233 @@
+<AppConfTempl name="Register Distribution Raw Events" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "$PUB_DXF_DML/event/raw_event_registration.dml";
+
+out :: get_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "register" and words[1] == "raw" and re_replace(words[2], "[A-Za-z0-9_]+", "") == "")
+    answer = words[2];
+  out :: answer;
+end;
+
+out :: get_all_table_mappings(grid)=
+begin
+  let string("\x01") result_string = "";
+  for(let map in grid)
+  begin
+    result_string = result_string + map.target_system + "[" + map.target_entity + "] -- " + map.source_name + "\n";
+  end
+  
+  out :: result_string;
+end;
+
+out :: get_registration_header()=
+begin
+  let fields = record_info_item(expand_type(read_type( $PUB_DXF_DML+"/event/raw_event_registration.dml")), "name");
+  let string("") header = "#" + string_join(fields, "|");
+  out :: header;
+end;
+
+out :: get_record_representations(grid)=
+begin
+  let string("") content = "";
+  let raw_event_registration_type registration;
+  let string("") freq = ""; 
+  for(let reg in grid)
+  begin
+    freq = switch(reg.frequency) 
+          case "Daily" : "D"; 
+          case "Monthly" : "M"; 
+          case "Weekly" : "W";
+          case "On-Demand" : "O"; 
+    end;
+    registration = [record
+                     source_name reg.source_name,
+                     target_system reg.target_system,
+                     target_entity reg.target_entity,
+                     target_type "file",
+                     channel_id reg.channel_id,
+                     combine_strategy reg.combine_strategy,
+                     frequency freq,
+                     sequence reg.sequence,
+                   ];
+    content = content + reinterpret_as(string("\n"), registration) + "\n";
+  end
+
+  out :: content;
+end;
+
+out :: get_raw_sources(raw_dml_path) =
+begin
+  let string("")[int] raw_sources = [vector];
+  for(let directory in directory_listing(raw_dml_path, "clean.*")) begin
+    raw_sources = vector_concat(raw_sources, directory_listing(raw_dml_path + "/" + directory, "clean.*.*.dml"));
+  end;
+  out :: for(let src in raw_sources) : string_join(string_split(src, ".")[1:3], ".");
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="empty" prototype_path="${PUB_DXF_MP}/empty.mp">
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="AI_META" expression="$AI_META"/>
+        <PdlExpression name="PUB_DATAHUB_DML" expression="$PUB_DATAHUB_DML"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="target_system" type="string"/>
+      <Variable name="target_system_description" type="string"/>
+      <ListVariable name="event_registration_grid" type="compound">
+        <Variable name="source_name" type="string"/>
+        <Variable name="target_system" type="string"/>
+        <Variable name="target_entity" type="string"/>
+        <Variable name="target_type" type="string"/>
+        <Variable name="channel_id" type="integer"/>
+        <Variable name="combine_strategy" type="string"/>
+        <Variable name="frequency" type="string"/>
+        <Variable name="sequence" type="integer"/>
+      </ListVariable>
+      <Variable name="error" type="string"/>
+    </Variables>
+    <ListItemReference name="registrations_ref" reference="vars.event_registration_grid" selection_mode="index" selection_field="source_name" default_label_field="source_name" save_reference="true"/>
+    <SharedFile name="event_registration" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Get data mart name from config name">
+      <SourceValue is_expression="true">get_name(built_in)</SourceValue>
+      <TargetValue reference="vars.target_system"/>
+    </Assignment>
+    <Assignment on_load_only="true">
+      <SourceValue is_expression="true">proj.empty.AI_META + "/raw_event_registration.dat"</SourceValue>
+      <TargetValue reference="event_registration" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_registration_header() + "\n" +
+first_defined(get_record_representations(vars.event_registration_grid),"")</SourceValue>
+      <TargetValue reference="event_registration"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">0</SourceValue>
+      <TargetValue reference="proj.empty" property="save_pset"/>
+    </Assignment>
+    <Assignment name="Configuration Name Check">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in.configuration_name,".")) != 2)
+  "Configuration should be named like &lt;i&gt;register.raw&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else if ( string_split_no_empty(built_in.configuration_name,".")[0] != "register" or string_split_no_empty(built_in.configuration_name,".")[1] != "raw" )
+  "Configuration should be named like &lt;i&gt;register.raw&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else
+  ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label reference="vars.error"/>
+          <UIElements/>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Raw to Target Mapping</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>To edit mapping information, go to "Edit Mappings" tab</Label>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA["<b>Mappings:</b>\n" +
+if(length_of(vars.event_registration_grid))
+  string_replace(get_all_table_mappings(vars.event_registration_grid), "--", "<--")
+else
+  "<None>"]]></Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Edit Mappings</Label>
+      <UIElements>
+        <TextLabel>
+          <Label><![CDATA[<font color="#0000FF"><b>HINT:</b> If copying and pasting from <b>Excel</b>, select the right number of columns in ONE row of the grid, and then paste. All copied excel rows will be pasted from that row down. To insert additional rows while pasting, add a new row, then select appropriate colimns in that row before pasting.</font>]]></Label>
+        </TextLabel>
+        <DataGrid>
+          <ColumnMetadata>
+            <Column data_field="source_name">
+              <HeaderText>Raw Source Name</HeaderText>
+              <Choices is_expression="true">get_raw_sources(proj.empty.PUB_DATAHUB_DML + "/raw/")</Choices>
+              <WarnIfTargetNotInChoices>true</WarnIfTargetNotInChoices>
+              <SortOrder>ascending</SortOrder>
+              <SortField>display_name</SortField>
+            </Column>
+            <Column data_field="target_system">
+              <HeaderText>Target System</HeaderText>
+            </Column>
+            <Column data_field="target_entity">
+              <HeaderText>Target Entity</HeaderText>
+            </Column>
+            <Column data_field="target_type">
+              <HeaderText>Target Type</HeaderText>
+              <Choices>
+                <ConstantValue>file</ConstantValue>
+                <ConstantValue>table</ConstantValue>
+              </Choices>
+              <WarnIfTargetNotInChoices>true</WarnIfTargetNotInChoices>
+            </Column>
+            <Column data_field="channel_id">
+              <HeaderText>Channel ID</HeaderText>
+              <DefaultValue>1</DefaultValue>
+              <ReadOnly>true</ReadOnly>
+            </Column>
+            <Column data_field="combine_strategy">
+              <Choices>
+                <ConstantValue>Keep Latest Changes</ConstantValue>
+                <ConstantValue>Keep All Changes</ConstantValue>
+              </Choices>
+              <HeaderText>Combine Strategy</HeaderText>
+              <WarnIfTargetNotInChoices>true</WarnIfTargetNotInChoices>
+            </Column>
+            <Column data_field="frequency">
+              <Choices>
+                <ConstantValue>Daily</ConstantValue>
+                <ConstantValue>Monthly</ConstantValue>
+                <ConstantValue>Weekly</ConstantValue>
+                <ConstantValue>On-Demand</ConstantValue>
+              </Choices>
+              <HeaderText>Frequency</HeaderText>
+              <DefaultValue>Daily</DefaultValue>
+              <WarnIfTargetNotInChoices>true</WarnIfTargetNotInChoices>
+            </Column>
+            <Column data_field="sequence">
+              <HeaderText>Sequence</HeaderText>
+              <DefaultValue>1</DefaultValue>
+              <WarnIfTargetNotInChoices>true</WarnIfTargetNotInChoices>
+            </Column>
+          </ColumnMetadata>
+          <Label>Data Grid</Label>
+          <SourceTargetValue reference="registrations_ref"/>
+          <Width>1500</Width>
+        </DataGrid>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Mappings File</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true"><![CDATA["<b>" + event_registration.path + "</b>"]]></Label>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="event_registration"/>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

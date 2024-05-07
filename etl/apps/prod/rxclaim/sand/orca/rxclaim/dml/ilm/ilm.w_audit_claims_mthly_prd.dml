@@ -1,0 +1,55 @@
+type logical_ids_rxclaim_w_audit_claims_mthly_prd_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0, maximum_length=16, sign_reserved) dqp2nb = NULL("");
+  string("\x01", maximum_length=15) dqs7cd = NULL("");
+  string("\x01", maximum_length=1) dqs6st = NULL("");
+  decimal("\x01",0) prod_sk = NULL("");
+  decimal("\x01",0) phr_sk = NULL("");
+  decimal("\x01".2, maximum_length=13) e0d2pr = NULL("");
+  decimal("\x01",0) cag_sk = NULL("");
+  string("\x01", maximum_length=9) dqs6cd = NULL("");
+  string("\x01", maximum_length=2) dqilcj = NULL("");
+  string("\x01", maximum_length=15) dqtccd = NULL("");
+  string("\x01", maximum_length=9) dqq3c3 = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) dqoinb = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("");
+  string("\x01", maximum_length=1) dqk2st = NULL("");
+  decimal("\x01",0, maximum_length=4, sign_reserved) dqimnb = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) drg_ndc_id = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) dqionb = NULL("");
+  string("\x01", maximum_length=15) dqs8cd = NULL("");
+  decimal("\x01",0, maximum_length=9, sign_reserved) dqbbda = NULL("");
+  string("\x01", maximum_length=20) dqs5cd = NULL("");
+  decimal("\x01",0) mbr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_dea_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pbr_npi_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01", maximum_length=12) dqukcd = NULL("");
+  decimal("\x01",0, maximum_length=9, sign_reserved) dqabda = NULL("");
+  date("YYYYMMDD")("\x01") dqc4dt = NULL("");
+  decimal("\x01",0, maximum_length=8, sign_reserved) dqbmdt = NULL("");
+  decimal("\x01",0, maximum_length=7, sign_reserved) dqabtm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) drg_ndc_short_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) drg_lbl_nm = NULL("");
+  string("\x01", maximum_length=2) dqhtcj = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_w_audit_claims_mthly_prd_t audit  /*@ BizName:'audit' */;
+end;

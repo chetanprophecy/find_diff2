@@ -1,0 +1,145 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b7e8432_1487_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.dmedlmgpi.med_limit_gpi_mme_conv,[passthrough],in0.abgcbs]
+  [out0.dmedlmgpi.med_limit_gpi_id,[transform],in0.abdxvg]
+  [out0.dmedlmgpi.mcv_tbl_nm,[passthrough],in0.abbovh]
+  [out0.dmedlmgpi.med_limit_uom,[passthrough],in0.abkjiy]
+  [out0.dmedlmgpi.med_limit_gpi_lst_id,[transform],in0.abdwvg]
+  [out0.dmedlmgpi.med_limit_gpi_sk,[transform],]
+  [out0.dmedlmgpi.med_limit_gpi_msg_cd,[passthrough],in0.abdyvg]
+  [out0.dmedlmgpi.med_limit_dose_depn_mme,[passthrough],in0.abikav]
+  [out0.dmedlmgpi.med_limit_gpi_from_dt,[transform],in0.abv0cf]
+  [out0.dmedlmgpi.restrct_qual,[passthrough],in0.abkjaw]
+  [out0.dmedlmgpi.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.dmedlmgpi.med_limit_gpi_strngth,[passthrough],in0.abgbbs]
+  [out0.dmedlmgpi.med_limit_gpi_thru_dt,[transform],in0.abv1cf]
+  [out0.dmedlmgpi.med_limit_gpi_nm,[transform],in0.abr8ix]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.dmedlmgpi.med_limit_gpi_mme_conv,'dmedlmgpi.med_limit_gpi_mme_conv',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_id,'dmedlmgpi.med_limit_gpi_id',1,0]
+     [out0.dmedlmgpi.mcv_tbl_nm,'dmedlmgpi.mcv_tbl_nm',1,0]
+     [out0.dmedlmgpi.med_limit_uom,'dmedlmgpi.med_limit_uom',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_lst_id,'dmedlmgpi.med_limit_gpi_lst_id',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_sk,'dmedlmgpi.med_limit_gpi_sk',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_msg_cd,'dmedlmgpi.med_limit_gpi_msg_cd',1,0]
+     [out0.dmedlmgpi.med_limit_dose_depn_mme,'dmedlmgpi.med_limit_dose_depn_mme',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_from_dt,'dmedlmgpi.med_limit_gpi_from_dt',3,2]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dmedlmgpi.restrct_qual,'dmedlmgpi.restrct_qual',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dmedlmgpi.src_env_sk,'dmedlmgpi.src_env_sk',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_strngth,'dmedlmgpi.med_limit_gpi_strngth',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.dmedlmgpi.med_limit_gpi_thru_dt,'dmedlmgpi.med_limit_gpi_thru_dt',3,2]
+     [out0.dmedlmgpi.med_limit_gpi_nm,'dmedlmgpi.med_limit_gpi_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.abbovh,'abbovh',1,1]
+     [in0.abgbbs,'abgbbs',1,1]
+     [in0.abdwvg,'abdwvg',1,1]
+     [in0.abkjiy,'abkjiy',1,1]
+     [in0.abv0cf,'abv0cf',5,3]
+     [in0.abgcbs,'abgcbs',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.abdxvg,'abdxvg',1,1]
+     [in0.abikav,'abikav',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.abdyvg,'abdyvg',1,1]
+     [in0.abv1cf,'abv1cf',5,3]
+     [in0.abr8ix,'abr8ix',1,1]
+     [in0.abkjaw,'abkjaw',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_1 = 0;
+let int bzt_2 = 0;
+let decimal("\x01",0) dmedlmgpi_med_limit_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) dmedlmgpi_med_limit_gpi_lst_id;
+let string("\x01",charset="iso-8859-15", maximum_length=14) dmedlmgpi_med_limit_gpi_id;
+let string("\x01",charset="iso-8859-15", maximum_length=60) dmedlmgpi_med_limit_gpi_nm;
+let date("YYYYMMDD")("\x01") dmedlmgpi_med_limit_gpi_from_dt;
+let date("YYYYMMDD")("\x01") dmedlmgpi_med_limit_gpi_thru_dt;
+let decimal("\x01".3, maximum_length=9, sign_reserved) dmedlmgpi_med_limit_gpi_strngth = fail_if_error(in0.abgbbs);
+let decimal("\x01".3, maximum_length=8, sign_reserved) dmedlmgpi_med_limit_gpi_mme_conv = fail_if_error(in0.abgcbs);
+let string("\x01",charset="iso-8859-15", maximum_length=10) dmedlmgpi_med_limit_gpi_msg_cd = fail_if_error(in0.abdyvg);
+let string("\x01",charset="iso-8859-15", maximum_length=8) dmedlmgpi_med_limit_uom = fail_if_error(in0.abkjiy);
+let string("\x01",charset="iso-8859-15", maximum_length=1) dmedlmgpi_med_limit_dose_depn_mme = fail_if_error(in0.abikav);
+let string("\x01",charset="iso-8859-15", maximum_length=10) dmedlmgpi_mcv_tbl_nm = fail_if_error(in0.abbovh);
+let string("\x01",charset="iso-8859-15", maximum_length=1) dmedlmgpi_restrct_qual = fail_if_error(in0.abkjaw);
+let decimal("\x01",0) dmedlmgpi_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute dmedlmgpi.med_limit_gpi_from_dt  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.abv0cf)) ==8) && ((is_valid(YYYYMMDD(in0.abv0cf))) ==1)),0))begin
+  bzt_1=1;
+  dmedlmgpi_med_limit_gpi_from_dt=YYYYMMDD(in0.abv0cf);
+end
+else if(first_defined(fail_if_error(((length_of(in0.abv0cf) member [vector 6,7])) && ((is_valid(YYYYMMDD(in0.abv0cf + 19000000))) ==1)),0))begin
+  bzt_1=1;
+  dmedlmgpi_med_limit_gpi_from_dt=YYYYMMDD(in0.abv0cf + 19000000);
+end
+
+/*   Default value   */
+if(!bzt_1)begin
+  dmedlmgpi_med_limit_gpi_from_dt=fail_if_error(low_date());
+end
+
+/*   Rule:Compute dmedlmgpi.med_limit_gpi_thru_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of(string_lrtrim(in0.abv1cf))) ==8) && ((is_valid(YYYYMMDD(in0.abv1cf))) ==1)),0))begin
+  bzt_2=1;
+  dmedlmgpi_med_limit_gpi_thru_dt=YYYYMMDD(in0.abv1cf);
+end
+else if(first_defined(fail_if_error(((length_of(string_lrtrim(in0.abv1cf)) member [vector 6,7])) && ((is_valid(YYYYMMDD(in0.abv1cf + 19000000))) ==1)),0))begin
+  bzt_2=1;
+  dmedlmgpi_med_limit_gpi_thru_dt=YYYYMMDD(in0.abv1cf + 19000000);
+end
+
+/*   Default value   */
+if(!bzt_2)begin
+  dmedlmgpi_med_limit_gpi_thru_dt=fail_if_error(high_date());
+end
+
+/*   Default value   */
+dmedlmgpi_med_limit_gpi_id=fail_if_error(str_nk(in0.abdxvg));
+
+/*   Default value   */
+dmedlmgpi_med_limit_gpi_lst_id=fail_if_error(str_nk(in0.abdwvg));
+
+/*   Default value   */
+dmedlmgpi_med_limit_gpi_nm=fail_if_error(str_non_nk(in0.abr8ix));
+
+  out0.dmedlmgpi.med_limit_gpi_sk::dmedlmgpi_med_limit_gpi_sk;
+  out0.dmedlmgpi.med_limit_gpi_lst_id::dmedlmgpi_med_limit_gpi_lst_id;
+  out0.dmedlmgpi.med_limit_gpi_id::dmedlmgpi_med_limit_gpi_id;
+  out0.dmedlmgpi.med_limit_gpi_nm::dmedlmgpi_med_limit_gpi_nm;
+  out0.dmedlmgpi.med_limit_gpi_from_dt::dmedlmgpi_med_limit_gpi_from_dt;
+  out0.dmedlmgpi.med_limit_gpi_thru_dt::dmedlmgpi_med_limit_gpi_thru_dt;
+  out0.dmedlmgpi.med_limit_gpi_strngth::dmedlmgpi_med_limit_gpi_strngth;
+  out0.dmedlmgpi.med_limit_gpi_mme_conv::dmedlmgpi_med_limit_gpi_mme_conv;
+  out0.dmedlmgpi.med_limit_gpi_msg_cd::dmedlmgpi_med_limit_gpi_msg_cd;
+  out0.dmedlmgpi.med_limit_uom::dmedlmgpi_med_limit_uom;
+  out0.dmedlmgpi.med_limit_dose_depn_mme::dmedlmgpi_med_limit_dose_depn_mme;
+  out0.dmedlmgpi.mcv_tbl_nm::dmedlmgpi_mcv_tbl_nm;
+  out0.dmedlmgpi.restrct_qual::dmedlmgpi_restrct_qual;
+  out0.dmedlmgpi.src_env_sk::dmedlmgpi_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,6 @@
+!prototype|P|||$PUB_DXF_PLAN/run.all.plan
+RUN_GROUP||||calpers.generated
+RUN_ID_FILE||||$[begin\r\nlet string("") v_group=string_split(RUN_GROUP,".")[0];\r\nresult :: PUB_DATAHUB_SERIAL + "/" + "run." + string_downcase(v_group) + ".integration.all."+  AI_PHASE + ".run_id.dat" ;\r\nend ;\r\n]
+TIMEZONE_OFFSET_HOURS||||0
+RUN_PLAN||||$[AI_PSET + "/run/non_daily/run.all." +RUN_GROUP + ".pset" ]
+RUN_ID||||$[string_split_no_empty(read_file(RUN_ID_FILE),"\\n")[0]]

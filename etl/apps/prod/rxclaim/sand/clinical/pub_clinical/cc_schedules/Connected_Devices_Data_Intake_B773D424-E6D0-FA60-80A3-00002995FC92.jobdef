@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="Connected Devices Data Intake for Life Scan" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="CB1CED0C-640B-5205-1B67-283C82D12621" jobDefinitionGuid="B773D424-E6D0-FA60-80A3-00002995FC92" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Connected Devices Data Intake" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/nas_to_cli/nas_to_cli.plan.Connected_Devices.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2019-12-05Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:15:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="300" fileURL="$NAS_DIR/DataIntake/Connected_Devices/OPTUM_PROD_LSdevice_????????.csv" isFirstMatchOnly1X50="false" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false"/>
+    </fileAndEventConstraints>
+  </constraintSet>
+
+</jobDefinition>

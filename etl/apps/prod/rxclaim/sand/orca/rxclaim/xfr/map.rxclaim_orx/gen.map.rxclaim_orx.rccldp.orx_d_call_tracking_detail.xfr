@@ -1,0 +1,127 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_rccldp_to_the_orx_d_call_tracking_detail_ILM_documentation(in)=
+begin
+
+out0.cl_trk_dtl.clh_create_dt::depends_on(
+         in.lmjxdt
+         );
+
+
+out0.cl_trk_dtl.cld_txt::depends_on(
+         in.lmq0t1
+         );
+
+
+out0.cl_trk_dtl.cld_seq_nbr::depends_on(
+         in.lmjzn1
+         );
+
+
+out0.cl_trk_dtl.cld_type_ind::depends_on(
+         in.lmlds2
+         );
+
+
+out0.clh_crt_dt.cal_day_dt::depends_on(
+         in.lmjxdt
+         );
+
+
+out0.cl_trk_dtl.clh_job_nbr::depends_on(
+         in.lmpyn1
+         );
+
+
+out0.cl_trk_dtl.clh_create_tm::depends_on(
+         in.lmaxtm
+         );
+
+
+out0.cl_trk_dtl.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_rccldp_to_the_orx_d_call_tracking_detail_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.cl_trk_dtl.clh_create_dt,'cl_trk_dtl.clh_create_dt',1,0]
+     [out0.cl_trk_dtl.cld_txt,'cl_trk_dtl.cld_txt',1,0]
+     [out0.cl_trk_dtl.cld_seq_nbr,'cl_trk_dtl.cld_seq_nbr',1,0]
+     [out0.cl_trk_dtl.cld_type_ind,'cl_trk_dtl.cld_type_ind',1,0]
+     [out0.cl_trk_dtl.sec_flg,'cl_trk_dtl.sec_flg',1,0]
+     [out0.clh_crt_dt.cal_day_dt,'clh_crt_dt.cal_day_dt',1,0]
+     [out0.cl_trk_dtl.clh_job_nbr,'cl_trk_dtl.clh_job_nbr',1,0]
+     [out0.cl_trk_dtl.call_track_dtl_sk,'cl_trk_dtl.call_track_dtl_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cl_trk_dtl.clh_create_tm,'cl_trk_dtl.clh_create_tm',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cl_trk_dtl.clh_create_dt_sk,'cl_trk_dtl.clh_create_dt_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cl_trk_dtl.src_env_sk,'cl_trk_dtl.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.lmq0t1,'lmq0t1',1,1]
+     [in0.lmjzn1,'lmjzn1',1,1]
+     [in0.lmjxdt,'lmjxdt',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.lmlds2,'lmlds2',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.lmpyn1,'lmpyn1',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.lmaxtm,'lmaxtm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cl_trk_dtl_call_track_dtl_sk = -1;
+let decimal("\x01",0) cl_trk_dtl_clh_create_dt_sk = -1;
+let date("YYYYMMDD")("\x01") cl_trk_dtl_clh_create_dt;
+let datetime("HH24:MI:SS.NNNNNN")("\x01") cl_trk_dtl_clh_create_tm;
+let decimal("\x01",0) cl_trk_dtl_clh_job_nbr = fail_if_error(in0.lmpyn1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cl_trk_dtl_cld_type_ind = fail_if_error(in0.lmlds2);
+let decimal("\x01",0) cl_trk_dtl_cld_seq_nbr = fail_if_error(in0.lmjzn1);
+let string("\x01",charset="iso-8859-15", maximum_length=55) cl_trk_dtl_cld_txt = fail_if_error(in0.lmq0t1);
+let decimal("\x01",0) cl_trk_dtl_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) cl_trk_dtl_sec_flg = 0;
+let date("YYYYMMDD")("\x01") clh_crt_dt_cal_day_dt;
+
+
+
+/*   Default value   */
+cl_trk_dtl_clh_create_dt=fail_if_error(date_check(in0.lmjxdt));
+
+/*   Default value   */
+clh_crt_dt_cal_day_dt=fail_if_error(date_check(in0.lmjxdt));
+
+/*   Default value   */
+cl_trk_dtl_clh_create_tm=fail_if_error(time_check(in0.lmaxtm));
+
+  out0.cl_trk_dtl.call_track_dtl_sk::cl_trk_dtl_call_track_dtl_sk;
+  out0.cl_trk_dtl.clh_create_dt_sk::cl_trk_dtl_clh_create_dt_sk;
+  out0.cl_trk_dtl.clh_create_dt::cl_trk_dtl_clh_create_dt;
+  out0.cl_trk_dtl.clh_create_tm::cl_trk_dtl_clh_create_tm;
+  out0.cl_trk_dtl.clh_job_nbr::cl_trk_dtl_clh_job_nbr;
+  out0.cl_trk_dtl.cld_type_ind::cl_trk_dtl_cld_type_ind;
+  out0.cl_trk_dtl.cld_seq_nbr::cl_trk_dtl_cld_seq_nbr;
+  out0.cl_trk_dtl.cld_txt::cl_trk_dtl_cld_txt;
+  out0.cl_trk_dtl.src_env_sk::cl_trk_dtl_src_env_sk;
+  out0.cl_trk_dtl.sec_flg::cl_trk_dtl_sec_flg;
+  out0.clh_crt_dt.cal_day_dt::clh_crt_dt_cal_day_dt;
+  out0.*::in0.*;
+end;

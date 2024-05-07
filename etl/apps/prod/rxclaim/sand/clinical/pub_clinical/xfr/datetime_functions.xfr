@@ -1,0 +1,27 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/datetime_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/12/01  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+cli_date_t out :: date_min(cli_date_t date1, cli_date_t date2) inline =
+begin
+  out :1: if (is_null(date1)) date2;
+  out :2: if (is_null(date2)) date1;
+  out :3: if (date1 < date2)  date1;
+  out  :: date2;
+end;
+
+cli_date_t out :: date_max(cli_date_t date1, cli_date_t date2) inline =
+begin
+  out :1: if (is_null(date1)) date2;
+  out :2: if (is_null(date2)) date1;
+  out :3: if (date1 > date2)  date1;
+  out  :: date2;
+end;

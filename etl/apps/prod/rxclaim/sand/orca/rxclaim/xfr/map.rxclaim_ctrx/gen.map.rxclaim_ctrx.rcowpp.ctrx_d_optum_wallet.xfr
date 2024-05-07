@@ -1,0 +1,119 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5c4b11f8_ec66_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.optum_wallet.src_add_user_nm,[transform],in0.tsakvn]
+  [out0.optum_wallet.src_chg_user_nm,[transform],in0.tsadvn]
+  [out0.optum_wallet.src_chg_pgm_nm,[transform],in0.tsaevn]
+  [out0.optum_wallet.src_chg_ts,[transform],in0.tsabtm,
+     in0.tsbmdt]
+  [out0.d_cag.account_id,[transform],in0.tsaccd]
+  [out0.optum_wallet.employer_group_id,[transform],in0.tsadcd]
+  [out0.optum_wallet.src_add_pgm_nm,[transform],in0.tsalvn]
+  [out0.optum_wallet.src_add_ts,[transform],in0.tsadtm,
+     in0.tsc2dt]
+  [out0.optum_wallet.account_id,[transform],in0.tsaccd]
+  [out0.optum_wallet.owp_sk,[transform],]
+  [out0.d_cag.carrier_id,[transform],in0.tsaacd]
+  [out0.optum_wallet.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.optum_wallet.carrier_id,[transform],in0.tsaacd]
+  [out0.d_cag.employer_group_id,[transform],in0.tsadcd]
+  [out0.optum_wallet.ow_pgm_stat_cd,[transform],in0.tsg2ax]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.optum_wallet.src_add_user_nm,'optum_wallet.src_add_user_nm',1,0]
+     [out0.optum_wallet.src_chg_user_nm,'optum_wallet.src_chg_user_nm',1,0]
+     [out0.optum_wallet.src_chg_pgm_nm,'optum_wallet.src_chg_pgm_nm',1,0]
+     [out0.optum_wallet.src_chg_ts,'optum_wallet.src_chg_ts',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,1]
+     [out0.optum_wallet.employer_group_id,'optum_wallet.employer_group_id',2,0]
+     [out0.optum_wallet.src_add_pgm_nm,'optum_wallet.src_add_pgm_nm',1,0]
+     [out0.optum_wallet.src_add_ts,'optum_wallet.src_add_ts',1,0]
+     [out0.optum_wallet.account_id,'optum_wallet.account_id',2,0]
+     [out0.optum_wallet.owp_sk,'optum_wallet.owp_sk',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,1]
+     [out0.optum_wallet.src_env_sk,'optum_wallet.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.optum_wallet.carrier_id,'optum_wallet.carrier_id',2,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,1]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.optum_wallet.ow_pgm_stat_cd,'optum_wallet.ow_pgm_stat_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.tsadvn,'tsadvn',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.tsaevn,'tsaevn',1,1]
+     [in0.tsbmdt,'tsbmdt',1,1]
+     [in0.tsc2dt,'tsc2dt',1,1]
+     [in0.tsaccd,'tsaccd',1,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.tsadcd,'tsadcd',1,2]
+     [in0.tsabtm,'tsabtm',1,1]
+     [in0.tsg2ax,'tsg2ax',1,1]
+     [in0.tsalvn,'tsalvn',1,1]
+     [in0.tsadtm,'tsadtm',1,1]
+     [in0.tsakvn,'tsakvn',1,1]
+     [in0.tsaacd,'tsaacd',1,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) optum_wallet_owp_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) optum_wallet_carrier_id = fail_if_error(string_lrtrim(in0.tsaacd));
+let string("\x01",charset="iso-8859-15", maximum_length=40) optum_wallet_account_id = fail_if_error(string_lrtrim(in0.tsaccd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) optum_wallet_employer_group_id = fail_if_error(string_lrtrim(in0.tsadcd));
+let decimal("\x01",0) optum_wallet_ow_pgm_stat_cd = fail_if_error(if(string_lrtrim(in0.tsg2ax)=="Y")1 else 0);
+let string("\x01",charset="iso-8859-15", maximum_length=10) optum_wallet_src_add_user_nm = fail_if_error(string_lrtrim(in0.tsakvn));
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") optum_wallet_src_add_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))(string(""))(decimal(""))(in0.tsc2dt*1000000+in0.tsadtm+19000000000000));
+let string("\x01",charset="iso-8859-15", maximum_length=10) optum_wallet_src_add_pgm_nm = fail_if_error(string_lrtrim(in0.tsalvn));
+let string("\x01",charset="iso-8859-15", maximum_length=10) optum_wallet_src_chg_user_nm = fail_if_error(string_lrtrim(in0.tsadvn));
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") optum_wallet_src_chg_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))(string(""))(decimal(""))(in0.tsbmdt*1000000+in0.tsabtm+19000000000000));
+let string("\x01",charset="iso-8859-15", maximum_length=10) optum_wallet_src_chg_pgm_nm = fail_if_error(string_lrtrim(in0.tsaevn));
+let decimal("\x01",0) optum_wallet_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id;
+
+
+
+/*   Default value   */
+d_cag_employer_group_id=fail_if_error(optum_wallet_employer_group_id);
+
+/*   Default value   */
+d_cag_account_id=fail_if_error(optum_wallet_account_id);
+
+/*   Default value   */
+d_cag_carrier_id=fail_if_error(optum_wallet_carrier_id);
+
+  out0.optum_wallet.owp_sk::optum_wallet_owp_sk;
+  out0.optum_wallet.carrier_id::optum_wallet_carrier_id;
+  out0.optum_wallet.account_id::optum_wallet_account_id;
+  out0.optum_wallet.employer_group_id::optum_wallet_employer_group_id;
+  out0.optum_wallet.ow_pgm_stat_cd::optum_wallet_ow_pgm_stat_cd;
+  out0.optum_wallet.src_add_user_nm::optum_wallet_src_add_user_nm;
+  out0.optum_wallet.src_add_ts::optum_wallet_src_add_ts;
+  out0.optum_wallet.src_add_pgm_nm::optum_wallet_src_add_pgm_nm;
+  out0.optum_wallet.src_chg_user_nm::optum_wallet_src_chg_user_nm;
+  out0.optum_wallet.src_chg_ts::optum_wallet_src_chg_ts;
+  out0.optum_wallet.src_chg_pgm_nm::optum_wallet_src_chg_pgm_nm;
+  out0.optum_wallet.src_env_sk::optum_wallet_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.*::in0.*;
+
+end;

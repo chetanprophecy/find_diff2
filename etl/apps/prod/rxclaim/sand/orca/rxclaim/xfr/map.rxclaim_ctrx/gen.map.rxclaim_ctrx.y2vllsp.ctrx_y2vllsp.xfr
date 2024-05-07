@@ -1,0 +1,70 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_y2vllsp.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_y2vllsp.src_env_sk,'ctrx_y2vllsp.src_env_sk',1,0]
+     [out0.ctrx_y2vllsp.intval,'ctrx_y2vllsp.intval',1,0]
+     [out0.ctrx_y2vllsp._at__at_cnd,'ctrx_y2vllsp._at__at_cnd',1,0]
+     [out0.ctrx_y2vllsp.cndtxt,'ctrx_y2vllsp.cndtxt',1,0]
+     [out0.ctrx_y2vllsp.cndtyp,'ctrx_y2vllsp.cndtyp',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_y2vllsp.usrmod,'ctrx_y2vllsp.usrmod',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_y2vllsp.extval,'ctrx_y2vllsp.extval',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_y2vllsp.valmap,'ctrx_y2vllsp.valmap',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.extval,'extval',1,1]
+     [in0.cndtyp,'cndtyp',1,1]
+     [in0.usrmod,'usrmod',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.valmap,'valmap',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.intval,'intval',1,1]
+     [in0._at__at_cnd,'_at__at_cnd',1,1]
+     [in0.cndtxt,'cndtxt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\001", maximum_length=10) ctrx_y2vllsp__at__at_cnd = fail_if_error(in0._at__at_cnd);
+let string("\001", maximum_length=3) ctrx_y2vllsp_cndtyp = fail_if_error(in0.cndtyp);
+let string("\001", maximum_length=25) ctrx_y2vllsp_extval = fail_if_error(in0.extval);
+let string("\001", maximum_length=25) ctrx_y2vllsp_intval = fail_if_error(in0.intval);
+let string("\001", maximum_length=50) ctrx_y2vllsp_cndtxt = fail_if_error(in0.cndtxt);
+let string("\001", maximum_length=1) ctrx_y2vllsp_usrmod = fail_if_error(in0.usrmod);
+let string("\001", maximum_length=1) ctrx_y2vllsp_valmap = fail_if_error(in0.valmap);
+let decimal("\x01",0) ctrx_y2vllsp_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.ctrx_y2vllsp._at__at_cnd::ctrx_y2vllsp__at__at_cnd;
+  out0.ctrx_y2vllsp.cndtyp::ctrx_y2vllsp_cndtyp;
+  out0.ctrx_y2vllsp.extval::ctrx_y2vllsp_extval;
+  out0.ctrx_y2vllsp.intval::ctrx_y2vllsp_intval;
+  out0.ctrx_y2vllsp.cndtxt::ctrx_y2vllsp_cndtxt;
+  out0.ctrx_y2vllsp.usrmod::ctrx_y2vllsp_usrmod;
+  out0.ctrx_y2vllsp.valmap::ctrx_y2vllsp_valmap;
+  out0.ctrx_y2vllsp.src_env_sk::ctrx_y2vllsp_src_env_sk;
+  out0.*::in0.*;
+
+end;

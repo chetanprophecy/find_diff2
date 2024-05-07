@@ -1,0 +1,341 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_590c5c4e_6fe3_3
+    BizHidden:true
+@*/
+/*   lookup l_generic_medispan_ind_lkp   */
+out0::bzt_2_6c54cc0a_590c5c4e_6fe3_3(in0)=
+begin
+let record
+  decimal("\x01",0) gnrc_mdspn_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_ind = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_generic_medispan_ind_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_590c5c4e_6fe3_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.rxsol_clm.network_flag,[transform],in0.ntwk_sk,
+     'lookup("d_pharmacy_network_lkp").phr_ntwrk_id']
+  [out0.rxsol_clm.prescriber_src_key,[passthrough],in0.phy_pbr_key]
+  [out0.rxsol_clm.prescriber_dea_code,[passthrough],in0.pbr_dea_id]
+  [out0.rxsol_clm.prescriber_id,[transform],in0.dxf_sk,
+     'lookup("d_prescriber_adjud_lkp").pbr_id']
+  [out0.rxsol_clm.dependent_id,[passthrough],in0.mbr_prsn_cd]
+  [out0.rxsol_clm.drug_code,[passthrough],in0.prod_id]
+  [out0.rxsol_clm.drug_cost,[transform],in0.clt_sales_tax_paid,
+     in0.clt_dispensing_fee,
+     in0.clt_ingred_cost_paid]
+  [out0.rxsol_clm.claim_id,[passthrough],in0.claim_nbr]
+  [out0.rxsol_clm.carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.rxsol_clm.employer_group_id,[passthrough],in0.orig_employer_group_id]
+  [out0.rxsol_clm.family_id,[passthrough],in0.orig_member_id]
+  [out0.rxsol_clm.clr_due_amt,[passthrough],in0.clt_due_amt]
+  [out0.rxsol_clm.account_id,[passthrough],in0.orig_account_id]
+  [out0.rxsol_clm.carrier_account_group_key,[passthrough],in0.cag_sk]
+  [out0.rxsol_clm.patient_id,[transform],in0.d_mbr.mbr_id,
+     in0.mbr_fam_id]
+  [out0.rxsol_clm.clr_patient_pay_amt,[passthrough],in0.clt_patient_pay_amt]
+  [out0.rxsol_clm.sales_tx_amt,[passthrough],in0.clt_sales_tax_paid]
+  [out0.rxsol_clm.maint_drug_ind,[transform],in0.drug_maint_cd_sk,
+     'lookup("l_drug_maint_lkp").drug_maint_cd']
+  [out0.rxsol_clm.pharmacy_id,[passthrough],in0.pharmacy.phr_id]
+  [out0.rxsol_clm.frmlry_cd,[transform],in0.clt_formulary_flg]
+  [out0.rxsol_clm.daw_cd,[passthrough],in0.daw_cd]
+  [out0.rxsol_clm.awp_price,[passthrough],in0.awp_unit_cost]
+  [out0.rxsol_clm.date_of_birth,[passthrough],in0.birth_dt]
+  [out0.rxsol_clm.package_strength,[transform],in0.drg_strngth_uom_cd,
+     in0.drg_strngth_qty]
+  [out0.rxsol_clm.prescriber_npi_id,[passthrough],in0.pbr_npi_id]
+  [out0.rxsol_clm.tier_type,[transform],in0.clt_formulary_flg,
+     in0.gnrc_mdspn_ind_sk,
+     'lookup("l_generic_medispan_ind_lkp").gnrc_mdspn_ind']
+  [out0.rxsol_clm.ing_cst_pd_amt,[passthrough],in0.clt_ingred_cost_paid]
+  [out0.rxsol_clm.submitted_date,[passthrough],in0.sbm_dt]
+  [out0.rxsol_clm.days_supply,[passthrough],in0.days_sply]
+  [out0.rxsol_clm.generic_number,[passthrough],in0.gpi.gpi_id]
+  [out0.rxsol_clm.drug_ind,[passthrough],in0.gnrc_mdspn.gnrc_mdspn_ind]
+  [out0.rxsol_clm.policy_number,[transform],in0.orig_employer_group_id,
+     in0.orig_carrier_id]
+  [out0.rxsol_clm.mail_retail_flag,[transform],in0.mail_srvc.hm_dlvry_ind]
+  [out0.rxsol_clm.deductible,[passthrough],in0.clt_attrib_to_ded_amt]
+  [out0.rxsol_clm.drug_strength_nbr,[passthrough],in0.drg_strngth_qty]
+  [out0.rxsol_clm.profdisp_fee,[passthrough],in0.clt_dispensing_fee]
+  [out0.rxsol_clm.fill_date,[passthrough],in0.filled_dt]
+  [out0.rxsol_clm.bpl_nbr,[passthrough],in0.grp_pln_cd]
+  [out0.rxsol_clm.pharmacy_key,[passthrough],in0.phr_sk]
+  [out0.rxsol_clm.copay,[passthrough],in0.clt_patient_pay_amt]
+  [out0.rxsol_clm.metric_dec_qty,[passthrough],in0.drg_qty]
+  [out0.rxsol_clm.drug_name,[passthrough],in0.drg_ndc_short_nm]
+  [out0.rxsol_clm.claim_seq_number,[passthrough],in0.claim_seq_nbr]
+  [out0.rxsol_clm.drug_id,[passthrough],in0.prod_sk]
+  [out0.rxsol_clm.claim_status_id,[passthrough],in0.claim_stat_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rxsol_clm.network_flag,'rxsol_clm.network_flag',1,0]
+     [out0.rxsol_clm.prescriber_src_key,'rxsol_clm.prescriber_src_key',1,0]
+     [out0.rxsol_clm.prescriber_dea_code,'rxsol_clm.prescriber_dea_code',1,0]
+     [out0.rxsol_clm.prescriber_id,'rxsol_clm.prescriber_id',1,0]
+     [out0.rxsol_clm.dependent_id,'rxsol_clm.dependent_id',1,0]
+     [out0.rxsol_clm.drug_code,'rxsol_clm.drug_code',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rxsol_clm.app_patient_pay_amt,'rxsol_clm.app_patient_pay_amt',1,0]
+     [out0.rxsol_clm.package_size,'rxsol_clm.package_size',1,0]
+     [out0.rxsol_clm.drug_cost,'rxsol_clm.drug_cost',1,0]
+     [out0.rxsol_clm.claim_id,'rxsol_clm.claim_id',1,0]
+     [out0.rxsol_clm.carrier_id,'rxsol_clm.carrier_id',1,0]
+     [out0.rxsol_clm.employer_group_id,'rxsol_clm.employer_group_id',1,0]
+     [out0.rxsol_clm.family_id,'rxsol_clm.family_id',1,0]
+     [out0.rxsol_clm.clr_due_amt,'rxsol_clm.clr_due_amt',1,0]
+     [out0.rxsol_clm.account_id,'rxsol_clm.account_id',1,0]
+     [out0.rxsol_clm.carrier_account_group_key,'rxsol_clm.carrier_account_group_key',1,0]
+     [out0.rxsol_clm.patient_id,'rxsol_clm.patient_id',1,0]
+     [out0.rxsol_clm.clr_patient_pay_amt,'rxsol_clm.clr_patient_pay_amt',1,0]
+     [out0.rxsol_clm.sales_tx_amt,'rxsol_clm.sales_tx_amt',1,0]
+     [out0.rxsol_clm.maint_drug_ind,'rxsol_clm.maint_drug_ind',1,0]
+     [out0.rxsol_clm.pharmacy_id,'rxsol_clm.pharmacy_id',1,0]
+     [out0.rxsol_clm.frmlry_cd,'rxsol_clm.frmlry_cd',1,0]
+     [out0.rxsol_clm.daw_cd,'rxsol_clm.daw_cd',1,0]
+     [out0.rxsol_clm.awp_price,'rxsol_clm.awp_price',1,0]
+     [out0.rxsol_clm.date_of_birth,'rxsol_clm.date_of_birth',1,0]
+     [out0.rxsol_clm.package_strength,'rxsol_clm.package_strength',1,0]
+     [out0.rxsol_clm.prescriber_npi_id,'rxsol_clm.prescriber_npi_id',1,0]
+     [out0.rxsol_clm.tier_type,'rxsol_clm.tier_type',1,1]
+     [out0.rxsol_clm.ing_cst_pd_amt,'rxsol_clm.ing_cst_pd_amt',1,0]
+     [out0.rxsol_clm.src_env_sk,'rxsol_clm.src_env_sk',1,0]
+     [out0.rxsol_clm.submitted_date,'rxsol_clm.submitted_date',1,0]
+     [out0.rxsol_clm.days_supply,'rxsol_clm.days_supply',1,0]
+     [out0.rxsol_clm.generic_number,'rxsol_clm.generic_number',1,0]
+     [out0.rxsol_clm.drug_ind,'rxsol_clm.drug_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.rxsol_clm.policy_number,'rxsol_clm.policy_number',1,0]
+     [out0.rxsol_clm.mail_retail_flag,'rxsol_clm.mail_retail_flag',1,0]
+     [out0.rxsol_clm.deductible,'rxsol_clm.deductible',1,0]
+     [out0.rxsol_clm.drug_strength_nbr,'rxsol_clm.drug_strength_nbr',1,0]
+     [out0.rxsol_clm.profdisp_fee,'rxsol_clm.profdisp_fee',1,0]
+     [out0.rxsol_clm.fill_date,'rxsol_clm.fill_date',1,0]
+     [out0.rxsol_clm.bpl_nbr,'rxsol_clm.bpl_nbr',1,0]
+     [out0.rxsol_clm.pharmacy_key,'rxsol_clm.pharmacy_key',1,0]
+     [out0.rxsol_clm.dxf_sk,'rxsol_clm.dxf_sk',1,0]
+     [out0.rxsol_clm.app_ingred_cost_paid,'rxsol_clm.app_ingred_cost_paid',1,0]
+     [out0.rxsol_clm.copay,'rxsol_clm.copay',1,0]
+     [out0.rxsol_clm.metric_dec_qty,'rxsol_clm.metric_dec_qty',1,0]
+     [out0.rxsol_clm.drug_name,'rxsol_clm.drug_name',1,0]
+     [out0.rxsol_clm.claim_seq_number,'rxsol_clm.claim_seq_number',1,0]
+     [out0.rxsol_clm.drug_id,'rxsol_clm.drug_id',1,0]
+     [out0.rxsol_clm.claim_status_id,'rxsol_clm.claim_status_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.phy_pbr_key,'phy_pbr_key',1,1]
+     [in0.pbr_dea_id,'pbr_dea_id',1,1]
+     [in0.clt_formulary_flg,'clt_formulary_flg',5,2]
+     ['lookup("d_prescriber_adjud_lkp").pbr_id','pbr_id',1,1]
+     [in0.clt_patient_pay_amt,'clt_patient_pay_amt',2,2]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     [in0.mail_srvc.hm_dlvry_ind,'hm_dlvry_ind',1,1]
+     [in0.drg_ndc_short_nm,'drg_ndc_short_nm',1,1]
+     [in0.orig_member_id,'orig_member_id',1,1]
+     [in0.app_ingred_cost_paid,'app_ingred_cost_paid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi.gpi_id,'gpi_id',1,1]
+     [in0.ntwk_sk,'ntwk_sk',1,1]
+     [in0.awp_unit_cost,'awp_unit_cost',1,1]
+     [in0.days_sply,'days_sply',1,1]
+     ['lookup("l_generic_medispan_ind_lkp").gnrc_mdspn_ind','gnrc_mdspn_ind',1,2]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.grp_pln_cd,'grp_pln_cd',1,1]
+     [in0.clt_sales_tax_paid,'clt_sales_tax_paid',2,2]
+     [in0.dxf_sk,'dxf_sk',2,2]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.clt_attrib_to_ded_amt,'clt_attrib_to_ded_amt',1,1]
+     [in0.drug_maint_cd_sk,'drug_maint_cd_sk',1,1]
+     [in0.pbr_npi_id,'pbr_npi_id',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+     [in0.clt_dispensing_fee,'clt_dispensing_fee',2,2]
+     [in0.orig_account_id,'orig_account_id',1,1]
+     [in0.gnrc_mdspn.gnrc_mdspn_ind,'gnrc_mdspn_ind',1,1]
+     [in0.mbr_fam_id,'mbr_fam_id',4,1]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     [in0.drg_qty,'drg_qty',1,1]
+     [in0.pharmacy.phr_id,'phr_id',1,1]
+     ['lookup("d_pharmacy_network_lkp").phr_ntwrk_id','phr_ntwrk_id',1,1]
+     [in0.drg_strngth_uom_cd,'drg_strngth_uom_cd',1,1]
+     ['lookup("l_drug_maint_lkp").drug_maint_cd','drug_maint_cd',1,1]
+     [in0.app_patient_pay_amt,'app_patient_pay_amt',1,1]
+     [in0.prod_id,'prod_id',1,1]
+     [in0.package_size,'package_size',1,1]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.clt_ingred_cost_paid,'clt_ingred_cost_paid',2,2]
+     [in0.phr_sk,'phr_sk',1,1]
+     [in0.gnrc_mdspn_ind_sk,'gnrc_mdspn_ind_sk',2,2]
+     [in0.orig_employer_group_id,'orig_employer_group_id',2,2]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.filled_dt,'filled_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.d_mbr.mbr_id,'mbr_id',1,1]
+     [in0.daw_cd,'daw_cd',1,1]
+     [in0.mbr_prsn_cd,'mbr_prsn_cd',1,1]
+     [in0.drg_strngth_qty,'drg_strngth_qty',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.birth_dt,'birth_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let integer(8) rxsol_clm_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01", maximum_length=38) rxsol_clm_claim_id = fail_if_error(in0.claim_nbr);
+let string("\x01", maximum_length=1) rxsol_clm_claim_status_id = fail_if_error(in0.claim_stat_id);
+let decimal("\x01",0, maximum_length=16, sign_reserved) rxsol_clm_claim_seq_number = fail_if_error(in0.claim_seq_nbr);
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_drug_cost = fail_if_error(in0.clt_ingred_cost_paid + in0.clt_dispensing_fee + in0.clt_sales_tax_paid);
+let string("\x01", maximum_length=1) rxsol_clm_network_flag;
+let string("\x01", maximum_length=1) rxsol_clm_mail_retail_flag = fail_if_error(if(in0.mail_srvc.hm_dlvry_ind=="Y") "M" else "R");
+let string("\x01", maximum_length=3) rxsol_clm_tier_type;
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_copay = fail_if_error(in0.clt_patient_pay_amt);
+let string("\x01", maximum_length=1) rxsol_clm_daw_cd = fail_if_error(in0.daw_cd);
+let string("\x01", maximum_length=1) rxsol_clm_drug_ind = fail_if_error(in0.gnrc_mdspn.gnrc_mdspn_ind);
+let string("\x01", maximum_length=1) rxsol_clm_frmlry_cd = fail_if_error(if(in0.clt_formulary_flg=="Y") "F"
+else
+if(in0.clt_formulary_flg=="N") "N"
+else "U");
+let date("YYYY-MM-DD")("\x01") rxsol_clm_fill_date = fail_if_error(in0.filled_dt);
+let date("YYYY-MM-DD")("\x01") rxsol_clm_submitted_date = fail_if_error(in0.sbm_dt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_awp_price = fail_if_error(in0.awp_unit_cost);
+let string("\x01", maximum_length=1) rxsol_clm_maint_drug_ind;
+let decimal("\x01".2, maximum_length=17, sign_reserved) rxsol_clm_ing_cst_pd_amt = fail_if_error(in0.clt_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rxsol_clm_profdisp_fee = fail_if_error(in0.clt_dispensing_fee);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rxsol_clm_sales_tx_amt = fail_if_error(in0.clt_sales_tax_paid);
+let decimal("\x01",0) rxsol_clm_days_supply = fail_if_error(in0.days_sply);
+let decimal("\x01".2, maximum_length=17, sign_reserved) rxsol_clm_deductible = fail_if_error(in0.clt_attrib_to_ded_amt);
+let decimal("\x01",0) rxsol_clm_carrier_account_group_key = fail_if_error(in0.cag_sk);
+let string("\x01", maximum_length=9) rxsol_clm_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01", maximum_length=15) rxsol_clm_account_id = fail_if_error(in0.orig_account_id);
+let string("\x01", maximum_length=30) rxsol_clm_employer_group_id = fail_if_error(in0.orig_employer_group_id);
+let string("\x01", maximum_length=25) rxsol_clm_bpl_nbr = fail_if_error(in0.grp_pln_cd);
+let string("\x01", maximum_length=20) rxsol_clm_family_id = fail_if_error(in0.orig_member_id);
+let string("\x01", maximum_length=3) rxsol_clm_dependent_id = fail_if_error(in0.mbr_prsn_cd);
+let string("\x01", maximum_length=20) rxsol_clm_patient_id = fail_if_error((if (sql_or(sql_or(is_blank(in0.mbr_fam_id),is_null(in0.mbr_fam_id)),(in0.mbr_fam_id=="-")))
+   in0.d_mbr.mbr_id
+ else
+   in0.mbr_fam_id));
+let date("YYYY-MM-DD")("\x01") rxsol_clm_date_of_birth = fail_if_error(in0.birth_dt);
+let decimal("\x01",0) rxsol_clm_pharmacy_key = fail_if_error(in0.phr_sk);
+let string("\x01", maximum_length=15) rxsol_clm_pharmacy_id = fail_if_error(in0.pharmacy.phr_id);
+let string("\x01", maximum_length=15) rxsol_clm_prescriber_id;
+let string("\x01", maximum_length=10) rxsol_clm_prescriber_src_key = fail_if_error(in0.phy_pbr_key);
+let string("\x01", maximum_length=15) rxsol_clm_prescriber_dea_code = fail_if_error(in0.pbr_dea_id);
+let string("\x01", maximum_length=10) rxsol_clm_prescriber_npi_id = fail_if_error(in0.pbr_npi_id);
+let decimal("\x01",0) rxsol_clm_drug_id = fail_if_error(in0.prod_sk);
+let string("\x01", maximum_length=30) rxsol_clm_drug_code = fail_if_error(in0.prod_id);
+let string("\x01", maximum_length=14) rxsol_clm_generic_number = fail_if_error(in0.gpi.gpi_id);
+let string("\x01", maximum_length=150) rxsol_clm_drug_name = fail_if_error(in0.drg_ndc_short_nm);
+let string("\x01", maximum_length=45) rxsol_clm_package_strength = fail_if_error(string_concat((string(""))in0.drg_strngth_qty, string_lrtrim(in0.drg_strngth_uom_cd)));
+let decimal("\x01".3, maximum_length=11, sign_reserved) rxsol_clm_package_size = fail_if_error(in0.package_size);
+let decimal("\x01".5, maximum_length=22, sign_reserved) rxsol_clm_drug_strength_nbr = fail_if_error(in0.drg_strngth_qty);
+let decimal("\x01".3, maximum_length=12, sign_reserved) rxsol_clm_metric_dec_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_clr_due_amt = fail_if_error(in0.clt_due_amt);
+let string("\x01", maximum_length=7) rxsol_clm_policy_number = fail_if_error(if(string_substring(str= in0.orig_carrier_id, start_index=1 , length= 3) == "UHC") string_substring(str= in0.orig_employer_group_id, start_index= 1, length= 7)
+else
+"");
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) rxsol_clm_clr_patient_pay_amt = fail_if_error(in0.clt_patient_pay_amt);
+let decimal("\x01",0) rxsol_clm_src_env_sk = fail_if_error(in0.src_env_sk);
+let unicode string(int) mdspn_ind;
+
+
+
+/*   Default value   */
+rxsol_clm_network_flag=fail_if_error(if(is_null(lookup("d_pharmacy_network_lkp",in0.ntwk_sk).phr_ntwrk_id)) "O" else "I");
+
+/*   Default value   */
+rxsol_clm_prescriber_id=fail_if_error(lookup("d_prescriber_adjud_lkp",in0.dxf_sk).pbr_id);
+
+/*   Default value   */
+rxsol_clm_maint_drug_ind=fail_if_error(lookup("l_drug_maint_lkp",in0.drug_maint_cd_sk).drug_maint_cd);
+
+/*   Default value   */
+mdspn_ind=fail_if_error(bzt_2_6c54cc0a_590c5c4e_6fe3_3(in0.gnrc_mdspn_ind_sk).gnrc_mdspn_ind);
+
+/*   Default value   */
+rxsol_clm_tier_type=fail_if_error((if (sql_and((mdspn_ind=="Y"),(in0.clt_formulary_flg=="Y")))
+   "1"
+ else
+   (if (sql_and((mdspn_ind member [vector"M","N","O"]),(in0.clt_formulary_flg=="Y")))
+      "2"
+    else
+      (if (sql_and((mdspn_ind member [vector"M","N","O","Y"]),(in0.clt_formulary_flg=="0")))
+         "3"
+       else
+         "7"))));
+
+  out0.rxsol_clm.dxf_sk::rxsol_clm_dxf_sk;
+  out0.rxsol_clm.claim_id::rxsol_clm_claim_id;
+  out0.rxsol_clm.claim_status_id::rxsol_clm_claim_status_id;
+  out0.rxsol_clm.claim_seq_number::rxsol_clm_claim_seq_number;
+  out0.rxsol_clm.drug_cost::rxsol_clm_drug_cost;
+  out0.rxsol_clm.network_flag::rxsol_clm_network_flag;
+  out0.rxsol_clm.mail_retail_flag::rxsol_clm_mail_retail_flag;
+  out0.rxsol_clm.tier_type::rxsol_clm_tier_type;
+  out0.rxsol_clm.copay::rxsol_clm_copay;
+  out0.rxsol_clm.daw_cd::rxsol_clm_daw_cd;
+  out0.rxsol_clm.drug_ind::rxsol_clm_drug_ind;
+  out0.rxsol_clm.frmlry_cd::rxsol_clm_frmlry_cd;
+  out0.rxsol_clm.fill_date::rxsol_clm_fill_date;
+  out0.rxsol_clm.submitted_date::rxsol_clm_submitted_date;
+  out0.rxsol_clm.awp_price::rxsol_clm_awp_price;
+  out0.rxsol_clm.maint_drug_ind::rxsol_clm_maint_drug_ind;
+  out0.rxsol_clm.ing_cst_pd_amt::rxsol_clm_ing_cst_pd_amt;
+  out0.rxsol_clm.profdisp_fee::rxsol_clm_profdisp_fee;
+  out0.rxsol_clm.sales_tx_amt::rxsol_clm_sales_tx_amt;
+  out0.rxsol_clm.days_supply::rxsol_clm_days_supply;
+  out0.rxsol_clm.deductible::rxsol_clm_deductible;
+  out0.rxsol_clm.carrier_account_group_key::rxsol_clm_carrier_account_group_key;
+  out0.rxsol_clm.carrier_id::rxsol_clm_carrier_id;
+  out0.rxsol_clm.account_id::rxsol_clm_account_id;
+  out0.rxsol_clm.employer_group_id::rxsol_clm_employer_group_id;
+  out0.rxsol_clm.bpl_nbr::rxsol_clm_bpl_nbr;
+  out0.rxsol_clm.family_id::rxsol_clm_family_id;
+  out0.rxsol_clm.dependent_id::rxsol_clm_dependent_id;
+  out0.rxsol_clm.patient_id::rxsol_clm_patient_id;
+  out0.rxsol_clm.date_of_birth::rxsol_clm_date_of_birth;
+  out0.rxsol_clm.pharmacy_key::rxsol_clm_pharmacy_key;
+  out0.rxsol_clm.pharmacy_id::rxsol_clm_pharmacy_id;
+  out0.rxsol_clm.prescriber_id::rxsol_clm_prescriber_id;
+  out0.rxsol_clm.prescriber_src_key::rxsol_clm_prescriber_src_key;
+  out0.rxsol_clm.prescriber_dea_code::rxsol_clm_prescriber_dea_code;
+  out0.rxsol_clm.prescriber_npi_id::rxsol_clm_prescriber_npi_id;
+  out0.rxsol_clm.drug_id::rxsol_clm_drug_id;
+  out0.rxsol_clm.drug_code::rxsol_clm_drug_code;
+  out0.rxsol_clm.generic_number::rxsol_clm_generic_number;
+  out0.rxsol_clm.drug_name::rxsol_clm_drug_name;
+  out0.rxsol_clm.package_strength::rxsol_clm_package_strength;
+  out0.rxsol_clm.package_size::rxsol_clm_package_size;
+  out0.rxsol_clm.drug_strength_nbr::rxsol_clm_drug_strength_nbr;
+  out0.rxsol_clm.metric_dec_qty::rxsol_clm_metric_dec_qty;
+  out0.rxsol_clm.app_ingred_cost_paid::rxsol_clm_app_ingred_cost_paid;
+  out0.rxsol_clm.clr_due_amt::rxsol_clm_clr_due_amt;
+  out0.rxsol_clm.policy_number::rxsol_clm_policy_number;
+  out0.rxsol_clm.app_patient_pay_amt::rxsol_clm_app_patient_pay_amt;
+  out0.rxsol_clm.clr_patient_pay_amt::rxsol_clm_clr_patient_pay_amt;
+  out0.rxsol_clm.src_env_sk::rxsol_clm_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,145 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a1289ec_3578_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.qu_ans_hist.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.qu_ans_hist.cpp_member_flag_qu_ans_hist_sk,[transform],]
+  [out0.qu_ans_hist.cpp_created_by,[passthrough],in0.created_by]
+  [out0.qu_ans_hist.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.qu_ans_hist.src_env_sk,[transform],]
+  [out0.qu_ans_hist.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.qu_ans_hist.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.qu_ans_hist.stts,'qu_ans_hist.stts',1,0]
+     [out0.qu_ans_hist.member_id,'qu_ans_hist.member_id',1,0]
+     [out0.qu_ans_hist.cli_carrier_id,'qu_ans_hist.cli_carrier_id',1,0]
+     [out0.qu_ans_hist.cpp_updated_by,'qu_ans_hist.cpp_updated_by',1,0]
+     [out0.qu_ans_hist.src_env_id,'qu_ans_hist.src_env_id',1,0]
+     [out0.qu_ans_hist.cpp_member_flag_qu_ans_hist_sk,'qu_ans_hist.cpp_member_flag_qu_ans_hist_sk',1,0]
+     [out0.qu_ans_hist.cli_member_id,'qu_ans_hist.cli_member_id',1,0]
+     [out0.qu_ans_hist.cli_acct_id,'qu_ans_hist.cli_acct_id',1,0]
+     [out0.qu_ans_hist.member_flag_qu_ans_hist_id,'qu_ans_hist.member_flag_qu_ans_hist_id',1,0]
+     [out0.qu_ans_hist.cpp_created_by,'qu_ans_hist.cpp_created_by',1,0]
+     [out0.qu_ans_hist.qu,'qu_ans_hist.qu',1,0]
+     [out0.qu_ans_hist.case_id,'qu_ans_hist.case_id',1,0]
+     [out0.qu_ans_hist.cpp_member_sk,'qu_ans_hist.cpp_member_sk',1,0]
+     [out0.qu_ans_hist.src_env_sk,'qu_ans_hist.src_env_sk',1,0]
+     [out0.qu_ans_hist.ans,'qu_ans_hist.ans',1,0]
+     [out0.qu_ans_hist.member_flag_ovrride_id,'qu_ans_hist.member_flag_ovrride_id',1,0]
+     [out0.qu_ans_hist.cpp_update_ts,'qu_ans_hist.cpp_update_ts',1,0]
+     [out0.qu_ans_hist.cli_emplyr_group_id,'qu_ans_hist.cli_emplyr_group_id',1,0]
+     [out0.qu_ans_hist.cli_src_env_id,'qu_ans_hist.cli_src_env_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.qu_ans_hist.acct_id,'qu_ans_hist.acct_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.qu_ans_hist.cpp_create_ts,'qu_ans_hist.cpp_create_ts',1,0]
+     [out0.qu_ans_hist.reported_dt,'qu_ans_hist.reported_dt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.qu_ans_hist.carrier_id,'qu_ans_hist.carrier_id',1,0]
+     [out0.qu_ans_hist.emplyr_group_id,'qu_ans_hist.emplyr_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.ans,'ans',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.member_flag_qu_ans_hist_id,'member_flag_qu_ans_hist_id',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.member_flag_ovrride_id,'member_flag_ovrride_id',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.reported_dt,'reported_dt',1,1]
+     [in0.stts,'stts',1,1]
+     [in0.qu,'qu',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) qu_ans_hist_cpp_member_flag_qu_ans_hist_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) qu_ans_hist_member_flag_ovrride_id = fail_if_error(in0.member_flag_ovrride_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_member_flag_qu_ans_hist_id = fail_if_error(in0.member_flag_qu_ans_hist_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) qu_ans_hist_cli_member_id = fail_if_error(in0.cli_member_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) qu_ans_hist_src_env_id = fail_if_error(in0.src_env_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) qu_ans_hist_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) qu_ans_hist_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) qu_ans_hist_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) qu_ans_hist_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) qu_ans_hist_cpp_member_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=15) qu_ans_hist_case_id = fail_if_error(in0.case_id);
+let utf8 string("\x01", maximum_length=8192) qu_ans_hist_qu = fail_if_error(in0.qu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) qu_ans_hist_ans = fail_if_error(in0.ans);
+let utf8 string("\x01", maximum_length=80) qu_ans_hist_stts = fail_if_error(in0.stts);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") qu_ans_hist_reported_dt = fail_if_error(in0.reported_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") qu_ans_hist_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) qu_ans_hist_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") qu_ans_hist_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) qu_ans_hist_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) qu_ans_hist_src_env_sk = 710;
+
+
+
+/*   Default value   */
+qu_ans_hist_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.qu_ans_hist.cpp_member_flag_qu_ans_hist_sk::qu_ans_hist_cpp_member_flag_qu_ans_hist_sk;
+  out0.qu_ans_hist.member_flag_ovrride_id::qu_ans_hist_member_flag_ovrride_id;
+  out0.qu_ans_hist.member_flag_qu_ans_hist_id::qu_ans_hist_member_flag_qu_ans_hist_id;
+  out0.qu_ans_hist.cli_src_env_id::qu_ans_hist_cli_src_env_id;
+  out0.qu_ans_hist.cli_carrier_id::qu_ans_hist_cli_carrier_id;
+  out0.qu_ans_hist.cli_acct_id::qu_ans_hist_cli_acct_id;
+  out0.qu_ans_hist.cli_emplyr_group_id::qu_ans_hist_cli_emplyr_group_id;
+  out0.qu_ans_hist.cli_member_id::qu_ans_hist_cli_member_id;
+  out0.qu_ans_hist.src_env_id::qu_ans_hist_src_env_id;
+  out0.qu_ans_hist.carrier_id::qu_ans_hist_carrier_id;
+  out0.qu_ans_hist.acct_id::qu_ans_hist_acct_id;
+  out0.qu_ans_hist.emplyr_group_id::qu_ans_hist_emplyr_group_id;
+  out0.qu_ans_hist.member_id::qu_ans_hist_member_id;
+  out0.qu_ans_hist.cpp_member_sk::qu_ans_hist_cpp_member_sk;
+  out0.qu_ans_hist.case_id::qu_ans_hist_case_id;
+  out0.qu_ans_hist.qu::qu_ans_hist_qu;
+  out0.qu_ans_hist.ans::qu_ans_hist_ans;
+  out0.qu_ans_hist.stts::qu_ans_hist_stts;
+  out0.qu_ans_hist.reported_dt::qu_ans_hist_reported_dt;
+  out0.qu_ans_hist.cpp_update_ts::qu_ans_hist_cpp_update_ts;
+  out0.qu_ans_hist.cpp_updated_by::qu_ans_hist_cpp_updated_by;
+  out0.qu_ans_hist.cpp_create_ts::qu_ans_hist_cpp_create_ts;
+  out0.qu_ans_hist.cpp_created_by::qu_ans_hist_cpp_created_by;
+  out0.qu_ans_hist.src_env_sk::qu_ans_hist_src_env_sk;
+  out0.*::in0.*;
+
+end;

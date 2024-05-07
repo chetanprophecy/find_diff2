@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcpcop_ndc
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpcop                  abiin2,abaacd,abfshn,abfthn,abguh6,abdxhh,abdyhh,abrzht,newline
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[string_concat("WHERE ABGUH6 !='*' AND ABH5IC='A' AND ABDYHH>" , (date("CYYMMDD"))(date("YYYYMMDD"))string_substring(RUN_ID,1,8))]
+RUN_ID||||20180301000000
+SQL||||$["select A.abiin2,A.abaacd,A.abfshn,A.abfthn,A.abrzht,A.abguh6,A.abdxhh,A.abdyhh,B.S4E6C4 from clmprdfil.RCPCOP A LEFT JOIN clmprdfil.RCPIDP B ON B.S4IIN2=A.ABIIN2 "+ WHERE_CLAUSE]
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]

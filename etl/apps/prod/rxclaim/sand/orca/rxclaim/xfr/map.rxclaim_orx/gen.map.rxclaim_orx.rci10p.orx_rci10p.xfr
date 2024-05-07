@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_rci10p.icd10_cd_frmt,[passthrough],in0.i1wmhq]
+  [out0.orx_rci10p.icd10_cd_nm,[passthrough],in0.i1uniu]
+  [out0.orx_rci10p.icd10_cd_unfrmt,[passthrough],in0.i1wnhq]
+  [out0.orx_rci10p.icd10_stat_cd,[passthrough],in0.i1toap]
+  [out0.orx_rci10p.icd10_cd_type,[passthrough],in0.i1tnap]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_rci10p.icd10_cd_frmt,'orx_rci10p.icd10_cd_frmt',1,0]
+     [out0.orx_rci10p.icd10_cd_nm,'orx_rci10p.icd10_cd_nm',1,0]
+     [out0.orx_rci10p.icd10_cd_unfrmt,'orx_rci10p.icd10_cd_unfrmt',1,0]
+     [out0.orx_rci10p.icd10_stat_cd,'orx_rci10p.icd10_stat_cd',1,0]
+     [out0.orx_rci10p.icd10_cd_type,'orx_rci10p.icd10_cd_type',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.i1wmhq,'i1wmhq',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.i1uniu,'i1uniu',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.i1wnhq,'i1wnhq',1,1]
+     [in0.i1toap,'i1toap',1,1]
+     [in0.i1tnap,'i1tnap',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rci10p_icd10_cd_type = fail_if_error(in0.i1tnap);
+let string("\x01",charset="iso-8859-15", maximum_length=20) orx_rci10p_icd10_cd_frmt = fail_if_error(in0.i1wmhq);
+let string("\x01",charset="iso-8859-15", maximum_length=20) orx_rci10p_icd10_cd_unfrmt = fail_if_error(in0.i1wnhq);
+let string("\x01",charset="iso-8859-15", maximum_length=100) orx_rci10p_icd10_cd_nm = fail_if_error(in0.i1uniu);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rci10p_icd10_stat_cd = fail_if_error(in0.i1toap);
+
+
+
+  out0.orx_rci10p.icd10_cd_type::orx_rci10p_icd10_cd_type;
+  out0.orx_rci10p.icd10_cd_frmt::orx_rci10p_icd10_cd_frmt;
+  out0.orx_rci10p.icd10_cd_unfrmt::orx_rci10p_icd10_cd_unfrmt;
+  out0.orx_rci10p.icd10_cd_nm::orx_rci10p_icd10_cd_nm;
+  out0.orx_rci10p.icd10_stat_cd::orx_rci10p_icd10_stat_cd;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,23 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+  out.mdm_cms_reject_code       :: in.agn8hj;
+  out.mdm_reject_code_descr     :: if(is_null(in.agq9io)) "NULL" else in.agq9io;
+  out.mdm_include_reject        :: if(is_null(in.agniie)) "NULL" else in.agniie;
+  out.mdm_rej_code_long_descr   :: if(is_null(in.agbrir)) "NULL" else in.agbrir;
+  /*out.rxtrack_add_user_name   :: in.Job Name;
+  out.rxtrack_add_date          :: in.CurrentDate();
+  out.rxtrack_add_time          :: in.CurrentTime();
+  out.rxtrack_add_program_name  :: in.Job Name;
+  out.rxtrack_chg_user_name     :: in.Job Name;
+  out.rxtrack_chg_date          :: in.CurrentDate();
+  out.rxtrack_chg_time          :: in.CurrentTime();
+  out.rxtrack_chg_program_name  :: in.Job Name; */
+  out.rxt_src_envrt_id          :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm          :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm           :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid            :: 'app_orca_rxclaim';
+  out.rxt_create_run_id         :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd           :: '';
+  out.*                         :: in.*;
+end;

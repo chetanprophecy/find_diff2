@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This process created the multiple Pharmacy and Medical scoop files as per clients." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="D94555DD-4E45-5D7C-7550-F188D1C64799" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Initialization - Scoop process for monthly programs" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_MP/p_optimization/monthly_pharma_claim_scoop.mp" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="MONTHLY" startDate="2018-05-01Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+      <days>
+        <dayOfMonthDay day="1" nonOperationalOffset="0"/>
+      </days>
+      <monthsOfYear>
+        <monthOfYear value="JAN"/>
+        <monthOfYear value="FEB"/>
+        <monthOfYear value="MAR"/>
+        <monthOfYear value="APR"/>
+        <monthOfYear value="MAY"/>
+        <monthOfYear value="JUN"/>
+        <monthOfYear value="JUL"/>
+        <monthOfYear value="AUG"/>
+        <monthOfYear value="SEP"/>
+        <monthOfYear value="OCT"/>
+        <monthOfYear value="NOV"/>
+        <monthOfYear value="DEC"/>
+      </monthsOfYear>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="A925429B-1382-71BF-D4A4-82390BF3C1DE"/>
+      <predecessor jobDefinitionGuid="46E5AAB9-DBAA-1AFB-429B-DFD642CF35F9"/>
+      <predecessor jobDefinitionGuid="8935D44F-D4C4-E7FB-5602-1EB54E5F99C4"/>
+      <predecessor jobDefinitionGuid="90AA0D85-CBA6-49E0-4ACE-23F3BFB48498"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

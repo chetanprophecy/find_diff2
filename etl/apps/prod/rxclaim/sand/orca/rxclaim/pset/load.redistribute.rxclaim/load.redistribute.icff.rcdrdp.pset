@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/load.redistribute.dim.interim.pset
+IDS_SOURCE_NAME||||ids_rxclaim.rcdrdp
+REPARTITIONED_TARGET_1_NAME||||$[IDS_SOURCE_NAME+"_d3bmdt"]
+RUN_ID||||$[string_split_no_empty(read_file(PUB_DATAHUB_SERIAL+"/run.idw.integration.all."+AI_PHASE+".run_id.dat"),"\\n")[0]]
+ENABLE_SBMDT_REPARTITION||||True
+ENABLE_DA_CREATION||||False
+ENABLE_FILLEDDT_REPARTITION||||False
+REPARTITIONED_TARGET_1_KEY||||d3bmdt
+SBMDT_XFR||||out :: reformat(in) =\r\nbegin\r\n  let string("") d3bmdt = if(!is_null(in.d3bmdt)) string_lrtrim((decimal(""))(string(""))in.d3bmdt) else "19000101";\r\n  if( string_length(d3bmdt) member [vector 6, 7] && is_valid((date("YYYYMMDD")(""))  string_lrtrim((string(""))(19000000 + (decimal(""))d3bmdt)) ) )  \r\n    d3bmdt = (date("YYYYMMDD")(""))string_lrtrim((string(""))(19000000 + (decimal(""))d3bmdt));\r\n  if( string_length(d3bmdt) member [vector 8] && is_valid( (date("YYYYMMDD")("")) d3bmdt ) ) \r\n    d3bmdt = (date("YYYYMMDD")("")) d3bmdt;   \r\n  out.d3bmdt :: d3bmdt;\r\n  out.* :: in.*;\r\nend;

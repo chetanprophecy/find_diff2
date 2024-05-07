@@ -1,0 +1,224 @@
+include "/~$PUB_DB_XFR/db_list.xfr";
+include "/~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+type file_info_t =
+record
+  string(long) file_type;
+  string(long) file_base_url;
+  string(long) dml_base_url;
+  string(long) file_prefix = "";
+end;
+
+type file_info_vec_t = file_info_t[long];
+
+type file_info_extended_t =
+record
+  string(long) full_file_url;
+  string(long)[int] prim_icff_file_name;
+  string(long)[int] sec_icff_file_name;
+  string(long)[int] sec_icff_file_index;
+  string(long) full_dml_url;
+  string(long) dml_name;
+  string(long) file_layout;
+  decimal(1) is_commpressed;
+end;
+
+out :: get_file_info_vec(file_list) = 
+begin
+  out :: for(let line in get_line_vec(file_list)) 
+                        : [record file_type line.word_vec[0]
+                                  file_base_url line.word_vec[1]
+                                  dml_base_url line.word_vec[2]
+                                  file_prefix first_defined(null_if_error(line.word_vec[3]), "")];
+end
+
+out :: get_available_file_types(file_list) = 
+begin
+  out :: for(let line in get_line_vec(file_list)) 
+                        : line.word_vec[0];
+end
+
+out :: get_ids_with_nk_flag(source_system, source_name, load_pset_dir, ids_dml_dir) = 
+begin
+  let pset_info_type load_pset = allocate_with_defaults();
+  let dml_field_info_vec ids_dml_info = allocate_with_defaults();
+  let string("") is_ids_dml_with_nk_flag = "0";
+  let decimal("") idn_index = -1;
+  
+  if(file_information(load_pset_dir + "/load." + source_system + "/load." + source_name + ".pset").found) begin
+    load_pset = pset_info(read_file(load_pset_dir + "/load." + source_system + "/load." + source_name + ".pset"));  
+    idn_index = vector_search(load_pset.parameters, [record name "IS_IDS_DML_WITH_NK" value "" interpretation "" value_in_file 0 interpret_file_contents 0 overridable 1], {name});
+    if(idn_index != -1)
+      is_ids_dml_with_nk_flag = load_pset.parameters[idn_index].value;
+  end
+  else begin
+    if(file_information(ids_dml_dir + "/nk/" + source_system + "/" + source_name + ".dml").found) is_ids_dml_with_nk_flag = "1";
+  end
+  
+  out :: is_ids_dml_with_nk_flag;  
+end
+
+out :: get_file_info(file_info_vec, file_type, source_name, run_id, load_pset_dir, start_date = "", end_date = "", ilm_name = "", sec_suffix = "_sec_1", manual_file_list = "") = 
+begin
+  let decimal("") file_index = vector_search(file_info_vec, [record file_type file_type file_base_url "" dml_base_url "" file_prefix ""], {file_type});
+  let string("") table_type = if(file_type == "IDS") get_ids_table_type(source_name) else "";
+  let string("") source_system = string_split(source_name, ".")[0];
+  let string("") source = string_lrtrim(string_substring(source_name, string_index(source_name, ".")+1, string_length(source_name)));
+  let string("")[int] ids_file_list = [vector];
+  let date("YYYYMMDD")("") ids_file_date = allocate_with_defaults();
+  let file_info_extended_t file_info = allocate_with_defaults();
+  let string("") ids_dml_url = "";
+  let string("") is_ids_dml_with_nk_flag = "0";
+  
+  switch(file_type)
+    case "DA_IDS" :
+        file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/da/" 
+                                prim_icff_file_name [vector source + "_da.dat.gz"]
+                                sec_icff_file_name [vector source + sec_suffix + ".dat.gz"]
+                                sec_icff_file_index [vector source + sec_suffix + ".idx"]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + source_system + "/"
+                                dml_name source_name + "_da.dml"
+                                file_layout "mfs"
+                                is_commpressed 1];                     
+    case "IDS" :
+      begin
+        is_ids_dml_with_nk_flag = get_ids_with_nk_flag(source_system, source_name, load_pset_dir, file_info_vec[file_index].dml_base_url);
+        ids_dml_url = if(is_ids_dml_with_nk_flag == "1" || is_ids_dml_with_nk_flag == "True") file_info_vec[file_index].dml_base_url + "/nk" else file_info_vec[file_index].dml_base_url;
+        switch(get_ids_table_type(source_name))
+          case "fact" :
+            begin
+              ids_file_list = if(!is_blank(manual_file_list)) re_split_no_empty(manual_file_list, "[ \r\n]+")
+                              else (
+                                if(is_blank(start_date) && is_blank(end_date)) directory_listing(file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/many/", source + ".????????.dat.gz")
+                                else for(let file in directory_listing(file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/many/", source + ".????????.dat.gz")) 
+                                        ids_file_date = string_split(re_get_match(file, "[0-9]+.dat.gz"), ".")[0];
+                                        : if(ids_file_date >= start_date && ids_file_date <= end_date) file
+                                );
+              file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/many/" 
+                                prim_icff_file_name ids_file_list 
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url ids_dml_url + "/" + source_system + "/" 
+                                dml_name source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+            end
+          default :
+            file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/one/" 
+                                prim_icff_file_name [vector source + ".dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url ids_dml_url + "/" + source_system + "/"
+                                dml_name source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+        end;
+      end
+    case "Source", "Clean"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + source_name + "." + run_id + ".dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+    case "Lookup"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + source_name + ".dat"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "serial"
+                                is_commpressed 0];
+    case "Split"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + ilm_name + "." + source_name + "." + run_id + ".dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+  end;
+  out :: file_info;
+end
+
+out :: get_file_info_eme(file_info_vec, file_type, source_name, run_id, load_pset_dir, start_date = "", end_date = "", ilm_name = "", sec_suffix = "_sec_1") = 
+begin
+  let decimal("") file_index = vector_search(file_info_vec, [record file_type file_type file_base_url "" dml_base_url "" file_prefix ""], {file_type});
+  let string("") table_type = if(file_type == "IDS") get_ids_table_type(source_name) else "";
+  let string("") source_system = string_split(source_name, ".")[0];
+  let string("") source = string_lrtrim(string_substring(source_name, string_index(source_name, ".")+1, string_length(source_name)));
+  let string("")[int] ids_file_list = [vector];
+  let date("YYYYMMDD")("") ids_file_date = allocate_with_defaults();
+  let file_info_extended_t file_info = allocate_with_defaults();
+  let string("") ids_dml_url = "";
+  
+  switch(file_type)
+    case "DA_IDS" :
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/da/" 
+                                prim_icff_file_name [vector source + "_da.dat.gz"]
+                                sec_icff_file_name [vector source + sec_suffix + ".dat.gz"]
+                                sec_icff_file_index [vector source + sec_suffix + ".idx"]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + source_system + "/"
+                                dml_name source_name + "_da.dml"
+                                file_layout "mfs"
+                                is_commpressed 1];                     
+    case "IDS" :
+      begin
+        ids_dml_url = file_info_vec[file_index].dml_base_url;
+        switch(get_ids_table_type(source_name))
+          case "fact" :
+            begin
+              file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/many/" 
+                                prim_icff_file_name [vector source + ".YYYYMMDD.dat.gz" ]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url ids_dml_url + "/" + source_system + "/" 
+                                dml_name source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+            end
+          default :
+            file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/ids/" + source_system + "/one/" 
+                                prim_icff_file_name [vector source + ".dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url ids_dml_url + "/" + source_system + "/"
+                                dml_name source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+        end;
+      end
+    case "Source", "Clean"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + source_name + ".{RUN_ID}.dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+    case "Lookup"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + source_name + ".dat"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "serial"
+                                is_commpressed 0];
+    case "Split"  : 
+      file_info = [record full_file_url file_info_vec[file_index].file_base_url + "/" + file_info_vec[file_index].file_prefix + "/" 
+                                prim_icff_file_name [vector file_info_vec[file_index].file_prefix + "." + ilm_name + "." + source_name + ".{RUN_ID}.dat.gz"]
+                                sec_icff_file_name [vector]
+                                sec_icff_file_index [vector]
+                                full_dml_url file_info_vec[file_index].dml_base_url + "/" + file_info_vec[file_index].file_prefix + "." + source_system + "/"
+                                dml_name file_info_vec[file_index].file_prefix + "." + source_name + ".dml"
+                                file_layout "mfs"
+                                is_commpressed 1];
+  end;
+  out :: file_info;
+end

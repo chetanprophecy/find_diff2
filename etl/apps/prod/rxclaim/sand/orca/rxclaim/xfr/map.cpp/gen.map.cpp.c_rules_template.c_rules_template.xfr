@@ -1,0 +1,77 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59ccabe8_1ed4_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_rul_tmplt.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_rul_tmplt.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_rul_tmplt.src_env_sk,[transform],]
+  [out0.c_rul_tmplt.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_rul_tmplt.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_rul_tmplt.cpp_template_type_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_rul_tmplt.cpp_created_by,'c_rul_tmplt.cpp_created_by',1,0]
+     [out0.c_rul_tmplt.cpp_updated_by,'c_rul_tmplt.cpp_updated_by',1,0]
+     [out0.c_rul_tmplt.template_type_descr,'c_rul_tmplt.template_type_descr',1,0]
+     [out0.c_rul_tmplt.template_type_cd,'c_rul_tmplt.template_type_cd',1,0]
+     [out0.c_rul_tmplt.template_type_name,'c_rul_tmplt.template_type_name',1,0]
+     [out0.c_rul_tmplt.src_env_sk,'c_rul_tmplt.src_env_sk',1,0]
+     [out0.c_rul_tmplt.cpp_create_ts,'c_rul_tmplt.cpp_create_ts',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_rul_tmplt.cpp_update_ts,'c_rul_tmplt.cpp_update_ts',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_rul_tmplt.cpp_template_type_sk,'c_rul_tmplt.cpp_template_type_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.template_type_cd,'template_type_cd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.template_type_descr,'template_type_descr',1,1]
+     [in0.template_type_name,'template_type_name',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_rul_tmplt_cpp_template_type_sk = -1;
+let utf8 string("\x01", maximum_length=100) c_rul_tmplt_template_type_cd = fail_if_error(in0.template_type_cd);
+let utf8 string("\x01", maximum_length=800) c_rul_tmplt_template_type_name = fail_if_error(in0.template_type_name);
+let utf8 string("\x01", maximum_length=1600) c_rul_tmplt_template_type_descr = fail_if_error(in0.template_type_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rul_tmplt_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_rul_tmplt_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_rul_tmplt_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_rul_tmplt_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_rul_tmplt_src_env_sk = 710;
+
+
+
+  out0.c_rul_tmplt.cpp_template_type_sk::c_rul_tmplt_cpp_template_type_sk;
+  out0.c_rul_tmplt.template_type_cd::c_rul_tmplt_template_type_cd;
+  out0.c_rul_tmplt.template_type_name::c_rul_tmplt_template_type_name;
+  out0.c_rul_tmplt.template_type_descr::c_rul_tmplt_template_type_descr;
+  out0.c_rul_tmplt.cpp_update_ts::c_rul_tmplt_cpp_update_ts;
+  out0.c_rul_tmplt.cpp_updated_by::c_rul_tmplt_cpp_updated_by;
+  out0.c_rul_tmplt.cpp_create_ts::c_rul_tmplt_cpp_create_ts;
+  out0.c_rul_tmplt.cpp_created_by::c_rul_tmplt_cpp_created_by;
+  out0.c_rul_tmplt.src_env_sk::c_rul_tmplt_src_env_sk;
+  out0.*::in0.*;
+
+end;

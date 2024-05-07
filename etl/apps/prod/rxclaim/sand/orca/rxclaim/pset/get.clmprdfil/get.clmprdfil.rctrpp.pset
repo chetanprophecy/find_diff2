@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rctrpp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rctrpp                  aop2nb,aooinb,aodkhs,aopch9,aopdh9,aoxyhc,aoxzhc,aox0hc,aophh9,aopeh9,aoylhc,aoymhc,aoynhc,aoykhc,aopfh9,aownhc,aoc2hk,aopgh9,aowohc,aowphc,aopih9,aowqhc,aodlhs,aodmhs,aopjh9,aowshc,aowthc,aowuhc,aos4al,aos5al,aos6al,aowvhc,aowwhc,aowxhc,aoyfal,aoygal,aor8an,aoakvn,aoc2dt,aoadtm,aoalvn,aoadvn,aobmdt,aoabtm,aoaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rctrpp.aoylhc IS NOT NULL AND rctrpp.aoylhc NOT IN ("+ $CARRIER_EXCL +") AND rctrpp.aobmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \r\n    " AND rctrpp.aobmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rctrpp.aoylhc IS NOT NULL AND rctrpp.aoylhc NOT IN ("+ $CARRIER_EXCL +") AND rctrpp.aobmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \r\n    " AND rctrpp.aobmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

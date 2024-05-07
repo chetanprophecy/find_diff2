@@ -1,0 +1,5 @@
+!prototype|P|||${AI_PSET}/setup.db.interim.pset
+SETUP_DB_LIST||||$[\nbegin\nlet string('')[int] lines = re_split_no_empty(get_matching_db_list_db_project_dbms(AI_TARGET_DB_LIST, 'netezza', 'DB_RXCLAIM_N24'), '[\\r\\n]+');\nlet string('')[int] line1 = re_split_no_empty(lines[0], '[ \\t]+');\nlet string('')[int] line2 = re_split_no_empty(lines[1], '[ \\t]+');\nline2[0] = line1[0] + '_stg';\nline1[5] = line1[2] + '/../db/' + line1[5];\nline2[5] = line2[2] + '/../db/' + line2[5];\nlines[0] = string_join(line1, '\\t');\nlines[1] = string_join(line2, '\\t');\nresult :: string_join([vector lines[0], lines[1]], '\\r\\n');\nend\n]
+SETUP_TABLE_LIST||||l_drug_cost_comparison_schedule
+DO_CHECK_IN||||1
+PARAMETER_PREFIX||||DB_RXCLAIM_N24

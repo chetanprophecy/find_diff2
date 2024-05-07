@@ -1,0 +1,57 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_geo_rgn.city_nm,[transform],in0.city_nm]
+  [out0.d_geo_rgn.state_cd,[transform],in0.state_cd]
+  [out0.d_geo_rgn.geog_rgn_sk,[transform],]
+  [out0.d_geo_rgn.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_geo_rgn.city_nm,'d_geo_rgn.city_nm',1,0]
+     [out0.d_geo_rgn.state_cd,'d_geo_rgn.state_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_geo_rgn.geog_rgn_sk,'d_geo_rgn.geog_rgn_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_geo_rgn.src_env_sk,'d_geo_rgn.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_geo_rgn.region_nm,'d_geo_rgn.region_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.state_cd,'state_cd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.region_nm,'region_nm',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.city_nm,'city_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_geo_rgn_geog_rgn_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_geo_rgn_state_cd = fail_if_error(string_lrtrim(in0.state_cd));
+let string("\x01",charset="iso-8859-15", maximum_length=35) d_geo_rgn_city_nm = fail_if_error(string_lrtrim(in0.city_nm));
+let string("\x01",charset="iso-8859-15", maximum_length=35) d_geo_rgn_region_nm = fail_if_error(in0.region_nm);
+let decimal("\x01",0) d_geo_rgn_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.d_geo_rgn.geog_rgn_sk::d_geo_rgn_geog_rgn_sk;
+  out0.d_geo_rgn.state_cd::d_geo_rgn_state_cd;
+  out0.d_geo_rgn.city_nm::d_geo_rgn_city_nm;
+  out0.d_geo_rgn.region_nm::d_geo_rgn_region_nm;
+  out0.d_geo_rgn.src_env_sk::d_geo_rgn_src_env_sk;
+  out0.*::in0.*;
+
+end;

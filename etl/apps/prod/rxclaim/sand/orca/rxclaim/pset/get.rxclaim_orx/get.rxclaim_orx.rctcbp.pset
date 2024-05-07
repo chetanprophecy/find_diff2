@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rctcbp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rctcbp                  ajp2nb,ajoinb,ajw8io,ajxaio,ajxcio,ajxiio,aju7ak,ajl4ho,ajf3ao\ndwxtract_bk1  rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctcbp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p')]
+DO_LOOKUP||||1
+DO_SOURCE||||0
+LOOKUP_FIELDS||||
+LOOKUP_NAME_OVERRIDE||||rctcbp_orx
+LOOKUP_KEY||||{ajp2nb; ajoinb; dxf_src_sys_id}
+WHERE_CLAUSE||||$[ \n    "WHERE rctcbp.ajbmdt >= " + \n     (string(''))(date('YYYYMMDD'))(datetime("YYYY-MM-DD HH24:MI:SS"))START_CHANGES_TIME + \n    " AND rctcbp.ajbmdt <= " + (string(''))(date('YYYYMMDD'))(datetime("YYYY-MM-DD HH24:MI:SS"))END_CHANGES_TIME + \n    " OPTIMIZE FOR ALL ROWS"\n]
+SQL||||$["SELECT rctcbp.ajp2nb\n     , rctcbp.ajoinb\n     , rctcbp.ajw8io\n     , rctcbp.ajxaio\n     , rctcbp.ajxcio\n     , rctcbp.ajxiio\n     , rctcbp.ajq3al\n     , rctcbp.aju7ak\n     , rctcbp.ajl4ho\n     , rctcbp.ajf3ao\n  FROM clmprdfil_bk1.rctcbp  rctcbp\n  inner join dwxtract_bk1.rcex1p rcex1p\non rctcbp.ajp2nb=rcex1p.rxclaimnbr\nand rctcbp.ajoinb=rcex1p.clmseqnbr\n"]

@@ -1,0 +1,41 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/job_exec_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/15  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_LOOKUP  parameter;
+constant cli_date_t    BIZ_DT                      parameter;
+
+cli_string_t out :: get_job_exec_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_SERIAL_LOOKUP + '/' + cli_string(BIZ_DT) + '/job_exec.dat';
+end;
+
+/*************************************************/
+/* Job Execution Lookup - Constant and Functions */
+/*************************************************/
+
+let job_exec_lkup_t GLKUP_JOB_EXEC = allocate_with_nulls();
+
+job_exec_lkup_t out :: load_job_exec_lkup() inline =
+begin
+  if (GLKUP_JOB_EXEC.id == lookup_not_loaded())
+    GLKUP_JOB_EXEC = lookup_load(get_job_exec_lkup_path());
+  
+  out :: GLKUP_JOB_EXEC;
+end;
+
+job_exec_t out :: get_job_exec(cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_app_config_nm_t app_config_nm) inline =
+begin
+  let lkup = load_job_exec_lkup();
+  out :: lookup(lkup, biz_dt, cli_clt_id, app_config_nm);
+end;

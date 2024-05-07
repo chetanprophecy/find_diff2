@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcrx1p_to_the_ctrx_l_pharmacy_network_gpi_list_ILM_documentation(in)=
+begin
+
+out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_displ_flg::depends_on(
+         in.agh7ak
+         );
+
+
+out0.l_p_ntwk_gpi.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm::depends_on(
+         in.agcoha
+         );
+
+
+out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_desc::depends_on(
+         in.agcwig
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcrx1p_to_the_ctrx_l_pharmacy_network_gpi_list_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_displ_flg,'l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_displ_flg',1,0]
+     [out0.l_p_ntwk_gpi.src_env_sk,'l_p_ntwk_gpi.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm,'l_p_ntwk_gpi.phr_ntwk_gpi_list_nm',1,0]
+     [out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_sk,'l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_desc,'l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_desc',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.agcoha,'agcoha',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.agcwig,'agcwig',1,1]
+     [in0.agh7ak,'agh7ak',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_p_ntwk_gpi_phr_ntwk_gpi_list_nm = fail_if_error(in0.agcoha);
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_desc = fail_if_error(in0.agcwig);
+let decimal("\x01",0) l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_displ_flg = fail_if_error((decimal(''))(in0.agh7ak));
+let decimal("\x01",0) l_p_ntwk_gpi_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+
+
+
+  out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_sk::l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_sk;
+  out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm::l_p_ntwk_gpi_phr_ntwk_gpi_list_nm;
+  out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_desc::l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_desc;
+  out0.l_p_ntwk_gpi.phr_ntwk_gpi_list_nm_displ_flg::l_p_ntwk_gpi_phr_ntwk_gpi_list_nm_displ_flg;
+  out0.l_p_ntwk_gpi.src_env_sk::l_p_ntwk_gpi_src_env_sk;
+  out0.*::in0.*;
+end;

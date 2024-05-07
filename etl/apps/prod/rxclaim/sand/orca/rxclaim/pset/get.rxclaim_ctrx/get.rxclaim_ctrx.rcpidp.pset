@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcpidp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcpidp                  s4nqs3,s4e6c4,s4iin2,s4whs3,s4xvs3,s4qns3,s4d9c4,s4btt3,s4cot3,s4cnt3,s4efc4,s4kcc4,s4cjv1,s4ckv1,s4eic4,s4civ1,s4fvc4,s4e8qt,s4cpt3,s4cqt3,s4ozs3,s4akvn,s4c2dt,s4adtm,s4alvn,s4advn,s4bmdt,s4abtm,s4aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+WHERE_CLAUSE||||$[ \n\n"WHERE S4BMDT >= " + \n\nstring_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))datetime_add((datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME,-2))-19000000) + \n\n" AND S4BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000)\n\n]
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_PUBLISH_CLEAN_FILE||||1

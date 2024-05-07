@@ -1,0 +1,107 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5b4dc2b8_d5ed_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_case_barr.src_env_sk,[transform],]
+  [out0.c_case_barr.cpp_barrier_sk,[transform],in0.barrier_id,
+     'lookup("c_barrier").dxf_sk']
+  [out0.c_case_barr.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_case_barr.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_case_barr.cpp_call_hist_sk,[transform],in0.call_hist_id,
+     'lookup("c_barrier_call_hist").dxf_sk']
+  [out0.c_case_barr.cpp_case_barrier_sk,[transform],]
+  [out0.c_case_barr.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_case_barr.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_case_barr.src_env_sk,'c_case_barr.src_env_sk',1,0]
+     [out0.c_case_barr.cpp_barrier_sk,'c_case_barr.cpp_barrier_sk',1,0]
+     [out0.c_case_barr.barrier_id,'c_case_barr.barrier_id',1,0]
+     [out0.c_case_barr.case_id,'c_case_barr.case_id',1,0]
+     [out0.c_case_barr.cpp_created_by,'c_case_barr.cpp_created_by',1,0]
+     [out0.c_case_barr.barrier_src,'c_case_barr.barrier_src',1,0]
+     [out0.c_case_barr.ivr_case_crrspdnce_id,'c_case_barr.ivr_case_crrspdnce_id',1,0]
+     [out0.c_case_barr.cpp_updated_by,'c_case_barr.cpp_updated_by',1,0]
+     [out0.c_case_barr.cpp_call_hist_sk,'c_case_barr.cpp_call_hist_sk',1,0]
+     [out0.c_case_barr.case_barrier_id,'c_case_barr.case_barrier_id',1,0]
+     [out0.c_case_barr.cpp_case_barrier_sk,'c_case_barr.cpp_case_barrier_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_case_barr.cpp_create_ts,'c_case_barr.cpp_create_ts',1,0]
+     [out0.c_case_barr.call_hist_id,'c_case_barr.call_hist_id',1,0]
+     [out0.c_case_barr.cpp_update_ts,'c_case_barr.cpp_update_ts',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.barrier_src,'barrier_src',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.barrier_id,'barrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.case_barrier_id,'case_barrier_id',1,1]
+     ['lookup("c_barrier").dxf_sk','dxf_sk',1,1]
+     [in0.call_hist_id,'call_hist_id',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     ['lookup("c_barrier_call_hist").dxf_sk','dxf_sk',1,1]
+     [in0.ivr_case_crrspdnce_id,'ivr_case_crrspdnce_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_case_barr_cpp_case_barrier_sk = -1;
+let decimal("\x01",0) c_case_barr_case_barrier_id = fail_if_error(in0.case_barrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_case_barr_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_case_barr_call_hist_id = fail_if_error(in0.call_hist_id);
+let decimal("\x01",0) c_case_barr_cpp_call_hist_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_case_barr_ivr_case_crrspdnce_id = fail_if_error(in0.ivr_case_crrspdnce_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_case_barr_barrier_src = fail_if_error(in0.barrier_src);
+let decimal("\x01",0) c_case_barr_barrier_id = fail_if_error(in0.barrier_id);
+let decimal("\x01",0) c_case_barr_cpp_barrier_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_case_barr_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_case_barr_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_case_barr_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_case_barr_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_case_barr_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_case_barr_cpp_barrier_sk=fail_if_error(lookup("c_barrier",in0.barrier_id).dxf_sk);
+
+/*   Default value   */
+c_case_barr_cpp_call_hist_sk=fail_if_error(lookup("c_barrier_call_hist",in0.call_hist_id).dxf_sk);
+
+  out0.c_case_barr.cpp_case_barrier_sk::c_case_barr_cpp_case_barrier_sk;
+  out0.c_case_barr.case_barrier_id::c_case_barr_case_barrier_id;
+  out0.c_case_barr.case_id::c_case_barr_case_id;
+  out0.c_case_barr.call_hist_id::c_case_barr_call_hist_id;
+  out0.c_case_barr.cpp_call_hist_sk::c_case_barr_cpp_call_hist_sk;
+  out0.c_case_barr.ivr_case_crrspdnce_id::c_case_barr_ivr_case_crrspdnce_id;
+  out0.c_case_barr.barrier_src::c_case_barr_barrier_src;
+  out0.c_case_barr.barrier_id::c_case_barr_barrier_id;
+  out0.c_case_barr.cpp_barrier_sk::c_case_barr_cpp_barrier_sk;
+  out0.c_case_barr.cpp_update_ts::c_case_barr_cpp_update_ts;
+  out0.c_case_barr.cpp_updated_by::c_case_barr_cpp_updated_by;
+  out0.c_case_barr.cpp_create_ts::c_case_barr_cpp_create_ts;
+  out0.c_case_barr.cpp_created_by::c_case_barr_cpp_created_by;
+  out0.c_case_barr.src_env_sk::c_case_barr_src_env_sk;
+  out0.*::in0.*;
+
+end;

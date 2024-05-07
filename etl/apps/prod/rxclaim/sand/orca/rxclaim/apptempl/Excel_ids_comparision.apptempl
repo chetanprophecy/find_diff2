@@ -1,0 +1,154 @@
+<AppConfTempl name="Excel_ids_comparision" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all">/Projects/orca/rxclaim</ProjectRPath>
+  <TemplateExpressionPackage><![CDATA[//include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( !(starts_with(appconf_name, "get.ids.compare")  ))
+    "This application configuration must be named: get.<b><i>ids.compare</i></b>.<b><i>jobname</i></b>.<b><i>msid</i></b>\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+//and length_of(string_split(appconf_name,".")) == 3
+]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="excel_and_ids_comp">
+      <Pset name="get_excel_and_ids_comparison" prototype_path="${AI_MP}/get.excel_and_ids_comparison.mp">
+        <ProjectParameter name="AI_PSET" parameter="AI_PSET"/>
+      </Pset>
+    </Project>
+    <Variables name="var">
+      <Variable name="app_name" type="string"/>
+      <Variable name="upload_status" type="integer" save_variable="false"/>
+      <Variable name="filename" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="appconf_name_check">
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="var.app_name"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>get_ids_and_excel_comp</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="var.app_name"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">var.app_name!=""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label/>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>L_NORM</ConstantValue>
+                <ConstantValue>D_SPECIALTY_DRUG_LST</ConstantValue>
+              </Choices>
+              <Label>IDS</Label>
+              <SourceTargetValue reference="excel_and_ids_comp.get_excel_and_ids_comparison.IDS_INPUT"/>
+            </ComboBox>
+            <FileUploader>
+              <Label>Excel File</Label>
+              <LocalFileName reference="var.filename"/>
+              <ServerPath reference="excel_and_ids_comp.get_excel_and_ids_comparison.EXL_FILE_URL"/>
+              <ButtonType>button</ButtonType>
+              <ButtonLabel>Upload excel for comparison</ButtonLabel>
+              <CanCreateDirectories>false</CanCreateDirectories>
+              <Filters>
+                <ConstantValue>Excel files (*.xls; *.xlsx)|*.xls *.xlsx</ConstantValue>
+              </Filters>
+              <LocalFilters>
+                <ConstantValue>Excel files (*.xls; *.xlsx)|*.xls *.xlsx</ConstantValue>
+              </LocalFilters>
+              <TransferState reference="var.upload_status"/>
+            </FileUploader>
+            <TextLabel>
+              <Label is_expression="true">if (var.upload_status==2) var.filename + " is uploaded succesfully " 
+else "Excel file not uploaded for comparison. "</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">var.app_name==""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label/>
+          <UIElements>
+            <Popup>
+              <Label>IDS Join Key</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Key Picker</Label>
+                  <RecordFormat is_expression="true">expand_type(read_type(excel_and_ids_comp.get_excel_and_ids_comparison.IDS_DML_FILE_NAME.resolved_value))</RecordFormat>
+                  <SourceTargetValue reference="excel_and_ids_comp.get_excel_and_ids_comparison.IDS_JOIN_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <Spacer>
+                  <Width>10%</Width>
+                  <Height>30</Height>
+                </Spacer>
+                <CheckBox>
+                  <Label>IDS Hash Gen Key</Label>
+                  <SourceTargetValue reference="excel_and_ids_comp.get_excel_and_ids_comparison.DRIVER_DEDUP_ON_JOIN_KEY"/>
+                </CheckBox>
+              </UIElements>
+              <MaxWidth>150</MaxWidth>
+            </HorizontalLayoutContainer>
+            <Popup>
+              <Label>Excel Join Key</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Excel Join Key</Label>
+                  <RecordFormat reference="excel_and_ids_comp.get_excel_and_ids_comparison.GET_DML"/>
+                  <SourceTargetValue reference="excel_and_ids_comp.get_excel_and_ids_comparison.JOIN_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible>false</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <UIElements>
+            <CheckBox>
+              <Label>Ignore Deleted Records</Label>
+              <SourceTargetValue reference="excel_and_ids_comp.get_excel_and_ids_comparison.IGNORE_DELETED_RECORDS"/>
+              <FalseValue>True</FalseValue>
+              <TrueValue>False</TrueValue>
+            </CheckBox>
+            <ExecuteButton>
+              <Label>Run</Label>
+              <SourceValue reference="excel_and_ids_comp.get_excel_and_ids_comparison"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">var.app_name==""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,66 @@
+type rccpdp_type=record
+  string("\x01", maximum_length=10) awx9vg /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=3) mpvyhc = NULL("");//from rcpdpp
+  string("\x01", maximum_length=5) contract_no = NULL("");
+  string("\x01", maximum_length=9) carrier_id = NULL("");//from rcpdpp via rccpdp
+  string("\x01", maximum_length=15) account_id = NULL("");//from rcpdpp via rccpdp
+end;
+
+let rccpdp_type v_rccpdp=allocate_with_defaults();
+
+let string("\x01", maximum_length=11) v_rcnd2p_proxy_ndc=allocate_with_nulls();
+
+out::length(in)=
+begin
+out::lookup_count("rccpdp_ndc",in.dxf_src_sys_id,string_lrtrim(in.afq7hb));
+end;
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+v_rccpdp=lookup_next("rccpdp_ndc");
+v_rcnd2p_proxy_ndc=string_concat(in.afq8hb,in.afq9hb,in.afrahb);
+out.awx9vg:1:v_rccpdp.awx9vg;
+out.aetvig:1:lookup("rcanlp_ndc",in.dxf_src_sys_id,string_lrtrim(v_rccpdp.awx9vg)).apjjiy;
+out.rcnd2p_proxy_ndc:1:v_rcnd2p_proxy_ndc;
+out.contract_no :1: v_rccpdp.contract_no;
+out.mpvyhc::v_rccpdp.mpvyhc;
+out.(*,form=="string"):2:string_lrtrim(in.*);                            
+out.carrier_id::v_rccpdp.carrier_id;
+out.account_id::v_rccpdp.account_id;
+out.*:3:in.*;
+end;
+
+/* This function is optional. */
+/*Select output record*/
+out::output_select(out)=
+begin
+out::not (is_null(out.aetvig) and is_blank(out.aetvig));
+end;
+
+
+
+
+//Code changed on 12/03
+/*out::length(in)=
+begin
+out::lookup_count("rcanlp_ndc",in.dxf_src_sys_id,string_lrtrim(lookup("rccpdp_ndc",string_lrtrim(in.afq7hb)).awx9vg));
+end;
+
+
+out::normalize(in,index)=
+begin
+out.awx9vg:1:lookup("rccpdp_ndc",string_lrtrim(in.afq7hb)).awx9vg;
+out.aetvig:1:lookup_next("rcanlp_ndc").apjjiy;
+out.rcnd2p_proxy_ndc:1:string_concat(in.afq8hb,in.afq9hb,in.afrahb);
+out.contract_no :1: lookup("rccpdp_ndc",string_lrtrim(in.afq7hb)).contract_no;
+out.(*,form=="string"):2:string_lrtrim(in.*);
+out.*:3:in.*;
+end;
+
+
+out::output_select(out)=
+begin
+out::not (is_null(out.aetvig) and is_blank(out.aetvig));
+end;
+*/

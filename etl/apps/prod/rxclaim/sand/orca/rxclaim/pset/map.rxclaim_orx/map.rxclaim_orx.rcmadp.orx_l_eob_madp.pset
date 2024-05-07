@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/map.interim.pset
+SOURCE_NAME||||rxclaim_orx.rcmadp
+ILM_NAME||||orx_l_eob_madp
+AB_CATALOG||||$AI_CAT/map.rxclaim_orx/map.rxclaim_orx.rcmadp.orx_l_eob_madp.cat
+REDUCED_LOOKUP_RETAIN_FIELDS_LIST||||
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{carrier_id; account_id; employer_group_id}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.employer_group_id,[transform],in0.i5accd]\n  [out0.carrier_id,[transform],in0.i5abcd]\n  [out0.account_id,[transform],in0.i5aacd]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.employer_group_id,'employer_group_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.account_id,'account_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.i5accd,'i5accd',1,1]\n     [in0.i5abcd,'i5abcd',1,1]\n     [in0.i5aacd,'i5aacd',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) carrier_id = fail_if_error(string_lrtrim(in0.i5abcd));\nlet string("\\x01",charset="iso-8859-15", maximum_length=40) account_id = fail_if_error(string_lrtrim(in0.i5aacd));\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = fail_if_error(string_lrtrim(in0.i5accd));\n\n\n\n  out0.carrier_id::carrier_id;\n  out0.account_id::account_id;\n  out0.employer_group_id::employer_group_id;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+RUN_ID||||20180108000000
+REDUCED_ICFF_IDS_LIST||||ids_common.d_cag
+ACE_CATALOG_CONTENTS|$|||d_cag_lkp,{carrier_id; account_id; employer_group_id},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_orx/lookup.rxclaim_orx.rcmadp.d_cag.dat,/~$AI_DML/map.rxclaim_orx/map.rxclaim_orx.rcmadp.orx_l_eob_madp.reduced_lkp.rxclaim_orx.rcmadp.d_cag.dml\n
+FILTER_EXPR||||1

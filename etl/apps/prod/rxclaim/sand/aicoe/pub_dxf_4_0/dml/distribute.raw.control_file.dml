@@ -1,0 +1,8 @@
+type control_type_t =
+record
+  string("|") source_name;
+  decimal("|") rec_count = NULL(""); // null for full snapshot
+  datetime("YYYYMMDDHH24MISS")("|") create_timestamp = NULL(""); // This contains the timestamp of last changes picked up, or the timestamp when the full snapshot was picked up
+  string("|\n") etl_app_user_id = NULL("");
+end;
+metadata type = control_type_t;

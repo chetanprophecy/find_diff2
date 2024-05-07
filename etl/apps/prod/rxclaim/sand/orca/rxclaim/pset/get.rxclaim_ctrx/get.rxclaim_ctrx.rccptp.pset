@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rccptp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rccptp                  sauian,saediu,saakvn,sac2dt,saadtm,saalvn,saadvn,sabmdt,saabtm,saaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccptp')]
+WHERE_CLAUSE||||$[if (DAILY_FLAG != "Y")     "WHERE  RCCPTP.SABMDT between " +      string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS" else  if (START_CHANGES_TIME != '')     "WHERE RCCPTP.SABMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +     " AND RCCPTP.SABMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"   else     "WHERE RCCPTP.SABMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +     " AND RCCPTP.SABMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"  ]
+DO_SOURCE||||0
+DO_CLEAN||||1
+DO_PUBLISH_CLEAN_FILE||||1

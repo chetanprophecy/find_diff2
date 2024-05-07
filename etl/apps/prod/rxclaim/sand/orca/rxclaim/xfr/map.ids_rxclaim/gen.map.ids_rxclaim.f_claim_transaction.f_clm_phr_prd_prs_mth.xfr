@@ -1,0 +1,266 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_5a2920f5_1200_2
+    BizHidden:true
+@*/
+/*   lookup d_pharmacy   */
+out0::bzt_3_6c54cc0a_5a2920f5_1200_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) phr_sk = NULL(""), phr_dispnsr_type_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) phr_id = NULL(""), phr_ncpdp_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_npi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) phr_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_affl_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) phr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) phr_zip_cd = NULL("");
+  decimal("\x01",0) phr_phone_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) dispr_typ_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_pharmacy",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_5a2920f5_1200_2
+    BizHidden:true
+@*/
+/*   lookup d_prescriber   */
+out0::bzt_4_6c54cc0a_5a2920f5_1200_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=15) pbr_dea_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pbr_npi_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phy_pbr_key = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) pbr_dea_cd = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a2920f5_1200_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.f_clm_mth.phr_ncpdp_id,[transform],in0.phr_sk,
+     in0.dxf_sk,
+     'lookup("d_pharmacy").phr_ncpdp_id']
+  [out0.f_clm_mth.phr_npi_no,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_npi_no']
+  [out0.f_clm_mth.pbr_npi_id,[transform],in0.pbr_sk,
+     in0.dxf_sk,
+     'lookup("d_prescriber").pbr_npi_id']
+  [out0.f_clm_mth.pbr_st_cd,[transform],in0.pbr_sk,
+     'lookup("d_prescriber").pbr_st_cd']
+  [out0.f_clm_mth.pbr_dea_id,[transform],in0.pbr_sk,
+     'lookup("d_prescriber").pbr_dea_id']
+  [out0.f_clm_mth.phr_st_cd,[transform],in0.phr_sk,
+     'lookup("d_pharmacy").phr_st_cd']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_clm_mth.dxf_hk_part2,'f_clm_mth.dxf_hk_part2',1,0]
+     [out0.f_clm_mth.filled_dt,'f_clm_mth.filled_dt',1,0]
+     [out0.f_clm_mth.phr_ncpdp_id,'f_clm_mth.phr_ncpdp_id',1,0]
+     [out0.f_clm_mth.phr_npi_no,'f_clm_mth.phr_npi_no',1,0]
+     [out0.f_clm_mth.phr_id,'f_clm_mth.phr_id',1,0]
+     [out0.f_clm_mth.clt_due_amt,'f_clm_mth.clt_due_amt',1,0]
+     [out0.f_clm_mth.mbr_sk,'f_clm_mth.mbr_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_clm_mth.pbr_npi_id,'f_clm_mth.pbr_npi_id',1,0]
+     [out0.f_clm_mth.account_id,'f_clm_mth.account_id',1,0]
+     [out0.f_clm_mth.employer_group_id,'f_clm_mth.employer_group_id',1,0]
+     [out0.f_clm_mth.claim_stat_id,'f_clm_mth.claim_stat_id',1,0]
+     [out0.f_clm_mth.sbm_tm,'f_clm_mth.sbm_tm',1,0]
+     [out0.f_clm_mth.app_due_amt,'f_clm_mth.app_due_amt',1,0]
+     [out0.f_clm_mth.carrier_id,'f_clm_mth.carrier_id',1,0]
+     [out0.f_clm_mth.sbm_mn_id,'f_clm_mth.sbm_mn_id',1,0]
+     [out0.f_clm_mth.claim_seq_nbr,'f_clm_mth.claim_seq_nbr',1,0]
+     [out0.f_clm_mth.rx_nbr,'f_clm_mth.rx_nbr',1,0]
+     [out0.f_clm_mth.dxf_sk,'f_clm_mth.dxf_sk',1,0]
+     [out0.f_clm_mth.pbr_st_cd,'f_clm_mth.pbr_st_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_clm_mth.pbr_dea_id,'f_clm_mth.pbr_dea_id',1,0]
+     [out0.f_clm_mth.sbm_dt,'f_clm_mth.sbm_dt',1,0]
+     [out0.f_clm_mth.days_sply,'f_clm_mth.days_sply',1,0]
+     [out0.f_clm_mth.phr_st_cd,'f_clm_mth.phr_st_cd',1,0]
+     [out0.f_clm_mth.claim_nbr,'f_clm_mth.claim_nbr',1,0]
+     [out0.f_clm_mth.phr_sk,'f_clm_mth.phr_sk',1,0]
+     [out0.f_clm_mth.compound_sk,'f_clm_mth.compound_sk',1,0]
+     [out0.f_clm_mth.prod_sk,'f_clm_mth.prod_sk',1,0]
+     [out0.f_clm_mth.dxf_hk_part1,'f_clm_mth.dxf_hk_part1',1,0]
+     [out0.f_clm_mth.drg_qty,'f_clm_mth.drg_qty',1,0]
+     [out0.f_clm_mth.pbr_sk,'f_clm_mth.pbr_sk',1,0]
+     [out0.f_clm_mth.phr_state_cd_sk,'f_clm_mth.phr_state_cd_sk',1,0]
+     [out0.f_clm_mth.cms_contract_id,'f_clm_mth.cms_contract_id',1,0]
+     [out0.f_clm_mth.src_env_sk,'f_clm_mth.src_env_sk',1,0]
+     [out0.f_clm_mth.rx_written_dt,'f_clm_mth.rx_written_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_clm_mth.cag_sk,'f_clm_mth.cag_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_clm_mth.prod_id,'f_clm_mth.prod_id',1,0]
+     [out0.f_clm_mth.mbr_id,'f_clm_mth.mbr_id',1,0]
+     [out0.f_clm_mth.cms_pbp_id,'f_clm_mth.cms_pbp_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     ['lookup("d_pharmacy").phr_npi_no','phr_npi_no',1,1]
+     [in0.sbm_mn_id,'sbm_mn_id',1,1]
+     [in0.d_cag.carrier_id,'carrier_id',1,1]
+     [in0.cms_contract_id,'cms_contract_id',1,1]
+     [in0.app_due_amt,'app_due_amt',1,1]
+     [in0.compound_sk,'compound_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.d_mbr.mbr_id,'mbr_id',1,1]
+     ['lookup("d_prescriber").pbr_dea_id','pbr_dea_id',1,1]
+     [in0.days_sply,'days_sply',1,1]
+     [in0.cms_pbp_id,'cms_pbp_id',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     [in0.d_cag.employer_group_id,'employer_group_id',1,1]
+     ['lookup("d_prescriber").pbr_st_cd','pbr_st_cd',1,1]
+     [in0.sbm_tm,'sbm_tm',1,1]
+     [in0.dxf_sk,'dxf_sk',3,3]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.pbr_sk,'pbr_sk',4,4]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+     ['lookup("d_pharmacy").phr_ncpdp_id','phr_ncpdp_id',1,1]
+     [in0.drg_qty,'drg_qty',1,1]
+     [in0.pharmacy.phr_id,'phr_id',1,1]
+     ['lookup("d_prescriber").pbr_npi_id','pbr_npi_id',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     ['lookup("d_pharmacy").phr_st_cd','phr_st_cd',1,1]
+     [in0.phr_state_cd_sk,'phr_state_cd_sk',1,1]
+     [in0.prod.prod_id,'prod_id',1,1]
+     [in0.clt_due_amt,'clt_due_amt',1,1]
+     [in0.phr_sk,'phr_sk',4,4]
+     [in0.rx_nbr,'rx_nbr',1,1]
+     [in0.prod_sk,'prod_sk',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.filled_dt,'filled_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.d_cag.account_id,'account_id',1,1]
+     [in0.rx_written_dt,'rx_written_dt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) f_clm_mth_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) f_clm_mth_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) f_clm_mth_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) f_clm_mth_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) f_clm_mth_sbm_mn_id = fail_if_error(in0.sbm_mn_id);
+let decimal("\x01",0) f_clm_mth_mbr_sk = fail_if_error(in0.mbr_sk);
+let decimal("\x01",0) f_clm_mth_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) f_clm_mth_phr_sk = fail_if_error(in0.phr_sk);
+let decimal("\x01",0) f_clm_mth_pbr_sk = fail_if_error(in0.pbr_sk);
+let decimal("\x01",0) f_clm_mth_prod_sk = fail_if_error(in0.prod_sk);
+let decimal("\x01",0) f_clm_mth_compound_sk = fail_if_error(in0.compound_sk);
+let decimal("\x01",0) f_clm_mth_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_clm_mth_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let date("YYYYMMDD")("\x01") f_clm_mth_sbm_dt = fail_if_error(in0.sbm_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_clm_mth_carrier_id = fail_if_error(in0.d_cag.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) f_clm_mth_account_id = fail_if_error(in0.d_cag.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_clm_mth_employer_group_id = fail_if_error(in0.d_cag.employer_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_clm_mth_mbr_id = fail_if_error(in0.d_mbr.mbr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_clm_mth_rx_nbr = fail_if_error(in0.rx_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=5) f_clm_mth_cms_contract_id = fail_if_error(in0.cms_contract_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_clm_mth_cms_pbp_id = fail_if_error(in0.cms_pbp_id);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_clm_mth_app_due_amt = fail_if_error(in0.app_due_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_clm_mth_clt_due_amt = fail_if_error(in0.clt_due_amt);
+let datetime("HH24:MI:SS.NNNNNN")("\x01") f_clm_mth_sbm_tm = fail_if_error(in0.sbm_tm);
+let date("YYYYMMDD")("\x01") f_clm_mth_filled_dt = fail_if_error(in0.filled_dt);
+let date("YYYYMMDD")("\x01") f_clm_mth_rx_written_dt = fail_if_error(in0.rx_written_dt);
+let decimal("\x01",0) f_clm_mth_days_sply = fail_if_error(in0.days_sply);
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_clm_mth_drg_qty = fail_if_error(in0.drg_qty);
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_clm_mth_phr_id = fail_if_error(in0.pharmacy.phr_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_clm_mth_phr_ncpdp_id;
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_clm_mth_phr_npi_no;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_clm_mth_phr_st_cd;
+let decimal("\x01",0) f_clm_mth_phr_state_cd_sk = fail_if_error(in0.phr_state_cd_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_clm_mth_prod_id = fail_if_error(in0.prod.prod_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_clm_mth_pbr_npi_id;
+let string("\x01",charset="iso-8859-15", maximum_length=15) f_clm_mth_pbr_dea_id;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_clm_mth_pbr_st_cd;
+let decimal("\x01",0) f_clm_mth_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+f_clm_mth_phr_ncpdp_id=fail_if_error(bzt_3_6c54cc0a_5a2920f5_1200_2(in0.phr_sk).phr_ncpdp_id);
+
+/*   Default value   */
+f_clm_mth_phr_npi_no=fail_if_error(bzt_3_6c54cc0a_5a2920f5_1200_2(in0.phr_sk).phr_npi_no);
+
+/*   Default value   */
+f_clm_mth_pbr_npi_id=fail_if_error(bzt_4_6c54cc0a_5a2920f5_1200_2(in0.pbr_sk).pbr_npi_id);
+
+/*   Default value   */
+f_clm_mth_pbr_st_cd=fail_if_error(bzt_4_6c54cc0a_5a2920f5_1200_2(in0.pbr_sk).pbr_st_cd);
+
+/*   Default value   */
+f_clm_mth_pbr_dea_id=fail_if_error(bzt_4_6c54cc0a_5a2920f5_1200_2(in0.pbr_sk).pbr_dea_id);
+
+/*   Default value   */
+f_clm_mth_phr_st_cd=fail_if_error(bzt_3_6c54cc0a_5a2920f5_1200_2(in0.phr_sk).phr_st_cd);
+
+  out0.f_clm_mth.dxf_hk_part1::f_clm_mth_dxf_hk_part1;
+  out0.f_clm_mth.dxf_hk_part2::f_clm_mth_dxf_hk_part2;
+  out0.f_clm_mth.dxf_sk::f_clm_mth_dxf_sk;
+  out0.f_clm_mth.claim_nbr::f_clm_mth_claim_nbr;
+  out0.f_clm_mth.sbm_mn_id::f_clm_mth_sbm_mn_id;
+  out0.f_clm_mth.mbr_sk::f_clm_mth_mbr_sk;
+  out0.f_clm_mth.cag_sk::f_clm_mth_cag_sk;
+  out0.f_clm_mth.phr_sk::f_clm_mth_phr_sk;
+  out0.f_clm_mth.pbr_sk::f_clm_mth_pbr_sk;
+  out0.f_clm_mth.prod_sk::f_clm_mth_prod_sk;
+  out0.f_clm_mth.compound_sk::f_clm_mth_compound_sk;
+  out0.f_clm_mth.claim_seq_nbr::f_clm_mth_claim_seq_nbr;
+  out0.f_clm_mth.claim_stat_id::f_clm_mth_claim_stat_id;
+  out0.f_clm_mth.sbm_dt::f_clm_mth_sbm_dt;
+  out0.f_clm_mth.carrier_id::f_clm_mth_carrier_id;
+  out0.f_clm_mth.account_id::f_clm_mth_account_id;
+  out0.f_clm_mth.employer_group_id::f_clm_mth_employer_group_id;
+  out0.f_clm_mth.mbr_id::f_clm_mth_mbr_id;
+  out0.f_clm_mth.rx_nbr::f_clm_mth_rx_nbr;
+  out0.f_clm_mth.cms_contract_id::f_clm_mth_cms_contract_id;
+  out0.f_clm_mth.cms_pbp_id::f_clm_mth_cms_pbp_id;
+  out0.f_clm_mth.app_due_amt::f_clm_mth_app_due_amt;
+  out0.f_clm_mth.clt_due_amt::f_clm_mth_clt_due_amt;
+  out0.f_clm_mth.sbm_tm::f_clm_mth_sbm_tm;
+  out0.f_clm_mth.filled_dt::f_clm_mth_filled_dt;
+  out0.f_clm_mth.rx_written_dt::f_clm_mth_rx_written_dt;
+  out0.f_clm_mth.days_sply::f_clm_mth_days_sply;
+  out0.f_clm_mth.drg_qty::f_clm_mth_drg_qty;
+  out0.f_clm_mth.phr_id::f_clm_mth_phr_id;
+  out0.f_clm_mth.phr_ncpdp_id::f_clm_mth_phr_ncpdp_id;
+  out0.f_clm_mth.phr_npi_no::f_clm_mth_phr_npi_no;
+  out0.f_clm_mth.phr_st_cd::f_clm_mth_phr_st_cd;
+  out0.f_clm_mth.phr_state_cd_sk::f_clm_mth_phr_state_cd_sk;
+  out0.f_clm_mth.prod_id::f_clm_mth_prod_id;
+  out0.f_clm_mth.pbr_npi_id::f_clm_mth_pbr_npi_id;
+  out0.f_clm_mth.pbr_dea_id::f_clm_mth_pbr_dea_id;
+  out0.f_clm_mth.pbr_st_cd::f_clm_mth_pbr_st_cd;
+  out0.f_clm_mth.src_env_sk::f_clm_mth_src_env_sk;
+  out0.*::in0.*;
+
+end;

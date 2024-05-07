@@ -1,0 +1,13 @@
+out :: reformat(in) =
+begin
+let start_time = now();
+let datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn") v_START_CHANGES_TIME=if(is_blank($"START_CHANGES_TIME") or is_null($"START_CHANGES_TIME")) (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS")) now()
+                      else (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  $"START_CHANGES_TIME" ;
+out.* :: in.*;
+  out.(*, name == "cdc_ts" ) :1: (datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn"))(datetime("YYYY-MM-DD HH24:MI:SS"))  v_START_CHANGES_TIME ;
+  out.(*, name == "cdc_flag"):2: "N";
+
+out.g3pgc2 :: first_defined(in.g3pgc2,"-");
+out.g3aecd :: first_defined(in.g3aecd,"-");
+
+end;

@@ -1,0 +1,47 @@
+type logical_ids_rxclaim_d_drug_appl_id_link_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) drug_appl_id_lnk_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) prod_appl_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) prod_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) appl_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ref_list_drug_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) fda_thera_eq_cd = NULL("");
+  decimal("\x01",0) fda_aprv_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") fda_aprv_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) fda_prior_1_1_82_aprv_flag = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) drug_appl_lnk_in_mdspn_flag = NULL("");
+  date("YYYYMMDD")("\x01") mdspn_inactv_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) drug_appl_id_lnk_stat = NULL("");
+  date("YYYYMMDD")("\x01") drug_appl_id_lnk_del_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) drug_appl_id_lnk_mrkt_catgy = NULL("");
+  date("YYYYMMDD")("\x01") drug_appl_id_lnk_mrkt_start_dt = NULL("");
+  date("YYYYMMDD")("\x01") drug_appl_id_lnk_mrkt_end_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d fda aprv dt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_drug_appl_id_link_t drg_app_lnk  /*@ BizName:'drg app lnk' */;
+  opt_nk_ids_common_d_date_t d_fda_aprv_dt  /*@ BizName:'d fda aprv dt' */;
+end;

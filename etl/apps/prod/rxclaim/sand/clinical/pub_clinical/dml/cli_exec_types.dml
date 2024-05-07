@@ -1,0 +1,148 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_exec_types.dml
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/23  Paul Thompson           Initial version
+ *  2016/10/28  Sundari Kala            Commenting the exec_dt and product_type_cd in job_t. Added automation type in job_t for 10/31 release
+ *  2016/11/15  Paul Thompson           Added biz_dt to job_exec_t
+ *                                      Added disease_app_config_nm_vec to rules_config_param_t
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+
+/***********************/
+/* Review Period types */
+/***********************/
+
+type review_period_t =
+record
+  cli_string_t                     review_period_nm;
+  cli_review_period_type_cd_t      review_period_type_cd;
+  cli_param_vec_t                  param_vec = [vector];
+  
+  // Only populated once the review period has been evaluated based on the current BIZ_DT
+  cli_date_t                       start_dt  = NULL;
+  cli_date_t                       end_dt    = NULL;
+  cli_date_t                       biz_dt    = NULL;
+end;
+type review_period_vec_t = review_period_t[int];
+
+type review_period_dts_t =
+record
+  cli_date_t   start_dt;
+  cli_date_t   end_dt;
+end;
+
+/****************************************/
+/* Rules Config (appconf) Details types */
+/****************************************/
+
+type rules_config_param_t =
+record
+  // Template and PSET
+  cli_string_t                     app_templ_nm;
+  cli_string_t                     pset                           = NULL;
+  cli_string_t[int]                pset_vec                       = [vector];
+  
+  // Pharmacy Claim Review Periods
+  review_period_t                  max_pharma_claim_review_period = NULL;
+  review_period_vec_t              pharma_claim_review_period_vec = [vector];
+  
+  // Medical Claim Review Periods
+  review_period_t                  max_med_claim_review_period    = NULL;
+  review_period_vec_t              med_claim_review_period_vec    = [vector];
+  
+  // GPI and Medical Code Inclusion and Exclusion Lists
+  cli_list_nm_t[int]               gpi_incl_list_vec              = [vector];
+  cli_list_nm_t[int]               gpi_excl_list_vec              = [vector];
+  cli_list_nm_t[int]               med_cd_incl_list_vec           = [vector];
+  cli_list_nm_t[int]               med_cd_excl_list_vec           = [vector];
+  
+  // Required Disease Identification App Config Names
+  cli_app_config_nm_t[int]         disease_app_config_nm_vec      = [vector];
+  
+  // Other Configuration Parameters
+  cli_param_vec_t                  param_vec                      = [vector];
+end;
+
+type rules_config_disease_param_t =
+record
+  // Pharmacy Claim Review Periods
+  review_period_t                  max_pharma_claim_review_period = NULL;
+  review_period_vec_t              pharma_claim_review_period_vec = [vector];
+
+  // Medical Claim Review Periods
+  review_period_t                  max_med_claim_review_period    = NULL;
+  review_period_vec_t              med_claim_review_period_vec    = [vector];
+
+  // GPI and Medical Code Inclusion and Exclusion Lists
+  cli_list_nm_t[int]               gpi_incl_list_vec              = [vector];
+  cli_list_nm_t[int]               gpi_excl_list_vec              = [vector];
+  cli_list_nm_t[int]               med_cd_incl_list_vec           = [vector];
+  cli_list_nm_t[int]               med_cd_excl_list_vec           = [vector];
+end;
+
+type rules_config_t = // Is this the right name?
+record
+  cli_date_t                       biz_dt;
+  
+  // Configuration and Parameters
+  rules_config_cfg_t               rules_config_cfg;
+  rules_config_param_t             rules_config_param = NULL;
+  
+  // Status and Errors
+  cli_flag_t                       action_flag;
+  cli_string_t[int]                error_vec                      = [vector];
+end;
+
+/************/
+/* Job type */
+/************/
+
+type job_t =
+record
+  //cli_date_t                       exec_dt;
+  cli_integer_id_t                 job_id;
+  cli_pega_id_t                    cli_clt_id;
+  cli_pega_id_t                    cli_product_id;
+  cli_program_id_t                 program_id;
+  
+  //cli_program_type_cd_t            product_type_cd;
+  cli_job_type_cd_t                job_type_cd; // IDENTIFICATION or EVALUATION
+  
+  string(int, maximum_length=100)  program_nm             = NULL('');
+  
+  cli_job_freq_t                   idntfn_job_freq        = NULL('');
+  cli_job_freq_t                   eval_job_freq          = NULL('');
+  
+  cli_rules_config_id_t            rules_config_id;
+  cli_config_type_cd_t             config_type_cd;
+  cli_program_type_cd_t            program_type_cd;
+  string(int, maximum_length=200)  app_config_nm          = NULL('');
+  cli_automation_type_t            automation_type        = NULL('');
+  cli_flag_t                       mtm_client_flag        = NULL('');
+  cli_flag_t                       mbr_idntfn_list_flag   = NULL('');
+  cli_flag_t                       mbr_targeted_list_flag = NULL('');
+  
+  // More fields to come later
+  
+  cli_datetime_t                   create_ts;
+  cli_user_t                       create_by;            // When we create a record, this will be something like ABINITIO
+  cli_datetime_t                   update_ts = NULL('');
+  cli_user_t                       update_by = NULL(''); // When we update a record, this will be something like ABINITIO
+end;
+
+type job_exec_t =
+record
+  cli_date_t               biz_dt;
+  job_t                    job;
+  product_cfg_t            product;
+  program_cfg_t            program;
+  clt_cfg_t                clt;
+  rules_config_cfg_t       rules_config;
+  rules_config_param_t     rules_config_param;
+end;

@@ -1,0 +1,50 @@
+/*Reformat operation*/
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+   out.ppc_payment_center_id :: in.hpakcd;
+   out.ppc_payment_center_name :: in.hpb2tx;
+   out.ppc_address_1 :: in.hpgotx;
+   out.ppc_address_2 :: in.hpgptx;
+   out.ppc_city :: in.hpdztx;
+   out.ppc_state :: in.hpkhcd;
+   out.ppc_zip :: in.hphjcd;
+   out.ppc_zip_2 :: in.hphkcd;
+   out.ppc_zip_3 :: in.hphlcd;
+   out.ppc_country :: in.hph6cd;
+   out.ppc_mailing_address_1 :: in.hpgqtx;
+   out.ppc_mailing_address_2 :: in.hpjrtx;
+   out.ppc_mailing_city :: in.hpjttx;
+   out.ppc_mailing_state :: in.hpetcd;
+   out.ppc_mailing_zip :: in.hph8cd;
+   out.ppc_mailing_zip_2 :: in.hppgcd;
+   out.ppc_mailing_zip_3 :: in.hphicd;
+   out.ppc_mailing_country :: in.hph7cd;
+   out.ppc_primary_contact_name :: in.hpauna;
+   out.ppc_primary_contact_title :: in.hpjytx;
+   out.ppc_phone::in.hpbvnb;
+   out.ppc_phone_ext::in.hpchnb;
+   out.ppc_fax::in.hpbxnb;
+   out.ppc_eft_routing_address::in.hphdcd;
+   out.ppc_eft_bank_account_nbr::in.hphccd;
+   out.ppc_remit_e_mail_address::in.hpa3hp;
+   out.ppc_obsolete_date::in.hpx7hg;
+   out.ppc_status::in.hpqmia;
+   out.add_user_name::in.hpakvn;
+   out.add_date::in.hpc2dt;
+   out.add_time::in.hpadtm;
+   out.add_program_name::in.hpalvn;
+   out.chg_user_name::in.hpadvn;
+   out.chg_date::in.hpbmdt;
+   out.chg_time::in.hpabtm;
+   out.chg_program_name::in.hpaevn;
+   out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+   out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+   out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+   out.rxt_create_uid :: 'app_orca_rxclaim';
+   out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+   out.rxt_rec_stat_cd :: '';
+end;
+
+

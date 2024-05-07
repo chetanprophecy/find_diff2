@@ -1,0 +1,459 @@
+<AppConfTempl name="IDS Table Properties (Integration)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath>/Projects/aicoe/pub_dxf</ProjectRPath>
+  <TemplateExpressionPackage>include "$PUB_DXF_DML/generic_data_types.dml";
+include "$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+out :: get_header()=
+begin
+  let fields = record_info_item(type_of( (table_properties_type)allocate_with_defaults() ), "name");
+  let string("") header = "#" + string_join(fields, "|");
+  out :: header;
+end;
+ 
+out :: get_record_representations(grid)=
+begin
+  let table_properties_type properties;
+  let string("") content = "";
+  for(let prop in grid)
+  begin
+    properties = [record
+                     table_name  prop.table,
+                     table_type  prop.table_type,
+                     storage_type  prop.storage_type,
+                     primary_key  prop.pk,
+                     natural_key  prop.nk,
+                     business_key  prop.bk,
+                     comment  prop.comment
+                   ];
+    content = content + reinterpret_as(string("\n"), properties) + "\n";
+  end
+ 
+  out :: content;
+end;
+ 
+out :: get_dml_without_hash_key_type(dml)=
+begin
+  let dml_field_info_vec fields = record_info(dml);
+  fields = for(let field in fields):
+               if(first_defined(field.typename,"") == "hash_key_type" || first_defined(field.typename,"") == "hash_key_combine_type")  make_field(field.name, "string(16)", comment = "Field type of string(16) is dummy. Actual type is " + field.typename)
+               else field;
+  out :: add_fields("record end", fields);
+end;
+ 
+out :: get_dml_file_for_table(table)=
+begin
+  let string("\x01") subject_area = string_prefix(table, string_index(table, ".")-1);
+  out :: $PUB_DATAHUB_DML + "/" + subject_area + "/" + table + ".dml";
+end;
+ 
+out :: get_dup_entries(list)=
+begin
+  let distinct_tables = vector_sort_dedup_first(list);
+  let string("")[] messages = [vector];
+  let string("") final = "";
+ 
+  for(let table in distinct_tables)
+  begin
+    let long[] indexes = vector_search_all(list, table);
+    if(length_of(indexes) &gt; 1)
+    begin
+      let row_numbers = for(let index in indexes): (string(""))(decimal(""))(index + 1);
+      let list = string_join(row_numbers, ", ");
+      messages = vector_append(messages, table + ": Rows " + string_replace(list, ",", "&amp;", string_rindex(list, ",") - 1 ));
+    end
+  end
+ 
+  if(length_of(messages) &gt; 0)
+    final = "Duplicates Found:\n" + string_join(messages, "\n");
+ 
+  out :: final;
+end;
+ 
+out :: search_table_rows(table, list)=
+begin
+  let long MAX_RESULTS = 15;
+  let string("")[] tables = list;
+  let string("")[] rows = [vector];
+  let decimal("") count;
+  let string("") result = "";
+ 
+  if(not is_blank(table))
+  begin
+    for(let int i, i &lt; length_of(tables))
+    begin
+      if(string_index(tables[i], table) != 0)
+        rows = vector_append(rows, (decimal(""))(i+1));
+    end
+    count = length_of(rows);
+    result = if(count &gt; MAX_RESULTS) "(" + (string(""))count + " found; refine your search)"
+             else if(count==0) "(not found)"
+             else string_join(rows, ", ");
+  end
+ 
+  out :: result;
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <SharedFile name="ids_table_properties" path="" is_appconf_owned="true"/>
+    <Project name="proj">
+      <Pset name="empty" prototype_path="${PUB_DXF_MP}/empty.mp">
+        <PdlExpression name="AI_META" expression="$AI_META"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <ListVariable name="props" type="compound">
+        <Variable name="table" type="string"/>
+        <Variable name="table_type" type="string"/>
+        <Variable name="storage_type" type="string"/>
+        <Variable name="pk" type="string"/>
+        <Variable name="nk" type="string"/>
+        <Variable name="bk" type="string"/>
+        <Variable name="comment" type="string"/>
+      </ListVariable>
+      <Variable name="warning" type="string"/>
+      <Variable name="editing_table" type="string"/>
+      <ListVariable name="extra_tables" type="string"/>
+      <ListVariable name="missing_tables" type="string"/>
+      <Variable name="error" type="string"/>
+      <Variable name="editing_table_dml_file" type="string"/>
+      <Variable name="dups" type="string"/>
+      <Variable name="properties_error" type="string"/>
+    </Variables>
+    <Variables name="ui_helper">
+      <Variable name="table_to_search" type="string"/>
+      <Variable name="found_table_indexes" type="string"/>
+    </Variables>
+    <ListItemReference name="props_ref" reference="vars.props" selection_mode="index" selection_field="table" default_label_field="table" save_reference="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.error == "") proj.empty.AI_META + "/ids_table_properties.dat"
+else ""</SourceValue>
+      <TargetValue reference="ids_table_properties" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n" +
+"# This file was written by Express It configuration\n" +
+"# " + built_in + ". DO NOT edit it by hand.\n" +
+"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n" +
+"# Table Type should be 'reference' for lookup tables, 'dimension'\n" +
+"# for dimension tables and 'fact' for fact tables.\n" +
+"# Storage type refers to the storage type of XREF lookup files.\n" +
+"# It should be ICFF only for tables with a huge data volume.\n" +
+"# Storage type should always be regular for date dimensions.\n" +
+"# # # # # # # # # # # # # # # # # # # # # # # # # # # # # #\n\n" +
+get_header() + "\n" +
+get_record_representations(vars.props)</SourceValue>
+      <TargetValue reference="ids_table_properties"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("")[] dml_list = for(let dml_file in directory_listing($PUB_DXF_DML + "/ids", "*.dml")):
+    string_prefix(dml_file, string_index(dml_file, ".dml") - 1);
+  let string("")[] props_list = vars.props.table;
+  result :: vector_difference(dml_list, props_list);
+end</SourceValue>
+      <TargetValue reference="vars.missing_tables"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("\r")[] props_list = vars.props.table; // some entries have carriage return at the end for some unknown reason, so we use that as delimiter
+  let string("\r")[] dml_list = [vector];
+  for(let d in directory_listing($PUB_DATAHUB_DML, "*", "dir"))
+    dml_list = vector_concat(dml_list, directory_listing($PUB_DATAHUB_DML + "/" + d, "*.dml", "file"));
+  for(let d in directory_listing($PUB_DATAHUB_DML + "/nk", "*", "dir"))
+    dml_list = vector_concat(dml_list, directory_listing($PUB_DATAHUB_DML + "/" + d, "*.dml", "file"));
+  dml_list = for(let dml_file in dml_list):
+    string_prefix(dml_file, string_index(dml_file, ".dml") - 1);
+
+  result :: vector_difference(props_list, dml_list);
+end</SourceValue>
+      <TargetValue reference="vars.extra_tables"/>
+    </Assignment>
+    <Assignment on_load_only="true">
+      <SourceValue is_expression="true"><![CDATA[if(built_in == "ids_table_properties")
+  ""
+else
+  "The configuration can only be named <i>ids_table_properties</i>.
+Close and rename it.
+ 
+Note that you can only have one configuration for this template."]]></SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">0</SourceValue>
+      <TargetValue reference="proj.empty" property="save_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_dup_entries(vars.props.table)</SourceValue>
+      <TargetValue reference="vars.dups"/>
+    </Assignment>
+    <Assignment name="Search for a table">
+      <SourceValue is_expression="true">search_table_rows(ui_helper.table_to_search, vars.props.table)</SourceValue>
+      <TargetValue reference="ui_helper.found_table_indexes"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("\x01") err = "";
+  for(let prop in vars.props)
+  begin
+    if(is_error(key_info(prop.nk)))
+      err = err + "NK of &lt;b&gt;" + prop.table + "&lt;/b&gt; is not in the right format (" + prop.nk + ")\n";
+    if(is_error(key_info(prop.pk)))
+      err = err + "PK of &lt;b&gt;" + prop.table + "&lt;/b&gt; is not in the right format (" + prop.pk + ")\n";
+  end
+  result :: err;
+end</SourceValue>
+      <TargetValue reference="vars.properties_error"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>main</Label>
+      <Column>
+        <Box>
+          <Label>Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+        <Box>
+          <Label>WARNING</Label>
+          <UIElements>
+            <TextLabel>
+              <Label><![CDATA[<font size="+2" color="#FF0000"><b>WARNING!</b> The content of the properties file does not match the configuration settings. The changes that you do here will completely overwrite what is currently in the file.</font>]]></Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">0 and vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>&lt;font color='#ff0000'&gt;Issues with settings&lt;/font&gt;</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#ff0000'&gt;" + vars.properties_error + "&lt;/font&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Arrowhead>off</Arrowhead>
+          <LineIn>off</LineIn>
+          <LineOut>off</LineOut>
+          <Visible is_expression="true">vars.properties_error != ""</Visible>
+        </Box>
+        <Box>
+          <Label>IDS Table Properties</Label>
+          <UIElements>
+            <Box>
+              <Label>Duplicate Entries!</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true"><![CDATA["<font color='#ff0000' size='+2'><b>" +
+        vars.dups +
+        "</b></font>"]]></Label>
+                </TextLabel>
+              </UIElements>
+              <Style>unstyled</Style>
+              <Visible is_expression="true">vars.dups != ""</Visible>
+            </Box>
+            <Box>
+              <Label>SEARCH: Locate a table/dataset</Label>
+              <UIElements>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Search term</Label>
+                      <SourceTargetValue reference="ui_helper.table_to_search"/>
+                    </TextInput>
+                    <TextInput>
+                      <Label>Found at rows:</Label>
+                      <SourceTargetValue reference="ui_helper.found_table_indexes"/>
+                      <ReadOnly>true</ReadOnly>
+                    </TextInput>
+                  </UIElements>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>unstyled</Style>
+            </Box>
+            <DataGrid>
+              <ColumnMetadata>
+                <Column data_field="table">
+                  <HeaderText>IDS Table</HeaderText>
+                  <SortField>display_name</SortField>
+                  <SortOrder>ascending</SortOrder>
+                </Column>
+                <Column data_field="table_type">
+                  <HeaderText>Table Type</HeaderText>
+                  <Choices is_expression="true">get_all_table_types()</Choices>
+                  <BlankValueDisplayName><![CDATA[<Select>]]></BlankValueDisplayName>
+                </Column>
+                <Column data_field="storage_type">
+                  <HeaderText>Xref Storage Type</HeaderText>
+                  <Choices>
+                    <ConstantValue>icff</ConstantValue>
+                    <ConstantValue>regular</ConstantValue>
+                  </Choices>
+                  <DefaultValue>icff</DefaultValue>
+                </Column>
+                <Column data_field="pk">
+                  <HeaderText>Primary Key</HeaderText>
+                </Column>
+                <Column data_field="nk">
+                  <HeaderText>Natural Key</HeaderText>
+                </Column>
+                <Column data_field="bk">
+                  <HeaderText>Business Key</HeaderText>
+                </Column>
+                <Column data_field="comment">
+                  <HeaderText>Comment (Do not use pipe)</HeaderText>
+                </Column>
+              </ColumnMetadata>
+              <Label>Edit</Label>
+              <SourceTargetValue reference="props_ref"/>
+              <Width>1000</Width>
+            </DataGrid>
+            <TextLabel>
+              <Label>Hint: The Data Grid control shares many of the same keystrokes as Microsoft Excel</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Edit Table Keys</Label>
+          <UIElements>
+            <ComboBox>
+              <Label>Select table below or in the grid on the left</Label>
+              <SourceTargetValue reference="props_ref"/>
+              <BlankValueDisplayName><![CDATA[<Select>]]></BlankValueDisplayName>
+            </ComboBox>
+            <Box>
+              <Label is_expression="true">"Edit keys for " + props_ref.fields.table</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;font color='#ff0000'&gt;" + get_dml_file_for_table(props_ref.fields.table) + " not found!&lt;/font&gt;"</Label>
+                  <Visible is_expression="true">not file_information(get_dml_file_for_table(props_ref.fields.table)).found</Visible>
+                </TextLabel>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;b&gt;Primary Key:&lt;/b&gt; " + props_ref.fields.pk</Label>
+                    </TextLabel>
+                    <Popup>
+                      <Label>Edit...</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label is_expression="true">"Primary key for table " + props_ref.fields.table</Label>
+                          <RecordFormat is_expression="true">read_type(get_dml_file_for_table(props_ref.fields.table))</RecordFormat>
+                          <SourceTargetValue reference="props_ref.fields.pk"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                  <Visible is_expression="true">file_information(get_dml_file_for_table(props_ref.fields.table)).found</Visible>
+                </HorizontalLayoutContainer>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;b&gt;Natural Key:&lt;/b&gt; " + props_ref.fields.nk</Label>
+                    </TextLabel>
+                    <Popup>
+                      <Label>Edit...</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label is_expression="true">"Natural key for table " + props_ref.fields.table</Label>
+                          <RecordFormat is_expression="true">read_type(get_dml_file_for_table(props_ref.fields.table))</RecordFormat>
+                          <SourceTargetValue reference="props_ref.fields.nk"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                  <Visible is_expression="true">file_information(get_dml_file_for_table(props_ref.fields.table)).found</Visible>
+                </HorizontalLayoutContainer>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"&lt;b&gt;Business Key:&lt;/b&gt; " + props_ref.fields.bk</Label>
+                    </TextLabel>
+                    <Popup>
+                      <Label>Edit...</Label>
+                      <Title/>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label is_expression="true">"Business key for table " + props_ref.fields.table</Label>
+                          <RecordFormat is_expression="true">read_type(get_dml_file_for_table(props_ref.fields.table))</RecordFormat>
+                          <SourceTargetValue reference="props_ref.fields.bk"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                  <Visible is_expression="true">file_information(get_dml_file_for_table(props_ref.fields.table)).found</Visible>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">is_defined(props_ref.fields.table) and not is_blank(props_ref.fields.table)</Visible>
+            </Box>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Canvas>
+      <Visible is_expression="true">vars.error == ""</Visible>
+      <Label is_expression="true">"Issues/Discrepancies (" + (string(""))(decimal(""))(length_of(vars.missing_tables) + length_of(vars.extra_tables)) + ")"</Label>
+      <Column>
+        <Box>
+          <Label>Issues</Label>
+          <UIElements>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"Tables with DML defined, but not in properties grid: " + (string(""))(decimal(""))length_of(vars.missing_tables)</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>View list...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">string_join(vars.missing_tables, "\n")</Label>
+                    </TextLabel>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+            </HorizontalLayoutContainer>
+            <HorizontalLayoutContainer>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"Tables in properties grid but no DML defined: " + (string(""))(decimal(""))length_of(vars.extra_tables)</Label>
+                </TextLabel>
+                <Popup>
+                  <Label>View list...</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">string_join(vars.extra_tables, "\n")</Label>
+                    </TextLabel>
+                  </UIElements>
+                </Popup>
+              </UIElements>
+            </HorizontalLayoutContainer>
+          </UIElements>
+          <Style>validation</Style>
+          <Expanded/>
+        </Box>
+      </Column>
+    </Canvas>
+  </UserInterface>
+</AppConfTempl>

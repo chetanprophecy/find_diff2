@@ -1,0 +1,71 @@
+type logical_ids_prior_auth_r_pas_case_key_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) caseid_key = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=32) caseid = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+type opt_logical_ids_prior_auth_r_pas_corr_list_hist_t =
+record
+  decimal(1) drop_record = 0;
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) caseid_key = NULL("");
+  utf8 string("\x01", maximum_length=128) pyid = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rec_eff_ts = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=32) caseid = NULL("");
+  utf8 string("\x01", maximum_length=160) attempt1status = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") attempt1time = NULL("");
+  utf8 string("\x01", maximum_length=128) attempt2status = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") attempt2time = NULL("");
+  utf8 string("\x01", maximum_length=128) carcode = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") corrcreatedate = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") corrsenddate = NULL("");
+  utf8 string("\x01", maximum_length=128) corrtype = NULL("");
+  utf8 string("\x01", maximum_length=2000) dispcode = NULL("");
+  utf8 string("\x01", maximum_length=1024) errordesc = NULL("");
+  utf8 string("\x01", maximum_length=128) faxormail = NULL("");
+  utf8 string("\x01", maximum_length=128) faxresent = NULL("");
+  decimal("\x01",0) faxtomail = NULL("");
+  utf8 string("\x01", maximum_length=128) filename = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") mailattempttime = NULL("");
+  utf8 string("\x01", maximum_length=128) mbid = NULL("");
+  utf8 string("\x01", maximum_length=1024) pdflocation = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") pxupdatedatetime = NULL("");
+  decimal("\x01",0) rightfaxretried = NULL("");
+  utf8 string("\x01", maximum_length=160) rightfaxstatus = NULL("");
+  utf8 string("\x01", maximum_length=128) sendto = NULL("");
+  utf8 string("\x01", maximum_length=128) seqnumber = NULL("");
+  utf8 string("\x01", maximum_length=128) statuscode = NULL("");
+  utf8 string("\x01", maximum_length=128) stfax = NULL("");
+  utf8 string("\x01", maximum_length=128) template = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") updatedatetime = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") uspsacceptancedatetime = NULL("");
+  utf8 string("\x01", maximum_length=128) uspstrackingno = NULL("");
+  utf8 string("\x01", maximum_length=128) worktable = NULL("");
+  utf8 string("\x01", maximum_length=1024) pzinskey = NULL("");
+  utf8 string("\x01", maximum_length=128) dailymedmaxthresholdvalue = NULL("");
+  decimal("\x01",0) proactivepacorrattmptnmbr = NULL("");
+  utf8 string("\x01", maximum_length=128) attempt3status = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") attempt3time = NULL("");
+  utf8 string("\x01", maximum_length=128) attempt4status = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") attempt4time = NULL("");
+  utf8 string("\x01", maximum_length=200) pystatuswork = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rec_term_ts = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  opt_logical_ids_prior_auth_r_pas_corr_list_hist_t out_cor  /*@ BizName:'out cor' */;
+  logical_ids_prior_auth_r_pas_case_key_t case_key  /*@ BizName:'case key' */;
+end;

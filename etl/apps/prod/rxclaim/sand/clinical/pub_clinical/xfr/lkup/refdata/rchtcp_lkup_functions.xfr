@@ -1,0 +1,66 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/rchtcp_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/05/05  Ram Kancharla           Initial version, create lookup functions for plan process. 
+ *  2016/06/01  Sourabh Mittal          Modified IDS File Pattern from taxonomy to rchtcp
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_taxonomy_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/rchtcp.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/rchtcp.dat' );
+end;
+
+cli_string_t out :: get_taxonomy_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*********************************************/
+/* Source Environment Lookup (ids surrogate key) */
+/*********************************************/
+
+type taxonomy_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  rchtcp_hash_lkup_t        RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {taxonomy.taxonomy_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let taxonomy_lkup_t GLKUP_TAXONOMY = allocate_with_nulls();
+
+taxonomy_lkup_t out :: load_taxonomy_lkup() inline =
+begin
+  if (GLKUP_TAXONOMY.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_taxonomy_lkup_path();
+    let indx_path  = get_taxonomy_indx_path(lkup_path, 'rchtcp');
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_TAXONOMY = if (indx_found) lookup_load(lkup_path, indx_path)
+                 else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_TAXONOMY;
+end;
+
+plan_t out :: get_taxonomy(taxonomy_cd) inline =
+begin
+  let taxonomy_lkup_t lkup = load_taxonomy_lkup();
+  out :: lookup(lkup, taxonomy_cd).taxonomy;
+end;

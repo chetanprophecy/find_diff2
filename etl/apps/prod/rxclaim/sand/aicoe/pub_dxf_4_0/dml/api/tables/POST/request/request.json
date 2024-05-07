@@ -1,0 +1,580 @@
+{
+  "properties" : {
+    "path_parameters" : {
+      "properties" : {
+        "_none" : {"type":"string"}
+      },
+      "required" : [ ],
+      "type" : "object"
+    },
+    "query" : {
+      "properties" : {
+        "_custom" : {
+          "type":"array",
+          "items": {
+            "type":"object",
+            "properties": {
+              "name": {
+                "type" : "string"
+              },
+              "value" : {
+                "type" : "string"
+              }
+            },
+            "required" : ["name", "value"]
+          }
+        }
+      },
+      "required" : [ ],
+      "type" : "object"
+    },
+    "body" : {
+      "$ref" : "#/components/schemas/SKReqBase"
+    },
+    "headers" : {
+      "properties" : {
+        "_custom" : {
+          "type":"array",
+          "items": {
+            "type":"object",
+            "properties": {
+              "name": {
+                "type" : "string"
+              },
+              "value" : {
+                "type" : "string"
+              }
+            },
+            "required" : ["name", "value"]
+          }
+        }
+      },
+      "required" : [ ],
+      "type" : "object"
+    },
+    "security_requirements" : {
+      "properties" : { },
+      "required" : [ ],
+      "type" : "object"
+    },
+    "server_url" : {
+      "type" : "string",
+      "default" : "/"
+    }
+  },
+  "required" : [ "body" ],
+  "type" : "object",
+  "components" : {
+    "schemas" : {
+      "BasicRequest" : {
+        "title" : "BasicRequest",
+        "required" : [ "client_id", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "GetSKStreamRequest" : {
+        "title" : "GetSKStreamRequest",
+        "required" : [ "client_id", "consumer", "group", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "consumer" : {
+            "title" : "Consumer",
+            "type" : "string",
+            "description" : "Consumer name within group. Requests made multiple times with the same consumer and group name will only get new results."
+          },
+          "detailed" : {
+            "title" : "Detailed",
+            "type" : "boolean",
+            "description" : "Return complex SurrogateKey objects if True",
+            "default" : false
+          },
+          "generated_only" : {
+            "title" : "Generated Only",
+            "type" : "boolean",
+            "description" : "Only return generated SKs.",
+            "default" : true
+          },
+          "group" : {
+            "title" : "Group",
+            "type" : "string",
+            "description" : "Consumer group name"
+          },
+          "maxrows" : {
+            "title" : "Maxrows",
+            "type" : "integer",
+            "description" : "Number of SKStream Items to fetch at a time. May return less if end of stream.",
+            "default" : 50
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "start_id" : {
+            "title" : "Start Id",
+            "type" : "string",
+            "description" : "ID to start at within stream. Use '0' to restart consumer/group progress within stream."
+          }
+        }
+      },
+      "GetSKStreamResponse" : {
+        "title" : "GetSKStreamResponse",
+        "required" : [ "client_id", "items", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "items" : {
+            "title" : "Items",
+            "type" : "array",
+            "description" : "List of SKStreamItems",
+            "items" : {
+              "$ref" : "#/components/schemas/SKStreamItem"
+            }
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "GetSKsRequest" : {
+        "title" : "GetSKsRequest",
+        "required" : [ "client_id", "pks", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "create_sks" : {
+            "title" : "Create Sks",
+            "type" : "boolean",
+            "description" : "Should new SKs be generated.",
+            "default" : true
+          },
+          "detailed" : {
+            "title" : "Detailed",
+            "type" : "boolean",
+            "description" : "Return detailed SK objects if True",
+            "default" : false
+          },
+          "pks" : {
+            "title" : "Pks",
+            "type" : "array",
+            "description" : "Which PKs to fetch",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "GetSKsResponse" : {
+        "title" : "GetSKsResponse",
+        "required" : [ "client_id", "pks_sks", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "pks_sks" : {
+            "title" : "Pks Sks",
+            "type" : "object",
+            "additionalProperties" : {
+              "anyOf" : [ {
+                "$ref" : "#/components/schemas/SurrogateKey"
+              }, {
+                "type" : "integer"
+              } ]
+            },
+            "description" : "Map of PK->SK. SK can be either an int or a complex object."
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "skipped" : {
+            "title" : "Skipped",
+            "type" : "array",
+            "description" : "Any PKs that were skipped due to error. Safe to retry.",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "HTTPValidationError" : {
+        "title" : "HTTPValidationError",
+        "type" : "object",
+        "properties" : {
+          "detail" : {
+            "title" : "Detail",
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/ValidationError"
+            }
+          }
+        }
+      },
+      "HeloResponse" : {
+        "title" : "HeloResponse",
+        "required" : [ "client_id", "request_id", "status", "version" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "status" : {
+            "title" : "Status",
+            "type" : "string",
+            "description" : "Status text, if any"
+          },
+          "version" : {
+            "title" : "Version",
+            "type" : "string"
+          }
+        }
+      },
+      "SKReqBase" : {
+        "title" : "SKReqBase",
+        "required" : [ "client_id", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "SKStreamItem" : {
+        "title" : "SKStreamItem",
+        "required" : [ "created_by", "partition_id", "pk", "sk", "ts" ],
+        "type" : "object",
+        "properties" : {
+          "created_by" : {
+            "title" : "Created By",
+            "type" : "string",
+            "description" : "Which client_id created this SK"
+          },
+          "partition_id" : {
+            "title" : "Partition Id",
+            "type" : "string",
+            "description" : "Partition within cluster where this record was created"
+          },
+          "pk" : {
+            "title" : "Pk",
+            "type" : "string",
+            "description" : "The Primary Key"
+          },
+          "sk" : {
+            "title" : "Sk",
+            "description" : "Surrogate Key. Can be either an Int or a complex object",
+            "anyOf" : [ {
+              "$ref" : "#/components/schemas/SurrogateKey"
+            }, {
+              "type" : "integer"
+            } ]
+          },
+          "ts" : {
+            "title" : "Ts",
+            "type" : "string",
+            "description" : "Timestamp when this record was created"
+          }
+        }
+      },
+      "SetNextIdRequest" : {
+        "title" : "SetNextIdRequest",
+        "required" : [ "client_id", "next_id", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "force" : {
+            "title" : "Force",
+            "type" : "boolean",
+            "description" : "Force set the next ID, even if it is less than the current ID",
+            "default" : false
+          },
+          "next_id" : {
+            "title" : "Next Id",
+            "type" : "integer",
+            "description" : "Set the next ID for a given table"
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "SetSKConflict" : {
+        "title" : "SetSKConflict",
+        "required" : [ "existing_sk", "new_sk" ],
+        "type" : "object",
+        "properties" : {
+          "existing_sk" : {
+            "title" : "Existing Sk",
+            "description" : "The SK that already exists for this PK",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/SurrogateKey"
+            } ]
+          },
+          "new_sk" : {
+            "title" : "New Sk",
+            "description" : "The new SK you were trying to write",
+            "allOf" : [ {
+              "$ref" : "#/components/schemas/SurrogateKey"
+            } ]
+          }
+        }
+      },
+      "SetSKsRequest" : {
+        "title" : "SetSKsRequest",
+        "required" : [ "client_id", "pks_sks", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "force" : {
+            "title" : "Force",
+            "type" : "boolean",
+            "description" : "Force overwrite even if new SK < Existing SK",
+            "default" : false
+          },
+          "overwrite" : {
+            "title" : "Overwrite",
+            "type" : "boolean",
+            "description" : "Overwrite existing PKs",
+            "default" : true
+          },
+          "pks_sks" : {
+            "title" : "Pks Sks",
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "integer"
+            },
+            "description" : "Map of PK->SK. Set PKs to new SKs."
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          }
+        }
+      },
+      "SetSKsResponse" : {
+        "title" : "SetSKsResponse",
+        "required" : [ "client_id", "conflicts", "request_id", "updated" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "conflicts" : {
+            "title" : "Conflicts",
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/SetSKConflict"
+            },
+            "description" : "Fields that were not updated because a more recent value was already found"
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "skipped" : {
+            "title" : "Skipped",
+            "type" : "object",
+            "additionalProperties" : {
+              "type" : "integer"
+            }
+          },
+          "updated" : {
+            "title" : "Updated",
+            "type" : "object",
+            "additionalProperties" : {
+              "$ref" : "#/components/schemas/SurrogateKey"
+            },
+            "description" : "Map of PK->SK that were updated."
+          }
+        }
+      },
+      "StatusResponse" : {
+        "title" : "StatusResponse",
+        "required" : [ "client_id", "request_id", "status" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "status" : {
+            "title" : "Status",
+            "type" : "string",
+            "description" : "Status text, if any"
+          }
+        }
+      },
+      "SurrogateKey" : {
+        "title" : "SurrogateKey",
+        "required" : [ "created_by", "generated", "value" ],
+        "type" : "object",
+        "properties" : {
+          "created_by" : {
+            "title" : "Created By",
+            "type" : "string",
+            "description" : "The client ID of the process that created this SK"
+          },
+          "generated" : {
+            "title" : "Generated",
+            "type" : "boolean",
+            "description" : "Was this SK generated as part of get_sks or set by an external client (i.e during initial load)"
+          },
+          "value" : {
+            "title" : "Value",
+            "type" : "integer",
+            "description" : "SK Value"
+          }
+        }
+      },
+      "TableListResponse" : {
+        "title" : "TableListResponse",
+        "required" : [ "client_id", "request_id" ],
+        "type" : "object",
+        "properties" : {
+          "client_id" : {
+            "title" : "Client ID",
+            "type" : "string",
+            "description" : "Client ID making this request."
+          },
+          "error" : {
+            "title" : "Error",
+            "type" : "string",
+            "description" : "Any error that has occurred (optional)"
+          },
+          "request_id" : {
+            "title" : "Request ID",
+            "type" : "string",
+            "description" : "Individual request ID."
+          },
+          "tables" : {
+            "title" : "Tables",
+            "type" : "array",
+            "description" : "List of tables seen by the service",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "ValidationError" : {
+        "title" : "ValidationError",
+        "required" : [ "loc", "msg", "type" ],
+        "type" : "object",
+        "properties" : {
+          "loc" : {
+            "title" : "Location",
+            "type" : "array",
+            "items" : {
+              "anyOf" : [ {
+                "type" : "string"
+              }, {
+                "type" : "integer"
+              } ]
+            }
+          },
+          "msg" : {
+            "title" : "Message",
+            "type" : "string"
+          },
+          "type" : {
+            "title" : "Error Type",
+            "type" : "string"
+          }
+        }
+      }
+    }
+  }
+}

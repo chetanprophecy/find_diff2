@@ -1,0 +1,12 @@
+out :: rollup(in) =
+begin
+  out.print_file.record_identifier :: "TD";
+  out.print_file.trailer.member_record_count :: string_pad(string_lrtrim((decimal(9))count(in.print_file.record_identifier,in.print_file.record_identifier == "MD")),9);
+  out.print_file.trailer.plan_detail_record_count ::  string_pad(string_lrtrim((decimal(9))count(in.print_file.record_identifier,in.print_file.record_identifier == "PD")),9);
+  out.print_file.trailer.claim_detail_record_count ::  string_pad(string_lrtrim((decimal(9))count(in.print_file.record_identifier,in.print_file.record_identifier == "CD")),9);
+  out.print_file.trailer.bonus_detail_record_count ::  string_pad(string_lrtrim((decimal(9))count(in.print_file.record_identifier,in.print_file.record_identifier == "BD")),9);
+  out.print_file.trailer.formulary_record_count ::  string_pad(string_lrtrim((decimal(9))count(in.print_file.record_identifier,in.print_file.record_identifier == "FD")),9);
+  out.dmem_mbr_sk :: in.dmem_mbr_sk;
+  out.filename :: in.filename;
+  out.print_file.trailer.newline :: "";
+end;

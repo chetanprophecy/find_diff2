@@ -1,0 +1,110 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.medigap_clm.rsp_medicaid_agency_nbr,[passthrough],in0.bxrmip]
+  [out0.medigap_clm.sbm_medicaid_id_nbr,[passthrough],in0.bxvkhk]
+  [out0.medigap_clm.rsp_medicaid_sbg_tnicn,[passthrough],in0.bxrnip]
+  [out0.medigap_clm.sbm_prvdr_accpt_asg_flg,[passthrough],in0.bxusoc]
+  [out0.medigap_clm.sbm_partd_quafd_fcty_flg,[passthrough],in0.bxutoc]
+  [out0.medigap_clm.sbm_medicaid_ind,[passthrough],in0.bxuroc]
+  [out0.medigap_clm.sbm_medicaid_paid_amt,[passthrough],in0.bxqjhz]
+  [out0.medigap_clm.sbm_medicaid_sbg_tnicn,[passthrough],in0.bxrlip]
+  [out0.medigap_clm.rsp_medicaid_id_nbr,[passthrough],in0.bxvlhk]
+  [out0.medigap_clm.sbm_medicaid_agency_nbr,[passthrough],in0.bxrkip]
+  [out0.medigap_clm.sub_medigap_id,[passthrough],in0.bxvjhk]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.medigap_clm.rsp_medicaid_agency_nbr,'medigap_clm.rsp_medicaid_agency_nbr',1,0]
+     [out0.medigap_clm.sbm_medicaid_id_nbr,'medigap_clm.sbm_medicaid_id_nbr',1,0]
+     [out0.medigap_clm.rsp_medicaid_sbg_tnicn,'medigap_clm.rsp_medicaid_sbg_tnicn',1,0]
+     [out0.medigap_clm.sbm_prvdr_accpt_asg_flg,'medigap_clm.sbm_prvdr_accpt_asg_flg',1,0]
+     [out0.medigap_clm.sbm_partd_quafd_fcty_flg,'medigap_clm.sbm_partd_quafd_fcty_flg',1,0]
+     [out0.medigap_clm.sbm_medicaid_ind,'medigap_clm.sbm_medicaid_ind',1,0]
+     [out0.medigap_clm.cag_sk,'medigap_clm.cag_sk',1,0]
+     [out0.medigap_clm.sbm_medicaid_paid_amt,'medigap_clm.sbm_medicaid_paid_amt',1,0]
+     [out0.medigap_clm.sbm_medicaid_sbg_tnicn,'medigap_clm.sbm_medicaid_sbg_tnicn',1,0]
+     [out0.medigap_clm.rsp_medicaid_id_nbr,'medigap_clm.rsp_medicaid_id_nbr',1,0]
+     [out0.medigap_clm.sbm_medicaid_agency_nbr,'medigap_clm.sbm_medicaid_agency_nbr',1,0]
+     [out0.medigap_clm.claim_nbr,'medigap_clm.claim_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.medigap_clm.src_env_sk,'medigap_clm.src_env_sk',1,0]
+     [out0.medigap_clm.mbr_sk,'medigap_clm.mbr_sk',1,0]
+     [out0.medigap_clm.claim_seq_nbr,'medigap_clm.claim_seq_nbr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.medigap_clm.sub_medigap_id,'medigap_clm.sub_medigap_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.mbr_sk,'mbr_sk',1,1]
+     [in0.bxuroc,'bxuroc',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.bxvlhk,'bxvlhk',1,1]
+     [in0.bxqjhz,'bxqjhz',1,1]
+     [in0.bxvkhk,'bxvkhk',1,1]
+     [in0.bxrnip,'bxrnip',1,1]
+     [in0.bxusoc,'bxusoc',1,1]
+     [in0.bxvjhk,'bxvjhk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     [in0.bxrlip,'bxrlip',1,1]
+     [in0.bxutoc,'bxutoc',1,1]
+     [in0.bxrmip,'bxrmip',1,1]
+     [in0.bxrkip,'bxrkip',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) medigap_clm_claim_nbr = fail_if_error(in0.claim_nbr);
+let decimal("\x01",0) medigap_clm_claim_seq_nbr = fail_if_error(in0.claim_seq_nbr);
+let decimal("\x01",0) medigap_clm_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) medigap_clm_mbr_sk = fail_if_error(in0.mbr_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medigap_clm_sub_medigap_id = fail_if_error(in0.bxvjhk);
+let string("\x01",charset="iso-8859-15", maximum_length=2) medigap_clm_sbm_medicaid_ind = fail_if_error(in0.bxuroc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medigap_clm_sbm_prvdr_accpt_asg_flg = fail_if_error(in0.bxusoc);
+let string("\x01",charset="iso-8859-15", maximum_length=1) medigap_clm_sbm_partd_quafd_fcty_flg = fail_if_error(in0.bxutoc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medigap_clm_sbm_medicaid_id_nbr = fail_if_error(in0.bxvkhk);
+let string("\x01",charset="iso-8859-15", maximum_length=15) medigap_clm_sbm_medicaid_agency_nbr = fail_if_error(in0.bxrkip);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medigap_clm_sbm_medicaid_sbg_tnicn = fail_if_error(in0.bxrlip);
+let decimal("\x01",0) medigap_clm_sbm_medicaid_paid_amt = fail_if_error(in0.bxqjhz);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medigap_clm_rsp_medicaid_id_nbr = fail_if_error(in0.bxvlhk);
+let string("\x01",charset="iso-8859-15", maximum_length=15) medigap_clm_rsp_medicaid_agency_nbr = fail_if_error(in0.bxrmip);
+let string("\x01",charset="iso-8859-15", maximum_length=20) medigap_clm_rsp_medicaid_sbg_tnicn = fail_if_error(in0.bxrnip);
+let decimal("\x01",0) medigap_clm_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.medigap_clm.claim_nbr::medigap_clm_claim_nbr;
+  out0.medigap_clm.claim_seq_nbr::medigap_clm_claim_seq_nbr;
+  out0.medigap_clm.cag_sk::medigap_clm_cag_sk;
+  out0.medigap_clm.mbr_sk::medigap_clm_mbr_sk;
+  out0.medigap_clm.sub_medigap_id::medigap_clm_sub_medigap_id;
+  out0.medigap_clm.sbm_medicaid_ind::medigap_clm_sbm_medicaid_ind;
+  out0.medigap_clm.sbm_prvdr_accpt_asg_flg::medigap_clm_sbm_prvdr_accpt_asg_flg;
+  out0.medigap_clm.sbm_partd_quafd_fcty_flg::medigap_clm_sbm_partd_quafd_fcty_flg;
+  out0.medigap_clm.sbm_medicaid_id_nbr::medigap_clm_sbm_medicaid_id_nbr;
+  out0.medigap_clm.sbm_medicaid_agency_nbr::medigap_clm_sbm_medicaid_agency_nbr;
+  out0.medigap_clm.sbm_medicaid_sbg_tnicn::medigap_clm_sbm_medicaid_sbg_tnicn;
+  out0.medigap_clm.sbm_medicaid_paid_amt::medigap_clm_sbm_medicaid_paid_amt;
+  out0.medigap_clm.rsp_medicaid_id_nbr::medigap_clm_rsp_medicaid_id_nbr;
+  out0.medigap_clm.rsp_medicaid_agency_nbr::medigap_clm_rsp_medicaid_agency_nbr;
+  out0.medigap_clm.rsp_medicaid_sbg_tnicn::medigap_clm_rsp_medicaid_sbg_tnicn;
+  out0.medigap_clm.src_env_sk::medigap_clm_src_env_sk;
+  out0.*::in0.*;
+
+end;

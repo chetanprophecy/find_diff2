@@ -1,0 +1,26 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8) dxf_src_rec_cnt = 0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dxf_src_sys_id = 0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dxf_src_file_name = ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string("\x01", maximum_length=1) cdc_flag = NULL;
+  datetime("YYYY-MM-DD HH24:MI:SS.nnnnnn")("\x01") cdc_ts = NULL;
+  decimal("\x01",0, maximum_length=16, sign_reserved) p1claimnbr /*NUMERIC(15) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) p1claimseq /*NUMERIC(3) NOT NULL*/;
+  string("\x01", maximum_length=1) p1status /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) p1sbmdate /*NUMERIC(8) NOT NULL*/;
+  string("\x01", maximum_length=12) p1clientd3 /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) p1reimburs /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) p1clmorgn /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=20) p1memberid /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=9) p1carierid /*CHAR(9) NOT NULL*/;
+  string("\x01", maximum_length=15) p1acountid /*CHAR(15) NOT NULL*/;
+  string("\x01", maximum_length=15) p1groupid /*CHAR(15) NOT NULL*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) p1ambiqu /*DECIMAL(9,2) NOT NULL*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) p1ambjqu /*DECIMAL(9,2) NOT NULL*/;
+  string("\x01", maximum_length=1) p1amc4ai /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) p1amc5ai /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) p1amc6ai /*CHAR(1) NOT NULL*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved) p1ambkqu /*DECIMAL(9,2) NOT NULL*/;
+  string(1) newline = "\n";
+end

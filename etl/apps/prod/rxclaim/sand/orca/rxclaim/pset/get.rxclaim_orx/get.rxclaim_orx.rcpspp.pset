@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcpspp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcpspp                  nzaqcd,nzflcd,nzakvn,nzc2dt,nzadtm,nzalvn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcpspp")]
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_LOOKUP||||1
+DO_CONS_LOOKUP||||1
+LOOKUP_NAME_OVERRIDE||||rcpspp_lkp
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE ((rcpspp.nzc2dt*1000000)+ rcpspp.NZADTM between " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    ")"\n else \n    "WHERE ((rcpspp.nzc2dt*1000000)+ rcpspp.NZADTM between " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    ")"\n]
+LOOKUP_KEY||||{nzaqcd; dxf_src_sys_id}

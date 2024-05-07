@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rccpbp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nclmprdfil     rccpbp                  aov9hj,aoy6hu,aof8vi,aoy7hu,aoy8hu,aowahj,aowbhj,aozeie,aoibtv,aog3bs,aoakvn,aoc2dt,aoadtm,aoalvn,aoadvn,aobmdt,aoabtm,aoaevn,newline
+SOURCE_DB_LIST||||$[\r\nbegin\r\nlet string("")[int] line = string_split_no_empty(get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccpbp'), "\\n");\r\nlet string("")[int] newline1 = for(let newline in line) : if(not starts_with(newline,"clmbwcfil" ) ) newline;\r\nresult :: string_join(newline1, "\\n");\r\nend\r\n]
+WHERE_CLAUSE||||
+DO_SOURCE||||0
+DO_CLEAN||||1
+ENABLE_DEFAULT_RULES||||True

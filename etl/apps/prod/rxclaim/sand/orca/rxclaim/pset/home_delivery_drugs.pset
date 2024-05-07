@@ -1,0 +1,8 @@
+!prototype|P|||$AI_MP/home_delivery_data_processing.mp
+OUTPUT_DML||||$AI_DML/home_delivery_drugs.dml
+SORT_KEY||||{NDC;WRITTEN_DRUG_SERVICE_ID}
+DUPLICATING_CONDITION||||out :: output_indexes(in) =\r\nbegin\r\n  out :1: if (in.NDC != in.WRITTEN_DRUG_SERVICE_ID) [vector 0, 1];\r\n  out : : [vector 0];\r\nend;
+MAPPING_XFR||||$AI_XFR/home_delivery_drugs_transform0.xfr
+MAPPING_XFR_OPTIONAL||||$AI_XFR/home_delivery_drugs_transform1.xfr
+OUTPUT_FILE_PATH||||$AI_SERIAL_PENDING/home_delivery.drugs.dat.gz
+AB_CATALOG|$|||$AI_CAT/home_delivery_data_drugs.cat

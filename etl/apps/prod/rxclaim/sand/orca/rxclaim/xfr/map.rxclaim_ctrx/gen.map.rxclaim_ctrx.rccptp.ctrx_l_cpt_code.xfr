@@ -1,0 +1,54 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.cptcode.proc_cd_sk,[transform],]
+  [out0.cptcode.cpt_cd_desc,[passthrough],in0.saediu]
+  [out0.cptcode.cpt_cd,[passthrough],in0.sauian]
+  [out0.cptcode.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cptcode.proc_cd_sk,'cptcode.proc_cd_sk',1,0]
+     [out0.cptcode.cpt_cd_desc,'cptcode.cpt_cd_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cptcode.cpt_cd,'cptcode.cpt_cd',1,0]
+     [out0.cptcode.src_env_sk,'cptcode.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.sauian,'sauian',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.saediu,'saediu',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cptcode_proc_cd_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) cptcode_cpt_cd = fail_if_error(in0.sauian);
+let string("\x01",charset="iso-8859-15", maximum_length=60) cptcode_cpt_cd_desc = fail_if_error(in0.saediu);
+let decimal("\x01",0) cptcode_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.cptcode.proc_cd_sk::cptcode_proc_cd_sk;
+  out0.cptcode.cpt_cd::cptcode_cpt_cd;
+  out0.cptcode.cpt_cd_desc::cptcode_cpt_cd_desc;
+  out0.cptcode.src_env_sk::cptcode_src_env_sk;
+  out0.*::in0.*;
+
+end;

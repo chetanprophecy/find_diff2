@@ -1,0 +1,18 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0/*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/;
+  little endian integer(4) dmf_src_rec_cnt = 0/*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2) dmf_src_sys_id = 0/*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1)) dmf_src_file_name = ""/*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  string(unsigned integer(1),maximum_length=10) adaecd /*CHAR(10) NOT NULL  */ /*@
+BizName:"RCPLNP: Plan Code"
+ BizComment:"Code used to identify a specific plan.  This code combined with a plan effective date uniquely identifies the plan in the RxCLAIM system."
+@*/;
+  little endian integer(4) adakdt /*DECIMAL(7) NOT NULL  */ /*@
+BizName:"RCPLNP: Plan Eff Date"
+ BizComment:"The date plan/benefit became effective.  Claims submitted prior to this date will not be accepted."
+@*/;
+  string(unsigned integer(1),maximum_length=8) adnxcd /*CHAR(8) NOT NULL  */ /*@
+BizName:"RCPLNP: DUG Table Name"
+ BizComment:"This is the NAME of the Drug Use Review Table.  This Name can be referenced by a PLAN to indicate the type of processing to be done on-line for DUR Editing."
+@*/;
+end

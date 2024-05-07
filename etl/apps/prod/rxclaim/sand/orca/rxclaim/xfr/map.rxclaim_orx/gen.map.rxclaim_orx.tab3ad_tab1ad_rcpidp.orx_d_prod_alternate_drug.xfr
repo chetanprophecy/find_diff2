@@ -1,0 +1,96 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59443192_7637_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_prd_alt_dg.prod_sk,[transform],]
+  [out0.d_prd_alt_dg.alt_drg_comments,[passthrough],in0.ad1cmt]
+  [out0.d_prd_alt_dg.alternate_drug,[passthrough],in0.ad3alt]
+  [out0.d_prd_alt_dg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_prd_alt_dg.target_drug,[passthrough],in0.ad3nme]
+  [out0.d_prd_alt_dg.prod_id_qlfr_cd,[passthrough],in0.s4nqs3]
+  [out0.d_alt_prod_sk.prod_id_qlfr_cd,[passthrough],in0.s4nqs3]
+  [out0.d_prd_alt_dg.eff_thru_dt,[passthrough],in0.ad3edt]
+  [out0.d_prd_alt_dg.eff_frm_dt,[passthrough],in0.ad3sdt]
+  [out0.d_prd_alt_dg.alt_daily_cost,[passthrough],in0.ad3cst]
+  [out0.d_prd_alt_dg.prod_id,[passthrough],in0.s4e6c4]
+  [out0.d_alt_prod_sk.prod_id,[passthrough],in0.s4e6c4]
+  [out0.d_prd_alt_dg.prod_alt_drg_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_prd_alt_dg.prod_sk,'d_prd_alt_dg.prod_sk',1,0]
+     [out0.d_prd_alt_dg.alt_drg_comments,'d_prd_alt_dg.alt_drg_comments',1,0]
+     [out0.d_prd_alt_dg.alternate_drug,'d_prd_alt_dg.alternate_drug',1,0]
+     [out0.d_prd_alt_dg.src_env_sk,'d_prd_alt_dg.src_env_sk',1,0]
+     [out0.d_prd_alt_dg.target_drug,'d_prd_alt_dg.target_drug',1,0]
+     [out0.d_prd_alt_dg.prod_id_qlfr_cd,'d_prd_alt_dg.prod_id_qlfr_cd',1,0]
+     [out0.d_alt_prod_sk.prod_id_qlfr_cd,'d_alt_prod_sk.prod_id_qlfr_cd',1,0]
+     [out0.d_prd_alt_dg.eff_thru_dt,'d_prd_alt_dg.eff_thru_dt',1,0]
+     [out0.d_prd_alt_dg.eff_frm_dt,'d_prd_alt_dg.eff_frm_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_prd_alt_dg.alt_daily_cost,'d_prd_alt_dg.alt_daily_cost',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_prd_alt_dg.prod_id,'d_prd_alt_dg.prod_id',1,0]
+     [out0.d_alt_prod_sk.prod_id,'d_alt_prod_sk.prod_id',1,0]
+     [out0.d_prd_alt_dg.prod_alt_drg_sk,'d_prd_alt_dg.prod_alt_drg_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.ad3edt,'ad3edt',1,1]
+     [in0.ad3nme,'ad3nme',1,1]
+     [in0.ad1cmt,'ad1cmt',1,1]
+     [in0.s4nqs3,'s4nqs3',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ad3cst,'ad3cst',1,1]
+     [in0.ad3sdt,'ad3sdt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ad3alt,'ad3alt',1,1]
+     [in0.s4e6c4,'s4e6c4',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_prd_alt_dg_prod_alt_drg_sk = -1;
+let decimal("\x01",0) d_prd_alt_dg_prod_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prd_alt_dg_prod_id = fail_if_error(in0.s4e6c4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prd_alt_dg_prod_id_qlfr_cd = fail_if_error(in0.s4nqs3);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_prd_alt_dg_target_drug = fail_if_error(in0.ad3nme);
+let string("\x01",charset="iso-8859-15", maximum_length=150) d_prd_alt_dg_alternate_drug = fail_if_error(in0.ad3alt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) d_prd_alt_dg_alt_daily_cost = fail_if_error(in0.ad3cst);
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_prd_alt_dg_alt_drg_comments = fail_if_error(in0.ad1cmt);
+let date("YYYYMMDD")("\x01") d_prd_alt_dg_eff_frm_dt = fail_if_error(in0.ad3sdt);
+let date("YYYYMMDD")("\x01") d_prd_alt_dg_eff_thru_dt = fail_if_error(in0.ad3edt);
+let decimal("\x01",0) d_prd_alt_dg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_alt_prod_sk_prod_id = fail_if_error(in0.s4e6c4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_alt_prod_sk_prod_id_qlfr_cd = fail_if_error(in0.s4nqs3);
+
+
+
+  out0.d_prd_alt_dg.prod_alt_drg_sk::d_prd_alt_dg_prod_alt_drg_sk;
+  out0.d_prd_alt_dg.prod_sk::d_prd_alt_dg_prod_sk;
+  out0.d_prd_alt_dg.prod_id::d_prd_alt_dg_prod_id;
+  out0.d_prd_alt_dg.prod_id_qlfr_cd::d_prd_alt_dg_prod_id_qlfr_cd;
+  out0.d_prd_alt_dg.target_drug::d_prd_alt_dg_target_drug;
+  out0.d_prd_alt_dg.alternate_drug::d_prd_alt_dg_alternate_drug;
+  out0.d_prd_alt_dg.alt_daily_cost::d_prd_alt_dg_alt_daily_cost;
+  out0.d_prd_alt_dg.alt_drg_comments::d_prd_alt_dg_alt_drg_comments;
+  out0.d_prd_alt_dg.eff_frm_dt::d_prd_alt_dg_eff_frm_dt;
+  out0.d_prd_alt_dg.eff_thru_dt::d_prd_alt_dg_eff_thru_dt;
+  out0.d_prd_alt_dg.src_env_sk::d_prd_alt_dg_src_env_sk;
+  out0.d_alt_prod_sk.prod_id::d_alt_prod_sk_prod_id;
+  out0.d_alt_prod_sk.prod_id_qlfr_cd::d_alt_prod_sk_prod_id_qlfr_cd;
+  out0.*::in0.*;
+
+end;

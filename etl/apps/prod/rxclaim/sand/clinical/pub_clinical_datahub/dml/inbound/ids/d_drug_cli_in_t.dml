@@ -1,0 +1,35 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_drug_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_drug_cli_in_t =
+record
+  //decimal("\x01",0)   drug_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) legacy_src_env_id /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   major_drg_grp = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)   drg_grp_id = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4)   drg_class_id = NULL("") /*VARCHAR(4)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)   drg_subclass_id = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=8)   drg_nm_id = NULL("") /*VARCHAR(8)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)   drg_nm_extn_id = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   drg_grp_desc = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   drg_class_desc = NULL("") /*VARCHAR(50)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   drg_subclass_desc = NULL("") /*VARCHAR(100)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   drg_nm_extn_desc = NULL("") /*VARCHAR(100)*/;
+  //decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type d_drug_cli_in_vec_t = d_drug_cli_in_t[int];
+
+
+metadata type = d_drug_cli_in_t;
+

@@ -1,0 +1,30 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.gpi_product_id :: in.igu6hj;
+  out.med_cond_restriction :: in.igu9hj;
+  out.indicated_med_cond_cd :: in.igvahj;
+  out.microorganism_code :: in.igvbhj;
+  out.role_of_therapy_code :: in.igx6ie;
+  out.outcome_code :: in.igx7ie;
+  out.treatment_rank_code :: in.igx8ie;
+  out.acceptance_level :: in.igx9ie;
+  out.proxy_code :: in.igyaie;
+  out.proxy_only :: in.igybie;
+  out.status :: in.igycie;
+  out.add_user_name :: in.igakvn;
+  out.add_date :: in.igc2dt;
+  out.add_time :: in.igadtm;
+  out.add_program_name :: in.igalvn;
+  out.chg_user_name :: in.igadvn    ;
+  out.chg_date :: in.igbmdt;
+  out.chg_time :: in.igabtm;
+  out.chg_program_name :: in.igaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

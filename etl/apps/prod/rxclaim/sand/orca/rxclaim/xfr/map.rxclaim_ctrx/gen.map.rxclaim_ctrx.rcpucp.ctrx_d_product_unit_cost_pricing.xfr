@@ -1,0 +1,250 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_4_6c54cc0a_5cda6b70_a69b_0
+    BizHidden:true
+@*/
+/*   lookup rcpidp_lkp   */
+out0::bzt_4_6c54cc0a_5cda6b70_a69b_0(in0,in1)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  unsigned integer(8) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01", maximum_length=2) s4nqs3 = NULL("");
+  string("\x01", maximum_length=20) s4e6c4 = NULL("");
+  decimal("\x01",0, maximum_length=10) s4iin2 = NULL("");
+  string("\x01", maximum_length=2) s4whs3 = NULL("");
+  string("\x01", maximum_length=1) s4xvs3 = NULL(""), s4qns3 = NULL("");
+  string("\x01", maximum_length=5) s4d9c4 = NULL("");
+  string("\x01", maximum_length=10) s4btt3 = NULL("");
+  string("\x01", maximum_length=30) s4cnt3 = NULL("");
+  string("\x01", maximum_length=14) s4efc4 = NULL("");
+  string("\x01", maximum_length=5) rxt_src_envrt_id = NULL("");
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("rcpidp_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5cda6b70_a69b_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_pd_unt_cst.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_pd_unt_cst.prod_id_qlfr_cd,[transform],in0.rxt_src_envrt_id,
+     in0.s7iin2,
+     'lookup("rcpidp_lkp").s4nqs3']
+  [out0.d_pd_unt_cst.cost_stat_cd,[passthrough],in0.s7qqs3]
+  [out0.d_pd_unt_cst.prod_key,[passthrough],in0.s7iin2]
+  [out0.d_pd_unt_cst.cost_type_cd_sk,[transform],]
+  [out0.d_pd_unt_cst.cost_origin_cd,[passthrough],in0.s7qrs3]
+  [out0.d_pd_unt_cst.cost_seq_no,[passthrough],in0.s7ipn2]
+  [out0.d_pd_unt_cst.prod_sk,[transform],]
+  [out0.l_cost_type.cost_type_cd,[passthrough],in0.s7e9c4]
+  [out0.d_pd_unt_cst.cost_thru_dt,[transform],in0.s7jqhg]
+  [out0.d_pd_unt_cst.prod_id,[transform],in0.s7iin2,
+     in0.rxt_src_envrt_id,
+     'lookup("rcpidp_lkp").s4e6c4']
+  [out0.d_pd_unt_cst.unit_cost_amt,[passthrough],in0.s7kbp1]
+  [out0.d_product.prod_id,[transform],in0.s7iin2,
+     in0.rxt_src_envrt_id,
+     'lookup("rcpidp_lkp").s4e6c4']
+  [out0.d_pd_unt_cst.cost_src_cd,[passthrough],in0.s7e8c4]
+  [out0.d_pd_unt_cst.prod_cost_sk,[transform],]
+  [out0.d_product.prod_id_qlfr_cd,[transform],in0.rxt_src_envrt_id,
+     in0.s7iin2,
+     'lookup("rcpidp_lkp").s4nqs3']
+  [out0.d_pd_unt_cst.price_src_sk,[transform],]
+  [out0.d_pd_unt_cst.cost_eff_dt,[transform],in0.s7n3dt]
+  [out0.d_pd_unt_cst.src_chg_ts,[transform],in0.s7abtm,
+     in0.s7bmdt]
+  [out0.l_price_src.price_src_cd,[transform],in0.s7e8c4]
+  [out0.d_pd_unt_cst.price_src_cd,[transform],in0.s7e8c4]
+  [out0.d_pd_unt_cst.cost_type_cd,[passthrough],in0.s7e9c4]
+  [out0.d_pd_unt_cst.src_add_ts,[transform],in0.s7adtm,
+     in0.s7c2dt]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_pd_unt_cst.src_env_sk,'d_pd_unt_cst.src_env_sk',1,0]
+     [out0.d_pd_unt_cst.prod_id_qlfr_cd,'d_pd_unt_cst.prod_id_qlfr_cd',1,0]
+     [out0.d_pd_unt_cst.cost_stat_cd,'d_pd_unt_cst.cost_stat_cd',1,0]
+     [out0.d_pd_unt_cst.prod_key,'d_pd_unt_cst.prod_key',1,0]
+     [out0.d_pd_unt_cst.cost_type_cd_sk,'d_pd_unt_cst.cost_type_cd_sk',1,0]
+     [out0.d_pd_unt_cst.cost_origin_cd,'d_pd_unt_cst.cost_origin_cd',1,0]
+     [out0.d_pd_unt_cst.cost_seq_no,'d_pd_unt_cst.cost_seq_no',1,0]
+     [out0.d_pd_unt_cst.prod_sk,'d_pd_unt_cst.prod_sk',1,0]
+     [out0.l_cost_type.cost_type_cd,'l_cost_type.cost_type_cd',1,0]
+     [out0.d_pd_unt_cst.cost_thru_dt,'d_pd_unt_cst.cost_thru_dt',3,2]
+     [out0.d_pd_unt_cst.prod_id,'d_pd_unt_cst.prod_id',1,0]
+     [out0.d_pd_unt_cst.unit_cost_amt,'d_pd_unt_cst.unit_cost_amt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_product.prod_id,'d_product.prod_id',1,0]
+     [out0.d_pd_unt_cst.cost_src_cd,'d_pd_unt_cst.cost_src_cd',1,0]
+     [out0.d_pd_unt_cst.prod_cost_sk,'d_pd_unt_cst.prod_cost_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_product.prod_id_qlfr_cd,'d_product.prod_id_qlfr_cd',1,0]
+     [out0.d_pd_unt_cst.price_src_sk,'d_pd_unt_cst.price_src_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_pd_unt_cst.cost_eff_dt,'d_pd_unt_cst.cost_eff_dt',3,2]
+     [out0.d_pd_unt_cst.src_chg_ts,'d_pd_unt_cst.src_chg_ts',1,0]
+     [out0.l_price_src.price_src_cd,'l_price_src.price_src_cd',1,0]
+     [out0.d_pd_unt_cst.price_src_cd,'d_pd_unt_cst.price_src_cd',1,0]
+     [out0.d_pd_unt_cst.cost_type_cd,'d_pd_unt_cst.cost_type_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_pd_unt_cst.src_add_ts,'d_pd_unt_cst.src_add_ts',1,0]
+  ]
+  impacts:
+  [
+     ['lookup("rcpidp_lkp").s4nqs3','s4nqs3',2,2]
+     [in0.s7bmdt,'s7bmdt',1,1]
+     [in0.s7c2dt,'s7c2dt',1,1]
+     [in0.s7ipn2,'s7ipn2',1,1]
+     [in0.s7abtm,'s7abtm',1,1]
+     [in0.s7e8c4,'s7e8c4',13,3]
+     [in0.s7iin2,'s7iin2',5,5]
+     [in0.s7qqs3,'s7qqs3',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',6,5]
+     [in0.s7adtm,'s7adtm',1,1]
+     [in0.s7jqhg,'s7jqhg',2,3]
+     [in0.s7qrs3,'s7qrs3',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.s7kbp1,'s7kbp1',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     ['lookup("rcpidp_lkp").s4e6c4','s4e6c4',2,2]
+     [in0.s7n3dt,'s7n3dt',2,3]
+     [in0.s7e9c4,'s7e9c4',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_2 = 0;
+let int bzt_3 = 0;
+let decimal("\x01",0) d_pd_unt_cst_prod_cost_sk = -1;
+let decimal("\x01",0) d_pd_unt_cst_prod_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_pd_unt_cst_prod_id;
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_pd_unt_cst_prod_id_qlfr_cd;
+let decimal("\x01",0) d_pd_unt_cst_price_src_sk = -1;
+let decimal("\x01",0) d_pd_unt_cst_cost_type_cd_sk = -1;
+let decimal("\x01",0) d_pd_unt_cst_prod_key = fail_if_error(in0.s7iin2);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_pd_unt_cst_cost_src_cd = fail_if_error(in0.s7e8c4);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_pd_unt_cst_cost_type_cd = fail_if_error(in0.s7e9c4);
+let decimal("\x01",0) d_pd_unt_cst_cost_seq_no = fail_if_error(in0.s7ipn2);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_pd_unt_cst_price_src_cd = fail_if_error(if(string_substring(in0.s7e8c4 , 1 , 3 )=='MED') 'M' 
+else if(in0.s7e8c4=='FDB') 'F' 
+else if(in0.s7e8c4=='FDBD') 'D' 
+else if(in0.s7e8c4=='PLAN') 'P' 
+else if(in0.s7e8c4=='REDBOOK') 'R' 
+else if(in0.s7e8c4=='S') 'S' 
+else 'U');
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_pd_unt_cst_cost_stat_cd = fail_if_error(in0.s7qqs3);
+let date("YYYYMMDD")("\x01") d_pd_unt_cst_cost_eff_dt;
+let date("YYYYMMDD")("\x01") d_pd_unt_cst_cost_thru_dt;
+let decimal("\x01".5, maximum_length=15, sign_reserved) d_pd_unt_cst_unit_cost_amt = fail_if_error(in0.s7kbp1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_pd_unt_cst_cost_origin_cd = fail_if_error(in0.s7qrs3);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_pd_unt_cst_src_add_ts;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_pd_unt_cst_src_chg_ts;
+let decimal("\x01",0) d_pd_unt_cst_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_product_prod_id;
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_product_prod_id_qlfr_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_cost_type_cost_type_cd = fail_if_error(in0.s7e9c4);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_price_src_price_src_cd = fail_if_error(if(string_substring(in0.s7e8c4 , 1 , 3 )=='MED') 'M' 
+else if(in0.s7e8c4=='FDB') 'F' 
+else if(in0.s7e8c4=='FDBD') 'D' 
+else if(in0.s7e8c4=='PLAN') 'P' 
+else if(in0.s7e8c4=='REDBOOK') 'R' 
+else if(in0.s7e8c4=='S') 'S' 
+else 'U');
+
+
+
+/*   Rule:Compute d_pd_unt_cst.cost_eff_dt  (#1)   */
+if(first_defined(fail_if_error((sql_or(6,7)) && (1)),0))begin
+  bzt_2=1;
+  d_pd_unt_cst_cost_eff_dt=YYYYMMDD(19000000+in0.s7n3dt);
+end
+else if(first_defined(fail_if_error((8) && (1)),0))begin
+  bzt_2=1;
+  d_pd_unt_cst_cost_eff_dt=(date("YYYYMMDD"))in0.s7n3dt;
+end
+
+/*   Default value   */
+if(!bzt_2)begin
+  d_pd_unt_cst_cost_eff_dt=fail_if_error(low_date());
+end
+
+/*   Rule:Compute d_pd_unt_cst.cost_thru_dt  (#2)   */
+if(first_defined(fail_if_error((sql_or(6,7)) && (1)),0))begin
+  bzt_3=1;
+  d_pd_unt_cst_cost_thru_dt=YYYYMMDD(19000000+in0.s7jqhg);
+end
+else if(first_defined(fail_if_error((8) && (1)),0))begin
+  bzt_3=1;
+  d_pd_unt_cst_cost_thru_dt=(date("YYYYMMDD")) in0.s7jqhg;
+end
+
+/*   Default value   */
+if(!bzt_3)begin
+  d_pd_unt_cst_cost_thru_dt=fail_if_error(high_date());
+end
+
+/*   Default value   */
+d_pd_unt_cst_prod_id_qlfr_cd=fail_if_error(bzt_4_6c54cc0a_5cda6b70_a69b_0(in0.s7iin2, in0.rxt_src_envrt_id).s4nqs3);
+
+/*   Default value   */
+d_pd_unt_cst_prod_id=fail_if_error(bzt_4_6c54cc0a_5cda6b70_a69b_0(in0.s7iin2, in0.rxt_src_envrt_id).s4e6c4);
+
+/*   Default value   */
+d_product_prod_id=fail_if_error(bzt_4_6c54cc0a_5cda6b70_a69b_0(in0.s7iin2, in0.rxt_src_envrt_id).s4e6c4);
+
+/*   Default value   */
+d_product_prod_id_qlfr_cd=fail_if_error(bzt_4_6c54cc0a_5cda6b70_a69b_0(in0.s7iin2, in0.rxt_src_envrt_id).s4nqs3);
+
+/*   Default value   */
+d_pd_unt_cst_src_chg_ts=fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))string_concat(date_check(in0.s7bmdt),time_check(in0.s7abtm)));
+
+/*   Default value   */
+d_pd_unt_cst_src_add_ts=fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))string_concat(date_check(in0.s7c2dt),time_check(in0.s7adtm)));
+
+  out0.d_pd_unt_cst.prod_cost_sk::d_pd_unt_cst_prod_cost_sk;
+  out0.d_pd_unt_cst.prod_sk::d_pd_unt_cst_prod_sk;
+  out0.d_pd_unt_cst.prod_id::d_pd_unt_cst_prod_id;
+  out0.d_pd_unt_cst.prod_id_qlfr_cd::d_pd_unt_cst_prod_id_qlfr_cd;
+  out0.d_pd_unt_cst.price_src_sk::d_pd_unt_cst_price_src_sk;
+  out0.d_pd_unt_cst.cost_type_cd_sk::d_pd_unt_cst_cost_type_cd_sk;
+  out0.d_pd_unt_cst.prod_key::d_pd_unt_cst_prod_key;
+  out0.d_pd_unt_cst.cost_src_cd::d_pd_unt_cst_cost_src_cd;
+  out0.d_pd_unt_cst.cost_type_cd::d_pd_unt_cst_cost_type_cd;
+  out0.d_pd_unt_cst.cost_seq_no::d_pd_unt_cst_cost_seq_no;
+  out0.d_pd_unt_cst.price_src_cd::d_pd_unt_cst_price_src_cd;
+  out0.d_pd_unt_cst.cost_stat_cd::d_pd_unt_cst_cost_stat_cd;
+  out0.d_pd_unt_cst.cost_eff_dt::d_pd_unt_cst_cost_eff_dt;
+  out0.d_pd_unt_cst.cost_thru_dt::d_pd_unt_cst_cost_thru_dt;
+  out0.d_pd_unt_cst.unit_cost_amt::d_pd_unt_cst_unit_cost_amt;
+  out0.d_pd_unt_cst.cost_origin_cd::d_pd_unt_cst_cost_origin_cd;
+  out0.d_pd_unt_cst.src_add_ts::d_pd_unt_cst_src_add_ts;
+  out0.d_pd_unt_cst.src_chg_ts::d_pd_unt_cst_src_chg_ts;
+  out0.d_pd_unt_cst.src_env_sk::d_pd_unt_cst_src_env_sk;
+  out0.d_product.prod_id::d_product_prod_id;
+  out0.d_product.prod_id_qlfr_cd::d_product_prod_id_qlfr_cd;
+  out0.l_cost_type.cost_type_cd::l_cost_type_cost_type_cd;
+  out0.l_price_src.price_src_cd::l_price_src_price_src_cd;
+  out0.*::in0.*;
+
+end;

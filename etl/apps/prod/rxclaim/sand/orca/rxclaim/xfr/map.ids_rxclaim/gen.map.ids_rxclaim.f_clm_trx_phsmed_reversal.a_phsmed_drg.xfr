@@ -1,0 +1,156 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_drug_lkp   */
+out0::bzt_3_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=4) drg_class_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) drg_subclass_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) drg_nm_extn_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_drug_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_5_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_date_lkp   */
+out0::bzt_5_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("");
+  decimal("\x01",0) cal_yr_mnth_id = NULL(""), cal_yr_qtr_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_date_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_submarket_id_lkp   */
+out0::bzt_4_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=9) carrier_id = NULL("");
+  decimal("\x01",0) submarket_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_submarket_id_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.a_phsmed_drg.drg_class_id,[transform],in0.drug_sk,
+     in0.dxf_sk,
+     'lookup("d_drug_lkp").drg_class_id']
+  [out0.a_phsmed_drg.drg_subclass_id,[transform],in0.drug_sk,
+     'lookup("d_drug_lkp").drg_subclass_id']
+  [out0.a_phsmed_drg.submarket_id,[transform],in0.orig_carrier_id,
+     'lookup("l_submarket_id_lkp").submarket_id']
+  [out0.a_phsmed_drg.cal_yr_qtr_id,[transform],in0.sbm_dt,
+     'lookup("d_date_lkp").cal_yr_qtr_id']
+  [out0.a_phsmed_drg.carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.a_phsmed_drg.dxf_hk_part1,'a_phsmed_drg.dxf_hk_part1',1,0]
+     [out0.a_phsmed_drg.care_fac_adjud_sk,'a_phsmed_drg.care_fac_adjud_sk',1,0]
+     [out0.a_phsmed_drg.dxf_hk_part2,'a_phsmed_drg.dxf_hk_part2',1,0]
+     [out0.a_phsmed_drg.drg_class_id,'a_phsmed_drg.drg_class_id',1,0]
+     [out0.a_phsmed_drg.dxf_sk,'a_phsmed_drg.dxf_sk',1,0]
+     [out0.a_phsmed_drg.drg_subclass_id,'a_phsmed_drg.drg_subclass_id',1,0]
+     [out0.a_phsmed_drg.submarket_id,'a_phsmed_drg.submarket_id',1,0]
+     [out0.a_phsmed_drg.mbr_sk,'a_phsmed_drg.mbr_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.a_phsmed_drg.cal_yr_qtr_id,'a_phsmed_drg.cal_yr_qtr_id',1,0]
+     [out0.a_phsmed_drg.src_env_sk,'a_phsmed_drg.src_env_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.a_phsmed_drg.carrier_id,'a_phsmed_drg.carrier_id',1,0]
+  ]
+  impacts:
+  [
+     ['lookup("d_drug_lkp").drg_subclass_id','drg_subclass_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.care_fac_adjud_sk,'care_fac_adjud_sk',2,2]
+     [in0.drug_sk,'drug_sk',2,2]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     ['lookup("d_drug_lkp").drg_class_id','drg_class_id',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     [in0.dxf_sk,'dxf_sk',2,2]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("l_submarket_id_lkp").submarket_id','submarket_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("d_date_lkp").cal_yr_qtr_id','cal_yr_qtr_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) a_phsmed_drg_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) a_phsmed_drg_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) a_phsmed_drg_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) a_phsmed_drg_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_phsmed_drg_submarket_id;
+let decimal("\x01",0) a_phsmed_drg_care_fac_adjud_sk = fail_if_error(in0.care_fac_adjud_sk);
+let decimal("\x01",0) a_phsmed_drg_cal_yr_qtr_id;
+let decimal("\x01",0) a_phsmed_drg_mbr_sk = fail_if_error(in0.mbr_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=4) a_phsmed_drg_drg_class_id;
+let string("\x01",charset="iso-8859-15", maximum_length=6) a_phsmed_drg_drg_subclass_id;
+let decimal("\x01",0) a_phsmed_drg_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+a_phsmed_drg_drg_class_id=fail_if_error(bzt_3_6c54cc0a_58d0f5d0_636b_2(in0.drug_sk).drg_class_id);
+
+/*   Default value   */
+a_phsmed_drg_drg_subclass_id=fail_if_error(bzt_3_6c54cc0a_58d0f5d0_636b_2(in0.drug_sk).drg_subclass_id);
+
+/*   Default value   */
+a_phsmed_drg_submarket_id=fail_if_error(bzt_4_6c54cc0a_58d0f5d0_636b_2(in0.orig_carrier_id).submarket_id);
+
+/*   Default value   */
+a_phsmed_drg_cal_yr_qtr_id=fail_if_error(bzt_5_6c54cc0a_58d0f5d0_636b_2((decimal(""))(string(""))string_substring(str=in0.sbm_dt , start_index= 1, length=6 )
+).cal_yr_qtr_id);
+
+  out0.a_phsmed_drg.dxf_hk_part1::a_phsmed_drg_dxf_hk_part1;
+  out0.a_phsmed_drg.dxf_hk_part2::a_phsmed_drg_dxf_hk_part2;
+  out0.a_phsmed_drg.dxf_sk::a_phsmed_drg_dxf_sk;
+  out0.a_phsmed_drg.carrier_id::a_phsmed_drg_carrier_id;
+  out0.a_phsmed_drg.submarket_id::a_phsmed_drg_submarket_id;
+  out0.a_phsmed_drg.care_fac_adjud_sk::a_phsmed_drg_care_fac_adjud_sk;
+  out0.a_phsmed_drg.cal_yr_qtr_id::a_phsmed_drg_cal_yr_qtr_id;
+  out0.a_phsmed_drg.mbr_sk::a_phsmed_drg_mbr_sk;
+  out0.a_phsmed_drg.drg_class_id::a_phsmed_drg_drg_class_id;
+  out0.a_phsmed_drg.drg_subclass_id::a_phsmed_drg_drg_subclass_id;
+  out0.a_phsmed_drg.src_env_sk::a_phsmed_drg_src_env_sk;
+  out0.*::in0.*;
+
+end;

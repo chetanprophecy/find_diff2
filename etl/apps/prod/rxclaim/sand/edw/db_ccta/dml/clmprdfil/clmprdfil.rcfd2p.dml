@@ -1,0 +1,92 @@
+record
+  decimal("\x01",0, maximum_length=7, sign_reserved) f2szal /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 GCN Sequence"
+ BizComment:"Clinical Formulation ID :P. This value represents a drug formulation identifier that groups together drug products by the following criteria and is stored in the following fields: :P. Ingredient List Identifier (HICL_SEQNO) - (formerly called the Hierarchical Ingredient Code List Sequence Number) represents the list or set of ingredients in a drug formulation. This includes only active ingredients. :P. Route of Administration (GCRT) - represents a common or representative site or method by which the drug is administered, such as oral, injection, or topical. :P. Dosage Form (GCDF) - represents a dosage form of the clinical formulation, such as tablet or capsule. :P. Strength of Drug (STR) - describes the drug potency in metric units. :P. A unique GCN_SEQNO is assigned to each different combination of ingredient(s), strength, dosage form, and route of administration for a drug formulation. The GCN_SEQNO aggregates drug products that share like ingredient sets, route of admin, dosage form, and strength of drug but are marketed by multiple manufacturers. However, it may be manufactured, packaged, and sold in literally hundreds of variations ranging from bottles of 500 to blister packs."
+@*/;
+  string("\x01", maximum_length=3) f2uual /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 HIC3 Code"
+ BizComment:"Hierarchical Specific Therapeutic Class Code :P. This code, depending on its context, identifies the specific therapeutic class of an ingredient (HIC_SEQN), a Clinical Formulation ID (GCN_SEQNO), or each ingredient in an Ingredient List (HICL_SEQNO). The HIC3 represents the first three characters of the Hierarchical Ingredient Code (HIC). The HIC3 serves as the primary identifier for First DataBank's Specific Therapeutic Classification system. :P. In context of an ingredient, the HIC3 uses the ingredient's HIC2 as a base value and adds a third character to complete the Specific Therapeutic Class Code. :P. In context of a Clinical Formulation ID (GCN_SEQNO), the specific therapeutic class is determined based on the formulation's ingredients taken into consideration as a whole. The GCN_SEQNO's HIC3 value depends on the therapeutic purpose of the entire formulation based on the judgment of First DataBank clinical staff. This field is not populated programmatically, and therefore no assumptions should be made about a formulation's HIC3 value based on the various HIC3 values of its ingredients. :P. In the context of a HICL_SEQNO, the specific therapeutic class represents the "parent" HIC3 of each ingredient linked to the HICL_SEQNO. Multi-ingredient HICL_SEQNOs will have multiple HIC3 values. Additionally, the HIC3 value ignores any "continuation" HIC3s."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) f2sxal /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD2P: FD3 HICL Seq-Ingrd ListID"
+ BizComment:"Hierarchical Ingredient List Identifier  :P. This number identifies a unique combination of active ingredients, irrespective of the manufacturer, package size, dosage form, route of administration, or strength. :P. The HICL_SEQNO is associated to one (or many) Clinical Formulation ID (GCN_SEQNO) to identify the active ingredients of the clinical formulation. The HICL_SEQNO does not contain inactive ingredients."
+@*/;
+  string("\x01", maximum_length=2) f2b7ho /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCFD2P: FD6 Dosage Form Code"
+ BizComment:"Dosage Form Code :P. This code represents a dosage form. The dosage form of a clinical formulation describes the physical presentation of a drug, such as tablet, capsule, or liquid. It may also incorporate the delivery and release mechanism of the drug. :P. A GCDF is associated to each Clinical Formulation ID (GCN_SEQNO) to identify that component of the clinical formulation."
+@*/;
+  string("\x01", maximum_length=1) f2b4ho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD2P: FD7 Route of Admin Code"
+ BizComment:"Route of Administration Code :P. This 1-byte code provides the normal site or method by which a drug is administered, such as oral, injection, or topical. :P. A GCRT is associated to each Clinical Formulation ID (GCN_SEQNO) to identify that component of the formulation."
+@*/;
+  string("\x01", maximum_length=10) f2wuis /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Drug Strength Desc-10"
+ BizComment:"Drug Strength Description-10  :P. This 10-byte field provides a description of drug potency in units of grams, milligrams, percentage, and other terms. :P. The strength of a clinical formulation is usually expressed in the metric system. Whole numbers are used when possible (for example, 500MG is used in preference to 0.5G); however, this is not an absolute standard. :P. The information in this field might include abbreviations considered inappropriate by The Joint Commission (TJC) and Institute for Safe Medication Practices (ISMP). To comply with TJC and ISMP requirements, use the STR60 field instead of the STR field."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) f2s0al /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Therapeutic Class-Gen"
+ BizComment:"Generic Therapeutic Class Code  :P. This code classifies drugs according to the most common intended use. :P. This classification provides the most general therapeutic groupings available from First DataBank. For more definitive therapeutic classification, consider Standard Therapeutic Class (TC), Specific Therapeutic Class (HIC3), AHFS Therapeutic Class (AHFS8), or the Enhanced Therapeutic Classification System (ETC). :P. 02 - ANALGESICS  :P. 03 - ANALGESIC AND ANTIHISTAMINE COMBINATION  :P. 05 - ANESTHETICS    :P. 08 - ANTI-OBESITY DRUGS  :P. 09 - ANTIDOTES           :P. 11 - ANTIARTHRITICS      :P. 14 - ANTIASTHMATICS      :P. 17 - ANTIHISTAMINES      :P. 18 - ANTIHISTAMINE AND DECONGESTANT COMBINATION :P. 20 - ANTIINFECTIVES       :P. 23 - ANTIINFECTIVES/MISC. :P. 26 - ANTINEOPLASTICS      :P. 29 - ANTIPARKINSON DRUGS  :P. 32 - AUTONOMIC DRUGS      :P. 35 - BLOOD                :P. 38 - CARDIAC DRUGS        :P. 41 - CARDIOVASCULAR       :P. 44 - CNS DRUGS            :P. 47 - CONTRACEPTIVES       :P. 50 - COUGH/COLD PREPARATIONS :P. 53 - DIAGNOSTIC           :P. 56 - DIURETICS            :P. 59 - ELECT/CALORIC/H20    :P. 62 - EENT PREPS           :P. 65 - GASTROINTESTINAL     :P. 68 - HORMONES             :P. 71 - HYPOGLYCEMICS        :P. 72 - IMMUNOSUPPRESANT     :P. 74 - MISC. MEDICAL SUPPLIES, DEVISES, NON-DRUG  :P. 77 - MUSCLE RELAXANTS         :P. 80 - PSYCHOTHERAPEUTIC DRUGS  :P. 83 - SEDATIVE/HYPNOTICS       :P. 86 - SKIN PREPS               :P. 89 - THYROID PREPS            :P. 92 - BIOLOGICALS              :P. 94 - PRE-NATAL VITAMINS       :P. 95 - VITAMINS                 :P. 97 - SMOKING DETERRENTS       :P. 98 - HERBALS                  :P. 99 - UNCLASSIFIED DRUG PRODUCTS"
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) f2s1al /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Therapeutic Class-Std"
+ BizComment:"Standard Therapeutic Class Code    :P. This code classifies drugs according to the most common intended use. :P. This therapeutic classification is intended to service those users who need a definitive but not comprehensive therapeutic classification system. Comprehensive therapeutic classification is provided by  Specific Therapeutic Class (HIC3), AHFS Therapeutic Class (AHFS8), or Generic Therapeutic Class (GTC)."
+@*/;
+  string("\x01", maximum_length=1) f2ccho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Drug Category"
+ BizComment:"Drug Category Code  :P. This code indicates that a drug product belongs to a category that is commonly treated as an exception in third party plans. :P. 0 - UNSPECIFIED    :P. 1 - DRUGS TO TREAT IMPOTENCY  :P. 2 - GROWTH HORMONE, GHRH, AND RELATED AGENTS :P. A - ANTI-ANXIETY AGENTS   :P. B - FERTILITY AGENTS      :P. C - CONTRACEPTIVES, ORAL  :P. D - DIAGNOSTICS           :P. E - FLUORIDE PREPARATIONS (EXCL.VIT.COMB.) :P. F - ANTIOBESITY DRUGS    :P. G - ANTACIDS             :P. H - HEMATINICS           :P. I - INSULINS             :P. J - SMOKING DETERRENTS   :P. K - AIDS RELATED         :P. L - LAXATIVES                :P. M - REUSABLE NEEDLES (ALL)   :P. N - DISPOSABLE NEEDLES (ALL) :P. O - REUS.SYRINGES W/WO NEEDLES (NON-INSULIN) :P. P - DISP.SYRINGES W/WO NEEDLES (NON-INSULIN) :P. Q - REUSABLE SYRINGES W/WO NEEDLES (INSULIN) :P. R - DISP.SYRINGES W/WO NEEDLES (INSULIN)     :P. S - DIABETIC SUPPLIES, MISC.                 :P. T - CONTRACEPTICES, TOPICAL                  :P. U - NON-REIMBURSABLE COSMETIC INDICATIONS    :P. V - VITAMINS, COMMONLY EXCLUDED              :P. W - CONTRACEPTIVES, SYSTEMIC, NON-ORAL       :P. Y - OSTOMY SUPPLIES                          :P. Z - ATTENTION DEFICIT DISORDER/NARCOLEPSY"
+@*/;
+  string("\x01", maximum_length=1) f2cdho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 GCNSeq Mult/SingleInd"
+ BizComment:"GCN_SEQNO-Level Multi-Source/Single-Source Indicator  :P. This indicator differentiates single-source from multiple-source drugs, applicable only to the United States. :P. Note that all medical supplies are assigned a GCNSEQ_GI value of 1, indicating multi-source. :P. 0 - Unassigned      :P. 1 - Multiple source :P. 2 - Single source"
+@*/;
+  string("\x01", maximum_length=1) f2ceho /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Gender-Specific Drug"
+ BizComment:"Gender-Specific Drug Indicator  :P. This indicator identifies drugs that are used for a specific gender. :P. GENDER can be used to help determine appropriateness of therapy based upon the sex of the patient (or to infer the sex of a patient). An indicator value is attached to the Formulation ID (GCN) or the Clinical Formulation ID (GCN_SEQNO), which identifies whether it is used in males, females, or both. This indicator is routinely applied to prescription (Rx) drugs where gender delineation is appropriate. Clinical Formulations linked to a combination of Rx and OTC products will have the indicator applied as to reflect the Rx use. No effort is currently made to populate this indicator for non-Rx products, such as herbal products or dietary supplements. :P. 0 - Neutral; not gender specific (default) :P. 1 - Used exclusively in males              :P. 2 - Most likely used in males              :P. 3 - Used exclusively in females            :P. 4 - Most likely used in females"
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) f2s2al /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 HIC3 Seq-TheraClsSeq#"
+ BizComment:"Hierarchical Specific Therapeutic Class Code Sequence Number :P. This number represents a Hierarchical Specific Therapeutic Class Code (HIC3) and is a stable identifier. :P. The HIC_SEQN is a permanent numeric identifier that represents the specific therapeutic class of a given active ingredient (HIC_SEQN). The HIC3_SEQN is a dumb number, assigned by First DataBank, which will never change."
+@*/;
+  string("\x01", maximum_length=60) f2b8ho /*CHAR(60) NOT NULL*/ /*@
+BizName:"RCFD2P: FD5 Drug Strength Desc-60"
+ BizComment:"Drug Strength Description-60 :P. This 60-byte field provides a description of drug potency in units of grams, milligrams, percentage, and other terms. STR60 is associated to each Clinical Formulation ID (GCN_SEQNO) to identify that component of the clinical formulation. :P. The strength of a clinical formulation is usually expressed in the metric system. Whole numbers are used when possible (for example, 500MG is used in preference to 0.5G); however, this is not an absolute standard. :P. The information in this field will comply with The Joint Commission (TJC) and Institute for Safe Medication Practices (ISMP) requirements to avoid inappropriate abbreviations."
+@*/;
+  string("\x01", maximum_length=1) f2dyak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCFD2P: FD2 Record Status"
+ BizComment:"Record Status  :P. The status of the record is determined by the input file. :P. Incremental Update: 'D'-Delete records will inactivate a product record. :P. Full Database: If record on system is absent from full file, then the record will be inactivated. :P. A - Active  :P. I - Inactive"
+@*/;
+  string("\x01", maximum_length=10) f2akvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD2P: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) f2c2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD2P: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) f2adtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD2P: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) f2alvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD2P: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) f2advn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD2P: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) f2bmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCFD2P: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) f2abtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCFD2P: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) f2aevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCFD2P: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

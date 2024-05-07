@@ -1,0 +1,80 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_595a2c10_202f_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.op_rx64607p1.ambkqu_1,[passthrough],in0.net_ambkqu]
+  [out0.op_rx64607p1.clientdef3_1,[passthrough],in0.net_clientdef3]
+  [out0.op_rx64607p1.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.op_rx64607p1.datesbm_1,[passthrough],in0.net_datesbm]
+  [out0.op_rx64607p1.clmseqnbr_1,[transform],in0.net_clmseqnbr]
+  [out0.op_rx64607p1.rxclaimnbr_1,[passthrough],in0.net_rxclaimnbr]
+  [out0.op_rx64607p1.clmorigin_1,[passthrough],in0.net_clmorigin]
+  [out0.op_rx64607p1.reimbursmt_1,[passthrough],in0.net_reimbursmt]
+  [out0.op_rx64607p1.claimsts_1,[passthrough],in0.net_claimsts]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.op_rx64607p1.ambkqu_1,'op_rx64607p1.ambkqu_1',1,0]
+     [out0.op_rx64607p1.clientdef3_1,'op_rx64607p1.clientdef3_1',1,0]
+     [out0.op_rx64607p1.src_env_sk,'op_rx64607p1.src_env_sk',1,0]
+     [out0.op_rx64607p1.datesbm_1,'op_rx64607p1.datesbm_1',1,0]
+     [out0.op_rx64607p1.clmseqnbr_1,'op_rx64607p1.clmseqnbr_1',1,0]
+     [out0.op_rx64607p1.rxclaimnbr_1,'op_rx64607p1.rxclaimnbr_1',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.op_rx64607p1.clmorigin_1,'op_rx64607p1.clmorigin_1',1,0]
+     [out0.op_rx64607p1.reimbursmt_1,'op_rx64607p1.reimbursmt_1',1,0]
+     [out0.op_rx64607p1.claimsts_1,'op_rx64607p1.claimsts_1',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.net_clmorigin,'net_clmorigin',1,1]
+     [in0.net_datesbm,'net_datesbm',1,1]
+     [in0.net_ambkqu,'net_ambkqu',1,1]
+     [in0.net_clientdef3,'net_clientdef3',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.net_clmseqnbr,'net_clmseqnbr',3,1]
+     [in0.net_rxclaimnbr,'net_rxclaimnbr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.net_reimbursmt,'net_reimbursmt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.net_claimsts,'net_claimsts',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01", maximum_length=17) op_rx64607p1_rxclaimnbr_1 = fail_if_error(in0.net_rxclaimnbr);
+let decimal("\x01", maximum_length=5) op_rx64607p1_clmseqnbr_1 = fail_if_error(if(in0.net_clmseqnbr < 0) in0.net_clmseqnbr else (1000 - in0.net_clmseqnbr));
+let string("\x01", maximum_length=3) op_rx64607p1_claimsts_1 = fail_if_error(in0.net_claimsts);
+let decimal("\x01", maximum_length=10) op_rx64607p1_datesbm_1 = fail_if_error(in0.net_datesbm);
+let string("\x01", maximum_length=12) op_rx64607p1_clientdef3_1 = fail_if_error(in0.net_clientdef3);
+let string("\x01", maximum_length=3) op_rx64607p1_reimbursmt_1 = fail_if_error(in0.net_reimbursmt);
+let string("\x01", maximum_length=3) op_rx64607p1_clmorigin_1 = fail_if_error(in0.net_clmorigin);
+let decimal("\x01".2, maximum_length=11) op_rx64607p1_ambkqu_1 = fail_if_error(in0.net_ambkqu);
+let decimal("\x01",0) op_rx64607p1_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.op_rx64607p1.rxclaimnbr_1::op_rx64607p1_rxclaimnbr_1;
+  out0.op_rx64607p1.clmseqnbr_1::op_rx64607p1_clmseqnbr_1;
+  out0.op_rx64607p1.claimsts_1::op_rx64607p1_claimsts_1;
+  out0.op_rx64607p1.datesbm_1::op_rx64607p1_datesbm_1;
+  out0.op_rx64607p1.clientdef3_1::op_rx64607p1_clientdef3_1;
+  out0.op_rx64607p1.reimbursmt_1::op_rx64607p1_reimbursmt_1;
+  out0.op_rx64607p1.clmorigin_1::op_rx64607p1_clmorigin_1;
+  out0.op_rx64607p1.ambkqu_1::op_rx64607p1_ambkqu_1;
+  out0.op_rx64607p1.src_env_sk::op_rx64607p1_src_env_sk;
+  out0.*::in0.*;
+
+end;

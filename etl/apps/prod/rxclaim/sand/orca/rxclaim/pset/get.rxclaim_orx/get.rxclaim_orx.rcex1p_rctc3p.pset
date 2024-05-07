@@ -1,0 +1,21 @@
+!prototype|P|||${AI_PSET}/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_orx.rcex1p
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+TARGET_NAME||||rxclaim_orx.rctc3p_lkp
+DRIVER_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_6 = $DRIVER_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_6 = $DRIVER_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.rioinb,[passthrough],in0.clmseqnbr]\n  [out0.rip2nb,[passthrough],in0.rxclaimnbr]\n  [out0.src_env_sk,[passthrough],in0.dxf_src_sys_id]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.rioinb,'rioinb',1,0]\n     [out0.clmseqnbr,'clmseqnbr',1,0]\n     [out0.filename,'filename',1,0]\n     [out0.rip2nb,'rip2nb',1,0]\n     [out0.rxclaimnbr,'rxclaimnbr',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]\n  ]\n  impacts:\n  [\n     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]\n     [in0.rxclaimnbr,'rxclaimnbr',2,2]\n     [in0.clmseqnbr,'clmseqnbr',2,2]\n     [in0.filename,'filename',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet decimal("\\x01", maximum_length=18) rip2nb = fail_if_error(in0.rxclaimnbr);\nlet decimal("\\x01", maximum_length=6) rioinb = fail_if_error(in0.clmseqnbr);\nlet decimal("\\x01",0) src_env_sk = fail_if_error(in0.dxf_src_sys_id);\n\n\n\n  out0.rip2nb::rip2nb;\n  out0.rioinb::rioinb;\n  out0.src_env_sk::src_env_sk;\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_1_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_4 = $NON_DRIVER_1_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_4 = $NON_DRIVER_1_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.ids_updt_dttm,'ids_updt_dttm',1,0]\n     [out0.rioinb,'rioinb',1,0]\n     [out0.rip2nb,'rip2nb',1,0]\n     [out0.filename,'filename',1,0]\n     [out0.riirhf,'riirhf',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.riodcd,'riodcd',1,0]\n     [out0.rivtid,'rivtid',1,0]\n  ]\n  impacts:\n  [\n     [in0.rioinb,'rioinb',1,1]\n     [in0.rip2nb,'rip2nb',1,1]\n     [in0.ids_updt_dttm,'ids_updt_dttm',1,1]\n     [in0.riirhf,'riirhf',1,1]\n     [in0.src_env_sk,'src_env_sk',1,1]\n     [in0.filename,'filename',1,1]\n     [in0.riodcd,'riodcd',1,1]\n     [in0.rivtid,'rivtid',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_2_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_7 = $NON_DRIVER_2_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_7 = $NON_DRIVER_2_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n  ]\n  impacts:\n  [\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_3_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_5 = $NON_DRIVER_3_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_5 = $NON_DRIVER_3_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n  ]\n  impacts:\n  [\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+OVERRIDE_JOIN_KEY||||{rip2nb; rioinb; src_env_sk}
+OVERRIDE_JOIN_LEVEL_2_KEY||||{}
+OVERRIDE_JOIN_LEVEL_3_KEY||||{}
+LOOKUP_FIELDS_KEY||||{rip2nb;rioinb;riodcd;riirhf;rivtid;src_env_sk}
+DRIVER_FILE_TYPE||||Clean
+DRIVER_OUTPUT_FIELDS||||rxclaimnbr,clmseqnbr,dxf_src_sys_id
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.rctc3p
+NON_DRIVER_1_OUTPUT_FIELDS||||rip2nb,rioinb,riirhf,riodcd,rivtid,src_env_sk
+JOIN_TYPE||||Inner Join
+DO_LOOKUP||||1
+JOIN_KEY||||{rip2nb; rioinb; src_env_sk}
+ADDITIONAL_FIELDS_DML||||record\n  decimal("\\x01", maximum_length=18) rip2nb;\n  decimal("\\x01", maximum_length=6) rioinb;\nend
+LOOKUP_KEY||||{rip2nb; rioinb; src_env_sk}

@@ -1,0 +1,15 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.ids_rxclaim/clean.ids_rxclaim.f_audit_note_mthly_clms_detail_adjust.${RUN_ID}.dat.gz
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.f_audit_note_mthly_clms_detail_adjust_rfmt.xfr
+USE_SORT||||True
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_rxclaim/many/f_audit_note_mthly_clms_detail.*.dat.gz
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.f_audit_note_mthly_clms_detail.dml
+OUTPUT_FILE_DML|$|||$AI_DML/clean.ids_rxclaim/clean.ids_rxclaim.f_audit_note_mthly_clms_detail_adjust.dml
+SORT_KEY||||{submd_mnth_id; claim_nbr; rxclaim_instance_ind; ids_updt_dttm}
+USE_DEDUP||||True
+FILTER_EXPR|$|||is_defined(adjust_claim_nbr) && adjust_claim_seq_nbr == 0
+DO_IDS_ICFF_LOOKUP||||True

@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcopdp
+SOURCE_SYSTEM_OVERRIDE||||ctrx_rxclaim
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcopdp                  a4tsc4,a4t8n2,a4m5cj,a4wqp1,a4wrp1,a4mvhy,a4mwhy,a4mzhy,a4mxhy,a4myhy,a4m2hy,a4m0hy,a4m1hy,a4m6cj,a4wsp1,a4wtp1,a4wup1,a4wvp1,a4m7cj,a4m8cj,a4m9cj,a4fyh6,a4n7hb,a4n5hb,a4aecd,a4akdt,a4l7h9,a4l8h9,a4e5ar,a4akvn,a4c2dt,a4adtm,a4alvn,a4advn,a4bmdt,a4abtm,a4aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[if (START_CHANGES_TIME != '')  "WHERE rcopdp.a4bmdt >= " +  string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +  " AND rcopdp.a4bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +  " OPTIMIZE FOR ALL ROWS" else  "WHERE rcopdp.a4bmdt >= " +  string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +  " AND rcopdp.a4bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +  " OPTIMIZE FOR ALL ROWS"]

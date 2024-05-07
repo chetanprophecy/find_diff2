@@ -1,0 +1,52 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5aabb7e9_732_6 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_sub_cari.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_sub_cari.submarket_id,'l_sub_cari.submarket_id',1,0]
+     [out0.l_sub_cari.care_fac_id,'l_sub_cari.care_fac_id',1,0]
+     [out0.l_sub_cari.src_env_sk,'l_sub_cari.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_sub_cari.carrier_id,'l_sub_cari.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.submarket_id,'submarket_id',1,1]
+     [in0.care_fac_id,'care_fac_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=30) l_sub_cari_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_sub_cari_care_fac_id = fail_if_error(in0.care_fac_id);
+let decimal("\x01",0) l_sub_cari_submarket_id = fail_if_error(in0.submarket_id);
+let decimal("\x01",0) l_sub_cari_src_env_sk = 480;
+
+
+
+  out0.l_sub_cari.carrier_id::l_sub_cari_carrier_id;
+  out0.l_sub_cari.care_fac_id::l_sub_cari_care_fac_id;
+  out0.l_sub_cari.submarket_id::l_sub_cari_submarket_id;
+  out0.l_sub_cari.src_env_sk::l_sub_cari_src_env_sk;
+  out0.*::in0.*;
+
+end;

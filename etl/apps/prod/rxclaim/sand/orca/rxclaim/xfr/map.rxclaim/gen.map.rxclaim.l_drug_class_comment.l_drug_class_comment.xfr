@@ -1,0 +1,60 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5aabb7e9_732_8 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_dr_cls_ct.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_dr_cls_ct.drug_class_mpd_comment,'l_dr_cls_ct.drug_class_mpd_comment',1,0]
+     [out0.l_dr_cls_ct.src_env_sk,'l_dr_cls_ct.src_env_sk',1,0]
+     [out0.l_dr_cls_ct.drug_class_desc,'l_dr_cls_ct.drug_class_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_dr_cls_ct.drug_class_new,'l_dr_cls_ct.drug_class_new',1,0]
+     [out0.l_dr_cls_ct.drug_class_psi_comment,'l_dr_cls_ct.drug_class_psi_comment',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_dr_cls_ct.drug_class_id,'l_dr_cls_ct.drug_class_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.drug_class_mpd_comment,'drug_class_mpd_comment',1,1]
+     [in0.drug_class_id,'drug_class_id',1,1]
+     [in0.drug_class_new,'drug_class_new',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.drug_class_desc,'drug_class_desc',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.drug_class_psi_comment,'drug_class_psi_comment',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=4) l_dr_cls_ct_drug_class_id = fail_if_error(in0.drug_class_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_dr_cls_ct_drug_class_desc = fail_if_error(in0.drug_class_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=512) l_dr_cls_ct_drug_class_psi_comment = fail_if_error(in0.drug_class_psi_comment);
+let string("\x01",charset="iso-8859-15", maximum_length=512) l_dr_cls_ct_drug_class_mpd_comment = fail_if_error(in0.drug_class_mpd_comment);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_dr_cls_ct_drug_class_new = fail_if_error(in0.drug_class_new);
+let decimal("\x01",0) l_dr_cls_ct_src_env_sk = 480;
+
+
+
+  out0.l_dr_cls_ct.drug_class_id::l_dr_cls_ct_drug_class_id;
+  out0.l_dr_cls_ct.drug_class_desc::l_dr_cls_ct_drug_class_desc;
+  out0.l_dr_cls_ct.drug_class_psi_comment::l_dr_cls_ct_drug_class_psi_comment;
+  out0.l_dr_cls_ct.drug_class_mpd_comment::l_dr_cls_ct_drug_class_mpd_comment;
+  out0.l_dr_cls_ct.drug_class_new::l_dr_cls_ct_drug_class_new;
+  out0.l_dr_cls_ct.src_env_sk::l_dr_cls_ct_src_env_sk;
+  out0.*::in0.*;
+
+end;

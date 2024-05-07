@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.orx_rcpigp.pig_inactive_dt,[transform],in0.sygocf]
+  [out0.orx_rcpigp.pig_rec_stat_cd,[passthrough],in0.syc0aq]
+  [out0.orx_rcpigp.pig_ing_type_cd,[passthrough],in0.sycyaq]
+  [out0.orx_rcpigp.pig_ing_flg,[passthrough],in0.syczaq]
+  [out0.orx_rcpigp.prod_key,[passthrough],in0.syiin2]
+  [out0.orx_rcpigp.pig_gnrc_nm,[passthrough],in0.syamiv]
+  [out0.orx_rcpigp.pig_strngth_uom_cd,[passthrough],in0.syaniv]
+  [out0.orx_rcpigp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.orx_rcpigp.pig_ing_id,[passthrough],in0.syc1aq]
+  [out0.orx_rcpigp.pig_strngth,[passthrough],in0.syuuqu]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.orx_rcpigp.pig_inactive_dt,'orx_rcpigp.pig_inactive_dt',3,3]
+     [out0.orx_rcpigp.pig_rec_stat_cd,'orx_rcpigp.pig_rec_stat_cd',1,0]
+     [out0.orx_rcpigp.pig_ing_type_cd,'orx_rcpigp.pig_ing_type_cd',1,0]
+     [out0.orx_rcpigp.pig_ing_flg,'orx_rcpigp.pig_ing_flg',1,0]
+     [out0.orx_rcpigp.prod_key,'orx_rcpigp.prod_key',1,0]
+     [out0.orx_rcpigp.pig_gnrc_nm,'orx_rcpigp.pig_gnrc_nm',1,0]
+     [out0.orx_rcpigp.pig_strngth_uom_cd,'orx_rcpigp.pig_strngth_uom_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.orx_rcpigp.src_env_sk,'orx_rcpigp.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.orx_rcpigp.pig_ing_id,'orx_rcpigp.pig_ing_id',1,0]
+     [out0.orx_rcpigp.pig_strngth,'orx_rcpigp.pig_strngth',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.syiin2,'syiin2',1,1]
+     [in0.syc1aq,'syc1aq',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.syaniv,'syaniv',1,1]
+     [in0.syczaq,'syczaq',1,1]
+     [in0.syuuqu,'syuuqu',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.sygocf,'sygocf',6,4]
+     [in0.syc0aq,'syc0aq',1,1]
+     [in0.sycyaq,'sycyaq',1,1]
+     [in0.syamiv,'syamiv',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",maximum_length=9) orx_rcpigp_prod_key = fail_if_error(in0.syiin2);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcpigp_pig_ing_type_cd = fail_if_error(in0.sycyaq);
+let decimal("\x01",maximum_length=9) orx_rcpigp_pig_ing_id = fail_if_error(in0.syc1aq);
+let string("\x01",charset="iso-8859-15", maximum_length=40) orx_rcpigp_pig_gnrc_nm = fail_if_error(in0.syamiv);
+let decimal("\x01",maximum_length=18) orx_rcpigp_pig_strngth = fail_if_error(in0.syuuqu);
+let string("\x01",charset="iso-8859-15", maximum_length=11) orx_rcpigp_pig_strngth_uom_cd = fail_if_error(in0.syaniv);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcpigp_pig_ing_flg = fail_if_error(in0.syczaq);
+let string("\x01",charset="iso-8859-15", maximum_length=1) orx_rcpigp_pig_rec_stat_cd = fail_if_error(in0.syc0aq);
+let datetime("YYYYMMDDHH24MISS")("\x01") orx_rcpigp_pig_inactive_dt;
+let decimal("\x01",0) orx_rcpigp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute orx_rcpigp.pig_inactive_dt  (#1)   */
+if(first_defined(fail_if_error(((string_length(in0.sygocf) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+in0.sygocf))) ==YYYYMMDD(19000000+in0.sygocf))),0))begin
+  orx_rcpigp_pig_inactive_dt=YYYYMMDD(19000000+in0.sygocf);
+end
+else if(first_defined(fail_if_error(((string_length(in0.sygocf)) ==8) && ((is_valid(YYYYMMDD(in0.sygocf))) ==1)),0))begin
+  orx_rcpigp_pig_inactive_dt=(date("YYYYMMDD")) in0.sygocf;
+end
+else begin
+  orx_rcpigp_pig_inactive_dt=00010101;
+end
+
+  out0.orx_rcpigp.prod_key::orx_rcpigp_prod_key;
+  out0.orx_rcpigp.pig_ing_type_cd::orx_rcpigp_pig_ing_type_cd;
+  out0.orx_rcpigp.pig_ing_id::orx_rcpigp_pig_ing_id;
+  out0.orx_rcpigp.pig_gnrc_nm::orx_rcpigp_pig_gnrc_nm;
+  out0.orx_rcpigp.pig_strngth::orx_rcpigp_pig_strngth;
+  out0.orx_rcpigp.pig_strngth_uom_cd::orx_rcpigp_pig_strngth_uom_cd;
+  out0.orx_rcpigp.pig_ing_flg::orx_rcpigp_pig_ing_flg;
+  out0.orx_rcpigp.pig_rec_stat_cd::orx_rcpigp_pig_rec_stat_cd;
+  out0.orx_rcpigp.pig_inactive_dt::orx_rcpigp_pig_inactive_dt;
+  out0.orx_rcpigp.src_env_sk::orx_rcpigp_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,100 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5922e427_d8d_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_pharmacy.phr_id,[passthrough],in0.lsavcd]
+  [out0.d_phr_sup_id.phr_supp_id_sk,[transform],]
+  [out0.d_phr_sup_id.phr_suppl_id_exp_dt,[transform],in0.lstbce]
+  [out0.d_phr_sup_id.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_phr_sup_id.phr_sk,[transform],]
+  [out0.d_phr_sup_id.phr_suppl_id_typ,[transform],]
+  [out0.d_phr_sup_id.phr_suppl_id,[passthrough],in0.lsa0iu]
+  [out0.d_phr_sup_id.phr_suppl_id_st_cd,[passthrough],in0.lsi1an]
+  [out0.d_phr_sup_id.phr_id,[passthrough],in0.lsavcd]
+  [out0.d_phr_sup_id.phr_suppl_id_stat,[transform],]
+  [out0.d_phr_sup_id.src_chg_dt,[transform],in0.lsbmdt]
+  [out0.d_phr_sup_id.phr_suppl_id_del_dt,[transform],in0.lstcce]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_pharmacy.phr_id,'d_pharmacy.phr_id',1,0]
+     [out0.d_phr_sup_id.phr_supp_id_sk,'d_phr_sup_id.phr_supp_id_sk',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id_exp_dt,'d_phr_sup_id.phr_suppl_id_exp_dt',1,0]
+     [out0.d_phr_sup_id.src_env_sk,'d_phr_sup_id.src_env_sk',1,0]
+     [out0.d_phr_sup_id.phr_sk,'d_phr_sup_id.phr_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id_typ,'d_phr_sup_id.phr_suppl_id_typ',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id,'d_phr_sup_id.phr_suppl_id',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id_st_cd,'d_phr_sup_id.phr_suppl_id_st_cd',1,0]
+     [out0.d_phr_sup_id.phr_id,'d_phr_sup_id.phr_id',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id_stat,'d_phr_sup_id.phr_suppl_id_stat',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_phr_sup_id.src_chg_dt,'d_phr_sup_id.src_chg_dt',1,0]
+     [out0.d_phr_sup_id.phr_suppl_id_del_dt,'d_phr_sup_id.phr_suppl_id_del_dt',1,0]
+  ]
+  impacts:
+  [
+     [in0.lsbmdt,'lsbmdt',1,1]
+     [in0.lstbce,'lstbce',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.lstcce,'lstcce',1,1]
+     [in0.lsi1an,'lsi1an',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.lsavcd,'lsavcd',2,2]
+     [in0.lsa0iu,'lsa0iu',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_phr_sup_id_phr_supp_id_sk = -1;
+let decimal("\x01",0) d_phr_sup_id_phr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_phr_sup_id_phr_id = fail_if_error(in0.lsavcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_phr_sup_id_phr_suppl_id_typ = "STATE LICENCE";
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_phr_sup_id_phr_suppl_id_st_cd = fail_if_error(in0.lsi1an);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_phr_sup_id_phr_suppl_id = fail_if_error(in0.lsa0iu);
+let date("YYYYMMDD")("\x01") d_phr_sup_id_phr_suppl_id_exp_dt;
+let date("YYYYMMDD")("\x01") d_phr_sup_id_phr_suppl_id_del_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_phr_sup_id_phr_suppl_id_stat = "Y";
+let date("YYYYMMDD")("\x01") d_phr_sup_id_src_chg_dt;
+let decimal("\x01",0) d_phr_sup_id_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_pharmacy_phr_id = fail_if_error(in0.lsavcd);
+
+
+
+/*   Default value   */
+d_phr_sup_id_phr_suppl_id_exp_dt=fail_if_error(date_check(in0.lstbce));
+
+/*   Default value   */
+d_phr_sup_id_src_chg_dt=fail_if_error(date_check(in0.lsbmdt));
+
+/*   Default value   */
+d_phr_sup_id_phr_suppl_id_del_dt=fail_if_error(date_check(in0.lstcce));
+
+  out0.d_phr_sup_id.phr_supp_id_sk::d_phr_sup_id_phr_supp_id_sk;
+  out0.d_phr_sup_id.phr_sk::d_phr_sup_id_phr_sk;
+  out0.d_phr_sup_id.phr_id::d_phr_sup_id_phr_id;
+  out0.d_phr_sup_id.phr_suppl_id_typ::d_phr_sup_id_phr_suppl_id_typ;
+  out0.d_phr_sup_id.phr_suppl_id_st_cd::d_phr_sup_id_phr_suppl_id_st_cd;
+  out0.d_phr_sup_id.phr_suppl_id::d_phr_sup_id_phr_suppl_id;
+  out0.d_phr_sup_id.phr_suppl_id_exp_dt::d_phr_sup_id_phr_suppl_id_exp_dt;
+  out0.d_phr_sup_id.phr_suppl_id_del_dt::d_phr_sup_id_phr_suppl_id_del_dt;
+  out0.d_phr_sup_id.phr_suppl_id_stat::d_phr_sup_id_phr_suppl_id_stat;
+  out0.d_phr_sup_id.src_chg_dt::d_phr_sup_id_src_chg_dt;
+  out0.d_phr_sup_id.src_env_sk::d_phr_sup_id_src_env_sk;
+  out0.d_pharmacy.phr_id::d_pharmacy_phr_id;
+  out0.*::in0.*;
+
+end;

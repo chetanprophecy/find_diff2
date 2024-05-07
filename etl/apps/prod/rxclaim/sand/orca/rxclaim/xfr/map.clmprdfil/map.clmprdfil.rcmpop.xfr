@@ -1,0 +1,38 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.mbr_member_id :: in.aeabcd;
+  out.car_carrier_id :: in.aeaacd;
+  out.acc_account_id :: in.aeaccd;
+  out.grp_group_id :: in.aeadcd;
+  out.prf_prescriber_id :: in.aelghb;
+  out.prq_prscrbr_id_qualifier :: in.aexch6;
+  out.prf_prescriber_id_state :: in.aexeh6;
+  out.mpo_seq_nbr :: in.aeh8hs;
+  out.mpo_status :: in.aec5i1;
+  out.mpo_from_date :: in.aequhg;
+  out.mpo_thru_date :: in.aeqvhg;
+  out.csc_copay_schedule_name :: in.aegrcd;
+  out.csc_step_nbr :: in.aeelnb;
+  out.prc_price_schedule_name :: in.aegocd;
+  out.mpo_md_ovr_pharm_prc_sch :: in.aecvhc;
+  out.mpo_md_ovr_client_pat_pay :: in.aed1hb;
+  out.mpo_md_ovr_pharm_pat_pay :: in.aedwhb;
+  out.msg_message_cde :: in.aedbc1;
+  out.mpo_md_ovr_msg_typ :: in.aedhcj;
+  out.mpo_md_override_qual :: in.aedccj;
+  out.add_date :: in.aec2dt;
+  out.add_time :: in.aeadtm;
+  out.add_user_name :: in.aeakvn;
+  out.add_program_name :: in.aealvn;
+  out.chg_date :: in.aebmdt;
+  out.chg_time :: in.aeabtm;
+  out.chg_user_name :: in.aeadvn;
+  out.chg_program_name :: in.aeaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+end;

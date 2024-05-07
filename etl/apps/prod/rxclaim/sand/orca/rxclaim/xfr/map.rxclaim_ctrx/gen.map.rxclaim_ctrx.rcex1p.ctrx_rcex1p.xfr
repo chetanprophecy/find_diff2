@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.raw_rcex1p.claim_stat_id,[passthrough],in0.claimsts]
+  [out0.raw_rcex1p.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.raw_rcex1p.manl_claim_trk_dt_sk,[transform],in0.manrecvdte]
+  [out0.raw_rcex1p.claim_seq_nbr,[transform],in0.clmseqnbr]
+  [out0.raw_rcex1p.claim_nbr,[passthrough],in0.rxclaimnbr]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.raw_rcex1p.claim_stat_id,'raw_rcex1p.claim_stat_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.raw_rcex1p.src_env_sk,'raw_rcex1p.src_env_sk',1,0]
+     [out0.raw_rcex1p.manl_claim_trk_dt_sk,'raw_rcex1p.manl_claim_trk_dt_sk',3,2]
+     [out0.raw_rcex1p.claim_seq_nbr,'raw_rcex1p.claim_seq_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.raw_rcex1p.claim_nbr,'raw_rcex1p.claim_nbr',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.manrecvdte,'manrecvdte',5,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxclaimnbr,'rxclaimnbr',1,1]
+     [in0.claimsts,'claimsts',1,1]
+     [in0.clmseqnbr,'clmseqnbr',3,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_0 = 0;
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) raw_rcex1p_claim_nbr = fail_if_error(in0.rxclaimnbr);
+let decimal("\x01",0) raw_rcex1p_claim_seq_nbr = fail_if_error(if(in0.clmseqnbr<0) in0.clmseqnbr else (1000 - in0.clmseqnbr));
+let string("\x01",charset="iso-8859-15", maximum_length=1) raw_rcex1p_claim_stat_id = fail_if_error(in0.claimsts);
+let decimal("\x01",0) raw_rcex1p_manl_claim_trk_dt_sk;
+let decimal("\x01",0) raw_rcex1p_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Rule:Compute raw_rcex1p.manl_claim_trk_dt_sk  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.manrecvdte)) ==8) && ((is_valid(YYYYMMDD(in0.manrecvdte))) ==1)),0))begin
+  bzt_0=1;
+  raw_rcex1p_manl_claim_trk_dt_sk=(string(""))YYYYMMDD(in0.manrecvdte);
+end
+else if(first_defined(fail_if_error(((length_of(in0.manrecvdte) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000 + in0.manrecvdte))) ==1)),0))begin
+  bzt_0=1;
+  raw_rcex1p_manl_claim_trk_dt_sk=(string(""))YYYYMMDD(19000000 + in0.manrecvdte);
+end
+
+/*   Default value   */
+if(!bzt_0)begin
+  raw_rcex1p_manl_claim_trk_dt_sk=fail_if_error((string(""))YYYYMMDD(19000101));
+end
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.raw_rcex1p.claim_nbr::raw_rcex1p_claim_nbr;
+  out0.raw_rcex1p.claim_seq_nbr::raw_rcex1p_claim_seq_nbr;
+  out0.raw_rcex1p.claim_stat_id::raw_rcex1p_claim_stat_id;
+  out0.raw_rcex1p.manl_claim_trk_dt_sk::raw_rcex1p_manl_claim_trk_dt_sk;
+  out0.raw_rcex1p.src_env_sk::raw_rcex1p_src_env_sk;
+  out0.*::in0.*;
+
+end;

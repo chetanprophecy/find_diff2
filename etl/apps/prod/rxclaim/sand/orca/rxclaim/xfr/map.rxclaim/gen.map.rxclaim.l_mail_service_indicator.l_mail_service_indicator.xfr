@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_ml_ind.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_ml_ind.hm_dlvry_ind_desc,[passthrough],in0.mail_srvc_ind_desc]
+  [out0.l_ml_ind.hm_dlvry_ind,[passthrough],in0.mail_srvc_ind]
+  [out0.l_ml_ind.hm_dlvry_ind_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_ml_ind.src_env_sk,'l_ml_ind.src_env_sk',1,0]
+     [out0.l_ml_ind.hm_dlvry_ind_desc,'l_ml_ind.hm_dlvry_ind_desc',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_ml_ind.hm_dlvry_ind,'l_ml_ind.hm_dlvry_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.l_ml_ind.hm_dlvry_ind_sk,'l_ml_ind.hm_dlvry_ind_sk',1,1]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.mail_srvc_ind_desc,'mail_srvc_ind_desc',1,1]
+     [in0.mail_srvc_ind,'mail_srvc_ind',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) l_ml_ind_hm_dlvry_ind_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_ml_ind_hm_dlvry_ind = fail_if_error(in0.mail_srvc_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_ml_ind_hm_dlvry_ind_desc = fail_if_error(in0.mail_srvc_ind_desc);
+let decimal("\x01",0) l_ml_ind_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let unicode decimal('') l_ml_ind_mail_srvc_ind_sk = -1;
+
+
+
+/*   Default value   */
+l_ml_ind_hm_dlvry_ind_sk=fail_if_error(l_ml_ind_mail_srvc_ind_sk);
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.l_ml_ind.hm_dlvry_ind_sk::l_ml_ind_hm_dlvry_ind_sk;
+  out0.l_ml_ind.hm_dlvry_ind::l_ml_ind_hm_dlvry_ind;
+  out0.l_ml_ind.hm_dlvry_ind_desc::l_ml_ind_hm_dlvry_ind_desc;
+  out0.l_ml_ind.src_env_sk::l_ml_ind_src_env_sk;
+  out0.*::in0.*;
+
+end;

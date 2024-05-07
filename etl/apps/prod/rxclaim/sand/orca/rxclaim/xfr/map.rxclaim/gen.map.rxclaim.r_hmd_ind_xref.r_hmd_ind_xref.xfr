@@ -1,0 +1,58 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.hmd_ind.hmd_ncpdp,[passthrough],in0.nabp_ncpdp]
+  [out0.hmd_ind.hmd_hdi_ind,[passthrough],in0.hdi]
+  [out0.hmd_ind.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.hmd_ind.hmd_mr_ind,[passthrough],in0.mr_hdi]
+  [out0.hmd_ind.hmd_ind_xref_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.hmd_ind.hmd_ncpdp,'hmd_ind.hmd_ncpdp',1,0]
+     [out0.hmd_ind.hmd_hdi_ind,'hmd_ind.hmd_hdi_ind',1,0]
+     [out0.hmd_ind.src_env_sk,'hmd_ind.src_env_sk',1,0]
+     [out0.hmd_ind.hmd_mr_ind,'hmd_ind.hmd_mr_ind',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.hmd_ind.hmd_ind_xref_sk,'hmd_ind.hmd_ind_xref_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.hdi,'hdi',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.nabp_ncpdp,'nabp_ncpdp',1,1]
+     [in0.mr_hdi,'mr_hdi',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) hmd_ind_hmd_ind_xref_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=12) hmd_ind_hmd_ncpdp = fail_if_error(in0.nabp_ncpdp);
+let string("\x01",charset="iso-8859-15", maximum_length=1) hmd_ind_hmd_hdi_ind = fail_if_error(in0.hdi);
+let string("\x01",charset="iso-8859-15", maximum_length=1) hmd_ind_hmd_mr_ind = fail_if_error(in0.mr_hdi);
+let decimal("\x01",0) hmd_ind_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.hmd_ind.hmd_ind_xref_sk::hmd_ind_hmd_ind_xref_sk;
+  out0.hmd_ind.hmd_ncpdp::hmd_ind_hmd_ncpdp;
+  out0.hmd_ind.hmd_hdi_ind::hmd_ind_hmd_hdi_ind;
+  out0.hmd_ind.hmd_mr_ind::hmd_ind_hmd_mr_ind;
+  out0.hmd_ind.src_env_sk::hmd_ind_src_env_sk;
+  out0.*::in0.*;
+
+end;

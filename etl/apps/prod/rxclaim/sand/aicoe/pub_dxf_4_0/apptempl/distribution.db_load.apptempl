@@ -1,0 +1,411 @@
+<AppConfTempl name="Load Database (Distribution)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+out :: get_mart_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  if(length_of(words) == 4 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[1];  
+  if(length_of(words) == 5 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  if(length_of(words) == 6 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[1];  
+  out :: answer;
+end;
+
+out :: get_table_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 4 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[2];  
+  if(length_of(words) == 5 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 6 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  out :: answer;
+end;
+
+out :: get_ids_source_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 3 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "")
+    answer = words[2];  
+  if(length_of(words) == 4 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] != "ilm")
+    answer = words[3];  
+  out :: answer;
+end;
+
+out :: get_ilm_name(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 5 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "")
+    answer = words[4];  
+  if(length_of(words) == 6 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[4];  
+  out :: answer;
+end;
+
+out :: get_variation(str)=
+begin
+  let string("\x01")[] words = string_split_no_empty(str, ".");
+  let string("\x01") answer = "";
+  if(length_of(words) == 6 and words[0] == "load" and re_replace(words[1], "[A-Za-z0-9_]", "") == "" and re_replace(words[2], "[A-Za-z0-9_]", "") == "" and words[3] == "ilm" and re_replace(words[4], "[A-Za-z0-9_]", "") == "" and re_replace(words[5], "[A-Za-z0-9_]", "") == "")
+    answer = words[5];  
+  out :: answer;
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="error" type="string"/>
+      <Variable name="target_nk" type="string"/>
+      <Variable name="target_nk_suggested" type="string"/>
+      <ListVariable name="target_db_project" type="string"/>
+      <Variable name="v_target_db_project" type="string"/>
+      <Variable name="db_type" type="string"/>
+      <Variable name="ids_table_name" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <Project name="proj">
+      <Pset name="load_db" prototype_path="${AI_PSET}/distribute.load_db.interim.pset" save_pset="false">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_TARGET_DB_LIST" expression="$AI_TARGET_DB_LIST"/>
+      </Pset>
+    </Project>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check Configuration Name">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in.configuration_name,".")) not member [vector 3,4,5,6])
+  "Configuration should be named like &lt;i&gt;load.datamartname.tablename&lt;/i&gt; or &lt;i&gt;load.datamartname.tablename.ids_src_nm&lt;/i&gt;\n" +
+  "or &lt;i&gt;load.datamartname.tablename.ilm.ilm_name.variation&lt;/i&gt;" + 
+  "Close and recreate configuration"
+else if(string_split_no_empty(built_in.configuration_name,".")[0] != "load")
+  "Configuration should be named like &lt;i&gt;load.datamartname.table&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[1], "[A-Za-z0-9_]", "") != "" )
+  "Please remove invalid characters from datamart name\n" +
+  "Close and recreate configuration"
+else if(re_replace(string_split_no_empty(built_in.configuration_name,".")[2], "[A-Za-z0-9_]", "") != "" )
+  "Please remove invalid characters from table name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 4 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != ""))
+  "Please remove invalid characters from ids_source_name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 4 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm")
+  "Configuration name is expected to contain ilm name. Variation may or may not be specified.\n" +
+  "Expected Format: &lt;/i&gt;load.datamart.target.ilm.ilm_name.variation&lt;/i&gt;\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 5 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "")
+  "Please remove invalid characters from ilm name\n" +
+  "Close and recreate configuration"
+else if(length_of(string_split_no_empty(built_in.configuration_name,".")) == 6 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[3] == "ilm" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "")
+  "Please remove invalid characters from variation\n" +
+  "Close and recreate configuration"
+else
+  ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment name="Suggest Target NK">
+      <SourceValue is_expression="true">begin
+  let string("\x01") ids_key = get_ids_table_nk(vars.ids_table_name);
+  let long keys_found_in_target = 1;
+  let target_fields = record_info_item(proj.load_db.LOAD_READY_DML, "name");
+
+  for(let field in key_info(ids_key))
+    if(field.field_name not member target_fields)
+      keys_found_in_target = 0;
+
+  result :: if(keys_found_in_target) ids_key else "";
+end</SourceValue>
+      <TargetValue reference="vars.target_nk_suggested"/>
+    </Assignment>
+    <Assignment name="DB Project List">
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let line in re_split_no_empty(proj.load_db.AI_TARGET_DB_LIST, "[\r\n]+")) : 
+  if(re_split_no_empty(line, "[ \t]+")[3] == string_downcase(vars.db_type)) re_split_no_empty(line, "[ \t]+")[4])</SourceValue>
+      <TargetValue reference="vars.target_db_project"/>
+    </Assignment>
+    <Assignment name="Pset Naming">
+      <SourceValue is_expression="true">if(proj.load_db.TABLE_NAME == proj.load_db.IDS_SOURCE_NAME &amp;&amp; proj.load_db.DO_PROCESS_ILM_EVENTS == "0")
+"pset/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "." + proj.load_db.TABLE_NAME + ".pset"
+else if(proj.load_db.TABLE_NAME != proj.load_db.IDS_SOURCE_NAME &amp;&amp; proj.load_db.DO_PROCESS_ILM_EVENTS == "0")
+"pset/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "." + proj.load_db.TABLE_NAME + "." + proj.load_db.IDS_SOURCE_NAME + ".pset"
+else if(proj.load_db.DO_PROCESS_ILM_EVENTS == "1" &amp;&amp; proj.load_db.VARIATION != "")
+"pset/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "." + proj.load_db.TABLE_NAME + "." + proj.load_db.ILM_NAME + "." + proj.load_db.VARIATION + ".pset"
+else 
+"pset/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "/load." + vars.db_type + "." + proj.load_db.DATA_MART_NAME + "." + proj.load_db.TABLE_NAME + "." + proj.load_db.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.load_db" property="relative_path"/>
+      <Condition is_expression="true">not is_blank(vars.db_type) and not is_blank(proj.load_db.DATA_MART_NAME) and vars.error == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[3], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.load_db.DO_PROCESS_ILM_EVENTS"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ilm_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_db.ILM_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_variation(built_in)</SourceValue>
+      <TargetValue reference="proj.load_db.VARIATION"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_mart_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_db.DATA_MART_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_table_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_db.TABLE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_ids_source_name(built_in)</SourceValue>
+      <TargetValue reference="proj.load_db.IDS_SOURCE_NAME"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(is_defined(vars.target_nk) &amp;&amp; !is_blank(vars.target_nk)) vars.target_nk else vars.target_nk_suggested</SourceValue>
+      <TargetValue reference="proj.load_db.NATURAL_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.v_target_db_project"/>
+      <TargetValue reference="proj.load_db.TGT_DB_PROJECT"/>
+    </Assignment>
+    <Assignment name="Restrict target DB list to the current type of database">
+      <SourceValue is_expression="true">'$[get_matching_db_list_dbms_type_maintain_order(AI_TARGET_DB_LIST, "' + vars.db_type + '")]'</SourceValue>
+      <TargetValue reference="proj.load_db.TARGET_DB_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">1</SourceValue>
+      <TargetValue reference="proj.load_db" property="save_pset"/>
+      <Condition is_expression="true">vars.error == "" &amp;&amp; !is_blank(vars.db_type)</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$[ join_types(\"record\n string(1) event_indicator; //Flag that would differentiate the records. I-Insert | U-Update | D- Delete\n end\", read_file(\"$" + proj.load_db.TGT_DB_PROJECT + "_DML/" + proj.load_db.DATA_MART_NAME + "/" + proj.load_db.DATA_MART_NAME + "." + proj.load_db.TABLE_NAME + ".dml\")  )]"</SourceValue>
+      <TargetValue reference="proj.load_db.LOAD_READY_DML"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.load_db"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.error == ""</Enabled>
+        <ErrorMessage>You must save this configuration before running it. The run button will be disabled if Appconf naming errors are found.</ErrorMessage>
+        <Description is_expression="true">if(not (vars.error == ""))
+        "You must SAVE AND REFRESH this configuration before running it. The run button will be disabled if Appconf naming errors are found." 
+        else "Load data to database."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Label reference="vars.error"/>
+          <UIElements/>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <Popup>
+              <Label>Pick Target DB Attributes...</Label>
+              <Title>Pick Target DB Attributes</Title>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>netezza</ConstantValue>
+                    <ConstantValue>mysql</ConstantValue>
+                    <ConstantValue>oracle</ConstantValue>
+                  </Choices>
+                  <Label>Target Database Type</Label>
+                  <SourceTargetValue reference="vars.db_type"/>
+                  <WarnIfTargetNotInChoices>false</WarnIfTargetNotInChoices>
+                  <ChoiceDisplayNames>
+                    <ConstantValue>Netezza</ConstantValue>
+                    <ConstantValue>MySQL</ConstantValue>
+                    <ConstantValue>Oracle</ConstantValue>
+                  </ChoiceDisplayNames>
+                  <BlankValueDisplayName>&lt;Select DB Type&gt;</BlankValueDisplayName>
+                </ComboBox>
+                <ComboBox>
+                  <Choices reference="vars.target_db_project"/>
+                  <Label>Select DB Project</Label>
+                  <SourceTargetValue reference="vars.v_target_db_project"/>
+                  <BlankValueDisplayName>&lt;Select project&gt;</BlankValueDisplayName>
+                </ComboBox>
+                <ComboBox>
+                  <Choices is_expression="true">vector_sort_dedup_first(get_ids_table_list())</Choices>
+                  <Label>Select IDS Table</Label>
+                  <SourceTargetValue reference="vars.ids_table_name"/>
+                  <BlankValueDisplayName>&lt;Select IDS&gt;</BlankValueDisplayName>
+                </ComboBox>
+              </UIElements>
+              <Style>options</Style>
+            </Popup>
+            <Box>
+              <Label>Database Type</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.load_db.TARGET_DBMS"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>DB Project</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.load_db.TGT_DB_PROJECT"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>IDS Table</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="vars.ids_table_name"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label is_expression="true">"&lt;font color='#ff4949'&gt;&lt;b&gt;Truncate and Load for table:&lt;/b&gt;&lt;/font&gt;" + " " + ( 
+  string_upcase(proj.load_db.TABLE_NAME)
+)</Label>
+              <SourceTargetValue reference="proj.load_db.TRUNCATE_AND_LOAD"/>
+              <Width>300</Width>
+            </CheckBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Target Natural Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;font color='#008800'&gt;Suggested Key: " + vars.target_nk_suggested + "&lt;/font&gt;"</Label>
+              <Visible is_expression="true">0 /* not is_blank(vars.target_nk_suggested) and vars.target_nk != vars.target_nk_suggested and proj.distribute.DO_PROCESS_ILM_EVENTS == "N" */</Visible>
+            </TextLabel>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Natural Key:&lt;/b&gt;\n" + vars.target_nk</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit natural key...</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Natural Key</Label>
+                  <RecordFormat reference="proj.load_db.LOAD_READY_DML"/>
+                  <SourceTargetValue reference="vars.target_nk"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <TextLabel>
+              <Label>&lt;font color='#ff4500'&gt;Note: NATURAL_KEYS on the Target Table may not be same as NK suggested.We also could have Primary SK of the Table in it as it would be a Distribution Column&lt;/font&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+        <Box>
+          <Label>Target Netezza Distribution Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Distribution Key:&lt;/b&gt;\n" + proj.load_db.NZ_DISTRIBUTION_KEY</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit distribution key...</Label>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Distribution Key</Label>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.load_db.TARGET_DML_FILE))</RecordFormat>
+                  <SourceTargetValue reference="proj.load_db.NZ_DISTRIBUTION_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <TextLabel>
+              <Label>&lt;font color='#ff4500'&gt;Note: Only specify a distribution key if it is NOT part of the natural key&lt;/font&gt;</Label>
+              <Visible is_expression="true">proj.load_db.VALIDATE_NZ_DISTRIBUTION_KEY != "1"</Visible>
+            </TextLabel>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and string_downcase(proj.load_db.TARGET_DBMS) member [vector "netezza"] /* append to this vector as we build more types of loaders */</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Load</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Remember: Save before you run</Label>
+              <SourceValue reference="proj.load_db"/>
+            </ExecuteButton>
+          </UIElements>
+          <Style>executable</Style>
+          <Visible is_expression="true">vars.error == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>DB Load Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.load_db.PROJECT_DIR + "/" + proj.load_db.relative_path + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">read_file(proj.load_db.PROJECT_DIR + "/" + proj.load_db.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>LR DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label reference="proj.load_db.LOAD_READY_DML"/>
+          <Width>1000</Width>
+          <Height>1000</Height>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label>&lt;font size="13" color="#2E86C1"&gt;
+Currenty DXF supports below database for loading:
+1. Netezza
+2. MySQL
+
+For any new database requirement, please reach out to AICOE.
+
+Target DB is populated from AI_TARGET_DB_LIST and defined as sandbox parameter.
+
+Please make sure you have added the entry in AI_TARGET_DB_LIST and the "Parameter Prefix" value should be unique across all the list entries.
+
+&lt;/font&gt;</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,992 @@
+<AppConfTempl name="Combine (Distribution)" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all"/>
+  <TemplateExpressionPackage>include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+    include "/~$PUB_DXF_XFR/ace_format.xfr";</TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="combine" prototype_path="${AI_PSET}/distribute.combine.file.interim.pset" save_pset="false">
+        <PdlExpression name="AI_PSET" expression="$AI_PSET"/>
+        <FlowData name="FILTER_INPUT" source_port="/Concatenate/out" dest_port="/FBE_Record_Drop_for_DM/in"/>
+        <FlowData name="MAPPING_INPUT" source_port="/Apply_Default_IDW_Rules/out0" dest_port="/RFMT_Column_Selection_Rules/in"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="project_rpath" expression="$AI_RPATH/$AI_REL_LOC"/>
+      </Pset>
+      <Pset name="combine_db" prototype_path="${AI_PSET}/distribute.combine.interim.pset" save_pset="false">
+        <PdlExpression name="AI_PSET" expression="$AI_PSET"/>
+        <FlowData name="FILTER_INPUT" source_port="/Concatenate/out" dest_port="/FBE_Record_Drop_for_DM/in"/>
+        <FlowData name="MAPPING_INPUT" source_port="/Apply_Default_IDW_Rules/out0" dest_port="/RFMT_Column_Selection_Rules/in"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="AI_TARGET_DB_LIST" expression="$AI_TARGET_DB_LIST"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="error" type="string"/>
+      <Variable name="db_type" type="string"/>
+      <ListVariable name="target_db_project" type="string"/>
+      <Variable name="v_target_db_project" type="string"/>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_object" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+      </ListVariable>
+      <Variable name="lookup_problem" type="string"/>
+      <Variable name="mapping_rules" type="ruleset"/>
+      <Variable name="registration_error" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <SharedFile name="catalog" path="" is_appconf_owned="true"/>
+    <SharedFile name="load_ready_file_dml" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment name="Check Configuration Name">
+      <SourceValue is_expression="true">if(length_of(string_split_no_empty(built_in.configuration_name,".")) not member [vector 3, 4, 5, 6, 7])
+        "Configuration should be named as follows:\n" +
+        "&lt;i&gt;combine.target_system.target_entity&lt;/i&gt;\n" +
+        "&lt;i&gt;combine.file.target_system.target_entity&lt;/i&gt;\n" +
+        "&lt;i&gt;combine.target_system.target_entity.ids_source_name&lt;/i&gt;\n" +
+        "&lt;i&gt;combine.file.target_system.target_entity.ids_source_name&lt;/i&gt;\n" +
+        "or &lt;i&gt;combine.target_system.target_entity.ilm.ilm_name&lt;/i&gt;\n" + 
+        "or &lt;i&gt;combine.file.target_system.target_entity.ilm.ilm_name&lt;/i&gt;\n" + 
+        "or &lt;i&gt;combine.target_system.target_entity.ilm.ilm_name.variation&lt;/i&gt;\n" +
+        "or &lt;i&gt;combine.file.target_system.target_entity.ilm.ilm_name.variation&lt;/i&gt;\n" +
+        "Close and recreate configuration"
+      else if(!starts_with(built_in, "combine."))
+        "Configuration name should begin with the word &lt;i&gt;combine.&lt;/i&gt;\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[2], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from datamart name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from table name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 5 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "ilm")
+        "Please remove invalid characters from ids source name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 6 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[4] != "ilm") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from ilm name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 7 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[4] != "ilm") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[6], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from variation\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] != "file" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[1], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from datamart name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] != "file" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[2], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from table name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] != "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 4 &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "ilm")
+        "Please remove invalid characters from ids source name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] != "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 5 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[3] != "ilm") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from ilm name\n" +
+        "Close and recreate configuration"
+      else if(string_split_no_empty(built_in.configuration_name,".")[1] != "file" &amp;&amp; length_of(string_split_no_empty(built_in.configuration_name,".")) == 6 &amp;&amp; (re_replace(string_split_no_empty(built_in.configuration_name,".")[3], "[A-Za-z0-9_]", "") != "" or string_split_no_empty(built_in.configuration_name,".")[3] != "ilm") &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[4], "[A-Za-z0-9_]", "") != "" &amp;&amp; re_replace(string_split_no_empty(built_in.configuration_name,".")[5], "[A-Za-z0-9_]", "") != "")
+        "Please remove invalid characters from variation\n" +
+        "Close and recreate configuration"
+      else
+        ""</SourceValue>
+      <TargetValue reference="vars.error"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.combine.LOAD_READY_FILE_DML</SourceValue>
+      <TargetValue reference="load_ready_file_dml" property="contents"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.combine_db.LOAD_READY_FILE_DML</SourceValue>
+      <TargetValue reference="load_ready_file_dml" property="contents"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.combine.TARGET_ENTITY == proj.combine.IDS_SOURCE_NAME &amp;&amp; proj.combine.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine.file." + proj.combine.TARGET_SYSTEM + "/combine.file." + proj.combine.TARGET_NAME + ".pset"
+      else if(proj.combine.TARGET_ENTITY != proj.combine.IDS_SOURCE_NAME &amp;&amp; proj.combine.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine.file." + proj.combine.TARGET_SYSTEM + "/combine.file." + proj.combine.TARGET_NAME + "." + proj.combine.IDS_SOURCE_NAME + ".pset"
+      else if(proj.combine.DO_PROCESS_ILM_EVENTS == "1" &amp;&amp; proj.combine.VARIATION != "")
+        "pset/combine.file." + proj.combine.TARGET_SYSTEM + "/combine.file." + proj.combine.TARGET_NAME + "." + proj.combine.ILM_NAME + "." + proj.combine.VARIATION + ".pset"
+      else 
+        "pset/combine.file." + proj.combine.TARGET_SYSTEM + "/combine.file." + proj.combine.TARGET_NAME + "." + proj.combine.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.combine" property="relative_path"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">1</SourceValue>
+      <TargetValue reference="proj.combine_db" property="save_pset"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">1</SourceValue>
+      <TargetValue reference="proj.combine" property="save_pset"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and  string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.combine_db.TABLE_NAME == proj.combine_db.IDS_SOURCE_NAME &amp;&amp; proj.combine_db.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine." + proj.combine_db.DATA_MART_NAME + "/combine." + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + ".pset"
+      else if(proj.combine_db.TABLE_NAME != proj.combine_db.IDS_SOURCE_NAME &amp;&amp; proj.combine_db.DO_PROCESS_ILM_EVENTS == "0")
+        "pset/combine." + proj.combine_db.DATA_MART_NAME + "/combine." + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + "." + proj.combine_db.IDS_SOURCE_NAME + ".pset"
+      else if(proj.combine_db.DO_PROCESS_ILM_EVENTS == "1" &amp;&amp; proj.combine_db.VARIATION != "")
+        "pset/combine." + proj.combine_db.DATA_MART_NAME + "/combine." + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + "." + proj.combine_db.ILM_NAME + "." + proj.combine_db.VARIATION + ".pset"
+      else 
+        "pset/combine." + proj.combine_db.DATA_MART_NAME + "/combine." + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + "." + proj.combine_db.ILM_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.combine_db" property="relative_path"/>
+      <Condition is_expression="true">vars.error == "" and vars.registration_error == "" and  string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.combine.REGISTRATION_DETAILS_VEC == "[vector]")
+"Target " + proj.combine.TARGET_NAME + " not registered. Please try again after registraion." 
+else  ""</SourceValue>
+      <TargetValue reference="vars.registration_error"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(proj.combine_db.REGISTRATION_DETAILS_VEC == "[vector]")
+"Target " + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + " not registered. Please try again after registraion." 
+else  ""</SourceValue>
+      <TargetValue reference="vars.registration_error"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[2] + "." + string_split(built_in, ".")[3]</SourceValue>
+      <TargetValue reference="proj.combine.TARGET_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[2]</SourceValue>
+      <TargetValue reference="proj.combine_db.TABLE_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="proj.combine_db.DATA_MART_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[4], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.combine.DO_PROCESS_ILM_EVENTS"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[5], "")</SourceValue>
+      <TargetValue reference="proj.combine.ILM_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[6], "")</SourceValue>
+      <TargetValue reference="proj.combine.VARIATION"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[3], "") == "ilm") "1" else "0"</SourceValue>
+      <TargetValue reference="proj.combine_db.DO_PROCESS_ILM_EVENTS"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[4], "")</SourceValue>
+      <TargetValue reference="proj.combine_db.ILM_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(string_split(built_in, ".")[5], "")</SourceValue>
+      <TargetValue reference="proj.combine_db.VARIATION"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[4], "") not member [vector "ilm", ""]) string_split(built_in, ".")[4] else proj.combine.TARGET_ENTITY</SourceValue>
+      <TargetValue reference="proj.combine.IDS_SOURCE_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(first_without_error(string_split(built_in, ".")[3], "") not member [vector "ilm", ""]) string_split(built_in, ".")[3] else proj.combine_db.TABLE_NAME</SourceValue>
+      <TargetValue reference="proj.combine_db.IDS_SOURCE_NAME"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment name="Lookup Validations">
+      <SourceValue is_expression="true">begin
+        let long[int] is_valid_vec = vars.lookups.eme_object.is_valid;
+        let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+        let string(int)[int] eme_lookup_name_vec = vars.lookups.eme_object.name;
+        let string(int)[int] name_vec =  vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int) lookup_problem = "";
+        for ( let long i, i &lt; length_of(is_valid_vec) and lookup_problem == "" ) begin
+          if ( not is_valid_vec[i] )
+            lookup_problem = printf("Lookup #%d: Please select a valid dataset", i+1);
+          if ( not starts_with(eme_lookup_name_vec[i],"lookup."))
+            lookup_problem = printf("Lookup #%d: Please select lookup starting with lookup.", i+1);
+          if ( not ends_with(eme_lookup_name_vec[i],".dat") and lookup_problem == "")
+            lookup_problem = printf("Lookup #%d: Please select lookup ending with .dat", i+1);
+
+          else if ( not ends_with(dml_vec[i], ".dml") and lookup_problem == "")
+            lookup_problem = printf("Lookup #%d: Invalid DML: %s.  Please select a valid dataset.", i+1, dml_vec[i]);
+          else if ( is_blank(name_vec[i]) and lookup_problem == "" )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup name.", i+1);
+          else if ( is_blank(key_vec[i]) and lookup_problem == "")
+            lookup_problem = printf("Lookup #%d: Please provide a lookup key.", i+1);
+        end
+        result :: lookup_problem;
+      end</SourceValue>
+      <TargetValue reference="vars.lookup_problem"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" + "combine.file." + proj.combine.TARGET_SYSTEM + "/" +  built_in + ".cat"</SourceValue>
+      <TargetValue reference="proj.combine.AB_CATALOG"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" + "distribute." + proj.combine_db.DATA_MART_NAME + "/distribute" +  string_replace_first(built_in, "combine", "") + ".cat"</SourceValue>
+      <TargetValue reference="proj.combine_db.AB_CATALOG"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine_db.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let string(int)[int] name_vec = vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int)[int] file_vec = vars.lookups.eme_object.parameterized_rpath;
+        let string(int)[int] dml_vec = vars.lookups.eme_object.parameterized_record_format_rpath;
+        result :: string_join(
+          for ( let long i, i &lt; length_of(name_vec) ) :
+            printf("%s,%s,/~%s,/~%s\n", name_vec[i],
+              key_vec[i],
+              re_replace(file_vec[i], "[{}]", ""), 
+              re_replace( dml_vec[i], "[{}]", "")),
+          "");
+        end</SourceValue>
+      <TargetValue reference="catalog"/>
+      <Condition is_expression="true">vars.lookup_problem == "" and catalog.path != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog"/>
+      <TargetValue reference="proj.combine.ACE_CATALOG_CONTENTS"/>
+      <Condition is_expression="true">vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog"/>
+      <TargetValue reference="proj.combine_db.ACE_CATALOG_CONTENTS"/>
+      <Condition is_expression="true">vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_object" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin        
+        let string(int) cat = proj.combine.ACE_CATALOG_CONTENTS.resolved_value;
+        let cat_vec = string_split_no_empty(cat, "\n");
+        result :: for ( let c in cat_vec ) :
+          string_replace_first(string_split(c, ",")[2], // The data directory is the 3rd field in the catalog.
+            "/~", "");  // Strip off the /~ we added when writing the catalog.
+      end</SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path" resizes_list="false"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.mapping_rules" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.MAPPING_INPUT" property="record_format"/>
+      <TargetValue reference="vars.mapping_rules" property="input_record_format"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine_db.MAPPING_INPUT" property="record_format"/>
+      <TargetValue reference="vars.mapping_rules" property="input_record_format"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.LOAD_READY_FILE_DML"/>
+      <TargetValue reference="vars.mapping_rules" property="output_record_format"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine_db.LOAD_READY_FILE_DML"/>
+      <TargetValue reference="vars.mapping_rules" property="output_record_format"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.mapping_rules" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="vars.mapping_rules" property="package_catalog_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine"/>
+      <TargetValue reference="vars.mapping_rules" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine.MAPPING_INPUT"/>
+      <TargetValue reference="vars.mapping_rules" property="test_data_path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.combine_db.MAPPING_INPUT"/>
+      <TargetValue reference="vars.mapping_rules" property="test_data_path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_rules"/>
+      <TargetValue reference="proj.combine.MAPPING_XFR"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_rules"/>
+      <TargetValue reference="proj.combine_db.MAPPING_XFR"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let line in re_split_no_empty(proj.combine_db.AI_TARGET_DB_LIST, "[\r\n]+")) : 
+  if(re_split_no_empty(line, "[ \t]+")[3] == string_downcase(vars.db_type)) re_split_no_empty(line, "[ \t]+")[4])</SourceValue>
+      <TargetValue reference="vars.target_db_project"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$" + vars.v_target_db_project + "_DML" + "/" + proj.combine_db.DATA_MART_NAME + "/" + proj.combine_db.DATA_MART_NAME + "." + proj.combine_db.TABLE_NAME + ".dml"</SourceValue>
+      <TargetValue reference="proj.combine_db.TARGET_DML"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">$AI_DML + "/" + proj.combine_db.DATA_MART_NAME + "/" + vars.db_type + "/load_ready." + proj.combine_db.TABLE_NAME + ".dml"</SourceValue>
+      <TargetValue reference="load_ready_file_dml" property="path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">$AI_DML + "/" + proj.combine.TARGET_SYSTEM + "/file/load_ready." + proj.combine.IDS_SOURCE_NAME + ".dml"</SourceValue>
+      <TargetValue reference="load_ready_file_dml" property="path"/>
+      <Condition is_expression="true">string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Condition>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.combine_db"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.error == "" and vars.registration_error == ""  and vars.lookup_problem == "" and string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Enabled>
+        <ErrorMessage>You must save this configuration before running it. The run button will be disabled in the following cases:
+        1. Appconf naming errors are found.
+        2. Target has not been registered.
+        3. Lookup has not been configured properly.
+        4. For Combine File, use the run button through inside of configuration.</ErrorMessage>
+        <Description is_expression="true">if(not (vars.error == "" and vars.registration_error == ""  and vars.lookup_problem == ""))
+        "You must save this configuration before running it. The run button will be disabled in the following cases:\n
+        1. Appconf naming errors are found.\n
+        2. Target has not been registered.\n
+        3. Lookup has not been configured properly.\n
+        4. For Combine File, use the run button through inside of configuration."
+        else "Combine files to create load ready file."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label is_expression="true">"FYI"</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">if(string_split_no_empty(built_in.configuration_name,".")[1] == "file") "As per your naming convention, your target will be a file!"
+            else "As per your naming convention, your target will be a database!"</Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>Delta</ConstantValue>
+                <ConstantValue>Full</ConstantValue>
+              </Choices>
+              <Label>Pick Target Dataset Type</Label>
+              <SourceTargetValue reference="proj.combine.TARGET_DATASET_TYPE"/>
+              <Visible is_expression="true">proj.combine.DO_PROCESS_ILM_EVENTS == "0"</Visible>
+            </RadioButtons>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>10</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target System:</b> " + proj.combine.TARGET_SYSTEM]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Entity:</b> " + proj.combine.TARGET_ENTITY]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Dataset Type:</b> " + proj.combine.TARGET_DATASET_TYPE]]></Label>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Target Information</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices>
+                <ConstantValue>netezza</ConstantValue>
+                <ConstantValue>mysql</ConstantValue>
+                <ConstantValue>oracle</ConstantValue>
+              </Choices>
+              <Label>Target Database Type</Label>
+              <SourceTargetValue reference="vars.db_type"/>
+              <WarnIfTargetNotInChoices>false</WarnIfTargetNotInChoices>
+              <ChoiceDisplayNames>
+                <ConstantValue>Netezza</ConstantValue>
+                <ConstantValue>MySQL</ConstantValue>
+                <ConstantValue>Oracle</ConstantValue>
+              </ChoiceDisplayNames>
+              <BlankValueDisplayName>&lt;Select DB Type&gt;</BlankValueDisplayName>
+            </ComboBox>
+            <ComboBox>
+              <Choices reference="vars.target_db_project"/>
+              <Label>Select DB Project</Label>
+              <SourceTargetValue reference="vars.v_target_db_project"/>
+              <BlankValueDisplayName>&lt;Select project&gt;</BlankValueDisplayName>
+            </ComboBox>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>Delta</ConstantValue>
+                <ConstantValue>Full</ConstantValue>
+              </Choices>
+              <Label>Pick Target Dataset Type</Label>
+              <SourceTargetValue reference="proj.combine_db.TARGET_DATASET_TYPE"/>
+              <Visible is_expression="true">proj.combine_db.DO_PROCESS_ILM_EVENTS == "0"</Visible>
+            </RadioButtons>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>10</Height>
+            </Spacer>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Database Type:</b> " + vars.db_type]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>DB Project:</b> " + vars.v_target_db_project]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Data Mart Name:</b> " + proj.combine_db.DATA_MART_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Table Name:</b> " + proj.combine_db.TABLE_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>Target Dataset Type:</b> " + proj.combine_db.TARGET_DATASET_TYPE]]></Label>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Source Information</Label>
+          <UIElements>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;IDS Source Name:&lt;/b&gt; " + proj.combine.FINAL_IDS_SOURCE_NAME</Label>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>enrichmentSource</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Source Information</Label>
+          <UIElements>
+            <Box>
+              <Label is_expression="true"><![CDATA["<b>IDS Source Name:</b> " + proj.combine_db.IDS_SOURCE_NAME]]></Label>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>enrichmentSource</Style>
+          <Visible is_expression="true">vars.error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Registration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.registration_error"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Lookups</Label>
+              <Title/>
+              <UIElements>
+                <EmeBrowser>
+                  <Label>Select lookup files</Label>
+                  <SourceTargetValue reference="vars.lookups.eme_object"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <BrowsableRootRpaths is_expression="true"><![CDATA[string_concat(proj.combine.project_rpath,"/data/serial/lookup/")]]></BrowsableRootRpaths>
+                  <BrowseMode>directory</BrowseMode>
+                  <ObjectTypes>
+                    <ConstantValue>dataset</ConstantValue>
+                  </ObjectTypes>
+                </EmeBrowser>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) or is_blank(lkp.key)</Expanded>
+                  <Style>inner</Style>
+                  <Label is_expression="true">if ( is_blank(lkp.lookup_name) ) "** Please Enter a Name **" else lkp.lookup_name</Label>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                    "\n\nLookup Name:\n" + lkp.lookup_name +
+                    "\n\nSource Dataset:\n" + ds_name(lkp.eme_object.name) +
+                    (if ( is_blank(lkp.key) ) "" else
+                      "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                  <UIElements>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <Popup>
+                      <Style>key</Style>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_object.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_object.name)</Title>
+                      <UIElements>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                          <ContextPset reference="proj.combine"/>
+                          <RecordFormat reference="lkp.eme_object" property="record_format"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <SourceTargetValue reference="lkp.key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>key</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Optional Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select Lookups</Label>
+              <Title/>
+              <UIElements>
+                <EmeBrowser>
+                  <Label>Select lookup files</Label>
+                  <SourceTargetValue reference="vars.lookups.eme_object"/>
+                  <AllowDuplicates>true</AllowDuplicates>
+                  <BrowsableRootRpaths is_expression="true"><![CDATA[string_concat(proj.combine.project_rpath,"/data/serial/lookup/")]]></BrowsableRootRpaths>
+                  <BrowseMode>directory</BrowseMode>
+                </EmeBrowser>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) or is_blank(lkp.key)</Expanded>
+                  <Style>inner</Style>
+                  <Label is_expression="true">if ( is_blank(lkp.lookup_name) ) "** Please Enter a Name **" else lkp.lookup_name</Label>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                    "\n\nLookup Name:\n" + lkp.lookup_name +
+                    "\n\nSource Dataset:\n" + ds_name(lkp.eme_object.name) +
+                    (if ( is_blank(lkp.key) ) "" else
+                      "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                  <UIElements>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <Popup>
+                      <Style>key</Style>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_object.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_object.name)</Title>
+                      <UIElements>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                          <ContextPset reference="proj.combine"/>
+                          <RecordFormat reference="lkp.eme_object" property="record_format"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <SourceTargetValue reference="lkp.key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+          <Style>key</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Lookup Configuration Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_problem"/>
+            </TextLabel>
+          </UIElements>
+          <Style>validation</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Filter/Transform</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Filter Expression</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Data</Label>
+                  <RecordFormat reference="proj.combine.FILTER_INPUT" property="record_format"/>
+                  <SourceTargetValue reference="proj.combine.FILTER_EXPRESSION"/>
+                  <Style>reduction</Style>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+            <BusinessRulesPopup>
+              <Label>Edit Mappings</Label>
+              <SourceTargetValue reference="vars.mapping_rules"/>
+              <Title/>
+              <Style>mapping</Style>
+            </BusinessRulesPopup>
+            <CheckBox>
+              <Label>Apply Defaulting Rules</Label>
+              <TrueValue>True</TrueValue>
+              <FalseValue>False</FalseValue>
+              <Description>Defaulting rules are applied as per the xfr "idw_audit_default_rules.file.xfr". This is private object. Please provide and xfr in this private object as per your requirement.</Description>
+              <SourceTargetValue reference="proj.combine.DO_DEFAULTING"/>
+            </CheckBox>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>IDS Natural Key</Label>
+          <UIElements>
+            <Popup>
+              <Label>Mandatory: Select Natural Keys</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Natural Keys</Label>
+                  <RecordFormat reference="proj.combine.IDS_DML"/>
+                  <SourceTargetValue reference="proj.combine.NATURAL_KEYS"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+              <Visible is_expression="true">proj.combine.DO_PROCESS_ILM_EVENTS == "1"</Visible>
+              <Description>"Natural Kyes are set to '{}' by default while processing ILM events.
+                Providing natural keys is necessary in this case."</Description>
+            </Popup>
+            <Popup>
+              <Label>Optional: Select Extra key for Dedup Sort</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Extra Dedup Key</Label>
+                  <SourceTargetValue reference="proj.combine.EXTRA_DEDUP_SORT_KEY"/>
+                  <RecordFormat is_expression="true">proj.combine.IDS_DML</RecordFormat>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+              <Description>By default the DEDUP_KEYS are same as the NATURAL_KEYS. You may add additional fields here.
+(It is recommended that date fields are not used in dedup key.)</Description>
+            </Popup>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Exta Dedup Sort Key&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine.EXTRA_DEDUP_SORT_KEY</Label>
+                </TextLabel>
+              </UIElements>
+              <Visible is_expression="true">proj.combine.EXTRA_DEDUP_SORT_KEY != ""</Visible>
+            </Box>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Sort/Dedup Keys&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine.SORT_KEYS</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Key field used to identify latest record&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine.EXTRA_SORT_KEYS</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Optional Filter/Transform</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Filter Expression</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Data</Label>
+                  <RecordFormat reference="proj.combine_db.FILTER_INPUT" property="record_format"/>
+                  <SourceTargetValue reference="proj.combine_db.FILTER_EXPRESSION"/>
+                  <Style>reduction</Style>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+            <BusinessRulesPopup>
+              <Label>Edit Mappings</Label>
+              <SourceTargetValue reference="vars.mapping_rules"/>
+              <Title/>
+              <Style>mapping</Style>
+            </BusinessRulesPopup>
+            <CheckBox>
+              <Label>Apply Defaulting Rules</Label>
+              <TrueValue>True</TrueValue>
+              <FalseValue>False</FalseValue>
+              <Description>Defaulting rules are applied as per the xfr "idw_audit_default_rules.file.xfr". This is private object. Please provide and xfr in this private object as per your requirement.</Description>
+              <SourceTargetValue reference="proj.combine_db.DO_DEFAULTING"/>
+            </CheckBox>
+          </UIElements>
+          <Style>mapping</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+        <Box>
+          <Label>IDS Natural Key</Label>
+          <UIElements>
+            <Popup>
+              <Label>Mandatory: Select Natural Keys</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Natural Keys</Label>
+                  <RecordFormat reference="proj.combine_db.IDS_DML"/>
+                  <SourceTargetValue reference="proj.combine_db.NATURAL_KEYS"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+              <Visible is_expression="true">proj.combine_db.DO_PROCESS_ILM_EVENTS == "1"</Visible>
+              <Description>"Natural Kyes are set to '{}' by default while processing ILM events.
+                Providing natural keys is necessary in this case."</Description>
+            </Popup>
+            <Popup>
+              <Label>Optional: Select Extra key for Dedup Sort</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Extra Dedup Key</Label>
+                  <SourceTargetValue reference="proj.combine_db.EXTRA_DEDUP_SORT_KEY"/>
+                  <RecordFormat is_expression="true">proj.combine_db.IDS_DML</RecordFormat>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+              <Description>By default the DEDUP_KEYS are same as the NATURAL_KEYS. You may add additional fields here.
+(It is recommended that date fields are not used in dedup key.)</Description>
+            </Popup>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Exta Dedup Sort Key&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine_db.EXTRA_DEDUP_SORT_KEY</Label>
+                </TextLabel>
+              </UIElements>
+              <Visible is_expression="true">proj.combine_db.EXTRA_DEDUP_SORT_KEY != ""</Visible>
+            </Box>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Sort/Dedup Keys&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine_db.SORT_KEYS</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Label is_expression="true">"&lt;b&gt;Key field used to identify latest record&lt;/b&gt;"</Label>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.combine_db.EXTRA_SORT_KEYS</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional Post Filter</Label>
+          <UIElements>
+            <Popup>
+              <Label>Edit Post Filter Expression</Label>
+              <Title/>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Data</Label>
+                  <SourceTargetValue reference="proj.combine.POST_FILTER_EXPRESSION"/>
+                  <Style>reduction</Style>
+                  <RecordFormat reference="proj.combine.LOAD_READY_FILE_DML"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file" &amp;&amp; length_of(vars.lookups) &gt; 0</Visible>
+          <Description>Optional: Post filter to reduce records incase data is assigned using lookup</Description>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Test Combine File</Label>
+          <Style>executable</Style>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Note: Please save before executing</Label>
+              <SourceValue reference="proj.combine"/>
+            </ExecuteButton>
+          </UIElements>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] == "file"</Visible>
+        </Box>
+        <Box>
+          <Label>Test Combine DB</Label>
+          <Style>executable</Style>
+          <UIElements>
+            <ExecuteButton>
+              <Label>Note: Please save before executing</Label>
+              <SourceValue reference="proj.combine_db"/>
+            </ExecuteButton>
+          </UIElements>
+          <Visible is_expression="true">vars.error == "" and vars.registration_error == "" and vars.lookup_problem == "" &amp;&amp; string_split_no_empty(built_in.configuration_name,".")[1] != "file"</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Visible>
+        <Expression>(string_split_no_empty(built_in.configuration_name,".")[1] == "file")</Expression>
+      </Visible>
+      <Label>Combine File Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine.PROJECT_DIR + "/" + proj.combine.relative_path + "&lt;/b&gt;"</Label>
+          <Width>900</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.combine.contents</Label>
+          <Width>900</Width>
+          <MaxHeight>800</MaxHeight>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible>
+        <Expression>(string_split_no_empty(built_in.configuration_name,".")[1] != "file")</Expression>
+      </Visible>
+      <Label>Combine Database Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.combine_db.PROJECT_DIR + "/" + proj.combine_db.relative_path + "&lt;/b&gt;"</Label>
+          <Width>900</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">proj.combine_db.contents</Label>
+          <Width>900</Width>
+          <MaxHeight>800</MaxHeight>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Load/Publish Ready DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label reference="load_ready_file_dml" property="resolved_path"/>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="load_ready_file_dml"/>
+          <Width>1000</Width>
+          <Height>1000</Height>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

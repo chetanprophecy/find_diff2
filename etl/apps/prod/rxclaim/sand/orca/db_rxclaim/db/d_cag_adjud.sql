@@ -1,0 +1,1 @@
+update a set a.cag_adjud_sk = b.unique_cag_adjud_sk , a.update_uid='CAG_ADJUD_DQ_FIX'd_cag_adjud.sql from orx_idw_dm_prd..f_claim_transaction a inner join orx_idw_dm_etl_prd.admin.d_cag_adjud_dups_delete b on a.cag_adjud_sk = b.delete_cag_adjud_sk;

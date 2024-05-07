@@ -1,0 +1,119 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/exec/job_exec_lkup_pdl_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/11/15  Paul Thompson           Initial version
+ *  2016/11/18  Maumita Sengupta        Added JOB Execution lookup load call with CLT_ID, BIZ_DT and Program type Cd 
+ *  2016/11/21  Maumita Sengupta        Added JOB Execution lookup load call with CLT_ID, BIZ_DT to fetch all intvn_idntfn psets 
+ *  2016/11/23  Rahul Sontakke          Added get_job_id function. 
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+cli_string_t out :: get_job_exec_lkup_path(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + cli_string(biz_dt) + '/job_exec.dat';
+end;
+
+/*************************************************/
+/* Job Execution Lookup - Constant and Functions */
+/*************************************************/
+
+job_exec_lkup_t out :: load_job_exec_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_job_exec_lkup_path(lookup_dir, biz_dt));
+end;
+
+job_exec_t out :: get_job_exec(cli_string_t lookup_dir, cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_app_config_nm_t app_config_nm) inline =
+begin
+  let lkup = load_job_exec_lkup(lookup_dir, biz_dt);
+  out :: lookup(lkup, biz_dt, cli_clt_id, app_config_nm);
+
+end;
+
+/****************************************************************************************/
+/* Job Execution Lookup with Client ID and Program type cd key - Constant and Functions */
+/****************************************************************************************/
+
+
+job_exec_clt_id_lkup_t out :: load_job_exec_clt_id_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_job_exec_lkup_path(lookup_dir, biz_dt));
+end;
+
+job_exec_t out :: get_job_exec_clt_id(cli_string_t lookup_dir, cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_program_type_cd_t cli_program_type_cd) inline =
+begin
+  let lkup = load_job_exec_clt_id_lkup(lookup_dir, biz_dt);
+  out :: lookup(lkup, biz_dt, cli_clt_id, cli_program_type_cd);
+
+end;
+
+/****************************************************************************************/
+/* Job Execution Lookup with Client ID and Product type cd key - Constant and Functions */
+/****************************************************************************************/
+
+
+job_exec_clt_id_prod_typ_lkup_t out :: load_job_exec_clt_id_prod_typ_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_job_exec_lkup_path(lookup_dir, biz_dt));
+end;
+
+job_exec_t out :: get_job_exec_clt_id_prod_typ(cli_string_t lookup_dir, cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_product_type_cd_t cli_product_type_cd) inline =
+begin
+  let lkup = load_job_exec_clt_id_prod_typ_lkup(lookup_dir, biz_dt);
+  out :: lookup(lkup, biz_dt, cli_clt_id, cli_product_type_cd);
+
+end;
+
+/****************************************************************************************/
+/* Job Execution Lookup with Client ID - Constant and Functions */
+/****************************************************************************************/
+
+job_exec_by_clt_tmr_lkup_t out :: load_job_exec_by_clt_tmr_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_job_exec_lkup_path(lookup_dir, biz_dt));
+end;
+
+cli_string_t[int] out :: get_job_exec_by_clt_tmr(cli_string_t lookup_dir, cli_date_t biz_dt, cli_pega_id_t cli_clt_id) inline =
+begin
+  let lkup = load_job_exec_by_clt_tmr_lkup(lookup_dir, biz_dt);
+  let cli_integer_t lkup_cnt = lookup_count(lkup, biz_dt, cli_clt_id);
+  let job_exec_t first_load_value = lookup(lkup, biz_dt, cli_clt_id);
+  let job_exec_t next_load_value = allocate_with_nulls();
+  let cli_string_t lookup_file_name = get_job_exec_lkup_path(lookup_dir, biz_dt);
+  let cli_string_t[int] prog_psets = if (is_defined(first_load_value) and ((first_load_value.rules_config.program_type_cd !='MTM-IDENT') 
+                                         and (first_load_value.rules_config.program_type_cd != 'EMTM-IDENT') and (first_load_value.rules_config.program_type_cd != 'RISK-SCORING') 
+                                         and (first_load_value.rules_config.program_type_cd != 'DISEASE-IDENT')))[vector string_replace(first_load_value.rules_config_param.pset,"pset/","")] else [vector];
+          
+          for (let cli_integer_t i = 0, i < lkup_cnt)
+             begin
+                 next_load_value = lookup_next(lkup);
+                 prog_psets = if (is_defined(next_load_value) and ((next_load_value.rules_config.program_type_cd !='MTM-IDENT') 
+                                  and (next_load_value.rules_config.program_type_cd != 'EMTM-IDENT') and (next_load_value.rules_config.program_type_cd != 'RISK-SCORING') 
+                                  and (next_load_value.rules_config.program_type_cd != 'DISEASE-IDENT')))vector_append(prog_psets,string_replace(next_load_value.rules_config_param.pset,"pset/",""))
+                                  else prog_psets;
+             end     
+               
+  out :: prog_psets;
+
+end;
+
+
+cli_integer_id_t out :: get_job_id(cli_string_t lookup_dir, cli_date_t biz_dt, cli_pega_id_t cli_clt_id, cli_app_config_nm_t app_config_nm) inline =
+begin
+      let cli_integer_id_t job_id = decimal_strip((datetime("YYYYMMDDHH24MISS"))now());
+
+         if (file_information(string_concat(lookup_dir,"/" ,biz_dt, "/job_exec.dat")).found )    
+                job_id = first_defined(get_job_exec(lookup_dir, biz_dt,cli_clt_id,app_config_nm).job.job_id,job_id);     
+          
+out :: job_id;
+     
+end;
+
+
+

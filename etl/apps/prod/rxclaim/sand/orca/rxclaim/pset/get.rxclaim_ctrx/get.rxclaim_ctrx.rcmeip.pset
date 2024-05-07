@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcmeip
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmeip
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcmeip')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SQL||||select a.ALABCD,a.ALAACD, a.ALACCD, a.ALADCD, a.ALZNAL,\nb.AHC5AM,\na.ALMKCE,\na.ALMLCE,\na.ALVPAK,\na.ALVQAK,\na.ALM0HO,\na.ALM1HO,\na.ALVRAK\n from clmprdfil.RCMEIP a full outer join clmprdfil.RCMAIP b on \n        a.ALABCD = b.AHABCD\nAND a.ALAACD = b.AHAACD\nAND a.ALACCD = B.AHACCD\nAND a.ALADCD = b.AHADCD\nAND a.ALZNAL = b.AHZ9N1 \nAND ((b.AHBMDT*1000000)+b.AHABTM between 1181209000000 and 1181210002759);
+RUN_ID||||20190105000000
+WHERE_CLAUSE||||$[ " WHERE ((rcmeip.albmdt*1000000)+rcmeip.alabtm between " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME -19000000000000))\n+ " and " +\nstring_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) END_CHANGES_TIME -19000000000000))\n+ ") " ]

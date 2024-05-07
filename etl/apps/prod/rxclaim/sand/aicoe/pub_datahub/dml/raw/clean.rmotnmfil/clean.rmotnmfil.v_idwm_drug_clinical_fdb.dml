@@ -1,0 +1,50 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string("\x01", maximum_length=11)  product_id /*CHAR(11) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  eff_dt /*DATE NOT NULL*/;
+  decimal("\x01",0)  audit_no /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  product_id_format_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=6)  manufacturer_id /*CHAR(6) NOT NULL*/;
+  string("\x01", maximum_length=30)  brand_name /*VARCHAR(30) NOT NULL*/;
+  string("\x01", maximum_length=30)  label_name /*VARCHAR(30) NOT NULL*/;
+  string("\x01", maximum_length=20)  additional_descriptor /*VARCHAR(20) NOT NULL*/;
+  decimal("\x01",0)  gcn_seq_no /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  hicl_seq_no /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=3)  hic3 /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=2)  generic_therapeutic_class_cd /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=2)  standard_therapeutic_class_cd /*CHAR(2) NOT NULL*/;
+  decimal("\x01",0)  ahfs_cd /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  dea_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  rx_required_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  drug_form_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2)  dosage_form_cd /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1)  unit_dose_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  route_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10)  drug_strength_desc /*VARCHAR(10) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  add_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  update_dt = NULL("") /*DATE*/;
+  date("YYYY-MM-DD")("\x01")  manufacturer_obsolete_dt = NULL("") /*DATE*/;
+  string("\x01", maximum_length=1)  innovator_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2)  orange_book_cd /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1)  desi_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  desi2_ind /*CHAR(1) NOT NULL*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved)  pkg_size /*DECIMAL(11,3) NOT NULL*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved)  package_size_equiv_value /*DECIMAL(11,3) NOT NULL*/;
+  string("\x01", maximum_length=1)  generic_price_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  private_labeler_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  repackager_ind /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  source_of_data_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  generic_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=9)  ndc_9 /*CHAR(9) NOT NULL*/;
+  string("\x01", maximum_length=1)  unit_of_use_cd /*VARCHAR(1) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  dcf_rec_create_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  dcf_rec_create_userid /*VARCHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  dcf_last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  dcf_last_upd_userid /*VARCHAR(16) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  term_dt = NULL("") /*DATE*/;
+  string("\x01", maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  newline =  "\n";
+end

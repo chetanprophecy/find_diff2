@@ -1,0 +1,76 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_rcmelp.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_rcmelp.flb9s2,'ctrx_rcmelp.flb9s2',1,0]
+     [out0.ctrx_rcmelp.flplc2,'ctrx_rcmelp.flplc2',1,0]
+     [out0.ctrx_rcmelp.fladcd,'ctrx_rcmelp.fladcd',1,0]
+     [out0.ctrx_rcmelp.flc5n1,'ctrx_rcmelp.flc5n1',1,0]
+     [out0.ctrx_rcmelp.src_env_sk,'ctrx_rcmelp.src_env_sk',1,0]
+     [out0.ctrx_rcmelp.flcpda,'ctrx_rcmelp.flcpda',1,0]
+     [out0.ctrx_rcmelp.flaccd,'ctrx_rcmelp.flaccd',1,0]
+     [out0.ctrx_rcmelp.flaacd,'ctrx_rcmelp.flaacd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_rcmelp.flcqda,'ctrx_rcmelp.flcqda',1,0]
+     [out0.ctrx_rcmelp.flabcd,'ctrx_rcmelp.flabcd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.flb9s2,'flb9s2',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.flplc2,'flplc2',1,1]
+     [in0.flcqda,'flcqda',1,1]
+     [in0.flc5n1,'flc5n1',1,1]
+     [in0.flcpda,'flcpda',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.flaccd,'flaccd',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.fladcd,'fladcd',1,1]
+     [in0.flabcd,'flabcd',1,1]
+     [in0.flaacd,'flaacd',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01", maximum_length=18) ctrx_rcmelp_flabcd = fail_if_error(in0.flabcd);
+let string("\x01", maximum_length=9) ctrx_rcmelp_flaacd = fail_if_error(in0.flaacd);
+let string("\x01", maximum_length=15) ctrx_rcmelp_flaccd = fail_if_error(in0.flaccd);
+let string("\x01", maximum_length=15) ctrx_rcmelp_fladcd = fail_if_error(in0.fladcd);
+let string("\x01", maximum_length=6) ctrx_rcmelp_flplc2 = fail_if_error(in0.flplc2);
+let string("\001", maximum_length=1) ctrx_rcmelp_flb9s2 = fail_if_error(in0.flb9s2);
+let decimal("\001", maximum_length=10) ctrx_rcmelp_flcpda = fail_if_error(in0.flcpda);
+let decimal("\001", maximum_length=10) ctrx_rcmelp_flcqda = fail_if_error(in0.flcqda);
+let decimal("\001", maximum_length=8) ctrx_rcmelp_flc5n1 = fail_if_error(in0.flc5n1);
+let decimal("\x01",0) ctrx_rcmelp_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.ctrx_rcmelp.flabcd::ctrx_rcmelp_flabcd;
+  out0.ctrx_rcmelp.flaacd::ctrx_rcmelp_flaacd;
+  out0.ctrx_rcmelp.flaccd::ctrx_rcmelp_flaccd;
+  out0.ctrx_rcmelp.fladcd::ctrx_rcmelp_fladcd;
+  out0.ctrx_rcmelp.flplc2::ctrx_rcmelp_flplc2;
+  out0.ctrx_rcmelp.flb9s2::ctrx_rcmelp_flb9s2;
+  out0.ctrx_rcmelp.flcpda::ctrx_rcmelp_flcpda;
+  out0.ctrx_rcmelp.flcqda::ctrx_rcmelp_flcqda;
+  out0.ctrx_rcmelp.flc5n1::ctrx_rcmelp_flc5n1;
+  out0.ctrx_rcmelp.src_env_sk::ctrx_rcmelp_src_env_sk;
+  out0.*::in0.*;
+
+end;

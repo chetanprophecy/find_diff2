@@ -1,0 +1,9 @@
+out :: reformat(in) =
+begin
+out.*::in.*;
+out.ctrx_d_cag.*::in.*;
+out.c_d_carr_acc.*::in.*;
+out.ctrx_d_carr.*::in.*;
+out.ctrx_d_cag.gps_plan_cd::first_defined(lookup("cag_gps_plan_code_lkp",string_lrtrim(in.carrier_id),string_lrtrim(in.account_id),string_lrtrim(in.employer_group_id)).gps_plan_code,'UNK');
+
+end;

@@ -1,0 +1,22 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_claim_st_claim_stat_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_claim_st_claim_stat_grp_id = fail_if_error(in0.claim_stat_grp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_claim_st_claim_stat_id = fail_if_error(in0.claim_stat_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_claim_st_claim_stat_desc = fail_if_error(in0.claim_stat_desc);
+let decimal("\x01",0) l_claim_st_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_claim_st.claim_stat_sk::l_claim_st_claim_stat_sk;
+  out0.l_claim_st.claim_stat_grp_id::l_claim_st_claim_stat_grp_id;
+  out0.l_claim_st.claim_stat_id::l_claim_st_claim_stat_id;
+  out0.l_claim_st.claim_stat_desc::l_claim_st_claim_stat_desc;
+  out0.l_claim_st.src_env_sk::l_claim_st_src_env_sk;
+  out0.*::in0.*;
+
+end;

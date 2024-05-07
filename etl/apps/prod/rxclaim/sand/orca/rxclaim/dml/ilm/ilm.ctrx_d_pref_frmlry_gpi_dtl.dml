@@ -1,0 +1,147 @@
+type logical_ids_rxclaim_d_pref_frmlry_gpi_dtl_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) pref_frmlry_gpi_dtl_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) gpi_multi_source_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) drug_rx_otc_ind = NULL("");
+  decimal("\x01",0) gpi_sk = NULL("");
+  decimal("\x01",0) gnrc_mdspn_ind_sk = NULL("");
+  decimal("\x01",0) drug_rx_otc_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=60) generic_nm = NULL("");
+  decimal("\x01",0) frmlry_gpi_dtl_curr_start_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") frmlry_gpi_dtl_curr_start_dt = NULL("");
+  decimal("\x01",0) frmlry_gpi_dtl_curr_end_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") frmlry_gpi_dtl_curr_end_dt = NULL("");
+  decimal("\x01",0) curr_pln_drg_stat_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) curr_pln_drg_stat_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) curr_msg_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) price_schedule_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_clt_price_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) curr_phr_pat_pay = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) curr_clt_pat_pay = NULL("");
+  decimal("\x01",0) prev_start_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") prev_start_dt = NULL("");
+  decimal("\x01",0) prev_end_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") prev_end_dt = NULL("");
+  decimal("\x01",0) prev_pln_drg_stat_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) prev_pln_drg_stat_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) bsc_sched_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_benefit_max = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) dsc_sched_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_deduct_accum = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) opc_sched_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_oop_accum = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_lifetime_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cur_lifetime_accum = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) benefit_reset = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_pref_srv_fee = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) clt_pref_srv_fee = NULL("");
+  decimal("\x01",0) drg_status_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=13) drg_status_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) troop_sched_ovrd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) egwp_troop_ovrd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) neg_chg_opt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) reg_cd_remap = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) csr_accum_ded_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) csr_accum_oop_sched = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) dgl_diagnosis_list = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) diagnosys_list_qual = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phn_phr_ntwk_id = NULL("");
+  decimal("\x01",0) phn_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_ntwk_list_qlfr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) super_ntwk_id = NULL("");
+  decimal("\x01",0) snh_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) fgd_supr_ntwk_qlfr = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d date c st: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+type opt_nk_ids_common_d_gpi_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d gpi: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_id = NULL("") /*VARCHAR(14) NOT NULL*/;
+end;
+type nk_ids_common_d_gpi_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_id = NULL("") /*VARCHAR(14) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_plan_drug_status_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d plan curr: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) pln_drg_stat_cd = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_common_d_plan_drug_status_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) pln_drg_stat_cd = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_common_l_generic_medispan_indicator_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l gnr med: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_ind = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_common_l_generic_medispan_indicator_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_ind = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_drug_otc_indicator_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l drg otc: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=1) drug_rx_otc_ind = NULL("") /*CHAR(1)*/;
+end;
+type nk_ids_rxclaim_l_drug_otc_indicator_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=1) drug_rx_otc_ind = NULL("") /*CHAR(1)*/;
+end;
+
+type opt_nk_ids_rxclaim_l_prod_status_rule_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'l prd dg: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=13) prod_status_rule_tbl_id = NULL("") /*VARCHAR(13) NOT NULL*/;
+end;
+type nk_ids_rxclaim_l_prod_status_rule_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=13) prod_status_rule_tbl_id = NULL("") /*VARCHAR(13) NOT NULL*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_pref_frmlry_gpi_dtl_t d_prf_f_gpi  /*@ BizName:'d prf f gpi' */;
+  opt_nk_ids_common_d_date_t d_date_c_end  /*@ BizName:'d date c end' */;
+  opt_nk_ids_common_d_date_t d_date_c_st  /*@ BizName:'d date c st' */;
+  opt_nk_ids_common_d_date_t d_date_p_end  /*@ BizName:'d date p end' */;
+  opt_nk_ids_common_d_date_t d_date_p_st  /*@ BizName:'d date p st' */;
+  opt_nk_ids_common_d_gpi_t d_gpi  /*@ BizName:'d gpi' */;
+  opt_nk_ids_common_d_plan_drug_status_t d_plan_curr  /*@ BizName:'d plan curr' */;
+  opt_nk_ids_common_d_plan_drug_status_t d_plan_prev  /*@ BizName:'d plan prev' */;
+  opt_nk_ids_rxclaim_l_drug_otc_indicator_t l_drg_otc  /*@ BizName:'l drg otc' */;
+  opt_nk_ids_common_l_generic_medispan_indicator_t l_gnr_med  /*@ BizName:'l gnr med' */;
+  opt_nk_ids_rxclaim_l_prod_status_rule_t l_prd_dg  /*@ BizName:'l prd dg' */;
+end;

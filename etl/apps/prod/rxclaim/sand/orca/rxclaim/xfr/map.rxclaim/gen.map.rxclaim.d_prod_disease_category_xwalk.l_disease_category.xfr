@@ -1,0 +1,18 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) disease_ct_dise_cat_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=80) disease_ct_dise_cat_nm = fail_if_error(in0.dise_cat_nm);
+let decimal("\x01",0) disease_ct_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.disease_ct.dise_cat_sk::disease_ct_dise_cat_sk;
+  out0.disease_ct.dise_cat_nm::disease_ct_dise_cat_nm;
+  out0.disease_ct.src_env_sk::disease_ct_src_env_sk;
+  out0.*::in0.*;
+
+end;

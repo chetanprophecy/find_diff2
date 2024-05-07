@@ -1,0 +1,20 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_mbr_typ_mbr_type_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_mbr_typ_mbr_type_cd = fail_if_error(in0.mbr_type_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_mbr_typ_mbr_type_desc = fail_if_error(in0.mbr_type_desc);
+let decimal("\x01",0) l_mbr_typ_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_mbr_typ.mbr_type_sk::l_mbr_typ_mbr_type_sk;
+  out0.l_mbr_typ.mbr_type_cd::l_mbr_typ_mbr_type_cd;
+  out0.l_mbr_typ.mbr_type_desc::l_mbr_typ_mbr_type_desc;
+  out0.l_mbr_typ.src_env_sk::l_mbr_typ_src_env_sk;
+  out0.*::in0.*;
+
+end;

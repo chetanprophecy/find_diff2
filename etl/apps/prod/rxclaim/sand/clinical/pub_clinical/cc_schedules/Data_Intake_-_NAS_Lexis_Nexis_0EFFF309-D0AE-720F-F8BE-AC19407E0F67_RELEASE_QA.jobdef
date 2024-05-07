@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="CB1CED0C-640B-5205-1B67-283C82D12621_RELEASE_QA" jobDefinitionGuid="0EFFF309-D0AE-720F-F8BE-AC19407E0F67_RELEASE_QA" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - NAS Lexis Nexis" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL_RELEASE_QA"/>
+
+  <mainAction executablePath="${AI_PSET}/nas_to_cli/nas_to_cli.plan.lexis_nexis_prescriber.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="NAS_RUN_DATES" mode="DAILY" startDate="2017-01-16Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="11:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="59E5EA9B-8CEE-B8E2-B3CA-00020CA63380"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

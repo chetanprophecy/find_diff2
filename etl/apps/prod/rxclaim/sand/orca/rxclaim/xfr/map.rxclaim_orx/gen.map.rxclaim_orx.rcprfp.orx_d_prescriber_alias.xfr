@@ -1,0 +1,135 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_97d014ac_575a6347_9604_1
+    BizHidden:true
+@*/
+/*   lookup src_env_rnk_orx_lkp   */
+out0::bzt_3_97d014ac_575a6347_9604_1(in0)=
+begin
+let record
+  decimal("\x01",0) src_env_sk, src_env_rnk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("src_env_rnk_orx_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_97d014ac_575a6347_9604_1
+    BizHidden:true
+@*/
+/*   lookup l_pbr_id_qlfr_lkp   */
+out0::bzt_4_97d014ac_575a6347_9604_1(in0)=
+begin
+let record
+  string("\x01",charset="iso-8859-15", maximum_length=2) pbr_id_qlfr_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) pbr_id_qlfr_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_pbr_id_qlfr_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_97d014ac_575a6347_9604_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_pres_alias.pbr_id_st_cd,[passthrough],in0.nyxeh6]
+  [out0.c_pres_alias.pbr_id,[passthrough],in0.nylghb]
+  [out0.c_pres_alias_fk.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_pres_alias.pbr_sk,[transform],]
+  [out0.c_pres_alias_fk.phy_pbr_key,[passthrough],in0.nyaqcd]
+  [out0.c_pres_alias.pbr_vendor_id,[passthrough],in0.nyhaho]
+  [out0.c_pres_alias.phy_pbr_key,[passthrough],in0.nyaqcd]
+  [out0.c_pres_alias.pbr_id_qlfr,[passthrough],in0.nyxch6]
+  [out0.c_pres_alias.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.c_pres_alias.rec_rank_no,[transform],in0.dxf_src_sys_id,
+     'lookup("src_env_rnk_orx_lkp").src_env_rnk']
+  [out0.c_pres_alias.pbr_id_qlfr_desc,[transform],in0.nyxch6,
+     'lookup("l_pbr_id_qlfr_lkp").pbr_id_qlfr_desc']
+  [out0.c_pres_alias.pbr_qlfr_id_sts_cd,[passthrough],in0.nyxfh6]
+  [out0.c_pres_alias.pbr_alias_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_pres_alias.pbr_id_st_cd,'c_pres_alias.pbr_id_st_cd',1,0]
+     [out0.c_pres_alias.pbr_id,'c_pres_alias.pbr_id',1,0]
+     [out0.c_pres_alias_fk.src_env_sk,'c_pres_alias_fk.src_env_sk',1,0]
+     [out0.c_pres_alias.pbr_sk,'c_pres_alias.pbr_sk',1,0]
+     [out0.c_pres_alias_fk.phy_pbr_key,'c_pres_alias_fk.phy_pbr_key',1,0]
+     [out0.c_pres_alias.pbr_vendor_id,'c_pres_alias.pbr_vendor_id',1,0]
+     [out0.c_pres_alias.phy_pbr_key,'c_pres_alias.phy_pbr_key',1,0]
+     [out0.c_pres_alias.pbr_id_qlfr,'c_pres_alias.pbr_id_qlfr',1,0]
+     [out0.c_pres_alias.src_env_sk,'c_pres_alias.src_env_sk',1,0]
+     [out0.c_pres_alias.rec_rank_no,'c_pres_alias.rec_rank_no',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_pres_alias.pbr_id_qlfr_desc,'c_pres_alias.pbr_id_qlfr_desc',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_pres_alias.pbr_qlfr_id_sts_cd,'c_pres_alias.pbr_qlfr_id_sts_cd',1,0]
+     [out0.c_pres_alias.pbr_alias_sk,'c_pres_alias.pbr_alias_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     ['lookup("l_pbr_id_qlfr_lkp").pbr_id_qlfr_desc','pbr_id_qlfr_desc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.nyhaho,'nyhaho',2,2]
+     [in0.nyxch6,'nyxch6',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',4,4]
+     [in0.nyxeh6,'nyxeh6',1,1]
+     ['lookup("src_env_rnk_orx_lkp").src_env_rnk','src_env_rnk',1,1]
+     [in0.nyaqcd,'nyaqcd',2,2]
+     [in0.nyxfh6,'nyxfh6',1,1]
+     [in0.nylghb,'nylghb',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_pres_alias_pbr_alias_sk = -1;
+let decimal("\x01",0) c_pres_alias_pbr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) c_pres_alias_pbr_id = fail_if_error(in0.nylghb);
+let string("\x01",charset="iso-8859-15", maximum_length=2) c_pres_alias_pbr_id_qlfr = fail_if_error(in0.nyxch6);
+let string("\x01",charset="iso-8859-15", maximum_length=3) c_pres_alias_pbr_id_st_cd = fail_if_error(in0.nyxeh6);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pres_alias_phy_pbr_key = fail_if_error(in0.nyaqcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_pres_alias_pbr_qlfr_id_sts_cd = fail_if_error(in0.nyxfh6);
+let string("\x01",charset="iso-8859-15", maximum_length=100) c_pres_alias_pbr_id_qlfr_desc;
+let decimal("\x01",0) c_pres_alias_rec_rank_no;
+let decimal("\x01",0) c_pres_alias_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pres_alias_pbr_vendor_id = fail_if_error(in0.nyhaho);
+let string("\x01",charset="iso-8859-15", maximum_length=10) c_pres_alias_fk_phy_pbr_key = fail_if_error(in0.nyaqcd);
+let decimal("\x01",0) c_pres_alias_fk_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+c_pres_alias_rec_rank_no=fail_if_error(bzt_3_97d014ac_575a6347_9604_1(in0.dxf_src_sys_id).src_env_rnk);
+
+/*   Default value   */
+c_pres_alias_pbr_id_qlfr_desc=fail_if_error(bzt_4_97d014ac_575a6347_9604_1(in0.nyxch6).pbr_id_qlfr_desc);
+
+  out0.c_pres_alias.pbr_alias_sk::c_pres_alias_pbr_alias_sk;
+  out0.c_pres_alias.pbr_sk::c_pres_alias_pbr_sk;
+  out0.c_pres_alias.pbr_id::c_pres_alias_pbr_id;
+  out0.c_pres_alias.pbr_id_qlfr::c_pres_alias_pbr_id_qlfr;
+  out0.c_pres_alias.pbr_id_st_cd::c_pres_alias_pbr_id_st_cd;
+  out0.c_pres_alias.phy_pbr_key::c_pres_alias_phy_pbr_key;
+  out0.c_pres_alias.pbr_qlfr_id_sts_cd::c_pres_alias_pbr_qlfr_id_sts_cd;
+  out0.c_pres_alias.pbr_id_qlfr_desc::c_pres_alias_pbr_id_qlfr_desc;
+  out0.c_pres_alias.rec_rank_no::c_pres_alias_rec_rank_no;
+  out0.c_pres_alias.src_env_sk::c_pres_alias_src_env_sk;
+  out0.c_pres_alias.pbr_vendor_id::c_pres_alias_pbr_vendor_id;
+  out0.c_pres_alias_fk.phy_pbr_key::c_pres_alias_fk_phy_pbr_key;
+  out0.c_pres_alias_fk.src_env_sk::c_pres_alias_fk_src_env_sk;
+  out0.*::in0.*;
+
+end;

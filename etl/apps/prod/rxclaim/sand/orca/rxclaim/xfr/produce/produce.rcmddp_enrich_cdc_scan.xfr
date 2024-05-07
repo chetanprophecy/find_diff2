@@ -1,0 +1,60 @@
+include "~$AI_XFR/bre_helper.map.xfr"; 
+type f_mpd_pde_recent_type = $[expand_type(read_file(LOOKUP_FILE_DML))];
+ 
+let f_mpd_pde_recent_type lookup_rec = allocate_with_defaults(); 
+let f_mpd_pde_recent_type output_record = allocate_with_defaults(); 
+
+let lookup_identifier_type lookup_id = lookup_not_loaded();
+let decimal("") match_flag = 0;
+
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") v_add_ts=allocate_with_defaults();
+//let datetime("YYYYMMDD HH24:MI:SS")("\x01") v_chg_ts=allocate_with_defaults();
+
+let string(1) v_rec_flg=allocate_with_defaults();
+/*Do computation*/
+out::scan(in)=
+begin
+let int match_count=0;
+v_rec_flg=in.flg;
+match_flag = 0;
+lookup_rec = allocate_with_defaults(); 
+output_record = allocate_with_defaults(); 
+//v_add_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))string_concat(str1=(date("YYYYMMDD"))(string(""))(decimal(""))(in.asc2dt+19000000), str2=(datetime("HH24:MI:SS"))(datetime("YYYYMMDD HH24:MI:SS"))(string(""))string_lrtrim(in.asadtm)));
+v_add_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))(datetime("YYYYMMDDHH24MISS"))string_concat((date("YYYYMMDD"))(in.asc2dt),time_check(in.asadtm)));
+//v_chg_ts = fail_if_error((datetime("YYYYMMDD HH24:MI:SS"))string_concat(str1=(date("YYYYMMDD"))(string(""))(decimal(""))(in.asbmdt+19000000), str2=(datetime("HH24:MI:SS"))(datetime("YYYYMMDD HH24:MI:SS"))(string(""))string_lrtrim(in.asabtm)));
+if(lookup_id == lookup_not_loaded())
+    lookup_id =  lookup_load(this_partition_path($'LOOKUP_FILE_PATH'), this_partition_path(string_replace($'LOOKUP_FILE_PATH', ".dat.gz", ".idx")), "IDS ICFF LKP");
+    
+match_count = if(v_rec_flg=="R")lookup_count(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1) else 0;   
+
+if(match_count != 0) 
+begin
+  
+    lookup_rec = lookup_last(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1);
+    
+    if(lookup_rec.dxf_hk_part2 != in.dxf_hk_part2)
+    begin block exact_match  
+      for(let int i = 1, i < match_count) 
+      begin
+        lookup_rec = lookup_previous(lookup_id, "IDS ICFF LKP");
+                if(lookup_rec.dxf_hk_part2 == in.dxf_hk_part2) 
+                begin
+
+                if(lookup_rec.mdd_add_ts>v_add_ts)
+                v_rec_flg="H";
+                
+                exit exact_match;
+                end
+      end
+
+    end block exact_match
+    else if(lookup_rec.mdd_add_ts>v_add_ts)
+        begin
+                v_rec_flg="H";
+        end;
+end;
+
+out.flg::v_rec_flg;
+out.*::in.*;
+
+end;

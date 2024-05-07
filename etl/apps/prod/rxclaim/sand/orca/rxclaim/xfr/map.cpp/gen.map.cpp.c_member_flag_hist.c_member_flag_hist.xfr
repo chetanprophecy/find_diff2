@@ -1,0 +1,146 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_582d5140_4fba_15 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_fl_hst.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_fl_hst.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_fl_hst.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_fl_hst.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_mem_fl_hst.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_fl_hst.cpp_member_flag_hist_sk,[transform],]
+  [out0.c_mem_fl_hst.src_env_sk,[transform],]
+  [out0.c_mem_fl_hst.flag_type,[passthrough],in0.flag_type]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_fl_hst.emplyr_group_id,'c_mem_fl_hst.emplyr_group_id',1,0]
+     [out0.c_mem_fl_hst.src_env_id,'c_mem_fl_hst.src_env_id',1,0]
+     [out0.c_mem_fl_hst.cli_acct_id,'c_mem_fl_hst.cli_acct_id',1,0]
+     [out0.c_mem_fl_hst.cli_src_env_id,'c_mem_fl_hst.cli_src_env_id',1,0]
+     [out0.c_mem_fl_hst.flag_active_dt,'c_mem_fl_hst.flag_active_dt',1,0]
+     [out0.c_mem_fl_hst.flag_value,'c_mem_fl_hst.flag_value',1,0]
+     [out0.c_mem_fl_hst.member_flag_hist_id,'c_mem_fl_hst.member_flag_hist_id',1,0]
+     [out0.c_mem_fl_hst.cpp_create_ts,'c_mem_fl_hst.cpp_create_ts',1,0]
+     [out0.c_mem_fl_hst.cpp_update_ts,'c_mem_fl_hst.cpp_update_ts',1,0]
+     [out0.c_mem_fl_hst.acct_id,'c_mem_fl_hst.acct_id',1,0]
+     [out0.c_mem_fl_hst.cli_emplyr_group_id,'c_mem_fl_hst.cli_emplyr_group_id',1,0]
+     [out0.c_mem_fl_hst.member_id,'c_mem_fl_hst.member_id',1,0]
+     [out0.c_mem_fl_hst.cpp_updated_by,'c_mem_fl_hst.cpp_updated_by',1,0]
+     [out0.c_mem_fl_hst.cpp_member_sk,'c_mem_fl_hst.cpp_member_sk',1,0]
+     [out0.c_mem_fl_hst.cli_member_id,'c_mem_fl_hst.cli_member_id',1,0]
+     [out0.c_mem_fl_hst.toc_process_flag,'c_mem_fl_hst.toc_process_flag',1,0]
+     [out0.c_mem_fl_hst.cpp_created_by,'c_mem_fl_hst.cpp_created_by',1,0]
+     [out0.c_mem_fl_hst.cli_carrier_id,'c_mem_fl_hst.cli_carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mem_fl_hst.reported_dt,'c_mem_fl_hst.reported_dt',1,0]
+     [out0.c_mem_fl_hst.carrier_id,'c_mem_fl_hst.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_fl_hst.cpp_member_flag_hist_sk,'c_mem_fl_hst.cpp_member_flag_hist_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_fl_hst.flag_end_dt,'c_mem_fl_hst.flag_end_dt',1,0]
+     [out0.c_mem_fl_hst.src_env_sk,'c_mem_fl_hst.src_env_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_mem_fl_hst.flag_type,'c_mem_fl_hst.flag_type',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.member_flag_hist_id,'member_flag_hist_id',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.toc_process_flag,'toc_process_flag',1,1]
+     [in0.flag_end_dt,'flag_end_dt',1,1]
+     [in0.flag_type,'flag_type',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.flag_value,'flag_value',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.flag_active_dt,'flag_active_dt',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.reported_dt,'reported_dt',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_fl_hst_cpp_member_flag_hist_sk = -1;
+let utf8 string("\x01", maximum_length=128) c_mem_fl_hst_member_flag_hist_id = fail_if_error(in0.member_flag_hist_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_fl_hst_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_fl_hst_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_fl_hst_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_fl_hst_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_fl_hst_cli_member_id = fail_if_error(in0.cli_member_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_mem_fl_hst_src_env_id = fail_if_error(in0.src_env_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_fl_hst_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_mem_fl_hst_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_fl_hst_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mem_fl_hst_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_mem_fl_hst_cpp_member_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_fl_hst_reported_dt = fail_if_error(in0.reported_dt);
+let utf8 string("\x01", maximum_length=200) c_mem_fl_hst_flag_type = fail_if_error(in0.flag_type);
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mem_fl_hst_flag_value = fail_if_error(in0.flag_value);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_fl_hst_flag_active_dt = fail_if_error(in0.flag_active_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_fl_hst_flag_end_dt = fail_if_error(in0.flag_end_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_fl_hst_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_fl_hst_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_fl_hst_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_fl_hst_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_fl_hst_src_env_sk = 710;
+let string("\x01",charset="iso-8859-15", maximum_length=1) c_mem_fl_hst_toc_process_flag = fail_if_error(in0.toc_process_flag);
+
+
+
+/*   Default value   */
+c_mem_fl_hst_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_mem_fl_hst.cpp_member_flag_hist_sk::c_mem_fl_hst_cpp_member_flag_hist_sk;
+  out0.c_mem_fl_hst.member_flag_hist_id::c_mem_fl_hst_member_flag_hist_id;
+  out0.c_mem_fl_hst.cli_src_env_id::c_mem_fl_hst_cli_src_env_id;
+  out0.c_mem_fl_hst.cli_carrier_id::c_mem_fl_hst_cli_carrier_id;
+  out0.c_mem_fl_hst.cli_acct_id::c_mem_fl_hst_cli_acct_id;
+  out0.c_mem_fl_hst.cli_emplyr_group_id::c_mem_fl_hst_cli_emplyr_group_id;
+  out0.c_mem_fl_hst.cli_member_id::c_mem_fl_hst_cli_member_id;
+  out0.c_mem_fl_hst.src_env_id::c_mem_fl_hst_src_env_id;
+  out0.c_mem_fl_hst.carrier_id::c_mem_fl_hst_carrier_id;
+  out0.c_mem_fl_hst.acct_id::c_mem_fl_hst_acct_id;
+  out0.c_mem_fl_hst.emplyr_group_id::c_mem_fl_hst_emplyr_group_id;
+  out0.c_mem_fl_hst.member_id::c_mem_fl_hst_member_id;
+  out0.c_mem_fl_hst.cpp_member_sk::c_mem_fl_hst_cpp_member_sk;
+  out0.c_mem_fl_hst.reported_dt::c_mem_fl_hst_reported_dt;
+  out0.c_mem_fl_hst.flag_type::c_mem_fl_hst_flag_type;
+  out0.c_mem_fl_hst.flag_value::c_mem_fl_hst_flag_value;
+  out0.c_mem_fl_hst.flag_active_dt::c_mem_fl_hst_flag_active_dt;
+  out0.c_mem_fl_hst.flag_end_dt::c_mem_fl_hst_flag_end_dt;
+  out0.c_mem_fl_hst.cpp_update_ts::c_mem_fl_hst_cpp_update_ts;
+  out0.c_mem_fl_hst.cpp_updated_by::c_mem_fl_hst_cpp_updated_by;
+  out0.c_mem_fl_hst.cpp_create_ts::c_mem_fl_hst_cpp_create_ts;
+  out0.c_mem_fl_hst.cpp_created_by::c_mem_fl_hst_cpp_created_by;
+  out0.c_mem_fl_hst.src_env_sk::c_mem_fl_hst_src_env_sk;
+  out0.c_mem_fl_hst.toc_process_flag::c_mem_fl_hst_toc_process_flag;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,40 @@
+include "/~$AI_XFR/sys_id.xfr";
+out :: reformat(in)=
+begin
+  out.add_date                                                :: in.dbc2dt;
+  out.add_user_name                                           :: in.dbakvn;
+  out.chg_date                                                :: in.dbbmdt;
+  out.chg_user_name                                           :: in.dbadvn;
+  out.chg_time                                                :: in.dbabtm;
+  out.add_time                                                :: in.dbadtm;
+  out.chg_program_name                                        :: in.dbaevn;
+  out.add_program_name                                        :: in.dbalvn;
+  out.snd_sntwk_pntwk_status                                  :: in.dbelh7;
+  out.snd_network_status                                      :: in.dbemh7;
+  out.snd_from_date                                           :: in.dbexhg;
+  out.phn_pharmacy_networkid                                  :: in.dbeycd;
+  out.snd_thru_date                                           :: in.dbeyhg;
+  out.seq_nbr                                                 :: in.dbfsnb;
+  out.snd_user_sequence                                       :: in.dbfyht;
+  out.snh_seq_nbr                                             :: in.dbn4hr;
+  out.snd_sntwk_pntwk_seq_nbr                                 :: in.dbn7hr;
+  out.snh_super_network_id                                    :: in.dboohb;
+  out.snd_carrier_id                                          :: in.dbphhb;
+  out.snd_region_code                                         :: in.dbpihb;
+  out.snd_process_qualifier                                   :: in.dbsfie;
+  out.snd_network_qualifier                                   :: in.dbvsid;
+  out.snd_pharmacy_network_type                               :: in.dbycia;/*
+  out.record_load_crm_ref_id                                  :: in.current_timestamp();
+  out.record_load_datetime                                    :: in.current_timestamp();
+  out.record_load_reason                                      :: in.00;
+  out.record_update_crm_ref_id                                :: in.00;
+  out.record_update_datetime                                  :: in.Undefined;
+  out.record_update_reason                                    :: in.Undefined;*/
+  out.rxt_src_envrt_id 		  :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm 		  :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm 		  :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid 		  :: 'app_orca_rxclaim';
+  out.rxt_create_run_id 	  :: (decimal(""))${RUN_TIMESTAMP};
+  out.rxt_rec_stat_cd 		  :: '';
+  out.* 			  :: in.*;
+end;

@@ -1,0 +1,61 @@
+/* Do Not Edit.  This file is generated automatically by combining
+ * "$PUB_DXF_DML/split_header.type2.dml", "$AI_DML/dxf_header.dml", any "$ADDITIONAL_FIELDS_DML",
+ * and "/~$PUB_DATAHUB_DML/ids_common/ids_common.d_member_eligibility_adjud.dml".
+ * Changing the target DML and re-running "$AI_PSET/setup.ilm/setup.ilm.orx_d_adjud.pset" will update this file.
+ */
+
+type opt_nk_ids_common_d_cag_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_member_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+type split_ids_common_d_member_eligibility_adjud_t =
+record
+  decimal(1) is_equal = 0;
+  decimal(1) drop_record = 0;
+  datetime("YYYY-MM-DD HH24:MI:SS") matching__eff_dt = NULL("");
+  little endian integer(8)  dxf_src_dataset_id =  0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8)  dxf_src_rec_cnt =  0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2)  dxf_src_sys_id =  0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1))  dxf_src_file_name =  ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  unsigned integer(8)    dxf_hk_part1 =    0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)    dxf_hk_part2 =    0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)    dxf_sk =    0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)     mbr_eligty_adjud_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     cag_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)     account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     mbr_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)     clt_prod_cd = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)     clt_rdr_cd = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10)     pln_cd = NULL("") /*VARCHAR(10)*/;
+  decimal("\x01",0)     src_env_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     mbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     curr_mbr_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     curr_cag_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     curr_carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)     curr_account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     curr_employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     curr_mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+metadata type =
+record
+  split_ids_common_d_member_eligibility_adjud_t d_mbr_elgt;
+  opt_nk_ids_common_d_cag_t d_cag_mbr_elg;
+  opt_nk_ids_common_d_member_t d_mem_mbr_elg;
+  opt_nk_ids_common_d_member_t d_cur_embr;
+  opt_nk_ids_common_d_cag_t d_cur_ecag;
+  string(1)   newline = "\n";
+end;

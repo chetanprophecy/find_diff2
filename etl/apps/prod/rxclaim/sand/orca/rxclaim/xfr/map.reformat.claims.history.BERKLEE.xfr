@@ -1,0 +1,78 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_596c80fe_1cd9_6 = $BIN;
+let string(int) bzt_1_6c54cc0a_596c80fe_1cd9_6 = $SBMT_GROUP;
+let string(int) bzt_2_6c54cc0a_596c80fe_1cd9_6 = $PCN;
+
+/*@
+dependency_analysis:
+[
+  [out0.fill_date,[transform],]
+  [out0.member_id,[transform],]
+  [out0.days_supply,[transform],]
+  [out0.client_identifier_level_1,[transform],]
+  [out0.newline,[transform],]
+  [out0.client_identifier_level_2,[transform],]
+  [out0.formulary_flag,[transform],]
+  [out0.pharmacy_id,[transform],]
+  [out0.ndc,[transform],]
+  [out0.map_name,[transform],]
+  [out0.incumbent_tier,[transform],]
+  [out0.quantity,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.fill_date,'fill_date',1,0]
+     [out0.member_id,'member_id',1,0]
+     [out0.days_supply,'days_supply',1,0]
+     [out0.client_identifier_level_1,'client_identifier_level_1',1,0]
+     [out0.newline,'newline',1,0]
+     [out0.client_identifier_level_2,'client_identifier_level_2',1,0]
+     [out0.formulary_flag,'formulary_flag',1,0]
+     [out0.pharmacy_id,'pharmacy_id',1,0]
+     [out0.ndc,'ndc',1,0]
+     [out0.map_name,'map_name',1,0]
+     [out0.incumbent_tier,'incumbent_tier',1,0]
+     [out0.quantity,'quantity',1,0]
+  ]
+  impacts:
+  [
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string(30) member_id = "1234";
+let string(20) ndc = "Test";
+let string(20) formulary_flag = bzt_0_6c54cc0a_596c80fe_1cd9_6;
+let string(20) incumbent_tier = bzt_2_6c54cc0a_596c80fe_1cd9_6;
+let decimal(3) days_supply = 123;
+let decimal(11.3) quantity = 12;
+let string(30) map_name = bzt_1_6c54cc0a_596c80fe_1cd9_6;
+let decimal(8) fill_date = 20170712;
+let string(30) client_identifier_level_1 = "Test";
+let string(30) client_identifier_level_2 = "Test";
+let string(15) pharmacy_id = "Test";
+let string("\n") newline = '\n';
+
+
+
+  out0.member_id::member_id;
+  out0.ndc::ndc;
+  out0.formulary_flag::formulary_flag;
+  out0.incumbent_tier::incumbent_tier;
+  out0.days_supply::days_supply;
+  out0.quantity::quantity;
+  out0.map_name::map_name;
+  out0.fill_date::fill_date;
+  out0.client_identifier_level_1::client_identifier_level_1;
+  out0.client_identifier_level_2::client_identifier_level_2;
+  out0.pharmacy_id::pharmacy_id;
+  out0.newline::newline;
+  out0.*::in0.*;
+
+end;

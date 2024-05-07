@@ -1,0 +1,104 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_rcmd8p_to_the_rxclaim_orx_f_mpd_pde_audit_claim_ILM_documentation(in)=
+begin
+
+out0.pde_adt_clm.claim_nbr_encrp::depends_on(
+         in.m8qubt
+         );
+
+
+out0.pde_adt_clm.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.pde_adt_clm.aud_cd::depends_on(
+         in.m8hwvi
+         );
+
+
+out0.pde_adt_clm.aud_stat::depends_on(
+         in.m8jqax
+         );
+
+
+out0.pde_adt_clm.claim_nbr::depends_on(
+         in.m8qubt
+         );
+
+
+out0.pde_adt_clm.aud_cd_desc::depends_on(
+         in.m7huvi
+         );
+
+
+out0.pde_adt_clm.aud_rsn_cd::depends_on(
+         in.m8hxvi
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_rcmd8p_to_the_rxclaim_orx_f_mpd_pde_audit_claim_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.pde_adt_clm.claim_nbr_encrp,'pde_adt_clm.claim_nbr_encrp',1,0]
+     [out0.pde_adt_clm.src_env_sk,'pde_adt_clm.src_env_sk',1,0]
+     [out0.pde_adt_clm.aud_cd,'pde_adt_clm.aud_cd',1,0]
+     [out0.pde_adt_clm.aud_stat,'pde_adt_clm.aud_stat',1,0]
+     [out0.pde_adt_clm.claim_nbr,'pde_adt_clm.claim_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.pde_adt_clm.aud_cd_desc,'pde_adt_clm.aud_cd_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.pde_adt_clm.aud_rsn_cd,'pde_adt_clm.aud_rsn_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.m7huvi,'m7huvi',1,1]
+     [in0.m8qubt,'m8qubt',6,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.m8hwvi,'m8hwvi',1,1]
+     [in0.m8jqax,'m8jqax',1,1]
+     [in0.m8hxvi,'m8hxvi',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) pde_adt_clm_claim_nbr = fail_if_error(in0.m8qubt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) pde_adt_clm_aud_cd = fail_if_error(in0.m8hwvi);
+let string("\x01",charset="iso-8859-15", maximum_length=24) pde_adt_clm_aud_cd_desc = fail_if_error(in0.m7huvi);
+let string("\x01",charset="iso-8859-15", maximum_length=24) pde_adt_clm_aud_rsn_cd = fail_if_error(in0.m8hxvi);
+let string("\x01",charset="iso-8859-15", maximum_length=1) pde_adt_clm_aud_stat = fail_if_error(in0.m8jqax);
+let decimal("\x01",0) pde_adt_clm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) pde_adt_clm_claim_nbr_encrp;
+
+
+
+/*   Default value   */
+pde_adt_clm_claim_nbr_encrp=fail_if_error(if(in0.m8qubt>0) (decimal(''))(string_concat(string_substring((decimal(''))in0.m8qubt,1,2),ff3_encrypt_idwdata((decimal(''))in0.m8qubt))) 
+else  (decimal(''))(string_concat(string_substring((decimal(''))in0.m8qubt,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs((decimal(''))in0.m8qubt))))));
+
+  out0.pde_adt_clm.claim_nbr::pde_adt_clm_claim_nbr;
+  out0.pde_adt_clm.aud_cd::pde_adt_clm_aud_cd;
+  out0.pde_adt_clm.aud_cd_desc::pde_adt_clm_aud_cd_desc;
+  out0.pde_adt_clm.aud_rsn_cd::pde_adt_clm_aud_rsn_cd;
+  out0.pde_adt_clm.aud_stat::pde_adt_clm_aud_stat;
+  out0.pde_adt_clm.src_env_sk::pde_adt_clm_src_env_sk;
+  out0.pde_adt_clm.claim_nbr_encrp::pde_adt_clm_claim_nbr_encrp;
+  out0.*::in0.*;
+end;

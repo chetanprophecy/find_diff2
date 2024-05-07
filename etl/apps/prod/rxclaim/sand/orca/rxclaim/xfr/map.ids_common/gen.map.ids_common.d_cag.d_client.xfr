@@ -1,0 +1,67 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_client.legacy_bus_nm,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_client.legacy_bus_nm,'d_client.legacy_bus_nm',1,0]
+     [out0.d_client.client_nm,'d_client.client_nm',1,0]
+     [out0.d_client.client_id,'d_client.client_id',1,0]
+     [out0.d_client.dxf_sk,'d_client.dxf_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_client.dxf_hk_part2,'d_client.dxf_hk_part2',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_client.client_sk,'d_client.client_sk',1,0]
+     [out0.d_client.dxf_hk_part1,'d_client.dxf_hk_part1',1,0]
+     [out0.d_client.src_env_sk,'d_client.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.client_nm,'client_nm',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.client_id,'client_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.client_sk,'client_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) d_client_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) d_client_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) d_client_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) d_client_client_sk = fail_if_error(in0.client_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_client_client_id = fail_if_error(in0.client_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_client_client_nm = fail_if_error(in0.client_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) d_client_legacy_bus_nm = "-";
+let decimal("\x01",0) d_client_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.d_client.dxf_hk_part1::d_client_dxf_hk_part1;
+  out0.d_client.dxf_hk_part2::d_client_dxf_hk_part2;
+  out0.d_client.dxf_sk::d_client_dxf_sk;
+  out0.d_client.client_sk::d_client_client_sk;
+  out0.d_client.client_id::d_client_client_id;
+  out0.d_client.client_nm::d_client_client_nm;
+  out0.d_client.legacy_bus_nm::d_client_legacy_bus_nm;
+  out0.d_client.src_env_sk::d_client_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,12 @@
+include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "/~$AI_XFR/bre_helper.map.xfr";
+include "~$PUB_DXF_XFR/common_functions.xfr";
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+out :: reformat(in) =
+begin
+ out.mbr_id_encrpd :1: if(!is_null(in.mbr_id) or !is_blank(in.mbr_id))  encrypt_idwdata(in.mbr_id) else in.mbr_id;
+
+   out.* :: in.*;
+end;
+

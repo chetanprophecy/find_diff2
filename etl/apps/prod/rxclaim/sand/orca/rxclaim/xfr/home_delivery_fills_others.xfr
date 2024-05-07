@@ -1,0 +1,13 @@
+out :: input_select(in) =
+begin
+  out :: first_defined(in.COVERAGE_INDICATOR,"-1") member [vector "4", "5"];
+end
+
+
+out :: rollup(in) =
+begin
+  out.PHARMACY_NPI      :: if(first_defined(in.PHARMACY_NPI,"-1")=='0000000000' and first_defined(in.WRITTEN_PHARMACY_CODE,"0")=='0001') '1497845317' else in.PHARMACY_NPI;
+  out.RX_NBR            :: in.RX_NUMBER;
+  out.FILL_NBR          :: (string(""))(decimal(2, zerofill))(99-(decimal(""))in.REFILL_NBR);//(Prefix '0' for single digit)
+  out.OTHER_PLANS_PAID  :: "";//sum(in.THIRD_PARTY_PAYMENT_AMOUNT) for each PHARMACY_NPI, RX_NBR, FILL_NBR, DT_FILLED;
+end

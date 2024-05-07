@@ -1,0 +1,95 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_anc_rf_sk1.carrier_id,[passthrough],in0.idaacd]
+  [out0.d_mbr_anc_rf.fld_datatype,[passthrough],in0.ida5ck]
+  [out0.d_mbr_anc_rf.fld_nm,[passthrough],in0.idvtt3]
+  [out0.d_mbr_anc_rf.employer_group_id,[passthrough],in0.idadcd]
+  [out0.d_mbr_anc_rf.fld_strt_pos,[passthrough],in0.idcriu]
+  [out0.d_mbr_anc_rf.account_id,[passthrough],in0.idaccd]
+  [out0.d_anc_rf_sk1.account_id,[passthrough],in0.idaccd]
+  [out0.d_mbr_anc_rf.cag_sk,[transform],]
+  [out0.d_mbr_anc_rf.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_mbr_anc_rf.fld_nbr,[passthrough],in0.iddjc6]
+  [out0.d_anc_rf_sk1.employer_group_id,[passthrough],in0.idadcd]
+  [out0.d_mbr_anc_rf.fld_max_len,[passthrough],in0.idbvn3]
+  [out0.d_mbr_anc_rf.carrier_id,[passthrough],in0.idaacd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_anc_rf_sk1.carrier_id,'d_anc_rf_sk1.carrier_id',1,0]
+     [out0.d_mbr_anc_rf.fld_datatype,'d_mbr_anc_rf.fld_datatype',1,0]
+     [out0.d_mbr_anc_rf.fld_nm,'d_mbr_anc_rf.fld_nm',1,0]
+     [out0.d_mbr_anc_rf.employer_group_id,'d_mbr_anc_rf.employer_group_id',1,0]
+     [out0.d_mbr_anc_rf.fld_strt_pos,'d_mbr_anc_rf.fld_strt_pos',1,0]
+     [out0.d_mbr_anc_rf.account_id,'d_mbr_anc_rf.account_id',1,0]
+     [out0.d_anc_rf_sk1.account_id,'d_anc_rf_sk1.account_id',1,0]
+     [out0.d_mbr_anc_rf.cag_sk,'d_mbr_anc_rf.cag_sk',1,0]
+     [out0.d_mbr_anc_rf.src_env_sk,'d_mbr_anc_rf.src_env_sk',1,0]
+     [out0.d_mbr_anc_rf.fld_nbr,'d_mbr_anc_rf.fld_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_anc_rf_sk1.employer_group_id,'d_anc_rf_sk1.employer_group_id',1,0]
+     [out0.d_mbr_anc_rf.fld_max_len,'d_mbr_anc_rf.fld_max_len',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_mbr_anc_rf.carrier_id,'d_mbr_anc_rf.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.ida5ck,'ida5ck',1,1]
+     [in0.idbvn3,'idbvn3',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.idaccd,'idaccd',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.idvtt3,'idvtt3',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.iddjc6,'iddjc6',1,1]
+     [in0.idadcd,'idadcd',2,2]
+     [in0.idcriu,'idcriu',1,1]
+     [in0.idaacd,'idaacd',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_mbr_anc_rf_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_anc_rf_carrier_id = fail_if_error(in0.idaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_anc_rf_account_id = fail_if_error(in0.idaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_anc_rf_employer_group_id = fail_if_error(in0.idadcd);
+let decimal("\x01",0) d_mbr_anc_rf_fld_nbr = fail_if_error(in0.iddjc6);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_anc_rf_fld_nm = fail_if_error(in0.idvtt3);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_anc_rf_fld_datatype = fail_if_error(in0.ida5ck);
+let decimal("\x01",0) d_mbr_anc_rf_fld_max_len = fail_if_error(in0.idbvn3);
+let decimal("\x01",0) d_mbr_anc_rf_fld_strt_pos = fail_if_error(in0.idcriu);
+let decimal("\x01",0) d_mbr_anc_rf_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_anc_rf_sk1_carrier_id = fail_if_error(in0.idaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_anc_rf_sk1_account_id = fail_if_error(in0.idaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_anc_rf_sk1_employer_group_id = fail_if_error(in0.idadcd);
+
+
+
+  out0.d_mbr_anc_rf.cag_sk::d_mbr_anc_rf_cag_sk;
+  out0.d_mbr_anc_rf.carrier_id::d_mbr_anc_rf_carrier_id;
+  out0.d_mbr_anc_rf.account_id::d_mbr_anc_rf_account_id;
+  out0.d_mbr_anc_rf.employer_group_id::d_mbr_anc_rf_employer_group_id;
+  out0.d_mbr_anc_rf.fld_nbr::d_mbr_anc_rf_fld_nbr;
+  out0.d_mbr_anc_rf.fld_nm::d_mbr_anc_rf_fld_nm;
+  out0.d_mbr_anc_rf.fld_datatype::d_mbr_anc_rf_fld_datatype;
+  out0.d_mbr_anc_rf.fld_max_len::d_mbr_anc_rf_fld_max_len;
+  out0.d_mbr_anc_rf.fld_strt_pos::d_mbr_anc_rf_fld_strt_pos;
+  out0.d_mbr_anc_rf.src_env_sk::d_mbr_anc_rf_src_env_sk;
+  out0.d_anc_rf_sk1.carrier_id::d_anc_rf_sk1_carrier_id;
+  out0.d_anc_rf_sk1.account_id::d_anc_rf_sk1_account_id;
+  out0.d_anc_rf_sk1.employer_group_id::d_anc_rf_sk1_employer_group_id;
+  out0.*::in0.*;
+
+end;

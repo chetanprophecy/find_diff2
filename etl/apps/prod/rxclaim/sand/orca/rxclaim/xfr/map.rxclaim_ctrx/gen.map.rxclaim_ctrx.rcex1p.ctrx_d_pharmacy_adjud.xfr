@@ -1,0 +1,271 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_97d014ac_575fed71_5c9d_0
+    BizHidden:true
+@*/
+/*   lookup relationship_lkp   */
+out0::bzt_2_97d014ac_575fed71_5c9d_0(in0)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  string("\x01", maximum_length=6) afajcd;
+  string("\x01", maximum_length=2) afqpia = NULL("");
+  string("\x01", maximum_length=35) afa9tx = NULL("");
+  string("\x01", maximum_length=55) afa7tx = NULL(""), afa8tx = NULL("");
+  string("\x01", maximum_length=30) afaptx = NULL("");
+  string("\x01", maximum_length=2) aficcd = NULL("");
+  string("\x01", maximum_length=5) afegcd = NULL("");
+  string("\x01", maximum_length=4) afehcd = NULL("");
+  string("\x01", maximum_length=2) afeicd = NULL("");
+  string("\x01", maximum_length=4) afdqcd = NULL("");
+  string("\x01", maximum_length=35) afbatx = NULL(""), afbbtx = NULL("");
+  string("\x01", maximum_length=20) afbctx = NULL("");
+  string("\x01", maximum_length=2) afibcd = NULL("");
+  string("\x01", maximum_length=5) afkgcd = NULL("");
+  string("\x01", maximum_length=4) afk2cd = NULL("");
+  string("\x01", maximum_length=2) afkbcd = NULL("");
+  string("\x01", maximum_length=4) afe0cd = NULL("");
+  string("\x01", maximum_length=30) afgjtx = NULL(""), afbdtx = NULL("");
+  decimal("\x01", maximum_length=13) afbrnb = NULL("");
+  decimal("\x01", maximum_length=8) afbcnb = NULL("");
+  decimal("\x01", maximum_length=13) afbtnb = NULL("");
+  string("\x01", maximum_length=50) afa4hp = NULL("");
+  string("\x01", maximum_length=1) afqqia = NULL("");
+  decimal("\x01", maximum_length=10) afyahg = NULL("");
+  string("\x01", maximum_length=6) afz1he = NULL("");
+  string("\x01", maximum_length=10) afakvn = NULL("");
+  decimal("\x01", maximum_length=10) afc2dt = NULL("");
+  decimal("\x01", maximum_length=9) afadtm = NULL("");
+  string("\x01", maximum_length=10) afalvn = NULL(""), afadvn = NULL("");
+  decimal("\x01", maximum_length=10) afbmdt = NULL("");
+  decimal("\x01", maximum_length=9) afabtm = NULL("");
+  string("\x01", maximum_length=10) afaevn = NULL("");
+  string("\x01", maximum_length=5) rxt_src_envrt_id;
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("relationship_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_3_97d014ac_575fed71_5c9d_0
+    BizHidden:true
+@*/
+/*   lookup Trans_Common_Dtl_Ext3_lkp   */
+out0::bzt_3_97d014ac_575fed71_5c9d_0(in0,in1,in2)=
+begin
+let record
+  little endian integer(8) dxf_src_dataset_id = 0;
+  little endian integer(4) dxf_src_rec_cnt = 0;
+  little endian integer(2) dxf_src_sys_id = 0;
+  string(unsigned integer(1)) dxf_src_file_name = "";
+  decimal("\x01", maximum_length=18) rip2nb;
+  decimal("\x01", maximum_length=6) rioinb;
+  string("\x01", maximum_length=1) rivtid = NULL("");
+  string("\x01", maximum_length=5) rxt_src_envrt_id;
+  string("\x01", maximum_length=30) rxt_src_envrt_nm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") rxt_create_dttm = NULL("");
+  string("\x01", maximum_length=20) rxt_create_uid = NULL("");
+  decimal("\x01", maximum_length=16) rxt_create_run_id = NULL("");
+  string("\x01", maximum_length=2) rxt_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("Trans_Common_Dtl_Ext3_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_phrm_adj.phr_affl_cd,[passthrough],in0.affiliatin]
+  [out0.d_phrm_adj.rslvd_phr_id_qlfr_cd,[passthrough],in0.srvprovidq]
+  [out0.d_phrm_adj.phr_ntwrk_seq_no,[passthrough],in0.netseq]
+  [out0.d_phrm_adj.phr_super_ntwrk_id,[passthrough],in0.srxnetwrk]
+  [out0.d_phrm_adj.phr_affl_nm,[transform],in0.affiliatin,
+     'lookup("relationship_lkp").afa9tx']
+  [out0.d_phrm_adj.phr_ntwrk_id,[passthrough],in0.rxnetwork]
+  [out0.d_phrm_adj.rslvd_phr_id,[passthrough],in0.srvprovid]
+  [out0.d_phrm_adj.phr_ntwrk_prity_cd,[passthrough],in0.netprior]
+  [out0.d_phrm_adj.phr_rgn_nm,[passthrough],in0.regioncde]
+  [out0.d_phrm_adj.phr_ntwrk_nm,[passthrough],in0.rxnetwrknm]
+  [out0.d_phrm_adj.phr_prnt_org_nm,[transform],in0.affiliatin,
+     'lookup("relationship_lkp").afz1he']
+  [out0.d_phrm_adj.phr_ntwrk_carr_nm,[passthrough],in0.rxnetcarr]
+  [out0.d_phrm_adj.phr_super_carr_nm,[passthrough],in0.scarrierid]
+  [out0.d_phrm_adj.phr_adjud_sk,[transform],]
+  [out0.d_phrm_adj.submd_phr_id_qlfr_cd,[passthrough],in0.sbmsrvprql]
+  [out0.d_phrm_adj.phr_pmt_centr_nm,[transform],in0.affiliatin,
+     in0.paycntr]
+  [out0.d_phrm_adj.phr_ntwrk_qlfr_ind,[passthrough],in0.rxnetwrkql]
+  [out0.d_phrm_adj.phr_zip_cd,[passthrough],in0.pharmzip]
+  [out0.d_phrm_adj.submd_phr_id,[passthrough],in0.sbmsrvprid]
+  [out0.d_phrm_adj.phr_ntwrk_prcs_qlfr_ind,[passthrough],in0.rxnetprcql]
+  [out0.d_phrm_adj.phr_nm,[passthrough],in0.srvprovnme]
+  [out0.d_phrm_adj.phr_ntwrk_clsfctn_ind,[transform],in0.clmseqnbr,
+     in0.rxclaimnbr,
+     in0.rxt_src_envrt_id,
+     'lookup("Trans_Common_Dtl_Ext3_lkp").rivtid']
+  [out0.d_phrm_adj.phr_npi_no,[passthrough],in0.npiprov]
+  [out0.d_phrm_adj.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_phrm_adj.phr_ntwrk_typ_cd,[passthrough],in0.nettype]
+  [out0.d_phrm_adj.phr_ncpdp_id,[passthrough],in0.prvncpdpid]
+  [out0.d_phrm_adj.phr_super_ntwrk_typ_cd,[passthrough],in0.srxnettype]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_phrm_adj.phr_affl_cd,'d_phrm_adj.phr_affl_cd',1,0]
+     [out0.d_phrm_adj.rslvd_phr_id_qlfr_cd,'d_phrm_adj.rslvd_phr_id_qlfr_cd',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_seq_no,'d_phrm_adj.phr_ntwrk_seq_no',1,0]
+     [out0.d_phrm_adj.phr_super_ntwrk_id,'d_phrm_adj.phr_super_ntwrk_id',1,0]
+     [out0.d_phrm_adj.phr_affl_nm,'d_phrm_adj.phr_affl_nm',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_id,'d_phrm_adj.phr_ntwrk_id',1,0]
+     [out0.d_phrm_adj.rslvd_phr_id,'d_phrm_adj.rslvd_phr_id',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_prity_cd,'d_phrm_adj.phr_ntwrk_prity_cd',1,0]
+     [out0.d_phrm_adj.phr_rgn_nm,'d_phrm_adj.phr_rgn_nm',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_nm,'d_phrm_adj.phr_ntwrk_nm',1,0]
+     [out0.d_phrm_adj.phr_prnt_org_nm,'d_phrm_adj.phr_prnt_org_nm',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_carr_nm,'d_phrm_adj.phr_ntwrk_carr_nm',1,0]
+     [out0.d_phrm_adj.phr_super_carr_nm,'d_phrm_adj.phr_super_carr_nm',1,0]
+     [out0.d_phrm_adj.phr_adjud_sk,'d_phrm_adj.phr_adjud_sk',1,0]
+     [out0.d_phrm_adj.submd_phr_id_qlfr_cd,'d_phrm_adj.submd_phr_id_qlfr_cd',1,0]
+     [out0.d_phrm_adj.phr_pmt_centr_nm,'d_phrm_adj.phr_pmt_centr_nm',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_qlfr_ind,'d_phrm_adj.phr_ntwrk_qlfr_ind',1,0]
+     [out0.d_phrm_adj.phr_zip_cd,'d_phrm_adj.phr_zip_cd',1,0]
+     [out0.d_phrm_adj.submd_phr_id,'d_phrm_adj.submd_phr_id',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_prcs_qlfr_ind,'d_phrm_adj.phr_ntwrk_prcs_qlfr_ind',1,0]
+     [out0.d_phrm_adj.phr_nm,'d_phrm_adj.phr_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_clsfctn_ind,'d_phrm_adj.phr_ntwrk_clsfctn_ind',1,0]
+     [out0.d_phrm_adj.phr_npi_no,'d_phrm_adj.phr_npi_no',1,0]
+     [out0.d_phrm_adj.src_env_sk,'d_phrm_adj.src_env_sk',1,0]
+     [out0.d_phrm_adj.phr_ntwrk_typ_cd,'d_phrm_adj.phr_ntwrk_typ_cd',1,0]
+     [out0.d_phrm_adj.phr_ncpdp_id,'d_phrm_adj.phr_ncpdp_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_phrm_adj.phr_super_ntwrk_typ_cd,'d_phrm_adj.phr_super_ntwrk_typ_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.srvprovnme,'srvprovnme',1,1]
+     [in0.npiprov,'npiprov',1,1]
+     ['lookup("relationship_lkp").afz1he','afz1he',1,1]
+     [in0.netseq,'netseq',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.srvprovidq,'srvprovidq',1,1]
+     [in0.rxclaimnbr,'rxclaimnbr',1,1]
+     [in0.nettype,'nettype',1,1]
+     [in0.rxnetcarr,'rxnetcarr',1,1]
+     [in0.regioncde,'regioncde',1,1]
+     [in0.scarrierid,'scarrierid',1,1]
+     [in0.rxnetwrknm,'rxnetwrknm',1,1]
+     [in0.rxnetwork,'rxnetwork',1,1]
+     [in0.sbmsrvprql,'sbmsrvprql',1,1]
+     [in0.rxnetprcql,'rxnetprcql',1,1]
+     [in0.pharmzip,'pharmzip',1,1]
+     [in0.paycntr,'paycntr',2,1]
+     ['lookup("relationship_lkp").afa9tx','afa9tx',1,1]
+     [in0.prvncpdpid,'prvncpdpid',1,1]
+     [in0.netprior,'netprior',1,1]
+     [in0.clmseqnbr,'clmseqnbr',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.srxnetwrk,'srxnetwrk',1,1]
+     [in0.srxnettype,'srxnettype',1,1]
+     [in0.srvprovid,'srvprovid',1,1]
+     [in0.rxnetwrkql,'rxnetwrkql',1,1]
+     [in0.affiliatin,'affiliatin',4,4]
+     ['lookup("Trans_Common_Dtl_Ext3_lkp").rivtid','rivtid',1,1]
+     [in0.sbmsrvprid,'sbmsrvprid',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',3,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_phrm_adj_phr_adjud_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_phrm_adj_submd_phr_id = fail_if_error(in0.sbmsrvprid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_phrm_adj_submd_phr_id_qlfr_cd = fail_if_error(in0.sbmsrvprql);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_phrm_adj_rslvd_phr_id = fail_if_error(in0.srvprovid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_phrm_adj_rslvd_phr_id_qlfr_cd = fail_if_error(in0.srvprovidq);
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_phrm_adj_phr_ncpdp_id = fail_if_error(in0.prvncpdpid);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_phrm_adj_phr_npi_no = fail_if_error(in0.npiprov);
+let string("\x01",charset="iso-8859-15", maximum_length=55) d_phrm_adj_phr_nm = fail_if_error(in0.srvprovnme);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_phrm_adj_phr_ntwrk_id = fail_if_error(in0.rxnetwork);
+let string("\x01",charset="iso-8859-15", maximum_length=25) d_phrm_adj_phr_ntwrk_nm = fail_if_error(in0.rxnetwrknm);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_phrm_adj_phr_ntwrk_prity_cd = fail_if_error(in0.netprior);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_phrm_adj_phr_ntwrk_qlfr_ind = fail_if_error(in0.rxnetwrkql);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_phrm_adj_phr_ntwrk_typ_cd = fail_if_error(in0.nettype);
+let string("\x01",charset="iso-8859-15", maximum_length=9) d_phrm_adj_phr_ntwrk_carr_nm = fail_if_error(in0.rxnetcarr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_phrm_adj_phr_ntwrk_prcs_qlfr_ind = fail_if_error(in0.rxnetprcql);
+let decimal("\x01",0) d_phrm_adj_phr_ntwrk_seq_no = fail_if_error(in0.netseq);
+let string("\x01",charset="iso-8859-15", maximum_length=9) d_phrm_adj_phr_super_carr_nm = fail_if_error(in0.scarrierid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_phrm_adj_phr_super_ntwrk_typ_cd = fail_if_error(in0.srxnettype);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_phrm_adj_phr_super_ntwrk_id = fail_if_error(in0.srxnetwrk);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_phrm_adj_phr_affl_cd = fail_if_error(in0.affiliatin);
+let string("\x01",charset="iso-8859-15", maximum_length=35) d_phrm_adj_phr_affl_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_phrm_adj_phr_pmt_centr_nm = fail_if_error((string_lrtrim(in0.paycntr) == '' ) ? in0.affiliatin : in0.paycntr);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_phrm_adj_phr_rgn_nm = fail_if_error(in0.regioncde);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_phrm_adj_phr_prnt_org_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_phrm_adj_phr_ntwrk_clsfctn_ind;
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_phrm_adj_phr_zip_cd = fail_if_error(in0.pharmzip);
+let decimal("\x01",0) d_phrm_adj_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Default value   */
+d_phrm_adj_phr_affl_nm=fail_if_error(bzt_2_97d014ac_575fed71_5c9d_0(in0.affiliatin).afa9tx);
+
+/*   Default value   */
+d_phrm_adj_phr_prnt_org_nm=fail_if_error(bzt_2_97d014ac_575fed71_5c9d_0(in0.affiliatin).afz1he);
+
+/*   Default value   */
+d_phrm_adj_phr_ntwrk_clsfctn_ind=fail_if_error(bzt_3_97d014ac_575fed71_5c9d_0(in0.rxclaimnbr, in0.clmseqnbr, in0.rxt_src_envrt_id).rivtid);
+
+  out0.d_phrm_adj.phr_adjud_sk::d_phrm_adj_phr_adjud_sk;
+  out0.d_phrm_adj.submd_phr_id::d_phrm_adj_submd_phr_id;
+  out0.d_phrm_adj.submd_phr_id_qlfr_cd::d_phrm_adj_submd_phr_id_qlfr_cd;
+  out0.d_phrm_adj.rslvd_phr_id::d_phrm_adj_rslvd_phr_id;
+  out0.d_phrm_adj.rslvd_phr_id_qlfr_cd::d_phrm_adj_rslvd_phr_id_qlfr_cd;
+  out0.d_phrm_adj.phr_ncpdp_id::d_phrm_adj_phr_ncpdp_id;
+  out0.d_phrm_adj.phr_npi_no::d_phrm_adj_phr_npi_no;
+  out0.d_phrm_adj.phr_nm::d_phrm_adj_phr_nm;
+  out0.d_phrm_adj.phr_ntwrk_id::d_phrm_adj_phr_ntwrk_id;
+  out0.d_phrm_adj.phr_ntwrk_nm::d_phrm_adj_phr_ntwrk_nm;
+  out0.d_phrm_adj.phr_ntwrk_prity_cd::d_phrm_adj_phr_ntwrk_prity_cd;
+  out0.d_phrm_adj.phr_ntwrk_qlfr_ind::d_phrm_adj_phr_ntwrk_qlfr_ind;
+  out0.d_phrm_adj.phr_ntwrk_typ_cd::d_phrm_adj_phr_ntwrk_typ_cd;
+  out0.d_phrm_adj.phr_ntwrk_carr_nm::d_phrm_adj_phr_ntwrk_carr_nm;
+  out0.d_phrm_adj.phr_ntwrk_prcs_qlfr_ind::d_phrm_adj_phr_ntwrk_prcs_qlfr_ind;
+  out0.d_phrm_adj.phr_ntwrk_seq_no::d_phrm_adj_phr_ntwrk_seq_no;
+  out0.d_phrm_adj.phr_super_carr_nm::d_phrm_adj_phr_super_carr_nm;
+  out0.d_phrm_adj.phr_super_ntwrk_typ_cd::d_phrm_adj_phr_super_ntwrk_typ_cd;
+  out0.d_phrm_adj.phr_super_ntwrk_id::d_phrm_adj_phr_super_ntwrk_id;
+  out0.d_phrm_adj.phr_affl_cd::d_phrm_adj_phr_affl_cd;
+  out0.d_phrm_adj.phr_affl_nm::d_phrm_adj_phr_affl_nm;
+  out0.d_phrm_adj.phr_pmt_centr_nm::d_phrm_adj_phr_pmt_centr_nm;
+  out0.d_phrm_adj.phr_rgn_nm::d_phrm_adj_phr_rgn_nm;
+  out0.d_phrm_adj.phr_prnt_org_nm::d_phrm_adj_phr_prnt_org_nm;
+  out0.d_phrm_adj.phr_ntwrk_clsfctn_ind::d_phrm_adj_phr_ntwrk_clsfctn_ind;
+  out0.d_phrm_adj.phr_zip_cd::d_phrm_adj_phr_zip_cd;
+  out0.d_phrm_adj.src_env_sk::d_phrm_adj_src_env_sk;
+  out0.*::in0.*;
+
+end;

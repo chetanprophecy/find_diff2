@@ -1,0 +1,41 @@
+
+out::rollup(in)=
+begin
+//date calculation
+let date("YYYYMMDD") sbm_start_dt=(date("YYYYMMDD")) string_concat(in.subm_yr_mnth,'01');
+let date("YYYYMMDD") sbm_end_dt=(date("YYYYMMDD")) date_add_months(sbm_start_dt,1);
+
+//distinct calculation
+let decimal('\x01',0)[int] msms_utilizing_mbr_cnt_no_int=accumulation(in.mbr_sk, (in.recent_clm_flg=='Y' and in.claim_stat_id member [vector 'C', 'P'] and in.day_90_prog_type=='M'));
+let decimal('\x01',0)[int] hd_utilizing_mbr_cnt_no_int=accumulation(in.mbr_sk, (in.recent_clm_flg=='Y'and in.claim_stat_id member [vector 'C','P'] and in.hm_dlvry_ind=='Y'));
+let decimal('\x01',0)[int] msms_mbr_opt_out_cnt_no_int=accumulation(in.mbr_sk, (in.claim_stat_id member [vector 'C','P'] and in.day_90_prog_type=='M' and in.consent_type_cd=='O' and
+                                                        in.mep_stat_cd == 'A' and in.mep_eff_dt>=sbm_start_dt and in.mep_eff_dt<sbm_end_dt));
+                                                        
+//sum calculation
+let decimal('\x01',0)[int]  claim_cntr_retail_30_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='N' and in.claim_stat_id member [vector 'C','P'] and in.days_sply<84));
+let decimal('\x01',0)[int]  claim_cntr_retail_90_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='N' and in.claim_stat_id member [vector 'C','P'] and in.days_sply>=84));
+let decimal('\x01',0)[int]  claim_cntr_hd_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='Y' and in.recent_clm_flg=='Y' and in.claim_stat_id member [vector 'C','P']));
+let decimal('\x01',0)[int]  claim_cntr_msms_retail_30_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='N' and in.day_90_prog_type=='M' and in.recent_clm_flg=='Y'  and in.claim_stat_id member [vector 'C','P'] and in.days_sply<84));
+let decimal('\x01',0)[int]  claim_cntr_msms_retail_90_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='N' and in.day_90_prog_type=='M' and in.recent_clm_flg=='Y'  and in.claim_stat_id member [vector 'C','P'] and in.days_sply>=84));
+let decimal('\x01',0)[int]  claim_cntr_msms_hd_int=accumulation(in.claim_cntr,(in.hm_dlvry_ind=='Y' and in.day_90_prog_type=='M' and in.recent_clm_flg=='Y' and in.claim_stat_id member [vector 'C','P']));
+
+
+out.cag_sk::in.cag_sk;
+out.subm_yr_mnth::in.subm_yr_mnth;
+
+out.msms_utilizing_mbr_cnt_no::length_of(vector_sort_dedup_first(vector_difference((decimal('\x01',0)[int]) msms_utilizing_mbr_cnt_no_int, (decimal('\x01',0)[int]) [vector 0])));
+out.hd_utilizing_mbr_cnt_no::length_of(vector_sort_dedup_first(vector_difference((decimal('\x01',0)[int]) hd_utilizing_mbr_cnt_no_int, (decimal('\x01',0)[int]) [vector 0])));
+out.msms_mbr_opt_out_cnt_no::length_of(vector_sort_dedup_first(vector_difference((decimal('\x01',0)[int]) msms_mbr_opt_out_cnt_no_int, (decimal('\x01',0)[int]) [vector 0])));
+
+out.claim_cntr_retail_30                :: vector_sum(claim_cntr_retail_30_int);
+out.claim_cntr_retail_90                :: vector_sum(claim_cntr_retail_90_int);
+out.claim_cntr_hd                       :: vector_sum(claim_cntr_hd_int);
+out.claim_cntr_msms_retail_30           :: vector_sum(claim_cntr_msms_retail_30_int);
+out.claim_cntr_msms_retail_90           :: vector_sum(claim_cntr_msms_retail_90_int);
+out.claim_cntr_msms_hd                  :: vector_sum(claim_cntr_msms_hd_int);
+
+out.*::in.*;
+
+end;
+
+ 

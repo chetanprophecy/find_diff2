@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||orxclaim_nextgen.elg_member_alternate_ins_mai_h
+SOURCE_DB_PROJECT||||DB_ORXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name    Unqualified Table Name          Fields\norxclaim_nextgen elg_platform_carrier_map        platform_id,carrier_id\norxclaim_nextgen elg_member_alternate_ins_mai_h
+SOURCE_DBMS_TYPE||||mysql
+DO_CLEAN||||1
+START_CHANGES_TIME:sandbox||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+SQL||||$["SELECT * from (SELECT h.*,\r\nCASE WHEN c.platform_id = 'BK2' THEN 490\r\nWHEN c.platform_id = 'BK1' THEN 480\r\nWHEN c.platform_id = 'CTR' THEN 510\r\nWHEN c.platform_id = 'GAM' THEN 550\r\nWHEN c.platform_id = 'INM' THEN 530\r\nWHEN c.platform_id = 'NVM' THEN 520\r\nWHEN c.platform_id = 'SDM' THEN 610\r\nWHEN c.platform_id = 'AZM' THEN 640\r\nWHEN c.platform_id = 'TNM' THEN 645\r\nWHEN c.platform_id = 'IRX' THEN 500\r\nEND AS src_env_sk\r\nFROM orxclaim_nextgen.elg_member_alternate_ins_mai_h h\r\nJOIN orxclaim_nextgen.elg_platform_carrier_map c on h.car_carrier_id = c.carrier_id\r\nwhere CONCAT(CONCAT(h.chg_date,' '),h.chg_time)>="+"'"+START_CHANGES_TIME+"'"+"\r\nand CONCAT(CONCAT(h.chg_date,' '),h.chg_time)<"+"'"+END_CHANGES_TIME+"'"+")a where a.src_env_sk is not null\r\n"]
+RUN_ID||||$RUN_ID

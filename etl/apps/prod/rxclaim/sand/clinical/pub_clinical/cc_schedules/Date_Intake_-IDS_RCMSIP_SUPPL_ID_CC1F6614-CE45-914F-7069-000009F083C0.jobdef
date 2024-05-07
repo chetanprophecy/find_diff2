@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" approveEnum1X170="APPROVED" description="This job subsets the IDS rcmsip file for given carrier id(s) and also calculates the records count and updates the control file." durationDefaultSec1X80="0" isEnabled="true" isManuallyGeneratedOnly1X130="false" isNoMatchAnError1X60="true" isOperatorVisible1X150="false" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="CC1F6614-CE45-914F-7069-000009F083C0" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Date Intake -IDS RCMSIP SUPPL ID" objectVersion="1.200" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="${AI_PSET}/ids_to_cli/mp/ids_to_cli_cdc_rcmsip_supplal.pset" executableType="GRAPH" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2019-06-30Z" startDate1X180="2019-06-30T18:30:00.000000Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <fileAndEventConstraints>
+      <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rcmsip_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+    </fileAndEventConstraints>
+    <predecessors>
+      <predecessor jobDefinitionGuid="71662B5E-149F-4815-85BB-231BC6E7A9A8"/>
+      <predecessor jobDefinitionGuid="48C29A90-B8D3-8DB4-C5A5-188A32F6D374"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

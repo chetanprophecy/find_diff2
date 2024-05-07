@@ -1,0 +1,67 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.eff_dt_thru,[transform],in0.costtypecodesub,
+     in0.costtypecode,
+     in0.packageprice,
+     in0.eff_dt_thru,
+     in0.unitprice,
+     in0.eff_dt,
+     in0.productid]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.is_fst_dt,'is_fst_dt',1,0]
+     [out0.is_lst_dt,'is_lst_dt',1,0]
+     [out0.packageprice,'packageprice',1,0]
+     [out0.costtypecode,'costtypecode',1,0]
+     [out0.eff_dt_thru,'eff_dt_thru',1,0]
+     [out0.unitprice,'unitprice',1,0]
+     [out0.eff_dt,'eff_dt',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.newline,'newline',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.costtypecodesub,'costtypecodesub',1,0]
+     [out0.productid,'productid',1,0]
+  ]
+  impacts:
+  [
+     [in0.is_lst_dt,'is_lst_dt',1,1]
+     [in0.is_fst_dt,'is_fst_dt',1,1]
+     [in0.costtypecodesub,'costtypecodesub',2,2]
+     [in0.packageprice,'packageprice',2,2]
+     [in0.costtypecode,'costtypecode',2,2]
+     [in0.eff_dt_thru,'eff_dt_thru',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.unitprice,'unitprice',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.newline,'newline',1,1]
+     [in0.eff_dt,'eff_dt',2,2]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.productid,'productid',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let datetime("YYYY-MM-DD HH24:MI:SS")("\x01") eff_dt_thru = fail_if_error((if (sql_and(sql_and(sql_and(sql_and(sql_and((in0.productid=='00140000635'),(in0.costtypecode=='AWP')),(in0.costtypecodesub=='AWPHist')),(in0.packageprice==62872.89)),(in0.unitprice==4.19153)),(((datetime("DD-MM-YYYY"))in0.eff_dt)=='07-07-2008')))
+   ((datetime("DD-MM-YYYY"))"25-09-2009")
+ else
+   in0.eff_dt_thru));
+
+
+
+  out0.eff_dt_thru::eff_dt_thru;
+  out0.*::in0.*;
+
+end;

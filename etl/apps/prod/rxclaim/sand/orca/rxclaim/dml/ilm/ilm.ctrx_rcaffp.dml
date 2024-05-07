@@ -1,0 +1,45 @@
+type logical_ids_common_rcaffp_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01", maximum_length=6) phr_relshp_cd = NULL("");
+  string("\x01", maximum_length=2) phr_relshp_typ_cd = NULL("");
+  string("\x01", maximum_length=35) phr_relshp_nm = NULL("");
+  string("\x01", maximum_length=55) phr_relshp_addr1_txt = NULL("");
+  string("\x01", maximum_length=55) phr_relshp_addr2_txt = NULL("");
+  string("\x01", maximum_length=30) phr_relshp_city_nm = NULL("");
+  string("\x01", maximum_length=2) phr_relshp_st_cd = NULL("");
+  string("\x01", maximum_length=15) phr_relshp_zip_cd = NULL("");
+  string("\x01", maximum_length=4) phr_relshp_zip2_cd = NULL("");
+  string("\x01", maximum_length=2) phr_relshp_zip3_cd = NULL("");
+  string("\x01", maximum_length=4) phr_relshp_cntry_cd = NULL("");
+  string("\x01", maximum_length=55) phr_relshp_mail_addr1_txt = NULL("");
+  string("\x01", maximum_length=55) phr_relshp_mail_addr2_txt = NULL("");
+  string("\x01", maximum_length=30) phr_relshp_mail_city_nm = NULL("");
+  string("\x01", maximum_length=2) phr_relshp_mail_st_cd = NULL("");
+  string("\x01", maximum_length=5) phr_relshp_mail_zip1_cd = NULL("");
+  string("\x01", maximum_length=4) phr_relshp_mail_zip2_cd = NULL("");
+  string("\x01", maximum_length=2) phr_relshp_mail_zip3_cd = NULL("");
+  string("\x01", maximum_length=4) phr_relshp_mail_cntry_cd = NULL("");
+  string("\x01", maximum_length=40) phr_relshp_cntct_nm = NULL("");
+  string("\x01", maximum_length=30) phr_relshp_cntct_title_nm = NULL("");
+  decimal("\x01",0) phr_relshp_phone_no = NULL("");
+  decimal("\x01",0) phr_relshp_phone_ext_no = NULL("");
+  decimal("\x01",0) phr_relshp_fax_phone = NULL("");
+  string("\x01", maximum_length=80) phr_relshp_cntct_email_txt = NULL("");
+  string("\x01", maximum_length=1) phr_affl_stat_cd = NULL("");
+  date("YYYYMMDD")("\x01") phr_relshp_obsolete_dt = NULL("");
+  string("\x01", maximum_length=30) phr_relshp_parent_org_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  little endian integer(4) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_common_rcaffp_t ctrx_rcaffp  /*@ BizName:'ctrx rcaffp' */;
+end;

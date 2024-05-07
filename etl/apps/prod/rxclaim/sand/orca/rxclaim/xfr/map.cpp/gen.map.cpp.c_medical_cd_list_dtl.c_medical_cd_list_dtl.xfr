@@ -1,0 +1,58 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_58be1fd0_aed_0 = $RUN_ID;
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) med_cd_l_dtl_cpp_medical_cd_list_dtl_sk = -1;
+let utf8 string("\x01", maximum_length=60) med_cd_l_dtl_medical_cd_list_id = fail_if_error(in0.medical_cd_list_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) med_cd_l_dtl_medical_cd_list_version = fail_if_error(in0.medical_cd_list_version);
+let decimal("\x01",0) med_cd_l_dtl_cpp_medical_cd_list_sk;
+let utf8 string("\x01", maximum_length=40) med_cd_l_dtl_idntfn_cd = fail_if_error(in0.idntfn_cd);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_idntfn_eff_dt = fail_if_error(in0.idntfn_eff_dt);
+let utf8 string("\x01", maximum_length=40) med_cd_l_dtl_intvn_cd = fail_if_error(in0.intvn_cd);
+let utf8 string("\x01", maximum_length=280) med_cd_l_dtl_disease = fail_if_error(in0.disease);
+let utf8 string("\x01", maximum_length=56) med_cd_l_dtl_cd_type = fail_if_error(in0.cd_type);
+let utf8 string("\x01", maximum_length=40) med_cd_l_dtl_cd = fail_if_error(in0.cd);
+let utf8 string("\x01", maximum_length=1020) med_cd_l_dtl_cd_descr = fail_if_error(in0.cd_descr);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_idntfn_term_dt = fail_if_error(in0.idntfn_term_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_eval_eff_dt = fail_if_error(in0.eval_eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_eval_term_dt = fail_if_error(in0.eval_term_dt);
+let utf8 string("\x01", maximum_length=8192) med_cd_l_dtl_cmmt = fail_if_error(in0.cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) med_cd_l_dtl_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") med_cd_l_dtl_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) med_cd_l_dtl_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) med_cd_l_dtl_src_env_sk = 710;
+let string("\x01",charset="iso-8859-15", maximum_length=1) med_cd_l_dtl_lvl = fail_if_error(in0.lvl);
+
+
+
+/*   Default value   */
+med_cd_l_dtl_cpp_medical_cd_list_sk=fail_if_error(first_defined(lookup("c_medical_cd_list",in0.medical_cd_list_id,in0.medical_cd_list_version).dxf_sk,-1));
+
+  out0.med_cd_l_dtl.cpp_medical_cd_list_dtl_sk::med_cd_l_dtl_cpp_medical_cd_list_dtl_sk;
+  out0.med_cd_l_dtl.medical_cd_list_id::med_cd_l_dtl_medical_cd_list_id;
+  out0.med_cd_l_dtl.medical_cd_list_version::med_cd_l_dtl_medical_cd_list_version;
+  out0.med_cd_l_dtl.cpp_medical_cd_list_sk::med_cd_l_dtl_cpp_medical_cd_list_sk;
+  out0.med_cd_l_dtl.idntfn_cd::med_cd_l_dtl_idntfn_cd;
+  out0.med_cd_l_dtl.idntfn_eff_dt::med_cd_l_dtl_idntfn_eff_dt;
+  out0.med_cd_l_dtl.intvn_cd::med_cd_l_dtl_intvn_cd;
+  out0.med_cd_l_dtl.disease::med_cd_l_dtl_disease;
+  out0.med_cd_l_dtl.cd_type::med_cd_l_dtl_cd_type;
+  out0.med_cd_l_dtl.cd::med_cd_l_dtl_cd;
+  out0.med_cd_l_dtl.cd_descr::med_cd_l_dtl_cd_descr;
+  out0.med_cd_l_dtl.idntfn_term_dt::med_cd_l_dtl_idntfn_term_dt;
+  out0.med_cd_l_dtl.eval_eff_dt::med_cd_l_dtl_eval_eff_dt;
+  out0.med_cd_l_dtl.eval_term_dt::med_cd_l_dtl_eval_term_dt;
+  out0.med_cd_l_dtl.cmmt::med_cd_l_dtl_cmmt;
+  out0.med_cd_l_dtl.cpp_update_ts::med_cd_l_dtl_cpp_update_ts;
+  out0.med_cd_l_dtl.cpp_updated_by::med_cd_l_dtl_cpp_updated_by;
+  out0.med_cd_l_dtl.cpp_create_ts::med_cd_l_dtl_cpp_create_ts;
+  out0.med_cd_l_dtl.cpp_created_by::med_cd_l_dtl_cpp_created_by;
+  out0.med_cd_l_dtl.src_env_sk::med_cd_l_dtl_src_env_sk;
+  out0.med_cd_l_dtl.lvl::med_cd_l_dtl_lvl;
+  out0.*::in0.*;
+
+end;

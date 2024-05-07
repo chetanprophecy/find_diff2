@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/compound_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/30  Gaurav Mirje            Initial version, create lookup functions for compound process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_compound_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_compound.dat';
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type compound_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  compound_hash_lkup_t    RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {compound.compound_cd};     
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let compound_lkup_t LKUP_COMPOUND = allocate_with_nulls();
+
+compound_lkup_t out :: load_compound_lkup() inline =
+begin
+  if (LKUP_COMPOUND.id == lookup_not_loaded())
+    LKUP_COMPOUND = lookup_load(this_partition_path(get_compound_lkup_path()));
+  
+  out :: LKUP_COMPOUND;
+end;
+
+compound_t out :: get_compound(compound_cd) inline =
+begin
+  let compound_lkup_t lkup = load_compound_lkup();
+  out :: lookup(lkup, compound_cd).compound;
+end;

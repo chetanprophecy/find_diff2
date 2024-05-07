@@ -1,0 +1,109 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_596ddb45_41b1_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.ag_mb_grp_mo.policy_id,[transform],in0.cag_sk,
+     'lookup("d_cag_lkp_agg_mbr_mn").employer_group_id',
+     'lookup("d_cag_lkp_agg_mbr_mn").carrier_id']
+  [out0.ag_mb_grp_mo.cal_year_month_id,[transform],in0.perd_start_dt_sk]
+  [out0.ag_mb_grp_mo.account_id,[transform],'lookup("d_cag_lkp_agg_mbr_mn").account_id']
+  [out0.ag_mb_grp_mo.employer_group_id,[transform],'lookup("d_cag_lkp_agg_mbr_mn").employer_group_id']
+  [out0.ag_mb_grp_mo.carrier_account_group_key,[passthrough],in0.cag_sk]
+  [out0.ag_mb_grp_mo.gender_code,[passthrough],in0.gender_sk]
+  [out0.ag_mb_grp_mo.src_env_sk,[passthrough],in0.src_env_sk]
+  [out0.ag_mb_grp_mo.carrier_id,[transform],in0.cag_sk,
+     'lookup("d_cag_lkp_agg_mbr_mn").carrier_id']
+  [out0.ag_mb_grp_mo.rxs_15th_member_cnt,[passthrough],in0.active_days_elig_mbr_cnt_no]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ag_mb_grp_mo.policy_id,'ag_mb_grp_mo.policy_id',1,2]
+     [out0.ag_mb_grp_mo.dxf_hk_part1,'ag_mb_grp_mo.dxf_hk_part1',1,0]
+     [out0.ag_mb_grp_mo.dxf_hk_part2,'ag_mb_grp_mo.dxf_hk_part2',1,0]
+     [out0.ag_mb_grp_mo.dxf_sk,'ag_mb_grp_mo.dxf_sk',1,0]
+     [out0.ag_mb_grp_mo.cal_year_month_id,'ag_mb_grp_mo.cal_year_month_id',1,0]
+     [out0.ag_mb_grp_mo.account_id,'ag_mb_grp_mo.account_id',1,0]
+     [out0.ag_mb_grp_mo.employer_group_id,'ag_mb_grp_mo.employer_group_id',1,0]
+     [out0.ag_mb_grp_mo.carrier_account_group_key,'ag_mb_grp_mo.carrier_account_group_key',1,0]
+     [out0.ag_mb_grp_mo.gender_code,'ag_mb_grp_mo.gender_code',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ag_mb_grp_mo.src_env_sk,'ag_mb_grp_mo.src_env_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ag_mb_grp_mo.carrier_id,'ag_mb_grp_mo.carrier_id',2,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ag_mb_grp_mo.rxs_15th_member_cnt,'ag_mb_grp_mo.rxs_15th_member_cnt',1,0]
+  ]
+  impacts:
+  [
+     [in0.perd_start_dt_sk,'perd_start_dt_sk',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     ['lookup("d_cag_lkp_agg_mbr_mn").account_id','account_id',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',2,4]
+     [in0.gender_sk,'gender_sk',1,1]
+     ['lookup("d_cag_lkp_agg_mbr_mn").employer_group_id','employer_group_id',2,3]
+     ['lookup("d_cag_lkp_agg_mbr_mn").carrier_id','carrier_id',1,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.active_days_elig_mbr_cnt_no,'active_days_elig_mbr_cnt_no',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) ag_mb_grp_mo_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) ag_mb_grp_mo_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) ag_mb_grp_mo_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) ag_mb_grp_mo_carrier_account_group_key = fail_if_error(in0.cag_sk);
+let string("\x01", maximum_length=9) ag_mb_grp_mo_carrier_id;
+let string("\x01", maximum_length=15) ag_mb_grp_mo_account_id;
+let string("\x01", maximum_length=30) ag_mb_grp_mo_employer_group_id;
+let string("\x01", maximum_length=1) ag_mb_grp_mo_gender_code = fail_if_error(in0.gender_sk);
+let decimal("\x01",0, maximum_length=7) ag_mb_grp_mo_cal_year_month_id = fail_if_error(string_substring(in0.perd_start_dt_sk,1,6));
+let decimal("\x01",0) ag_mb_grp_mo_rxs_15th_member_cnt = fail_if_error(in0.active_days_elig_mbr_cnt_no);
+let string("\x01", maximum_length=7) ag_mb_grp_mo_policy_id;
+let decimal("\x01",0) ag_mb_grp_mo_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+ag_mb_grp_mo_account_id=fail_if_error(lookup("d_cag_lkp_agg_mbr_mn",in0.cag_sk).account_id);
+
+/*   Default value   */
+ag_mb_grp_mo_employer_group_id=fail_if_error(lookup("d_cag_lkp_agg_mbr_mn",in0.cag_sk).employer_group_id);
+
+/*   Default value   */
+ag_mb_grp_mo_carrier_id=fail_if_error(lookup("d_cag_lkp_agg_mbr_mn",in0.cag_sk).carrier_id);
+
+/*   Rule:Compute ag_mb_grp_mo.policy_id  (#1)   */
+if(first_defined(fail_if_error(((string_like(ag_mb_grp_mo_carrier_id,"UHC%")) ==1)),0))begin
+  ag_mb_grp_mo_policy_id=string_substring(lookup("d_cag_lkp_agg_mbr_mn",in0.cag_sk).employer_group_id,1,7);
+end
+
+  out0.ag_mb_grp_mo.dxf_hk_part1::ag_mb_grp_mo_dxf_hk_part1;
+  out0.ag_mb_grp_mo.dxf_hk_part2::ag_mb_grp_mo_dxf_hk_part2;
+  out0.ag_mb_grp_mo.dxf_sk::ag_mb_grp_mo_dxf_sk;
+  out0.ag_mb_grp_mo.carrier_account_group_key::ag_mb_grp_mo_carrier_account_group_key;
+  out0.ag_mb_grp_mo.carrier_id::ag_mb_grp_mo_carrier_id;
+  out0.ag_mb_grp_mo.account_id::ag_mb_grp_mo_account_id;
+  out0.ag_mb_grp_mo.employer_group_id::ag_mb_grp_mo_employer_group_id;
+  out0.ag_mb_grp_mo.gender_code::ag_mb_grp_mo_gender_code;
+  out0.ag_mb_grp_mo.cal_year_month_id::ag_mb_grp_mo_cal_year_month_id;
+  out0.ag_mb_grp_mo.rxs_15th_member_cnt::ag_mb_grp_mo_rxs_15th_member_cnt;
+  out0.ag_mb_grp_mo.policy_id::ag_mb_grp_mo_policy_id;
+  out0.ag_mb_grp_mo.src_env_sk::ag_mb_grp_mo_src_env_sk;
+  out0.*::in0.*;
+
+end;

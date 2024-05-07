@@ -1,0 +1,725 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_msg_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/05/12  Paul Thompson           Initial version
+ *  2016/05/12  Majid Mohammed          Added member, Pharmacy and Medical metadata types
+ *  2016/06/13  Majid Mohammed          Updated column names and format to match it to IDS
+ *  2016/06/14  Paul Thompson           Renamed cli_internal_message_types.dml -> cli_msg_types.dml
+ *                                      Added hierarcy types, renamed member_t -> mbr_t, updated mbr_t
+ *  2016/06/16  Aravind Sanku           Modifed the datatypes in pharma & medical claims to use base types
+ *  2016/06/23  Paul Thompson           Version 1 of SCAG, Member and Pharmacy Claim types
+ *  2016/06/29  Paul Thompson           Version 1 of Medical Claim types (more work to be done here)
+ *  2016/06/30  Sherene Bryn            Commented out all newlines
+ *  2016/07/06  Paul Thompson           Added Clincal Client type (cli_clt_t) and SCAGM type (scagm_t)
+ *  2016/08/11  Paul Thompson           Added cli_src_env_id (surrogate key) field
+ *                                      Replaced src_env_id with cli_src_env_id as foreign key in various record structures
+ *                                      Moved hierarcy, prescriber and pharmacy types to cli_refdata_types.dml
+ *  2018/08/22  Aravind Sanku           Added mbr_elig_t
+ *  2018/08/23  Mohd Shadab             Added mbr_dtl_t, added Natural keys for SCAG and surrogate key for mbr(generated per SCAGM) in mbr_t,
+                                        changed field names (mcre_covrg_from_dt to mel_strt_dt, ben_reset_dt to mel_end_dt in type mbr_t)
+ *  2018/09/01  Mohd Shadab             Added cagm_sk_t, mbr_scagm_lkp_t, mbr_scagm_t
+ *  2018/09/06  Mohd Shadab             Added hic_cd in med_claim_mbr_t 
+ *  2018/09/07  Mohd Shadab             Removed ids_mbr_sk from mbr_t, added few fields in med_claim_txn_dtl_t, med_claim_mbr_t, med_claim_provider_t
+ *  2016/09/19  Chinmay Sahoo           Made ids_create_dttm, ids_updt_dttm as nullable fields for mbr_t and mbr_elig_t.
+ *  2016/09/28  Paul Thompson           Added cagm_t, cagm_nk_t and cagm_sk_t
+ *  2016/09/29  Chinmay Sahoo           Added cli_pharma_claim_sk field to pharma_claim_txn_dtl_t.
+ *  2016/09/30  Paul Thompson           Changed cli_pharma_claim_sk to cli_claim_id
+ *                                      Removed scagm_t
+ *                                      In mbr_dtl_t, renamed member_insured_dml -> mbr
+ *  2016/10/01  Mohd Shadab             Added field conclusive_mtch_flag in mbr_dtl_t and mbr_cagm_t 
+ *  2016/10/01  Paul Thompson           Fixed qlfr_cd for prescribers which was 2 instead of 3 characters)
+ *                                      Renamed pharmacy claim fields:
+ *                                          prescriber_qlfr_cd           -> prescriber_qlfr_cd
+ *                                          prescriber_id                -> prescriber_alias_id
+ *                                          spclty_prescriber_id_qlfr_cd -> spclty_prescriber_qlfr_cd
+ *                                          spclty_prescriber_id         -> spclty_prescriber_alias_id
+ *                                          pharmacy_id_qlfr_cd          -> pharmacy_qlfr_cd
+ *                                          pharmacy_id                  -> pharmacy_alias_id
+ *  2016/10/02  Aravind Sanku           Added days_sply to pharma_claim_txn_dtl_t
+ *  2016/10/21  Mohd Shadab             Added job_id in job_t
+ *  2016/10/23  Paul Thompson           Moved job_t to cli_exec_types.dml
+ *  2016/11/07  Chinmay Sahoo           Added rx_num and mail_service_ind to pharma_claim_t
+ *  2016/11/30  Paul Thompson           Removal of CLI surrogate keys for Source Environment and CAG dimensions from pharma_claim and mbr
+ *  2016/12/01  Paul Thompson           Added mbr_pharma_claim_stats_t
+ *  2016/12/07  Paul Thompson           Moved mbr_med_claim_stats_t into this file
+ *  2017/03/20  Chinmay Sahoo           Added pharma_claim_missing_dim_recycle_t type.
+ *  2017/07/12  Sarani Bhattacharya     Added daw_cd in pharma_claim_txn_dtl_t type.
+ *  2017/07/26  Mohd Shadab             Added src_svc_start_dt to keep the same value as we are getting from source 
+ *  2017/08/09  Yogesh Anasane          Added cagm_idntfn_cd_t for the trigger claim logic into all the rules program.
+ *  2017/10/11  Ankit/Santosh           Created a new type mmd_mbr_elig_t for RCMMDP IDS file .
+ *  2017/10/25  Mohd Shadab             Added new type for mtm idntfd members lookup file mtm_idntfn_ptnt_t 
+ *  2017/11/08 Naveen k Das             Added new field refill_remaining in pharma_claim_txn_dtl_t type.
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_refdata_types.dml";
+
+/****************/
+/* Member types */
+/****************/
+
+type mbr_t =
+utf8 record
+  // Natural Key
+  cli_carrier_id_t                 carrier_id                    /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id               /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id             /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                     mbr_id;
+  
+  // cli_mbr_id generated on scagm Natural keys (What is this and who added it? Why is this not in the change log above?)
+  cli_integer_id_t                 cli_mbr_id;
+  
+  // CAGM Hash
+  hash_key_t                       cagm_hash;
+  
+  cli_integer_id_t                 ptnt_id            = NULL     /*                       */;
+  cli_integer_id_t                 mast_prsn_id       = NULL     /* BIGINT                */;
+  cli_typ_cd_t                     mbr_typ            = NULL('') /* CHAR(1)               */;
+  cli_mbr_id_t                     fam_id             = NULL('') /* VARCHAR(20)           */;
+  cli_typ_cd_t                     fam_typ_cd         = NULL('') /* CHAR(1)               */;
+  cli_ind_t                        fam_ind            = NULL('') /* CHAR(1)               */;
+  cli_clt_id_t                     clt_id             = NULL('') /* VARCHAR(50)           */;
+  cli_ind_t                        alt_ins_ind        = NULL('') /* CHAR(1)               */;
+  string(int, maximum_length=10)   alt_ins_id         = NULL('') /* VARCHAR(10)           */;
+  cli_mbr_id_t                     alt_ins_mbr_id     = NULL('') /* VARCHAR(20)           */;
+  cli_first_nm_t                   first_nm           = NULL('') /* VARCHAR(25)           */;
+  cli_mid_init_nm_t                mid_init_nm        = NULL('') /* CHAR(1)               */;
+  cli_last_nm_t                    last_nm            = NULL('') /* VARCHAR(35)           */;
+  cli_date_t                       birth_dt           = NULL('') /* DATE                  */;
+  cli_sex_t                        sex                = NULL('') /* CHAR(1)               */;
+  cli_ssn_t                        ssn_nbr            = NULL('') /* VARCHAR(10)           */;
+  cli_hic_cd_t                     hic_cd             = NULL('') /* VARCHAR(11)           */;
+  cli_prsn_cd_t                    prsn_cd            = NULL('') /* VARCHAR(3)            */;
+  cli_relshp_cd_t                  relshp_cd          = NULL('') /* CHAR(1)               */;
+  cli_addr_t                       addr1              = NULL('') /* VARCHAR(60)           */;
+  cli_addr_t                       addr2              = NULL('') /* VARCHAR(60)           */;
+  cli_addr_t                       addr3              = NULL('') /* VARCHAR(60)           */;
+  cli_city_nm_t                    city_nm            = NULL('') /* VARCHAR(30)           */;
+  cli_st_cd_t                      st_cd              = NULL('') /* VARCHAR(3)            */;
+  cli_zip_t                        zip                = NULL('') /* VARCHAR(5)            */;
+  cli_zip2_t                       zip2               = NULL('') /* VARCHAR(4)            */;
+  cli_zip4_t                       zip4               = NULL('') /* VARCHAR(2)            */;
+  cli_cntry_t                      cntry              = NULL('') /* VARCHAR(4)            */;
+  cli_decimal_t                    phone              = NULL('') /* BIGINT                */;
+  cli_eml_addr_t                   eml_addr           = NULL('') /* VARCHAR(80)           */;
+  cli_typ_cd_t                     mcre_covrg_typ     = NULL('') /* CHAR(1)               */;
+  cli_date_t                       mel_strt_dt        = NULL('') /* DATE                  */;
+  cli_date_t                       mel_end_dt         = NULL('') /* DATE                  */;
+  cli_lang_cd_t                    lang_cd            = NULL('') /* VARCHAR(3)            */;
+  cli_flag_t                       dur_prcs_flag      = NULL('') /* CHAR(1)               */;
+  cli_integer_t                    mltpl_brth_cd      = NULL     /* BYTEINT               */;
+    
+  cli_datetime_t                   ids_create_dttm    = NULL('') /* TIMESTAMP(6)          */;
+  cli_datetime_t                   ids_updt_dttm      = NULL('') /* TIMESTAMP(6)          */;
+  
+//string(1) newline = '\n';
+end;
+
+type cagm_t =
+utf8 record
+  // Surrogate Key
+  cli_integer_id_t         cli_carrier_id        /*@ BizName:"Carrier"         @*/;
+  cli_integer_id_t         cli_carrier_acct_id   /*@ BizName:"Carrier Account" @*/;
+  cli_integer_id_t         cli_employer_group_id /*@ BizName:"Employer Group"  @*/;
+  
+  // Natural Key
+  cli_carrier_id_t         carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t    carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t  employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  
+  cli_mbr_id_t             mbr_id                /*@ BizName:"Member ID" @*/;
+end;
+type cagm_vec_t = cagm_t[int];
+
+type cagm_sk_t =
+utf8 record
+  cli_integer_id_t         cli_carrier_id        /*@ BizName:"Carrier"         @*/;
+  cli_integer_id_t         cli_carrier_acct_id   /*@ BizName:"Carrier Account" @*/;
+  cli_integer_id_t         cli_employer_group_id /*@ BizName:"Employer Group"  @*/;
+  cli_mbr_id_t             mbr_id                /*@ BizName:"Member ID" @*/;  
+end;
+type cagm_sk_vec_t = cagm_sk_t[int];
+
+type cagm_nk_t =
+utf8 record
+  cli_carrier_id_t         carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t    carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t  employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t             mbr_id                /*@ BizName:"Member ID" @*/;  
+end;
+type cagm_nk_vec_t = cagm_nk_t[int];
+
+/************************/
+/* Pharmacy Claim types */
+/************************/
+
+// Pharmacy Claim Transaction Details type
+
+type pharma_claim_txn_dtl_t =
+utf8 record
+  // Surrogate key
+  cli_decimal_t                    cli_claim_id;
+
+  // CAG Natural Keys
+  cli_carrier_id_t                 carrier_id        /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t            carrier_acct_id   /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id /* VARCHAR(40)  NOT NULL */;
+  
+  // Member Identifier
+  cli_mbr_id_t                     mbr_id;
+  
+  // Source Environment ID, Claim Number and Sequence Number
+  cli_src_env_id_t                 src_env_id        /* VARCHAR(4)   NOT NULL */;
+  cli_pharma_claim_nbr_t           claim_nbr         /* BIGINT       NOT NULL */;
+  cli_pharma_claim_seq_nbr_t       claim_seq_nbr     /* INTEGER      NOT NULL */;
+  string(int, maximum_length=2)    vers_nbr          /* VARCHAR(2)            */;
+  
+  // More Dates
+  cli_date_t                       cli_recv_dt                = NULL('');
+  cli_date_t                       sbm_dt                     = NULL('');
+  cli_date_t                       filled_dt                  = NULL('');
+  cli_date_t                       rx_written_dt              = NULL('');
+  
+  // Prescriber Qualifier Code and Alias ID
+  cli_dea_id_t                     prescriber_dea_id          = NULL;
+  cli_npi_id_t                     prescriber_npi             = NULL;
+  cli_prescriber_qlfr_cd_t         prescriber_qlfr_cd;
+  cli_prescriber_alias_id_t        prescriber_alias_id;
+  
+  cli_prescriber_qlfr_cd_t         spclty_prescriber_qlfr_cd  = NULL('');
+  cli_prescriber_alias_id_t        spclty_prescriber_alias_id = NULL('');
+  
+  // Pharmacy Qualifier Code and ID
+  cli_pharmacy_qlfr_cd_t           pharmacy_qlfr_cd;
+  cli_pharmacy_alias_id_t          pharmacy_alias_id;
+  
+  // Diagnosis Qualifier Code and ID
+  cli_diagnosis_qlfr_cd_t          diagnosis_cd_qual          = NULL('');
+  cli_diagnosis_cd_t               diagnosis_cd               = NULL('');
+  
+  // Drug Details
+  cli_ndc_id_t                     ndc_id;
+  cli_gpi_id_t                     gpi_id                     = NULL('');
+  decimal('\x01'.3, maximum_length=13, sign_reserved) drg_qty = NULL('');
+  cli_typ_cd_t                     drg_category_code          = NULL('');
+  cli_typ_cd_t                     drg_maint_cd               = NULL('');
+  cli_typ_cd_t                     drg_coverage_stat_cd       = NULL('');
+  
+  //Product details
+  cli_product_qlfr_cd_t            product_id_qlfr_cd         = NULL('');
+  string(int, maximum_length=20)   product_id                 = NULL('');
+  
+  // More Stuff
+  cli_rx_num_t                     rx_num                     = NULL('');
+  cli_stat_t                       mail_service_ind           = NULL('');         
+  cli_stat_t                       claim_stat_id;
+  cli_stat_t                       net_out_ind                = NULL('');
+  cli_stat_t                       daw_cd                     = NULL('');
+  cli_cust_loc_t                   cust_loc                   = NULL('');
+  cli_residence_cd_t               residence_cd               = NULL('');
+  cli_pbp_id_t                     cms_pbp_id                 = NULL('');
+  cli_contract_nbr_t               cms_contract_nbr           = NULL('');
+  cli_decimal_t                    days_sply                  = NULL('');
+  cli_decimal_t                    refill_remaining           = 0;
+end;
+
+// Pharmacy Claim Adjudication - Submitted
+type pharma_claim_adjud_sbm_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid          = NULL('') /*@ BizName:"Ingredient Costs Submitted" BizComment:"The Ingredient costs for this prescription that were requsted to be paid, as DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  dispensing_fee            = NULL('') /*@ BizName:"Dispensing Fee"             BizComment:"The dispensing fee requested by the pharmacy as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  sales_tax_paid            = NULL('') /*@ BizName:"Sales Tax"                  BizComment:"The sales tax paid by the pharmacy as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  patient_pay_amt           = NULL('') /*@ BizName:"Patient Paid"               BizComment:"The total amount the Patient Paid (out of pocket),including deductibles and copays at time of service at the pharmacy as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  due_amt                   = NULL('') /*@ BizName:"Due Amount"                 BizComment:"The amount due for payment calculated by the pharmacy as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  usual_customary_amt       = NULL('') /*@ BizName:"Usual & Customary Amount"   BizComment:"The usual and necessary amount according the the pharmacy and submitted with the claim as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  prof_svc_fee              = NULL('') /*@ BizName:"Professional Service Fee"   BizComment:"The professional service fee requested by the pharmacy as a DECIMAL(9.2)" @*/;
+end;
+
+// Pharmacy Claim Adjudication - Calculated ???
+type pharma_claim_adjud_cal_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  dispensing_fee            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  sales_tax_paid            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  patient_pay_amt           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  due_amt                   = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_prod_sel_amt       = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  prof_svc_fee              = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  atr_ded_amt               = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  incentive_fee_amt         = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  other_pmt_amt             = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  withhold_amt              = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  cob_amt                   = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  ingred_cost_con_reimb_amt = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  plan_sls_tax_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  tot_other_amt             = NULL('') /* DECIMAL(9,2) */;
+end;
+
+// Pharmacy Claim Adjudication - Approved
+type pharma_claim_adjud_app_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid         = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  dispensing_fee           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  sales_tax_paid           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  patient_pay_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  due_amt                  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  copay_amt                = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_prod_sel_amt      = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  other_payer_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  incentive_amt            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_to_ded_amt        = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  exe_per_bft_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  prof_svc_fee             = NULL('') /* DECIMAL(9,2) */;
+  decimal("\x01".4, maximum_length=17, sign_reserved)  awp_discount_rate   = NULL('') /* DECIMAL(15,4)*/;
+end;
+
+// Pharmacy Claim Adjudication - CLT ???
+type pharma_claim_adjud_clt_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid         = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  dispensing_fee           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  sales_tax_paid           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  patient_pay_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  due_amt                  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  copay_amt                = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_prod_sel_amt      = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  other_payer_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  incentive_amt            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_to_ded_amt        = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  exe_per_bft_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  pct_copay_amt            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  amt_covrg_gap            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrd_sls_tax            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  flat_copay_amt           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  oth_amt                  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  tot_cob_amt              = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  wthd_amt                 = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  ppay_amt_psc_brnd_npf    = NULL('') /* DECIMAL(9,2) */;
+  decimal("\x01".4, maximum_length=17, sign_reserved)  awp_discount_rate   = NULL('') /*DECIMAL(15,4)*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved)  cost_type_unit_cost = NULL('') /*DECIMAL(13,5)*/;
+end;
+
+// Pharmacy Claim Adjudication - Response ???
+type pharma_claim_adjud_rsp_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid         = NULL('') /*@ BizName:"Ingredient Costs Paid" BizComment:"The Ingredient costs for this prescription that were calculated and paid by adjudication, as DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  dispensing_fee           = NULL('') /*@ BizName:"Dispensing Fee Paid" BizComment:"The dispensing fee paid by adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  sales_tax_paid           = NULL('') /*@ BizName:"Sales Tax Paid" BizComment:"The sales tax paid by the pharmacy and confirmed by adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  patient_pay_amt          = NULL('') /*@ BizName:"Adj Patient Paid" BizComment:"The total amount the Patient Paid (out of pocket),including deductibles and copays as a result of adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  due_amt                  = NULL('') /*@ BizName:"Due Amount Paid" BizComment:"The amount due for payment calculated by adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  copay_amt                = NULL('') /*@ BizName:"Copay Amount" BizComment:"The copay amount calculated by adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  attrib_prod_sel_amt      = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  other_payer_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  incentive_amt            = NULL('') /*@ BizName:"Incentive Amount" BizComment:"The incentive amount to be paid, calculated by adjudication, as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  attrib_to_ded_amt        = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  exe_per_bft_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  prof_svc_fee             = NULL('') /*@ BizName:"Professional Service Fee Paid" BizComment:"The professional service fee paid as calculated by adjudication as a DECIMAL(9.2)" @*/;
+  cli_adjud_amt_t  acct_ded_amt             = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  amt_covrg_gap            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrd_sls_tax            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  oth_amt                  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  pat_sls_tax_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  pln_sls_tax_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  remn_ben                 = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  remn_ded                 = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  ingrd_cost_cntrctd_remb  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  ppay_amt_psc_brnd        = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  ppay_amt_psc_brnd_npf    = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  atr_proc_fee_amt         = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  atr_priv_ntw_sel_amt     = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  atr_ppay_psc_np_amt      = NULL('') /* DECIMAL(9,2) */;
+end;
+
+// Pharmacy Claim Adjudication - Posted ???
+type pharma_claim_adjud_pst_t =
+utf8 record
+  cli_adjud_amt_t  ingred_cost_paid         = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  dispensing_fee           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  sales_tax_paid           = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  patient_pay_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  due_amt                  = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  copay_amt                = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_prod_sel_amt      = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  other_payer_amt          = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  incentive_amt            = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  attrib_to_ded_amt        = NULL('') /* DECIMAL(9,2) */;
+  cli_adjud_amt_t  prof_svc_fee             = NULL('') /* DECIMAL(9,2) */;
+end;
+
+type pharma_claim_adjud_t =
+utf8 record
+  pharma_claim_adjud_sbm_t  sbm /*@ BizName:"Submitted Values"  BizComment:"Amounts submitted on the incoming claim"                         @*/;
+  pharma_claim_adjud_cal_t  cal /*@ BizName:"Calculated Values"                                                                              @*/;
+  pharma_claim_adjud_app_t  app /*@ BizName:"Approved Values"                                                                                @*/;
+  pharma_claim_adjud_clt_t  clt /*@ BizName:"Client Values"                                                                                  @*/;
+  pharma_claim_adjud_rsp_t  rsp /*@ BizName:"Response Values"   BizComment:"Amounts calculated by adjudication and returned to the pharmacy" @*/;
+  pharma_claim_adjud_pst_t  pst /*@ BizName:"Posted Values"                                                                                  @*/;
+end;
+
+type pharma_claim_t =
+utf8 record
+  pharma_claim_txn_dtl_t  txn_dtl;
+  pharma_claim_adjud_t    adjud;
+  hash_key_t              cagm_hash;
+end;
+type pharma_claim_vec_t = pharma_claim_t[int];
+
+type pharma_claim_stats_t =
+utf8 record
+  cli_date_t        min_filled_dt = NULL;
+  cli_date_t        max_filled_dt = NULL;
+  cli_date_t[int]   filled_dt_vec = [vector];
+  cli_integer_t     filled_dt_cnt = 0;
+  
+  cli_date_t        min_recv_dt = NULL;
+  cli_date_t        max_recv_dt = NULL;
+  cli_date_t[int]   recv_dt_vec = [vector];
+  cli_integer_t     recv_dt_cnt = 0;
+end;
+
+type mbr_pharma_claim_stats_t =
+utf8 record
+  hash_key_t        cagm_hash;
+  cagm_nk_t         cagm;
+  
+  cli_date_t        min_filled_dt;
+  cli_date_t        max_filled_dt;
+  cli_date_t[int]   filled_dt_vec = [vector];
+  cli_integer_t     filled_dt_cnt = 0;
+  
+  cli_date_t        min_recv_dt;
+  cli_date_t        max_recv_dt;
+  cli_date_t[int]   recv_dt_vec = [vector];
+  cli_integer_t     recv_dt_cnt = 0;
+  
+  string(1)         newline = '\n';
+end;
+
+/***********************/
+/* Medical Claim types */
+/***********************/
+
+type med_claim_txn_dtl_t =
+utf8 record
+  cli_claim_id_t                                        cli_claim_id;
+    
+  decimal('|',0, maximum_length=13, sign_reserved)      claim_seq_nbr                    /* NUMBER(12) NOT NULL */;
+  cli_date_t                                            cli_recv_dt           = NULL('') /* DATE                */;
+  cli_string_t                                          clt_id                = NULL('') /* NUMBER(7)*/;
+  decimal('|',0, maximum_length=13, sign_reserved)      claim_sbm_id          = NULL('') /* NUMBER(12)*/;
+  string(int, maximum_length=400)                       src_group_id          = NULL('') /* VARCHAR2(400)*/;
+  cli_string_t                                          proc_seq_nbr          = NULL('') /* NUMBER(10)*/;
+  decimal('|',0, maximum_length=4,  sign_reserved)      vers_nbr              = NULL('') /* NUMBER(3)*/;
+  decimal('|',0, maximum_length=4,  sign_reserved)      src_sys_id            = NULL('') /* NUMBER(3)*/;
+  string(int, maximum_length=80)                        record_nbr            = NULL('') /* VARCHAR2(80)*/;
+  string(int, maximum_length=60)                        clt_uniq_claim_id     = NULL('') /* VARCHAR2(60)*/;
+  string(int, maximum_length=120)                       clt_claim_nbr         = NULL('') /* VARCHAR2(120)*/;
+  string(int, maximum_length=80)                        clt_claim_line_nbr    = NULL('') /* VARCHAR2(80)*/;
+  
+  string(int, maximum_length=40)                        claim_type_cd         = NULL('') /* VARCHAR2(40)*/;
+  string(int, maximum_length=40)                        claim_stat_id         = NULL('') /* VARCHAR2(40)*/;
+  string(int, maximum_length=100)                       svc_type_cd           = NULL('') /* VARCHAR2(100)*/;
+  string(int, maximum_length=100)                       svc_pl_cd             = NULL('') /* VARCHAR2(100)*/;
+  string(int, maximum_length=100)                       admission_type_cd     = NULL('') /* VARCHAR2(100)*/;
+  string(int, maximum_length=100)                       admission_src_cd      = NULL('') /* VARCHAR2(100)*/;
+  string(int, maximum_length=100)                       discharge_stat_cd     = NULL('') /* VARCHAR2(100)*/;
+  
+  cli_string_t                                          unique_patient_id          = NULL('');
+  cli_string_t                                          employee_status_cd         = NULL('');
+  cli_string_t                                          submitted_discharge_drg_cd = NULL('');
+  cli_string_t                                          payment_source_cd          = NULL('');
+  cli_string_t                                          rec_status_cd              = NULL('');
+  cli_string_t                                          discharge_drg_cd           = NULL('');
+  cli_string_t                                          encounter_code_1           = NULL('');
+  cli_string_t                                          encounter_code_2           = NULL('');
+  cli_string_t                                          encounter_code_3           = NULL('');
+  cli_string_t                                          client_div                 = NULL('');
+  cli_date_t                                            src_svc_start_dt      = NULL('') /* DATE          */;
+  cli_date_t                                            svc_start_dt          = NULL('') /* DATE          */;
+  cli_date_t                                            svc_end_dt            = NULL('') /* DATE          */;
+  cli_date_t                                            reversal_dt           = NULL('') /* DATE          */;
+  cli_date_t                                            admission_dt          = NULL('') /* DATE          */;
+  cli_date_t                                            discharge_dt          = NULL('') /* DATE          */;
+  cli_date_t                                            paid_dt               = NULL('') /* DATE          */;
+  
+  cli_plan_cd_t                                         plan_cd               = NULL('') /* VARCHAR2(60)  */;
+  decimal('|',0, maximum_length=11, sign_reserved)      service_units         = NULL('') /* NUMBER(10)    */;
+  string(int, maximum_length=100)                       drg_cd                = NULL('') /* VARCHAR2(100) */;
+  
+  string(int, maximum_length=100)                       sbm_svc_type_cd       = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)                       sbm_svc_pl_cd         = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)                       sbm_admission_type_cd = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)                       sbm_admission_src_cd  = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)                       sbm_discharge_stat_cd = NULL('') /* VARCHAR2(100) */;
+end;
+
+type med_claim_mbr_t =
+utf8 record
+  cli_mbr_id_t                          mbr_id            = NULL('');
+  cli_carrier_id_t                      carrier_id        = NULL('');
+  cli_first_nm_t                        first_nm          = NULL('');
+  cli_mid_init_nm_t                     mid_init_nm       = NULL('');
+  cli_last_nm_t                         last_nm           = NULL('');
+  cli_date_t                            birth_dt          = NULL('');
+  cli_sex_t                             sex               = NULL('');
+  cli_ssn_t                             ssn_nbr           = NULL('');
+  cli_prsn_cd_t                         prsn_cd           = NULL('');
+  cli_relshp_cd_t                       relshp_cd         = NULL('');
+  cli_addr_t                            addr1             = NULL('');
+  cli_addr_t                            addr2             = NULL('');
+  cli_city_nm_t                         city_nm           = NULL('');
+  cli_st_cd_t                           st_cd             = NULL('');
+  cli_zip_t                             zip               = NULL('');
+  cli_cntry_t                           cntry             = NULL('');
+  cli_hic_cd_t                          hic_cd            = NULL('');
+  cli_string_t                          suffix            = NULL('');
+  cli_first_nm_t                        sbscr_first_nm    = NULL('');
+  cli_mid_init_nm_t                     sbscr_mid_init_nm = NULL('');
+  cli_last_nm_t                         sbscr_last_nm     = NULL('');
+end;
+
+type med_claim_provider_t =
+utf8 record
+  cli_st_lic_nbr_t                      provider_st_lic_nbr      = NULL('') /* VARCHAR2(60)  */; // fix this
+  cli_string_t                          provider_id              = NULL('');
+  string(int, maximum_length=8)         st_lic_issue             = NULL('') /* VARCHAR2(8)   */; // fix this
+  cli_npi_id_t                          npi_id                   = NULL('') /* VARCHAR2(80)  */;
+  string(int, maximum_length=80)        upin                     = NULL('') /* VARCHAR2(80)  */; // fix this
+  cli_dea_id_t                          dea_id                   = NULL('') /* VARCHAR2(80)  */;
+  string(int, maximum_length=80)        tax_id                   = NULL('') /* VARCHAR2(80)  */; // prescriber_tin
+  string(int, maximum_length=80)        fac_tax_id               = NULL('') /* VARCHAR2(80)  */; // facility_tin
+  cli_string_t                          first_nm                 = NULL('') /* VARCHAR2(120) */;
+  cli_last_nm_t                         last_nm                  = NULL('') /* VARCHAR2(120) */;
+  cli_city_nm_t                         city_nm                  = NULL('') /* VARCHAR2(120) */;
+  cli_st_cd_t                           st_cd                    = NULL('') /* VARCHAR2(8)   */;
+  cli_zip_t                             zip                      = NULL('') /* VARCHAR2(40)  */;
+  string(int, maximum_length=100)       prescriber_type_cd       = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)       prescriber_spclty_cd     = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)       sbm_prescriber_type_cd   = NULL('') /* VARCHAR2(100) */;
+  string(int, maximum_length=100)       sbm_prescriber_spclty_cd = NULL('') /* VARCHAR2(100) */;
+end;
+
+type med_claim_pricing_t =
+utf8 record
+  cli_med_signed_pricing_amt_t   billed_amt               = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   paid_amt                 = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   allowed_amt              = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   deductible_amt           = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   copay_amt                = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   medicare_allowed_amt     = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   medicare_paid_amt        = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   co_insurance_amt         = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   cob_amt                  = NULL('') /* NUMBER(12,2) */;
+  cli_med_signed_pricing_amt_t   front_end_deductible_amt = NULL('') /* NUMBER(12,2) */;
+end;
+
+type med_diag_t =
+utf8 record
+  cli_med_diag_type_cd_t   diag_type_cd;
+  cli_med_diag_cd_t        diag_cd;
+  cli_med_diag_icdtp_cd_t  diag_icdtp_cd;
+end;
+type med_diag_vec_t = med_diag_t[int];
+
+type med_proc_t =
+utf8 record
+  cli_med_proc_type_t      proc_type;  
+  cli_med_proc_type_cd_t   proc_type_cd;
+  cli_med_proc_mod_t       proc_mod_a;
+  cli_med_proc_mod_t       proc_mod_b;
+end;
+type med_proc_vec_t = med_proc_t[int];
+
+type cli_hosp_rev_cd_vec_t = cli_hosp_rev_cd_t[int];
+
+type med_claim_t =
+utf8 record
+  med_claim_txn_dtl_t     txn_dtl;
+  med_claim_mbr_t         mbr;
+  
+  med_claim_provider_t    provider;
+  med_claim_pricing_t     pricing;
+  
+  med_diag_vec_t          diag_vec        = [vector];
+  med_proc_vec_t          proc_vec        = [vector];
+  cli_hosp_rev_cd_vec_t   hosp_rev_cd_vec = [vector];
+  
+ // string(1) newline = '\n';
+end;
+type med_claim_vec_t = med_claim_t[int];
+
+
+
+type med_claim_icff_t=
+record
+ med_claim_t            med_claim;
+ cli_integer_id_t       ptnt_id =NULL;
+ cli_date_t             med_mtch_create_dt;
+end;
+type med_claim_icff_vec_t=med_claim_icff_t[int];
+
+type mbr_med_claim_stats_t =
+record
+  cli_integer_id_t  ptnt_id = NULL;
+  cli_date_t        max_svc_start_dt;
+  cli_date_t[int]   svc_start_dt_vec = [vector];
+  cli_integer_t     svc_dt_cnt       = 0;
+  
+  string(1)         newline = '\n';
+end;
+
+
+
+type pharma_claim_missing_dim_recycle_t=
+record
+  hash_key_t              claim_cagm_hash         ;  
+  pharma_claim_t          pharma_claim            ;
+  cagm_sk_t               claim_cagm_sk           ;
+  cli_integer_id_t        cli_prescriber_id = NULL;
+  cli_integer_id_t        drug_product_id   = NULL;
+  cli_string_t            vendor_id         = NULL;
+  cli_boolean_t           rec_vld_complete        ;
+  cli_flag_t              recycle_flag      = NULL;
+end;
+
+/***************************/
+/* Member Eligibility type */
+/***************************/
+
+type mbr_elig_t =
+utf8 record
+  // Added as part of member_eglilibity load ready file creation
+  cli_carrier_id_t                 carrier_id            /* VARCHAR(30)  NOT NULL */; 
+  cli_carrier_acct_id_t            carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t          employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                     mbr_id;
+  
+  // CAGM Hash
+  hash_key_t                       cagm_hash;
+  
+  cli_integer_id_t                 seq_nbr;
+  string(int, maximum_length=1)    mel_stat_cd = NULL('');
+  cli_date_t                       mel_eff_dt  = NULL('') /* DATE        */;
+  cli_date_t                       mel_thru_dt = NULL('') /* DATE        */;
+  cli_plan_cd_t                    pln_cd      = NULL('') /* VARCHAR(10) */;
+  cli_date_t                       plan_eff_dt = NULL('') /* DATE        */;
+  cli_integer_id_t                 cli_src_env_id;
+  
+  cli_datetime_t                   ids_create_dttm = NULL('') /* TIMESTAMP(6) */;
+  cli_datetime_t                   ids_updt_dttm   = NULL('') /* TIMESTAMP(6) */;
+end;
+
+/***************************/
+
+
+/***************************/
+/* RCMMDP type */
+/***************************/
+
+type mmd_mbr_elig_t =
+  
+  utf8 record
+  // Added as part of mmd_member_eligibility load ready file creation
+  cli_carrier_id_t                  carrier_id            /* VARCHAR(30)  NOT NULL */; 
+  cli_carrier_acct_id_t             carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t           employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t                      mbr_id;
+  
+  // CAGM Hash
+  hash_key_t                        cagm_hash;
+  
+  cli_integer_id_t                  mmd_seq_nbr ;//= NULL("") /*INTEGER*/;
+  
+  cli_stat_t                        mmd_record_status = NULL("") /*CHAR(1)*/; 
+  cli_date_t                        mmd_from_dt = NULL("") /*DATE*/;
+  cli_date_t                        mmd_thru_dt = NULL("") /*DATE*/;
+  cli_contract_nbr_t                mmd_contract_id = NULL("") /*VARCHAR(5)*/;
+  cli_pbp_id_t                      mmd_pbp_id = NULL("") /*VARCHAR(3)*/;
+  cli_pbp_id_t                      mmd_segment_id = NULL("") /*VARCHAR(3)*/;
+  cli_pbp_id_t                      mmd_subsidy_lvl = NULL("") /*VARCHAR(3)*/;
+  cli_stat_t                        mmd_copay_category = NULL("") /*CHAR(1)*/;
+  cli_date_t                        mmd_copay_catg_eff_td = NULL("") /*DATE*/;
+  cli_stat_t                        mmd_enrlmnt_src = NULL("") /*CHAR(1)*/;
+  cli_src_env_id_t                  legacy_src_env_id;
+  hash_key_t                        func_fld_hash;
+   
+  cli_datetime_t                    ids_create_dttm = NULL("");
+  cli_datetime_t                    ids_updt_dttm = NULL("");
+end;
+
+
+/************************************************/
+/* Member Detail ICFF lookup with CAGM hash key */
+/************************************************/
+
+type mbr_dtl_t =
+record
+  hash_key_t              hash_key;
+  mbr_t                   mbr;
+  cli_integer_id_t        mbr_dtl_id;
+  cli_flag_t              conclusive_mtch_flag = NULL; // If it is Y that means mbr match outcome is strong or new and
+                                                       // If it is N then mbr match outcome is suspect or contradiction
+end;
+
+/****************************************************************************************************************/
+/* Member ICFF lookup (direct address) primary data file dml used in patient matching as well as in enrichments */
+/****************************************************************************************************************/
+
+type mbr_cagm_t =
+record
+  hash_key_t              hash_key;
+  cli_integer_id_t        ptnt_id;
+  cagm_nk_t               cagm;
+  cli_flag_t              conclusive_mtch_flag = NULL; // If it is Y that means mbr match outcome is strong or new and
+                                                       // If it is N then mbr match outcome is suspect or contradiction
+end;
+
+/************************************************************************************************************************/
+/* Member ICFF lookup (direct address) secondary files (address) dml used in patient matching as well as in enrichments */
+/************************************************************************************************************************/
+
+type mbr_cagm_lkp_t =
+record
+  hash_key_t              hash_key;
+  cli_integer_id_t        ptnt_id;
+  bc_lookup_address_type  addr;
+end;
+
+/************************************************************************************************************************/
+/* Member ICFF lookup  dml used in PUB_CLINICAL_TEMPLATE */
+/************************************************************************************************************************/
+type cagm_idntfn_cd_t =
+utf8 record
+  cli_carrier_id_t         carrier_id            /* VARCHAR(30)  NOT NULL */;
+  cli_carrier_acct_id_t    carrier_acct_id       /* VARCHAR(40)  NOT NULL */;
+  cli_employer_group_id_t  employer_group_id     /* VARCHAR(40)  NOT NULL */;
+  cli_mbr_id_t             mbr_id                /*@ BizName:"Member ID" @*/; 
+  cli_idntfn_cd_t idntfn_cd;
+end;
+
+
+
+/************************************************************************************************************************/
+/* mtm idntfd mbrs ptnt lookup dml */
+/************************************************************************************************************************/
+type mtm_idntfn_ptnt_t=
+record
+  hash_key_t[int]          idntfn_clt_cagm_hash_vec=NULL;
+  cagm_nk_t[int]           idntfn_clt_cagm_vec=NULL;
+  hash_key_t               cagm_hash;
+  cagm_nk_t                cagm;
+  cli_pega_id_t            clt_id=NULL;
+  cli_integer_id_t         ptnt_id =NULL;
+  cli_contract_nbr_t       contract_id  = NULL;
+  cli_integer_id_t         intvn_id;
+  cli_date_t               idntfn_dt = NULL;
+  cli_pbp_id_t             pbp_id        = NULL;
+  cli_hic_cd_t             hic_cd =NULL;
+  cli_flag_t               retro_flg ='N';
+  cli_flag_t               cont_mbr_flag=NULL;
+  cli_date_t               update_dt;
+end;

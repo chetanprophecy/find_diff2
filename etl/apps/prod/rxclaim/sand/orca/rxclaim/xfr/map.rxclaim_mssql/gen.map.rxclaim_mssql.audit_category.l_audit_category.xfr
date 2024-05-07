@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_audit_ctg.audit_category_sk,[transform],]
+  [out0.l_audit_ctg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_audit_ctg.audit_category_desc,[transform],in0.audit_category_description]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_audit_ctg.audit_category_sk,'l_audit_ctg.audit_category_sk',1,0]
+     [out0.l_audit_ctg.src_env_sk,'l_audit_ctg.src_env_sk',1,0]
+     [out0.l_audit_ctg.audit_category_id,'l_audit_ctg.audit_category_id',1,0]
+     [out0.l_audit_ctg.audit_category_sort_order,'l_audit_ctg.audit_category_sort_order',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_audit_ctg.audit_category_desc,'l_audit_ctg.audit_category_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.audit_category_id,'audit_category_id',1,1]
+     [in0.audit_category_description,'audit_category_description',3,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.audit_category_sort_order,'audit_category_sort_order',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_audit_ctg_audit_category_sk = -1;
+let decimal("\x01",0) l_audit_ctg_audit_category_id = fail_if_error(in0.audit_category_id);
+let decimal("\x01",0) l_audit_ctg_audit_category_sort_order = fail_if_error(in0.audit_category_sort_order);
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_audit_ctg_audit_category_desc = fail_if_error((if (sql_or(is_null(string_lrtrim(in0.audit_category_description)),is_blank(string_lrtrim(in0.audit_category_description))))
+   'Not Specified'
+ else
+   string_convert_explicit(string_lrtrim(in0.audit_category_description),"iso-8859-15","")));
+let decimal("\x01",0) l_audit_ctg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.l_audit_ctg.audit_category_sk::l_audit_ctg_audit_category_sk;
+  out0.l_audit_ctg.audit_category_id::l_audit_ctg_audit_category_id;
+  out0.l_audit_ctg.audit_category_sort_order::l_audit_ctg_audit_category_sort_order;
+  out0.l_audit_ctg.audit_category_desc::l_audit_ctg_audit_category_desc;
+  out0.l_audit_ctg.src_env_sk::l_audit_ctg_src_env_sk;
+  out0.*::in0.*;
+
+end;

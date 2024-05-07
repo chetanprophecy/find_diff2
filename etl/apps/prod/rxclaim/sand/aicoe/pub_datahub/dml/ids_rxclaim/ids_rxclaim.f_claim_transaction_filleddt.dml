@@ -1,0 +1,92 @@
+record
+  unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+
+  //IDW required fields
+  decimal("\x01",0) claim_nbr = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0) claim_seq_nbr= NULL("") /*INTEGER NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id= NULL("") /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0) cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) mbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) gender_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) age_band_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) relationship_cd_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) acct_benefit_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=10) grp_clt_ben_cd = NULL("") /*VARCHAR(10)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) group_sic = NULL("") /*VARCHAR(4)*/;
+  decimal("\x01",0) final_pln_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) mbr_eligty_adjud_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) care_fac_adjud_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) phr_adjud_sk = NULL("") /*BIGINT*/;
+  date("YYYYMMDD") filled_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) residence_cd_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2) phr_svc_typ_submd = NULL("") /*VARCHAR(2)*/;
+  decimal("\x01",0)      mbr_age = NULL("") /*SMALLINT*/;
+  decimal("\x01",0)      adj_rxcount_stnd_days_sply = NULL("") /*INTEGER*/;
+  decimal("\x01",0)      pbr_adjud_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)  pbr_spclty_cd = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=12)  phr_id = NULL("") /*VARCHAR(12) NOT NULL*/;
+
+  //Optiod required additional fields
+  decimal("\x01",0) rej_cnt = NULL("") /*SMALLINT*/;
+  decimal("\x01",0) rej_cd1_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd2_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd3_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd4_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd5_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd6_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd7_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd8_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd9_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) rej_cd10_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) cms_pbp_id = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5) cms_contract_id = NULL("") /*VARCHAR(5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   orig_carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)   orig_account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)   orig_employer_group_id = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0)   days_sply = NULL("") /*SMALLINT*/;
+  decimal("\x01",0)   pbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)   gpi_sk = NULL("") /*BIGINT*/;
+
+  //Specialty required additional fields
+  decimal("\x01",0) phr_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) refill_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) rx_nbr = NULL("");
+  decimal("\x01".8, maximum_length=26, sign_reserved) awp_unit_cost = NULL("");
+  decimal("\x01".5, maximum_length=15, sign_reserved) wac_unit_cost = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clt_ingred_cost_paid = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) clt_due_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) cal_cost_src_cd = NULL("");
+
+
+  //CDAG/CDE required additional fields
+  decimal("\x01",0) claim_seq_nbr_src = NULL("") /*INTEGER*/;
+  decimal("\x01",0) carrier_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=15) grp_nbr_submd = NULL("") /*VARCHAR(15)*/;
+  decimal("\x01",0) orig_cag_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) orig_member_id = NULL("") /*VARCHAR(20)*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") submd_claim_dttm = NULL("") /*TIMESTAMP(6)*/;
+  decimal("\x01",0) dmr_ind_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) drug_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) prod_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) manl_claim_trk_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) filled_yr_mnth = NULL("") /*INTEGER*/;
+  decimal("\x01",0) phr_state_cd_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0) compound_sk = NULL("") /*BIGINT*/;
+  decimal("\x01".3, maximum_length=13, sign_reserved) drg_qty = NULL("") /*DECIMAL(11,3)*/;
+  decimal("\x01",0) days_of_supply_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_origin_cd = NULL("") /*CHAR(1)*/;
+
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+  decimal("\x01", maximum_length=5)   dxf_src_sys_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end

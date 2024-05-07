@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||orxclaim_nextgen.elg_member_eligibility_mel_h
+SOURCE_DB_PROJECT||||DB_ORXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name    Unqualified Table Name        Fields\norxclaim_nextgen elg_member_eligibility_mel_h  mbr_member_id,car_carrier_id,acc_account_id,grp_group_id,mel_seq_nbr,mel_status,mel_eff_date,mel_thru_date,mel_copay_brand,mel_copay_generic,mel_copay_3,mel_copay_4,mel_client_product_code,mel_client_rider_code,plan_code,plan_eff_date,mel_spend_down_amount,add_user_name,add_date,add_time,add_program_name,chg_user_name,chg_date,chg_time,chg_program_name,newline\norxclaim_nextgen elg_platform_carrier_map      platform_id,carrier_id
+SOURCE_DBMS_TYPE||||mysql
+DO_CLEAN||||1
+START_CHANGES_TIME:sandbox||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+SQL||||$["\r\nSELECT * FROM\r\n( SELECT elig.*,\r\nCASE WHEN c.platform_id = 'BK2' THEN 490\r\nWHEN c.platform_id = 'BK1' THEN 480\r\nWHEN c.platform_id = 'CTR' THEN 510\r\nWHEN c.platform_id = 'GAM' THEN 550\r\nWHEN c.platform_id = 'INM' THEN 530\r\nWHEN c.platform_id = 'NVM' THEN 520\r\nWHEN c.platform_id = 'SDM' THEN 610\r\nWHEN c.platform_id = 'AZM' THEN 640\r\nWHEN c.platform_id = 'TNM' THEN 645\r\nWHEN c.platform_id = 'IRX' THEN 500\r\nEND AS src_env_sk\r\nFROM orxclaim_nextgen.elg_member_eligibility_mel_h elig\r\nJOIN orxclaim_nextgen.elg_platform_carrier_map c on elig.car_carrier_id = c.carrier_id\r\nwhere elig.chg_date>='2022-01-01'\r\n)A where A.src_env_sk IS NOT NULL\r\n"]
+RUN_ID||||$RUN_ID

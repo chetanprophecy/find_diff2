@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxbsysqa3.rxcui_assignment_ndc
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrxbsysqa3     rxcui_assignment
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'rxbsysqa3', 'rxbsysqa3.rxcui_assignment')]
+SQL||||select ndc, rxcui, msc, active_ind,partd_ind, eff_dt, term_dt , rxcui_type_cd  from rxbsysqa3.rxcui_assignment where msc in ('M', 'N', 'O') and active_ind='Y' and partd_ind='Y' and $[string_concat("'",(date("YYYY-MM-DD"))(datetime("YYYYMMDDHH24MISS")) RUN_ID,"'")]  between eff_dt and term_dt OPTIMIZE FOR ALL ROWS
+DO_CLEAN||||1
+DO_SOURCE||||0
+DO_LOOKUP||||1
+LOOKUP_KEY||||{ndc; rxcui; msc; active_ind; partd_ind; eff_dt; term_dt; rxcui_type_cd}
+LOOKUP_FIELDS||||ndc,rxcui,msc,active_ind,partd_ind,eff_dt,term_dt,rxcui_type_cd
+RUN_ID||||20171129090000

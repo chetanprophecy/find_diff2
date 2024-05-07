@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxstreamdls.rccrap
+SOURCE_DB_PROJECT||||DB_ORXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\r\nrxstreamdls                    rccrap
+SOURCE_DBMS_TYPE||||odbc
+DO_CLEAN||||1
+DO_LOOKUP||||0
+SQL||||$[string_concat("select * from default.RCCRAP rccrap ",WHERE_CLAUSE,";")]
+DO_SOURCE||||0
+START_CHANGES_TIME:sandbox||||2022-04-05 04:35:33
+SOURCE_DB_LIST||||rxstreamdls    default  $DB_ORXCLAIM_DML    odbc  DB_ORXCLAIM    $DB_ORXCLAIM_DB/odbc.db_rxstreamdls.dbc
+WHERE_CLAUSE||||$[ \r\n if (START_CHANGES_TIME != '') \r\n            string_concat("WHERE to_date(rccrap.update_timestamp,'YYYY-MM-DD') >= '" , (string(''))(datetime('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME, "' AND to_date(rccrap.update_timestamp,'YYYY-MM-DD') <= '" , (string(''))(date('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME,"'")\r\nelse \r\n    string_concat("WHERE to_date(rccrap.update_timestamp,'YYYY-MM-DD') >= '" , (string(''))(datetime('YYYY-MM-DD'))((datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME-1) ,"' AND to_date(rccrap.update_timestamp,'YYYY-MM-DD') <= '" , (string(''))(date('YYYY-MM-DD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME , "'");\r\n\r\n]
+END_CHANGES_TIME:sandbox||||2022-08-30 04:52:49

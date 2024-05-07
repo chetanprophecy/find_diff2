@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/ahfs_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Gaurav Mirje            Initial version, create lookup functions for ahfs process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS parameter;
+
+cli_string_t out :: get_ahfs_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS + '/cli_ahfs.dat';
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type ahfs_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  ahfs_hash_lkup_t        RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {ahfs.ahfs_cd};     
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let ahfs_lkup_t GLKUP_AHFS = allocate_with_nulls();
+
+ahfs_lkup_t out :: load_ahfs_lkup() inline =
+begin
+  if (GLKUP_AHFS.id == lookup_not_loaded())
+    GLKUP_AHFS = lookup_load(this_partition_path(get_ahfs_lkup_path()));
+  
+  out :: GLKUP_AHFS;
+end;
+
+ahfs_t out :: get_ahfs(ahfs_cd) inline =
+begin
+  let ahfs_lkup_t lkup = load_ahfs_lkup();
+  out :: lookup(lkup, ahfs_cd).ahfs;
+end;

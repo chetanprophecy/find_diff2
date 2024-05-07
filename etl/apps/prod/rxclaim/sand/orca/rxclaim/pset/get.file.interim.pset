@@ -1,0 +1,8 @@
+!prototype|P|||$PUB_DXF_MP/get.file.mp
+DO_CLEAN||||1
+DO_SOURCE||||0
+INPUT_FILE_PATH||||$[ if ( SOURCE_SYSTEM == 'cpp' )\r\nPUB_CLINICAL_DATAHUB_SERIAL_OUTBOUND +'/' + (string(long))(date("YYYYMMDD")) (date("YYYY-MM-DD"))EFF_DATE\r\nelse\r\nAI_SERIAL_PENDING +'/' + SOURCE_SYSTEM]
+SOURCE_NAME||||{SYSTEM}.{SOURCE}  // This must be set appropriately in the private pset.
+GET_DML_FILE||||$[ if ( SOURCE_SYSTEM == 'cpp' )\r\nPUB_CLINICAL_DATAHUB_DML + "/outbound" +  "/" + string_split(SOURCE_NAME,".")[1]  + "_tbl_t.dml"\r\nelse\r\nAI_DML + "/get." + SOURCE_SYSTEM + "/get." + SOURCE_NAME  + ".dml"]
+SOURCE_LOGICAL_NAME||||clinical_cpp
+INPUT_FILE_PATTERN||||sample*.dat

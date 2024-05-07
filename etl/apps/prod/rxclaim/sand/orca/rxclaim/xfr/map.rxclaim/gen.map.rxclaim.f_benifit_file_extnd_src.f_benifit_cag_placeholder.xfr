@@ -1,0 +1,142 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_f_benifit_file_extnd_src_to_the_f_benifit_cag_placeholder_ILM_documentation(in)=
+begin
+
+out0.cag.account_id::depends_on(
+         in.ACCT_ID
+         );
+
+
+out0.f_bnft_plc.employer_group_nm::depends_on(
+         in.EMPLOYER_GROUP_NM
+         );
+
+
+out0.f_bnft_plc.account_nm::depends_on(
+         in.ACCT_NM
+         );
+
+
+out0.f_bnft_plc.account_id::depends_on(
+         in.ACCT_ID
+         );
+
+
+out0.f_bnft_plc.carrier_nm::depends_on(
+         in.CARRIER_NM
+         );
+
+
+out0.f_bnft_plc.carrier_id::depends_on(
+         in.CARRIER_ID
+         );
+
+
+out0.f_bnft_plc.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.carrier.carrier_id::depends_on(
+         in.CARRIER_ID
+         );
+
+
+out0.cag.employer_group_id::depends_on(
+         in.EMPLOYER_GROUP_ID
+         );
+
+
+out0.cag.carrier_id::depends_on(
+         in.CARRIER_ID
+         );
+
+
+out0.f_bnft_plc.employer_group_id::depends_on(
+         in.EMPLOYER_GROUP_ID
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_f_benifit_file_extnd_src_to_the_f_benifit_cag_placeholder_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.cag.account_id,'cag.account_id',1,0]
+     [out0.f_bnft_plc.employer_group_nm,'f_bnft_plc.employer_group_nm',1,0]
+     [out0.f_bnft_plc.sec_flg,'f_bnft_plc.sec_flg',1,0]
+     [out0.f_bnft_plc.account_nm,'f_bnft_plc.account_nm',1,0]
+     [out0.f_bnft_plc.account_id,'f_bnft_plc.account_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_bnft_plc.carrier_nm,'f_bnft_plc.carrier_nm',1,0]
+     [out0.f_bnft_plc.carrier_id,'f_bnft_plc.carrier_id',1,0]
+     [out0.f_bnft_plc.src_env_sk,'f_bnft_plc.src_env_sk',1,0]
+     [out0.f_bnft_plc.cag_sk,'f_bnft_plc.cag_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_bnft_plc.carrier_sk,'f_bnft_plc.carrier_sk',1,0]
+     [out0.carrier.carrier_id,'carrier.carrier_id',1,0]
+     [out0.cag.employer_group_id,'cag.employer_group_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.cag.carrier_id,'cag.carrier_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_bnft_plc.employer_group_id,'f_bnft_plc.employer_group_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.CARRIER_NM,'CARRIER_NM',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.EMPLOYER_GROUP_NM,'EMPLOYER_GROUP_NM',1,1]
+     [in0.ACCT_ID,'ACCT_ID',2,2]
+     [in0.CARRIER_ID,'CARRIER_ID',3,3]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.ACCT_NM,'ACCT_NM',1,1]
+     [in0.EMPLOYER_GROUP_ID,'EMPLOYER_GROUP_ID',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_bnft_plc_carrier_id = fail_if_error(in0.CARRIER_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=40) f_bnft_plc_account_id = fail_if_error(in0.ACCT_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_bnft_plc_employer_group_id = fail_if_error(in0.EMPLOYER_GROUP_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=50) f_bnft_plc_carrier_nm = fail_if_error(in0.CARRIER_NM);
+let string("\x01",charset="iso-8859-15", maximum_length=50) f_bnft_plc_account_nm = fail_if_error(in0.ACCT_NM);
+let string("\x01",charset="iso-8859-15", maximum_length=50) f_bnft_plc_employer_group_nm = fail_if_error(in0.EMPLOYER_GROUP_NM);
+let decimal("\x01",0) f_bnft_plc_cag_sk = -1;
+let decimal("\x01",0) f_bnft_plc_carrier_sk = -1;
+let decimal("\x01",0) f_bnft_plc_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) f_bnft_plc_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_carrier_id = fail_if_error(in0.CARRIER_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=40) cag_account_id = fail_if_error(in0.ACCT_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_employer_group_id = fail_if_error(in0.EMPLOYER_GROUP_ID);
+let string("\x01",charset="iso-8859-15", maximum_length=30) carrier_carrier_id = fail_if_error(in0.CARRIER_ID);
+
+
+
+  out0.f_bnft_plc.carrier_id::f_bnft_plc_carrier_id;
+  out0.f_bnft_plc.account_id::f_bnft_plc_account_id;
+  out0.f_bnft_plc.employer_group_id::f_bnft_plc_employer_group_id;
+  out0.f_bnft_plc.carrier_nm::f_bnft_plc_carrier_nm;
+  out0.f_bnft_plc.account_nm::f_bnft_plc_account_nm;
+  out0.f_bnft_plc.employer_group_nm::f_bnft_plc_employer_group_nm;
+  out0.f_bnft_plc.cag_sk::f_bnft_plc_cag_sk;
+  out0.f_bnft_plc.carrier_sk::f_bnft_plc_carrier_sk;
+  out0.f_bnft_plc.src_env_sk::f_bnft_plc_src_env_sk;
+  out0.f_bnft_plc.sec_flg::f_bnft_plc_sec_flg;
+  out0.cag.carrier_id::cag_carrier_id;
+  out0.cag.account_id::cag_account_id;
+  out0.cag.employer_group_id::cag_employer_group_id;
+  out0.carrier.carrier_id::carrier_carrier_id;
+  out0.*::in0.*;
+end;

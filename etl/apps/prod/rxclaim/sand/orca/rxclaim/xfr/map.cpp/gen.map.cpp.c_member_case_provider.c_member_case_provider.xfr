@@ -1,0 +1,116 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a5c5838_1b92_0
+    BizHidden:true
+@*/
+/*   lookup c_provider   */
+out0::bzt_2_6c54cc0a_5a5c5838_1b92_0(in0)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0, maximum_length=39, sign_reserved) provider_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("") cpp_update_ts = NULL("");
+  decimal("",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("c_provider",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a5c5838_1b92_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_ca_pro.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_ca_pro.cpp_consulted_provider_sk,[transform],in0.consulted_provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.c_mem_ca_pro.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_ca_pro.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_ca_pro.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_ca_pro.cpp_member_case_decision_hist_sk,[transform],in0.sequence_num,
+     in0.member_case_decision_hist_id,
+     'lookup("c_member_case_decision_hist").dxf_sk']
+  [out0.c_mem_ca_pro.cpp_member_case_provider_sk,[transform],]
+  [out0.c_mem_ca_pro.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_ca_pro.sequence_num,'c_mem_ca_pro.sequence_num',1,0]
+     [out0.c_mem_ca_pro.member_case_decision_hist_id,'c_mem_ca_pro.member_case_decision_hist_id',1,0]
+     [out0.c_mem_ca_pro.cpp_update_ts,'c_mem_ca_pro.cpp_update_ts',1,0]
+     [out0.c_mem_ca_pro.cpp_consulted_provider_sk,'c_mem_ca_pro.cpp_consulted_provider_sk',1,0]
+     [out0.c_mem_ca_pro.cpp_create_ts,'c_mem_ca_pro.cpp_create_ts',1,0]
+     [out0.c_mem_ca_pro.consulted_provider_id,'c_mem_ca_pro.consulted_provider_id',1,0]
+     [out0.c_mem_ca_pro.cpp_created_by,'c_mem_ca_pro.cpp_created_by',1,0]
+     [out0.c_mem_ca_pro.cpp_updated_by,'c_mem_ca_pro.cpp_updated_by',1,0]
+     [out0.c_mem_ca_pro.cpp_member_case_decision_hist_sk,'c_mem_ca_pro.cpp_member_case_decision_hist_sk',1,0]
+     [out0.c_mem_ca_pro.cpp_member_case_provider_sk,'c_mem_ca_pro.cpp_member_case_provider_sk',1,0]
+     [out0.c_mem_ca_pro.src_env_sk,'c_mem_ca_pro.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     [in0.consulted_provider_id,'consulted_provider_id',2,2]
+     ['lookup("c_member_case_decision_hist").dxf_sk','dxf_sk',1,1]
+     [in0.member_case_decision_hist_id,'member_case_decision_hist_id',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_ca_pro_cpp_member_case_provider_sk = -1;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_ca_pro_member_case_decision_hist_id = fail_if_error(in0.member_case_decision_hist_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_ca_pro_sequence_num = fail_if_error(in0.sequence_num);
+let decimal("\x01",0) c_mem_ca_pro_cpp_member_case_decision_hist_sk;
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_ca_pro_consulted_provider_id = fail_if_error(in0.consulted_provider_id);
+let decimal("\x01",0) c_mem_ca_pro_cpp_consulted_provider_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ca_pro_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_ca_pro_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_ca_pro_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_ca_pro_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_ca_pro_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mem_ca_pro_cpp_consulted_provider_sk=fail_if_error(bzt_2_6c54cc0a_5a5c5838_1b92_0(in0.consulted_provider_id).dxf_sk);
+
+/*   Default value   */
+c_mem_ca_pro_cpp_member_case_decision_hist_sk=fail_if_error(lookup("c_member_case_decision_hist",in0.member_case_decision_hist_id,in0.sequence_num).dxf_sk);
+
+  out0.c_mem_ca_pro.cpp_member_case_provider_sk::c_mem_ca_pro_cpp_member_case_provider_sk;
+  out0.c_mem_ca_pro.member_case_decision_hist_id::c_mem_ca_pro_member_case_decision_hist_id;
+  out0.c_mem_ca_pro.sequence_num::c_mem_ca_pro_sequence_num;
+  out0.c_mem_ca_pro.cpp_member_case_decision_hist_sk::c_mem_ca_pro_cpp_member_case_decision_hist_sk;
+  out0.c_mem_ca_pro.consulted_provider_id::c_mem_ca_pro_consulted_provider_id;
+  out0.c_mem_ca_pro.cpp_consulted_provider_sk::c_mem_ca_pro_cpp_consulted_provider_sk;
+  out0.c_mem_ca_pro.cpp_update_ts::c_mem_ca_pro_cpp_update_ts;
+  out0.c_mem_ca_pro.cpp_updated_by::c_mem_ca_pro_cpp_updated_by;
+  out0.c_mem_ca_pro.cpp_create_ts::c_mem_ca_pro_cpp_create_ts;
+  out0.c_mem_ca_pro.cpp_created_by::c_mem_ca_pro_cpp_created_by;
+  out0.c_mem_ca_pro.src_env_sk::c_mem_ca_pro_src_env_sk;
+  out0.*::in0.*;
+
+end;

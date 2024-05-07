@@ -1,0 +1,595 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_58a6a24c_2cc2_0
+    BizHidden:true
+@*/
+/*   lookup c_provider   */
+out0::bzt_2_6c54cc0a_58a6a24c_2cc2_0(in0)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0, maximum_length=39, sign_reserved) provider_id = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("") cpp_update_ts = NULL("");
+  decimal("",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("c_provider",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58a6a24c_2cc2_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.pc_up_cc_wc.cpp_pc_uhg_pbm_cl_cpp_work_corr_sk,[transform],]
+  [out0.pc_up_cc_wc.provider_id,[passthrough],in0.providerid]
+  [out0.pc_up_cc_wc.py_resolved_user_workgroup,[passthrough],in0.pyresolveduserworkgroup]
+  [out0.pc_up_cc_wc.recorded_date,[passthrough],in0.recordeddate]
+  [out0.pc_up_cc_wc.undelivered_flag,[passthrough],in0.undeliveredflag]
+  [out0.pc_up_cc_wc.py_worklist_integer1,[passthrough],in0.pyworklistinteger1]
+  [out0.pc_up_cc_wc.py_status_work,[passthrough],in0.pystatuswork]
+  [out0.pc_up_cc_wc.px_update_opname,[passthrough],in0.pxupdateopname]
+  [out0.pc_up_cc_wc.org_corr_id,[passthrough],in0.orgcorrid]
+  [out0.pc_up_cc_wc.py_reopen_timestamp,[passthrough],in0.pyreopentimestamp]
+  [out0.pc_up_cc_wc.py_orig_org,[passthrough],in0.pyorigorg]
+  [out0.pc_up_cc_wc.py_charge_to,[passthrough],in0.pychargeto]
+  [out0.pc_up_cc_wc.px_covered_count_open,[passthrough],in0.pxcoveredcountopen]
+  [out0.pc_up_cc_wc.px_create_operator,[passthrough],in0.pxcreateoperator]
+  [out0.pc_up_cc_wc.py_orig_user_division,[passthrough],in0.pyoriguserdivision]
+  [out0.pc_up_cc_wc.px_update_datetime,[transform],in0.pxcreatedatetime,
+     in0.pxupdatedatetime]
+  [out0.pc_up_cc_wc.product,[passthrough],in0.product]
+  [out0.pc_up_cc_wc.py_sla_deadline,[passthrough],in0.pysladeadline]
+  [out0.pc_up_cc_wc.py_sla_name,[passthrough],in0.pyslaname]
+  [out0.pc_up_cc_wc.py_primary_contact,[passthrough],in0.pyprimarycontact]
+  [out0.pc_up_cc_wc.py_id,[passthrough],in0.pyid]
+  [out0.pc_up_cc_wc.py_event_id,[passthrough],in0.pyeventid]
+  [out0.pc_up_cc_wc.py_folder_type,[passthrough],in0.pyfoldertype]
+  [out0.pc_up_cc_wc.py_effort_estimate_timestamp,[passthrough],in0.pyeffortestimatetimestamp]
+  [out0.pc_up_cc_wc.px_obj_class,[passthrough],in0.pxobjclass]
+  [out0.pc_up_cc_wc.corr_case_id,[passthrough],in0.corrcaseid]
+  [out0.pc_up_cc_wc.py_elapsed_customer_unsatisfied,[passthrough],in0.pyelapsedcustomerunsatisfied]
+  [out0.pc_up_cc_wc.py_resolved_org,[passthrough],in0.pyresolvedorg]
+  [out0.pc_up_cc_wc.py_age_from_date,[passthrough],in0.pyagefromdate]
+  [out0.pc_up_cc_wc.px_urgency_work,[passthrough],in0.pxurgencywork]
+  [out0.pc_up_cc_wc.px_create_opname,[passthrough],in0.pxcreateopname]
+  [out0.pc_up_cc_wc.px_commit_datetime,[passthrough],in0.pxcommitdatetime]
+  [out0.pc_up_cc_wc.px_update_operator,[passthrough],in0.pxupdateoperator]
+  [out0.pc_up_cc_wc.px_current_stage,[passthrough],in0.pxcurrentstage]
+  [out0.pc_up_cc_wc.count_of_lines,[passthrough],in0.countoflines]
+  [out0.pc_up_cc_wc.client_name,[passthrough],in0.clientname]
+  [out0.pc_up_cc_wc.py_elapsed_status_pending,[passthrough],in0.pyelapsedstatuspending]
+  [out0.pc_up_cc_wc.py_charge_amount,[passthrough],in0.pychargeamount]
+  [out0.pc_up_cc_wc.py_worklist_text3,[passthrough],in0.pyworklisttext3]
+  [out0.pc_up_cc_wc.py_problem_reason,[passthrough],in0.pyproblemreason]
+  [out0.pc_up_cc_wc.py_contact_type,[passthrough],in0.pycontacttype]
+  [out0.pc_up_cc_wc.py_worklist_datetime2,[passthrough],in0.pyworklistdatetime2]
+  [out0.pc_up_cc_wc.py_resolution_cost,[passthrough],in0.pyresolutioncost]
+  [out0.pc_up_cc_wc.py_contact_channel,[passthrough],in0.pycontactchannel]
+  [out0.pc_up_cc_wc.py_customer_org,[passthrough],in0.pycustomer]
+  [out0.pc_up_cc_wc.py_owner_division,[passthrough],in0.pyownerdivision]
+  [out0.pc_up_cc_wc.py_customer_enterprise,[passthrough],in0.pycustomerenterprise]
+  [out0.pc_up_cc_wc.px_create_datetime,[passthrough],in0.pxcreatedatetime]
+  [out0.pc_up_cc_wc.px_covered_count_unsatisfied,[passthrough],in0.pxcoveredcountunsatisfied]
+  [out0.pc_up_cc_wc.py_worklist_text1,[passthrough],in0.pyworklisttext1]
+  [out0.pc_up_cc_wc.py_sla_goal,[passthrough],in0.pyslagoal]
+  [out0.pc_up_cc_wc.py_resolved_timestamp,[passthrough],in0.pyresolvedtimestamp]
+  [out0.pc_up_cc_wc.py_elapsed_status_open,[passthrough],in0.pyelapsedstatusopen]
+  [out0.pc_up_cc_wc.py_description,[passthrough],in0.pydescription]
+  [out0.pc_up_cc_wc.py_customer,[passthrough],in0.pycustomer]
+  [out0.pc_up_cc_wc.corr_type,[passthrough],in0.corrtype]
+  [out0.pc_up_cc_wc.py_effort_estimate,[passthrough],in0.pyeffortestimate]
+  [out0.pc_up_cc_wc.px_covered_count,[passthrough],in0.pxcoveredcount]
+  [out0.pc_up_cc_wc.px_cover_inskey,[passthrough],in0.pxcoverinskey]
+  [out0.pc_up_cc_wc.vendor_id,[passthrough],in0.vendorid]
+  [out0.pc_up_cc_wc.corr_written_date,[passthrough],in0.corrwrittendate]
+  [out0.pc_up_cc_wc.py_worklist_date1,[passthrough],in0.pyworklistdate1]
+  [out0.pc_up_cc_wc.py_resolved_org_unit,[passthrough],in0.pyresolvedorgunit]
+  [out0.pc_up_cc_wc.py_elapsed_past_deadline,[passthrough],in0.pyelapsedpastdeadline]
+  [out0.pc_up_cc_wc.py_elapsed_customer_ack,[passthrough],in0.pyelapsedcustomerack]
+  [out0.pc_up_cc_wc.src_env_sk,[transform],]
+  [out0.pc_up_cc_wc.py_resolved_time,[passthrough],in0.pyresolvedtime]
+  [out0.pc_up_cc_wc.py_resolution_complexity,[passthrough],in0.pyresolutioncomplexity]
+  [out0.pc_up_cc_wc.px_save_datetime,[passthrough],in0.pxsavedatetime]
+  [out0.pc_up_cc_wc.py_worklist_text2,[passthrough],in0.pyworklisttext2]
+  [out0.pc_up_cc_wc.py_status_customersat,[passthrough],in0.pystatuscustomersat]
+  [out0.pc_up_cc_wc.py_cus_level,[passthrough],in0.pycuslevel]
+  [out0.pc_up_cc_wc.px_ins_name,[passthrough],in0.pxinsname]
+  [out0.pc_up_cc_wc.py_worklist_decimal1,[passthrough],in0.pyworklistdecimal1]
+  [out0.pc_up_cc_wc.py_ack_timestamp,[passthrough],in0.pyacktimestamp]
+  [out0.pc_up_cc_wc.fullfillment_method,[passthrough],in0.fullfillmentmethod]
+  [out0.pc_up_cc_wc.py_label,[passthrough],in0.pylabel]
+  [out0.pc_up_cc_wc.py_customer_name,[passthrough],in0.pycustomername]
+  [out0.pc_up_cc_wc.cpp_provider_sk,[transform],in0.providerid,
+     'lookup("c_provider").dxf_sk']
+  [out0.pc_up_cc_wc.px_create_system_id,[passthrough],in0.pxcreatesystemid]
+  [out0.pc_up_cc_wc.py_owner_org,[passthrough],in0.pyownerorg]
+  [out0.pc_up_cc_wc.corr_template_id,[passthrough],in0.corrtemplateid]
+  [out0.pc_up_cc_wc.py_orig_userid,[passthrough],in0.pyoriguserid]
+  [out0.pc_up_cc_wc.parent_id,[passthrough],in0.parentid]
+  [out0.pc_up_cc_wc.py_owner_org_unit,[passthrough],in0.pyownerorgunit]
+  [out0.pc_up_cc_wc.py_effort_actual,[passthrough],in0.pyeffortactual]
+  [out0.pc_up_cc_wc.py_worklist_datetime1,[passthrough],in0.pyworklistdatetime1]
+  [out0.pc_up_cc_wc.py_orig_user_workgroup,[passthrough],in0.pyoriguserworkgroup]
+  [out0.pc_up_cc_wc.template_version,[passthrough],in0.templateversion]
+  [out0.pc_up_cc_wc.py_customer_satisfied_timestamp,[passthrough],in0.pycustomersatisfiedtimestamp]
+  [out0.pc_up_cc_wc.pz_ins_key,[passthrough],in0.pzinskey]
+  [out0.pc_up_cc_wc.py_root_cause,[passthrough],in0.pyrootcause]
+  [out0.pc_up_cc_wc.py_orig_org_unit,[passthrough],in0.pyorigorgunit]
+  [out0.pc_up_cc_wc.edms_doc_id,[passthrough],in0.edmsdocid]
+  [out0.pc_up_cc_wc.px_update_system_id,[passthrough],in0.pxupdatesystemid]
+  [out0.pc_up_cc_wc.py_worklist_decimal2,[passthrough],in0.pyworklistdecimal2]
+  [out0.pc_up_cc_wc.py_orig_division,[passthrough],in0.pyorigdivision]
+  [out0.pc_up_cc_wc.py_reopen_count,[passthrough],in0.pyreopencount]
+  [out0.pc_up_cc_wc.px_current_stage_label,[passthrough],in0.pxcurrentstagelabel]
+  [out0.pc_up_cc_wc.px_flow_count,[passthrough],in0.pxflowcount]
+  [out0.pc_up_cc_wc.py_elapsed_past_goal,[passthrough],in0.pyelapsedpastdeadline]
+  [out0.pc_up_cc_wc.py_problem_type,[passthrough],in0.pyproblemtype]
+  [out0.pc_up_cc_wc.py_resolved_userid,[passthrough],in0.pyresolveduserid]
+  [out0.pc_up_cc_wc.py_problem_source,[passthrough],in0.pyproblemsource]
+  [out0.pc_up_cc_wc.py_resolved_division,[passthrough],in0.pyresolveddivision]
+  [out0.pc_up_cc_wc.py_elapsed_status_new,[passthrough],in0.pyelapsedstatusnew]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.pc_up_cc_wc.cpp_pc_uhg_pbm_cl_cpp_work_corr_sk,'pc_up_cc_wc.cpp_pc_uhg_pbm_cl_cpp_work_corr_sk',1,0]
+     [out0.pc_up_cc_wc.provider_id,'pc_up_cc_wc.provider_id',1,0]
+     [out0.pc_up_cc_wc.py_resolved_user_workgroup,'pc_up_cc_wc.py_resolved_user_workgroup',1,0]
+     [out0.pc_up_cc_wc.recorded_date,'pc_up_cc_wc.recorded_date',1,0]
+     [out0.pc_up_cc_wc.undelivered_flag,'pc_up_cc_wc.undelivered_flag',1,0]
+     [out0.pc_up_cc_wc.py_worklist_integer1,'pc_up_cc_wc.py_worklist_integer1',1,0]
+     [out0.pc_up_cc_wc.py_status_work,'pc_up_cc_wc.py_status_work',1,0]
+     [out0.pc_up_cc_wc.px_update_opname,'pc_up_cc_wc.px_update_opname',1,0]
+     [out0.pc_up_cc_wc.org_corr_id,'pc_up_cc_wc.org_corr_id',1,0]
+     [out0.pc_up_cc_wc.py_reopen_timestamp,'pc_up_cc_wc.py_reopen_timestamp',1,0]
+     [out0.pc_up_cc_wc.py_orig_org,'pc_up_cc_wc.py_orig_org',1,0]
+     [out0.pc_up_cc_wc.py_charge_to,'pc_up_cc_wc.py_charge_to',1,0]
+     [out0.pc_up_cc_wc.px_covered_count_open,'pc_up_cc_wc.px_covered_count_open',1,0]
+     [out0.pc_up_cc_wc.px_create_operator,'pc_up_cc_wc.px_create_operator',1,0]
+     [out0.pc_up_cc_wc.py_orig_user_division,'pc_up_cc_wc.py_orig_user_division',1,0]
+     [out0.pc_up_cc_wc.px_update_datetime,'pc_up_cc_wc.px_update_datetime',1,0]
+     [out0.pc_up_cc_wc.product,'pc_up_cc_wc.product',1,0]
+     [out0.pc_up_cc_wc.py_sla_deadline,'pc_up_cc_wc.py_sla_deadline',1,0]
+     [out0.pc_up_cc_wc.py_sla_name,'pc_up_cc_wc.py_sla_name',1,0]
+     [out0.pc_up_cc_wc.py_primary_contact,'pc_up_cc_wc.py_primary_contact',1,0]
+     [out0.pc_up_cc_wc.py_id,'pc_up_cc_wc.py_id',1,0]
+     [out0.pc_up_cc_wc.py_event_id,'pc_up_cc_wc.py_event_id',1,0]
+     [out0.pc_up_cc_wc.py_folder_type,'pc_up_cc_wc.py_folder_type',1,0]
+     [out0.pc_up_cc_wc.py_effort_estimate_timestamp,'pc_up_cc_wc.py_effort_estimate_timestamp',1,0]
+     [out0.pc_up_cc_wc.px_obj_class,'pc_up_cc_wc.px_obj_class',1,0]
+     [out0.pc_up_cc_wc.corr_case_id,'pc_up_cc_wc.corr_case_id',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_customer_unsatisfied,'pc_up_cc_wc.py_elapsed_customer_unsatisfied',1,0]
+     [out0.pc_up_cc_wc.py_resolved_org,'pc_up_cc_wc.py_resolved_org',1,0]
+     [out0.pc_up_cc_wc.py_age_from_date,'pc_up_cc_wc.py_age_from_date',1,0]
+     [out0.pc_up_cc_wc.px_urgency_work,'pc_up_cc_wc.px_urgency_work',1,0]
+     [out0.pc_up_cc_wc.px_create_opname,'pc_up_cc_wc.px_create_opname',1,0]
+     [out0.pc_up_cc_wc.px_commit_datetime,'pc_up_cc_wc.px_commit_datetime',1,0]
+     [out0.pc_up_cc_wc.px_update_operator,'pc_up_cc_wc.px_update_operator',1,0]
+     [out0.pc_up_cc_wc.px_current_stage,'pc_up_cc_wc.px_current_stage',1,0]
+     [out0.pc_up_cc_wc.count_of_lines,'pc_up_cc_wc.count_of_lines',1,0]
+     [out0.pc_up_cc_wc.client_name,'pc_up_cc_wc.client_name',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_status_pending,'pc_up_cc_wc.py_elapsed_status_pending',1,0]
+     [out0.pc_up_cc_wc.py_charge_amount,'pc_up_cc_wc.py_charge_amount',1,0]
+     [out0.pc_up_cc_wc.py_worklist_text3,'pc_up_cc_wc.py_worklist_text3',1,0]
+     [out0.pc_up_cc_wc.py_problem_reason,'pc_up_cc_wc.py_problem_reason',1,0]
+     [out0.pc_up_cc_wc.py_contact_type,'pc_up_cc_wc.py_contact_type',1,0]
+     [out0.pc_up_cc_wc.py_worklist_datetime2,'pc_up_cc_wc.py_worklist_datetime2',1,0]
+     [out0.pc_up_cc_wc.py_resolution_cost,'pc_up_cc_wc.py_resolution_cost',1,0]
+     [out0.pc_up_cc_wc.py_contact_channel,'pc_up_cc_wc.py_contact_channel',1,0]
+     [out0.pc_up_cc_wc.py_customer_org,'pc_up_cc_wc.py_customer_org',1,0]
+     [out0.pc_up_cc_wc.py_owner_division,'pc_up_cc_wc.py_owner_division',1,0]
+     [out0.pc_up_cc_wc.py_customer_enterprise,'pc_up_cc_wc.py_customer_enterprise',1,0]
+     [out0.pc_up_cc_wc.px_create_datetime,'pc_up_cc_wc.px_create_datetime',1,0]
+     [out0.pc_up_cc_wc.px_covered_count_unsatisfied,'pc_up_cc_wc.px_covered_count_unsatisfied',1,0]
+     [out0.pc_up_cc_wc.py_worklist_text1,'pc_up_cc_wc.py_worklist_text1',1,0]
+     [out0.pc_up_cc_wc.py_sla_goal,'pc_up_cc_wc.py_sla_goal',1,0]
+     [out0.pc_up_cc_wc.py_resolved_timestamp,'pc_up_cc_wc.py_resolved_timestamp',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_status_open,'pc_up_cc_wc.py_elapsed_status_open',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.pc_up_cc_wc.py_description,'pc_up_cc_wc.py_description',1,0]
+     [out0.pc_up_cc_wc.py_customer,'pc_up_cc_wc.py_customer',1,0]
+     [out0.pc_up_cc_wc.corr_type,'pc_up_cc_wc.corr_type',1,0]
+     [out0.pc_up_cc_wc.py_effort_estimate,'pc_up_cc_wc.py_effort_estimate',1,0]
+     [out0.pc_up_cc_wc.px_covered_count,'pc_up_cc_wc.px_covered_count',1,0]
+     [out0.pc_up_cc_wc.px_cover_inskey,'pc_up_cc_wc.px_cover_inskey',1,0]
+     [out0.pc_up_cc_wc.vendor_id,'pc_up_cc_wc.vendor_id',1,0]
+     [out0.pc_up_cc_wc.corr_written_date,'pc_up_cc_wc.corr_written_date',1,0]
+     [out0.pc_up_cc_wc.py_worklist_date1,'pc_up_cc_wc.py_worklist_date1',1,0]
+     [out0.pc_up_cc_wc.py_resolved_org_unit,'pc_up_cc_wc.py_resolved_org_unit',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_past_deadline,'pc_up_cc_wc.py_elapsed_past_deadline',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_customer_ack,'pc_up_cc_wc.py_elapsed_customer_ack',1,0]
+     [out0.pc_up_cc_wc.src_env_sk,'pc_up_cc_wc.src_env_sk',1,0]
+     [out0.pc_up_cc_wc.py_resolved_time,'pc_up_cc_wc.py_resolved_time',1,0]
+     [out0.pc_up_cc_wc.py_resolution_complexity,'pc_up_cc_wc.py_resolution_complexity',1,0]
+     [out0.pc_up_cc_wc.px_save_datetime,'pc_up_cc_wc.px_save_datetime',1,0]
+     [out0.pc_up_cc_wc.py_worklist_text2,'pc_up_cc_wc.py_worklist_text2',1,0]
+     [out0.pc_up_cc_wc.py_status_customersat,'pc_up_cc_wc.py_status_customersat',1,0]
+     [out0.pc_up_cc_wc.py_cus_level,'pc_up_cc_wc.py_cus_level',1,0]
+     [out0.pc_up_cc_wc.px_ins_name,'pc_up_cc_wc.px_ins_name',1,0]
+     [out0.pc_up_cc_wc.py_worklist_decimal1,'pc_up_cc_wc.py_worklist_decimal1',1,0]
+     [out0.pc_up_cc_wc.py_ack_timestamp,'pc_up_cc_wc.py_ack_timestamp',1,0]
+     [out0.pc_up_cc_wc.fullfillment_method,'pc_up_cc_wc.fullfillment_method',1,0]
+     [out0.pc_up_cc_wc.py_label,'pc_up_cc_wc.py_label',1,0]
+     [out0.pc_up_cc_wc.py_customer_name,'pc_up_cc_wc.py_customer_name',1,0]
+     [out0.pc_up_cc_wc.cpp_provider_sk,'pc_up_cc_wc.cpp_provider_sk',1,0]
+     [out0.pc_up_cc_wc.px_create_system_id,'pc_up_cc_wc.px_create_system_id',1,0]
+     [out0.pc_up_cc_wc.py_owner_org,'pc_up_cc_wc.py_owner_org',1,0]
+     [out0.pc_up_cc_wc.corr_template_id,'pc_up_cc_wc.corr_template_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.pc_up_cc_wc.py_orig_userid,'pc_up_cc_wc.py_orig_userid',1,0]
+     [out0.pc_up_cc_wc.parent_id,'pc_up_cc_wc.parent_id',1,0]
+     [out0.pc_up_cc_wc.py_owner_org_unit,'pc_up_cc_wc.py_owner_org_unit',1,0]
+     [out0.pc_up_cc_wc.py_effort_actual,'pc_up_cc_wc.py_effort_actual',1,0]
+     [out0.pc_up_cc_wc.py_worklist_datetime1,'pc_up_cc_wc.py_worklist_datetime1',1,0]
+     [out0.pc_up_cc_wc.py_orig_user_workgroup,'pc_up_cc_wc.py_orig_user_workgroup',1,0]
+     [out0.pc_up_cc_wc.template_version,'pc_up_cc_wc.template_version',1,0]
+     [out0.pc_up_cc_wc.py_customer_satisfied_timestamp,'pc_up_cc_wc.py_customer_satisfied_timestamp',1,0]
+     [out0.pc_up_cc_wc.pz_ins_key,'pc_up_cc_wc.pz_ins_key',1,0]
+     [out0.pc_up_cc_wc.py_root_cause,'pc_up_cc_wc.py_root_cause',1,0]
+     [out0.pc_up_cc_wc.py_orig_org_unit,'pc_up_cc_wc.py_orig_org_unit',1,0]
+     [out0.pc_up_cc_wc.edms_doc_id,'pc_up_cc_wc.edms_doc_id',1,0]
+     [out0.pc_up_cc_wc.px_update_system_id,'pc_up_cc_wc.px_update_system_id',1,0]
+     [out0.pc_up_cc_wc.py_worklist_decimal2,'pc_up_cc_wc.py_worklist_decimal2',1,0]
+     [out0.pc_up_cc_wc.py_orig_division,'pc_up_cc_wc.py_orig_division',1,0]
+     [out0.pc_up_cc_wc.py_reopen_count,'pc_up_cc_wc.py_reopen_count',1,0]
+     [out0.pc_up_cc_wc.px_current_stage_label,'pc_up_cc_wc.px_current_stage_label',1,0]
+     [out0.pc_up_cc_wc.px_flow_count,'pc_up_cc_wc.px_flow_count',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_past_goal,'pc_up_cc_wc.py_elapsed_past_goal',1,0]
+     [out0.pc_up_cc_wc.py_problem_type,'pc_up_cc_wc.py_problem_type',1,0]
+     [out0.pc_up_cc_wc.py_resolved_userid,'pc_up_cc_wc.py_resolved_userid',1,0]
+     [out0.pc_up_cc_wc.py_problem_source,'pc_up_cc_wc.py_problem_source',1,0]
+     [out0.pc_up_cc_wc.py_resolved_division,'pc_up_cc_wc.py_resolved_division',1,0]
+     [out0.pc_up_cc_wc.py_elapsed_status_new,'pc_up_cc_wc.py_elapsed_status_new',1,0]
+  ]
+  impacts:
+  [
+     [in0.pycustomername,'pycustomername',1,1]
+     [in0.pyagefromdate,'pyagefromdate',1,1]
+     [in0.corrcaseid,'corrcaseid',1,1]
+     [in0.pycontactchannel,'pycontactchannel',1,1]
+     [in0.pyworklisttext1,'pyworklisttext1',1,1]
+     [in0.pyorigorg,'pyorigorg',1,1]
+     [in0.pyworklisttext3,'pyworklisttext3',1,1]
+     [in0.pxinsname,'pxinsname',1,1]
+     [in0.pxcommitdatetime,'pxcommitdatetime',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.pyeffortactual,'pyeffortactual',1,1]
+     [in0.recordeddate,'recordeddate',1,1]
+     [in0.templateversion,'templateversion',1,1]
+     [in0.pyworklistdecimal1,'pyworklistdecimal1',1,1]
+     [in0.pyrootcause,'pyrootcause',1,1]
+     [in0.pydescription,'pydescription',1,1]
+     [in0.pxupdateoperator,'pxupdateoperator',1,1]
+     [in0.fullfillmentmethod,'fullfillmentmethod',1,1]
+     [in0.pyresolvedorgunit,'pyresolvedorgunit',1,1]
+     [in0.pyoriguserid,'pyoriguserid',1,1]
+     [in0.clientname,'clientname',1,1]
+     [in0.pychargeto,'pychargeto',1,1]
+     [in0.pyeffortestimate,'pyeffortestimate',1,1]
+     [in0.pyelapsedstatusopen,'pyelapsedstatusopen',1,1]
+     [in0.countoflines,'countoflines',1,1]
+     [in0.pzinskey,'pzinskey',1,1]
+     [in0.pystatuswork,'pystatuswork',1,1]
+     [in0.pyresolveddivision,'pyresolveddivision',1,1]
+     [in0.pxcoveredcountopen,'pxcoveredcountopen',1,1]
+     [in0.pxcoveredcountunsatisfied,'pxcoveredcountunsatisfied',1,1]
+     [in0.pyworklistdate1,'pyworklistdate1',1,1]
+     [in0.pyslagoal,'pyslagoal',1,1]
+     [in0.corrwrittendate,'corrwrittendate',1,1]
+     [in0.corrtype,'corrtype',1,1]
+     [in0.pyresolvedorg,'pyresolvedorg',1,1]
+     [in0.pyoriguserdivision,'pyoriguserdivision',1,1]
+     [in0.pystatuscustomersat,'pystatuscustomersat',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.pycustomerenterprise,'pycustomerenterprise',1,1]
+     [in0.pyprimarycontact,'pyprimarycontact',1,1]
+     [in0.pyownerorg,'pyownerorg',1,1]
+     [in0.pycontacttype,'pycontacttype',1,1]
+     [in0.edmsdocid,'edmsdocid',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.pyproblemsource,'pyproblemsource',1,1]
+     [in0.pyworklisttext2,'pyworklisttext2',1,1]
+     [in0.pxcreatesystemid,'pxcreatesystemid',1,1]
+     [in0.pyresolveduserid,'pyresolveduserid',1,1]
+     [in0.pyeventid,'pyeventid',1,1]
+     [in0.pyorigdivision,'pyorigdivision',1,1]
+     [in0.pyownerorgunit,'pyownerorgunit',1,1]
+     [in0.corrtemplateid,'corrtemplateid',1,1]
+     [in0.providerid,'providerid',2,2]
+     [in0.pyworklistdecimal2,'pyworklistdecimal2',1,1]
+     [in0.pxupdateopname,'pxupdateopname',1,1]
+     [in0.pyelapsedpastdeadline,'pyelapsedpastdeadline',2,2]
+     [in0.pxcurrentstagelabel,'pxcurrentstagelabel',1,1]
+     [in0.pxcreatedatetime,'pxcreatedatetime',2,2]
+     [in0.pyworklistdatetime2,'pyworklistdatetime2',1,1]
+     [in0.pyoriguserworkgroup,'pyoriguserworkgroup',1,1]
+     [in0.pyresolveduserworkgroup,'pyresolveduserworkgroup',1,1]
+     [in0.pycustomer,'pycustomer',2,2]
+     [in0.pyelapsedcustomerunsatisfied,'pyelapsedcustomerunsatisfied',1,1]
+     [in0.pyorigorgunit,'pyorigorgunit',1,1]
+     [in0.pyreopencount,'pyreopencount',1,1]
+     [in0.pyacktimestamp,'pyacktimestamp',1,1]
+     [in0.pyresolutioncomplexity,'pyresolutioncomplexity',1,1]
+     [in0.pxobjclass,'pxobjclass',1,1]
+     [in0.pycuslevel,'pycuslevel',1,1]
+     [in0.pxupdatesystemid,'pxupdatesystemid',1,1]
+     [in0.pyid,'pyid',1,1]
+     [in0.vendorid,'vendorid',1,1]
+     [in0.product,'product',1,1]
+     [in0.pyslaname,'pyslaname',1,1]
+     [in0.pyresolvedtime,'pyresolvedtime',1,1]
+     [in0.pxurgencywork,'pxurgencywork',1,1]
+     [in0.pychargeamount,'pychargeamount',1,1]
+     [in0.undeliveredflag,'undeliveredflag',1,1]
+     [in0.pxcoverinskey,'pxcoverinskey',1,1]
+     [in0.pyresolvedtimestamp,'pyresolvedtimestamp',1,1]
+     [in0.pxupdatedatetime,'pxupdatedatetime',1,1]
+     [in0.pxcreateopname,'pxcreateopname',1,1]
+     [in0.pyelapsedcustomerack,'pyelapsedcustomerack',1,1]
+     [in0.pxcoveredcount,'pxcoveredcount',1,1]
+     [in0.pyreopentimestamp,'pyreopentimestamp',1,1]
+     [in0.pyworklistinteger1,'pyworklistinteger1',1,1]
+     [in0.pyelapsedstatusnew,'pyelapsedstatusnew',1,1]
+     [in0.pylabel,'pylabel',1,1]
+     [in0.orgcorrid,'orgcorrid',1,1]
+     [in0.parentid,'parentid',1,1]
+     [in0.pyeffortestimatetimestamp,'pyeffortestimatetimestamp',1,1]
+     [in0.pxflowcount,'pxflowcount',1,1]
+     [in0.pyfoldertype,'pyfoldertype',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pxsavedatetime,'pxsavedatetime',1,1]
+     [in0.pycustomersatisfiedtimestamp,'pycustomersatisfiedtimestamp',1,1]
+     [in0.pyelapsedstatuspending,'pyelapsedstatuspending',1,1]
+     [in0.pyworklistdatetime1,'pyworklistdatetime1',1,1]
+     [in0.pysladeadline,'pysladeadline',1,1]
+     [in0.pyresolutioncost,'pyresolutioncost',1,1]
+     [in0.pxcreateoperator,'pxcreateoperator',1,1]
+     [in0.pyproblemtype,'pyproblemtype',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.pyproblemreason,'pyproblemreason',1,1]
+     [in0.pyownerdivision,'pyownerdivision',1,1]
+     [in0.pxcurrentstage,'pxcurrentstage',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) pc_up_cc_wc_cpp_pc_uhg_pbm_cl_cpp_work_corr_sk = -1;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_px_commit_datetime = fail_if_error(in0.pxcommitdatetime);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_px_save_datetime = fail_if_error(in0.pxsavedatetime);
+let utf8 string("\x01", maximum_length=1020) pc_up_cc_wc_px_cover_inskey = fail_if_error(in0.pxcoverinskey);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_px_covered_count = fail_if_error(in0.pxcoveredcount);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_px_covered_count_open = fail_if_error(in0.pxcoveredcountopen);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_px_covered_count_unsatisfied = fail_if_error(in0.pxcoveredcountunsatisfied);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_px_create_datetime = fail_if_error(in0.pxcreatedatetime);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_create_opname = fail_if_error(in0.pxcreateopname);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_create_operator = fail_if_error(in0.pxcreateoperator);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_px_create_system_id = fail_if_error(in0.pxcreatesystemid);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_px_flow_count = fail_if_error(in0.pxflowcount);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_ins_name = fail_if_error(in0.pxinsname);
+let utf8 string("\x01", maximum_length=384) pc_up_cc_wc_px_obj_class = fail_if_error(in0.pxobjclass);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_px_update_datetime = fail_if_error(first_defined(in0.pxupdatedatetime,in0.pxcreatedatetime));
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_update_opname = fail_if_error(in0.pxupdateopname);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_update_operator = fail_if_error(in0.pxupdateoperator);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_px_update_system_id = fail_if_error(in0.pxupdatesystemid);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_px_urgency_work = fail_if_error(in0.pxurgencywork);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_ack_timestamp = fail_if_error(in0.pyacktimestamp);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_age_from_date = fail_if_error(in0.pyagefromdate);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_charge_amount = fail_if_error(in0.pychargeamount);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_charge_to = fail_if_error(in0.pychargeto);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_contact_channel = fail_if_error(in0.pycontactchannel);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_contact_type = fail_if_error(in0.pycontacttype);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_cus_level = fail_if_error(in0.pycuslevel);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_customer = fail_if_error(in0.pycustomer);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_customer_enterprise = fail_if_error(in0.pycustomerenterprise);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_customer_name = fail_if_error(in0.pycustomername);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_customer_org = fail_if_error(in0.pycustomer);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_customer_satisfied_timestamp = fail_if_error(in0.pycustomersatisfiedtimestamp);
+let utf8 string("\x01", maximum_length=1020) pc_up_cc_wc_py_description = fail_if_error(in0.pydescription);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_effort_actual = fail_if_error(in0.pyeffortactual);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_effort_estimate = fail_if_error(in0.pyeffortestimate);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_effort_estimate_timestamp = fail_if_error(in0.pyeffortestimatetimestamp);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_customer_ack = fail_if_error(in0.pyelapsedcustomerack);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_customer_unsatisfied = fail_if_error(in0.pyelapsedcustomerunsatisfied);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_past_deadline = fail_if_error(in0.pyelapsedpastdeadline);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_past_goal = fail_if_error(in0.pyelapsedpastdeadline);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_status_new = fail_if_error(in0.pyelapsedstatusnew);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_status_open = fail_if_error(in0.pyelapsedstatusopen);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_elapsed_status_pending = fail_if_error(in0.pyelapsedstatuspending);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_event_id = fail_if_error(in0.pyeventid);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_folder_type = fail_if_error(in0.pyfoldertype);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_py_id = fail_if_error(in0.pyid);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_label = fail_if_error(in0.pylabel);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_orig_division = fail_if_error(in0.pyorigdivision);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_orig_org = fail_if_error(in0.pyorigorg);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_orig_org_unit = fail_if_error(in0.pyorigorgunit);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_orig_user_division = fail_if_error(in0.pyoriguserdivision);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_orig_userid = fail_if_error(in0.pyoriguserid);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_orig_user_workgroup = fail_if_error(in0.pyoriguserworkgroup);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_owner_division = fail_if_error(in0.pyownerdivision);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_owner_org = fail_if_error(in0.pyownerorg);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_owner_org_unit = fail_if_error(in0.pyownerorgunit);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_primary_contact = fail_if_error(in0.pyprimarycontact);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_problem_reason = fail_if_error(in0.pyproblemreason);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_problem_source = fail_if_error(in0.pyproblemsource);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_problem_type = fail_if_error(in0.pyproblemtype);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_reopen_count = fail_if_error(in0.pyreopencount);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_reopen_timestamp = fail_if_error(in0.pyreopentimestamp);
+let string("\x01",charset="iso-8859-15", maximum_length=8) pc_up_cc_wc_py_resolution_complexity = fail_if_error(in0.pyresolutioncomplexity);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_resolution_cost = fail_if_error(in0.pyresolutioncost);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_resolved_division = fail_if_error(in0.pyresolveddivision);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_resolved_org = fail_if_error(in0.pyresolvedorg);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_resolved_org_unit = fail_if_error(in0.pyresolvedorgunit);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_resolved_time = fail_if_error(in0.pyresolvedtime);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_resolved_timestamp = fail_if_error(in0.pyresolvedtimestamp);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_resolved_userid = fail_if_error(in0.pyresolveduserid);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_resolved_user_workgroup = fail_if_error(in0.pyresolveduserworkgroup);
+let utf8 string("\x01", maximum_length=256) pc_up_cc_wc_py_root_cause = fail_if_error(in0.pyrootcause);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_sla_deadline = fail_if_error(in0.pysladeadline);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_sla_goal = fail_if_error(in0.pyslagoal);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_sla_name = fail_if_error(in0.pyslaname);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_py_status_customersat = fail_if_error(in0.pystatuscustomersat);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_py_status_work = fail_if_error(in0.pystatuswork);
+let string("\x01",charset="iso-8859-15", maximum_length=8) pc_up_cc_wc_py_worklist_date1 = fail_if_error(in0.pyworklistdate1);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_worklist_datetime1 = fail_if_error(in0.pyworklistdatetime1);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_py_worklist_datetime2 = fail_if_error(in0.pyworklistdatetime2);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_worklist_decimal1 = fail_if_error(in0.pyworklistdecimal1);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_worklist_decimal2 = fail_if_error(in0.pyworklistdecimal2);
+let decimal("\x01",0, maximum_length=19, sign_reserved) pc_up_cc_wc_py_worklist_integer1 = fail_if_error(in0.pyworklistinteger1);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_worklist_text1 = fail_if_error(in0.pyworklisttext1);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_worklist_text2 = fail_if_error(in0.pyworklisttext2);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_py_worklist_text3 = fail_if_error(in0.pyworklisttext3);
+let utf8 string("\x01", maximum_length=512) pc_up_cc_wc_px_current_stage_label = fail_if_error(in0.pxcurrentstagelabel);
+let string("\x01",charset="iso-8859-15", maximum_length=32) pc_up_cc_wc_px_current_stage = fail_if_error(in0.pxcurrentstage);
+let utf8 string("\x01", maximum_length=900) pc_up_cc_wc_pz_ins_key = fail_if_error(in0.pzinskey);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_client_name = fail_if_error(in0.clientname);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_parent_id = fail_if_error(in0.parentid);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_corr_case_id = fail_if_error(in0.corrcaseid);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_provider_id = fail_if_error(in0.providerid);
+let decimal("\x01",0) pc_up_cc_wc_cpp_provider_sk;
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_product = fail_if_error(in0.product);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_corr_template_id = fail_if_error(in0.corrtemplateid);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_template_version = fail_if_error(in0.templateversion);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_corr_type = fail_if_error(in0.corrtype);
+let utf8 string("\x01", maximum_length=32) pc_up_cc_wc_corr_written_date = fail_if_error(in0.corrwrittendate);
+let decimal("\x01",0) pc_up_cc_wc_count_of_lines = fail_if_error(in0.countoflines);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_edms_doc_id = fail_if_error(in0.edmsdocid);
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_fullfillment_method = fail_if_error(in0.fullfillmentmethod);
+let string("\x01",charset="iso-8859-15", maximum_length=25) pc_up_cc_wc_vendor_id = fail_if_error(in0.vendorid);
+let decimal("\x01",0) pc_up_cc_wc_src_env_sk = 710;
+let utf8 string("\x01", maximum_length=128) pc_up_cc_wc_org_corr_id = fail_if_error(in0.orgcorrid);
+let string("\x01",charset="iso-8859-15", maximum_length=20) pc_up_cc_wc_undelivered_flag = fail_if_error(in0.undeliveredflag);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pc_up_cc_wc_recorded_date = fail_if_error(in0.recordeddate);
+
+
+
+/*   Default value   */
+pc_up_cc_wc_cpp_provider_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_58a6a24c_2cc2_0(in0.providerid).dxf_sk,-1));
+
+  out0.pc_up_cc_wc.cpp_pc_uhg_pbm_cl_cpp_work_corr_sk::pc_up_cc_wc_cpp_pc_uhg_pbm_cl_cpp_work_corr_sk;
+  out0.pc_up_cc_wc.px_commit_datetime::pc_up_cc_wc_px_commit_datetime;
+  out0.pc_up_cc_wc.px_save_datetime::pc_up_cc_wc_px_save_datetime;
+  out0.pc_up_cc_wc.px_cover_inskey::pc_up_cc_wc_px_cover_inskey;
+  out0.pc_up_cc_wc.px_covered_count::pc_up_cc_wc_px_covered_count;
+  out0.pc_up_cc_wc.px_covered_count_open::pc_up_cc_wc_px_covered_count_open;
+  out0.pc_up_cc_wc.px_covered_count_unsatisfied::pc_up_cc_wc_px_covered_count_unsatisfied;
+  out0.pc_up_cc_wc.px_create_datetime::pc_up_cc_wc_px_create_datetime;
+  out0.pc_up_cc_wc.px_create_opname::pc_up_cc_wc_px_create_opname;
+  out0.pc_up_cc_wc.px_create_operator::pc_up_cc_wc_px_create_operator;
+  out0.pc_up_cc_wc.px_create_system_id::pc_up_cc_wc_px_create_system_id;
+  out0.pc_up_cc_wc.px_flow_count::pc_up_cc_wc_px_flow_count;
+  out0.pc_up_cc_wc.px_ins_name::pc_up_cc_wc_px_ins_name;
+  out0.pc_up_cc_wc.px_obj_class::pc_up_cc_wc_px_obj_class;
+  out0.pc_up_cc_wc.px_update_datetime::pc_up_cc_wc_px_update_datetime;
+  out0.pc_up_cc_wc.px_update_opname::pc_up_cc_wc_px_update_opname;
+  out0.pc_up_cc_wc.px_update_operator::pc_up_cc_wc_px_update_operator;
+  out0.pc_up_cc_wc.px_update_system_id::pc_up_cc_wc_px_update_system_id;
+  out0.pc_up_cc_wc.px_urgency_work::pc_up_cc_wc_px_urgency_work;
+  out0.pc_up_cc_wc.py_ack_timestamp::pc_up_cc_wc_py_ack_timestamp;
+  out0.pc_up_cc_wc.py_age_from_date::pc_up_cc_wc_py_age_from_date;
+  out0.pc_up_cc_wc.py_charge_amount::pc_up_cc_wc_py_charge_amount;
+  out0.pc_up_cc_wc.py_charge_to::pc_up_cc_wc_py_charge_to;
+  out0.pc_up_cc_wc.py_contact_channel::pc_up_cc_wc_py_contact_channel;
+  out0.pc_up_cc_wc.py_contact_type::pc_up_cc_wc_py_contact_type;
+  out0.pc_up_cc_wc.py_cus_level::pc_up_cc_wc_py_cus_level;
+  out0.pc_up_cc_wc.py_customer::pc_up_cc_wc_py_customer;
+  out0.pc_up_cc_wc.py_customer_enterprise::pc_up_cc_wc_py_customer_enterprise;
+  out0.pc_up_cc_wc.py_customer_name::pc_up_cc_wc_py_customer_name;
+  out0.pc_up_cc_wc.py_customer_org::pc_up_cc_wc_py_customer_org;
+  out0.pc_up_cc_wc.py_customer_satisfied_timestamp::pc_up_cc_wc_py_customer_satisfied_timestamp;
+  out0.pc_up_cc_wc.py_description::pc_up_cc_wc_py_description;
+  out0.pc_up_cc_wc.py_effort_actual::pc_up_cc_wc_py_effort_actual;
+  out0.pc_up_cc_wc.py_effort_estimate::pc_up_cc_wc_py_effort_estimate;
+  out0.pc_up_cc_wc.py_effort_estimate_timestamp::pc_up_cc_wc_py_effort_estimate_timestamp;
+  out0.pc_up_cc_wc.py_elapsed_customer_ack::pc_up_cc_wc_py_elapsed_customer_ack;
+  out0.pc_up_cc_wc.py_elapsed_customer_unsatisfied::pc_up_cc_wc_py_elapsed_customer_unsatisfied;
+  out0.pc_up_cc_wc.py_elapsed_past_deadline::pc_up_cc_wc_py_elapsed_past_deadline;
+  out0.pc_up_cc_wc.py_elapsed_past_goal::pc_up_cc_wc_py_elapsed_past_goal;
+  out0.pc_up_cc_wc.py_elapsed_status_new::pc_up_cc_wc_py_elapsed_status_new;
+  out0.pc_up_cc_wc.py_elapsed_status_open::pc_up_cc_wc_py_elapsed_status_open;
+  out0.pc_up_cc_wc.py_elapsed_status_pending::pc_up_cc_wc_py_elapsed_status_pending;
+  out0.pc_up_cc_wc.py_event_id::pc_up_cc_wc_py_event_id;
+  out0.pc_up_cc_wc.py_folder_type::pc_up_cc_wc_py_folder_type;
+  out0.pc_up_cc_wc.py_id::pc_up_cc_wc_py_id;
+  out0.pc_up_cc_wc.py_label::pc_up_cc_wc_py_label;
+  out0.pc_up_cc_wc.py_orig_division::pc_up_cc_wc_py_orig_division;
+  out0.pc_up_cc_wc.py_orig_org::pc_up_cc_wc_py_orig_org;
+  out0.pc_up_cc_wc.py_orig_org_unit::pc_up_cc_wc_py_orig_org_unit;
+  out0.pc_up_cc_wc.py_orig_user_division::pc_up_cc_wc_py_orig_user_division;
+  out0.pc_up_cc_wc.py_orig_userid::pc_up_cc_wc_py_orig_userid;
+  out0.pc_up_cc_wc.py_orig_user_workgroup::pc_up_cc_wc_py_orig_user_workgroup;
+  out0.pc_up_cc_wc.py_owner_division::pc_up_cc_wc_py_owner_division;
+  out0.pc_up_cc_wc.py_owner_org::pc_up_cc_wc_py_owner_org;
+  out0.pc_up_cc_wc.py_owner_org_unit::pc_up_cc_wc_py_owner_org_unit;
+  out0.pc_up_cc_wc.py_primary_contact::pc_up_cc_wc_py_primary_contact;
+  out0.pc_up_cc_wc.py_problem_reason::pc_up_cc_wc_py_problem_reason;
+  out0.pc_up_cc_wc.py_problem_source::pc_up_cc_wc_py_problem_source;
+  out0.pc_up_cc_wc.py_problem_type::pc_up_cc_wc_py_problem_type;
+  out0.pc_up_cc_wc.py_reopen_count::pc_up_cc_wc_py_reopen_count;
+  out0.pc_up_cc_wc.py_reopen_timestamp::pc_up_cc_wc_py_reopen_timestamp;
+  out0.pc_up_cc_wc.py_resolution_complexity::pc_up_cc_wc_py_resolution_complexity;
+  out0.pc_up_cc_wc.py_resolution_cost::pc_up_cc_wc_py_resolution_cost;
+  out0.pc_up_cc_wc.py_resolved_division::pc_up_cc_wc_py_resolved_division;
+  out0.pc_up_cc_wc.py_resolved_org::pc_up_cc_wc_py_resolved_org;
+  out0.pc_up_cc_wc.py_resolved_org_unit::pc_up_cc_wc_py_resolved_org_unit;
+  out0.pc_up_cc_wc.py_resolved_time::pc_up_cc_wc_py_resolved_time;
+  out0.pc_up_cc_wc.py_resolved_timestamp::pc_up_cc_wc_py_resolved_timestamp;
+  out0.pc_up_cc_wc.py_resolved_userid::pc_up_cc_wc_py_resolved_userid;
+  out0.pc_up_cc_wc.py_resolved_user_workgroup::pc_up_cc_wc_py_resolved_user_workgroup;
+  out0.pc_up_cc_wc.py_root_cause::pc_up_cc_wc_py_root_cause;
+  out0.pc_up_cc_wc.py_sla_deadline::pc_up_cc_wc_py_sla_deadline;
+  out0.pc_up_cc_wc.py_sla_goal::pc_up_cc_wc_py_sla_goal;
+  out0.pc_up_cc_wc.py_sla_name::pc_up_cc_wc_py_sla_name;
+  out0.pc_up_cc_wc.py_status_customersat::pc_up_cc_wc_py_status_customersat;
+  out0.pc_up_cc_wc.py_status_work::pc_up_cc_wc_py_status_work;
+  out0.pc_up_cc_wc.py_worklist_date1::pc_up_cc_wc_py_worklist_date1;
+  out0.pc_up_cc_wc.py_worklist_datetime1::pc_up_cc_wc_py_worklist_datetime1;
+  out0.pc_up_cc_wc.py_worklist_datetime2::pc_up_cc_wc_py_worklist_datetime2;
+  out0.pc_up_cc_wc.py_worklist_decimal1::pc_up_cc_wc_py_worklist_decimal1;
+  out0.pc_up_cc_wc.py_worklist_decimal2::pc_up_cc_wc_py_worklist_decimal2;
+  out0.pc_up_cc_wc.py_worklist_integer1::pc_up_cc_wc_py_worklist_integer1;
+  out0.pc_up_cc_wc.py_worklist_text1::pc_up_cc_wc_py_worklist_text1;
+  out0.pc_up_cc_wc.py_worklist_text2::pc_up_cc_wc_py_worklist_text2;
+  out0.pc_up_cc_wc.py_worklist_text3::pc_up_cc_wc_py_worklist_text3;
+  out0.pc_up_cc_wc.px_current_stage_label::pc_up_cc_wc_px_current_stage_label;
+  out0.pc_up_cc_wc.px_current_stage::pc_up_cc_wc_px_current_stage;
+  out0.pc_up_cc_wc.pz_ins_key::pc_up_cc_wc_pz_ins_key;
+  out0.pc_up_cc_wc.client_name::pc_up_cc_wc_client_name;
+  out0.pc_up_cc_wc.parent_id::pc_up_cc_wc_parent_id;
+  out0.pc_up_cc_wc.corr_case_id::pc_up_cc_wc_corr_case_id;
+  out0.pc_up_cc_wc.provider_id::pc_up_cc_wc_provider_id;
+  out0.pc_up_cc_wc.cpp_provider_sk::pc_up_cc_wc_cpp_provider_sk;
+  out0.pc_up_cc_wc.product::pc_up_cc_wc_product;
+  out0.pc_up_cc_wc.corr_template_id::pc_up_cc_wc_corr_template_id;
+  out0.pc_up_cc_wc.template_version::pc_up_cc_wc_template_version;
+  out0.pc_up_cc_wc.corr_type::pc_up_cc_wc_corr_type;
+  out0.pc_up_cc_wc.corr_written_date::pc_up_cc_wc_corr_written_date;
+  out0.pc_up_cc_wc.count_of_lines::pc_up_cc_wc_count_of_lines;
+  out0.pc_up_cc_wc.edms_doc_id::pc_up_cc_wc_edms_doc_id;
+  out0.pc_up_cc_wc.fullfillment_method::pc_up_cc_wc_fullfillment_method;
+  out0.pc_up_cc_wc.vendor_id::pc_up_cc_wc_vendor_id;
+  out0.pc_up_cc_wc.src_env_sk::pc_up_cc_wc_src_env_sk;
+  out0.pc_up_cc_wc.org_corr_id::pc_up_cc_wc_org_corr_id;
+  out0.pc_up_cc_wc.undelivered_flag::pc_up_cc_wc_undelivered_flag;
+  out0.pc_up_cc_wc.recorded_date::pc_up_cc_wc_recorded_date;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,7 @@
+out :: reformat(in) =
+begin
+ let decimal(",") v_month_count = decimal_round(datetime_difference_months(in.end_date,in.start_date),0);
+  out.* :: in.*;
+  out.month_count :: v_month_count;
+  out.average_pmpm :: in.membership_count * v_month_count;
+end;

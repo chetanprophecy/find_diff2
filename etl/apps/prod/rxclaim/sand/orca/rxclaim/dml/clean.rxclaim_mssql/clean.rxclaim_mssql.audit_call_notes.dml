@@ -1,0 +1,31 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  call_note_id /*INTEGER NOT NULL*/;
+  string("\x01",charset="windows-1252", maximum_length=20)  claim_number /*VARCHAR(20) NOT NULL*/;
+  decimal("\x01",0)  zero_reclaim = NULL("") /*BIT*/;
+  decimal("\x01",0)  payment_type_id = NULL("") /*INTEGER*/;
+  string("\x01",charset="windows-1252", maximum_length=50)  pharmacy_contact_name /*VARCHAR(50) NOT NULL*/;
+  decimal("\x01",0)  audit_category_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  number_of_calls = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  number_of_emails = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  audit_type_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  fraud_type_id /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  fraud_violation_reason_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  fraud_perpetrator_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  non_fraud_violation_reason_id = NULL("") /*INTEGER*/;
+  string("\x01",charset="windows-1252", maximum_length=155)  comments /*VARCHAR(155) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  created_date = NULL("") /*TIMESTAMP*/;
+  string("\x01",charset="windows-1252", maximum_length=30)  created_by = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01".3, maximum_length=22, sign_reserved)  phr_adjust_amount = NULL("") /*DECIMAL(20,3)*/;
+  decimal("\x01",0)  audited_seq = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  adjusted_seq = NULL("") /*INTEGER*/;
+  decimal("\x01".3, maximum_length=22, sign_reserved)  client_adj_amount = NULL("") /*DECIMAL(20,3)*/;
+  decimal("\x01",0)  instance_ind = NULL("") /*INTEGER*/;
+  string("\x01",charset="windows-1252", maximum_length=20)  adjusted_claim_number = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0)  audit_rxclaim_instances_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  dw_src_env_sk = NULL("") /*INTEGER*/;
+  string(1)  newline =  "\n";
+end

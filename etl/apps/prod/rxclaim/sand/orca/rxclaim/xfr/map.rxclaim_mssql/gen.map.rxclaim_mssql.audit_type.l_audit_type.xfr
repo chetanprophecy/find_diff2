@@ -1,0 +1,59 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.audit_type.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.audit_type.audit_type_sk,[transform],]
+  [out0.audit_type.audit_type_desc,[transform],in0.audit_type_description]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.audit_type.audit_type_sort_order,'audit_type.audit_type_sort_order',1,0]
+     [out0.audit_type.audit_type_id,'audit_type.audit_type_id',1,0]
+     [out0.audit_type.src_env_sk,'audit_type.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.audit_type.audit_type_sk,'audit_type.audit_type_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.audit_type.audit_type_desc,'audit_type.audit_type_desc',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.audit_type_description,'audit_type_description',3,1]
+     [in0.audit_type_sort_order,'audit_type_sort_order',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.audit_type_id,'audit_type_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) audit_type_audit_type_sk = -1;
+let decimal("\x01",0) audit_type_audit_type_id = fail_if_error(in0.audit_type_id);
+let decimal("\x01",0) audit_type_audit_type_sort_order = fail_if_error(in0.audit_type_sort_order);
+let string("\x01",charset="iso-8859-15", maximum_length=50) audit_type_audit_type_desc = fail_if_error((if (sql_or(is_null(string_lrtrim(in0.audit_type_description)),is_blank(string_lrtrim(in0.audit_type_description))))
+   'Not Specified'
+ else
+   string_lrtrim(in0.audit_type_description)));
+let decimal("\x01",0) audit_type_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.audit_type.audit_type_sk::audit_type_audit_type_sk;
+  out0.audit_type.audit_type_id::audit_type_audit_type_id;
+  out0.audit_type.audit_type_sort_order::audit_type_audit_type_sort_order;
+  out0.audit_type.audit_type_desc::audit_type_audit_type_desc;
+  out0.audit_type.src_env_sk::audit_type_src_env_sk;
+  out0.*::in0.*;
+
+end;

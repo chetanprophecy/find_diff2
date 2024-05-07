@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxclaim.d_msms_client_category_hist
+SOURCE_DB_PROJECT||||DB_RXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrxclaim       f_claim_transaction     \nrxclaim       d_cag                   \nrxclaim       d_msms_client_category
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+SQL||||$[\n"select a.cag_sk,\n\ta.carrier_id,\n\ta.account_id,\n\ta.employer_group_id as group_id,\n\ta.policy_no,\n\ta.funding_arrangment_cd,\n\ta.situs_state_cd,\n\t(\n\tcase\n\twhen(a.src_env_sk='480') then 'ASO2016 Forward'\n\twhen(a.src_env_sk='490' and a.funding_arrangment_cd='A') then 'ASO2016 Forward'\n\twhen(a.src_env_sk='490' and a.funding_arrangment_cd <>'A') then 'FI'\n\telse 'Catamaran'\n\tend ) as msms_catgry\n  from d_cag a\n  inner join f_claim_transaction b\n  on  a.cag_sk = b.cag_sk\n  where  b.day_90_prog_type='M' and \n  a.cag_sk not in (select cag_sk from d_msms_client_category)\n and b.sbm_dt between to_char(to_date('" + START_CHANGES_TIME + "', 'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS') and to_char(to_date('" + END_CHANGES_TIME + "', 'YYYY-MM-DD HH24:MI:SS'),'YYYY-MM-DD HH24:MI:SS')"\n]\n
+DO_CLEAN||||1

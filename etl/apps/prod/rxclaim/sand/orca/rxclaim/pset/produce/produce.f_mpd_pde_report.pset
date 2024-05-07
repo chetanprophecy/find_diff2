@@ -1,0 +1,12 @@
+!prototype|P|||$PUB_DXF_MP/produce.mp
+INPUT_FILE_DML|$|||$AI_DML/get.rxclaim/pdfs.resp.dml
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.rxclaim/lookup.pdfs.resp.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.f_mpd_pde_report.dat
+NORM_OUTPUT_DML||||$[\r\nread_file(OUTPUT_FILE_DML)]
+NORM_XFR||||$AI_XFR/produce/produce.pdfs.resp.norm.xfr
+USE_NORM||||True
+SORT_KEY||||PDR_FILE_ID
+USE_DEDUP||||True
+INPUT_FILE_PATH||||$[\r\n"file:/etl/data/"+AI_PHASE+"/serial/ecg_landing/inbound/aiorcrxc/RXCLAIM/PDE/"+"*PDFS.RESP*.txt"\r\n]
+LOOKUP_KEY||||$SORT_KEY
+EXTRA_SORT_KEY||||{PDR_DATE descending}

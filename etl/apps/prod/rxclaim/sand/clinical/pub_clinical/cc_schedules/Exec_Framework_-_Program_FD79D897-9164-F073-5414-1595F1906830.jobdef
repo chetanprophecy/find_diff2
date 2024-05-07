@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="PUB_CLINICAL_TEMPLATES_PROGRAM" approveEnum1X170="APPROVED" description="This job, create combine files for disease and TMR results." durationDefaultSec1X80="0" isEnabled="true" isManuallyGeneratedOnly1X130="false" isNoMatchAnError1X60="true" isOperatorVisible1X150="false" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="FD79D897-9164-F073-5414-1595F1906830" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - Program" objectVersion="1.200" sandbox="${FILESYSTEM_ROOT}/pub_clinical_templates_program" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$PUB_CLINICAL_TEMPLATES_PLAN/pctm_program_exec_frwk.plan" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-04-26Z" startDate1X180="2017-04-26T00:00:00.000000Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="07:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="1A494DCD-F72D-BDAB-F7DA-031BD303660A"/>
+      <predecessor jobDefinitionGuid="F3E50584-E457-E686-59B6-AF24E4012043"/>
+      <predecessor jobDefinitionGuid="D97E805D-9B9F-DC10-E750-D0DA2C9A5FD6"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

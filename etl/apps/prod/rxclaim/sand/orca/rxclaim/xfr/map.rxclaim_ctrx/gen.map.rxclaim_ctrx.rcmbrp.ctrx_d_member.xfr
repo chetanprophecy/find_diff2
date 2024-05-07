@@ -1,0 +1,570 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup member_eligibility_lkp   */
+out0::bzt_5_97d014ac_575a6982_4013_0(in0,in1,in2,in3,in4)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01", maximum_length=18) flabcd = NULL("");
+  string("\x01", maximum_length=9) flaacd = NULL("");
+  string("\x01", maximum_length=15) flaccd = NULL(""), fladcd = NULL("");
+  string("\x01", maximum_length=6) flplc2 = NULL("");
+  string("\001", maximum_length=1) flb9s2 = NULL("");
+  decimal("\001", maximum_length=10) flcpda = NULL(""), flcqda = NULL("");
+  decimal("\001", maximum_length=8) flc5n1 = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("member_eligibility_lkp",in0,in1,in2,in3,in4));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcmbrp_to_the_ctrx_d_member_ILM_documentation(in)=
+begin
+
+out0.ctrx_d_mbr.employer_group_id::depends_on(
+         in.abadcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_addr3::depends_on(
+         in.ablqio
+         );
+
+
+out0.ctrx_d_mbr.mbr_mcre_covrg_typ::depends_on(
+         in.abaist
+         );
+
+
+out0.ctrx_d_mbr.mbr_cntry::depends_on(
+         in.abpzc2
+         );
+
+
+out0.ctrx_d_mbr.mbr_st_cd::depends_on(
+         in.abaztx
+         );
+
+
+out0.ctrx_d_mbr.mbr_addr2::depends_on(
+         in.aba2tx
+         );
+
+
+out0.ctrx_d_mbr.mbr_alt_ins_id::depends_on(
+         in.abqccd
+         );
+
+
+out0.ctrx_d_mbr.mbr_phone::depends_on(
+         in.ababnb
+         );
+
+
+out0.ctrx_d_mbr.mb_last_nm::depends_on(
+         in.abaqtx
+         );
+
+
+out0.ctrx_d_mbr.mbr_alt_ins_ind::depends_on(
+         in.abofst
+         );
+
+
+out0.ctrx_d_mcag.carrier_id::depends_on(
+         in.abaacd
+         );
+
+
+out0.ctrx_d_mbr.mbr_eml_addr::depends_on(
+         in.abe1hj
+         );
+
+
+out0.ctrx_d_mbr.mbr_dur_prcs_flag::depends_on(
+         in.abb7s2
+         );
+
+
+out0.ctrx_d_mbr.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.ctrx_d_mbr.mbr_ssn_nbr::depends_on(
+         in.aba0nb
+         );
+
+
+out0.ctrx_d_mbr.mbr_fam_typ_cd::depends_on(
+         in.abodst
+         );
+
+
+out0.ctrx_d_mbr.mbr_prsn_cd::depends_on(
+         in.abqdcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_relshp_cd::depends_on(
+         in.abogst
+         );
+
+
+out0.ctrx_d_mbr.carrier_id::depends_on(
+         in.abaacd
+         );
+
+
+out0.ctrx_d_mbr.mbr_zip2::depends_on(
+         in.abhkt1
+         );
+
+
+out0.ctrx_d_mbr.mbr_sex::depends_on(
+         in.abaast
+         );
+
+
+out0.ctrx_d_mbr.mbr_zip::depends_on(
+         in.aba0tx
+         );
+
+
+out0.ctrx_d_mbr.account_id::depends_on(
+         in.abaccd
+         );
+
+
+out0.ctrx_d_mbr.mbr_ben_reset_dt::depends_on(
+         in.abd2dt
+         /*   Rule: "Compute ctrx_d_mbr.mbr_ben_reset_dt"   */ );
+
+
+out0.ctrx_d_mbr.mbr_id::depends_on(
+         in.ababcd
+         );
+
+
+out0.ctrx_d_mbr.mb_mid_init_nm::depends_on(
+         in.abastx
+         );
+
+
+out0.ctrx_d_mbr.mbr_typ::depends_on(
+         in.abc4s2
+         );
+
+
+out0.ctrx_d_mbr.mbr_orig_eff_dt::depends_on(
+         in.abgddt
+         /*   Rule: "Compute ctrx_d_mbr.mbr_orig_eff_dt"   */ );
+
+
+out0.ctrx_d_mbr.mbr_dt_of_brth::depends_on(
+         in.abajdt
+         /*   Rule: "Compute ctrx_d_mbr.mbr_dt_of_brth"   */ );
+
+
+out0.ctrx_d_mbr.mbr_mcre_covrg_from_dt::depends_on(
+         in.abasdt
+         /*   Rule: "Compute ctrx_d_mbr.mbr_mcre_covrg_from_dt"   */ );
+
+
+out0.ctrx_d_mbr.mbr_city_nm::depends_on(
+         in.abaytx
+         );
+
+
+out0.ctrx_d_mbr.mbr_fam_id::depends_on(
+         in.abqbcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_addr1::depends_on(
+         in.aba1tx
+         );
+
+
+out0.ctrx_d_mbr.mbr_alt_ins_mbr_id::depends_on(
+         in.abancd
+         );
+
+
+out0.ctrx_d_mbr.mbr_id_encrpd::depends_on(
+         in.ababcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_fam_ind::depends_on(
+         in.aboest
+         );
+
+
+out0.ctrx_d_mbr.mbr_zip4::depends_on(
+         in.abhlt1
+         );
+
+
+out0.ctrx_d_mbr.mbr_dur_keyvar::depends_on(
+         in.abqgcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_rdr::depends_on(
+         in.abaccd,
+         in.abadcd,
+         in.rxt_src_envrt_id,
+         in.ababcd,
+         in.abaacd,
+         lookup("member_eligibility_lkp",'keystr','keystr','keystr','keystr','keystr').flplc2  
+         );
+
+
+out0.ctrx_d_mbr.mb_first_nm::depends_on(
+         in.abartx
+         );
+
+
+out0.dxf_src_rec_cnt::depends_on(
+         in.dxf_src_rec_cnt
+         );
+
+
+out0.ctrx_d_mcag.employer_group_id::depends_on(
+         in.abadcd
+         );
+
+
+out0.ctrx_d_mbr.mbr_lang_cd::depends_on(
+         in.abb5s2
+         );
+
+
+out0.ctrx_d_mbr.mbr_hic_cd::depends_on(
+         in.abaxtx
+         );
+
+
+out0.ctrx_d_mcag.account_id::depends_on(
+         in.abaccd
+         );
+
+
+out0.ctrx_d_mbr.mbr_mltpl_brth_cd::depends_on(
+         in.abdmn1
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcmbrp_to_the_ctrx_d_member_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_d_mbr.employer_group_id,'ctrx_d_mbr.employer_group_id',1,0]
+     [out0.ctrx_d_mbr.mbr_addr3,'ctrx_d_mbr.mbr_addr3',1,0]
+     [out0.ctrx_d_mbr.mbr_mcre_covrg_typ,'ctrx_d_mbr.mbr_mcre_covrg_typ',1,0]
+     [out0.ctrx_d_mbr.mbr_cntry,'ctrx_d_mbr.mbr_cntry',1,0]
+     [out0.ctrx_d_mbr.mbr_st_cd,'ctrx_d_mbr.mbr_st_cd',1,0]
+     [out0.ctrx_d_mbr.mbr_addr2,'ctrx_d_mbr.mbr_addr2',1,0]
+     [out0.ctrx_d_mbr.mbr_alt_ins_id,'ctrx_d_mbr.mbr_alt_ins_id',1,0]
+     [out0.ctrx_d_mbr.mbr_phone,'ctrx_d_mbr.mbr_phone',1,0]
+     [out0.ctrx_d_mbr.mb_last_nm,'ctrx_d_mbr.mb_last_nm',1,0]
+     [out0.ctrx_d_mbr.mbr_alt_ins_ind,'ctrx_d_mbr.mbr_alt_ins_ind',1,0]
+     [out0.ctrx_d_mcag.carrier_id,'ctrx_d_mcag.carrier_id',1,0]
+     [out0.ctrx_d_mbr.mbr_eml_addr,'ctrx_d_mbr.mbr_eml_addr',1,0]
+     [out0.ctrx_d_mbr.mbr_dur_prcs_flag,'ctrx_d_mbr.mbr_dur_prcs_flag',1,0]
+     [out0.ctrx_d_mbr.cag_sk,'ctrx_d_mbr.cag_sk',1,0]
+     [out0.ctrx_d_mbr.mbr_sk,'ctrx_d_mbr.mbr_sk',1,0]
+     [out0.ctrx_d_mbr.src_env_sk,'ctrx_d_mbr.src_env_sk',1,0]
+     [out0.ctrx_d_mbr.mbr_ssn_nbr,'ctrx_d_mbr.mbr_ssn_nbr',1,0]
+     [out0.ctrx_d_mbr.mbr_fam_typ_cd,'ctrx_d_mbr.mbr_fam_typ_cd',1,0]
+     [out0.ctrx_d_mbr.mbr_prsn_cd,'ctrx_d_mbr.mbr_prsn_cd',1,0]
+     [out0.ctrx_d_mbr.mbr_relshp_cd,'ctrx_d_mbr.mbr_relshp_cd',1,0]
+     [out0.ctrx_d_mbr.carrier_id,'ctrx_d_mbr.carrier_id',1,0]
+     [out0.ctrx_d_mbr.mbr_zip2,'ctrx_d_mbr.mbr_zip2',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_d_mbr.mbr_sex,'ctrx_d_mbr.mbr_sex',1,0]
+     [out0.ctrx_d_mbr.mbr_zip,'ctrx_d_mbr.mbr_zip',1,0]
+     [out0.ctrx_d_mbr.account_id,'ctrx_d_mbr.account_id',1,0]
+     [out0.ctrx_d_mbr.mast_prsn_id,'ctrx_d_mbr.mast_prsn_id',1,0]
+     [out0.ctrx_d_mbr.mbr_ben_reset_dt,'ctrx_d_mbr.mbr_ben_reset_dt',3,2]
+     [out0.ctrx_d_mbr.mbr_id,'ctrx_d_mbr.mbr_id',1,0]
+     [out0.ctrx_d_mbr.mb_mid_init_nm,'ctrx_d_mbr.mb_mid_init_nm',1,0]
+     [out0.ctrx_d_mbr.mbr_typ,'ctrx_d_mbr.mbr_typ',1,0]
+     [out0.ctrx_d_mbr.mbr_orig_eff_dt,'ctrx_d_mbr.mbr_orig_eff_dt',3,2]
+     [out0.ctrx_d_mbr.mbr_dt_of_brth,'ctrx_d_mbr.mbr_dt_of_brth',3,2]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_d_mbr.mbr_mcre_covrg_from_dt,'ctrx_d_mbr.mbr_mcre_covrg_from_dt',3,2]
+     [out0.ctrx_d_mbr.mbr_city_nm,'ctrx_d_mbr.mbr_city_nm',1,0]
+     [out0.ctrx_d_mbr.mbr_fam_id,'ctrx_d_mbr.mbr_fam_id',1,0]
+     [out0.ctrx_d_mbr.mbr_addr1,'ctrx_d_mbr.mbr_addr1',1,0]
+     [out0.ctrx_d_mbr.mbr_alt_ins_mbr_id,'ctrx_d_mbr.mbr_alt_ins_mbr_id',1,0]
+     [out0.ctrx_d_mbr.mbr_id_encrpd,'ctrx_d_mbr.mbr_id_encrpd',1,0]
+     [out0.ctrx_d_mbr.mbr_fam_ind,'ctrx_d_mbr.mbr_fam_ind',1,0]
+     [out0.ctrx_d_mbr.mbr_zip4,'ctrx_d_mbr.mbr_zip4',1,0]
+     [out0.ctrx_d_mbr.mbr_dur_keyvar,'ctrx_d_mbr.mbr_dur_keyvar',1,0]
+     [out0.ctrx_d_mbr.mbr_rdr,'ctrx_d_mbr.mbr_rdr',1,0]
+     [out0.ctrx_d_mbr.mb_first_nm,'ctrx_d_mbr.mb_first_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_d_mbr.clt_id,'ctrx_d_mbr.clt_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_d_mcag.employer_group_id,'ctrx_d_mcag.employer_group_id',1,0]
+     [out0.ctrx_d_mbr.mbr_lang_cd,'ctrx_d_mbr.mbr_lang_cd',1,0]
+     [out0.ctrx_d_mbr.mbr_hic_cd,'ctrx_d_mbr.mbr_hic_cd',1,0]
+     [out0.ctrx_d_mcag.account_id,'ctrx_d_mcag.account_id',1,0]
+     [out0.ctrx_d_mbr.mbr_mltpl_brth_cd,'ctrx_d_mbr.mbr_mltpl_brth_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.ababnb,'ababnb',1,1]
+     [in0.abhlt1,'abhlt1',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.abodst,'abodst',1,1]
+     [in0.aboest,'aboest',1,1]
+     [in0.abaccd,'abaccd',3,3]
+     [in0.abaxtx,'abaxtx',1,1]
+     [in0.abadcd,'abadcd',3,3]
+     [in0.aba1tx,'aba1tx',1,1]
+     [in0.abdmn1,'abdmn1',1,1]
+     [in0.abaztx,'abaztx',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.abaast,'abaast',1,1]
+     [in0.abqdcd,'abqdcd',1,1]
+     [in0.abqccd,'abqccd',1,1]
+     [in0.abofst,'abofst',1,1]
+     [in0.abb7s2,'abb7s2',1,1]
+     [in0.abe1hj,'abe1hj',1,1]
+     [in0.abaqtx,'abaqtx',1,1]
+     [in0.ablqio,'ablqio',1,1]
+     [in0.abqgcd,'abqgcd',1,1]
+     [in0.aba0nb,'aba0nb',3,1]
+     [in0.abaacd,'abaacd',3,3]
+     [in0.abd2dt,'abd2dt',5,3]
+     [in0.abajdt,'abajdt',5,3]
+     [in0.abastx,'abastx',1,1]
+     [in0.abc4s2,'abc4s2',1,1]
+     [in0.abaist,'abaist',1,1]
+     [in0.abpzc2,'abpzc2',1,1]
+     [in0.abogst,'abogst',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.ababcd,'ababcd',6,3]
+     [in0.abb5s2,'abb5s2',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',2,2]
+     [in0.abhkt1,'abhkt1',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.abgddt,'abgddt',5,3]
+     [in0.aba0tx,'aba0tx',1,1]
+     [in0.aba2tx,'aba2tx',1,1]
+     [in0.abaytx,'abaytx',1,1]
+     [in0.abqbcd,'abqbcd',1,1]
+     [in0.abancd,'abancd',1,1]
+     [in0.abasdt,'abasdt',5,3]
+     [in0.abartx,'abartx',1,1]
+     ['lookup("member_eligibility_lkp").flplc2','flplc2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_1 not NULL = 0;
+let int bzt_2 not NULL = 0;
+let int bzt_3 not NULL = 0;
+let int bzt_4 not NULL = 0;
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) ctrx_d_mbr_mbr_sk = -1;
+let decimal("\x01",0) ctrx_d_mbr_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_mbr_carrier_id = fail_if_error(in0.abaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_mbr_account_id = fail_if_error(in0.abaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_mbr_employer_group_id = fail_if_error(in0.abadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_mbr_mbr_id = fail_if_error(in0.ababcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_mbr_clt_id = '-';
+let decimal("\x01",0) ctrx_d_mbr_mast_prsn_id = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_mbr_mbr_fam_id = fail_if_error(in0.abqbcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_alt_ins_ind = fail_if_error(in0.abofst);
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_mbr_mbr_alt_ins_id = fail_if_error(in0.abqccd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_mbr_mbr_alt_ins_mbr_id = fail_if_error(in0.abancd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_mbr_mbr_ssn_nbr = fail_if_error((if ((is_null(in0.aba0nb) || is_blank(in0.aba0nb)))
+   '-'
+ else
+   string_lpad(in0.aba0nb,9,'0')));
+let date("YYYYMMDD")("\x01") ctrx_d_mbr_mbr_dt_of_brth;
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_mbr_mbr_hic_cd = fail_if_error(in0.abaxtx);
+let string("\x01",charset="iso-8859-15", maximum_length=25) ctrx_d_mbr_mb_first_nm = fail_if_error(in0.abartx);
+let string("\x01",charset="iso-8859-15", maximum_length=35) ctrx_d_mbr_mb_last_nm = fail_if_error(in0.abaqtx);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mb_mid_init_nm = fail_if_error(in0.abastx);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_mbr_mbr_prsn_cd = fail_if_error(in0.abqdcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_relshp_cd = fail_if_error(in0.abogst);
+let string("\x01",charset="iso-8859-15", maximum_length=6) ctrx_d_mbr_mbr_rdr;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_sex = fail_if_error(in0.abaast);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_mbr_mbr_city_nm = fail_if_error(in0.abaytx);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_mbr_mbr_st_cd = fail_if_error(in0.abaztx);
+let string("\x01",charset="iso-8859-15", maximum_length=15) ctrx_d_mbr_mbr_zip = fail_if_error(in0.aba0tx);
+let date("YYYYMMDD")("\x01") ctrx_d_mbr_mbr_mcre_covrg_from_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=60) ctrx_d_mbr_mbr_addr1 = fail_if_error(in0.aba1tx);
+let string("\x01",charset="iso-8859-15", maximum_length=60) ctrx_d_mbr_mbr_addr2 = fail_if_error(in0.aba2tx);
+let string("\x01",charset="iso-8859-15", maximum_length=60) ctrx_d_mbr_mbr_addr3 = fail_if_error(in0.ablqio);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_mbr_mbr_zip2 = fail_if_error(in0.abhkt1);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_mbr_mbr_zip4 = fail_if_error(in0.abhlt1);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_mbr_mbr_cntry = fail_if_error(in0.abpzc2);
+let string("\x01",charset="iso-8859-15", maximum_length=15) ctrx_d_mbr_mbr_phone = fail_if_error(in0.ababnb);
+let string("\x01",charset="iso-8859-15", maximum_length=80) ctrx_d_mbr_mbr_eml_addr = fail_if_error(in0.abe1hj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_mcre_covrg_typ = fail_if_error(in0.abaist);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_fam_typ_cd = fail_if_error(in0.abodst);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_fam_ind = fail_if_error(in0.aboest);
+let string("\x01",charset="iso-8859-15", maximum_length=18) ctrx_d_mbr_mbr_dur_keyvar = fail_if_error(in0.abqgcd);
+let date("YYYYMMDD")("\x01") ctrx_d_mbr_mbr_ben_reset_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_mbr_mbr_lang_cd = fail_if_error(in0.abb5s2);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_dur_prcs_flag = fail_if_error(in0.abb7s2);
+let decimal("\x01",0) ctrx_d_mbr_mbr_mltpl_brth_cd = fail_if_error(in0.abdmn1);
+let date("YYYYMMDD")("\x01") ctrx_d_mbr_mbr_orig_eff_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_mbr_mbr_typ = fail_if_error(in0.abc4s2);
+let string("\x01",charset="iso-8859-15", maximum_length=65) ctrx_d_mbr_mbr_id_encrpd;
+let decimal("\x01",0) ctrx_d_mbr_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_mcag_carrier_id = fail_if_error(in0.abaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_mcag_account_id = fail_if_error(in0.abaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_mcag_employer_group_id = fail_if_error(in0.abadcd);
+
+
+
+/*   Rule:Compute ctrx_d_mbr.mbr_dt_of_brth  (#1)   */
+if(first_defined(fail_if_error(((length_of(in0.abajdt)) ==8) && ((is_valid(YYYYMMDD(in0.abajdt))) ==1)),0))begin
+  bzt_1=1;
+  ctrx_d_mbr_mbr_dt_of_brth=YYYYMMDD(in0.abajdt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.abajdt) member [vector 6,7])) && ((is_valid(YYYYMMDD(1900000+in0.abajdt))) ==1)),0))begin
+  bzt_1=1;
+  ctrx_d_mbr_mbr_dt_of_brth=YYYYMMDD(19000000+in0.abajdt);
+end
+
+/*   Default value   */
+if(!bzt_1)begin
+  ctrx_d_mbr_mbr_dt_of_brth=fail_if_error(YYYYMMDD(19000101));
+end
+
+/*   Rule:Compute ctrx_d_mbr.mbr_ben_reset_dt  (#2)   */
+if(first_defined(fail_if_error(((length_of(in0.abd2dt) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+ in0.abd2dt))) ==1)),0))begin
+  bzt_2=1;
+  ctrx_d_mbr_mbr_ben_reset_dt=YYYYMMDD(19000000+ in0.abd2dt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.abd2dt)) ==8) && ((is_valid(YYYYMMDD(in0.abd2dt))) ==1)),0))begin
+  bzt_2=1;
+  ctrx_d_mbr_mbr_ben_reset_dt=YYYYMMDD( in0.abd2dt);
+end
+
+/*   Default value   */
+if(!bzt_2)begin
+  ctrx_d_mbr_mbr_ben_reset_dt=fail_if_error(YYYYMMDD('19000101'));
+end
+
+/*   Rule:Compute ctrx_d_mbr.mbr_mcre_covrg_from_dt  (#3)   */
+if(first_defined(fail_if_error(((length_of(in0.abasdt) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000+in0.abasdt))) ==1)),0))begin
+  bzt_3=1;
+  ctrx_d_mbr_mbr_mcre_covrg_from_dt=YYYYMMDD(19000000+ in0.abasdt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.abasdt)) ==8) && ((is_valid(YYYYMMDD(in0.abasdt))) ==1)),0))begin
+  bzt_3=1;
+  ctrx_d_mbr_mbr_mcre_covrg_from_dt=YYYYMMDD( in0.abasdt);
+end
+
+/*   Default value   */
+if(!bzt_3)begin
+  ctrx_d_mbr_mbr_mcre_covrg_from_dt=fail_if_error(low_date());
+end
+
+/*   Rule:Compute ctrx_d_mbr.mbr_orig_eff_dt  (#4)   */
+if(first_defined(fail_if_error(((length_of(in0.abgddt)) ==8) && ((is_valid(YYYYMMDD(in0.abgddt))) ==1)),0))begin
+  bzt_4=1;
+  ctrx_d_mbr_mbr_orig_eff_dt=YYYYMMDD(in0.abgddt);
+end
+else if(first_defined(fail_if_error(((length_of(in0.abgddt) member [vector 6,7])) && ((is_valid(YYYYMMDD(19000000 + in0.abgddt))) ==1)),0))begin
+  bzt_4=1;
+  ctrx_d_mbr_mbr_orig_eff_dt=YYYYMMDD(19000000 + in0.abgddt);
+end
+
+/*   Default value   */
+if(!bzt_4)begin
+  ctrx_d_mbr_mbr_orig_eff_dt=fail_if_error(low_date());
+end
+
+/*   Default value   */
+ctrx_d_mbr_mbr_id_encrpd=fail_if_error((if (sql_or(!is_blank(in0.ababcd),!is_null(in0.ababcd)))
+   encrypt_idwdata(in0.ababcd)
+ else
+   in0.ababcd));
+
+/*   Default value   */
+ctrx_d_mbr_mbr_rdr=fail_if_error(bzt_5_97d014ac_575a6982_4013_0(in0.abaacd,in0.abaccd,in0.abadcd,in0.ababcd,in0.rxt_src_envrt_id).flplc2);
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.ctrx_d_mbr.mbr_sk::ctrx_d_mbr_mbr_sk;
+  out0.ctrx_d_mbr.cag_sk::ctrx_d_mbr_cag_sk;
+  out0.ctrx_d_mbr.carrier_id::ctrx_d_mbr_carrier_id;
+  out0.ctrx_d_mbr.account_id::ctrx_d_mbr_account_id;
+  out0.ctrx_d_mbr.employer_group_id::ctrx_d_mbr_employer_group_id;
+  out0.ctrx_d_mbr.mbr_id::ctrx_d_mbr_mbr_id;
+  out0.ctrx_d_mbr.clt_id::ctrx_d_mbr_clt_id;
+  out0.ctrx_d_mbr.mast_prsn_id::ctrx_d_mbr_mast_prsn_id;
+  out0.ctrx_d_mbr.mbr_fam_id::ctrx_d_mbr_mbr_fam_id;
+  out0.ctrx_d_mbr.mbr_alt_ins_ind::ctrx_d_mbr_mbr_alt_ins_ind;
+  out0.ctrx_d_mbr.mbr_alt_ins_id::ctrx_d_mbr_mbr_alt_ins_id;
+  out0.ctrx_d_mbr.mbr_alt_ins_mbr_id::ctrx_d_mbr_mbr_alt_ins_mbr_id;
+  out0.ctrx_d_mbr.mbr_ssn_nbr::ctrx_d_mbr_mbr_ssn_nbr;
+  out0.ctrx_d_mbr.mbr_dt_of_brth::ctrx_d_mbr_mbr_dt_of_brth;
+  out0.ctrx_d_mbr.mbr_hic_cd::ctrx_d_mbr_mbr_hic_cd;
+  out0.ctrx_d_mbr.mb_first_nm::ctrx_d_mbr_mb_first_nm;
+  out0.ctrx_d_mbr.mb_last_nm::ctrx_d_mbr_mb_last_nm;
+  out0.ctrx_d_mbr.mb_mid_init_nm::ctrx_d_mbr_mb_mid_init_nm;
+  out0.ctrx_d_mbr.mbr_prsn_cd::ctrx_d_mbr_mbr_prsn_cd;
+  out0.ctrx_d_mbr.mbr_relshp_cd::ctrx_d_mbr_mbr_relshp_cd;
+  out0.ctrx_d_mbr.mbr_rdr::ctrx_d_mbr_mbr_rdr;
+  out0.ctrx_d_mbr.mbr_sex::ctrx_d_mbr_mbr_sex;
+  out0.ctrx_d_mbr.mbr_city_nm::ctrx_d_mbr_mbr_city_nm;
+  out0.ctrx_d_mbr.mbr_st_cd::ctrx_d_mbr_mbr_st_cd;
+  out0.ctrx_d_mbr.mbr_zip::ctrx_d_mbr_mbr_zip;
+  out0.ctrx_d_mbr.mbr_mcre_covrg_from_dt::ctrx_d_mbr_mbr_mcre_covrg_from_dt;
+  out0.ctrx_d_mbr.mbr_addr1::ctrx_d_mbr_mbr_addr1;
+  out0.ctrx_d_mbr.mbr_addr2::ctrx_d_mbr_mbr_addr2;
+  out0.ctrx_d_mbr.mbr_addr3::ctrx_d_mbr_mbr_addr3;
+  out0.ctrx_d_mbr.mbr_zip2::ctrx_d_mbr_mbr_zip2;
+  out0.ctrx_d_mbr.mbr_zip4::ctrx_d_mbr_mbr_zip4;
+  out0.ctrx_d_mbr.mbr_cntry::ctrx_d_mbr_mbr_cntry;
+  out0.ctrx_d_mbr.mbr_phone::ctrx_d_mbr_mbr_phone;
+  out0.ctrx_d_mbr.mbr_eml_addr::ctrx_d_mbr_mbr_eml_addr;
+  out0.ctrx_d_mbr.mbr_mcre_covrg_typ::ctrx_d_mbr_mbr_mcre_covrg_typ;
+  out0.ctrx_d_mbr.mbr_fam_typ_cd::ctrx_d_mbr_mbr_fam_typ_cd;
+  out0.ctrx_d_mbr.mbr_fam_ind::ctrx_d_mbr_mbr_fam_ind;
+  out0.ctrx_d_mbr.mbr_dur_keyvar::ctrx_d_mbr_mbr_dur_keyvar;
+  out0.ctrx_d_mbr.mbr_ben_reset_dt::ctrx_d_mbr_mbr_ben_reset_dt;
+  out0.ctrx_d_mbr.mbr_lang_cd::ctrx_d_mbr_mbr_lang_cd;
+  out0.ctrx_d_mbr.mbr_dur_prcs_flag::ctrx_d_mbr_mbr_dur_prcs_flag;
+  out0.ctrx_d_mbr.mbr_mltpl_brth_cd::ctrx_d_mbr_mbr_mltpl_brth_cd;
+  out0.ctrx_d_mbr.mbr_orig_eff_dt::ctrx_d_mbr_mbr_orig_eff_dt;
+  out0.ctrx_d_mbr.mbr_typ::ctrx_d_mbr_mbr_typ;
+  out0.ctrx_d_mbr.mbr_id_encrpd::ctrx_d_mbr_mbr_id_encrpd;
+  out0.ctrx_d_mbr.src_env_sk::ctrx_d_mbr_src_env_sk;
+  out0.ctrx_d_mcag.carrier_id::ctrx_d_mcag_carrier_id;
+  out0.ctrx_d_mcag.account_id::ctrx_d_mcag_account_id;
+  out0.ctrx_d_mcag.employer_group_id::ctrx_d_mcag_employer_group_id;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,21 @@
+!prototype|P|||${AI_PSET}/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_orx.rcex1p
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+TARGET_NAME||||rxclaim_orx.rctc6p_lkp
+DRIVER_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_14 = $DRIVER_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_14 = $DRIVER_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.hmp2nb,[passthrough],in0.rxclaimnbr]\n  [out0.hmoinb,[passthrough],in0.clmseqnbr]\n  [out0.src_env_sk,[passthrough],in0.dxf_src_sys_id]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.clmseqnbr,'clmseqnbr',1,0]\n     [out0.filename,'filename',1,0]\n     [out0.hmp2nb,'hmp2nb',1,0]\n     [out0.rxclaimnbr,'rxclaimnbr',1,0]\n     [out0.hmoinb,'hmoinb',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]\n  ]\n  impacts:\n  [\n     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]\n     [in0.rxclaimnbr,'rxclaimnbr',2,2]\n     [in0.clmseqnbr,'clmseqnbr',2,2]\n     [in0.filename,'filename',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet decimal("\\x01", maximum_length=17) hmp2nb = fail_if_error(in0.rxclaimnbr);\nlet decimal("\\x01", maximum_length=5) hmoinb = fail_if_error(in0.clmseqnbr);\nlet decimal("\\x01",0) src_env_sk = fail_if_error(in0.dxf_src_sys_id);\n\n\n\n  out0.hmp2nb::hmp2nb;\n  out0.hmoinb::hmoinb;\n  out0.src_env_sk::src_env_sk;\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_1_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_12 = $NON_DRIVER_1_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_12 = $NON_DRIVER_1_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.hmp2nb,'hmp2nb',1,0]\n     [out0.ids_updt_dttm,'ids_updt_dttm',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.hmoinb,'hmoinb',1,0]\n     [out0.hmqyhd,'hmqyhd',1,0]\n     [out0.filename,'filename',1,0]\n  ]\n  impacts:\n  [\n     [in0.ids_updt_dttm,'ids_updt_dttm',1,1]\n     [in0.hmp2nb,'hmp2nb',1,1]\n     [in0.src_env_sk,'src_env_sk',1,1]\n     [in0.filename,'filename',1,1]\n     [in0.hmoinb,'hmoinb',1,1]\n     [in0.hmqyhd,'hmqyhd',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_2_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_15 = $NON_DRIVER_2_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_15 = $NON_DRIVER_2_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n  ]\n  impacts:\n  [\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+NON_DRIVER_3_XFR||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\nlet decimal('') bzt_0_6c54cc0a_58f616ef_2eeb_13 = $NON_DRIVER_3_START_DATE;\nlet decimal('') bzt_1_6c54cc0a_58f616ef_2eeb_13 = $NON_DRIVER_3_END_DATE;\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n  ]\n  impacts:\n  [\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+OVERRIDE_JOIN_KEY||||{hmp2nb; hmoinb; src_env_sk}
+OVERRIDE_JOIN_LEVEL_2_KEY||||{}
+OVERRIDE_JOIN_LEVEL_3_KEY||||{}
+LOOKUP_FIELDS_KEY||||{hmp2nb;hmoinb;src_env_sk;hmqyhd}
+DRIVER_FILE_TYPE||||Clean
+DRIVER_OUTPUT_FIELDS||||rxclaimnbr,clmseqnbr,dxf_src_sys_id
+NON_DRIVER_1_SOURCE_NAME||||ids_rxclaim.rctc6p
+NON_DRIVER_1_OUTPUT_FIELDS||||hmp2nb,hmoinb,src_env_sk,hmqyhd
+DO_LOOKUP||||1
+JOIN_KEY||||{hmp2nb; hmoinb; src_env_sk}
+ADDITIONAL_FIELDS_DML||||record\n  decimal("\\x01", maximum_length=17) hmp2nb = NULL("");\n  decimal("\\x01", maximum_length=5) hmoinb = NULL("");\nend
+LOOKUP_KEY||||{hmp2nb; hmoinb; src_env_sk}
+JOIN_TYPE||||Inner Join

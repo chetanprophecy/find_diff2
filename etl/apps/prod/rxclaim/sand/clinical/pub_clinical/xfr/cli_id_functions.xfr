@@ -1,0 +1,79 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/cli_id_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/17  Paul Thompson           Initial version
+ *  2016/11/04  Paul Thompson           Removed a zero from the calculations
+ *  2016/11/10  Paul Thompson           Added get_pharma_claim_id()
+ *  2016/11/11  Paul Thompson           Fixed get_pharma_claim_id() to only be made up of claim_nbr and legacy_src_env_id
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+
+// Sequence Globals
+
+let cli_integer_id_t  g_intvn_idntfn_id_seq   = 0;
+let cli_integer_id_t  g_intvn_evdnce_id_seq   = 0;
+let cli_integer_id_t  g_disease_idntfn_id_seq = 0;
+
+/*******************************************/
+/* Derive a CLI Claim ID - Pharmacy Claims */
+/*******************************************/
+
+//cli_claim_id_t out :: get_pharma_claim_id(claim_nbr, claim_seq_nbr, legacy_src_env_id, claim_stat_id ) inline =
+cli_claim_id_t out :: get_pharma_claim_id(claim_nbr, legacy_src_env_id) inline =
+begin
+  let cli_claim_id_t id = 0;
+  
+//id = id + ( claim_nbr                        * 10 * 1000 * 1000 );
+//id = id + ( claim_seq_nbr                    *        10 * 1000 );
+//id = id + ( decimal_strip(legacy_src_env_id) *               10 );
+//id = id + ( (claim_stat_id == 'P')           *                1 );
+  
+  id = id + ( claim_nbr                        * 1000 );
+  id = id + ( decimal_strip(legacy_src_env_id) *    1 );
+  
+  out :: id;
+end;
+
+/***********************************************/
+/* Get the next Intervention Identification ID */
+/***********************************************/
+
+cli_integer_id_t out :: get_next_intvn_idntfn_id(cli_integer_id_t job_id) inline =
+begin
+  g_intvn_idntfn_id_seq = g_intvn_idntfn_id_seq + 1;
+  
+  out :: ( 100 * 1000 * 1000 * job_id )
+       + (       1000 * 1000 * (this_partition() == -1 ? 0 : this_partition() + 1) )
+       +   g_intvn_idntfn_id_seq;
+end;
+
+/*****************************************/
+/* Get the next Intervention Evidence ID */
+/*****************************************/
+
+cli_integer_id_t out :: get_next_intvn_evdnce_id(cli_integer_id_t job_id) inline =
+begin
+  g_intvn_evdnce_id_seq = g_intvn_evdnce_id_seq + 1;
+  
+  out :: ( 100 * 1000 * 1000 * job_id )
+       + (       1000 * 1000 * (this_partition() == -1 ? 0 : this_partition() + 1) )
+       +   g_intvn_evdnce_id_seq;
+end;
+
+/******************************************/
+/* Get the next Disease Identification ID */
+/******************************************/
+
+cli_integer_id_t out :: get_next_disease_idntfn_id(cli_integer_id_t job_id) inline =
+begin
+  g_disease_idntfn_id_seq = g_disease_idntfn_id_seq + 1;
+  
+  out :: ( 100 * 1000 * 1000 * job_id )
+       + (       1000 * 1000 * (this_partition() == -1 ? 0 : this_partition() + 1) )
+       +   g_disease_idntfn_id_seq;
+end;

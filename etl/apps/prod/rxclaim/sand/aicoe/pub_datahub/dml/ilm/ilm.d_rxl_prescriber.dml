@@ -1,0 +1,41 @@
+type logical_pcms_d_rxl_prescriber_t =
+record
+  decimal("\x01",0) pbr_id;
+  string("\x01",charset="iso-8859-15", maximum_length=100) pbr_uuid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) pbr_optum_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) npi = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) presbr_lst_nm;
+  string("\x01",charset="iso-8859-15", maximum_length=35) presbr_fst_nm;
+  string("\x01",charset="iso-8859-15", maximum_length=40) adr_ln_1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) cty = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) st = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) zip_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cntry_cd;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pri_tel_nbr;
+  string("\x01",charset="iso-8859-15", maximum_length=10) fax_nbr;
+  string("\x01",charset="iso-8859-15", maximum_length=100) rxl_create_uid;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rxl_create_dttm;
+  string("\x01",charset="iso-8859-15", maximum_length=100) rxl_update_uid;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") rxl_update_dttm;
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) insert_uid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) update_uid = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") insert_ts = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") update_ts = NULL("");
+  decimal("\x01",0) run_id = NULL("");
+  decimal("\x01",0) rec_stat_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) email = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) email_rgst = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) email_snd_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) aprv_ind = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_pcms_d_rxl_prescriber_t d_rxl_presc  /*@ BizName:'d rxl presc' */;
+end;

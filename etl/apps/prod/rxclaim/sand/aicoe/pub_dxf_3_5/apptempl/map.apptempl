@@ -1,0 +1,1354 @@
+<AppConfTempl name="Map Source to ILM (Integration)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "/~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name, AI_DML) =
+begin
+  let dot_vec = string_split(appconf_name, ".");
+  let source_system = first_without_error(dot_vec[1], "");
+  let source_entity = first_without_error(dot_vec[2], "");
+  let ilm_name = first_without_error(dot_vec[3], "");
+  let variation = first_without_error(dot_vec[4], "");
+  let source_name = source_system + "." + source_entity;
+  let source_dml_found = file_information(AI_DML + "/clean." + source_system + "/clean." + source_name + ".dml").found;
+  let ilm_dml_found = file_information(AI_DML + "/ilm/ilm." + ilm_name + ".dml").found;
+
+  set_metadata_value("proj.map_graph.SOURCE_NAME", source_name);
+  set_metadata_value("proj.map_graph.ILM_NAME",    ilm_name);
+  set_metadata_value("proj.map_graph.VARIATION",   variation);
+  set_metadata_value("proj.active_spec.SOURCE_NAME", source_name);
+  set_metadata_value("proj.active_spec.ILM_NAME",    ilm_name);
+  //set_metadata_value("proj.active_spec.VARIATION",   variation);
+
+  out :1: if ( not starts_with(appconf_name, "map.") )
+    "This application configuration must be named: map.
+    <i>something</i>
+    .\n" +
+    "Please close and rename it.";
+  out :2: if ( (length_of(dot_vec) not member [vector 4, 5]) )
+    "This application configuration must be named:\n" +
+    "map.
+    <i>source_name</i>
+    .
+    <i>ilm_name</i>
+    or\n" +
+    "map.
+    <i>source_name</i>
+    .
+    <i>ilm_name</i>
+    .
+    <i>variation</i>
+    ,\n" +
+    "where
+    <i>source_name</i>
+    is a clean file with one period (.) in the name;\n" +
+    "
+    <i>target_name</i>
+    is an ILM and must not contain a period (.),\n" +
+    "and
+    <i>variation</i>
+    (if used) must not contain a period (.).\n" +
+    "The
+    <i>variation</i>
+    should only be used if there are multiple\n" +
+    "mappings targeting the same result.\n" +
+    "Please close and rename this configuration.";
+  out :3: if ( not source_dml_found )
+    "Cannot find a source file named: " + source_name + "\n" +
+    "Please either set up the source first, or, if its name was misspelled,\n" +
+    "please close and rename this configuration.";
+  out :4: if ( not ilm_dml_found )
+    "Cannot find a ILM file named: " + ilm_name + "\n" +
+    "Please either set up the ILM first, or, if its name was misspelled,\n" +
+    "please close and rename this configuration.";
+  out :: "";
+end;
+
+out :: built_list_of_rpaths(proj_list) =
+begin
+
+let string("")[] v_list_of_browsable_rpaths = string_split(proj_list,"\r\n");
+let string("") v_each_proj_path="";
+let string("")[] v_final_rpaths=allocate_with_defaults();
+
+  for(let int i,i< length_of(v_list_of_browsable_rpaths))
+  begin
+          v_each_proj_path=string_concat(v_list_of_browsable_rpaths[i],"/data/serial/lookup/");
+          v_final_rpaths=vector_append(v_final_rpaths, v_each_proj_path);
+  end
+
+out :: v_final_rpaths;
+end;]]></TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <ListVariable name="lookups" type="compound">
+        <Variable name="eme_obj" type="emeObject"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="key" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="sample_data_path" type="string"/>
+      </ListVariable>
+      <Variable name="lookup_problem" type="string"/>
+      <Variable name="mapping_ruleset" type="ruleset"/>
+      <Variable name="active_spec_file" type="string"/>
+      <ListVariable name="void_fields_list" type="string"/>
+      <ListVariable name="reduced_lookups" type="compound">
+        <Variable name="orig_lookup_name" type="string"/>
+        <Variable name="use_reduced" type="boolean"/>
+        <Variable name="lookup_name" type="string"/>
+        <Variable name="orig_record_format" type="string"/>
+        <Variable name="retain_fields" type="string"/>
+        <Variable name="record_format" type="string"/>
+        <Variable name="natural_key" type="string"/>
+        <Variable name="sort_key" type="string"/>
+        <Variable name="dedup_key" type="string"/>
+        <Variable name="ruleset" type="ruleset"/>
+        <Variable name="get_all_recs" type="boolean"/>
+        <Variable name="filter_expr" type="string"/>
+      </ListVariable>
+      <ListVariable name="reduced_lkp_nk_dmls_from_graph" type="string"/>
+      <Variable name="lookup_warning" type="string"/>
+      <ListVariable name="ids_list_extended" type="string"/>
+    </Variables>
+    <Eme name="eme"/>
+    <Project name="proj">
+      <Pset name="map_graph" prototype_path="$AI_PSET/map.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+        <PdlExpression name="project_rpath" expression="$AI_RPATH/$AI_REL_LOC"/>
+        <PdlExpression name="proj_name" expression="$[ re_replace(AI_REL_LOC, '^.*/', '') ]"/>
+        <ComponentData name="filtered" component="/Optional_Filter/For_BRE"/>
+        <PdlExpression name="PUB_DATAHUB_DML" expression="$PUB_DATAHUB_DML"/>
+      </Pset>
+      <Pset name="active_spec" prototype_path="$AI_PSET/active_spec.pset">
+        <ComponentData name="xls" component="XLS_File"/>
+      </Pset>
+    </Project>
+    <SharedFile name="catalog" display_name="Lookups and Their Keys" path="" is_appconf_owned="true"/>
+    <SharedFile name="bre_xfr" path="" is_appconf_owned="true"/>
+    <SharedFile name="ilm_dml" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_0" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_1" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_2" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_3" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_4" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_5" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_6" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_7" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_8" path="" is_appconf_owned="true"/>
+    <SharedFile name="reduced_lookup_9" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <!-- Check for Application Configuration Errors and Prevent Changes if There Are Any -->
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in, proj.map_graph.AI_DML)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <!-- Establish the PSet & Catalog Naming Conventions -->
+    <Assignment>
+      <SourceValue is_expression="true">"pset/" + re_get_match(built_in, "^map[.][^.]+") + "/" +  built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.map_graph" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_CAT/" + re_get_match(built_in, "^map[.][^.]+") + "/" +  built_in + ".cat"</SourceValue>
+      <TargetValue reference="proj.map_graph.AB_CATALOG"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/active_spec." + re_get_match(built_in, "^map[.][^.]+") + "/active_spec." +  built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.active_spec" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph.AB_CATALOG"/>
+      <TargetValue reference="catalog" property="path"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <!-- Check for Lookup Errors and Prevent Changes if There Are Any -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[begin
+        let long[int] is_valid_vec = vars.lookups.eme_obj.is_valid;
+        let string(int)[int] dml_vec = vars.lookups.eme_obj.parameterized_record_format_rpath;
+		let string(int)[int] eme_lookup_name_vec = vars.lookups.eme_obj.name;
+        let string(int)[int] name_vec =  vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int) lookup_problem = "";
+        for ( let long i, i < length_of(is_valid_vec) and lookup_problem == "" ) begin
+          if ( not is_valid_vec[i] )
+            lookup_problem = printf("Lookup #%d: Please select a valid dataset", i+1);
+		  else if ( not starts_with(eme_lookup_name_vec[i],"lookup.") and lookup_problem == "")
+            lookup_problem = printf("Lookup #%d: Please select lookup starting with lookup.", i+1);
+		  else if ( not ends_with(eme_lookup_name_vec[i],".dat") and lookup_problem == "")
+            lookup_problem = printf("Lookup #%d: Please select lookup ending with .dat", i+1);						
+          else if ( not ends_with(dml_vec[i], ".dml") and lookup_problem == "" )
+            lookup_problem = printf("Lookup #%d: Invalid DML: %s.  Please select a valid dataset.", i+1, dml_vec[i]);
+          else if ( is_blank(name_vec[i]) and lookup_problem == "" )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup name.", i+1);
+          else if ( is_blank(key_vec[i]) and lookup_problem == "" )
+            lookup_problem = printf("Lookup #%d: Please provide a lookup key.", i+1);
+        end
+        result :: lookup_problem;
+end]]></SourceValue>
+      <TargetValue reference="vars.lookup_problem"/>
+    </Assignment>
+    <!-- Lookups (Only Updated When Lookups Are Consistent) -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[begin
+        // Build the mapping's lookup catalog, but only if we all the lookups keyed.
+        let string(int)[int] name_vec = vars.lookups.lookup_name;
+        let string(int)[int] key_vec = vars.lookups.key;
+        let string(int)[int] file_vec = vars.lookups.eme_obj.parameterized_rpath;
+        let string(int)[int] dml_vec = vars.lookups.eme_obj.parameterized_record_format_rpath;
+        result :: string_join(
+          for ( let long i, i < length_of(name_vec) ) :
+            printf("%s,%s,/~%s,/~%s\n", name_vec[i],
+              key_vec[i],
+              re_replace(file_vec[i], "[{}]", ""), // Remove curly braces from parameters.
+              re_replace( dml_vec[i], "[{}]", "")),
+          "");
+      end]]></SourceValue>
+      <TargetValue reference="catalog" property="contents"/>
+      <Condition is_expression="true">vars.lookup_problem == "" and catalog.path != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="contents"/>
+      <TargetValue reference="proj.map_graph.ACE_CATALOG_CONTENTS" property="dollar_expression"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[begin
+        // Take advantage of resolved_value to expand parameters in the catalog, such as the path of the file.
+        let string(int) cat = proj.map_graph.ACE_CATALOG_CONTENTS.resolved_value;
+        let cat_vec = string_split_no_empty(cat, "\n");
+        result :: for ( let c in cat_vec ) :
+          string_replace_first(string_split(c, ",")[2], // The data directory is the 3rd field in the catalog.
+            "/~", "");  // Strip off the /~ we added when writing the catalog.
+      end]]></SourceValue>
+      <TargetValue reference="vars.lookups.sample_data_path" resizes_list="false"/>
+      <Condition is_expression="true">vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.lookups.eme_obj" property="record_format"/>
+      <TargetValue reference="vars.lookups.record_format" resizes_list="false"/>
+    </Assignment>
+    <!-- Mapping Ruleset -->
+    <Assignment>
+      <SourceValue reference="proj.map_graph.project_rpath"/>
+      <TargetValue reference="vars.mapping_ruleset" property="project_rpath"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph"/>
+      <TargetValue reference="vars.mapping_ruleset" property="context_pset"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="included_packages"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"vars.lookups"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="lookup_metadata_reference"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split_no_empty("proj.map_graph.RUN_ID", ",")</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="parameter_metadata_references"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"Map " + proj.map_graph.SOURCE_NAME + " to the " + proj.map_graph.ILM_NAME + " ILM" + (if ( proj.map_graph.VARIATION == "" ) "" else ", Variation: " + proj.map_graph.VARIATION)</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="ruleset_name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph.CLEAN_DML"/>
+      <TargetValue reference="vars.mapping_ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph.ILM_DML"/>
+      <TargetValue reference="vars.mapping_ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph.filtered"/>
+      <TargetValue reference="vars.mapping_ruleset" property="test_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"file:$AI_SERIAL_TEMP/baseline." + built_in + ".dat"</SourceValue>
+      <TargetValue reference="vars.mapping_ruleset" property="baseline_data_path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="path"/>
+      <TargetValue reference="vars.mapping_ruleset" property="package_catalog_path"/>
+      <Condition is_expression="true">catalog.path != ""</Condition>
+    </Assignment>
+    <!-- Active Spec PSet -->
+    <Assignment>
+      <SourceValue reference="built_in"/>
+      <TargetValue reference="proj.active_spec.REPORT_NAME" property="constant_expression"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_ruleset" property="ruleset_xml"/>
+      <TargetValue reference="proj.active_spec.RULESET_XML" property="constant_expression"/>
+      <Condition is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="catalog" property="contents"/>
+      <TargetValue reference="proj.active_spec.CATALOG_CONTENTS" property="dollar_expression"/>
+      <Condition is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^map", "active_spec") + ".xls"</SourceValue>
+      <TargetValue reference="vars.active_spec_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.map_graph.MAPPING_XFR_BRE"/>
+      <TargetValue reference="bre_xfr" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.mapping_ruleset"/>
+      <TargetValue reference="bre_xfr"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.ILM_DML_FILE_PUBLIC_PATH</SourceValue>
+      <TargetValue reference="ilm_dml" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">read_file(proj.map_graph.ILM_DML_FILE)</SourceValue>
+      <TargetValue reference="ilm_dml" property="contents"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(string_filter(proj.map_graph.AB_MAX_RECORD_BUFFER, "0123456789") != proj.map_graph.AB_MAX_RECORD_BUFFER or (decimal(""))proj.map_graph.AB_MAX_RECORD_BUFFER &lt; 5000000) "5000000" else proj.map_graph.AB_MAX_RECORD_BUFFER</SourceValue>
+      <TargetValue reference="proj.map_graph.AB_MAX_RECORD_BUFFER"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for ( let field in record_info(proj.map_graph.CLEAN_DML_ORIGINAL) ): if (starts_with(field.dml_type, "void(")) field.name;</SourceValue>
+      <TargetValue reference="vars.void_fields_list"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true" list_conversion_format="comma">proj.map_graph.ACE_IDS_LIST_FOR_REDUCED_LKP</SourceValue>
+      <TargetValue reference="vars.ids_list_extended"/>
+    </Assignment>
+    <Assignment name="Reduced lookup names">
+      <SourceValue is_expression="true">for(let entry in vars.reduced_lookups):
+  if(entry.use_reduced) entry.orig_lookup_name + ".reduced"
+  else entry.orig_lookup_name</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.lookup_name"/>
+    </Assignment>
+    <Assignment name="Reduced lookup dmls for selecting required fields">
+      <SourceValue is_expression="true">for(let lookup_name in vars.reduced_lookups.lookup_name):
+  expand_type(read_type(proj.map_graph.PUB_DATAHUB_DML + "/" +
+  string_split(lookup_name, ".")[0] + "/" +
+  lookup_name + ".dml"))</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.orig_record_format"/>
+    </Assignment>
+    <Assignment name="Reduced lookup dmls resulting from selected fields">
+      <SourceValue is_expression="true">for(let lkp in vars.reduced_lookups):
+  if(is_blank(lkp.retain_fields)) lkp.orig_record_format
+  else
+  begin
+    let dml_field_info_vec all_fields = record_info(lkp.orig_record_format);
+    let dml_field_info_vec retain_fields = [vector];
+    let retain_field_names = string_split_no_empty(lkp.retain_fields, ",");
+    if(length_of(retain_field_names) == length_of(all_fields)) // All fields are selected
+      retain_fields = all_fields;
+    else
+      for(let field in all_fields)
+        if(field.name member retain_field_names) retain_fields = vector_append(retain_fields, field);
+    result :: add_fields("record end", retain_fields);
+  end</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_join(vars.reduced_lookups.lookup_name,"|")</SourceValue>
+      <TargetValue reference="proj.map_graph.REDUCED_ICFF_IDS_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_join(vars.reduced_lookups.natural_key, "|")</SourceValue>
+      <TargetValue reference="proj.map_graph.IDS_LKP_ICFF_NK_KEY_EXPR_LIST"/>
+    </Assignment>
+    <Assignment name="NK DMLs are created in graph param. Pull those to template variable. Vector length in param may not match in some cases">
+      <SourceValue reference="proj.map_graph.NK_DML_VEC"/>
+      <TargetValue reference="vars.reduced_lkp_nk_dmls_from_graph"/>
+    </Assignment>
+    <Assignment name="Assign bre output dml from nk dmls pulled from graph">
+      <SourceValue is_expression="true">for(let i=0, i &lt; length_of(vars.reduced_lookups)):
+  vars.reduced_lkp_nk_dmls_from_graph[i]</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.ruleset" property="output_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let i=0, i&lt; length_of(vars.reduced_lookups)):
+  proj.map_graph.CLEAN_DML</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.ruleset" property="input_record_format"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">/* current version of graph expects all 10 entries to be present */
+string_join( vector_slice(vector_concat(vars.reduced_lookups.sort_key, make_constant_vector(10,"")), 0, 9), "|")</SourceValue>
+      <TargetValue reference="proj.map_graph.ADJUSTED_SORT_KEY_EXPR_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">/* current version of graph expects all 10 entries to be present */
+string_join( vector_slice(vector_concat(vars.reduced_lookups.dedup_key, make_constant_vector(10,"")), 0, 9), "|")</SourceValue>
+      <TargetValue reference="proj.map_graph.ADJUSTED_DEDUP_KEY_EXPR_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">/* current version of graph expects all 10 entries to be present */
+string_join( vector_slice(vector_concat(
+for(let entry in vars.reduced_lookups): if(entry.get_all_recs) "1" else "0"
+, make_constant_vector(10,"0")), 0, 9), "|")</SourceValue>
+      <TargetValue reference="proj.map_graph.GET_ALL_RECORD_FROM_IDS_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">/* current version of graph expects all 10 entries to be present */
+string_join( vector_slice(vector_concat(vars.reduced_lookups.ruleset.transform, make_constant_vector(10,"out :: reformat(in) = begin out.* :: in.*; end;") ), 0, 9), "\n\n|")</SourceValue>
+      <TargetValue reference="proj.map_graph.DRIVER_TO_LOOKUP_COL_XFR_LIST"/>
+    </Assignment>
+    <Assignment name="Populate fields to retain for each reduced lookup. Blank out the ones that select ALL fields">
+      <SourceValue is_expression="true">string_join(
+  for(let lkp in vars.reduced_lookups):
+    if(length_of(string_split_no_empty(lkp.retain_fields, ",")) == length_of(record_info(lkp.orig_record_format))) "" else lkp.retain_fields,
+  "|"
+)</SourceValue>
+      <TargetValue reference="proj.map_graph.REDUCED_LOOKUP_RETAIN_FIELDS_LIST"/>
+    </Assignment>
+    <Assignment name="Filter expression for serial lookup which gets created from reduced file">
+      <SourceValue is_expression="true">string_join( vector_slice(vector_concat(vars.reduced_lookups.filter_expr, make_constant_vector(10,"")), 0, 9), "@#%")</SourceValue>
+      <TargetValue reference="proj.map_graph.REDUCED_LOOKUP_FILTER_EXPR_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_0</SourceValue>
+      <TargetValue reference="reduced_lookup_0" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_1</SourceValue>
+      <TargetValue reference="reduced_lookup_1" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_2</SourceValue>
+      <TargetValue reference="reduced_lookup_2" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_3</SourceValue>
+      <TargetValue reference="reduced_lookup_3" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_4</SourceValue>
+      <TargetValue reference="reduced_lookup_4" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_5</SourceValue>
+      <TargetValue reference="reduced_lookup_5" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_6</SourceValue>
+      <TargetValue reference="reduced_lookup_6" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_7</SourceValue>
+      <TargetValue reference="reduced_lookup_7" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_8</SourceValue>
+      <TargetValue reference="reduced_lookup_8" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">proj.map_graph.REDUCED_LOOKUP_DML_FILE_9</SourceValue>
+      <TargetValue reference="reduced_lookup_9" property="path"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[0].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_0"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[1].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_1"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[2].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_2"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[3].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_3"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[4].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_4"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[5].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_5"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[6].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_6"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[7].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_7"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[8].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_8"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">first_without_error(vars.reduced_lookups[9].record_format, "/*Dummy DML */\n\nrecord string(1) newline = '\\n'; end")</SourceValue>
+      <TargetValue reference="reduced_lookup_9"/>
+    </Assignment>
+    <Assignment name="Check and issue a warning if a reduced lookup is pointing to an IDS DML instead of private DML. This change was done on 6/11/18, and new appconfs will point to private DML only.">
+      <SourceValue is_expression="true">begin
+  let string("\x01")[] datasets_to_delete = [vector];
+  let string("\x01") message = "";
+  for(let lkp in vars.lookups)
+  begin
+    let file_name = string_substring(lkp.eme_obj.rpath, string_rindex(lkp.eme_obj.rpath, "/") + 1, 9999);
+    if(starts_with(file_name, "lookup." + proj.map_graph.SOURCE_LOWER) /* i.e. this is reduced lookup */
+       and string_index(lkp.eme_obj.parameterized_record_format_rpath, "PUB_DATAHUB_DML") /* i.e. dml is pointing to IDS DML and not to pvt DML */)
+      datasets_to_delete = vector_append(datasets_to_delete, lkp.eme_obj.rpath);
+  end
+
+  message = string_join(datasets_to_delete, "\n");
+  if(not is_blank(message))
+    message = "&lt;font color='#880000'&gt;Reduced lookups used in this configuration are pointing to old DMLs. " +
+              "As of June 2018 the reduced lookups should point to private DML paths. " +
+              "This is part of enabling limited fields to be written to disk.\n\n" +
+              "Action: Delete the following logical dataset(s) &lt;b&gt;from the EME&lt;/b&gt; using the &lt;i&gt;air rm&lt;/i&gt; command, and lock and republish the appconf. " + 
+              "This will re-create the dataset(s) and link to the correct DML(s).\n" +
+              "(There is no need to change anything in the appconf in order to complete this action)\n\n" +
+              "&lt;b&gt;&lt;i&gt;" + message + "&lt;/i&gt;&lt;/b&gt;&lt;/font&gt;";
+
+  result :: message;
+end</SourceValue>
+      <TargetValue reference="vars.lookup_warning"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let entry in vars.reduced_lookups): "$AI_XFR/bre_helper.map.xfr"</SourceValue>
+      <TargetValue reference="vars.reduced_lookups.ruleset" property="included_packages"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.map_graph"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Mapping</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+          <Width>400</Width>
+          <Style>mainSource</Style>
+          <Label>Application Configuration Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.errors"/>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+          <Label>Derived from the Configuration Name</Label>
+          <UIElements>
+            <Popup>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Clean File</Title>
+              <UIElements>
+                <ViewData>
+                  <SourceIsCompressed>true</SourceIsCompressed>
+                  <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                  <SourceValue reference="proj.map_graph.CLEAN_FILE_NAME"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Name</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.map_graph.SOURCE_NAME"/>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>ILM Name</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.map_graph.ILM_NAME"/>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>Variation Name</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.map_graph.VARIATION"/>
+                </TextLabel>
+              </UIElements>
+              <Visible is_expression="true">proj.map_graph.VARIATION != ""</Visible>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional: Reduced Lookups</Label>
+          <UIElements>
+            <Box>
+              <Label>Advanced Settings</Label>
+              <UIElements>
+                <TextInput>
+                  <Label>Override ADJACENT_INTERVAL_MICROSECONDS</Label>
+                  <SourceTargetValue reference="proj.map_graph.ADJACENT_INTERVAL_MICROSECONDS"/>
+                  <Description>(For Interval Lookups)
+The number of microseconds between adjacent effective and end dates.  Typically 1 or 1000000 (a second) or 86400000000 (a day). Enter a numeric value only.</Description>
+                </TextInput>
+              </UIElements>
+              <Style>inner</Style>
+              <Expanded>false</Expanded>
+            </Box>
+            <Popup>
+              <Label>Select IDS Datasets</Label>
+              <Title/>
+              <UIElements>
+                <OrderedList>
+                  <Choices reference="vars.ids_list_extended"/>
+                  <Label>Select IDS</Label>
+                  <SourceTargetValue reference="vars.reduced_lookups.orig_lookup_name" list_conversion_format="comma"/>
+                  <MaxCount>10</MaxCount>
+                </OrderedList>
+              </UIElements>
+              <Style>diffSource</Style>
+            </Popup>
+            <ForEach list_reference="vars.reduced_lookups" item="rlkp">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(rlkp.natural_key)</Expanded>
+                  <Label is_expression="true">rlkp.lookup_name</Label>
+                  <UIElements>
+                    <RadioButtons>
+                      <Choices>
+                        <ConstantValue>false</ConstantValue>
+                        <ConstantValue>true</ConstantValue>
+                      </Choices>
+                      <Label>Reduced ICFF Found (based on DML listing)</Label>
+                      <SourceTargetValue reference="rlkp.use_reduced"/>
+                      <ChoiceDisplayNames is_expression="true">[vector " Use " + rlkp.orig_lookup_name, "Use " + rlkp.orig_lookup_name + ".reduced"]</ChoiceDisplayNames>
+                      <Visible is_expression="true">file_information(
+          proj.map_graph.PUB_DATAHUB_DML + "/" +
+          string_split(rlkp.orig_lookup_name, ".")[0] + "/" +
+          rlkp.orig_lookup_name + ".reduced.dml"
+        ).found</Visible>
+                    </RadioButtons>
+                    <Popup>
+                      <Label is_expression="true">"Natural Key" + (if(not is_blank(rlkp.natural_key)) "  &lt;b&gt;" + rlkp.natural_key + "&lt;/b&gt;" else "")</Label>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Select NK</Label>
+                          <RecordFormat is_expression="true">rlkp.orig_record_format</RecordFormat>
+                          <SourceTargetValue reference="rlkp.natural_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                      <Style>key</Style>
+                    </Popup>
+                    <Popup>
+                      <Label is_expression="true">"Sort Key" + (if(not is_blank(rlkp.sort_key)) "  &lt;b&gt;" + rlkp.sort_key + "&lt;/b&gt;" else "")</Label>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Select Sort Key</Label>
+                          <RecordFormat is_expression="true">rlkp.record_format</RecordFormat>
+                          <SourceTargetValue reference="rlkp.sort_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label is_expression="true">"Dedup Key" + (if(not is_blank(rlkp.dedup_key)) "  &lt;b&gt;" + rlkp.dedup_key + "&lt;/b&gt;" else "")</Label>
+                      <UIElements>
+                        <KeyPicker>
+                          <Label>Select Dedup Key</Label>
+                          <RecordFormat is_expression="true">rlkp.record_format</RecordFormat>
+                          <SourceTargetValue reference="rlkp.dedup_key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                    <Popup>
+                      <Label>Reduced Serial Lookup Filter</Label>
+                      <Style>expressionEditor</Style>
+                      <UIElements>
+                        <ExpressionEditor>
+                          <Label>Expression Editor</Label>
+                          <RecordFormat reference="rlkp.orig_record_format"/>
+                          <SourceTargetValue reference="rlkp.filter_expr"/>
+                        </ExpressionEditor>
+                      </UIElements>
+                    </Popup>
+                    <BusinessRulesPopup>
+                      <Label>Clean file to nk mappings (BRE)</Label>
+                      <SourceTargetValue reference="rlkp.ruleset"/>
+                      <Title/>
+                      <Style>processing</Style>
+                    </BusinessRulesPopup>
+                    <RadioButtons>
+                      <Choices>
+                        <ConstantValue>false</ConstantValue>
+                        <ConstantValue>true</ConstantValue>
+                      </Choices>
+                      <Label>Records to pull per key</Label>
+                      <SourceTargetValue reference="rlkp.get_all_recs"/>
+                      <ChoiceDisplayNames>
+                        <ConstantValue>Latest record only</ConstantValue>
+                        <ConstantValue>All matching records</ConstantValue>
+                      </ChoiceDisplayNames>
+                      <ColumnCount>2</ColumnCount>
+                    </RadioButtons>
+                    <TextLabel>
+                      <Label>&lt;b&gt;Fields to Retain:&lt;/b&gt;</Label>
+                    </TextLabel>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">if(is_blank(rlkp.retain_fields)) "[all]" else rlkp.retain_fields</Label>
+                        </TextLabel>
+                        <Popup>
+                          <Label>Edit Field List...</Label>
+                          <Title/>
+                          <UIElements>
+                            <MultiChoiceList>
+                              <Choices is_expression="true">record_info_item(rlkp.orig_record_format, "name")</Choices>
+                              <Label>Select Fields to Retain in the Lookup File Written to Disk</Label>
+                              <SourceTargetValue reference="rlkp.retain_fields" list_conversion_format="comma"/>
+                            </MultiChoiceList>
+                            <TextLabel>
+                              <Label>&lt;b&gt;Note:&lt;/b&gt;
+        &lt;font color="#00bb00"&gt;Be sure to select dxf_hk_part1 and dxf_hk_part2.&lt;/font&gt;
+        It is simpler to select no field instead of selecting all fields. Selecting nothing is equivalent to selecting all.
+        Be sure to retain the fields to be used in sorting and deduping.</Label>
+                            </TextLabel>
+                          </UIElements>
+                        </Popup>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                  <Style>dataset</Style>
+                </Box>
+              </UIElements>
+            </ForEach>
+            <Box>
+              <Label>More...</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label>&lt;b&gt;1) Select and configure reduced lookups
+        2) Publish appconf - this will populate reduced lookups in the regular lookups list (Optional: Lookups box)
+        3) Reopen/edit appconf and select reduced lookups from the regular lookups list to use in the BRE
+        &lt;/b&gt;</Label>
+                </TextLabel>
+                <TextLabel>
+                  <Label>If a reduced icff was configured in a load step but is not detected after selecting the corresponding IDS above, make sure that the dml for that reduced icff has been saved. Load pset can work without the reduced dml but this template relies on reduced dml to identify the reduced icff.</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>unstyled</Style>
+              <Expanded>false</Expanded>
+            </Box>
+            <Box>
+              <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+              <Style>reduction</Style>
+              <Label>Filter the Source Data to create Reduced Lookups</Label>
+              <UIElements>
+                <Popup>
+                  <Style>expressionEditor</Style>
+                  <Label>Optional: Filter Records from Reduced Lookups...</Label>
+                  <Description>Provide the rules for which records should be kept.</Description>
+                  <Title>Keep Only These Filtered Source Records</Title>
+                  <UIElements>
+                    <ExpressionEditor>
+                      <Label>Filter Expression</Label>
+                      <ContextPset reference="proj.map_graph"/>
+                      <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                      <SourceTargetValue reference="proj.map_graph.REDUCED_LOOKUP_SELECT_EXPR"/>
+                    </ExpressionEditor>
+                    <!-- 
+                                    <ViewData>
+                                      <Label>Filtered Records</Label>
+                                      <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                                      <ContextPset reference="proj.map_graph"/>
+                                      <SourceValue reference="proj.map_graph.filtered"/>
+                                    </ViewData>
+                                     -->
+                  </UIElements>
+                </Popup>
+                <Box>
+                  <Visible is_expression="true">proj.map_graph.REDUCED_LOOKUP_SELECT_EXPR != ""</Visible>
+                  <Style>inner</Style>
+                  <Label>Filter Expression</Label>
+                  <UIElements>
+                    <TextLabel>
+                      <Label reference="proj.map_graph.FILTER_EXPR"/>
+                      <Width>200</Width>
+                    </TextLabel>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true"><![CDATA[vars.errors == ""]]></Visible>
+          <Expanded>false</Expanded>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>&lt;font color="#dd0000"&gt;Problem with Reduced Lookup DMLs&lt;/font&gt;</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_warning"/>
+            </TextLabel>
+          </UIElements>
+          <Style>inner</Style>
+          <Visible is_expression="true">not is_blank(vars.lookup_warning)</Visible>
+          <LineIn>off</LineIn>
+          <LineOut>off</LineOut>
+        </Box>
+        <Box>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+          <Style>enrichmentSource</Style>
+          <Label>Optional: Lookups</Label>
+          <Description>Configure any lookups.  Lookups are used to add inputs to the BRE that can enrich or "decorate" the source records.</Description>
+          <UIElements>
+            <Popup>
+              <Style>diffSource</Style>
+              <Label>Select any Lookups...</Label>
+              <Description>Choose the lookups.  These lookups will be available in the filter expression and the mapping rules.  You can choose the same dataset more than once, if you want to use it with different keys.  If you cannot find the dataset you want, make sure that there is either a get or clean configuration that has "Use as Lookup" checked.</Description>
+              <Title>Choose the Lookups (lookup.*.dat)</Title>
+              <UIElements>
+                <EmeBrowser>
+                  <Eme reference="eme"/>
+                  <SourceTargetValue reference="vars.lookups.eme_obj"/>
+                  <BrowseMode>directory</BrowseMode>
+                  <BrowsableRootRpaths is_expression="true">built_list_of_rpaths(proj.map_graph.ACE_LOOKUP_PROJECT_LIST)</BrowsableRootRpaths>
+                  <ObjectTypes>
+                    <ConstantValue>dataset</ConstantValue>
+                  </ObjectTypes>
+                  <AllowDuplicates>true</AllowDuplicates>
+                </EmeBrowser>
+              </UIElements>
+            </Popup>
+            <ForEach item="lkp" list_reference="vars.lookups">
+              <UIElements>
+                <Box>
+                  <Expanded is_expression="true">is_blank(lkp.lookup_name) or is_blank(lkp.key)</Expanded>
+                  <Style>dataset</Style>
+                  <Label is_expression="true">if ( is_blank(lkp.lookup_name) ) "** Please Enter a Name **" else lkp.lookup_name</Label>
+                  <Description is_expression="true">"Configure the name and the key for this lookup." +
+                            "\n\nLookup Name:\n" + lkp.lookup_name +
+                            "\n\nSource Dataset:\n" + ds_name(lkp.eme_obj.name) +
+                            (if ( is_blank(lkp.key) ) "" else
+                              "\n\nKey:\n" + re_replace(lkp.key, "; *", ";\n"))</Description>
+                  <UIElements>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.lookup_name)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup name. **</Label>
+                      <Description>Without a name, a lookup cannot be referenced in the mappings.</Description>
+                    </TextLabel>
+                    <TextLabel>
+                      <Visible is_expression="true">is_blank(lkp.key)</Visible>
+                      <Label>** Note: Before you go on, please select the lookup key. **</Label>
+                      <Description>Without a lookup key, a lookup has no way of finding a matching record in the mapping.</Description>
+                    </TextLabel>
+                    <TextInput>
+                      <Label>Lookup Name:</Label>
+                      <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                      <SourceTargetValue reference="lkp.lookup_name"/>
+                    </TextInput>
+                    <Popup>
+                      <Style>key</Style>
+                      <Label is_expression="true">(if ( is_blank(lkp.key) ) "Select" else "Change") + " the Lookup Key for " + ds_name(lkp.eme_obj.name) + "..."</Label>
+                      <Title is_expression="true">"Lookup Key for " + ds_name(lkp.eme_obj.name)</Title>
+                      <UIElements>
+                        <TextInput>
+                          <Label>Lookup Name:</Label>
+                          <Description>Enter the name for this lookup.  Make it "business friendly", and avoid really long names.</Description>
+                          <SourceTargetValue reference="lkp.lookup_name"/>
+                        </TextInput>
+                        <KeyPicker>
+                          <ShowSpecialColumn>true</ShowSpecialColumn>
+                          <Label>Lookup Key</Label>
+                          <Description>Enter the key for this lookup.  The key should include all fields that will be used to specify matching records in the lookup.</Description>
+                          <ContextPset reference="proj.map_graph"/>
+                          <RecordFormat reference="lkp.eme_obj" property="record_format"/>
+                          <ShowOrderColumn>false</ShowOrderColumn>
+                          <SourceTargetValue reference="lkp.key"/>
+                        </KeyPicker>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </Box>
+              </UIElements>
+            </ForEach>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.lookup_problem != ""</Visible>
+          <Label>Lookup Configuration Error</Label>
+          <Width>400</Width>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.lookup_problem"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+          <Style>reduction</Style>
+          <Label>Filter the Source Data</Label>
+          <UIElements>
+            <Popup>
+              <Style>expressionEditor</Style>
+              <Label>Optional: Filter Records...</Label>
+              <Description>Provide the rules for which records should be kept.</Description>
+              <Title>Keep Only These Source Records</Title>
+              <UIElements>
+                <ExpressionEditor>
+                  <Label>Filter Expression</Label>
+                  <ContextPset reference="proj.map_graph"/>
+                  <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                  <SourceTargetValue reference="proj.map_graph.FILTER_EXPR" source_property="expression" target_property="pdl_expression"/>
+                </ExpressionEditor>
+                <!-- 
+                <ViewData>
+                  <Label>Filtered Records</Label>
+                  <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                  <ContextPset reference="proj.map_graph"/>
+                  <SourceValue reference="proj.map_graph.filtered"/>
+                </ViewData>
+                 -->
+              </UIElements>
+            </Popup>
+            <Box>
+              <Visible is_expression="true">proj.map_graph.FILTER_EXPR != ""</Visible>
+              <Style>inner</Style>
+              <Label>Filter Expression</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.map_graph.FILTER_EXPR"/>
+                  <Width>200</Width>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == ""</Visible>
+          <Style>mapping</Style>
+          <Label>Source to ILM Mapping</Label>
+          <Description>Configure the mapping rules.  The source, any lookups and their keys, and the ILM will all be automatically included.</Description>
+          <UIElements>
+            <Box>
+              <Label>Binary fields (void)</Label>
+              <UIElements>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <CheckBox>
+                      <Label>Reinterpret voids as strings</Label>
+                      <SourceTargetValue reference="proj.map_graph.READ_VOIDS_AS_STRINGS"/>
+                    </CheckBox>
+                    <Popup>
+                      <Label>Help...</Label>
+                      <Title/>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">"The following field(s) in the clean file record format are of datatype void (blob/varbinary)\n" +
+            "&lt;b&gt;" + string_join(vars.void_fields_list,"\n") /*string_replace(proj.map_graph.CLEAN_DML_VOID_FIELDS, ",", "\n")*/ + "&lt;/b&gt;\n" +
+            "Void type fields are not supported in BRE. If you choose to read them as string, then only they will be available in the BRE mappings."</Label>
+                        </TextLabel>
+                      </UIElements>
+                    </Popup>
+                  </UIElements>
+                </HorizontalLayoutContainer>
+                <Box>
+                  <Label>&lt;font color="#aa3300"&gt;IMPORTANT NOTE&lt;/font&gt;</Label>
+                  <UIElements>
+                    <TextLabel>
+                      <Label>&lt;font color="#aa3300"&gt;You have chosen to treat void fields as text/string. Note that it poses a few risk, including:
+* making the binary data unusable in case you truncate or manipulate it in BRE mappings
+* your target database not storing the text in a format that can be converted back to binary
+* if the data contained is actually text data, then data &lt;b&gt;security/masking&lt;/b&gt; is your responsibility while creating the BRE mappings
+                
+Typically, blobs and clobs make the record size very large, which could cause failures. If your records are going to be larger than &lt;b&gt;5 million bytes&lt;/b&gt;, override the max record size above.
+
+Binary data can contain any byte, including the &lt;b&gt;field delimiter&lt;/b&gt; used in the target DML. It is recommended that you use string_filter_out() to remove the delimiter character while mapping such fields to delimited target field(s).&lt;/font&gt;</Label>
+                    </TextLabel>
+                  </UIElements>
+                  <Style>inner</Style>
+                  <Visible reference="proj.map_graph.READ_VOIDS_AS_STRINGS"/>
+                  <Expanded>false</Expanded>
+                </Box>
+                <Popup>
+                  <Label is_expression="true">"Override Maximum Record Size [" + proj.map_graph.AB_MAX_RECORD_BUFFER + "]"</Label>
+                  <Title/>
+                  <UIElements>
+                    <TextInput>
+                      <Label>Enter the value of AB_MAX_RECORD_BUFFER</Label>
+                      <SourceTargetValue reference="proj.map_graph.AB_MAX_RECORD_BUFFER"/>
+                    </TextInput>
+                  </UIElements>
+                  <Style>options</Style>
+                  <Visible reference="proj.map_graph.READ_VOIDS_AS_STRINGS"/>
+                </Popup>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">length_of(vars.void_fields_list) != 0</Visible>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible is_expression="true">length_of(vars.void_fields_list) != 0</Visible>
+            </Spacer>
+            <BusinessRulesPopup>
+              <Style>processing</Style>
+              <Label>Edit Mapping Rules...</Label>
+              <Title>Mapping Rules</Title>
+              <SourceTargetValue reference="vars.mapping_ruleset"/>
+            </BusinessRulesPopup>
+            <FileDownloader>
+              <Visible is_expression="true">vars.mapping_ruleset.is_valid</Visible>
+              <ButtonType>button</ButtonType>
+              <ButtonLabel>Generate and Download Active Spec</ButtonLabel>
+              <ServerPath reference="proj.active_spec.xls"/>
+              <DefaultLocalFileName reference="vars.active_spec_file"/>
+            </FileDownloader>
+            <Box>
+              <Visible is_expression="true">vars.mapping_ruleset.is_valid and vars.mapping_ruleset.doc_transform != ""</Visible>
+              <Style>inner</Style>
+              <Label reference="vars.mapping_ruleset" property="ruleset_name"/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">summarize_rule(vars.mapping_ruleset.doc_transform, NULL, vars.mapping_ruleset.input_record_format, vars.mapping_ruleset.output_record_format)</Label>
+                  <Width>300</Width>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <CheckBox>
+              <Label>Publish ILM File</Label>
+              <SourceTargetValue reference="proj.map_graph.DO_PUBLISH_ILM_FL"/>
+            </CheckBox>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and vars.lookup_problem == "" and vars.mapping_ruleset.is_valid</Visible>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <Popup>
+              <Label>Set Notes...</Label>
+              <Style>options</Style>
+              <Title>Set Notes</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Notes</Label>
+                  <SourceTargetValue reference="proj.map_graph.NOTES" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>5</Height>
+            </Spacer>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Run Map</ButtonLabel>
+              <SourceValue reference="proj.map_graph"/>
+            </ExecuteButton>
+            <Spacer>
+              <Height>5</Height>
+            </Spacer>
+            <Popup>
+              <Style>validation</Style>
+              <Label>View ILM File...</Label>
+              <Title>View ILM File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="proj.map_graph.ILM_DML"/>
+                  <SourceIsCompressed>true</SourceIsCompressed>
+                  <SourceValue reference="proj.map_graph.ILM_URL"/>
+                </ViewData>
+              </UIElements>
+              <Visible is_expression="true">proj.map_graph.DO_PUBLISH_ILM_FL</Visible>
+            </Popup>
+            <!-- 
+            <Popup>
+              <Style>validation</Style>
+              <Label>View Any Data that Failed to Map...</Label>
+              <Title>View Any Data that Failed to Map</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="proj.map_graph.CLEAN_DML"/>
+                  <SourceIsCompressed>true</SourceIsCompressed>
+                  <SourceValue reference="proj.map_graph.REJECTS_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">vars.mapping_ruleset.is_valid</Visible>
+              <Style>validation</Style>
+              <Label>View Any Mapping Error Messages...</Label>
+              <Title>View Any Mapping Error Messages</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="proj.map_graph.ERRORS_DML"/>
+                  <SourceIsCompressed>true</SourceIsCompressed>
+                  <SourceValue reference="proj.map_graph.ERRORS_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+             -->
+            <Popup>
+              <Visible is_expression="true">vars.mapping_ruleset.is_valid</Visible>
+              <Style>validation</Style>
+              <Label>View Error Summary...</Label>
+              <Title>View Error Summary from Mapping and Simulated Loads</Title>
+              <UIElements>
+                <ViewData>
+                  <ContextPset reference="proj.map_graph"/>
+                  <RecordFormat reference="proj.map_graph.ERROR_SUMMARY_DML"/>
+                  <SourceValue reference="proj.map_graph.ERROR_SUMMARY_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Box>
+              <Visible is_expression="true">proj.map_graph.NOTES != ""</Visible>
+              <Style>inner</Style>
+              <Label>Notes</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.map_graph.NOTES"/>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.map_graph.CLEAN_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(read_file(proj.map_graph.CLEAN_DML_FILE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">vars.lookup_problem == ""</Visible>
+      <Label>Lookup Catalog</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(catalog.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(catalog.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Map XFR</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.map_graph.MAPPING_XFR_BRE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(read_file(proj.map_graph.MAPPING_XFR_BRE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Map PSet</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.map_graph.PROJECT_DIR + "/" + proj.map_graph.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(read_file(proj.map_graph.PROJECT_DIR + "/" + proj.map_graph.relative_path))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>ILM DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.map_graph.ILM_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(read_file(proj.map_graph.ILM_DML_FILE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label><![CDATA[<font size="14 pt"><b>Overview</b>
+
+This template is part of the Data Management Framework or "DMF".  The DMF provides a way for 
+business analysts to build complex data processing applications by breaking them down into simple 
+steps.  This mapping template is one of the most critical parts of this process.
+
+Mappings "reshape" the source data to load into the target system(s).  Each mapping is tied to a 
+single source file/table/dataset.  Mappings handle both the copying and transformation of individual 
+fields, as well as restructuring the source data to "fit" the target.  In other words, a mapping can 
+either assemble multiple sources (via lookups) or break apart one source into many target entries 
+(via the Intermediate Logical Model (ILM)).
+
+If you find that your source contains fields that cannot be mapped, take a minute to stop and think 
+about whether they hold valuable data.  If not, they can simply be left unmapped and this information 
+will be dropped.  If so, then consider modifying the ILM, which is the target of the mapping, to 
+include more target tables/files/datasets.  Then your source fields will have a place to belong.
+</font>
+          ]]></Label>
+        </TextLabel>
+        <TextLabel>
+          <Label><![CDATA[<font size="14 pt"><b>Step By Step</b>
+
+There are five steps to setting up a mapping:
+1) Choose the source "backbone" and the target ILM
+2) Add any lookups needed to enrich your backbone records
+3) Optionally, filter out some of the source records
+4) Map the possibly filtered source to the ILM
+5) Testing and baselining your results
+
+<i>Source and Target</i>
+
+Step one is done automatically, based on the name of your mapping. Getting that name "just right" is 
+very important.  It should look like map.<i>source_system.source_entity.ilm_name</i> or in rare cases 
+map.<i>source_system.source_entity.ilm_name.variation</i>.  The source is prepared by an earlier 
+"clean" or "get" step.  The ILM is configured in the "ilm" setup step.  So make sure that these 
+other steps exist before trying to set up your mapping.
+
+<i>Lookups</i>
+
+To add a lookup, first click on the "Select any Lookups..." link and select the lookup datasets that 
+you wish to add.  You can save time searching by using filter box above the dataset list.  You may 
+need to expand the "Lookup Files" entry to see the datasets.  
+
+Once you have selected your lookup datasets, you then need to give the lookup a name.  This name 
+appears in the mapping rules, so you should pick a name that is business friendly.  For example, 
+"County Demographics" or "Demographics".  There's no need to include the word "Lookup", since that 
+makes the name longer, and makes the rules in the BRE a bit harder to read.
+
+Finally, you want to pick a key for the lookup.  These are generally the fields that uniquely 
+identify the record that has the data you want access to.  Sometimes, you may have duplicate keys.  
+In that case, the rules will always return the first record in the file with the matching key.  You 
+can also go into the clean or get step and set a dedup sort key to ensure that there is only one 
+entry per key and that the best record is the one that survives.
+
+<i>Filtering</i>
+
+Filtering lets you only process a subset of the data.  Sometimes a source has entire records that 
+you want to ignore.  Sometimes there are extraneous records, such as headers or footers, that you 
+need to skip.  To set a filter, click on "Optional: Filter Records..." and enter a formula that 
+returns 0 for records you want to skip and non-zero for records you want to keep.  
+
+Be careful to avoid returning NULL.  NULL will cause an error.  You can use the first_defined() 
+function to protect against NULL.  For example, first_defined(state_code == "MA", 0) will keep 
+records from Massachusettes, excluding any NULLs.  Likewise, first_defined(status_flag == "I", 1) 
+will drop only "I" (Inactive) records, keeping any that are NULL.
+
+You can use lookups in your filter expression.  There are many different lookup functions; the most 
+useful for filtering are lookup_match() and lookup_count().  For example, if you want only the valid 
+state codes, you might use:
+    first_defined(lookup_match("Valid States", state_cd), 0)
+If you want stores with multiple addresses, use something like:
+    lookup_count("Addresses", "S", store_id) > 1
+
+<i>Mapping</i>
+
+Click on "Edit Mapping Rules...".  This takes you to the Ab Initio Business Rules Environment.  
+The BRE provides an Excel-like model for entering your mappings.  For straight-through rules, 
+you can just drag-n-drop the input fields onto the output fields.  Ab Initio provides a huge 
+library of functions for manipulating and converting almost any kind of data.  See the Keywords 
+and Functions tab on the right side of the main BRE window.  You can work with your development 
+partners to add more functions, and have them appear in the User Functions & Constants list.
+
+A full description of how to use the BRE is beyond the scope of this help section.  But the BRE 
+is fully documented, just open your mappings and click on the Help button in the toolbar.  The 
+Tutorial and following sections are very useful.  If you use lookups (and you probably will), 
+be sure to visit the "Using lookup variables" chapter of the Tutorial.  Make sure you know how 
+"Edit Default Key Values..." works.
+
+<i>Testing</i>
+
+As you write rules in the BRE, you will immediately see the "live" data values for your inputs, 
+lookups, and rule results.  Using the left and right arrows (to the left of the Search box), you can 
+move between different source records.  
+
+Once you are happy with your rules, you can use the Test button and then the Run button to test your 
+entire source file.  If there are no errors, you will have the option to Save a Baseline file (using 
+the 1st button on the right).  Doing this provides a point of comparison as you change the rules.  
+Any time a value differs from the baseline, it is highlighted with a golden star, and if you hover 
+over that, you will see the previous, baseline value for comparison.
+
+You should make a habit of running a Test in the BRE every time you finish working on your rules, 
+then update your baseline.  After you close your rules, Save, and click on the "Run Map" button.  
+Click on the "View ILM File..." link, and you should see the same results you saw in the BRE test 
+results, but they will be arranged into groups according to the targets that were included in your 
+ILM.  Use the triangles in the header to open up these subrecords.
+
+To check for errors, click on the "View Error Summary..." link.  If all is well, you will not see any 
+error summaries.  If there are records, then they can come from one of two problems.  The first is 
+mapping errors.  These include things like assigning NULLs to non-NULL fields or invalid numeric or 
+date conversions.  These sorts of errors will have the "src_examples" subrecord populated, and the 
+example data will be Source input data that could not be assigned.
+
+The second type of error comes from mappings that assign strings to numbers or dates in an invalid 
+way.  For example, you can legally map "ABC" into a numeric (decimal) field, but in the end this 
+will fail to load into a database or ICFF.  This sort of thing is allowed in mapping rules as an 
+"escape hatch" for reprocessing bad data or to allow you to pass bad data to a later cleansing step.  
+However, this sort of data will cause problems if it reaches the load step.  To make it easy to 
+catch these problems, the mapping template includes a "simulate load" feature that finds these 
+errors and reports them in the "ilm_examples" subrecord.  Unless you have a later cleansing step, 
+you will want to take care to fix any errors of this type as well.
+
+If everything is OK, you should get 0 records in the View Errors window.
+
+Try to make a habit of always running Test in the BRE, plus Run Map, View Results, and View Errors 
+at the end of any mapping session.  Then you can be confident that your mappings are safe to Publish 
+for the whole world to see.
+</font>
+          ]]></Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

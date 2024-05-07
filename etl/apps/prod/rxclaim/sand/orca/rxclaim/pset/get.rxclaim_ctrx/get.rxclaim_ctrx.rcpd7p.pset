@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcpd7p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdext     rcex1p                  claimsts,carrierid,accountid,groupid,memberid\nclmprdfil     rcpd7p                  asp2nb,asoinb,asd9hs,asi6h9,asokhc,asm1ih,asochc,astshx,asrgh9,asrhh9,asrih9,asukh9,asoxhg,asb2io,asfihs,asalhy,asamhy,asf1qu,asf2qu,asb3hd,asc9hk,asfjhs,aso4ic,asxzqv,asx0qv,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex1p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcpd7p')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||\n$[ \n\t\t"WHERE  RCEX1P.RXCLAIMNBR = RCPD7P.ASP2NB\tAND RCEX1P.CLMSEQNBR = RCPD7P.ASOINB \n\t\tAND TRIM(RCEX1P.CARRIERID) IS NOT NULL  AND TRIM(RCEX1P.CARRIERID) != '' AND TRIM(RCEX1P.CARRIERID) != 'JILL' AND RCEX1P.CARRIERID  NOT LIKE '%TEST%'\n\t\tAND (TRIM(RCEX1P.CLMORIGIN)  IN ('T', 'M', 'B', 'R' ,'A','I','J')  \n\t\t\t  AND ( (RCEX1P.SBMSRVPRID NOT IN ('1718634', '0556540', '1497704431', '1669498515') \n\t\t\t\tAND RCEX1P.SRVPROVID NOT IN ('1718634', '0556540', '1497704431', '1669498515')) \n\t\t\t\tOR (DECIMAL(RCEX1P.RXNUMBER) >= 10000) ))" +\n\t\t" OPTIMIZE FOR ALL ROWS"\n\t]\n\t
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+DO_PUBLISH_CLEAN_FILE||||1
+RUN_ID||||20180

@@ -1,0 +1,69 @@
+/* Do Not Edit.  This file is generated automatically by combining
+ * "$PUB_DXF_DML/split_header.type2.dml", "$AI_DML/dxf_header.dml", any "$ADDITIONAL_FIELDS_DML",
+ * and "/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.d_mpa_audit.dml".
+ * Changing the target DML and re-running "$AI_PSET/setup.ilm/setup.ilm.orx_d_mpa_audit.pset" will update this file.
+ */
+
+type opt_nk_ids_common_d_cag_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+end;
+
+type opt_nk_ids_common_d_member_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+end;
+
+type opt_nk_ids_rxclaim_d_member_prior_auth_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11) prior_auth_nbr = NULL("") /*VARCHAR(11)*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+end;
+
+type split_ids_rxclaim_d_mpa_audit_t =
+record
+  decimal(1) is_equal = 0;
+  decimal(1) drop_record = 0;
+  datetime("YYYY-MM-DD HH24:MI:SS") matching__eff_dt = NULL("");
+  little endian integer(8)  dxf_src_dataset_id =  0/*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/;
+  unsigned integer(8)  dxf_src_rec_cnt =  0/*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/;
+  little endian integer(2)  dxf_src_sys_id =  0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  string(unsigned integer(1))  dxf_src_file_name =  ""/*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/;
+  unsigned integer(8)    dxf_hk_part1 =    0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)    dxf_hk_part2 =    0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)    dxf_sk =    0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)     mpa_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)     mpa_audit_seq_nbr = NULL("") /*INTEGER*/;
+  decimal("\x01",0)     cag_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)     mbr_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)     mpa_audit_dtl_cd = NULL("") /*VARCHAR(1)*/;
+  decimal("\x01",0)     src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11)     prior_auth_nbr = NULL("") /*VARCHAR(11)*/;
+  date("YYYYMMDD")("\x01")     chg_dt = NULL("") /*DATE*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01")     chg_ts = NULL("") /*TIMESTAMP(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     chg_uid = NULL("") /*VARCHAR(20)*/;
+  decimal("\x01",0)     mpa_audit_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)     account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)     employer_group_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)     mbr_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11)     prior_auth_nbr_encrp = NULL("") /*VARCHAR(11)*/;
+end;
+
+metadata type =
+record
+  split_ids_rxclaim_d_mpa_audit_t mpa_audit;
+  opt_nk_ids_common_d_cag_t d_cag;
+  opt_nk_ids_common_d_member_t d_mbr;
+  opt_nk_ids_rxclaim_d_member_prior_auth_t d_mpa;
+  string(1)   newline = "\n";
+end;

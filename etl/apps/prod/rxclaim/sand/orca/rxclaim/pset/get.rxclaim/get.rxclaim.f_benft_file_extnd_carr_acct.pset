@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxclaim.f_benft_file_extnd_carr_acct
+SOURCE_DB_PROJECT||||DB_RXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrxclaim       f_benft_file_extnd      carrier_id,acct_id,employer_group_id,carrier_nm,acct_nm,employer_group_nm,insert_ts
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+DO_LOOKUP||||1
+LOOKUP_KEY||||{carrier_id; acct_id}
+START_CHANGES_TIME:sandbox||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+SOURCE_DB_LIST||||$DB_RXCLAIM_MAIN_SCHEMA_EME  $DB_RXMAX_DB_NAME.admin       $DB_RXCLAIM_DML    $DB_RXCLAIM_DBMS  DB_RXCLAIM $DB_RXCLAIM_DB/netezza.rxmax.main.dbc
+LOOKUP_FIELDS||||carrier_id,carrier_nm,acct_id,acct_nm,update_ts
+SQL||||select carrier_id ,carrier_nm, acct_id ,acct_nm , update_ts from (select carrier_id , acct_id , carrier_nm , acct_nm,update_ts  , row_number() over ( partition by carrier_id , acct_id order by benft_record_mon desc,update_ts desc ) rank from ${DB_RXMAX_DB_NAME}.admin.F_BENFT_FILE_EXTND where carrier_nm <> 'NULL' and acct_nm<>'NULL') F_BENFT_FILE_EXTND where rank =1;
+EXTRA_DEDUP_SORT_KEY||||

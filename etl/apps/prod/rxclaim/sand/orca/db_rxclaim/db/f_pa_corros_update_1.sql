@@ -1,0 +1,24 @@
+UPDATE ORX_IDW_DM_PRD..F_PA_CORRESPONDENCE_DETAIL T
+SET T.CAG_SK=L.CAG_SK,
+T.MBR_SK=L.MBR_SK,
+T.UPDATE_TS=CURRENT_TIMESTAMP,
+T.UPDATE_UID='FPACORNOTPACASE_HIS'
+FROM 
+(select CAG_SK,MBR_SK,MBR_ID,CARRIER_ID,update_ts from
+(select CAG_SK,MBR_SK,MBR_ID,CARRIER_ID,update_ts,
+row_number() over ( partition by MBR_ID order by rec_Stat_Cd asc, insert_ts desc, update_ts desc ) rank
+from ORX_IDW_DM_PRD.admin.D_MEMBER ) D_MEMBER where rank =1) L
+WHERE (T.CAG_SK IS NULL OR T.MBR_SK IS NULL) AND T.PA_MBR_ID=L.MBR_ID AND T.CAR_CD=L.CARRIER_ID;
+
+
+UPDATE ORX_IDW_DM_PRD..F_PA_CORRESPONDENCE_DETAIL T
+SET T.CAG_SK=L.CAG_SK,
+T.MBR_SK=L.MBR_SK,
+T.UPDATE_TS=CURRENT_TIMESTAMP,
+T.UPDATE_UID='FPACORNOTPACASE_HIS'
+FROM 
+(select CAG_SK,MBR_SK,MBR_ID,CARRIER_ID,update_ts from
+(select CAG_SK,MBR_SK,MBR_ID,CARRIER_ID,update_ts,
+row_number() over ( partition by MBR_ID order by rec_Stat_Cd asc, insert_ts desc, update_ts desc ) rank
+from ORX_IDW_DM_PRD.admin.D_MEMBER ) D_MEMBER where rank =1) L
+WHERE (T.CAG_SK IS NULL OR T.MBR_SK IS NULL) AND T.PA_MBR_ID=L.MBR_ID;

@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/days_of_supply_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/30  Gaurav Mirje            Initial version, create lookup functions for days_of_supply process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_days_of_supply_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_days_of_supply.dat';
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type days_of_supply_lkup_t =
+record
+  lookup_identifier_type      id             = -1; 
+  days_of_supply_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                  key()          = {days_of_supply.days_of_supply_min; days_of_supply.days_of_supply_max};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let days_of_supply_lkup_t GLKUP_DAYS_OF_SUPPLY = allocate_with_nulls();
+
+days_of_supply_lkup_t out :: load_days_of_supply_lkup() =
+begin
+  if (GLKUP_DAYS_OF_SUPPLY.id == lookup_not_loaded())
+    GLKUP_DAYS_OF_SUPPLY = lookup_load(this_partition_path(get_days_of_supply_lkup_path()));
+  
+  out :: GLKUP_DAYS_OF_SUPPLY;
+end;
+
+days_of_supply_t out :: get_days_of_supply(days_of_supply_min, days_of_supply_max) inline =
+begin
+  let days_of_supply_lkup_t lkup = load_days_of_supply_lkup();
+  out :: lookup(lkup, days_of_supply_min, days_of_supply_max).days_of_supply;
+end;

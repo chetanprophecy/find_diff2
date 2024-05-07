@@ -1,0 +1,57 @@
+include "/~$PUB_DMF_XFR/standardize.xfr";
+
+constant datetime("YYYY-MM-DD HH24:MI:SS") current_time = now1();
+constant string("") uid = "DMF-2-" + string_suffix($"RUN_ID", 14);  // Keep this <= 20 characters.
+
+constant long min_dttm = (datetime("YYYY-MM-DD"))"1800-01-01";
+constant long max_dttm = (datetime("YYYY-MM-DD HH24:MI:SS"))"9999-12-31 23:59:59";
+
+
+// Used to work around bad mappings, discovered in QA or UAT, until they can be fixed in Dev.
+//out :: fix_num(in) =
+//begin
+//  out :1: if ( is_valid(in) ) in;
+//  out :2: -1;
+//end;
+
+
+/* Sets the bookkeeping and other "physical" fields.  Rounds the effective and end times to the second. */
+out :: reformat(in) =
+begin
+  let long eff_dttm = $[ if ( EFFECTIVE_DATE_FIELD_NAME == "" ) "" else
+    "if ( is_valid(in." + EFFECTIVE_DATE_FIELD_NAME + ') and (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + EFFECTIVE_DATE_FIELD_NAME + " >= min_dttm )\n" +
+    '    (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + EFFECTIVE_DATE_FIELD_NAME + "\n" +
+    "  else\n    " 
+    ]min_dttm;
+  let long end_dttm = $[ if ( END_DATE_FIELD_NAME == "" ) "" else
+    "if ( is_valid(in." + END_DATE_FIELD_NAME + ') and (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + END_DATE_FIELD_NAME + " <= max_dttm )\n" +
+    '    (long)(datetime("YYYY-MM-DD HH24:MI:SS"))in.' + END_DATE_FIELD_NAME + "\n" +
+    "  else\n    " 
+    ]max_dttm;
+
+  // Make sure that Drop Record requests do not have "backwards" effective dates.
+  if ( in.drop_record and eff_dttm > end_dttm )
+    end_dttm = eff_dttm;
+
+  out.matching__eff_dt :: eff_dttm;
+  out.$EFFECTIVE_DATE_FIELD_NAME :: eff_dttm;
+
+  $[ if ( END_DATE_FIELD_NAME == "" ) "// There is no End Date." else "out." + END_DATE_FIELD_NAME + " :: end_dttm;" ]
+
+  out.is_equal :: 0;
+  $[ if ( SURROGATE_KEY_FIELD_NAME == "" ) "" else "out." + SURROGATE_KEY_FIELD_NAME + " :: 0;" ]
+  out.(*, starts_with(form, "date") and
+          name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :1: current_time;
+  out.(*, form == "string" and
+          re_index(name, "(user|uid)") and
+          name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :2: uid;
+  out.(*, name == "proc_run_id") :3: (decimal(""))string_suffix($"RUN_ID", 12);  // Keep this <= 12 digits.
+  out.(*, name == "curr_rec_ind") :4: "Y";  // Active
+  //out.(*, name == "db_sxca5_record_placeholder_ind") :5: "N";  // Not a Placeholder
+  //out.(*, name == "db_sxca5_src_sys_id") :6: in.dmf_src_sys_id;
+  // Used to work around bad mappings, discovered in QA or UAT, until they can be fixed in Dev.
+  //out.(*, name=="something" and form=="decimal") :9: fix_num(in.*);
+  out.(*, form == "string") :99: trim_for_netezza(in.*);
+  out.* :: in.*;
+  out.newline :: "\n";
+end;

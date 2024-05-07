@@ -1,0 +1,1196 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<opsSchedule xmlns="http://www.abinitio.com/opconsole/1.0" objectVersion="1.120">
+
+  <jobDefinition applicationName="ENRICHMENTS" description="This job does following :&#xD;1) Create Job  2) CAG Enumeration 3) GPI Enumeration 4) Med Code Enumeration 5) Creation of daily client - gpi lkp file. 6)Client Member Enumeration" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Daily Initialization" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/config_data_init.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-31Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="2993CA10-E4FA-8BEA-A865-DB5ADA905998"/>
+        <predecessor jobDefinitionGuid="071D6CA8-AD63-1BF7-833D-2314EA93C50B"/>
+        <predecessor jobDefinitionGuid="777D8F94-1BD7-A7C6-3F92-2815536DC4DA"/>
+        <predecessor jobDefinitionGuid="28F313F7-EB1E-4EB4-D7B3-74408906E490"/>
+        <predecessor jobDefinitionGuid="90AA0D85-CBA6-49E0-4ACE-23F3BFB48498"/>
+        <predecessor jobDefinitionGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="071D6CA8-AD63-1BF7-833D-2314EA93C50B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Member Eligibility" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/ids_to_cli/plan/ids_to_cli_cdc_plan.member_eligibility.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="6EA78FC7-2CB2-584C-D5CF-DFC89DCE6568"/>
+        <predecessor jobDefinitionGuid="B09B734C-EAE2-AB2A-132C-18B781E4986E"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="CB1CED0C-640B-5205-1B67-283C82D12621" jobDefinitionGuid="0EFFF309-D0AE-720F-F8BE-AC19407E0F67" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - NAS Lexis Nexis" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/nas_to_cli/nas_to_cli.plan.lexis_nexis_prescriber.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="30600" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="NAS_RUN_DATES" mode="DAILY" startDate="2017-01-16Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="300" fileURL="$NAS_DIR/DataIntake/Lexus_Nexus/Provider_CPP_Extract_????????.txt" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="19DC6402-D32B-147E-0909-2317CAC4A5EE" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Pharmacy" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.pharmacy.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_pharmacy_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This Jobs runs the execution plan for MTM - PBS6458 " durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="1CE9F1CC-60A4-061A-3029-B33EA65A24E4" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - PBS6458" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/execution_framework/exec_framework_intrvn.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-8"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-19Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" description="This job subsets the IDS member file for given carrier id(s) and also calculates the records count and updates the control file." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="26C9E5EA-DF0A-9A65-0369-18B392AFA3D9" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="IDS Subset - Member" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_member_pre_prod_cleanup_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-02-06Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_member_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads all the member related dimensions like C_PATIENT, C_MEMBER and C_MEMBER_ELIGIBILITY" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="28F313F7-EB1E-4EB4-D7B3-74408906E490" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Member Files" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/mbr_mtch_load_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-05Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="6EA78FC7-2CB2-584C-D5CF-DFC89DCE6568"/>
+        <predecessor jobDefinitionGuid="82790974-07EB-39FF-8F94-65339CB8B299"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="EXTRACTS" description="This job loads the config data from Pega tables to the CPP servers" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="2993CA10-E4FA-8BEA-A865-DB5ADA905998" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Pega Config Unload" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/extracts" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/unload_ods_config_tbls.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="169200" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-30Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="31179A17-A464-3D4A-CF53-1E6CFA5A8FE3" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS CAG" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.cag.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_cag_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="E0F489D3-A94D-8411-5478-23018DBA9ED1"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="3327F8FB-803B-3C5A-823E-ABF2464A1BEA" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Member Eligibility" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/generic_db_loader_member_elig.pset" executableType="GRAPH" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-16Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="071D6CA8-AD63-1BF7-833D-2314EA93C50B"/>
+        <predecessor jobDefinitionGuid="28F313F7-EB1E-4EB4-D7B3-74408906E490"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="EXTRACTS" description="This job takes the ODS load ready file and conver them into IDS  format and places the files to IDS outbound dir (NAS directory)" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="34B47F5B-254C-28E8-4E2D-2ED82EB6BF80" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="CPP TO IDS - Outbound extract" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/extracts" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/cpp_to_ids_outbound_extract.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-11-04Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="7F99361D-E90E-A5F2-4294-B34260449D2D"/>
+        <predecessor jobDefinitionGuid="B0CC88CF-B055-FD16-4D69-B34905272D56"/>
+        <predecessor jobDefinitionGuid="3327F8FB-803B-3C5A-823E-ABF2464A1BEA"/>
+        <predecessor jobDefinitionGuid="634BB1C1-A370-8510-9EFC-B34BC716010C"/>
+        <predecessor jobDefinitionGuid="9A5187FB-54BB-3C01-0104-654AD45A4A1D"/>
+        <predecessor jobDefinitionGuid="FCD5828D-C0F1-A978-4E02-60A2B43B8368"/>
+        <predecessor jobDefinitionGuid="CB1CED0C-640B-5205-1B67-283C82D12621"/>
+        <predecessor jobDefinitionGuid="C4BEAF59-9165-85D9-88B8-B34A81F76F53"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="365E3C79-0FB8-AF66-C6CF-2311FE0BFAF2" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Med Code - ICD9" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.icd9.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rcicdp_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="382878EE-AAF3-16DD-19BC-73D398AD767B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Contract PBP" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/ids_to_cli/plan/ids_to_cli_cdc_plan.contract_pbp.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-05Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_contract_pbp_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="395F4E34-6029-6F29-F03A-231AB86691D6"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="395F4E34-6029-6F29-F03A-231AB86691D6" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Group Eligibility" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.rcgelp.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rcgelp_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="31179A17-A464-3D4A-CF53-1E6CFA5A8FE3"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="40453C0D-533C-C93A-153A-2302D638916A" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Drug" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.drug.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_drug_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="This is the very first job of the schdule .This job sets the Control Center's internal property 'BOOK_DATE' at the start of the schedule .&#xD;&#xD;If the server goes down before this job could get executed and remains down for 24hours, meaning it crosses the date and the server comes back up on the next date , we need to pass the date manually in YYYYMMDD format instead of using the shell command &quot;$(date +%Y%m%d)&quot;" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="408673A8-864B-E096-6708-E0B1222DAE22" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Set BIZ_DT" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_BIN/control_center/set_book_dt.ksh" executableType="PROGRAM" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="CLINICAL"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-26Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" description="This job subsets the IDS rcmsip file for given carrier id(s) and also calculates the records count and updates the control file." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="48C29A90-B8D3-8DB4-C5A5-188A32F6D374" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="IDS Subset - RCMSIP" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_rcmsip_pre_prod_cleanup_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-02-06Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rcmsip_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="553C48B5-EA0E-D3F0-FB5F-2308699431D8" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS GPI" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.gpi.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_gpi_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This Jobs runs the execution plan for MTM - MEBFC " durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="60827D85-EA20-92F8-D28E-B34069F88A82" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - MEBFC" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/execution_framework/exec_framework_intrvn.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-6"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-19Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads the result table for MTM - MEBFC" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="634BB1C1-A370-8510-9EFC-B34BC716010C" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Result Tables - MEBFC" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-6"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-09Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="60827D85-EA20-92F8-D28E-B34069F88A82"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="This job creates a file at the very end of the entire batch . The next day's schedule's &quot;CPP Batch Trigger&quot; job will wait for this file and won't start untill it finds this file . This was we are controlling the trigger of next day's schedule untill we make sure that previous day's schedule has run successfully." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="64B0487B-F13E-1F4F-C890-F7122E512138" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Create Batch End File" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="touch" executableType="PROGRAM" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="$AI_SERIAL_TEMP/cpp_cc_batch_trigger.ctl"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-05-11Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="8A4999ED-1263-B455-277A-F247F844A74F"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="PATIENT_MATCHING" description="This process uses the member file created in previous process and creates a file which would be loaded to member tables in ODS.&#xD;This process looks for the member in the ODS tables , if it finds one , it gets the existing Patient _ID to it otherwise it creates a new Patient_ID for the new member." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="6EA78FC7-2CB2-584C-D5CF-DFC89DCE6568" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Patient Matching - IDS Members" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/patient_matching" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/mbr_mtch.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-31Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="71662B5E-149F-4815-85BB-231BC6E7A9A8"/>
+        <predecessor jobDefinitionGuid="26C9E5EA-DF0A-9A65-0369-18B392AFA3D9"/>
+        <predecessor jobDefinitionGuid="31179A17-A464-3D4A-CF53-1E6CFA5A8FE3"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="71662B5E-149F-4815-85BB-231BC6E7A9A8" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS RCMSIP" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.rcmsip.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="48C29A90-B8D3-8DB4-C5A5-188A32F6D374"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="74E00A26-48AC-59DB-ED78-2399004BFE82" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Source Env" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.src_env.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-21Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_src_env_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This process reads the c_rules_config table , pulls the Express>IT configurations as well and does a CDC and finally insert / update the data to c_rules_config" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="777D8F94-1BD7-A7C6-3F92-2815536DC4DA" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Rules Config Table Update" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config/" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/static/c_rules_config_table_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-22Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="2993CA10-E4FA-8BEA-A865-DB5ADA905998"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="7EDA090A-6DD2-1DB5-4BC0-2319CA147723" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Product" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.product.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_product_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads the result table for MTM - PBS3650" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="7F99361D-E90E-A5F2-4294-B34260449D2D" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS load - Result Tables - PBS3650" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-7"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-09Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="D60623FD-0429-E98F-3FD0-B33BB44EEB25"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="8045B4FB-7D1D-2E59-7FDB-22FF1B69AB4B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Carrier" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.carrier.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_carrier_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads all the inbound ids files " durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="82790974-07EB-39FF-8F94-65339CB8B299" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - IDS Dimentional files" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_files_load_wrapper.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-02Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="Sends the success email notification" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="8A4999ED-1263-B455-277A-F247F844A74F" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Success Notification" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/send_mail.pset" executableType="GRAPH" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-05-10Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="DAAEB281-C699-76BE-DE2B-F0E11EB8145B"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" description="This process uses the pharmacy files created by &quot;Data Intake&quot; and creates an ICFF file having all the pharmacy claims . It keeps appending everyday's data to the same pharma ICFF file. Its dependent on &quot;member match&quot; file since it uses the lookups created by mbr_match plan." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="90AA0D85-CBA6-49E0-4ACE-23F3BFB48498" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Pharmacy Claims" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PLAN}/pharma_claim_intake_and_incr_load.plan" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-08-31Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="60" fileURL="$PUB_CLINICAL_DATAHUB_MFS_INBOUND/ids/f_claim_transaction_*.dat.gz" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="ECD9F7E8-BD0C-C283-1B3A-18C314DDE1C0"/>
+        <predecessor jobDefinitionGuid="31179A17-A464-3D4A-CF53-1E6CFA5A8FE3"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads the enumerated data created after daily initialization processes" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="9A5187FB-54BB-3C01-0104-654AD45A4A1D" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Enumerated Files" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/load" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/enum_files_load_wrapper.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-02Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+        <predecessor jobDefinitionGuid="82790974-07EB-39FF-8F94-65339CB8B299"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This Jobs runs the execution plan for MPDOVA " durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="9C9B6A38-FA62-F497-BE74-18BC23F204FB" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - PDPIND (eMTM)" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/execution_framework/exec_framework_intrvn.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="-INTVN_FILE_TYPE"/>
+        <argument isExpandable="false" value="EMTM"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-4"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-19Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="AB872FE2-1E42-79D3-1395-23227563C844" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS RCPRLP" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.rcprlp.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rcprlp_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="B09B734C-EAE2-AB2A-132C-18B781E4986E" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="IDS Subset - Member Elig" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/ids_to_cli/plan/ids_member_elig_pre_prod_cleanup_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-02-06Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_member_eligibility_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads the result table for MTM - PBS6458" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="B0CC88CF-B055-FD16-4D69-B34905272D56" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS load - Result Tables - PBS6458" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-8"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-09Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="1CE9F1CC-60A4-061A-3029-B33EA65A24E4"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="B9A5D051-472F-1BA7-2650-23093549293B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Med Code - ICD10" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.icd10.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/rci10p_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="This job triggers the entire CPP batch . It waits for a .ctl file which is always created manually . Basically this job is created to control the triggering of CPP batch" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="BD17CC2D-38C8-3A82-4866-0F7E6AF1144E" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="CPP Batch Trigger" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="mv" executableType="PROGRAM" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="$AI_SERIAL_TEMP/cpp_cc_batch_trigger.ctl"/>
+        <argument isExpandable="false" value="$PUB_CLINICAL_DATAHUB_SERIAL_ARCHIVE/cpp_cc_batch_trigger_${BIZ_DT}.ctl"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-03-26Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="120" fileURL="$AI_SERIAL_TEMP/cpp_cc_batch_trigger.ctl" isFirstMatchOnly1X50="false" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="408673A8-864B-E096-6708-E0B1222DAE22"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This Jobs runs the execution plan for MTM - PBS2229" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="C0989306-D78F-42D1-6DD6-B33FA3FF7CBF" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - PBS2229" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/execution_framework/exec_framework_intrvn.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-5"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-19Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job loads the result table for MTM - PBS2229" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="C4BEAF59-9165-85D9-88B8-B34A81F76F53" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Result Tables - PBS2229" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-5"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-09Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="C0989306-D78F-42D1-6DD6-B33FA3FF7CBF"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="CAF968B2-FF60-0362-F35E-23076887EB80" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Client" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.clt.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_client_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="TEMPLATE_CONFIG" description="This Jobs runs the execution plan for MTM - PBS3650" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="D60623FD-0429-E98F-3FD0-B33BB44EEB25" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Exec Framework - PBS3650 " objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/template_config" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/execution_framework/exec_framework_intrvn.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-7"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-19Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="04550BE9-CD32-63C8-E6D0-23C2746C9422"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="This job runs at the very end of the schedule and delete the unwanted files that are older than a perticular duration of time ." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="DAAEB281-C699-76BE-DE2B-F0E11EB8145B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Cleanup Files" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="ksh" executableType="PROGRAM" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="$AI_BIN/cleanup_files.ksh"/>
+        <argument isExpandable="false" value="${FILESYSTEM_ROOT}/enrichments"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-03-21Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="34B47F5B-254C-28E8-4E2D-2ED82EB6BF80"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="E0F489D3-A94D-8411-5478-23018DBA9ED1" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Carrier Acct" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.carrier_acct.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_carrier_acct_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="8045B4FB-7D1D-2E59-7FDB-22FF1B69AB4B"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="OTHER" description="This job creates the date directories for current date before the run of schedule" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Create Date Directories" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/jobs.daily.setup.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments>
+        <argument isExpandable="false" value="-TEST_FLAG"/>
+        <argument isExpandable="false" value="$AI_TEST_FLAG"/>
+      </arguments>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-03-08Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="BD17CC2D-38C8-3A82-4866-0F7E6AF1144E"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="E6AC2574-4F78-D3D8-6DE5-2318B3FAAFCC" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - IDS Plan" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_to_cli_cdc_plan.plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2016-12-20Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="600" fileURL="$PUB_CLINICAL_DATAHUB_SERIAL_CONTROL/ids/?_plan_????????_*.ctl" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" jobDefinitionGuid="ECD9F7E8-BD0C-C283-1B3A-18C314DDE1C0" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="IDS Subset - Pharmacy Claim" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/ids_to_cli/plan/ids_pharma_claim_pre_prod_cleanup_plan.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-02-06Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="60" fileURL="$PUB_CLINICAL_DATAHUB_MFS_INBOUND/ids/f_claim_transaction_*.dat.gz" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="ENRICHMENTS" durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGroupGuid="CB1CED0C-640B-5205-1B67-283C82D12621" jobDefinitionGuid="EE5688DF-4253-6C82-832C-28505A25C37B" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Data Intake - NAS Member TOC" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="${AI_PSET}/nas_to_cli/nas_to_cli_cdc_.plan.transition_in_care.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="30600" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value=""/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="NAS_RUN_DATES" mode="DAILY" startDate="2016-12-22Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="01:30:00"/>
+        </startTimes>
+      </timeConstraint>
+      <fileAndEventConstraints>
+        <fileConstraint fileRetryIntervalSec="300" fileURL="$NAS_DIR/DataIntake/Transition_Of_Care/toc_????????.dat" isFirstMatchOnly1X50="true" isRegExSyntax1X40="false" isRepeatableForFileCreationTime="false" propertyName1X30="IDS_FILE_NAME"/>
+      </fileAndEventConstraints>
+      <predecessors>
+        <predecessor jobDefinitionGuid="28F313F7-EB1E-4EB4-D7B3-74408906E490"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinition applicationName="LOAD" description="This job " durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="FCD5828D-C0F1-A978-4E02-60A2B43B8368" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="ODS Load - Results Table - PDPIND" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+    <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+    <mainAction executablePath="$AI_PSET/exec_framework/run_load_process.pset" executableType="PLAN" workingDirectory="${RUN}">
+      <arguments/>
+    </mainAction>
+    <expirationStart durationSec="86400" isEnabled="true" isNotification="false"/>
+    <properties>
+      <property isWildcard="false" name="CLT_ID" value="CS-4"/>
+      <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+      <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    </properties>
+    <constraintSet>
+      <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-01-09Z">
+        <startTimes timeZoneId="EST5EDT">
+          <singleTimepoint startTime="23:00:00"/>
+        </startTimes>
+      </timeConstraint>
+      <predecessors>
+        <predecessor jobDefinitionGuid="9C9B6A38-FA62-F497-BE74-18BC23F204FB"/>
+      </predecessors>
+    </constraintSet>
+  </jobDefinition>
+
+  <jobDefinitionGroup applicationName="ENRICHMENTS" description="This job group has all the data intake inbound jobs reading the ids data from IDS inbound directory and creating a  CLI format file for reference lookup pruposes . These jobs also do CDC on full files ." jobDefinitionGuid="A9F33087-CCDF-3F93-8AA2-1E5E41C3E5BF" name="Data Intake - IDS Dimensions" objectVersion="1.120" systemName="CLINICAL">
+    <predecessors>
+      <predecessor jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D"/>
+    </predecessors>
+  </jobDefinitionGroup>
+
+  <jobDefinitionGroup applicationName="ENRICHMENTS" description="This job group holds all the data intake jobs that read the files from NAS drive . Mostly there are 5 files coming from NAS .&#xD;CPT Code&#xD;CPT Mod Code&#xD;Snomed Code&#xD;Member List&#xD;Member TOC" jobDefinitionGuid="CB1CED0C-640B-5205-1B67-283C82D12621" name="Data Intake - NAS Dimensions" objectVersion="1.120" systemName="CLINICAL">
+    <predecessors>
+      <predecessor jobDefinitionGuid="E5C5571A-2E36-B96D-44F8-B316EE68258D"/>
+    </predecessors>
+  </jobDefinitionGroup>
+
+</opsSchedule>

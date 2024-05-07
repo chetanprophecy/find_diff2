@@ -1,0 +1,20 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  cms_unit_rebate_offset_amt_id /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=11)  product_id /*CHAR(11) NOT NULL*/;
+  decimal("\x01",0)  rebate_year_quarter /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  reported_year_quarter /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  record_correction_type_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  decimal("\x01".6, maximum_length=13, sign_reserved)  unit_rebate_offset_amount /*DECIMAL(11,6) NOT NULL*/;
+  decimal("\x01",0)  input_file_line_no /*INTEGER NOT NULL*/;
+  decimal("\x01",0)  uroa_load_run_id /*BIGINT NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  uroa_rec_create_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  uroa_rec_create_userid /*CHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  uroa_last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  uroa_last_upd_userid /*CHAR(16) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  newline =  "\n";
+end

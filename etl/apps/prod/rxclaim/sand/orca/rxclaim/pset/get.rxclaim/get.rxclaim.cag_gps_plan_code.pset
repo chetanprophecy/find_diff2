@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.csv.interim.pset
+TARGET_NAME||||rxclaim.cag_gps_plan_code
+RFMT_TRANSFORM||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\ninclude '~$AI_XFR/bre_helper.map.xfr';\n\n/*@\ndependency_analysis:\n[\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.employer_group_id,'employer_group_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.source_environment_key,'source_environment_key',1,0]\n     [out0.gps_plan_code,'gps_plan_code',1,0]\n     [out0.account_id,'account_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.account_id,'account_id',1,1]\n     [in0.employer_group_id,'employer_group_id',1,1]\n     [in0.gps_plan_code,'gps_plan_code',1,1]\n     [in0.carrier_id,'carrier_id',1,1]\n     [in0.source_environment_key,'source_environment_key',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\n\n\n\n  out0.*::in0.*;\n\nend;\n
+LOOKUP_FIELDS_KEY||||{}
+INPUT_FILE_PATTERN||||CAG_GPS_PLAN_CODE.csv
+DO_CLEAN||||0
+DO_LOOKUP||||1
+LOOKUP_KEY||||{carrier_id; account_id; employer_group_id}
+RECORD_SEPARATOR|$|||'\\r\\n'

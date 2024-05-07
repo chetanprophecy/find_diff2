@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcmp2p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmp2p                  ababcd,abaacd,abaccd,abadcd,abavcd,abh5hs,abc2i1,abqohg,abqphg,abgrcd,abelnb,abdfhc,abdhhc,abdehc,abdghc,abcqhc,abweh8,abwfh8,abakvn,abc2dt,abadtm,abalvn,abadvn,abbmdt,ababtm,abaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[if (DAILY_FLAG != "Y")   if (CARRIER_ID_MIN == "*")   "WHERE RCMP2P.ABBMDT  between " + string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS"   else    "WHERE RCMP2P.ACAACD between '" + CARRIER_ID_MIN + "' AND '" + CARRIER_ID_MAX + "'  and RCMP2P.ABBMDT  between " +      string_lrtrim((string(''))((decimal(''))START_DATE-19000000)) + " and " + string_lrtrim((string(''))((decimal(''))END_DATE-19000000) )+     " OPTIMIZE FOR ALL ROWS" else  if (START_CHANGES_TIME != '')     "WHERE RCMP2P.ABBMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +     " AND RCMP2P.ABBMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"   else     "WHERE RCMP2P.ABBMDT >= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +     " AND RCMP2P.ABBMDT  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +     " OPTIMIZE FOR ALL ROWS"  ]
+ENABLE_DEFAULT_RULES||||True

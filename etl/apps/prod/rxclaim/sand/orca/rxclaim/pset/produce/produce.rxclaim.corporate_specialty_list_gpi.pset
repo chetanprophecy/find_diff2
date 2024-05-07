@@ -1,0 +1,13 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_MFS/clean.rxclaim/clean.rxclaim.corporate_specialty_list_gpi.${RUN_ID}.dat.gz
+MAPPING_XFR|$|||$AI_XFR/produce/produce.rxclaim.corporate_specialty_list_gpi_rfmt.xfr
+USE_SORT||||True
+ROLLUP_XFR||||
+INPUT_FILE_PATH||||$AI_MFS/clean.rxclaim/clean.rxclaim.corporate_specialty_drug_list.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.corporate_specialty_drug_list.dml
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxclaim/clean.rxclaim.corporate_specialty_list_gpi.dml
+SORT_KEY||||{gpi_id}
+USE_DEDUP||||True
+DEDUP_KEY||||{gpi_id}
+FILTER_EXPR|$|||MDL_TERM_DATE > (date("MM/DD/YYYY"))(date("YYYYMMDD"))(datetime("YYYYMMDDHH24MISS"))now1()
+POST_FILTER_EXPR||||

@@ -1,0 +1,57 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_592fb975_227_3 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_bnch_seg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_bnch_seg.cag_sk,[passthrough],in0.cag_sk]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_bnch_seg.perd_type_sk,'d_bnch_seg.perd_type_sk',1,0]
+     [out0.d_bnch_seg.src_env_sk,'d_bnch_seg.src_env_sk',1,0]
+     [out0.d_bnch_seg.perd_start_dt_sk,'d_bnch_seg.perd_start_dt_sk',1,0]
+     [out0.d_bnch_seg.buss_seg_sk,'d_bnch_seg.buss_seg_sk',1,0]
+     [out0.d_bnch_seg.cag_sk,'d_bnch_seg.cag_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.perd_start_dt_sk,'perd_start_dt_sk',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.perd_type_sk,'perd_type_sk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.buss_seg_sk,'buss_seg_sk',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_bnch_seg_perd_type_sk = fail_if_error(in0.perd_type_sk);
+let decimal("\x01",0) d_bnch_seg_perd_start_dt_sk = fail_if_error(in0.perd_start_dt_sk);
+let decimal("\x01",0) d_bnch_seg_buss_seg_sk = fail_if_error(in0.buss_seg_sk);
+let decimal("\x01",0) d_bnch_seg_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) d_bnch_seg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.d_bnch_seg.perd_type_sk::d_bnch_seg_perd_type_sk;
+  out0.d_bnch_seg.perd_start_dt_sk::d_bnch_seg_perd_start_dt_sk;
+  out0.d_bnch_seg.buss_seg_sk::d_bnch_seg_buss_seg_sk;
+  out0.d_bnch_seg.cag_sk::d_bnch_seg_cag_sk;
+  out0.d_bnch_seg.src_env_sk::d_bnch_seg_src_env_sk;
+  out0.*::in0.*;
+
+end;

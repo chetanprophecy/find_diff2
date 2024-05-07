@@ -1,0 +1,17 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.ids_rxclaim/lookup.ids_rxclaim.d_med_limit_thrshld.dat
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.ids_rxclaim.d_med_limit_thrshld_rfmt.xfr
+USE_SORT||||True
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_PATH||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_rxclaim/one/d_med_limit_thrshld.dat.gz
+INPUT_FILE_DML|$|||$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.d_med_limit_thrshld.dml
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.ids_rxclaim/lookup.ids_rxclaim.d_med_limit_thrshld.dml
+USE_SCAN||||False
+SORT_KEY||||{dur_tbl_nm; dur_srvc_nm; med_limit_resp; med_limit_new_mbr; med_limit_ir_flg; src_env_sk}
+USE_DEDUP||||True
+EXTRA_SORT_KEY||||{med_limit_from_dt descending; ids_updt_dttm descending}
+DEDUP_KEY||||{dur_tbl_nm; dur_srvc_nm; med_limit_resp; med_limit_new_mbr; med_limit_ir_flg; src_env_sk}
+LOOKUP_KEY||||{dur_tbl_nm; dur_srvc_nm; med_limit; src_env_sk}

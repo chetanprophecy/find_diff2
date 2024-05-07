@@ -1,0 +1,266 @@
+record
+  string("\x01", maximum_length=10) c7aecd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: Plan Code"
+ BizComment:"Code used to identify a specific plan.  This code combined with a plan effective date uniquely identifies the plan in the RxCLAIM system."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c7akdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPDCP: Plan Eff Date"
+ BizComment:"The date plan/benefit became effective.  Claims submitted prior to this date will not be accepted."
+@*/;
+  string("\x01", maximum_length=1) c7ilst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC DEA Code"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=2) c7szao /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1) c7s0ao /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xpbs /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=1) c7imst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC DEA Status"
+ BizComment:"When the override drug status is set to '*', no override, then the other specified details are used but the current drug status is not changed. :LINES. * = No Override a = Plan Default h = Override-List/PA Dtls  2 x = O Non-Form w/msg; Form y = Y Form; Non-Form w/Msg z = Y Form; Non-Form Reject B = No Prescrptn Drug Benefit C = Paid Non-Formulary w/ Msg F = Formulary G = Paid Non-Formulary w/oMsg H = Formulary Captured K = Formulary(SkipDed/BenMax) L = Non-Form (SkipDed/BenMax) M = Message N = Non-Formulary Reject O = Override P = Prior Authorization R = Reject S = Formulary(NoDed/BenAccum) T = Non-Form (NoDed/BenAccum) 3 = Override-Use List/PA Dtls 5 = Formulary 5 6 = Formulary 6 7 = Non-Formulary Captured 8 = Non-Preferred Form Reject 9 = Y Pd NFw/oMSG;Pd NFw/MSG :ELINES."
+@*/;
+  string("\x01", maximum_length=1) c7ukcj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC DEA Active Flag"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7ulcj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Dispensing Edit Flag"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) c7ybc4 /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Message Cde"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7umcj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Message Type"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xzn2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Min Days Supply"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x0n2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Max Days Supply 1"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x1n2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Max Days Supply 2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x2n2 /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Maximum Quantity"
+ BizComment:"Fill Qualifier"
+@*/;
+  string("\x01", maximum_length=1) c7uncj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Comp Days Supply/Qty"
+ BizComment:"L: Lower of,Not >Than Either :P. H: Not > Both; non ea (Qty>) :PC. Both Days Supply and Quantity must exceed set limits to fail.  For non-eaches, Quantity is always assumed to be greater than the set limit. :P. U: Not > Both; non ea (Qty<) :PC. Both Days Supply and Quantity must exceed set limits to fail.  For non-eaches, Quantity is always assumed to be less than the set limit. :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) c7x3n2 /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr per Calendar Yr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7gth6 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Prescriber Edit"
+ BizComment:"This flag is used to optionally validate the submitted Prescriber ID against the DEA algorithm. :P. Valid values are: :P. Y = Yes, verify that the submitted Prescriber ID meets the DEA algorithm. This value will verify that the submitted Prescriber ID meets the DEA algorithm. :P. N = No edit. This value performs no check against the submitted Prescriber ID. :P. 1 = Verify if the Submitted Prescriber ID has a DEA ID. :P. 2 = Vrfy Prescrbr DEA Class;P: The system first checks if the Prescriber has a DEA ID, then checks if the claim's fill date is prior to the DEA ID renewal date, then checks if the DEA ID has a DEA Class that corresponds to the product's DEA Class. The system will continue processing a claim if the claim fails any of the above checks. A message is returned indicating the prescriber does not have the proper DEA Class to prescribe the drug. :P. 3 = Vrfy Prescrbr DEA Class;R: The system first checks if the Prescriber has a DEA ID, then checks if the claim's fill date is prior to the DEA ID renewal date, then checks if the DEA ID has a DEA Class that corresponds to the product's DEA Class.  The system will reject a claim if the claim fails any of the above checks. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=6) c7i6he /*CHAR(6) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Prescriber Network ID"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7yri1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Pres Network Status"
+ BizComment:"Prescriber Network status field is used to Include/Exclude Prescriber ID's from the DEA edit. The Prescriber Network field must be populated if the Prescriber Network Status field is Include/Exclude.  The Prescriber Network field must be left blank if the Prescriber Network Status field is All. :LINES. A - All E - Exclude I - Include :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=3, sign_reserved) c7f4hu /*DECIMAL(2) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Max Refills"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7ljid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Fill Qualifier"
+ BizComment:"G=GPI N=NDC"
+@*/;
+  string("\x01", maximum_length=2) c7llid /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Wildcard"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7lkid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Fill Limit Period"
+ BizComment:"*Blank D=Specified Days L=Lifetime (Full History) M=Month (Calendar) Q=Quarter (Calendar) Y=Year (Calendar)"
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7f2hu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Fill Limit Days"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7f3hu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Fill Limit Number"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7zwaj /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Refill Level"
+ BizComment:"For the specified DEA class, this allows to perform refill checking across various C/A/G for a given member ID. :P. This field can contain one of the following values: :P. A = Carrier/Account: If the carrier, account, and member ID are the same, then the group may change and the claim will check for refill limitations. :P. C = Carrier: If the carrier and member ID are the same, then the account and group may change and the claim will still check for refill limitations. :P. G = Carrier/Account/Group: (Default value) If the carrier, account, group, and member ID are the same, then the claim will check for refill limitations.  If any of the remaining keys to the member change, then refill checking will not be performed. :P. M = Member ID: If the member ID is the same, then the carrier, account, or group may change and the claim will check for refill limitations."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7phal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 1"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pral /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 1"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pial /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7psal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 2"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pjal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 3"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7ptal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 3"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pkal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 4"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pual /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 4"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7plal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 5"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pval /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 5"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pmal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 6"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pwal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 6"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pnal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 7"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pxal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 7"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7poal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 8"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pyal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 8"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7ppal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 9"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pzal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 9"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7pqal /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Nbr of Days Supply 10"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7p0al /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC Days Supply Used % 10"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) c7p8ak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPDCP: PDC DEA Class Comparision"
+ BizComment:"Indicates whether the first character of a Prescriber's DEA Class is compared to the Product's DEA Class or the full Prescriber's DEA Class is compared to the Product's DEA Class. 1 - Compare first character: Compares the product DEA Class to only the first digit of a Prescriber's DEA Class. 2 - Compare all characters: Compares the product DEA Class to the two-byte Prescriber DEA Class. Trailing spaces are truncated if the Prescriber DEA Class contains only one digit."
+@*/;
+  string("\x01", maximum_length=1) c7z6am /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=5, sign_reserved) c7lxao /*DECIMAL(4) NOT NULL*/;
+  string("\x01", maximum_length=10) c7xzhp /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=2) c7lyao /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1) c7xzat /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) c7ylat /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) c7fhcg /*DECIMAL(8) NOT NULL*/;
+  decimal("\x01",0, maximum_length=9, sign_reserved) c7ficg /*DECIMAL(8) NOT NULL*/;
+  string("\x01", maximum_length=10) c7j8vh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) c7j9vh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) c7wyav /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) c7wzav /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kavh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kbvh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kcvh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kdvh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w0av /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w1av /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kevh /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) c7kfvh /*CHAR(10) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xqbs /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w2av /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xrbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xsbs /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w3av /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w4av /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xtbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xubs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xvbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xwbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xxbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xybs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7xzbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x0bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x1bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x2bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x3bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x4bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x5bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x6bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x7bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x8bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7x9bs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7yabs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7ybbs /*DECIMAL(3) NOT NULL*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) c7ycbs /*DECIMAL(3) NOT NULL*/;
+  string("\x01", maximum_length=1) c7w5av /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=10) c7akvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c7c2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPDCP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) c7adtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPDCP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) c7alvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) c7advn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) c7bmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPDCP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) c7abtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPDCP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) c7aevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPDCP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

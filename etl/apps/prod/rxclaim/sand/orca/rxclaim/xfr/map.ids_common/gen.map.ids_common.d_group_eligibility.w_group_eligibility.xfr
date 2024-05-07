@@ -1,0 +1,119 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a1e8e14_7e73_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.w_grp_elg.insert_ts,[passthrough],in0.ids_create_dttm]
+  [out0.w_grp_elg.formulary_desc,[transform],]
+  [out0.w_grp_elg.plan_name,[transform],]
+  [out0.w_grp_elg.plan_effective_date,[transform],in0.pln_eff_dt]
+  [out0.w_grp_elg.plan_code,[passthrough],in0.pln_cd]
+  [out0.w_grp_elg.formulary_code,[transform],]
+  [out0.w_grp_elg.gel_thru_date,[transform],in0.gel_thru_dt]
+  [out0.w_grp_elg.plan_terminate_date,[transform],]
+  [out0.w_grp_elg.gel_from_date,[transform],in0.gel_eff_dt]
+  [out0.w_grp_elg.situs_state,[transform],]
+  [out0.w_grp_elg.update_ts,[passthrough],in0.ids_updt_dttm]
+  [out0.w_grp_elg.client_benefit_code,[passthrough],in0.gel_clt_benefit_cd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.w_grp_elg.insert_ts,'w_grp_elg.insert_ts',1,0]
+     [out0.w_grp_elg.carrier_id,'w_grp_elg.carrier_id',1,0]
+     [out0.w_grp_elg.formulary_desc,'w_grp_elg.formulary_desc',1,0]
+     [out0.w_grp_elg.plan_name,'w_grp_elg.plan_name',1,0]
+     [out0.w_grp_elg.plan_effective_date,'w_grp_elg.plan_effective_date',1,0]
+     [out0.w_grp_elg.plan_code,'w_grp_elg.plan_code',1,0]
+     [out0.w_grp_elg.dxf_sk,'w_grp_elg.dxf_sk',1,0]
+     [out0.w_grp_elg.formulary_code,'w_grp_elg.formulary_code',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.w_grp_elg.gel_thru_date,'w_grp_elg.gel_thru_date',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.w_grp_elg.src_env_sk,'w_grp_elg.src_env_sk',1,0]
+     [out0.w_grp_elg.plan_terminate_date,'w_grp_elg.plan_terminate_date',1,0]
+     [out0.w_grp_elg.gel_from_date,'w_grp_elg.gel_from_date',1,0]
+     [out0.w_grp_elg.account_id,'w_grp_elg.account_id',1,0]
+     [out0.w_grp_elg.dxf_hk_part2,'w_grp_elg.dxf_hk_part2',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.w_grp_elg.situs_state,'w_grp_elg.situs_state',1,0]
+     [out0.w_grp_elg.dxf_hk_part1,'w_grp_elg.dxf_hk_part1',1,0]
+     [out0.w_grp_elg.update_ts,'w_grp_elg.update_ts',1,0]
+     [out0.w_grp_elg.client_benefit_code,'w_grp_elg.client_benefit_code',1,0]
+     [out0.w_grp_elg.employer_group_id,'w_grp_elg.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.account_id,'account_id',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.ids_updt_dttm,'ids_updt_dttm',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.employer_group_id,'employer_group_id',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pln_cd,'pln_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.gel_clt_benefit_cd,'gel_clt_benefit_cd',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.ids_create_dttm,'ids_create_dttm',1,1]
+     [in0.gel_thru_dt,'gel_thru_dt',1,1]
+     [in0.gel_eff_dt,'gel_eff_dt',1,1]
+     [in0.pln_eff_dt,'pln_eff_dt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) w_grp_elg_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) w_grp_elg_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) w_grp_elg_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=9) w_grp_elg_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_grp_elg_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) w_grp_elg_employer_group_id = fail_if_error(in0.employer_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_gel_from_date = fail_if_error((date("YYYY-MM-DD"))(date("YYYYMMDD"))in0.gel_eff_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_gel_thru_date = fail_if_error((date("YYYY-MM-DD"))(date("YYYYMMDD"))in0.gel_thru_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_client_benefit_code = fail_if_error(in0.gel_clt_benefit_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_plan_code = fail_if_error(in0.pln_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_plan_effective_date = fail_if_error((date("YYYY-MM-DD"))(date("YYYYMMDD"))in0.pln_eff_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_plan_terminate_date = "1800-01-01";
+let string("\x01",charset="iso-8859-15", maximum_length=25) w_grp_elg_plan_name = "";
+let string("\x01",charset="iso-8859-15", maximum_length=2) w_grp_elg_situs_state = "";
+let string("\x01",charset="iso-8859-15", maximum_length=10) w_grp_elg_formulary_code = "";
+let string("\x01",charset="iso-8859-15", maximum_length=25) w_grp_elg_formulary_desc = "";
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") w_grp_elg_insert_ts = fail_if_error(in0.ids_create_dttm);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") w_grp_elg_update_ts = fail_if_error(in0.ids_updt_dttm);
+let decimal("\x01",0) w_grp_elg_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+  out0.w_grp_elg.dxf_hk_part1::w_grp_elg_dxf_hk_part1;
+  out0.w_grp_elg.dxf_hk_part2::w_grp_elg_dxf_hk_part2;
+  out0.w_grp_elg.dxf_sk::w_grp_elg_dxf_sk;
+  out0.w_grp_elg.carrier_id::w_grp_elg_carrier_id;
+  out0.w_grp_elg.account_id::w_grp_elg_account_id;
+  out0.w_grp_elg.employer_group_id::w_grp_elg_employer_group_id;
+  out0.w_grp_elg.gel_from_date::w_grp_elg_gel_from_date;
+  out0.w_grp_elg.gel_thru_date::w_grp_elg_gel_thru_date;
+  out0.w_grp_elg.client_benefit_code::w_grp_elg_client_benefit_code;
+  out0.w_grp_elg.plan_code::w_grp_elg_plan_code;
+  out0.w_grp_elg.plan_effective_date::w_grp_elg_plan_effective_date;
+  out0.w_grp_elg.plan_terminate_date::w_grp_elg_plan_terminate_date;
+  out0.w_grp_elg.plan_name::w_grp_elg_plan_name;
+  out0.w_grp_elg.situs_state::w_grp_elg_situs_state;
+  out0.w_grp_elg.formulary_code::w_grp_elg_formulary_code;
+  out0.w_grp_elg.formulary_desc::w_grp_elg_formulary_desc;
+  out0.w_grp_elg.insert_ts::w_grp_elg_insert_ts;
+  out0.w_grp_elg.update_ts::w_grp_elg_update_ts;
+  out0.w_grp_elg.src_env_sk::w_grp_elg_src_env_sk;
+  out0.*::in0.*;
+
+end;

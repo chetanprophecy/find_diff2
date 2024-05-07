@@ -1,0 +1,70 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.mbr_member_id :: in.agabcd;
+  out.car_carrier_id:: in.agaacd;
+  out.acc_account_id:: in.agaccd;
+  out.grp_group_id:: in.agadcd;
+  out.seq_nbr:: in.agvuhu;
+  out.status:: in.ago9ie;
+  out.from_date:: in.agkihk;
+  out.thru_date:: in.agkjhk;
+  out.total_risk_score:: in.agi3ik;
+  out.event:: in.agpaie;
+  out.model:: in.agpohj;
+  out.rx_risk_score:: in.agi6ik;
+  out.rxs_rxclaim_nbr:: in.agp2nb;
+  out.tcd_claim_seq_nbr_999s_comp:: in.agoinb;
+  out.tcd_sbm_product_id:: in.agric4;
+  out.grouper_version:: in.agpqhj;
+  out.aic:: in.agt4am;
+  out.total_rxgaps:: in.agvgam;
+  out.arthritis_code:: in.agprhj;
+  out.asthma_code:: in.agpshj;
+  out.rxgap_asthma:: in.agt5am;
+  out.mpr_asthma:: in.agt6am;
+  out.csa_asthma:: in.agt7am;
+  out.esrd_chrncrenalfail:: in.agpthj;
+  out.congstv_heartfailre:: in.agpuhj;
+  out.depression_code:: in.agpvhj;
+  out.diabetes_code:: in.agpwhj;
+  out.rxgap_diabetes:: in.agt8am;
+  out.mpr_diabetes:: in.agt9am;
+  out.csa_diabetes:: in.aguaam;
+  out.hyperlipidemia_code:: in.agpxhj;
+  out.rxgap_disdrlipidmet:: in.agubam;
+  out.mpr_disdrlipidmet:: in.agucam;
+  out.csa_disdrlipidmet:: in.agudam;
+  out.hiv:: in.agckhp;
+  out.rxgap_hiv:: in.agueam;
+  out.mpr_hiv:: in.agufam;
+  out.csa_hiv:: in.agugam;
+  out.hypertension_code:: in.agpyhj;
+  out.hypothyroidism:: in.agclhp;
+  out.rxgap_hypothyroid:: in.aguham;
+  out.mpr_hypothyroid:: in.aguiam;
+  out.csa_hypothyroid:: in.agujam;
+  out.event_time:: in.agpzhj;
+  out.claim_status:: in.agsvie;
+  out.add_user_name:: in.agakvn;
+  out.add_date:: if ( in.agc2dt > 0)
+                        in.agc2dt + 19000000
+                     else
+                         0 ;
+  out.add_time:: in.agadtm;
+  out.add_program_name:: in.agalvn;
+  out.chg_user_name:: in.agadvn;
+  out.chg_date::  if ( in.agbmdt > 0)
+                        in.agbmdt + 19000000
+                     else
+                         0 ;
+  out.chg_time:: in.agabtm;
+  out.chg_program_name:: in.agaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

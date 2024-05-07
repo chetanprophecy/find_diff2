@@ -1,0 +1,238 @@
+// Usage: include "/~$PUB_DXF_XFR/ace_format.xfr";
+// This file is included in ACE templates via <TemplateExpressionPackage>.
+
+/* Tests:
+ksh <<'!'
+. ./ab_project_setup.ksh .
+export AB_INCLUDE_FILES=$PUB_DXF_XFR/ace_format.xfr
+m_eval 'ds_name("get.foo.bar.dat.gz")' # "foo.bar"
+m_eval 'no_cr("foo\rbar\r\nbaz")' # "foo\nbar\nbaz"
+m_eval 'bold("foo\rbar\r\nbaz")' # "<b>foo\nbar\nbaz<b>"
+m_eval 'show_key("{a; b interval_bottom; c interval_top}", "record int a//@BizName:AAA\n,b,c;end")' # "{a; b interval_bottom; c interval_top}\na: AAA"
+m_eval 'show_key("{a; b}", "record int a//@BizName:AAA\n,b,c;end")' # "{a; b}\na: AAA"
+m_eval 'show_key("{a; b.c}", "record int a;record int c;end b;end")' # "{a; b.c}\n"
+m_eval 'show_key("{a; b.c}", "record int a;record int c//@BizName:CCC\n;end b;end")' # "{a; b.c}\nb.c: b: CCC"
+m_eval 'show_key("{a; b.c}", "record int a;record int c//@BizName:CCC BizComment:ThisIsAComment\n;end b;end")' # "{a; b.c}\nb.c: b: CCC\n<i>ThisIsAComment</i>\n"
+m_eval 'show_key("{a; b.c}", "record int a;record int c//@BizName:CCC Broken.\n;end b;end")' # "{a; b.c}\n"
+m_eval 'count_fields("record int a;record int c//@BizName:CCC Broken.\n;end b;end")' # 2
+m_eval 'count_fields("record int a;record string(1) c; void(int) d;end b;end")' # 3
+m_eval 'count_fields("record int[5] a;record string(1) c; void(int) d;end[int] b;end")' # 3
+m_eval 'get_field_name_vec("record int a;record int c//@BizName:CCC Broken.\n;end b;end")' # 2
+m_eval 'get_field_name_vec("record int a;record string(1) c; void(int) d;end b;end")' # 3
+m_eval 'get_field_name_vec("record int[5] a;record string(1) c; void(int) d;end[int] b;end")' # 3
+!
+*/
+
+
+/* Returns the Dataset Name, without the type prefix or file suffix. */
+out :: ds_name(dataset_name) =
+begin
+  out :: re_replace(dataset_name, "(^get[.]|^source[.]|^clean[.]|^ilm[.]{SOURCE}[.]|[.]dat$|[.]dat[.]gz$)", "");
+end;
+
+
+//
+// Flex/HTML Formating Functions:
+//
+
+/* Removes a Carriage Return if it proceeds a Newline and turns a lone Carriage Return into a Newline. */
+out :: no_cr(str) =
+begin
+  out :: re_replace(str, "\r\n?", "\n");
+end;
+
+
+/* Wraps a string with the HTML markup for bold. */
+out :: bold(str) =
+begin
+  out :: "<b>" + no_cr(str) + "</b>";
+end;
+
+
+/* Wraps a string with the HTML markup for a fixed-width font. */
+out :: fixed_font(str) =
+begin
+  out :: '<font face="courier,fixedsys,monospace,monaco,consolas">' + no_cr(str) + '</font>';
+end;
+
+
+//
+// Display Functions:
+//
+
+/* Formats a key against the given DML and displays the key fields along with their BizName and BizComments. */
+out :: show_key(key, top_dml) =
+begin
+  let info_vec = record_info(top_dml);
+  let match = info_vec[0];  // This just gives us a place to set the name for vector_select.
+  let msg_vec = for ( let key_field in key_info(key) ) :
+    begin
+      let dml = top_dml;
+      let string(long)[long] biz_name_vec = [vector];
+      let string(long) biz_name = "";
+      let string(long) biz_comment = "";
+      for ( let key_part in string_split(key_field.field_name, ".") ) begin
+        info_vec = record_info(dml);
+        match.name = key_part;
+        match = vector_select(info_vec, match, {name})[0];
+        dml = match.dml_type;  // In case we iterate.
+        begin
+          let sc_vec = first_defined(
+            first_without_error(
+              scomment_info(match.scomment).parts,
+              [vector]),
+            [vector]);
+          let bn_vec = for ( let sc in sc_vec ) :
+            if ( sc.name == "BizName" )
+              sc.value;
+          let bn = first_without_error(bn_vec[0], key_part);
+          let bc_vec = for ( let sc in sc_vec ) :
+            if ( sc.name == "BizComment" )
+              sc.value;
+          biz_name_vec = vector_append(biz_name_vec, bn);
+          
+          biz_comment = first_without_error("\n<i>" + bc_vec[0] + "</i>\n", "");
+        end
+      end
+      if ( string_join(biz_name_vec, ".") != key_field.field_name )
+        biz_name = ": " + string_join(biz_name_vec, ": ");
+      result :: if (biz_name != "" or biz_comment != "" )
+        key_field.field_name + biz_name + biz_comment;
+    end;
+  out :: re_replace(key, "; *", "; ") + "\n\n" + string_join(msg_vec, "\n");
+end;
+
+//
+// Documentation Transform Functions:
+//
+
+/* Parses a Documentation Transform and extracts all the "words" (letters, numbers, period, and underscore) found within. */
+out :: rule_word_vec(doc_transform) =
+begin
+  out :: vector_sort_dedup_first(
+    re_split_no_empty(doc_transform, "[^._a-zA-Z0-9]+"));
+end;
+
+/* Returns a vector of Input Field Names for the given Documentation Transform. */
+out :: rule_input_vec(doc_transform) =
+begin
+  out :: for ( let w in rule_word_vec(doc_transform) ) :
+    if ( w != "in." and starts_with(w, "in.") or
+         w != "in0." and starts_with(w, "in0.") )
+      (string(long))re_replace(w, "^in0?[.]", "");
+end;
+
+/* Returns a vector of Output Field Names for the given Documentation Transform. */
+out :: rule_output_vec(doc_transform) =
+begin
+  out :: for ( let w in rule_word_vec(doc_transform) ) :
+    if ( w != "out0." and starts_with(w, "out0.") )
+      (string(long))re_replace(w, "^out0[.]", "");
+end;
+
+
+/* Returns a count of the number of "leaf" fields. */
+out :: count_fields(dml) =
+begin
+  let long count = 0;
+  let long temp_count;
+
+  for ( let f in record_info(dml) )
+    switch ( f.form )
+      case "function":
+        NULL;
+      case "record", "union":
+        count = count + count_fields(f.dml_type);
+      case "vector": begin
+        temp_count = count_fields(re_replace(f.dml_type, "[[][^[]+$", ""));
+        if ( temp_count == 0 )
+          count = count + 1;
+        else
+          count = count + temp_count;
+      end
+      default:
+        count = count + 1;
+    end;
+  out :: count;
+end;
+
+
+/* Returns a vector of "leaf" field names. */
+out :: get_field_name_vec(dml, prefix = "") =
+begin
+  let string(long)[long] field_name_vec = [vector];
+  let string(long)[long] temp_vec;
+
+  for ( let f in record_info(dml) )
+    switch ( f.form )
+      case "function":
+        NULL;
+      case "record", "union":
+        field_name_vec = vector_concat(field_name_vec, get_field_name_vec(f.dml_type, prefix + f.name + "."));
+      case "vector": begin
+        temp_vec = get_field_name_vec(re_replace(f.dml_type, "[[][^[]+$", ""), prefix + f.name + "[].");
+        if ( temp_vec == [vector] )
+          field_name_vec = vector_append(field_name_vec, prefix + f.name);
+        else
+          field_name_vec = vector_concat(field_name_vec, temp_vec);
+      end
+      default:
+        field_name_vec = vector_append(field_name_vec, prefix + f.name);
+    end;
+  out :: field_name_vec;
+end;
+
+
+/* Returns a Summary and Comparison of two Documentation Transforms. */
+out :: summarize_rule(doc_transform, string(long) doc_transform_2, input_dml, output_dml) =
+begin
+  let in_rule_fields_vec = rule_input_vec(doc_transform);
+  let out_rule_fields_vec = rule_output_vec(doc_transform);
+  let in_dml_fields_vec = get_field_name_vec(input_dml);
+  let out_dml_fields_vec = get_field_name_vec(output_dml);
+  let in_unused_fields_vec = vector_difference(in_dml_fields_vec, in_rule_fields_vec);
+  let out_unused_fields_vec = vector_difference(out_dml_fields_vec, out_rule_fields_vec);
+  let matching_unused_fields_vec = vector_intersection(in_unused_fields_vec, out_unused_fields_vec);
+  let num_in_used = length_of(in_rule_fields_vec) + length_of(matching_unused_fields_vec);
+  let num_in_fields = length_of(in_dml_fields_vec);
+  let num_out_used = length_of(out_rule_fields_vec);
+  let num_out_fields = length_of(out_dml_fields_vec);
+  let line_vec = re_split_no_empty(doc_transform, "[\r\n]+");
+  let line_vec_2 = re_split_no_empty(doc_transform_2, "[\r\n]+");
+  let num_diff = length_of(vector_difference(line_vec, line_vec_2));
+  out :: printf("Uses %d of %d input field%s to populate %d of %d output field%s.",
+    num_in_used,  num_in_fields,  if (num_in_fields  == 1) "" else "s",
+    num_out_used, num_out_fields, if (num_out_fields == 1) "" else "s") +
+    (if ( is_null(doc_transform_2) ) "" else
+      printf("\n%d line%s different from the other rule.",
+        num_diff, if (num_in_used == 1) "" else "s")) +
+    (if ( length_of(out_unused_fields_vec) == 0 ) "" else
+      "\n<b>Unassigned:</b>\n" +
+      string_join(vector_slice(vector_sort(out_unused_fields_vec), 0, 3), "\n") +
+      if ( length_of(out_unused_fields_vec) <= 4 ) "" else "\n...") +
+    (if ( length_of(in_unused_fields_vec) == 0 ) "" else
+      "\n<b>Unused:</b>\n" +
+      string_join(vector_slice(vector_sort(in_unused_fields_vec), 0, 19), "\n") +
+      if ( length_of(in_unused_fields_vec) <= 20 ) "" else "\n...");
+end;
+
+
+/* Compares the Inputs found in a Documentation Transform with the Fields defined in a DML Record Format and reports the number of Unused Fields. */
+out :: unused_fields(doc_transform, input_dml) =
+begin
+  let unused_vec = vector_sort(
+    vector_difference(
+      (string(long)[long])record_info_item(input_dml, "name"),
+      (string(long)[long])rule_input_vec(doc_transform)));
+  out :: if ( unused_vec == [vector] ) "" else
+    "\nUnused Input Fields:\n" + string_join(unused_vec, "\n");
+end;
+
+
+/* Parses the ACE Lookup Project List and returns a vector of EME taxonomies to search for lookup files. */
+// Baswanth Molgi: Added forward slash "/" , so that EME path is provided to fetch Lookup Files
+out :: get_lookup_vec(lookup_list) =
+begin
+  out :: for ( let proj in re_split_no_empty(lookup_list, "[^a-zA-Z_0-9/]+") ) :
+    "Datasets:Projects:" + proj + ":Lookup Files";
+end;

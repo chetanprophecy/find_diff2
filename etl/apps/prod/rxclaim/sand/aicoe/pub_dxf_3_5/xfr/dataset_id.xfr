@@ -1,0 +1,64 @@
+include "/~ab_home/include/lookup-constants.dml";
+include "/~$PUB_DXF_DML/lookup.datset_id.dml";
+
+
+let record
+  lookup_identifier_type id = -1;
+  lookup_dataset_id_t RecordFormat() = allocate();
+  string("") key() = {};
+  string("") datapath() = "/~null";
+  string("") eme_dataset_location() = "/~null";
+end dataset_id_by_file = allocate();
+
+let record
+  lookup_identifier_type id = -1;
+  lookup_dataset_id_t RecordFormat() = allocate();
+  string("") key() = {dataset_id};
+  string("") datapath() = "/~null";
+  string("") eme_dataset_location() = "/~null";
+end dataset_id_by_id = allocate();
+
+
+/* Return an increasing Dataset ID, while writing the ID to the given lookup.  Detects and correct for simultaneous updates. */
+out :: get_dataset_id(lookup_path) =
+begin
+  let lookup_dataset_id_t entry = [record
+      dataset_id  0,
+      uid         unique_identifier(),
+    ];
+  let timeout_usec = 10 * 1000 * 1000;
+  let timeout = now() + timeout_usec;
+  let long delay_usec;
+  let lookup_identifier_type lkp;
+  let long dataset_id = 0;
+
+  delay_usec = 0;  // Only delay on retry.
+  while ( dataset_id == 0 and now() < timeout ) begin
+    sleep_for_microseconds(delay_usec);
+    lkp = lookup_load(lookup_path, NULL, dataset_id_by_file, LOOKUP_LOAD_UPDATABLE);
+    if ( lkp < 0 )
+      force_error("Error: Unable to append to the Dataset ID Lookup: " + lookup_path);
+    // Increment the Dataset ID, but start from 1 if the file is empty.
+    dataset_id = first_defined(lookup_last(lkp, dataset_id_by_file).dataset_id + 1, 1);
+    // Append the new Dataset ID to the file, along with the UID.
+    entry.dataset_id = dataset_id;
+    if ( first_without_error(lookup_add(lkp, dataset_id_by_file, entry), 1) )  // This can fail if the lookup size changes.
+      dataset_id = 0;
+    lkp = lookup_unload(lkp, dataset_id_by_file);
+//sleep_for_microseconds(random(1000));
+
+    if ( dataset_id != 0 ) begin
+      // Double check that no one else took our ID.
+      lkp = lookup_load(lookup_path, NULL, dataset_id_by_id, LOOKUP_LOAD_APPENDABLE);
+      if ( lkp < 0 )
+        force_error("Error: Unable to read the Dataset ID Lookup: " + lookup_path);
+      if ( entry != lookup_last(lkp, dataset_id_by_id, dataset_id) or lookup_count(lkp, dataset_id_by_id, dataset_id) != 1 )
+        dataset_id = 0;
+      lkp = lookup_unload(lkp, dataset_id_by_id);
+    end
+    delay_usec = 1 * 1000 + random(2 * 1000);
+  end
+  if ( dataset_id == 0 )
+    force_error("Error: Unable to update a Dataset ID.  Lookup: " + lookup_path);
+  out :: dataset_id;
+end;

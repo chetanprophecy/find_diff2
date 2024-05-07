@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.database.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||rxclaim.f_claim_txn
+SOURCE_DB_PROJECT||||DB_RXCLAIM
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nrxclaim       f_claim_transaction     \nrxclaim       d_cag                   \nrxclaim       d_product               \nrxclaim       d_gpi_carrier_xref
+SOURCE_DBMS_TYPE||||netezza
+SOURCE_UNLOAD_INTERFACE||||api
+SQL||||SELECT CAG_SK, PROD_SK, PROD_ID, PROD_ID_QLFR_CD, GPI_NO,GPI_SK, SPECLTY_IND, SPECLTY_IND_NM\nFROM (\n      SELECT DG.CAG_SK, DP.PROD_SK, DP.PROD_ID, DP.PROD_ID_QLFR_CD,  DP.GPI_NO, DP.GPI_SK, CONF.SPECLTY_IND, CONF.SPECLTY_IND_NM\n        FROM ORX_IDW_DM_R2_QA.ADMIN.F_CLAIM_TRANSACTION FCT\n              INNER JOIN ORX_IDW_DM_R2_QA.ADMIN.D_CAG DG ON FCT.CAG_SK=DG.CAG_SK\n             INNER JOIN ORX_IDW_DM_R2_QA.ADMIN.D_PRODUCT DP ON FCT.PROD_SK=DP.PROD_SK\n             INNER JOIN ORX_IDW_DM_R2_QA.ADMIN.D_GPI_CARRIER_XREF CONF ON\n                      CONF.CARRIER_ID = DG.CARRIER_ID AND NVL(CONF.GPI_ID,'@@@') = NVL(DP.GPI_NO,'@@@' )\n            ) M;
+DO_SOURCE||||0
+DO_CLEAN||||1

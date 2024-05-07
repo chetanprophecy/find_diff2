@@ -1,0 +1,75 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.crp_gpi_xref.carrier_id,[transform],in0.carrier_id]
+  [out0.crp_gpi_xref.drop_record,[transform],in0.gpi_no,
+     in0.carrier_id]
+  [out0.crp_gpi_xref.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.crp_gpi_xref.gpi_id,[transform],in0.gpi_no]
+  [out0.crp_gpi_xref.gpi_carrier_sk,[transform],]
+  [out0.crp_gpi_xref.dxf_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.crp_gpi_xref.speclty_ind_nm,'crp_gpi_xref.speclty_ind_nm',1,0]
+     [out0.crp_gpi_xref.carrier_id,'crp_gpi_xref.carrier_id',1,0]
+     [out0.crp_gpi_xref.drop_record,'crp_gpi_xref.drop_record',1,1]
+     [out0.crp_gpi_xref.src_env_sk,'crp_gpi_xref.src_env_sk',1,0]
+     [out0.crp_gpi_xref.gpi_id,'crp_gpi_xref.gpi_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.crp_gpi_xref.gpi_carrier_sk,'crp_gpi_xref.gpi_carrier_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.crp_gpi_xref.speclty_ind,'crp_gpi_xref.speclty_ind',1,0]
+     [out0.crp_gpi_xref.dxf_sk,'crp_gpi_xref.dxf_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.speclty_ind_nm,'speclty_ind_nm',1,1]
+     [in0.carrier_id,'carrier_id',2,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.gpi_no,'gpi_no',2,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.speclty_ind,'speclty_ind',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal(1) crp_gpi_xref_drop_record;
+let integer(8) crp_gpi_xref_dxf_sk = 0;
+let decimal("\x01",0) crp_gpi_xref_gpi_carrier_sk = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=30) crp_gpi_xref_carrier_id = fail_if_error(string_lrtrim(in0.carrier_id));
+let string("\x01",charset="iso-8859-15", maximum_length=14) crp_gpi_xref_gpi_id = fail_if_error(string_lrtrim(in0.gpi_no));
+let string("\x01",charset="iso-8859-15", maximum_length=1) crp_gpi_xref_speclty_ind = fail_if_error(in0.speclty_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=50) crp_gpi_xref_speclty_ind_nm = fail_if_error(in0.speclty_ind_nm);
+let decimal("\x01",0) crp_gpi_xref_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Rule:Compute crp_gpi_xref.drop_record  (#1)   */
+if(first_defined(fail_if_error(((lookup_match("lkp_d_gpi_carrier_xref", null_if_error(string_lrtrim(in0.carrier_id)), in0.gpi_no)) ==1)),0))begin
+  crp_gpi_xref_drop_record=2;
+end
+
+  out0.crp_gpi_xref.drop_record::crp_gpi_xref_drop_record;
+  out0.crp_gpi_xref.dxf_sk::crp_gpi_xref_dxf_sk;
+  out0.crp_gpi_xref.gpi_carrier_sk::crp_gpi_xref_gpi_carrier_sk;
+  out0.crp_gpi_xref.carrier_id::crp_gpi_xref_carrier_id;
+  out0.crp_gpi_xref.gpi_id::crp_gpi_xref_gpi_id;
+  out0.crp_gpi_xref.speclty_ind::crp_gpi_xref_speclty_ind;
+  out0.crp_gpi_xref.speclty_ind_nm::crp_gpi_xref_speclty_ind_nm;
+  out0.crp_gpi_xref.src_env_sk::crp_gpi_xref_src_env_sk;
+  out0.*::in0.*;
+
+end;

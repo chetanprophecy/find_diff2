@@ -1,0 +1,186 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_XFR/cli_dml_defs.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/07/15  Paul Thompson           Initial version
+ *  2016/05/11  Gaurav Mirje            Added lookup identifier type function for job_exec
+ ******************************************************************************************************************************************/
+
+//include "/~abenv/xfr/abenv.xfr";
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+
+constant long m_in_bytes = 1048576;
+constant long k_in_bytes = 1024;
+
+out :: convert_max_core_with_constant(in, c) = 
+begin
+  /* Converts a numeric value using either "k" or "m". */
+  let decimal("") num = string_filter_out(in,c);
+  out :1: if(is_valid(num)) num * (if(c=="k") k_in_bytes else m_in_bytes);
+  out :2: force_error(string_representation(in) + " is not a valid value for max-core.");
+end;
+
+out :: ends_with_char(in,c) =
+begin
+  /* Match last character of a string. 
+     Define this function instead of using the builtin ends_with()
+     in order to increase compatibility with older releases. */
+  out :: string_substring(in, length_of(in), 1) == c;
+end;
+
+out :: string_to_max_core_in_bytes(in) =
+begin
+  /* Convertes a settings for max core into a number of bytes. */
+  let string(long) max_core = string_lrtrim((decimal(""))in);
+  let long result;
+ 
+  if(ends_with_char(max_core,"k"))
+  begin
+    result = convert_max_core_with_constant(max_core, "k");
+  end
+  else if(ends_with_char(max_core, "m"))
+  begin
+    result = convert_max_core_with_constant(max_core, "m");
+  end
+  else
+  begin
+    if(is_valid((decimal(""))max_core))
+    begin
+      result = (decimal(""))max_core;
+    end
+    else
+      force_error(string_representation(max_core) + " is not a valid value for max-core.");
+  end  
+  
+  out :: result;
+end;
+
+out :: string_to_max_core_in_bytes_with_error(in, err_msg) =
+begin
+  let long tmp = null_if_error(string_to_max_core_in_bytes(in));
+  if(is_null(tmp))
+    force_error(err_msg + "\n" + last_error());
+  out :: tmp;
+end;
+
+out :: check_max_core(value, min, max) =
+begin
+  /* Check that max-core value is between min and max.
+     If the value is less than min, min is returned.
+     If the value is greater than max, that is an error. */
+
+  let long tmp_value = string_to_max_core_in_bytes_with_error(value, "Error in value for max-core.");  
+  let long tmp_min   = string_to_max_core_in_bytes_with_error(min, "Error in minimum value for max-core.");
+  let long tmp_max   = string_to_max_core_in_bytes_with_error(max, "Error in maximum value for max-core.");
+
+  if(tmp_value > tmp_max)
+    force_error("The value for AI_GRAPH_MAX_CORE is greater than the maximum set in common-constants.\nEither decrease the value for AI_GRAPH_MAX_CORE (typically set in the stdenv project),\nor increase the value for AI_GRAPH_MAX_CORE_MAX in $STD_TOOLS/common-contants.");
+
+  out :1: if(tmp_value < tmp_min) (decimal("\n"))tmp_min;
+  out :: "";
+end;
+
+out :: interpret_ai_graph_max_core(in) inline =
+begin
+  out :: string_to_max_core_in_bytes_with_error(in, "Error in value for AI_GRAPH_MAX_CORE");
+end;
+
+out :: basename(in) =
+begin
+  let int index = string_rindex(in,"/");
+  out :: if(not index) in else string_substring(in,index+1,length_of(in));
+end;
+
+out :: dirname(in) =
+begin
+  let int index = string_rindex(in,"/");
+  out :: if(not index) in else string_substring(in,1,index-1);
+end;
+
+out :: is_valid_octal(in) inline =
+begin
+  out :: (string_index("01234567", in) != 0);
+end;
+
+out :: combine_umasks(u1, u2) =
+begin
+  // Determine most restrictive umask from two values
+  let string(int) umask1 = string_lrtrim((decimal(""))u1);
+  let string(int) umask2 = string_lrtrim((decimal(""))u2);
+  let int len1 = length_of(umask1);
+  let int len2 = length_of(umask2);
+  let int max_len = if(len1 >= len2) len1 else len2;
+  let string(int) result = "";
+  let int i;
+  let string(1) s1;
+  let string(1) s2;
+ 
+  for(i, i<max_len)
+  begin
+    // if umasks differ in length replace with zeroes
+    s1 = if(i <= len1 - 1) string_substring(umask1,len1-i,1) else "0";
+    s2 = if(i <= len2 - 1) string_substring(umask2,len2-i,1) else "0";
+
+    if(!is_valid_octal(s1)) force_error("umask \"" + umask1 + "\" is invalid");
+    if(!is_valid_octal(s2)) force_error("umask \"" + umask2 + "\" is invalid");
+
+    result = (string(1))(decimal(1))((integer(1))(decimal(1))s1 | (integer(1))(decimal(1))s2) + result;
+  end
+
+  out :: (string("\n"))result;
+end;
+
+cli_integer_t out :: mfs_depth(path) inline =
+begin
+  let multifile_paths_length = length_of(multifile_information(path).paths);
+  out :: multifile_paths_length  == 0 ? 1 : multifile_paths_length;
+end;
+
+cli_string_t out :: prefix_file_or_mfile(file) inline =
+begin
+  out :: (mfs_depth(dirname(file)) == 1 ? 'file:' : 'mfile:') + file;
+end;
+
+
+/**********************************/
+/* Job execution lookup (on clt_id) */
+/**********************************/
+
+
+cli_string_t out :: get_job_exec_lkup_path() inline =
+begin
+
+  out :: $PUB_CLINICAL_SERIAL_CONFIG + "/" + $DEFAULT_BIZ_DT + '/job_exec.dat';
+  
+end;
+
+
+type job_exec_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  job_exec_t  RecordFormat()               = allocate_with_defaults();
+  string('')                key()          = {clt.cli_clt_id}; 
+end;
+
+//let job_exec_lkup_t GLKUP_JOB_EXEC = allocate_with_nulls();
+
+job_exec_lkup_t out :: load_job_exec_lkup() inline =
+begin
+  let job_exec_lkup_t GLKUP_JOB_EXEC = allocate_with_nulls();
+  if (GLKUP_JOB_EXEC.id == lookup_not_loaded())
+    GLKUP_JOB_EXEC = lookup_load(get_job_exec_lkup_path());
+    
+  out :: GLKUP_JOB_EXEC;
+end;
+
+job_exec_t out :: get_job_exec_by_clt_id(cli_clt_id) inline =
+begin
+  let job_exec_lkup_t lkup = load_job_exec_lkup();
+  out :: lookup(lkup, cli_clt_id);
+end;
+
+

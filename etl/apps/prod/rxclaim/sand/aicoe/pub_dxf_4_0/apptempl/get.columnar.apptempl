@@ -1,0 +1,727 @@
+<AppConfTempl name="Get from Columnar" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[include "~$PUB_DXF_XFR/ids/ids_table_properties.xfr";
+include "/~$PUB_DXF_XFR/ace_format.xfr";
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name) =
+begin
+  out :1: if ( not starts_with(appconf_name, "get.") )
+    "This application configuration must be named: get.<i>something</i>.\n" +
+    "Please close and rename it.";
+  out :2: if ( (not (string_filter(appconf_name, ".") == ".." || string_filter(appconf_name, ".") == "...")) || 
+               (string_filter(appconf_name, ".") == "..." && string_split(appconf_name, ".")[3] != "reduced") )
+    "This application configuration must be named:\n" +
+    "get.<i>subject_area</i>.<i>ids_dataset</i> or get.<i>subject_area</i>.<i>ids_dataset</i>.reduced,\n" +
+    "where <i>subject_area</i> and <i>ids_dataset</i>\n" +
+    "must not contain periods (.).\n" +
+    "Please close and rename it.";
+  out :: "";
+end;
+
+out :: lattice_to_string(lattice)=
+begin
+  let string("")[] lines = [vector];
+  for(let vec in lattice)
+    lines = vector_append(lines, string_join(for(let num in vec): (string(""))num, ", "));
+  out :: string_join(lines, "\n");
+end]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="get" prototype_path="$AI_PSET/get.columnar.interim.pset">
+        <PdlExpression name="PUB_DATAHUB_DML" expression="$PUB_DATAHUB_DML"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <Variable name="ids" type="string"/>
+      <Variable name="ids_dml" type="string"/>
+      <Variable name="out_dml" type="string"/>
+      <Variable name="subject_area" type="string"/>
+      <Variable name="lkp_flds" type="string"/>
+      <ListVariable name="columnars" type="compound">
+        <Variable name="name" type="string"/>
+        <Variable name="dml" type="string"/>
+        <Variable name="dml_location" type="string"/>
+        <Variable name="selected_field_list" type="string"/>
+      </ListVariable>
+      <ListVariable name="read_fields" type="compound">
+        <Variable name="name" type="string"/>
+        <Variable name="columnar" type="string"/>
+      </ListVariable>
+    </Variables>
+    <Variables name="uivars">
+      <Variable name="ids_list_filter" type="string"/>
+      <ListVariable name="ids_list_original" type="string"/>
+      <ListVariable name="ids_list_filtered" type="string"/>
+      <Variable name="columnars_exist" type="boolean"/>
+      <Variable name="manual_columnar_select" type="boolean"/>
+      <Variable name="ids_present_by_conf_name" type="boolean"/>
+      <Variable name="field_list_populated" type="boolean"/>
+    </Variables>
+    <SharedFile name="clean_dml_file" path="" auto_lock="false"/>
+    <SharedFile name="source_dml_file" path="" auto_lock="false"/>
+    <SharedFile name="lookup_dml_file" path="" auto_lock="false"/>
+    <Variables name="results">
+      <ListVariable name="columnar_dmls" type="string"/>
+      <Variable name="column_fields_dml" type="string"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split_no_empty(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="vars.subject_area"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let t in get_ids_table_list()): if(starts_with(t, vars.subject_area + ".")) t</SourceValue>
+      <TargetValue reference="uivars.ids_list_original"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("")[] matches = [vector];
+  if(uivars.ids_list_filter != "")
+  begin
+    let words = string_split_no_empty(uivars.ids_list_filter, " ");
+    for(let ids in uivars.ids_list_original)
+    begin block SEARCH_BLOCK
+      for(let word in words)
+        if(not string_index(ids, word)) exit SEARCH_BLOCK;
+      matches = vector_append(matches, ids);
+    end block SEARCH_BLOCK
+  end
+  else
+    matches = uivars.ids_list_original;
+  result :: matches;
+end</SourceValue>
+      <TargetValue reference="uivars.ids_list_filtered"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^get.", "") member uivars.ids_list_filtered</SourceValue>
+      <TargetValue reference="uivars.ids_present_by_conf_name"/>
+    </Assignment>
+    <Assignment name="If no IDS is selected, try to assign/select IDS using appconf name">
+      <SourceValue is_expression="true">if(vars.ids == "" and uivars.ids_present_by_conf_name)
+  re_replace(built_in, "^get.", "")
+else
+  vars.ids</SourceValue>
+      <TargetValue reference="vars.ids"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let columnar_dml_names=(string("")[])eval([record a 10], proj.get.ALL_COLUMNAR_DML_VEC);
+  result :: for(let dml_name in columnar_dml_names): proj.get.PUB_DATAHUB_DML + "/" + vars.subject_area + "/" + dml_name;
+end</SourceValue>
+      <TargetValue reference="vars.columnars.dml_location"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let string("")[] words;
+  result :: for(let dml in vars.columnars.dml_location) words = string_split_no_empty(dml, ".");: words[length_of(words) - 2];
+end</SourceValue>
+      <TargetValue reference="vars.columnars.name"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for(let file in vars.columnars.dml_location): expand_type(read_type(file))</SourceValue>
+      <TargetValue reference="vars.columnars.dml"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">length_of(vars.columnars) &gt; 0</SourceValue>
+      <TargetValue reference="uivars.columnars_exist"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">expand_type(read_type(proj.get.PUB_DATAHUB_DML + "/" + vars.subject_area + "/" + vars.ids + ".dml"))</SourceValue>
+      <TargetValue reference="vars.ids_dml"/>
+    </Assignment>
+    <Assignment name="Has user selected any fields yet?">
+      <SourceValue is_expression="true">length_of(vars.read_fields) &gt; 0
+/* added second condition due to a bug that is populating one field even if none selected */
+and vars.read_fields.name[0] != ""</SourceValue>
+      <TargetValue reference="uivars.field_list_populated"/>
+    </Assignment>
+    <Assignment name="Get pset path">
+      <SourceValue is_expression="true">"pset/get." + vars.subject_area + "/" + built_in + ".pset"</SourceValue>
+      <TargetValue reference="proj.get" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and vars.subject_area != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_downcase(re_replace(built_in, "^get.", ""))</SourceValue>
+      <TargetValue reference="proj.get.SOURCE_LOWER"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"{" + re_replace(vars.lkp_flds, ",", ";") + "}"</SourceValue>
+      <TargetValue reference="proj.get.LOOKUP_FIELDS_KEY"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.ids"/>
+      <TargetValue reference="proj.get.MAIN_DATASET"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_join(vars.read_fields.name, ",")</SourceValue>
+      <TargetValue reference="proj.get.GET_COLUMN_LIST"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML_FILE"/>
+      <TargetValue reference="source_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML"/>
+      <TargetValue reference="source_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML_FILE"/>
+      <TargetValue reference="clean_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML"/>
+      <TargetValue reference="clean_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML_FILE"/>
+      <TargetValue reference="lookup_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML"/>
+      <TargetValue reference="lookup_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment name="List of DML files of columnars to be read">
+      <SourceValue is_expression="true">begin
+  let record
+      string("") columnar_file ;
+      string("") columnar_dml;
+  end[int] read_info_vec = eval([record a 10], proj.get.COLUMNARS_READ_INFO_VEC);
+  result :: for(let info in read_info_vec): info.columnar_dml;
+end</SourceValue>
+      <TargetValue reference="results.columnar_dmls"/>
+    </Assignment>
+    <Assignment name="Common fields between all columnars to be read. Used for building the filter expression.">
+      <SourceValue is_expression="true">begin
+  let len = length_of(results.columnar_dmls);
+  let dml_field_info_vec common_fields = if(len &gt; 0) record_info(read_type(results.columnar_dmls[0])) else [vector];
+  for(let i=1, i &lt; len)
+  begin
+    let next_dml_fields = record_info(read_type(results.columnar_dmls[i]));
+    common_fields = vector_intersection(common_fields, next_dml_fields, {name});
+  end
+  result :: add_fields("record end", common_fields);
+end</SourceValue>
+      <TargetValue reference="results.column_fields_dml"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.get"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>DEVELOPER NOTES</Label>
+          <UIElements>
+            <TextLabel>
+              <Label>&lt;font color="#880000"&gt;This template contains some features that have been disabled or hidden. WHen development started, the logic to auto-detect the required columnars was being built in the template. Currently it is in the get.columnar graph. The components are still saved in the template in case we have to move the logic back into the template.
+&lt;/font&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible>false</Visible>
+        </Box>
+        <Box>
+          <Label>Main IDS Dataset</Label>
+          <UIElements>
+            <ComboBox>
+              <Choices reference="uivars.ids_list_filtered"/>
+              <SourceTargetValue reference="vars.ids"/>
+              <BlankValueDisplayName>[Select IDS Dataset]</BlankValueDisplayName>
+              <WarnIfTargetNotInChoices>false</WarnIfTargetNotInChoices>
+              <Label>Select IDS Dataset</Label>
+            </ComboBox>
+            <Box>
+              <Label/>
+              <UIElements>
+                <TextInput>
+                  <SourceTargetValue reference="uivars.ids_list_filter"/>
+                  <Description>Search pattern can contain multiple words</Description>
+                </TextInput>
+              </UIElements>
+              <Style>unstyled</Style>
+              <Width>270</Width>
+            </Box>
+            <CheckBox>
+              <Label>Read from archive files in addition to main columnar files</Label>
+              <SourceTargetValue reference="proj.get.IS_READ_ARCHIVE"/>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label>Source IDS</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="vars.ids"/>
+                  <Visible is_expression="true">vars.ids != ""</Visible>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>Available Columnars</Label>
+              <UIElements>
+                <!--<TextLabel>
+                  <Label is_expression="true">string_join(for(let c in vars.columnars): c.name + "  (" + string_substring(c.dml_location, string_rindex(c.dml_location, "/")+1, 9999) + ")", "\n")</Label>
+                  <Visible reference="uivars.columnars_exist"/>
+                </TextLabel>-->
+                <TextLabel>
+                  <Label>&lt;font color='#ff0000'&gt;&lt;b&gt;There are no columnar datasets configured for the selected IDS&lt;/b&gt;&lt;/font&gt;</Label>
+                  <Visible is_expression="true">not uivars.columnars_exist</Visible>
+                </TextLabel>
+                <ForEach list_reference="vars.columnars" item="columnar">
+                  <UIElements>
+                    <HorizontalLayoutContainer>
+                      <Visible reference="uivars.columnars_exist"/>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">columnar.name + "  (" + string_substring(columnar.dml_location, string_rindex(columnar.dml_location, "/")+1, 9999) + ")"</Label>
+                        </TextLabel>
+                        <Popup>
+                          <Label>View...</Label>
+                          <Title/>
+                          <UIElements>
+                            <RecordFormat>
+                              <Label is_expression="true">"Record Format of columnar " + columnar.name</Label>
+                              <ReadOnly>true</ReadOnly>
+                              <SourceValue is_expression="true">columnar.dml</SourceValue>
+                            </RecordFormat>
+                          </UIElements>
+                        </Popup>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                </ForEach>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">vars.ids != ""</Visible>
+            </Box>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+        <Box>
+          <Visible is_expression="true"><![CDATA[ vars.errors != "" ]]></Visible>
+          <Style>mainSource</Style>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;" + vars.errors + "&lt;/b&gt;"</Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Select Fields</Label>
+          <UIElements>
+            <Popup>
+              <Label>Select fields to be read from IDS</Label>
+              <Title/>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Field Picker</Label>
+                  <RecordFormat is_expression="true">begin
+  let columnar_field_names = string_split_no_empty(proj.get.ALL_UNIQUE_COLUMN_PRESENT, ",");
+  let ids_fields = record_info(vars.ids_dml);
+  let usable_fields = for(let field in ids_fields): if(field.name member columnar_field_names) field;
+  result :: add_fields("record end", usable_fields);
+end</RecordFormat>
+                  <SourceTargetValue reference="vars.read_fields.name" list_conversion_format="comma"/>
+                </FieldPicker>
+              </UIElements>
+              <Description>Only fields that are available in columnar files can be selected from</Description>
+            </Popup>
+            <Box>
+              <Label is_expression="true">"Fields to be read (" +
+  (if(uivars.field_list_populated)
+    (string(""))(decimal(""))length_of(vars.read_fields.name)
+  else
+    "0")
++ ")"</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;i&gt;" + string_join(vars.read_fields.name, "\n") + "&lt;/i&gt;"</Label>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <Expanded is_expression="true">length_of(vars.read_fields) &lt; 15</Expanded>
+            </Box>
+          </UIElements>
+          <Style>mainRecordFormat</Style>
+        </Box>
+        <Box>
+          <Label>Configure Columnar Sources</Label>
+          <UIElements>
+            <RadioButtons>
+              <Choices>
+                <ConstantValue>false</ConstantValue>
+                <ConstantValue>true</ConstantValue>
+              </Choices>
+              <Label>Mode</Label>
+              <SourceTargetValue reference="uivars.manual_columnar_select"/>
+              <ChoiceDisplayNames>
+                <ConstantValue>Auto Analyze and Suggest</ConstantValue>
+                <ConstantValue>Manual Selection</ConstantValue>
+              </ChoiceDisplayNames>
+              <Enabled>false</Enabled>
+              <ColumnCount>2</ColumnCount>
+            </RadioButtons>
+            <Box>
+              <Label>Manual Selection</Label>
+              <UIElements>
+                <ForEach list_reference="vars.read_fields" item="field">
+                  <UIElements>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <TextLabel>
+                          <Label is_expression="true">field.name</Label>
+                        </TextLabel>
+                        <ComboBox>
+                          <Choices is_expression="true">for(let columnar in vars.columnars): if(field.name member record_info_item(columnar.dml, "name")) columnar.name</Choices>
+                          <SourceTargetValue reference="field.columnar"/>
+                        </ComboBox>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                </ForEach>
+              </UIElements>
+              <Style>enrichJoin</Style>
+              <Visible is_expression="true">uivars.manual_columnar_select</Visible>
+            </Box>
+            <Box>
+              <Label>Summary</Label>
+              <UIElements>
+                <HorizontalLayoutContainer>
+                  <UIElements>
+                    <TextLabel>
+                      <Label is_expression="true">"...\n" + string_join(vars.read_fields.name, "\n")</Label>
+                    </TextLabel>
+                    <HorizontalLayoutContainer>
+                      <UIElements>
+                        <ForEach list_reference="vars.columnars" item="columnar">
+                          <UIElements>
+                            <TextLabel>
+                              <Label is_expression="true">begin
+                                                                                              let columnar_fields = record_info_item(columnar.dml, "name");
+                                                                                              let columns = string_join(
+                                                                                                          for(let i, i &lt; length_of(vars.read_fields.name)):if(vars.read_fields.name[i] member columnar_fields) (if(vars.read_fields[i].columnar == columnar.name) "&lt;font color='#ddbb11'&gt;&lt;b&gt;*&lt;/b&gt;&lt;/font&gt;" else "*") else " "
+                                                                                                          , "\n");
+                                                                                              
+                                                                                              result :: columnar.name + "\n&lt;font color='#999999'&gt;" + columns + "&lt;/font&gt;";
+                                                                                            end</Label>
+                            </TextLabel>
+                          </UIElements>
+                        </ForEach>
+                      </UIElements>
+                    </HorizontalLayoutContainer>
+                  </UIElements>
+                </HorizontalLayoutContainer>
+              </UIElements>
+              <Style>inner</Style>
+              <LineIn>off</LineIn>
+              <Visible>false</Visible>
+            </Box>
+            <Box>
+              <Label>Summary</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">begin
+  let record
+      string("") columnar_file ;
+      string("") columnar_dml;
+  end[int] read_info_vec = eval([record a 10], proj.get.COLUMNARS_READ_INFO_VEC);
+  let string("\x01") file;
+  let files = for(let info in read_info_vec) file=info.columnar_file;: string_substring(file, string_rindex(file, "/")+1, 9999);
+  result :: "The following columnar files will be read:\n&lt;i&gt;" + string_join(files, "\n") + "&lt;/i&gt;";
+end</Label>
+                  <Visible is_expression="true">(decimal(""))proj.get.IS_ALL_COLUMN_PRESENT</Visible>
+                </TextLabel>
+                <TextLabel>
+                  <Label is_expression="true">"&lt;font color='#ff0000'&gt;&lt;b&gt;ERROR: The number of columnar datasets required to be read for the combination of fields you selected will exceed the max limits of allowed columnar dataset.&lt;/b&gt;\n\n" +
+"The current limit is " + proj.get.MAX_NUM_COLUMNAR_READ + ".\n\n" +
+"Perhaps you need to extend a columnar or add a new one. Please contact IDW ETL team for further inputs.&lt;/font&gt;"</Label>
+                  <Visible is_expression="true">not (decimal(""))proj.get.IS_ALL_COLUMN_PRESENT</Visible>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>executable</Style>
+          <Description>Select which fields will be read from which coumnar dataset</Description>
+          <Visible reference="uivars.field_list_populated"/>
+        </Box>
+        <Visible is_expression="true">vars.errors == "" and uivars.columnars_exist</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Optional: Filter Records</Label>
+          <UIElements>
+            <Box>
+              <Label>Filter Expression</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.FILTER_EXPR"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Popup>
+              <Label>Edit filter expression...</Label>
+              <Title/>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">"(Only the fields that are common between the columnars are available for defining the filter expression)"</Label>
+                </TextLabel>
+                <ExpressionEditor>
+                  <Label>Filter Expression</Label>
+                  <SourceTargetValue reference="proj.get.FILTER_EXPR" source_property="expression"/>
+                  <Style>expressionEditor</Style>
+                  <RecordFormat reference="results.column_fields_dml"/>
+                </ExpressionEditor>
+              </UIElements>
+              <Style>reduction</Style>
+            </Popup>
+            <TextLabel>
+              <Label>(This filter will be applied to each
+columnar immediately after reading)</Label>
+              <WordWrap>true</WordWrap>
+            </TextLabel>
+          </UIElements>
+          <Style>reduction</Style>
+          <Visible is_expression="true">vars.errors == "" and uivars.columnars_exist</Visible>
+        </Box>
+        <Visible is_expression="true">vars.errors == "" and uivars.columnars_exist and length_of(vars.read_fields) &gt; 0 and (decimal(""))proj.get.IS_ALL_COLUMN_PRESENT</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+          <Style/>
+          <Label>Output</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Produce a Source File for Cleansing</Label>
+              <SourceTargetValue reference="proj.get.DO_SOURCE"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Clean File</Label>
+              <SourceTargetValue reference="proj.get.DO_CLEAN"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <CheckBox>
+              <Label>Skip Cleansing, and Produce a Lookup</Label>
+              <SourceTargetValue reference="proj.get.DO_LOOKUP"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <TextLabel>
+              <Visible is_expression="true">(decimal(""))proj.get.DO_SOURCE + (decimal(""))proj.get.DO_CLEAN + (decimal(""))proj.get.DO_LOOKUP != 1</Visible>
+              <Label is_expression="true">bold("Note: Typically, only one of these should be selected.")</Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+        <Box>
+          <Label>Lookup Fields and Key</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true">"&lt;b&gt;Lookup Fields (Optional):&lt;/b&gt;\n" + proj.get.LOOKUP_FIELDS_KEY + "\n" +
+"&lt;b&gt;Lookup Key:&lt;/b&gt;\n" + proj.get.LOOKUP_KEY</Label>
+            </TextLabel>
+            <Popup>
+              <Label>Edit lookup fields(Optional)...</Label>
+              <Title/>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Lookup Fields Picker</Label>
+                  <SourceTargetValue reference="vars.lkp_flds"/>
+                  <RecordFormat is_expression="true">begin
+  let ids_fields = record_info(vars.ids_dml);
+  let read_fields = for(let field in ids_fields): if(field.name member vars.read_fields.name) field;
+  result :: add_fields("record end", read_fields);
+end</RecordFormat>
+                </FieldPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Edit lookup key...</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Key</Label>
+                  <SourceTargetValue reference="proj.get.LOOKUP_KEY"/>
+                  <ShowOrderColumn>false</ShowOrderColumn>
+                  <ShowSpecialColumn>true</ShowSpecialColumn>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Edit Dedup Key (Optional)</Label>
+              <Title/>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Select Dedup Keys</Label>
+                  <SourceTargetValue reference="proj.get.EXTRA_DEDUP_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+          </UIElements>
+          <Style>sort</Style>
+          <Visible is_expression="true">vars.errors == "" and (decimal(""))proj.get.DO_LOOKUP</Visible>
+        </Box>
+        <Visible is_expression="true">vars.errors == "" and uivars.columnars_exist and length_of(vars.read_fields) &gt; 0 and (decimal(""))proj.get.IS_ALL_COLUMN_PRESENT</Visible>
+      </Column>
+      <Column>
+        <Box>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label>&lt;font color='#880000'&gt;Remember: Save before you run.&lt;/font&gt;</Label>
+              <ButtonLabel>Run Get</ButtonLabel>
+              <SourceValue reference="proj.get"/>
+            </ExecuteButton>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_CLEAN</Visible>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Output File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.CLEAN_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.CLEAN_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.CLEAN_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_LOOKUP</Visible>
+              <Label>View Lookup File...</Label>
+              <Style>validation</Style>
+              <Title>View Lookup File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.LOOKUP_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.LOOKUP_FILE_URL</SourceValue>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.DO_SOURCE</Visible>
+              <Label>View Source File...</Label>
+              <Style>validation</Style>
+              <Title>View Source File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat is_expression="true">expand_type(read_type(proj.get.SOURCE_DML_FILE))</RecordFormat>
+                  <SourceValue is_expression="true">proj.get.SOURCE_FILE_URL</SourceValue>
+                  <SourceIsCompressed is_expression="true">ends_with(proj.get.SOURCE_FILE_URL, ".gz")</SourceIsCompressed>
+                </ViewData>
+              </UIElements>
+            </Popup>
+          </UIElements>
+        </Box>
+        <Visible is_expression="true">vars.errors == "" and uivars.columnars_exist and length_of(vars.read_fields) &gt; 0 and
+(proj.get.DO_CLEAN=="1" or proj.get.DO_LOOKUP=="1" or proj.get.DO_SOURCE=="1") and (decimal(""))proj.get.IS_ALL_COLUMN_PRESENT</Visible>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Get Columnar Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">"&lt;b&gt;" + proj.get.PROJECT_DIR + "/" + proj.get.relative_path + "&lt;/b&gt;"</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Width>1200</Width>
+          <Label is_expression="true">fixed_font(read_file(proj.get.PROJECT_DIR + "/" + proj.get.relative_path))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_SOURCE != "0"</Visible>
+      <Label>Source DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.SOURCE_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Width>1000</Width>
+          <Label is_expression="true">fixed_font(read_file(proj.get.SOURCE_DML_FILE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_CLEAN != "0"</Visible>
+      <Label>Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.CLEAN_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Width>1000</Width>
+          <Label is_expression="true">fixed_font(read_file(proj.get.CLEAN_DML_FILE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_LOOKUP != "0"</Visible>
+      <Label>Lookup DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.LOOKUP_DML_FILE)</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+        <TextLabel>
+          <Width>1000</Width>
+          <Label is_expression="true">fixed_font(read_file(proj.get.LOOKUP_DML_FILE))</Label>
+          <ReadOnly>true</ReadOnly>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">'&lt;font size="14 pt"&gt;&lt;b&gt;Source:&lt;/b&gt;\n' + '
+get.columnar is a step in integration layer using which you can read data from IDS datasets that are stored in columnar format. Each columnar file may contain between 10 and 30 fields from the superset of the fields defined in the IDS DML.
+After reading the relevant columns from the columnar files the process combines them to create source, clean or lookup file as output.
+' + '&lt;/font&gt;'</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,15 @@
+!prototype|P|||${AI_PSET}/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.ids_common/clean.ids_common.d_cag.${RUN_ID}.dat.gz
+OUTPUT_FILE_LOCATION||||$AI_MFS/placeholder/placeholder.ctrx.produce.d_cag.ids_common.d_cag.${RUN_ID}.dat.gz
+NORM_XFR||||
+MAPPING_XFR|$|||$AI_XFR/produce/produce.ids_rxclaim.d_cag_rfmt.xfr
+USE_SORT||||False
+SCAN_XFR||||
+ROLLUP_XFR||||
+POST_FILTER_EXPR||||
+INPUT_FILE_DML|$|||$AI_DML/clean.ids_common/clean.ids_common.d_cag.dml
+FILTER_EXPR|$|||ids_rec_stat_cd=='3' and  ((is_null(bseg_bus_typ)  or bseg_bus_typ=='-' ) or  (is_null(bseg_srv_typ) or bseg_srv_typ=='-') or (is_null(bseg_clt_typ) or bseg_clt_typ=='-'))
+OUTPUT_FILE_DML|$|||$AI_DML/split.ids_common/split.ids_common.d_cag.dml
+AB_CATALOG|$|||$AI_CAT/produce/produce.ids_rxclaim.d_cag.cat
+ACE_CATALOG_CONTENTS|$|||bob_180_cag_list_lkp,{carrier_id; account_id},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_sandbox/lookup.rxclaim_sandbox.bob_180_cag_list.dat,/~$AI_DML/lookup.rxclaim_sandbox/lookup.rxclaim_sandbox.bob_180_cag_list.dml\n
+analysis_level|Pl|||ignore_sql_errors

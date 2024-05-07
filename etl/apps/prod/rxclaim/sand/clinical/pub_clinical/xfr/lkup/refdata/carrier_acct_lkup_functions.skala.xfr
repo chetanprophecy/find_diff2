@@ -1,0 +1,151 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/carrier_acct_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/10  Paul Thompson           Initial version
+ *  2016/08/25  Gaurav Mirje            Added load_ids_carrier_acct_sk_lkup function and ids_carrier_acct_sk_lkup_t to fetch the
+ *                                      cli_carrier_acct based on ids_src_env_sk ids_carrier_sk ids_carrier_acct_sk.
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_LOOKUP parameter;
+
+cli_string_t out :: get_carrier_acct_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_LOOKUP + '/cli_carrier_acct.dat';
+end;
+
+/****************************************/
+/* Carrier Account Lookup (natural key) */
+/****************************************/
+
+type carrier_acct_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  carrier_acct_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {carrier_acct.carrier_acct_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_acct_lkup_t GLKUP_CARRIER_ACCT = allocate_with_nulls();
+
+carrier_acct_lkup_t out :: load_carrier_acct_lkup() inline =
+begin
+  if (GLKUP_CARRIER_ACCT.id == lookup_not_loaded())
+    GLKUP_CARRIER_ACCT = lookup_load(this_partition_path(get_carrier_acct_lkup_path()));
+  
+  out :: GLKUP_CARRIER_ACCT;
+end;
+
+carrier_acct_t out :: get_carrier_acct(carrier_acct_id) inline =
+begin
+  let carrier_acct_lkup_t lkup = load_carrier_acct_lkup();
+  out :: lookup(lkup, carrier_acct_id).carrier_acct;
+end;
+
+/****************************************/
+/* Carrier Account Lookup (natural key) */
+/****************************************/
+
+type carrier_acct_nk_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  carrier_acct_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {carrier_acct.carrier_id; carrier_acct.carrier_acct_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_acct_nk_lkup_t GLKUP_CARRIER_ACCT_NK = allocate_with_nulls();
+
+carrier_acct_nk_lkup_t out :: load_carrier_acct_nk_lkup() inline =
+begin
+  if (GLKUP_CARRIER_ACCT_NK.id == lookup_not_loaded())
+    GLKUP_CARRIER_ACCT_NK = lookup_load(this_partition_path(get_carrier_acct_lkup_path()));
+  
+  out :: GLKUP_CARRIER_ACCT_NK;
+end;
+
+carrier_acct_t out :: get_carrier_acct_by_nk(carrier_id,carrier_acct_id) inline =
+begin
+  let carrier_acct_nk_lkup_t lkup = load_carrier_acct_nk_lkup();
+  out :: lookup(lkup,carrier_id,carrier_acct_id).carrier_acct;
+end;
+/******************************************/
+/* Carrier Account Lookup (surrogate key) */
+/******************************************/
+
+type carrier_acct_sk_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  carrier_acct_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {carrier_acct.cli_carrier_acct_id}; 
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_acct_sk_lkup_t GLKUP_CARRIER_ACCT_SK = allocate_with_nulls();
+
+carrier_acct_sk_lkup_t out :: load_carrier_acct_sk_lkup() inline =
+begin
+  if (GLKUP_CARRIER_ACCT_SK.id == lookup_not_loaded())
+    GLKUP_CARRIER_ACCT_SK = lookup_load(this_partition_path(get_carrier_acct_lkup_path()));
+    
+  out :: GLKUP_CARRIER_ACCT_SK;
+end;
+
+carrier_acct_t out :: get_carrier_acct_by_sk(cli_carrier_acct_id) inline =
+begin
+  let carrier_acct_sk_lkup_t lkup = load_carrier_acct_sk_lkup();
+  out :: lookup(lkup, cli_carrier_acct_id).carrier_acct;
+end;
+
+/********************************************************/
+/* Carrier Account Lookup (hierarchical surrogate keys) */
+/********************************************************/
+
+type carrier_acct_hier_sk_lkup_t =
+record
+  lookup_identifier_type    id             = -1; 
+  carrier_acct_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')                key()          = {carrier_acct.cli_carrier_id; carrier_acct.cli_carrier_acct_id}; 
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+//string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let carrier_acct_hier_sk_lkup_t GLKUP_CARRIER_ACCT_HIER_SK = allocate_with_nulls();
+
+carrier_acct_hier_sk_lkup_t out :: load_carrier_acct_hier_sk_lkup() inline =
+begin
+  if (GLKUP_CARRIER_ACCT_HIER_SK.id == lookup_not_loaded())
+    GLKUP_CARRIER_ACCT_HIER_SK = lookup_load(this_partition_path(get_carrier_acct_lkup_path()));
+  
+  out :: GLKUP_CARRIER_ACCT_HIER_SK;
+end;
+
+carrier_acct_t out :: get_carrier_acct_by_hier_sk(cli_carrier_id, cli_carrier_acct_id) inline =
+begin
+  let carrier_acct_hier_sk_lkup_t lkup = load_carrier_acct_hier_sk_lkup();
+  out :: lookup(lkup, cli_carrier_id, cli_carrier_acct_id).carrier_acct;
+end;
+

@@ -1,0 +1,139 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5834419a_5b0f_7 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_al_lan.cmmt,[passthrough],in0.cmmt]
+  [out0.c_mem_al_lan.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_al_lan.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_al_lan.cpp_member_altrnte_language_sk,[transform],]
+  [out0.c_mem_al_lan.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_al_lan.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_mem_al_lan.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_al_lan.src_env_sk,[transform],]
+  [out0.c_mem_al_lan.language_cd,[passthrough],in0.language]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_al_lan.cmmt,'c_mem_al_lan.cmmt',1,0]
+     [out0.c_mem_al_lan.emplyr_group_id,'c_mem_al_lan.emplyr_group_id',1,0]
+     [out0.c_mem_al_lan.src_env_id,'c_mem_al_lan.src_env_id',1,0]
+     [out0.c_mem_al_lan.cli_acct_id,'c_mem_al_lan.cli_acct_id',1,0]
+     [out0.c_mem_al_lan.cli_src_env_id,'c_mem_al_lan.cli_src_env_id',1,0]
+     [out0.c_mem_al_lan.member_id,'c_mem_al_lan.member_id',1,0]
+     [out0.c_mem_al_lan.cpp_create_ts,'c_mem_al_lan.cpp_create_ts',1,0]
+     [out0.c_mem_al_lan.cpp_update_ts,'c_mem_al_lan.cpp_update_ts',1,0]
+     [out0.c_mem_al_lan.acct_id,'c_mem_al_lan.acct_id',1,0]
+     [out0.c_mem_al_lan.cli_emplyr_group_id,'c_mem_al_lan.cli_emplyr_group_id',1,0]
+     [out0.c_mem_al_lan.cpp_member_altrnte_language_sk,'c_mem_al_lan.cpp_member_altrnte_language_sk',1,0]
+     [out0.c_mem_al_lan.reported_dt,'c_mem_al_lan.reported_dt',1,0]
+     [out0.c_mem_al_lan.carrier_id,'c_mem_al_lan.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.c_mem_al_lan.cpp_updated_by,'c_mem_al_lan.cpp_updated_by',1,0]
+     [out0.c_mem_al_lan.source_system,'c_mem_al_lan.source_system',1,0]
+     [out0.c_mem_al_lan.cpp_member_sk,'c_mem_al_lan.cpp_member_sk',1,0]
+     [out0.c_mem_al_lan.cli_member_id,'c_mem_al_lan.cli_member_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_al_lan.cpp_created_by,'c_mem_al_lan.cpp_created_by',1,0]
+     [out0.c_mem_al_lan.cli_carrier_id,'c_mem_al_lan.cli_carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_al_lan.src_env_sk,'c_mem_al_lan.src_env_sk',1,0]
+     [out0.c_mem_al_lan.language_cd,'c_mem_al_lan.language_cd',1,0]
+     [out0.c_mem_al_lan.member_altrnte_language_id,'c_mem_al_lan.member_altrnte_language_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.cmmt,'cmmt',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.source_system,'source_system',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.acct_id,'acct_id',2,2]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.member_altrnte_language_id,'member_altrnte_language_id',1,1]
+     [in0.language,'language',1,1]
+     [in0.reported_dt,'reported_dt',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_al_lan_cpp_member_altrnte_language_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_mem_al_lan_member_altrnte_language_id = fail_if_error(in0.member_altrnte_language_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_al_lan_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_al_lan_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_al_lan_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_al_lan_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_al_lan_cli_member_id = fail_if_error(in0.cli_member_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_mem_al_lan_src_env_id = fail_if_error(in0.src_env_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_al_lan_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_mem_al_lan_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_al_lan_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mem_al_lan_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_mem_al_lan_cpp_member_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_al_lan_reported_dt = fail_if_error(in0.reported_dt);
+let utf8 string("\x01", maximum_length=60) c_mem_al_lan_source_system = fail_if_error(in0.source_system);
+let utf8 string("\x01", maximum_length=80) c_mem_al_lan_language_cd = fail_if_error(in0.language);
+let utf8 string("\x01", maximum_length=2000) c_mem_al_lan_cmmt = fail_if_error(in0.cmmt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_al_lan_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_al_lan_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_al_lan_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_al_lan_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_al_lan_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mem_al_lan_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+  out0.c_mem_al_lan.cpp_member_altrnte_language_sk::c_mem_al_lan_cpp_member_altrnte_language_sk;
+  out0.c_mem_al_lan.member_altrnte_language_id::c_mem_al_lan_member_altrnte_language_id;
+  out0.c_mem_al_lan.cli_src_env_id::c_mem_al_lan_cli_src_env_id;
+  out0.c_mem_al_lan.cli_carrier_id::c_mem_al_lan_cli_carrier_id;
+  out0.c_mem_al_lan.cli_acct_id::c_mem_al_lan_cli_acct_id;
+  out0.c_mem_al_lan.cli_emplyr_group_id::c_mem_al_lan_cli_emplyr_group_id;
+  out0.c_mem_al_lan.cli_member_id::c_mem_al_lan_cli_member_id;
+  out0.c_mem_al_lan.src_env_id::c_mem_al_lan_src_env_id;
+  out0.c_mem_al_lan.carrier_id::c_mem_al_lan_carrier_id;
+  out0.c_mem_al_lan.acct_id::c_mem_al_lan_acct_id;
+  out0.c_mem_al_lan.emplyr_group_id::c_mem_al_lan_emplyr_group_id;
+  out0.c_mem_al_lan.member_id::c_mem_al_lan_member_id;
+  out0.c_mem_al_lan.cpp_member_sk::c_mem_al_lan_cpp_member_sk;
+  out0.c_mem_al_lan.reported_dt::c_mem_al_lan_reported_dt;
+  out0.c_mem_al_lan.source_system::c_mem_al_lan_source_system;
+  out0.c_mem_al_lan.language_cd::c_mem_al_lan_language_cd;
+  out0.c_mem_al_lan.cmmt::c_mem_al_lan_cmmt;
+  out0.c_mem_al_lan.cpp_update_ts::c_mem_al_lan_cpp_update_ts;
+  out0.c_mem_al_lan.cpp_updated_by::c_mem_al_lan_cpp_updated_by;
+  out0.c_mem_al_lan.cpp_create_ts::c_mem_al_lan_cpp_create_ts;
+  out0.c_mem_al_lan.cpp_created_by::c_mem_al_lan_cpp_created_by;
+  out0.c_mem_al_lan.src_env_sk::c_mem_al_lan_src_env_sk;
+  out0.*::in0.*;
+
+end;

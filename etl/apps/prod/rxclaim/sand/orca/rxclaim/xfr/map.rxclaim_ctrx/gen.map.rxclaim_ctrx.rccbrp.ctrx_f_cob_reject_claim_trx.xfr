@@ -1,0 +1,190 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup ctrx_rccbrp_f_clm_trx_red_lkp   */
+out0::bzt_1_6c54cc0a_5a701701_632a_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) employer_group_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL(""), mbr_adjud_sk = NULL(""), pbr_sk = NULL(""), pbr_adjud_sk = NULL(""), phr_sk = NULL(""), phr_adjud_sk = NULL(""), pln_adjud_sk = NULL(""), prod_sk = NULL(""), prod_adjud_sk = NULL(""), care_fac_adjud_sk = NULL(""), claim_stat_sk = NULL(""), carrier_sk = NULL(""), carrier_acct_sk = NULL(""), final_pln_sk = NULL(""), compound_sk = NULL(""), orig_carrier_sk = NULL(""), orig_mbr_sk = NULL(""), orig_cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) orig_account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) orig_member_id = NULL("");
+  decimal("\x01",0) claim_seq_nbr_src = NULL(""), sbm_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  decimal("\x01",0) filled_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL(""), rx_written_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) rx_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) refill_nbr = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) drg_qty = NULL("");
+  decimal("\x01".8, maximum_length=26, sign_reserved) awp_unit_cost = NULL("");
+  decimal("\x01".5, maximum_length=15, sign_reserved) extd_awp_cost = NULL("");
+  decimal("\x01",0) refill_max = NULL(""), days_sply = NULL(""), days_of_supply_sk = NULL(""), dmr_ind_sk = NULL(""), injectable_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_patient_pay_amt = NULL(""), app_due_amt = NULL(""), clt_due_amt = NULL(""), clt_ingred_cost_paid = NULL(""), clt_dispensing_fee = NULL(""), sbm_ingred_cost_paid = NULL(""), sbm_dispensing_fee = NULL(""), sbm_patient_pay_amt = NULL(""), sbm_due_amt = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("ctrx_rccbrp_f_clm_trx_red_lkp",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rccbrp_to_the_ctrx_f_cob_reject_claim_trx_ILM_documentation(in)=
+begin
+
+out0.f_cb_rj_c_tx.mbr_sk::depends_on(
+         in.dxf_src_sys_id,
+         in.claimsts,
+         in.akoinb,
+         in.akp2nb,
+         lookup("ctrx_rccbrp_f_clm_trx_red_lkp",'keystr','keystr','keystr','keystr').mbr_sk  
+         );
+
+
+out0.f_cb_rj_c_tx.claim_nbr_encrp::depends_on(
+         in.akp2nb
+         );
+
+
+out0.f_cb_rj_c_tx.cag_sk::depends_on(
+         in.dxf_src_sys_id,
+         in.claimsts,
+         in.akoinb,
+         in.akp2nb,
+         lookup("ctrx_rccbrp_f_clm_trx_red_lkp",'keystr','keystr','keystr','keystr').cag_sk  
+         );
+
+
+out0.f_cb_rj_c_tx.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.f_cb_rj_c_tx.claim_seq_nbr::depends_on(
+         in.akoinb
+         );
+
+
+out0.f_cb_rj_c_tx.claim_nbr::depends_on(
+         in.akp2nb
+         );
+
+
+out0.f_cb_rj_c_tx.cbr_sbm_oth_pyr_rej_cde::depends_on(
+         in.akitcj
+         );
+
+
+out0.f_cb_rj_c_tx.carrier_sk::depends_on(
+         in.dxf_src_sys_id,
+         in.claimsts,
+         in.akoinb,
+         in.akp2nb,
+         lookup("ctrx_rccbrp_f_clm_trx_red_lkp",'keystr','keystr','keystr','keystr').carrier_sk  
+         );
+
+
+out0.f_cb_rj_c_tx.cbr_seq_nbr::depends_on(
+         in.akvin2
+         );
+
+
+out0.f_cb_rj_c_tx.cob_seq_nbr::depends_on(
+         in.akven2
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rccbrp_to_the_ctrx_f_cob_reject_claim_trx_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_cb_rj_c_tx.mbr_sk,'f_cb_rj_c_tx.mbr_sk',1,0]
+     [out0.f_cb_rj_c_tx.claim_nbr_encrp,'f_cb_rj_c_tx.claim_nbr_encrp',1,0]
+     [out0.f_cb_rj_c_tx.cag_sk,'f_cb_rj_c_tx.cag_sk',1,0]
+     [out0.f_cb_rj_c_tx.src_env_sk,'f_cb_rj_c_tx.src_env_sk',1,0]
+     [out0.f_cb_rj_c_tx.claim_seq_nbr,'f_cb_rj_c_tx.claim_seq_nbr',1,0]
+     [out0.f_cb_rj_c_tx.claim_nbr,'f_cb_rj_c_tx.claim_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_cb_rj_c_tx.cbr_sbm_oth_pyr_rej_cde,'f_cb_rj_c_tx.cbr_sbm_oth_pyr_rej_cde',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_cb_rj_c_tx.carrier_sk,'f_cb_rj_c_tx.carrier_sk',1,0]
+     [out0.f_cb_rj_c_tx.cbr_seq_nbr,'f_cb_rj_c_tx.cbr_seq_nbr',1,0]
+     [out0.f_cb_rj_c_tx.cob_seq_nbr,'f_cb_rj_c_tx.cob_seq_nbr',1,0]
+  ]
+  impacts:
+  [
+     [in0.akp2nb,'akp2nb',12,5]
+     [in0.claimsts,'claimsts',6,3]
+     [in0.akoinb,'akoinb',21,4]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.akitcj,'akitcj',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.akven2,'akven2',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',7,4]
+     [in0.akvin2,'akvin2',1,1]
+     ['lookup("ctrx_rccbrp_f_clm_trx_red_lkp").carrier_sk','carrier_sk',2,1]
+     ['lookup("ctrx_rccbrp_f_clm_trx_red_lkp").cag_sk','cag_sk',2,1]
+     ['lookup("ctrx_rccbrp_f_clm_trx_red_lkp").mbr_sk','mbr_sk',2,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) f_cb_rj_c_tx_claim_nbr = fail_if_error(in0.akp2nb);
+let decimal("\x01",0) f_cb_rj_c_tx_claim_seq_nbr = fail_if_error(if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb));
+let decimal("\x01",0) f_cb_rj_c_tx_cob_seq_nbr = fail_if_error(in0.akven2);
+let decimal("\x01",0) f_cb_rj_c_tx_cbr_seq_nbr = fail_if_error(in0.akvin2);
+let decimal("\x01",0) f_cb_rj_c_tx_cag_sk;
+let decimal("\x01",0) f_cb_rj_c_tx_mbr_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_cb_rj_c_tx_cbr_sbm_oth_pyr_rej_cde = fail_if_error(in0.akitcj);
+let decimal("\x01",0) f_cb_rj_c_tx_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+let decimal("\x01",0) f_cb_rj_c_tx_carrier_sk;
+let decimal("\x01",0) f_cb_rj_c_tx_claim_nbr_encrp;
+
+
+
+/*   Default value   */
+f_cb_rj_c_tx_mbr_sk=fail_if_error(if(is_null(bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).mbr_sk))-1 else bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).mbr_sk);
+
+/*   Default value   */
+f_cb_rj_c_tx_claim_nbr_encrp=fail_if_error(if(in0.akp2nb>0) (decimal(''))(string_concat(string_substring((decimal(''))in0.akp2nb,1,2),ff3_encrypt_idwdata((decimal(''))in0.akp2nb))) 
+else  (decimal(''))(string_concat(string_substring((decimal(''))in0.akp2nb,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs((decimal(''))in0.akp2nb))))));
+
+/*   Default value   */
+f_cb_rj_c_tx_cag_sk=fail_if_error(if(is_null(bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).cag_sk))-1 else bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).cag_sk);
+
+/*   Default value   */
+f_cb_rj_c_tx_carrier_sk=fail_if_error(if(is_null(bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).carrier_sk))-1 else bzt_1_6c54cc0a_5a701701_632a_0(in0.akp2nb, if (in0.akoinb<0) in0.akoinb else (1000-in0.akoinb), in0.claimsts, in0.dxf_src_sys_id).carrier_sk);
+
+  out0.f_cb_rj_c_tx.claim_nbr::f_cb_rj_c_tx_claim_nbr;
+  out0.f_cb_rj_c_tx.claim_seq_nbr::f_cb_rj_c_tx_claim_seq_nbr;
+  out0.f_cb_rj_c_tx.cob_seq_nbr::f_cb_rj_c_tx_cob_seq_nbr;
+  out0.f_cb_rj_c_tx.cbr_seq_nbr::f_cb_rj_c_tx_cbr_seq_nbr;
+  out0.f_cb_rj_c_tx.cag_sk::f_cb_rj_c_tx_cag_sk;
+  out0.f_cb_rj_c_tx.mbr_sk::f_cb_rj_c_tx_mbr_sk;
+  out0.f_cb_rj_c_tx.cbr_sbm_oth_pyr_rej_cde::f_cb_rj_c_tx_cbr_sbm_oth_pyr_rej_cde;
+  out0.f_cb_rj_c_tx.src_env_sk::f_cb_rj_c_tx_src_env_sk;
+  out0.f_cb_rj_c_tx.carrier_sk::f_cb_rj_c_tx_carrier_sk;
+  out0.f_cb_rj_c_tx.claim_nbr_encrp::f_cb_rj_c_tx_claim_nbr_encrp;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,29 @@
+record
+  unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+  little endian integer(4)  cmspstdte /*DECIMAL(8) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  fileid /*CHAR(10) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=9)  client_id /*CHAR(9) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=5)  contract_nbr /*CHAR(5) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=3)  pbp_nbr /*CHAR(3) NOT NULL*/;
+  string("\x01", maximum_length=4) planyear = NULL("");
+  string(unsigned integer(1),maximum_length=11)  prod_id /*CHAR(11) NOT NULL*/;
+  decimal("\x01".5, maximum_length=18, sign_reserved)  client_unit_cost /*CHAR(100) NOT NULL*/;
+  decimal("\x01".5, maximum_length=18, sign_reserved) wac_unit_cost = NULL("");
+  decimal("\x01".5, maximum_length=18, sign_reserved) wac20 = NULL("");
+  decimal("\x01".5, maximum_length=18, sign_reserved) cms_high_value = NULL("");
+  decimal("\x01".5, maximum_length=18, sign_reserved) cms_low_value = NULL("");
+  string(unsigned integer(1),maximum_length=25) description;
+  decimal("\x01",0) src_env_sk /*BIGINT NOT NULL*/;
+  decimal("\x01", maximum_length=5)   dxf_src_sys_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline = NULL("");
+
+end

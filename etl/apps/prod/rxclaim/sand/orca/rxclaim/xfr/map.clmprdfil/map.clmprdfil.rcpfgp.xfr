@@ -1,0 +1,34 @@
+/*Reformat operation*/
+include "/~$AI_XFR/sys_id.xfr";
+
+
+out::reformat(in)=
+begin
+  out.plan_code :: in.iuaecd;
+  out.plan_eff_date :: in.iuakdt;
+  out.fgl_gpi_list_name :: in.iuqyc2;
+  out.pfg_seq_nbr :: in.iuc9n3;
+  out.pfg_message_cde :: in.iuq0c2;
+  out.pfg_from_date :: in.iusldt;
+  out.pfg_thru_date :: in.iusmdt;
+  out.pfg_status :: in.iuhwck;
+  out.pfg_sequence_search :: in.ium6hs;
+  out.pfg_compound_criteria :: in.iuhbia;
+  out.pfg_plan_dflt_list :: in.iugdhn;
+  out.add_user_name :: in.iuakvn;
+  out.add_date :: in.iuc2dt;
+  out.add_time :: in.iuadtm;
+  out.add_program_name :: in.iualvn;
+  out.chg_user_name :: in.iuadvn;
+  out.chg_date :: in.iubmdt;
+  out.chg_time :: in.iuabtm;
+  out.chg_program_name :: in.iuaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+
+end;
+

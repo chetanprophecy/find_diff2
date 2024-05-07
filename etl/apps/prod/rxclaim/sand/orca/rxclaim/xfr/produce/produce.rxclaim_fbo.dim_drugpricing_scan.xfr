@@ -1,0 +1,28 @@
+type temporary_type = 
+  record
+    datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01") this_date =NULL( '');
+    datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01") prev_eff_date =NULL( '');
+    datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01") min_value = NULL;
+  end;
+  
+ temp :: initialize(in) =
+begin
+  temp.min_value :: allocate_with_defaults();
+end;
+
+
+out :: scan(temp, in) =
+begin
+  out.this_date :: in.eff_dt;
+  out.prev_eff_date::datetime_add(temp.this_date,days=-1);
+  out.min_value :: in.eff_dt;
+end;
+
+out :: finalize(temp, in) =
+begin
+  out.* :: in.*;
+  out.eff_dt :: temp.this_date;
+  out.eff_dt_thru :: if (is_null(temp.prev_eff_date)) (datetime("YYYY-MM-DD")) "2999-12-31" else temp.prev_eff_date ;
+  out.is_fst_dt :: 0; 
+  out.is_lst_dt :: if (is_null(temp.prev_eff_date)) 1 else NULL;
+end;

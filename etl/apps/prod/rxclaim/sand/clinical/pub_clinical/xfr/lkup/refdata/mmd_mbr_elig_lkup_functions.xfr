@@ -1,0 +1,171 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/mmd_mbr_elig_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/11  Santosh Nalmas          Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/enum_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_date_t BIZ_DT parameter;
+constant cli_string_t  PUB_CLINICAL_MFS     parameter;
+
+/*cli_string_t out :: get_mbr_elig_lkup_path() inline =
+begin
+  out  :: this_partition_path(PUB_CLINICAL_MFS +'/mbr_elig_icff.lkp.gz');
+end;
+
+cli_string_t out :: get_mbr_elig_indx_path() inline =
+begin
+  out :: this_partition_path( PUB_CLINICAL_MFS +'/mbr_elig_icff.idx');
+end;*/
+
+/*****************/
+/* MMD Member Elig Lookup */
+/*****************/
+
+type mmd_mbr_elig_sec_addr_t=
+record
+hash_key_t             cagm_hash;
+cli_integer_id_t       seq_nbr;
+bc_lookup_address_type addr;
+end;
+
+type mmd_mbr_elig_da_lukp_t =
+record 
+  lookup_identifier_type id                       = -1; 
+  mmd_mbr_elig_t         RecordFormat()           = allocate_with_nulls(); 
+ 
+  int                    keep_on_disk()           = 1; 
+  int                    block_compressed()       = 1; 
+  int                    cache()                  = 0; 
+  int                    load_once()              = 1; 
+  
+  int                    direct_addressed()       = 1; 
+end;
+
+type mmd_mbr_elig_cagm_seq_nbr_lukp_t =
+record 
+  lookup_identifier_type id                                      = -1; 
+  mmd_mbr_elig_sec_addr_t               RecordFormat()           = allocate_with_nulls(); 
+  string('')                            key()                    = {cagm_hash;seq_nbr}; 
+  int                                   keep_on_disk()           = 1; 
+  int                                   block_compressed()       = 1; 
+  int                                   cache()                  = 0; 
+  int                                   load_once()              = 1; 
+  int                                   only_last_key_instance() = 0; 
+  int                                   direct_addressed()       = 0; 
+end;
+
+type mmd_mbr_elig_cagm_lukp_t =
+record 
+  lookup_identifier_type id                                      = -1; 
+  mmd_mbr_elig_sec_addr_t               RecordFormat()           = allocate_with_nulls(); 
+  string('')                            key()                    = {cagm_hash}; 
+  int                                   keep_on_disk()           = 1; 
+  int                                   block_compressed()       = 1; 
+  int                                   cache()                  = 0; 
+  int                                   load_once()              = 1; 
+  int                                   only_last_key_instance() = 0; 
+  int                                   direct_addressed()       = 0; 
+end;
+
+//define global variable to hold lookup template 
+
+let mmd_mbr_elig_da_lukp_t            G_LKUP_MMD_MBR_ELIG               =allocate();
+let mmd_mbr_elig_cagm_seq_nbr_lukp_t  G_LKUP_MMD_MBR_ELIG_CAGM_SEQ_NBR  =allocate();
+let mmd_mbr_elig_cagm_lukp_t          G_LKUP_MMD_MBR_ELIG_CAGM          =allocate();
+
+//load function to load mbr data file 
+mmd_mbr_elig_da_lukp_t out :: load_mmd_mbr_elig_da_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/mmd_mbr_elig_icff.lkp.gz");
+end;
+
+
+//load function to load secondery file of mbr direct address file having cagm hash code as a key
+mmd_mbr_elig_cagm_seq_nbr_lukp_t out :: load_mmd_mbr_elig_cagm_seq_nbr_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/mmd_mbr_elig_icff_cagm_hash_seqno_addr_lkp.gz",this_partition_path($PUB_CLINICAL_MFS)+"/mmd_mbr_elig_icff_cagm_hash_seqno_addr_lkp.idx");
+end;
+
+mmd_mbr_elig_cagm_lukp_t out :: load_mmd_mbr_elig_cagm_lukp() inline =
+begin
+   out :: lookup_load(this_partition_path($PUB_CLINICAL_MFS)+"/mmd_mbr_elig_icff_cagm_hash_addr.lkp.gz",this_partition_path($PUB_CLINICAL_MFS)+"/mmd_mbr_elig_icff_cagm_hash_addr.lkp.idx");
+end;
+
+
+
+
+
+mmd_mbr_elig_t out :: get_mmd_mbr_elig(cagm_hash,seq_nbr) inline =
+begin
+  //fetch ptnt_id for this cagm
+  
+  let bc_lookup_address_type addr=allocate_with_defaults();
+ 
+  
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG.id)                  G_LKUP_MMD_MBR_ELIG                 =load_mmd_mbr_elig_da_lukp();
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG_CAGM_SEQ_NBR.id)     G_LKUP_MMD_MBR_ELIG_CAGM_SEQ_NBR    =load_mmd_mbr_elig_cagm_seq_nbr_lukp();
+  
+  
+  addr=lookup_last(G_LKUP_MMD_MBR_ELIG_CAGM_SEQ_NBR,cagm_hash,seq_nbr).addr;
+ 
+  out:: lookup_last(G_LKUP_MMD_MBR_ELIG,addr);
+end;
+
+type  mmd_mbr_elig_vec_t = mmd_mbr_elig_t[];
+
+mmd_mbr_elig_vec_t out :: get_mmd_mbr_elig_vec(hash_key_t cagm_hash) inline =
+begin
+  let bc_lookup_address_type addr=allocate_with_defaults();
+  let mmd_mbr_elig_t         mmd_mbr_elig=allocate();
+  let mmd_mbr_elig_vec_t     mmd_mbr_elig_vec=[vector];
+  
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG.id)              G_LKUP_MMD_MBR_ELIG             =load_mmd_mbr_elig_da_lukp();
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG_CAGM.id)         G_LKUP_MMD_MBR_ELIG_CAGM        =load_mmd_mbr_elig_cagm_lukp();
+  
+  
+  addr=lookup(G_LKUP_MMD_MBR_ELIG_CAGM,cagm_hash).addr;
+  mmd_mbr_elig= lookup(G_LKUP_MMD_MBR_ELIG, addr);
+  while ( is_defined(mmd_mbr_elig) && (mmd_mbr_elig.mmd_thru_dt >= date_add_months(BIZ_DT,-6)) && (mmd_mbr_elig.mmd_from_dt <= date_add_months(BIZ_DT,-6)) )
+  begin
+    addr=lookup_next(G_LKUP_MMD_MBR_ELIG_CAGM).addr;
+    mmd_mbr_elig_vec = vector_append(mmd_mbr_elig_vec, mmd_mbr_elig);
+    mmd_mbr_elig     = lookup(G_LKUP_MMD_MBR_ELIG,addr);
+  end;
+  
+  out:: vector_sort_dedup_first(mmd_mbr_elig_vec, {mmd_seq_nbr});
+
+  //out:: lookup_last(G_LKUP_MMD_MBR_ELIG,addr);
+end;
+
+mmd_mbr_elig_vec_t out :: get_mmd_mbr_elig_full_vec(hash_key_t cagm_hash) inline =
+begin
+  let bc_lookup_address_type addr=allocate_with_defaults();
+  let mmd_mbr_elig_t         mmd_mbr_elig=allocate();
+  let mmd_mbr_elig_vec_t     mmd_mbr_elig_vec=[vector];
+  
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG.id)              G_LKUP_MMD_MBR_ELIG             =load_mmd_mbr_elig_da_lukp();
+  if(lookup_not_loaded()==G_LKUP_MMD_MBR_ELIG_CAGM.id)         G_LKUP_MMD_MBR_ELIG_CAGM        =load_mmd_mbr_elig_cagm_lukp();
+  
+  
+  addr=lookup(G_LKUP_MMD_MBR_ELIG_CAGM,cagm_hash).addr;
+  mmd_mbr_elig= lookup(G_LKUP_MMD_MBR_ELIG, addr); 
+  while ( is_defined(mmd_mbr_elig) && (mmd_mbr_elig.mmd_thru_dt >= date_add_months(BIZ_DT,-6)) && (mmd_mbr_elig.mmd_from_dt <= date_add_months(BIZ_DT,-6)) && mmd_mbr_elig.mmd_record_status  == 'A')
+  begin
+   addr=lookup_next(G_LKUP_MMD_MBR_ELIG_CAGM).addr;
+   mmd_mbr_elig_vec = vector_append(mmd_mbr_elig_vec, mmd_mbr_elig);
+    
+   mmd_mbr_elig     = lookup(G_LKUP_MMD_MBR_ELIG,addr);
+  end;
+  mmd_mbr_elig_vec  = vector_sort_dedup_first(mmd_mbr_elig_vec,{mmd_seq_nbr});
+  out:: mmd_mbr_elig_vec;
+
+  //out:: lookup_last(G_LKUP_MMD_MBR_ELIG,addr);
+end;

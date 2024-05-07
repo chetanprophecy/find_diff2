@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/map.ht2.interim.pset
+SOURCE_NAME||||rxclaim_ctrx.rcfpbp_cde
+ILM_NAME||||f_mpd_claim_trx_formulary
+AB_CATALOG||||$AI_CAT/map.rxclaim_ctrx/map.rxclaim_ctrx.rcfpbp_cde.f_mpd_claim_trx_formulary.cat
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{rip2nb; rioinb; src_env_sk}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\n\n/*@\ndependency_analysis:\n[\n  [out0.rip2nb,[passthrough],in0.aip2nb]\n  [out0.src_env_sk,[passthrough],in0.dxf_src_sys_id]\n  [out0.rioinb,[passthrough],in0.aioinb]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.rip2nb,'rip2nb',1,0]\n     [out0.src_env_sk,'src_env_sk',1,0]\n     [out0.rioinb,'rioinb',1,0]\n  ]\n  impacts:\n  [\n     [in0.aip2nb,'aip2nb',1,1]\n     [in0.aioinb,'aioinb',1,1]\n     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet decimal("\\x01", maximum_length=18) rip2nb = fail_if_error(in0.aip2nb);\nlet decimal("\\x01", maximum_length=6) rioinb = fail_if_error(in0.aioinb);\nlet decimal("\\x01",0) src_env_sk = fail_if_error(in0.dxf_src_sys_id);\n\n\n\n  out0.rip2nb::rip2nb;\n  out0.rioinb::rioinb;\n  out0.src_env_sk::src_env_sk;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+REDUCED_ICFF_IDS_LIST||||ids_rxclaim.rctc3p.reduced
+ADJUSTED_SORT_KEY_EXPR_LIST||||{dxf_hk_part1; dxf_hk_part2}|||||||||
+ADJUSTED_DEDUP_KEY_EXPR_LIST||||{dxf_hk_part1; dxf_hk_part2}|||||||||
+ACE_CATALOG_CONTENTS|$|||rctc3p_lkp,{rip2nb; rioinb; src_env_sk},/~$AI_SERIAL_LOOKUP/lookup.rxclaim_ctrx/lookup.rxclaim_ctrx.rcfpbp_cde.rctc3p.reduced.dat,/~$PUB_DATAHUB_DML/ids_rxclaim/ids_rxclaim.rctc3p.reduced.dml\n
+READ_VOIDS_AS_STRINGS||||false

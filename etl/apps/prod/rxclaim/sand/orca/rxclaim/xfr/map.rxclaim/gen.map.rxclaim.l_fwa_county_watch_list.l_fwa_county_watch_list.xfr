@@ -1,0 +1,56 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.cnty_wtc_ls.zip_cd,[transform],in0.zip_cd]
+  [out0.cnty_wtc_ls.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cnty_wtc_ls.fwa_county_list_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cnty_wtc_ls.zip_cd,'cnty_wtc_ls.zip_cd',1,0]
+     [out0.cnty_wtc_ls.src_env_sk,'cnty_wtc_ls.src_env_sk',1,0]
+     [out0.cnty_wtc_ls.fwa_county_list_sk,'cnty_wtc_ls.fwa_county_list_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.cnty_wtc_ls.county_nm,'cnty_wtc_ls.county_nm',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cnty_wtc_ls.city_nm,'cnty_wtc_ls.city_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.zip_cd,'zip_cd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.county_nm,'county_nm',1,1]
+     [in0.city_nm,'city_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cnty_wtc_ls_fwa_county_list_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=5) cnty_wtc_ls_zip_cd = fail_if_error(string_lrtrim(in0.zip_cd));
+let string("\x01",charset="iso-8859-15", maximum_length=35) cnty_wtc_ls_city_nm = fail_if_error(in0.city_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=35) cnty_wtc_ls_county_nm = fail_if_error(in0.county_nm);
+let decimal("\x01",0) cnty_wtc_ls_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.cnty_wtc_ls.fwa_county_list_sk::cnty_wtc_ls_fwa_county_list_sk;
+  out0.cnty_wtc_ls.zip_cd::cnty_wtc_ls_zip_cd;
+  out0.cnty_wtc_ls.city_nm::cnty_wtc_ls_city_nm;
+  out0.cnty_wtc_ls.county_nm::cnty_wtc_ls_county_nm;
+  out0.cnty_wtc_ls.src_env_sk::cnty_wtc_ls_src_env_sk;
+  out0.*::in0.*;
+
+end;

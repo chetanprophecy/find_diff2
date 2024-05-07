@@ -1,0 +1,292 @@
+include "~$AI_DML/eob/eob_print_file.dml";
+include "~$AI_XFR/eob/filter_condition.formulary_record.xfr";
+
+
+constant string("")RUN_MONTH parameter;
+
+out::calculate_effective_dt(effective_dt,change_reason,run_month)=
+
+begin
+let string("") v_eff_dt_out_of_range;
+let date("YYYYMMDD") v_next_year_start_dt;
+
+v_next_year_start_dt= (date("YYYYMMDD"))string_lrtrim((decimal(""))string_concat(string_substring(run_month,1,4),"0101") + 10000);
+v_eff_dt_out_of_range=if(string_lrtrim(change_reason) member [vector "AVLGENERIC","REQUIRESPA","QNTYLIMIT","STEPTHERPY","REQPAPTBD","GENBRNDT3"])
+                                if((date("YYYYMMDD"))effective_dt > v_next_year_start_dt ) "Y" else "N"
+                                
+                           else if(string_lrtrim(change_reason) not member [vector "AVLGENERIC","REQUIRESPA","QNTYLIMIT","STEPTHERPY","REQPAPTBD","GENBRNDT3"])
+                               "N" ;
+                                
+                                
+
+
+out::if(is_null(effective_dt) or v_eff_dt_out_of_range=="Y") "" else effective_dt;
+
+end;
+
+out::pad_zero_at_start(in)=
+begin
+
+//out :: if(starts_with(in,"."))string_concat("0",string_lrtrim(in)) else in;
+
+out     :1: (decimal(""))re_replace(re_replace( string_lrtrim(in) ,"^\\.","0." ),"^-\\.","-0.");
+out     :: "0";
+
+end;
+
+out :: join(in0, in1) =
+begin
+
+
+let claim_rec claim_rec_var = allocate_with_defaults();
+
+
+  //Lookups used in claim records
+  let lkp_d_pharmacy_lkp_rec  = lookup("d_pharmacy_lkp", in0.mbr_rec.fmpd_phr_sk) ;
+  let lkp_d_product_lkp_rec   = lookup("d_product_lkp", in0.mbr_rec.fmpd_prod_sk) ;
+  let lkp_d_plan_drug_sts_rec = lookup("d_plan_drug_status_lkp", in0.mbr_rec.fclm_pln_drg_stat_sk) ;
+  
+let string("") drug_status          = first_defined( lkp_d_plan_drug_sts_rec.pln_drg_stat_cd ,"");
+
+let lkp_d_contract_pbp = lookup("d_contract_pbp_lkp",in0.mbr_rec.fmpd_contract_pbp_sk);
+
+let lkp_bonus_drug_list_rec = if(string_lrtrim(in0.mbr_rec.dmem_carrier_id) member [vector "MPDOVA","PDPIND"] )//Group Retiree Logic
+                                
+                               first_defined( lookup("LKP : Bonus Drug List",in0.mbr_rec.dmem_carrier_id,in0.mbr_rec.dmem_account_id, in0.mbr_rec.dmem_employer_group_id, drug_status ),
+                                                lookup("LKP : Bonus Drug List", in0.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status))
+                                else
+                                            lookup("LKP : Bonus Drug List", in0.mbr_rec.dmem_carrier_id,"*ALL"           ,"*ALL"                    ,drug_status) ;
+                                                
+                                                
+ let d_contract_pbp_extn_lkp_rec = lookup("d_contract_pbp_extn_lkp",in0.mbr_rec.fmpd_contract_pbp_sk);
+                                                
+  let lkp_l_formulary_lkp_rec = lookup("l_eob_formulary_lkp", d_contract_pbp_extn_lkp_rec.pdp_frmlry_notice_list,lkp_d_product_lkp_rec.prod_id);
+  
+    //Formulary Filter Code Start
+
+  let formulary_lkp_rec_type formulary_lkp_rec  = if(lkp_d_product_lkp_rec.prod_id_qlfr_cd=="03")lookup("l_eob_formulary_lkp",d_contract_pbp_extn_lkp_rec.pdp_frmlry_notice_list,lkp_d_product_lkp_rec.prod_id) else allocate_with_defaults() ;
+  let string("") v_cd_bd_formulary_change_code_id = calculate_v_cd_bd_formulary_change_code_id(formulary_lkp_rec.chg_reason,formulary_lkp_rec.chg_dt,formulary_lkp_rec.effective_dt,in0.mbr_rec.fmpd_sbm_dt,RUN_MONTH,formulary_lkp_rec.formulary_chg_cd_id);
+  //Formulary Filter Code End
+
+  
+  //let lkp_l_rctrpp_rec        = lookup("l_rctrpp_eob_lkp", "", ""); //need to add keys, dummy added for now
+
+//Variables used in claim records
+  let v_bonus_drug_flag       = if((!is_null(lkp_d_plan_drug_sts_rec)) 
+                                 and (!is_null(lkp_bonus_drug_list_rec))
+                                 and (lkp_d_plan_drug_sts_rec.pln_drg_stat_cd == lkp_bonus_drug_list_rec.drug_status))
+                                      "Y"
+                                 else 
+                                      "N"; //used for CD01
+  let string(1) group_retiree = if(is_defined(lkp_d_contract_pbp) and starts_with(string_lrtrim(lkp_d_contract_pbp.pbp_id),"8")) "G"
+                                else "-";                                    
+  
+                                          
+  let v_prd_description_abbrev          = if ((lkp_d_product_lkp_rec.prod_id == "00000000000") and in0.mbr_rec.fmpd_compound_cd < "2")
+                                                "Service Claim"
+                                          else if ((lkp_d_product_lkp_rec.prod_id == "00000000000") and in0.mbr_rec.fmpd_compound_cd == "2")
+                                                "Compound"
+                                          else if (lkp_d_product_lkp_rec.prod_id != "00000000000")
+                                                  lkp_d_product_lkp_rec.drg_lbl_nm; //lkp_d_product_lkp_rec.drg_ndc_short_nm; change on 12/17/2018 
+
+  let decimal("") rctrpp_trp_other_payer_balance_claim_only = if(is_defined(in0.rctrpp_rec.trp_update_reason_code) and in0.rctrpp_rec.trp_update_reason_code member [vector 1,6 ] )
+                                                first_defined (in0.rctrpp_rec.trp_other_payer_balance,0)						
+                                               else 
+                                                0;
+  let decimal("") rctrpp_trp_other_payer_amount_claim_only = if(is_defined(in0.rctrpp_rec.trp_update_reason_code) and in0.rctrpp_rec.trp_update_reason_code member [vector 1,6 ] )
+                                                first_defined (in0.rctrpp_rec.trp_other_payer_paid_amt,0)						
+                                               else 
+                                               0; 
+  
+/*  let decimal("") v_plan_paid = //first_defined(in0.mbr_rec.fmpd_amt_twd_plan_ded_amt,0) +
+                                   first_defined(in0.mbr_rec.fmpd_amt_twd_plan_gap_amt,0) +
+                                   first_defined(in0.mbr_rec.fmpd_amt_twd_plan_cat_amt,0) +
+                                   first_defined(in0.mbr_rec.fmpd_plan_pay_init_cov_lvl_amt,0);*/
+                                   
+                                   
+let decimal("") v_plan_paid_amt = first_defined(in0.mbr_rec.fmpd_drg_spnd_amt,0) -( 
+                                  first_defined(in0.mbr_rec.fmpd_lics_amt,0) +
+                                  first_defined(in0.mbr_rec.fmpd_phr_patient_pay_amt,0) +
+                                  math_abs(first_defined(in0.mbr_rec.fmpd_gap_brnd_disc_amt,0))     +
+                                  first_defined(in0.mbr_rec.fmpd_phr_oth_pyr_recog_amt,0));
+let claim_amount_paid_by_you = if(is_defined(in0.mbr_rec.fmpd_drg_cov_stat_cd) and in0.mbr_rec.fmpd_drg_cov_stat_cd member [vector "C", "E", "G", "N", "O", "P", "W", "Y"])
+                                
+                                (
+                                if(is_defined(in0.rctrpp_rec.trp_update_reason_code) and in0.rctrpp_rec.trp_update_reason_code member [vector 1,2,6] and string_lrtrim(in0.rctrpp_rec.trp_transaction_code) member [vector "N1","N3"] 
+                                )
+                                (first_defined(in0.mbr_rec.fmpd_phr_patient_pay_amt , 0) - first_defined (in0.rctrpp_rec.trp_other_payer_balance,0))
+                                else 
+                                first_defined(in0.mbr_rec.fmpd_phr_patient_pay_amt , 0));
+
+                                   
+/*
+let decimal("") v_plan_paid_egwp    =   //first_defined(in0.mbr_rec.fmpd_egwp_amt_twd_plan_ded_amt,0)+
+
+                                           first_defined(in0.mbr_rec.fmpd_egwp_amt_twd_plan_gap_amt,0) +
+
+                                           first_defined(in0.mbr_rec.fmpd_egwp_amt_twd_plan_cat_amt,0) +
+
+                                           first_defined(in0.mbr_rec.fmpd_egwp_plan_pay_icl_amt,0) ; */ 
+  
+  claim_rec_var.carrier_id                                         = in0.mbr_rec.dmem_carrier_id;               //CD02
+  claim_rec_var.account_id                                         = in0.mbr_rec.dmem_account_id;               //CD03
+  claim_rec_var.group_id                                           = in0.mbr_rec.dmem_employer_group_id;        //CD04
+  claim_rec_var.member_id                                          = in0.mbr_rec.dmem_mbr_id;                   //CD05
+  claim_rec_var.rxclaim_number                                     = in0.mbr_rec.fmpd_claim_nbr;                //CD06
+  claim_rec_var.sequence_number                                    = decimal_strip(1000 - in0.mbr_rec.fmpd_claim_seq_nbr) ; //CD07
+  claim_rec_var.claim_status                                       = in0.mbr_rec.fmpd_claim_stat_id;            //CD08
+  claim_rec_var.provider_id                                        = lkp_d_pharmacy_lkp_rec.phr_id;          //CD09
+
+                                                                             
+  claim_rec_var.pharmacy_name_                                     = 
+                                                                      string_join(for(let i in string_split_no_empty(first_defined(lkp_d_pharmacy_lkp_rec.phr_full_nm,"")," ")):
+                                                                        string_concat(
+                                                                                string_upcase(string_substring(i,1,1))
+                                                                                ,
+                                                                                first_defined(string_downcase(string_substring(i,2,(string_length(i)-1))),"")
+                                                                                )," ");
+  claim_rec_var.out_of_network_pharmacy_indicator                  = "";              //CD11
+  claim_rec_var.pharmacy_address_1                                 = lkp_d_pharmacy_lkp_rec.phr_addr1_txt;  //CD12
+  claim_rec_var.pharmacy_address_2                                 = lkp_d_pharmacy_lkp_rec.phr_addr2_txt;  //CD13
+  claim_rec_var.pharmacy_city                                      = lkp_d_pharmacy_lkp_rec.phr_city_nm;    //CD14
+  claim_rec_var.pharmacy_state_abbreviation                        = lkp_d_pharmacy_lkp_rec.phr_st_cd;      //CD15
+  claim_rec_var.refill_number                                      = in0.mbr_rec.fmpd_refill_nbr;                   //CD17 //CD 16 filler of 9 bytes
+  claim_rec_var.fill_date                                          = in0.mbr_rec.fmpd_sbm_srv_dt;                   //CD18
+  claim_rec_var.submit_date                                        = in0.mbr_rec.fmpd_sbm_dt;                       //CD19
+
+  claim_rec_var.product_name_dosage                                = string_join(for(let i in string_split_no_empty(first_defined(v_prd_description_abbrev,"")," ")):
+                                                                        string_concat(
+                                                                                string_upcase(string_substring(i,1,1))
+                                                                                ,
+                                                                                first_defined(string_downcase(string_substring(i,2,(string_length(i)-1))),"")
+                                                                                )," ");
+  claim_rec_var.dispensed_quantity                                 = pad_zero_at_start((decimal(""))in0.mbr_rec.fmpd_drg_qty);                      //CD21
+  claim_rec_var.days_supply                                        = math_abs(in0.mbr_rec.fmpd_days_sply);                    //CD22
+  claim_rec_var.patient_pay_before_lics                            = pad_zero_at_start((decimal(""))in0.mbr_rec.fmpd_clt_patient_pay_amt);          //CD23
+  claim_rec_var.drug_tier                                          = if(is_defined(in0.mbr_rec.fmpd_tier_ind) and string_lrtrim(in0.mbr_rec.fmpd_tier_ind) != "-")first_defined(in0.mbr_rec.fmpd_tier_ind,"") else "";                     //CD24
+
+  /*claim_rec_var.retail_price_uc_w_                                 = pad_zero_at_start((decimal(""))(if(first_defined(in0.mbr_rec.fclm_sbm_usual_customary_amt,0) 
+                                                                             < (first_defined(in0.mbr_rec.fmpd_clt_due_amt,0) +  
+                                                                             first_defined(in0.mbr_rec.fca_sav_acct_amt,0))) 
+                                                                                "0" 
+                                                                             else 
+                                                                                in0.mbr_rec.fclm_sbm_usual_customary_amt)); //CD25*/
+  claim_rec_var.retail_price_uc_w_ = pad_zero_at_start((decimal(""))first_defined(in0.mbr_rec.fclm_sbm_usual_customary_amt,0));
+  claim_rec_var.total_drug_cost_                                   = pad_zero_at_start((decimal(""))in0.mbr_rec.fmpd_drg_spnd_amt);               //CD26
+    
+  claim_rec_var.drug_coverage_status_code                          = if(v_bonus_drug_flag == "Y")lkp_bonus_drug_list_rec.drug_status else in0.mbr_rec.fmpd_drg_cov_stat_cd;
+                                                                               //CD27
+  claim_rec_var.eap_drug_flag                                      = if(lkp_d_plan_drug_sts_rec.pln_drg_stat_cd =="e" or 
+                                                                                lkp_d_plan_drug_sts_rec.pln_drg_stat_cd =="f") 
+                                                                                        "Y" 
+                                                                             else 
+                                                                                        "N";                           //CD28
+  //claim_rec_var.amount_paid_by_plan                                = pad_zero_at_start(math_max(v_plan_paid,v_plan_paid_egwp));                             //CD29
+  claim_rec_var.amount_paid_by_plan                                = pad_zero_at_start(if(v_bonus_drug_flag == "Y") in0.mbr_rec.fmpd_clt_due_amt else v_plan_paid_amt);//pad_zero_at_start(if(group_retiree == "G")v_plan_paid_egwp else v_plan_paid);                             //CD29
+  claim_rec_var.amount_paid_by_you                                 = if(v_bonus_drug_flag == "Y") pad_zero_at_start((decimal(""))first_defined(in0.mbr_rec.fmpd_phr_patient_pay_amt,0))
+                                                                        else pad_zero_at_start((decimal(""))first_defined((decimal(""))claim_amount_paid_by_you,0));             //CD30
+  claim_rec_var.plro_cob_payer_amount_                           = pad_zero_at_start((decimal(""))first_defined(rctrpp_trp_other_payer_amount_claim_only,0));        //CD31
+                                                                             
+  claim_rec_var.others_paid                                      = if(v_bonus_drug_flag == "Y")
+                                                                        pad_zero_at_start((decimal(""))(first_defined(in0.mbr_rec.fmpd_lics_amt,0)         + 
+                                                                             first_defined(math_abs(in0.mbr_rec.fmpd_gap_brnd_disc_amt),0) + 
+                                                                             first_defined(in0.rctrpp_rec.trp_other_payer_balance,0)))
+                                                                        else
+                                                                        pad_zero_at_start((decimal(""))(first_defined(in0.mbr_rec.fmpd_lics_amt,0)         + 
+                                                                             first_defined(math_abs(in0.mbr_rec.fmpd_gap_brnd_disc_amt),0) + 
+                                                                             first_defined(rctrpp_trp_other_payer_balance_claim_only,0))); //CD32                                                                            
+                                                                             
+  claim_rec_var.lics_adjustment_amount                             = pad_zero_at_start((decimal(""))in0.mbr_rec.fmpd_lics_amt);                         //CD33
+  claim_rec_var.preferred_mail_service_savings                     = "";  //CD34
+  claim_rec_var.lower_cost_drug_name_1                             = "";  //CD35
+  claim_rec_var.lower_cost_drug_name_2                             = "";  //CD36
+  claim_rec_var.lower_cost_drug_name_3                             = "";  //CD37
+  claim_rec_var.lower_cost_drug_range_of_savings                   = "";  //CD38
+  claim_rec_var.other_troop                                      = if(v_bonus_drug_flag == "Y")
+                                                                       pad_zero_at_start((decimal(""))0)
+                                                                  /*      pad_zero_at_start((decimal(""))(first_defined(math_abs(in0.mbr_rec.fmpd_gap_brnd_disc_amt),0) + 
+                                                                             first_defined(in0.rctrpp_rec.trp_other_payer_balance,0   )))*/
+                                                                        else
+                                                                        pad_zero_at_start((decimal(""))(first_defined(math_abs(in0.mbr_rec.fmpd_gap_brnd_disc_amt),0) + 
+                                                                             first_defined(rctrpp_trp_other_payer_balance_claim_only,0)));             //CD39
+  claim_rec_var.monthtodate_amount_paid_by_you                     =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                        (decimal(""))first_defined(in1.bonus_monthtodate_amount_paid_by_you,0)
+                                                                      else 
+                                                                        (decimal(""))first_defined(in1.claim_monthtodate_amount_paid_by_you,0));//CD40  dependent on member  
+  claim_rec_var.monthtodate_amount_paid_by_others                  =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                        in1.bonus_monthtodate_amount_paid_by_others
+                                                                      else 
+                                                                        in1.claim_monthtodate_amount_paid_by_others);//CD41 dependent on member                                                                    
+  claim_rec_var.monthtodate_plan_paid                              =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                       in1.bonus_monthtodate_plan_paid
+                                                                      else 
+                                                                       in1.claim_monthtodate_plan_paid); //CD42 need to calculate dependent on member
+  claim_rec_var.monthtodate_total_drug_cost                        =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                       in1.bonus_monthtodate_total_drug_cost 
+                                                                      else 
+                                                                       in1.claim_monthtodate_total_drug_cost) ; //CD43 need to calculate dependent on member
+  claim_rec_var.monthtodate_retail_price                           = pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                       (decimal(""))first_defined(in1.bonus_monthtodate_retail_price,0)
+                                                                      else 
+                                                                       (decimal(""))first_defined(in1.claim_monthtodate_retail_price,0));//CD44 dependent on member                                                                         
+  claim_rec_var.yeartodate_amount_paid_by_you                      = pad_zero_at_start(if(v_bonus_drug_flag == "Y") 
+                                                                       (decimal(""))first_defined(in1.bonus_yeartodate_amount_paid_by_you,0)
+                                                                      else 
+                                                                       (decimal(""))first_defined(in1.claim_yeartodate_amount_paid_by_you,0));//CD45 need to calculate dependent on member
+  claim_rec_var.yeartodate_amount_paid_by_others                   =  pad_zero_at_start(if(v_bonus_drug_flag == "Y") 
+                                                                      (decimal(""))first_defined(in1.bonus_yeartodate_amount_paid_by_others,0)
+                                                                      else 
+                                                                       (decimal(""))first_defined(in1.claim_yeartodate_amount_paid_by_others,0) ); //CD46 dependent on member
+  claim_rec_var.yeartodate_plan_paid                               = pad_zero_at_start(if(v_bonus_drug_flag == "Y") 
+                                                                      in1.bonus_yeartodate_plan_paid 
+                                                                      else 
+                                                                       in1.claim_yeartodate_plan_paid) ; //CD47dependent on member
+  
+  claim_rec_var.yeartodate_total_drug_cost                         =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_yeartodate_total_drug_cost
+                                                                     else 
+                                                                     in1.claim_yeartodate_total_drug_cost); //CD48 dependent on member
+  claim_rec_var.yeartodate_retail_price                            = pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_yeartodate_retail_price 
+                                                                     else 
+                                                                      in1.claim_yeartodate_retail_price );//CD49 dependent on member
+  claim_rec_var.monthtodate_cob_payer_amount                       =  pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_monthtodate_cob_payer_amount
+                                                                     else 
+                                                                      in1.claim_monthtodate_cob_payer_amount );//CD50 dependent on member
+  claim_rec_var.yeartodate_cob_payer_amount                        = pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_yeartodate_cob_payer_amount
+                                                                      else 
+                                                                      in1.claim_yeartodate_cob_payer_amount );//CD51 dependent on member
+  claim_rec_var.monthtodate_others_paid_that_counted_towards_troop = pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_monthtodate_others_paid_that_counted_towards_troop
+                                                                      else 
+                                                                        in1.claim_monthtodate_others_paid_that_counted_towards_troop);//CD52 dependent on member
+  claim_rec_var.yeartodate_others_paid_that_counted_towards_troop  = pad_zero_at_start(if(v_bonus_drug_flag == "Y")
+                                                                      in1.bonus_yeartodate_others_paid_that_counted_towards_troop
+                                                                      else 
+                                                                        in1.claim_yeartodate_others_paid_that_counted_towards_troop);//CD53 dependent on member
+  claim_rec_var.gap_discount_amount                                = pad_zero_at_start((decimal(""))math_abs(in0.mbr_rec.fmpd_gap_brnd_disc_amt));                 //CD 54
+   claim_rec_var.formulary_change_code_id                           = if(is_defined(v_cd_bd_formulary_change_code_id) and !is_blank(v_cd_bd_formulary_change_code_id))
+                                                                                string_lpad(lkp_l_formulary_lkp_rec.formulary_chg_cd_id,2,"0")
+                                                                                else
+                                                                                "";//CD55
+  claim_rec_var.rxnumber                                           = in0.mbr_rec.fmpd_rx_nbr;                            //CD 56
+  claim_rec_var.formulary_change_effective_date                    = if(is_defined(v_cd_bd_formulary_change_code_id) and !is_blank(v_cd_bd_formulary_change_code_id))
+                                                                        calculate_effective_dt(lkp_l_formulary_lkp_rec.effective_dt,lkp_l_formulary_lkp_rec.chg_reason,RUN_MONTH)
+                                                                        else
+                                                                        "";       //CD 57
+  claim_rec_var.filler                                             = "";                                         //CD 58
+
+  out.print_file.record_identifier                      :: if(v_bonus_drug_flag == "Y")    "BD"   else      "CD";                         //CD01
+  out.print_file.bonus                                  :: if(v_bonus_drug_flag == "Y")  claim_rec_var;
+  out.print_file.claim                                  :: if(v_bonus_drug_flag != "Y")  claim_rec_var;
+  
+  
+  out.dmem_mbr_sk :: in0.mbr_rec.dmem_mbr_sk;
+  out.carrier_id :: in1.carrier_id;
+  out.mbr_id :: in1.mbr_id;
+  out.filename :: in0.mbr_rec.filename;
+
+
+end;

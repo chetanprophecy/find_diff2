@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/plan_type_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+
+cli_string_t out :: get_plan_type_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_REFDATA + '/cli_plan_type.dat';
+end;
+
+/************************************************/
+/* Plan Type Lookup (ids surrogate key) */
+/************************************************/
+
+type plan_type_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  plan_type_hash_lkup_t   RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {plan_type.plan_type_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let plan_type_lkup_t GLKUP_PLAN_TYPE = allocate_with_nulls();
+
+plan_type_lkup_t out :: load_plan_type_lkup() inline =
+begin
+  if (GLKUP_PLAN_TYPE.id == lookup_not_loaded())
+    GLKUP_PLAN_TYPE = lookup_load(this_partition_path(get_plan_type_lkup_path()));
+  
+  out :: GLKUP_PLAN_TYPE;
+end;
+
+plan_type_t out :: get_plan_type(plan_type_cd) inline =
+begin
+  let plan_type_lkup_t lkup = load_plan_type_lkup();
+  out :: lookup(lkup, plan_type_cd).plan_type;
+end;

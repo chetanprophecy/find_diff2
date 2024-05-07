@@ -1,0 +1,121 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.sub_mbr.account_id,[transform],in0.icaccd]
+  [out0.sub_mbr.carrier_id,[transform],in0.icaacd]
+  [out0.sub_mbr.mbr_id,[transform],in0.icabcd]
+  [out0.mbr_cstm_fld.grp_hrchy_lvl_1_id_mask,[passthrough],in0.icaacd]
+  [out0.mbr_cstm_fld.mbr_sk,[transform],]
+  [out0.mbr_cstm_fld.mbr_custom_field_sk,[transform],]
+  [out0.mbr_cstm_fld.curr_ind,[transform],in0.ica4ck]
+  [out0.mbr_cstm_fld.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.sub_mbr.employer_group_id,[transform],in0.icadcd]
+  [out0.mbr_cstm_fld.cag_sk,[transform],]
+  [out0.mbr_cstm_fld.fld_value,[passthrough],in0.icvst3]
+  [out0.sub_cag.employer_group_id,[transform],in0.icabcd]
+  [out0.mbr_cstm_fld.eff_thru_dt,[transform],in0.icrpdt]
+  [out0.mbr_cstm_fld.eff_frm_dt,[transform],in0.icrodt]
+  [out0.mbr_cstm_fld.grp_hrchy_lvl_2_id_mask,[passthrough],in0.icaccd]
+  [out0.mbr_cstm_fld.grp_hrchy_lvl_3_id_mask,[passthrough],in0.icadcd]
+  [out0.sub_cag.account_id,[transform],in0.icaccd]
+  [out0.sub_cag.carrier_id,[transform],in0.icaacd]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.sub_mbr.account_id,'sub_mbr.account_id',1,0]
+     [out0.sub_mbr.carrier_id,'sub_mbr.carrier_id',1,0]
+     [out0.sub_mbr.mbr_id,'sub_mbr.mbr_id',1,0]
+     [out0.mbr_cstm_fld.grp_hrchy_lvl_1_id_mask,'mbr_cstm_fld.grp_hrchy_lvl_1_id_mask',1,0]
+     [out0.mbr_cstm_fld.mbr_sk,'mbr_cstm_fld.mbr_sk',1,0]
+     [out0.mbr_cstm_fld.mbr_custom_field_sk,'mbr_cstm_fld.mbr_custom_field_sk',1,0]
+     [out0.mbr_cstm_fld.curr_ind,'mbr_cstm_fld.curr_ind',1,0]
+     [out0.mbr_cstm_fld.src_env_sk,'mbr_cstm_fld.src_env_sk',1,0]
+     [out0.sub_mbr.employer_group_id,'sub_mbr.employer_group_id',1,0]
+     [out0.mbr_cstm_fld.cag_sk,'mbr_cstm_fld.cag_sk',1,0]
+     [out0.mbr_cstm_fld.fld_value,'mbr_cstm_fld.fld_value',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.sub_cag.employer_group_id,'sub_cag.employer_group_id',1,0]
+     [out0.mbr_cstm_fld.eff_thru_dt,'mbr_cstm_fld.eff_thru_dt',1,0]
+     [out0.mbr_cstm_fld.eff_frm_dt,'mbr_cstm_fld.eff_frm_dt',1,0]
+     [out0.mbr_cstm_fld.grp_hrchy_lvl_2_id_mask,'mbr_cstm_fld.grp_hrchy_lvl_2_id_mask',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.mbr_cstm_fld.grp_hrchy_lvl_3_id_mask,'mbr_cstm_fld.grp_hrchy_lvl_3_id_mask',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.sub_cag.account_id,'sub_cag.account_id',1,0]
+     [out0.sub_cag.carrier_id,'sub_cag.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.icaccd,'icaccd',3,3]
+     [in0.icadcd,'icadcd',2,2]
+     [in0.ica4ck,'ica4ck',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.icabcd,'icabcd',2,2]
+     [in0.icrpdt,'icrpdt',2,1]
+     [in0.icaacd,'icaacd',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.icvst3,'icvst3',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.icrodt,'icrodt',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) mbr_cstm_fld_mbr_custom_field_sk = -1;
+let decimal("\x01",0) mbr_cstm_fld_mbr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_cstm_fld_grp_hrchy_lvl_1_id_mask = fail_if_error(in0.icaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) mbr_cstm_fld_grp_hrchy_lvl_2_id_mask = fail_if_error(in0.icaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) mbr_cstm_fld_grp_hrchy_lvl_3_id_mask = fail_if_error(in0.icadcd);
+let date("YYYYMMDD")("\x01") mbr_cstm_fld_eff_frm_dt;
+let date("YYYYMMDD")("\x01") mbr_cstm_fld_eff_thru_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=255) mbr_cstm_fld_fld_value = fail_if_error(in0.icvst3);
+let decimal("\x01",0) mbr_cstm_fld_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) mbr_cstm_fld_curr_ind = fail_if_error(if(in0.ica4ck=='A') 'Y' else 'N');
+let decimal("\x01",0) mbr_cstm_fld_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) sub_cag_carrier_id = fail_if_error(string_lrtrim(in0.icaacd));
+let string("\x01",charset="iso-8859-15", maximum_length=40) sub_cag_account_id = fail_if_error(string_lrtrim(in0.icaccd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) sub_cag_employer_group_id = fail_if_error(string_lrtrim(in0.icabcd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) sub_mbr_carrier_id = fail_if_error(string_lrtrim(in0.icaacd));
+let string("\x01",charset="iso-8859-15", maximum_length=40) sub_mbr_account_id = fail_if_error(string_lrtrim(in0.icaccd));
+let string("\x01",charset="iso-8859-15", maximum_length=30) sub_mbr_employer_group_id = fail_if_error(string_lrtrim(in0.icadcd));
+let string("\x01",charset="iso-8859-15", maximum_length=20) sub_mbr_mbr_id = fail_if_error(string_lrtrim(in0.icabcd));
+
+
+
+/*   Default value   */
+mbr_cstm_fld_eff_thru_dt=fail_if_error(if (date_check(in0.icrpdt) == (date("YYYYMMDD")) "19000101") high_date() else date_check(in0.icrpdt));
+
+/*   Default value   */
+mbr_cstm_fld_eff_frm_dt=fail_if_error(date_check(in0.icrodt));
+
+  out0.mbr_cstm_fld.mbr_custom_field_sk::mbr_cstm_fld_mbr_custom_field_sk;
+  out0.mbr_cstm_fld.mbr_sk::mbr_cstm_fld_mbr_sk;
+  out0.mbr_cstm_fld.grp_hrchy_lvl_1_id_mask::mbr_cstm_fld_grp_hrchy_lvl_1_id_mask;
+  out0.mbr_cstm_fld.grp_hrchy_lvl_2_id_mask::mbr_cstm_fld_grp_hrchy_lvl_2_id_mask;
+  out0.mbr_cstm_fld.grp_hrchy_lvl_3_id_mask::mbr_cstm_fld_grp_hrchy_lvl_3_id_mask;
+  out0.mbr_cstm_fld.eff_frm_dt::mbr_cstm_fld_eff_frm_dt;
+  out0.mbr_cstm_fld.eff_thru_dt::mbr_cstm_fld_eff_thru_dt;
+  out0.mbr_cstm_fld.fld_value::mbr_cstm_fld_fld_value;
+  out0.mbr_cstm_fld.cag_sk::mbr_cstm_fld_cag_sk;
+  out0.mbr_cstm_fld.curr_ind::mbr_cstm_fld_curr_ind;
+  out0.mbr_cstm_fld.src_env_sk::mbr_cstm_fld_src_env_sk;
+  out0.sub_cag.carrier_id::sub_cag_carrier_id;
+  out0.sub_cag.account_id::sub_cag_account_id;
+  out0.sub_cag.employer_group_id::sub_cag_employer_group_id;
+  out0.sub_mbr.carrier_id::sub_mbr_carrier_id;
+  out0.sub_mbr.account_id::sub_mbr_account_id;
+  out0.sub_mbr.employer_group_id::sub_mbr_employer_group_id;
+  out0.sub_mbr.mbr_id::sub_mbr_mbr_id;
+  out0.*::in0.*;
+
+end;

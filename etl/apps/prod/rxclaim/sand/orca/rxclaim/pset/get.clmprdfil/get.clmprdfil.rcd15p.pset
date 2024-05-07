@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil.rcd15p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcd15p                  asnxcd,asnkcd,asben3,asaack,asabck,asacck,asdsvg,asf7bs,asf9bs,asdtvg,asduvg,asdvvg,asgabs,asnmvg,astkau,ask3bs,astlau,asnlvg,asakvn,asc2dt,asadtm,asalvn,asadvn,asbmdt,asabtm,asaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcd15p')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||
+SOURCE_DB_INFO_VEC||||$[ \r\nbegin\r\nresult :: for (let i in get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS)) :\r\n        if (!string_like(i.logical_schema,'%nvm%')) i ;\r\nend\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

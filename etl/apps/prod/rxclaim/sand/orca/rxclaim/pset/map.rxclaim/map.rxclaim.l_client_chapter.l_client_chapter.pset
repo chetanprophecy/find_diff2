@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/map.interim.pset
+SOURCE_NAME||||rxclaim.l_client_chapter
+ILM_NAME||||l_client_chapter
+AB_CATALOG||||$AI_CAT/map.rxclaim/map.rxclaim.l_client_chapter.l_client_chapter.cat
+IDS_LKP_ICFF_NK_KEY_EXPR_LIST||||{carrier_id; account_id; employer_group_id}
+DRIVER_TO_LOOKUP_COL_XFR_LIST||||/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */\n\n/*@\ndependency_analysis:\n[\n  [out0.employer_group_id,[passthrough],in0.Group]\n  [out0.carrier_id,[passthrough],in0.Carrier]\n  [out0.account_id,[passthrough],in0.Account]\n  [out0.*,in0.*]\n]\nmetrics:\n{\n  dependencies:\n  [\n     [out0.employer_group_id,'employer_group_id',1,0]\n     [out0.carrier_id,'carrier_id',1,0]\n     [out0.account_id,'account_id',1,0]\n  ]\n  impacts:\n  [\n     [in0.Carrier,'Carrier',1,1]\n     [in0.Account,'Account',1,1]\n     [in0.Group,'Group',1,1]\n  ]\n}\n@*/\n\nout0::reformat(in0)=\nbegin\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) carrier_id = fail_if_error(in0.Carrier);\nlet string("\\x01",charset="iso-8859-15", maximum_length=40) account_id = fail_if_error(in0.Account);\nlet string("\\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = fail_if_error(in0.Group);\n\n\n\n  out0.carrier_id::carrier_id;\n  out0.account_id::account_id;\n  out0.employer_group_id::employer_group_id;\n  out0.*::in0.*;\n\nend;\n\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;\n\n|out :: reformat(in) = begin out.* :: in.*; end;
+ACE_CATALOG_CONTENTS|$|||d_cag,{carrier_id; account_id; employer_group_id},/~$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.l_client_chapter.d_cag.dat,/~$PUB_DATAHUB_DML/ids_common/ids_common.d_cag.dml\n
+REDUCED_ICFF_IDS_LIST||||ids_common.d_cag
+ADJUSTED_SORT_KEY_EXPR_LIST||||{dxf_hk_part1; dxf_hk_part2}|||||||||
+ADJUSTED_DEDUP_KEY_EXPR_LIST||||{dxf_hk_part1; dxf_hk_part2}|||||||||
+ENABLE_DEFAULT_RULES||||True

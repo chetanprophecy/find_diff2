@@ -1,0 +1,28 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+out.mdh_file_id :: in.arpwih;
+out.pdp_contract_id :: in.arvwhc;
+out.pdp_pbp_id :: in.arvyhc;
+out.mdb_number_of_det_records :: in.arfxhs;
+out.mdb_det_records_accepted :: in.arfyhs;
+out.mdb_det_records_infrmtnal :: in.araeht;
+out.mdb_det_records_rejected :: in.arfzhs;
+out.mdb_ddps_system_date :: if(string_substring((string(""))(decimal(""))in.arngce,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.arngce) else (date("YYYYMMDD")) '99991231';
+out.mdb_ddps_system_time :: if(first_defined(in.arbrtz,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.arbrtz)==4)'00' else if(string_length((string(""))(decimal(""))in.arbrtz)==5)'0' else '',(string(""))(decimal("")) in.arbrtz);
+out.add_user_name :: in.arakvn;
+out.add_date :: if(string_substring((string(""))(decimal(""))in.arc2dt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.arc2dt) else (date("YYYYMMDD")) '99991231';
+out.add_time :: if(first_defined(in.aradtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.aradtm)==4)'00' else if(string_length((string(""))(decimal(""))in.aradtm)==5)'0' else '',(string(""))(decimal("")) in.aradtm);
+out.add_program_name :: in.aralvn;
+out.chg_user_name :: in.aradvn;
+out.chg_date :: if(string_substring((string(""))(decimal(""))in.arbmdt,1,1)=='1') (datetime("YYYYMMDD"))(string(""))(decimal(""))(19000000+in.arbmdt) else (date("YYYYMMDD")) '99991231';
+out.chg_time :: if(first_defined(in.arabtm,-1)==0) (datetime('HH24:MI:SS')) '00:00:00' else (datetime("HH24MISS"))string_concat(if(string_length((string(""))(decimal(""))in.arabtm)==4)'00' else if(string_length((string(""))(decimal(""))in.arabtm)==5)'0' else '',(string(""))(decimal("")) in.arabtm);
+out.chg_program_name ::	in.araevn;
+out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+out.rxt_create_uid :: 'app_orca_rxclaim';
+out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+out.rxt_rec_stat_cd :: '';
+out.* :: in.*;
+end;

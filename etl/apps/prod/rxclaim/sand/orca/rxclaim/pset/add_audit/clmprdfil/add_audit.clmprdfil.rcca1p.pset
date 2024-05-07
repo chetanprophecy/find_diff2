@@ -1,0 +1,5 @@
+!prototype|P|||$AI_PSET/add_audit.interim.pset
+SOURCE_SYSTEM||||clmprdfil.rcca1p
+CLEAN_DIRS||||$[RXTRACK_COMBO_SERIAL_PATH + "../lookup/"+ AI_PHASE]
+CLEAN_DML_FILE||||$[AI_DML + "/lookup." + string_downcase(SOURCE_SCHEMA_NAME) + "/lookup." + SOURCE_SYSTEM  + ".dml"]
+CLEAN_FILE_NAME||||$[begin\r\n\r\nlet string("")[int] v_read_files = [vector];\r\n\r\n        for( let int i = 0, i < (int)date_difference_days((date("YYYY-MM-DD"))END_DATE, (date("YYYY-MM-DD"))START_DATE) + 1)\r\n                for( let int j = 0, j < length_of(CLEAN_DIR_VEC) )\r\n                        v_read_files = vector_append(v_read_files, CLEAN_DIR_VEC[j] +  "/lookup." + SOURCE_SYSTEM + ".dat");\r\nresult :: v_read_files;\r\nend]

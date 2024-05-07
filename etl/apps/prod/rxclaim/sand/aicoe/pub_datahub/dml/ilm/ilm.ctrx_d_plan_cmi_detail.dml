@@ -1,0 +1,92 @@
+type logical_ids_rxclaim_d_plan_cmi_detail_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) pln_sk = NULL("");
+  decimal("\x01",0) min_ingredients_no = NULL("");
+  decimal("\x01",0) max_ingredients_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) legend_ingrd_req_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_prod_stat_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_prod_stat_option_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_multi_src_cd_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_multi_src_cd_option_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) max_days_of_supply_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_refill_limits_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) drg_restriction_ind = NULL("");
+  decimal("\x01".2, maximum_length=12, sign_reserved) max_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) apply_to_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) msg_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) msg_type_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) gpi_list_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) ndc_list_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clrfcn_cd_recog_ind = NULL("");
+  date("YYYYMMDD")("\x01") cmi_eff_dt = NULL("");
+  date("YYYYMMDD")("\x01") cmi_thru_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pref_ndc_price_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pref_gpi_price_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ingrd_refill_lmt_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) admin_rte_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) dosag_frm_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pkg_excp_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ingrd_dur_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) dur_table_nm = NULL("");
+  decimal("\x01",0) max_day_ovrd_pln_sk = NULL("");
+  decimal("\x01",0) refill_lmt_pln_sk = NULL("");
+  decimal("\x01",0) admin_rte_pln_sk = NULL("");
+  decimal("\x01",0) dosag_frm_pln_sk = NULL("");
+  decimal("\x01",0) pkg_excp_pln_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ingrd_otc_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ingrd_3rd_party_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) ingrd_medicaid_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) partb_gpi_list_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) partb_ndc_list_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) drg_stat_not_used_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) plan_ndc_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) plan_gpi_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) fms_sched_use_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) clm_tier_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) formulary_tier_list_nm = NULL("");
+  decimal("\x01",0) drg_history_days_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_list_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_list_qlfr_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) phr_list_msg_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) phr_list_msg_type_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) ndc_ignore_clrfcn_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) gpi_ignore_clrfcn_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) partc_drg_stat_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) partb_drg_stat_ind = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_plan_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'d plan: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+type nk_ids_common_d_plan_t =  // Used in splits
+record
+  string("\x01",charset="iso-8859-15", maximum_length=10) pln_cd = NULL("") /*VARCHAR(10)*/;
+  date("YYYYMMDD")("\x01") pln_eff_dt = NULL("") /*DATE*/;
+  decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_d_plan_cmi_detail_t pln_cmi_dtl  /*@ BizName:'pln cmi dtl' */;
+  opt_nk_ids_common_d_plan_t admin_plan  /*@ BizName:'admin plan' */;
+  opt_nk_ids_common_d_plan_t d_plan  /*@ BizName:'d plan' */;
+  opt_nk_ids_common_d_plan_t dosag_plan  /*@ BizName:'dosag plan' */;
+  opt_nk_ids_common_d_plan_t max_plan  /*@ BizName:'max plan' */;
+  opt_nk_ids_common_d_plan_t pkg_excp_plan  /*@ BizName:'pkg excp plan' */;
+  opt_nk_ids_common_d_plan_t refill_plan  /*@ BizName:'refill plan' */;
+end;

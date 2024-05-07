@@ -1,0 +1,39 @@
+// Usage: include "/~$PUB_DXF_XFR/join_types.xfr";
+// This file is used in PDL via AB_DML_DEFS.
+
+/* Tests:
+ksh <<'!'
+. ./ab_project_setup.ksh .
+export AB_INCLUDE_FILES="$PUB_DXF_XFR/join_types.xfr"
+m_eval -raw '(string("\n"))join_types3("dxf_header_t", "record\n  int a;\nend", "record\n  string(1) b;\nend", [vector "/~$PUB_DXF_DML/dxf_header.dml"])'
+m_eval -raw '(string("\n"))join_types4("dxf_header_t", "record\n  int a;\nend", "record\n  string(1) b;\nend", "lookup_max_sk_t", [vector "/~$PUB_DXF_DML/dxf_header.dml", "/~$PUB_DXF_DML/lookup.max_sk.dml"])'
+m_eval -raw '(string("\n"))join_types5("dxf_header_t", "record\n  int a;\nend", "record\n  string(1) b;\nend", "lookup_max_sk_t", "record void(1)v;end", [vector "/~$PUB_DXF_DML/dxf_header.dml", "/~$PUB_DXF_DML/lookup.max_sk.dml"])'
+!
+*/
+
+
+/* Join 3 record formats together. */
+out :: join_types3(t1, t2, t3, include_vec) =
+begin
+  out :: join_types(
+    join_types(t1, t2, include_vec),
+    t3, include_vec);
+end;
+
+
+/* Join 4 record formats together. */
+out :: join_types4(t1, t2, t3, t4, include_vec) =
+begin
+  out :: join_types(
+    join_types3(t1, t2, t3, include_vec),
+    t4, include_vec);
+end;
+
+
+/* Join 5 record formats together. */
+out :: join_types5(t1, t2, t3, t4, t5, include_vec) =
+begin
+  out :: join_types(
+    join_types4(t1, t2, t3, t4, include_vec),
+    t5, include_vec);
+end;

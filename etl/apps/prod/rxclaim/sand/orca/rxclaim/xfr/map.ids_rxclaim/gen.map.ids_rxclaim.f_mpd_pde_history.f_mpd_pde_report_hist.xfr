@@ -1,0 +1,103 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a605acd_47b4_1
+    BizHidden:true
+@*/
+/*   lookup pde_report   */
+out0::bzt_2_6c54cc0a_5a605acd_47b4_1(in0)=
+begin
+let record
+  string("\x01") PDR_DATE, PDR_FILE_ID;
+  string("\n") PDR_ACCEPT_REJECT;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("pde_report",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a605acd_47b4_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.pde_rpt.ddps_process_ts,[passthrough],in0.pde_file_proc_ts]
+  [out0.pde_rpt.pdfs_curr_status,[transform],in0.pde_file_id,
+     'lookup("pde_report").PDR_ACCEPT_REJECT']
+  [out0.pde_rpt.resp_file_dt,[transform],in0.pde_file_id,
+     'lookup("pde_report").PDR_DATE']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.pde_rpt.dxf_hk_part2,'pde_rpt.dxf_hk_part2',1,0]
+     [out0.pde_rpt.ddps_process_ts,'pde_rpt.ddps_process_ts',1,0]
+     [out0.pde_rpt.pdfs_curr_status,'pde_rpt.pdfs_curr_status',1,0]
+     [out0.pde_rpt.dxf_sk,'pde_rpt.dxf_sk',1,0]
+     [out0.pde_rpt.mdh_chg_ts,'pde_rpt.mdh_chg_ts',1,0]
+     [out0.pde_rpt.pde_file_sbm_ts,'pde_rpt.pde_file_sbm_ts',1,0]
+     [out0.pde_rpt.pde_file_id,'pde_rpt.pde_file_id',1,0]
+     [out0.pde_rpt.dxf_hk_part1,'pde_rpt.dxf_hk_part1',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.pde_rpt.src_env_sk,'pde_rpt.src_env_sk',1,0]
+     [out0.pde_rpt.resp_file_dt,'pde_rpt.resp_file_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.pde_file_sbm_ts,'pde_file_sbm_ts',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     ['lookup("pde_report").PDR_ACCEPT_REJECT','PDR_ACCEPT_REJECT',1,1]
+     [in0.pde_file_id,'pde_file_id',3,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pde_file_proc_ts,'pde_file_proc_ts',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     ['lookup("pde_report").PDR_DATE','PDR_DATE',1,1]
+     [in0.mdh_chg_ts,'mdh_chg_ts',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) pde_rpt_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) pde_rpt_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) pde_rpt_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=10) pde_rpt_pde_file_id = fail_if_error(in0.pde_file_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pde_rpt_pde_file_sbm_ts = fail_if_error(in0.pde_file_sbm_ts);
+let date("YYYYMMDD")("\x01") pde_rpt_resp_file_dt;
+let string("\x01") pde_rpt_pdfs_curr_status;
+let string("\x01") pde_rpt_ddps_process_ts = fail_if_error(in0.pde_file_proc_ts);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") pde_rpt_mdh_chg_ts = fail_if_error(in0.mdh_chg_ts);
+let decimal("\x01",0) pde_rpt_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+pde_rpt_pdfs_curr_status=fail_if_error(first_defined(bzt_2_6c54cc0a_5a605acd_47b4_1(in0.pde_file_id).PDR_ACCEPT_REJECT,""));
+
+/*   Default value   */
+pde_rpt_resp_file_dt=fail_if_error(first_defined(bzt_2_6c54cc0a_5a605acd_47b4_1(in0.pde_file_id).PDR_DATE,""));
+
+  out0.pde_rpt.dxf_hk_part1::pde_rpt_dxf_hk_part1;
+  out0.pde_rpt.dxf_hk_part2::pde_rpt_dxf_hk_part2;
+  out0.pde_rpt.dxf_sk::pde_rpt_dxf_sk;
+  out0.pde_rpt.pde_file_id::pde_rpt_pde_file_id;
+  out0.pde_rpt.pde_file_sbm_ts::pde_rpt_pde_file_sbm_ts;
+  out0.pde_rpt.resp_file_dt::pde_rpt_resp_file_dt;
+  out0.pde_rpt.pdfs_curr_status::pde_rpt_pdfs_curr_status;
+  out0.pde_rpt.ddps_process_ts::pde_rpt_ddps_process_ts;
+  out0.pde_rpt.mdh_chg_ts::pde_rpt_mdh_chg_ts;
+  out0.pde_rpt.src_env_sk::pde_rpt_src_env_sk;
+  out0.*::in0.*;
+
+end;

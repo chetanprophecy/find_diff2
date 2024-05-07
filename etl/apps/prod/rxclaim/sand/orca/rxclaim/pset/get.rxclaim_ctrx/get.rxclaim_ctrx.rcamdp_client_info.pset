@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcamdp_client_info
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcamdp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcamdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[\r\n  if (START_CHANGES_TIME != '')\r\n    "WHERE rcamdp.icbmdt >= " +\r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\r\n    " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\r\n    " OPTIMIZE FOR ALL ROWS"\r\nelse\r\n    "WHERE rcamdp.icbmdt >= " +\r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +\r\n    " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\r\n    " OPTIMIZE FOR ALL ROWS"]
+SQL||||$[ "SELECT rcamdp.icabcd,\r\nrcamdp.icaacd,\r\nrcamdp.icaccd,\r\nrcamdp.icadcd,\r\nrcamdp.icbwn3,\r\nrcamdp.ica4ck,\r\nrcamdp.icrodt,\r\nrcamdp.icrpdt,\r\nrcamdp.icvst3,\r\nrcamdp.icakvn,\r\nrcamdp.icc2dt,\r\nrcamdp.icadtm,\r\nrcamdp.icalvn,\r\nrcamdp.icadvn,\r\nrcamdp.icbmdt,\r\nrcamdp.icabtm,\r\nrcamdp.icaevn FROM clmprdfil.rcamdp rcamdp " +\r\n if (START_CHANGES_TIME != '')\r\n "WHERE rcamdp.icbmdt >= " +\r\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +\r\n " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\r\n " OPTIMIZE FOR ALL ROWS"\r\n else\r\n "WHERE rcamdp.icbmdt >= " +\r\n string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +\r\n " AND rcamdp.icbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +\r\n " OPTIMIZE FOR ALL ROWS"\r\n]
+ENABLE_DEFAULT_RULES||||True

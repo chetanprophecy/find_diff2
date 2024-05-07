@@ -1,0 +1,82 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.stars_cal.cal_start_dt,[passthrough],in0.starting_date]
+  [out0.stars_cal.cal_start_dt_sk,[transform],]
+  [out0.stars_cal.cal_end_dt,[passthrough],in0.ending_date]
+  [out0.stars_cal.prod_directory_dt_sk,[transform],]
+  [out0.end_dt.cal_day_dt,[passthrough],in0.ending_date]
+  [out0.stars_cal.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.stars_cal.prod_directory_dt,[passthrough],in0.prod_dir]
+  [out0.stars_cal.cal_end_dt_sk,[transform],]
+  [out0.stars_cal.cms_stars_calendar_submission_sk,[transform],]
+  [out0.strt_dt.cal_day_dt,[passthrough],in0.starting_date]
+  [out0.dir_dt.cal_day_dt,[passthrough],in0.prod_dir]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.stars_cal.cal_start_dt,'stars_cal.cal_start_dt',1,0]
+     [out0.stars_cal.cal_start_dt_sk,'stars_cal.cal_start_dt_sk',1,0]
+     [out0.stars_cal.cal_end_dt,'stars_cal.cal_end_dt',1,0]
+     [out0.stars_cal.prod_directory_dt_sk,'stars_cal.prod_directory_dt_sk',1,0]
+     [out0.end_dt.cal_day_dt,'end_dt.cal_day_dt',1,0]
+     [out0.stars_cal.src_env_sk,'stars_cal.src_env_sk',1,0]
+     [out0.stars_cal.prod_directory_dt,'stars_cal.prod_directory_dt',1,0]
+     [out0.stars_cal.cal_end_dt_sk,'stars_cal.cal_end_dt_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.stars_cal.cms_stars_calendar_submission_sk,'stars_cal.cms_stars_calendar_submission_sk',1,0]
+     [out0.strt_dt.cal_day_dt,'strt_dt.cal_day_dt',1,0]
+     [out0.dir_dt.cal_day_dt,'dir_dt.cal_day_dt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.ending_date,'ending_date',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.starting_date,'starting_date',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.prod_dir,'prod_dir',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) stars_cal_cms_stars_calendar_submission_sk = -1;
+let decimal("\x01",0) stars_cal_prod_directory_dt_sk = -1;
+let decimal("\x01",0) stars_cal_cal_start_dt_sk = -1;
+let decimal("\x01",0) stars_cal_cal_end_dt_sk = -1;
+let date("YYYYMMDD")("\x01") stars_cal_cal_start_dt = fail_if_error(in0.starting_date);
+let date("YYYYMMDD")("\x01") stars_cal_cal_end_dt = fail_if_error(in0.ending_date);
+let date("YYYYMMDD")("\x01") stars_cal_prod_directory_dt = fail_if_error(in0.prod_dir);
+let decimal("\x01",0) stars_cal_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let date("YYYYMMDD")("\x01") dir_dt_cal_day_dt = fail_if_error(in0.prod_dir);
+let date("YYYYMMDD")("\x01") end_dt_cal_day_dt = fail_if_error(in0.ending_date);
+let date("YYYYMMDD")("\x01") strt_dt_cal_day_dt = fail_if_error(in0.starting_date);
+
+
+
+  out0.stars_cal.cms_stars_calendar_submission_sk::stars_cal_cms_stars_calendar_submission_sk;
+  out0.stars_cal.prod_directory_dt_sk::stars_cal_prod_directory_dt_sk;
+  out0.stars_cal.cal_start_dt_sk::stars_cal_cal_start_dt_sk;
+  out0.stars_cal.cal_end_dt_sk::stars_cal_cal_end_dt_sk;
+  out0.stars_cal.cal_start_dt::stars_cal_cal_start_dt;
+  out0.stars_cal.cal_end_dt::stars_cal_cal_end_dt;
+  out0.stars_cal.prod_directory_dt::stars_cal_prod_directory_dt;
+  out0.stars_cal.src_env_sk::stars_cal_src_env_sk;
+  out0.dir_dt.cal_day_dt::dir_dt_cal_day_dt;
+  out0.end_dt.cal_day_dt::end_dt_cal_day_dt;
+  out0.strt_dt.cal_day_dt::strt_dt_cal_day_dt;
+  out0.*::in0.*;
+
+end;

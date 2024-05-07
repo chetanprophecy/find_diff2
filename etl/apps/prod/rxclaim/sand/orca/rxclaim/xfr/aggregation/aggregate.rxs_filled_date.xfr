@@ -1,0 +1,10 @@
+out :: rollup(in) =
+begin
+  out.rxs_filled_date :: string_concat("f_claim_transaction_filleddt.",in.rxs_filled_date,".dat.gz");
+end;
+
+out :: output_select(final) =
+begin
+;
+  out :: file_information(string_concat($"PUB_DATAHUB_MFS_LOOKUP","/ids/ids_rxclaim/many/", final.rxs_filled_date)).found;
+end;

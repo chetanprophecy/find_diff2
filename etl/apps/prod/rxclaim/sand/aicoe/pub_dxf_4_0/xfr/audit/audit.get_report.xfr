@@ -1,0 +1,17 @@
+let int ilm_parm_len=length_of(string_split($"AI_DML","/")); 
+let string("") v_app_nm=string_split($"AI_DML","/")[ilm_parm_len - 2 ];
+let string("") v_program_nm=string_upcase(string_split($"AI_DML","/")[ilm_parm_len - 3 ]);
+
+out :: reformat(in) =
+begin
+//out.src_env :: if( string_index(in.file_src_path,"rx1")) "Book1"
+//               else if (string_index(in.file_src_path,"rx2")) "Book2" 
+//                else if( string_index(in.file_src_path,"owd")) "owd"
+//                else "N/A";
+
+out.src_env :: if( string_index(in.src_file_nm,"_bk1")) "Book1"
+                else if (string_index(in.src_file_nm,"_bk2")) "Book2" 
+                else "ctrx";
+out.src_file_nm :: string_lrtrim(in.src_file_nm);
+out.*:: in.*;
+end;

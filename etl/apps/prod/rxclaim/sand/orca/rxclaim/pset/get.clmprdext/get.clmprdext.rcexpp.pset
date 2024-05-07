@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdext.rcexpp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdext     rcexpp                  akp2nb,akoinb,aks6st,aks6cd,aks7cd,aks8cd,akc4dt,aksdqv,akseqv,aksfqv,aksgqv,akshqv,aksiqv,aksjqv,akskqv,akslqv,aksmqv,aksnqv,aksoqv,akspqv,aksqqv,aksrqv,akssqv,akstqv,aksuqv,aksvqv,aksaau,akakvn,akc2dt,akadtm,akalvn,akadvn,akbmdt,akabtm,akaevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, 'clmprdext clmgamext clminmext clmnvmext clmctrext clmcigext clmprdext_a6_nmh clmksrext clmm21ext clmazmext clmvahext clmsdmext clmomcext clmtnmext', SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_SOURCE||||0
+DO_CLEAN||||1
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rcexpp.aks6cd IS NOT NULL AND rcexpp.aks6cd NOT IN ("+ $CARRIER_EXCL +") AND rcexpp.akbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \r\n    " AND rcexpp.akbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rcexpp.aks6cd IS NOT NULL AND rcexpp.aks6cd NOT IN ("+ $CARRIER_EXCL +") AND rcexpp.akbmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \r\n    " AND rcexpp.akbmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

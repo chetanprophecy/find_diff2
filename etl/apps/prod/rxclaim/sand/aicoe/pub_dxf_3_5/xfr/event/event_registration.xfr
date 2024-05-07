@@ -1,0 +1,53 @@
+include "~$PUB_DXF_DML/event/event_registration.dml";
+
+out :: get_registration_file_path(target, process_ilm_events = "0")=
+begin
+  out :: if(process_ilm_events == "0") pdl_resolve("$AI_META").resolved_value + "/event_registration." + target + ".dat"
+         else pdl_resolve("$AI_META").resolved_value + "/event_registration.ilm." + target + ".dat";
+end;
+
+
+event_registration_type[] out :: get_all_registrations(mart = "*", process_ilm_events = "0")=
+begin
+  let string("\x01") contents = read_files_for_mart(mart, process_ilm_events);
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let event_registration_type[] registrations = [vector];
+  for(let line in lines)
+  begin
+    if(not is_blank(line) and not starts_with(line, "#"))
+    begin
+      let string("") l = line + "\n";
+      let event_registration_type r = reinterpret(l);
+      registrations = vector_append(registrations, r);
+    end
+  end
+  out :: registrations;
+end;
+
+out :: read_files_for_mart(mart, process_ilm_events = "0")=
+begin
+  let string("") content = "";
+  if(mart == "*")
+  begin
+    let path_with_asterisk = get_registration_file_path(mart, process_ilm_events);
+    let dir = string_prefix(path_with_asterisk, string_rindex(path_with_asterisk, "/"));
+    let all_files = directory_listing(
+                      dir,
+                      string_substring(path_with_asterisk, string_rindex(path_with_asterisk, "/") + 1, 999)
+                    );
+     for(let file in all_files)
+       content = content + read_file(dir + "/" + file);
+  end
+  else
+    content = read_file(get_registration_file_path(mart, process_ilm_events));
+  
+  out :: content;
+end;
+
+event_registration_type[] out :: get_registration_details(mart, table, process_ilm_events = "0")=
+begin
+  let regs = for(let reg in get_all_registrations(mart, process_ilm_events)): if(reg.table_name == table) reg;
+  
+  out :1: if(length_of(regs)) regs;
+  out :: allocate_with_defaults();
+end;

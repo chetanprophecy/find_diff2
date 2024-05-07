@@ -1,0 +1,27 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_pharmacy_affiliation_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/04  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+type d_pharmacy_affiliation_cli_in_t =
+record
+  decimal("\x01",0)   phr_afflt_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=6)   phr_afflt_cd = NULL("") /*VARCHAR(6)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50)   phr_afflt_nm = NULL("") /*VARCHAR(50)*/;
+  decimal("\x01",0)   phr_afflt_grp_id = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=100)   phr_afflt_grp_desc = NULL("") /*VARCHAR(100)*/;
+  decimal("\x01",0)   src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+type d_pharmacy_affiliation_cli_in_vec_t = d_pharmacy_affiliation_cli_in_t[int];
+
+metadata type = d_pharmacy_affiliation_cli_in_t;
+

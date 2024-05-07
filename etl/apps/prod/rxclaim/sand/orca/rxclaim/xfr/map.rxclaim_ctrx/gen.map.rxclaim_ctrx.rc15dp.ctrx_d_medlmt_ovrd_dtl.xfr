@@ -1,0 +1,85 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.rc15dp.medlmt_gpi_lst_id,[passthrough],in0.abdwvg]
+  [out0.rc15dp.medlmt_gpi_thru_dt,[transform],in0.abv1cf]
+  [out0.rc15dp.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.rc15dp.medlmt_gpi_name,[passthrough],in0.abr8ix]
+  [out0.rc15dp.medlmt_gpi_mime_conv,[passthrough],in0.abgcbs]
+  [out0.rc15dp.medlmt_gpi_from_dt,[transform],in0.abv0cf]
+  [out0.rc15dp.medlmt_gpi_id,[passthrough],in0.abdxvg]
+  [out0.rc15dp.medlmt_gpi_msg_cd,[passthrough],in0.abdyvg]
+  [out0.rc15dp.medlmt_gpi_strength,[passthrough],in0.abgbbs]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.rc15dp.medlmt_gpi_lst_id,'rc15dp.medlmt_gpi_lst_id',1,0]
+     [out0.rc15dp.medlmt_gpi_thru_dt,'rc15dp.medlmt_gpi_thru_dt',1,0]
+     [out0.rc15dp.src_env_sk,'rc15dp.src_env_sk',1,0]
+     [out0.rc15dp.medlmt_gpi_name,'rc15dp.medlmt_gpi_name',1,0]
+     [out0.rc15dp.medlmt_gpi_mime_conv,'rc15dp.medlmt_gpi_mime_conv',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.rc15dp.medlmt_gpi_from_dt,'rc15dp.medlmt_gpi_from_dt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.rc15dp.medlmt_gpi_id,'rc15dp.medlmt_gpi_id',1,0]
+     [out0.rc15dp.medlmt_gpi_msg_cd,'rc15dp.medlmt_gpi_msg_cd',1,0]
+     [out0.rc15dp.medlmt_gpi_strength,'rc15dp.medlmt_gpi_strength',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.abgbbs,'abgbbs',1,1]
+     [in0.abdwvg,'abdwvg',1,1]
+     [in0.abv0cf,'abv0cf',4,1]
+     [in0.abgcbs,'abgcbs',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.abdxvg,'abdxvg',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.abdyvg,'abdyvg',1,1]
+     [in0.abv1cf,'abv1cf',4,1]
+     [in0.abr8ix,'abr8ix',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01", maximum_length=20) rc15dp_medlmt_gpi_lst_id = fail_if_error(in0.abdwvg);
+let string("\x01", maximum_length=30) rc15dp_medlmt_gpi_id = fail_if_error(in0.abdxvg);
+let string("\x01", maximum_length=60) rc15dp_medlmt_gpi_name = fail_if_error(in0.abr8ix);
+let date("YYYYMMDD")("\x01") rc15dp_medlmt_gpi_from_dt = fail_if_error((if (sql_and(sql_and(!is_null(in0.abv0cf),is_valid(((date("YYYYMMDD"))((string(""))((decimal(""))(in0.abv0cf+19000000)))))),(string_length(in0.abv0cf) member [vector 6,7])))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(in0.abv0cf+19000000))))
+ else
+   "18000101"));
+let date("YYYYMMDD")("\x01") rc15dp_medlmt_gpi_thru_dt = fail_if_error((if (sql_and(sql_and(!is_null(in0.abv1cf),is_valid(((date("YYYYMMDD"))((string(""))((decimal(""))(in0.abv1cf+19000000)))))),(string_length(in0.abv1cf) member [vector 6,7])))
+   ((date("YYYYMMDD"))((string(""))((decimal(""))(in0.abv1cf+19000000))))
+ else
+   "18000101"));
+let decimal("\x01".3, sign_reserved) rc15dp_medlmt_gpi_strength = fail_if_error(in0.abgbbs);
+let decimal("\x01".3, sign_reserved) rc15dp_medlmt_gpi_mime_conv = fail_if_error(in0.abgcbs);
+let string("\x01", maximum_length=10) rc15dp_medlmt_gpi_msg_cd = fail_if_error(in0.abdyvg);
+let decimal("\x01",0) rc15dp_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.rc15dp.medlmt_gpi_lst_id::rc15dp_medlmt_gpi_lst_id;
+  out0.rc15dp.medlmt_gpi_id::rc15dp_medlmt_gpi_id;
+  out0.rc15dp.medlmt_gpi_name::rc15dp_medlmt_gpi_name;
+  out0.rc15dp.medlmt_gpi_from_dt::rc15dp_medlmt_gpi_from_dt;
+  out0.rc15dp.medlmt_gpi_thru_dt::rc15dp_medlmt_gpi_thru_dt;
+  out0.rc15dp.medlmt_gpi_strength::rc15dp_medlmt_gpi_strength;
+  out0.rc15dp.medlmt_gpi_mime_conv::rc15dp_medlmt_gpi_mime_conv;
+  out0.rc15dp.medlmt_gpi_msg_cd::rc15dp_medlmt_gpi_msg_cd;
+  out0.rc15dp.src_env_sk::rc15dp_src_env_sk;
+  out0.*::in0.*;
+
+end;

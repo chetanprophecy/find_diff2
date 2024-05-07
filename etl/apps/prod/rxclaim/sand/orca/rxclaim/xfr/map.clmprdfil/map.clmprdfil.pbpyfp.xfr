@@ -1,0 +1,28 @@
+include "/~$AI_XFR/sys_id.xfr";
+out::reformat(in)=
+begin
+out.routing_number :: in.f6baid;
+out.pb2_fi_account_nbr :: '**********';
+out.py5_check_number :: in.f6nmnb;
+out.pyf_fulfillment_date :: in.f6dvce;
+out.payment_number :: in.f6gtnb;
+out.payment_batch_number :: in.f6prcd;
+out.payee_id :: in.f6ptid;
+out.seq_nbr :: in.f6f7nb;
+out.payor_id :: in.f6payr;
+out.add_user_name :: in.f6akvn;
+out.add_date :: in.f6c2dt;
+out.add_time :: in.f6adtm;
+out.add_program_name :: in.f6alvn;
+out.chg_user_name :: in.f6advn;
+out.chg_date :: in.f6bmdt;
+out.chg_time :: in.f6abtm;
+out.chg_program_name :: in.f6aevn;
+out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+out.rxt_create_uid :: 'app_orca_rxclaim';
+out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+out.rxt_rec_stat_cd :: '';
+out.* :: in.*;
+end;

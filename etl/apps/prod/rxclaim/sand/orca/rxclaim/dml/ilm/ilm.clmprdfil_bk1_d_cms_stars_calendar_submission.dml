@@ -1,0 +1,40 @@
+type opt_logical_ids_rxclaim_d_cms_stars_calendar_submission_t =
+record
+  decimal(1) drop_record = 0;
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cms_stars_calendar_submission_sk = NULL("");
+  decimal("\x01",0) prod_directory_dt_sk = NULL("");
+  decimal("\x01",0) cal_start_dt_sk = NULL("");
+  decimal("\x01",0) cal_end_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") cal_start_dt = NULL("");
+  date("YYYYMMDD")("\x01") cal_end_dt = NULL("");
+  date("YYYYMMDD")("\x01") prod_directory_dt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+type opt_nk_ids_common_d_date_t =  // Used in ILMs and mappings
+record
+  decimal(1) _nk_is_available_ = 1;  /*@ xBizName:'prd dir dt: Natural Key Is Available'
+    BizComment:'Whether this natural key is available.  Defaults to 1 (True).  If 0 (False), then -1 is used for the Foreign Surrogate Key.'*/
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+type nk_ids_common_d_date_t =  // Used in splits
+record
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("") /*DATE*/;
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  opt_logical_ids_rxclaim_d_cms_stars_calendar_submission_t cms_str_cal  /*@ BizName:'cms str cal' */;
+  opt_nk_ids_common_d_date_t end_dt  /*@ BizName:'end dt' */;
+  opt_nk_ids_common_d_date_t prd_dir_dt  /*@ BizName:'prd dir dt' */;
+  opt_nk_ids_common_d_date_t str_dt  /*@ BizName:'str dt' */;
+end;

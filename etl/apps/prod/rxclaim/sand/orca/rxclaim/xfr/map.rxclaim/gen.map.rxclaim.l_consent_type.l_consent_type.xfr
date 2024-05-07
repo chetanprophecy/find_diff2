@@ -1,0 +1,51 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.l_cnsent_typ.src_env_sk,[transform],]
+  [out0.l_cnsent_typ.consent_type_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_cnsent_typ.consent_type_desc,'l_cnsent_typ.consent_type_desc',1,0]
+     [out0.l_cnsent_typ.consent_type_cd,'l_cnsent_typ.consent_type_cd',1,0]
+     [out0.l_cnsent_typ.src_env_sk,'l_cnsent_typ.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_cnsent_typ.consent_type_sk,'l_cnsent_typ.consent_type_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.consent_type_cd,'consent_type_cd',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.consent_type_desc,'consent_type_desc',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_cnsent_typ_consent_type_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) l_cnsent_typ_consent_type_cd = fail_if_error(in0.consent_type_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_cnsent_typ_consent_type_desc = fail_if_error(in0.consent_type_desc);
+let decimal("\x01",0) l_cnsent_typ_src_env_sk = 800;
+
+
+
+  out0.l_cnsent_typ.consent_type_sk::l_cnsent_typ_consent_type_sk;
+  out0.l_cnsent_typ.consent_type_cd::l_cnsent_typ_consent_type_cd;
+  out0.l_cnsent_typ.consent_type_desc::l_cnsent_typ_consent_type_desc;
+  out0.l_cnsent_typ.src_env_sk::l_cnsent_typ_src_env_sk;
+  out0.*::in0.*;
+
+end;

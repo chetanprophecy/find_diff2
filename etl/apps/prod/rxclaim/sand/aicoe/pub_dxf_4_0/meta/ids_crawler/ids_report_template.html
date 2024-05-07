@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>IDS Details/Analysis</title>
+<link rel="stylesheet" type="text/css" href="./styles/ids_report.css" />
+</head>
+<script>
+function showfull(obj) {
+  if(obj.innerHTML.indexOf("...") != -1) {
+    var temp = obj.innerHTML;
+    obj.innerHTML = obj.title;
+    obj.title = temp;
+  }
+}
+function hidefull(obj) {
+  if(obj.innerHTML.indexOf("...") == -1) {
+    var temp = obj.innerHTML;
+    obj.innerHTML = obj.title;
+    obj.title = temp;
+  }
+}
+function filter_list() {
+  var subject_area_filter = document.getElementById("filter_subject_area");
+  var dataset_type_filter = document.getElementById("filter_dataset_type");
+  var xref_type_filter = document.getElementById("filter_xref_type");
+  var details_table = document.getElementById("details_table");
+  var filter_message = document.getElementById("filter_message");
+
+  var sa = subject_area_filter.value;
+  var dataset_type = dataset_type_filter.value;
+  var xref_type = xref_type_filter.value;
+
+  var trs = details_table.getElementsByTagName("tr");
+  var i;
+  var match_count = 0;
+  var class_alt = 0;
+
+  // Set any filters to yellow if filter is active
+  if(sa == "ALL") subject_area_filter.style = "background-color:#ffffff"; else subject_area_filter.style = "background-color:#ffff00";
+  if(dataset_type == "ALL") dataset_type_filter.style = "background-color:#ffffff"; else dataset_type_filter.style = "background-color:#ffff00";
+  if(xref_type == "ALL") xref_type_filter.style = "background-color:#ffffff"; else xref_type_filter.style = "background-color:#ffff00";
+
+  for(i=1; i < trs.length; i++) {
+    var sa_match;
+	var dataset_type_match;
+	var xref_type_match;
+	var all_tds = trs[i].getElementsByTagName("td");
+    if(sa == "ALL") sa_match = 1; else if(all_tds[1].getElementsByTagName("a")[0].innerHTML.startsWith(sa + ".")) sa_match = 1; else sa_match = 0;
+    if(dataset_type == "ALL") dataset_type_match = 1; else if(all_tds[2].getElementsByTagName("div")[0].innerHTML == dataset_type) dataset_type_match = 1; else dataset_type_match = 0;
+    if(xref_type == "ALL") xref_type_match = 1; else if(all_tds[3].getElementsByTagName("div")[0].innerHTML == xref_type) xref_type_match = 1; else xref_type_match = 0;
+
+    if(sa_match == 1 && dataset_type_match == 1 && xref_type_match == 1) {
+      if(class_alt==1) {trs[i].className = "alt"; class_alt = 0;} else {trs[i].className = ""; class_alt = 1;}
+      trs[i].style.display = "";
+	  ++match_count;
+    } else
+	  trs[i].style.display = "none";
+  }
+  if(sa == "ALL" && dataset_type == "ALL" && xref_type == "ALL") {
+    filter_message.style.display = "none";
+  } else {
+    filter_message.innerHTML = "Showing " + match_count + " results for the combined filter";
+    filter_message.style.display = "";
+  }
+}
+</script>
+
+<body>
+<font face="Verdana">
+<h1 class="header">IDS Dataset Details and Analysis</h1>
+
+<p>
+ <table width="100%" style="margin-left:40px">
+ <tbody>
+ <tr><td>Use this interface to detect impacts of IDS change, verify IDS settings, view data sizes and so on.</td></tr>
+ <tr><td>Click on any IDS dataset name to open up a more detailed view of that dataset.</td></tr>
+ <tr><td><b><a href='./ilm_report.html'>Click here for ILM Report</a></b></td></tr>
+ </tbody>
+ </table>
+</p>
+
+<div class="datagridH">
+<!-- PLACEHOLDER FOR GENERATED CODE -->
+</div>
+</font>
+<br><br><br>
+</body></html>
+
+

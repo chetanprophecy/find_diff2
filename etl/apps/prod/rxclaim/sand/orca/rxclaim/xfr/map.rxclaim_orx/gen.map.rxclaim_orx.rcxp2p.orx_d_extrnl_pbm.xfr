@@ -1,0 +1,89 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_orx_rcxp2p_to_the_orx_d_extrnl_pbm_ILM_documentation(in)=
+begin
+
+out0.epbm.extrnl_pbm_nm::depends_on(
+         in.xp2_ext_pbm_name
+         );
+
+
+out0.epbm.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.epbm.extrnl_pbm_id::depends_on(
+         in.xp2_ext_pbm_id
+         );
+
+
+out0.epbm.extrnl_pbm_uuid::depends_on(
+         in.xp2_ext_pbm_uuid
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_orx_rcxp2p_to_the_orx_d_extrnl_pbm_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.epbm.sec_flg,'epbm.sec_flg',1,0]
+     [out0.epbm.extrnl_pbm_nm,'epbm.extrnl_pbm_nm',1,0]
+     [out0.epbm.src_env_sk,'epbm.src_env_sk',1,0]
+     [out0.epbm.extrnl_pbm_id_sk,'epbm.extrnl_pbm_id_sk',1,0]
+     [out0.epbm.extrnl_pbm_id,'epbm.extrnl_pbm_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.epbm.extrnl_pbm_uuid,'epbm.extrnl_pbm_uuid',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.xp2_ext_pbm_name,'xp2_ext_pbm_name',1,1]
+     [in0.xp2_ext_pbm_id,'xp2_ext_pbm_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.xp2_ext_pbm_uuid,'xp2_ext_pbm_uuid',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) epbm_extrnl_pbm_id_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=10) epbm_extrnl_pbm_id;
+let string("\x01",charset="iso-8859-15", maximum_length=25) epbm_extrnl_pbm_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=36) epbm_extrnl_pbm_uuid;
+let decimal("\x01",0) epbm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal("\x01",0) epbm_sec_flg = 0;
+
+
+
+/*   Default value   */
+epbm_extrnl_pbm_nm=fail_if_error(str_non_nk(in0.xp2_ext_pbm_name));
+
+/*   Default value   */
+epbm_extrnl_pbm_id=fail_if_error(str_nk(in0.xp2_ext_pbm_id));
+
+/*   Default value   */
+epbm_extrnl_pbm_uuid=fail_if_error(str_non_nk(in0.xp2_ext_pbm_uuid));
+
+  out0.epbm.extrnl_pbm_id_sk::epbm_extrnl_pbm_id_sk;
+  out0.epbm.extrnl_pbm_id::epbm_extrnl_pbm_id;
+  out0.epbm.extrnl_pbm_nm::epbm_extrnl_pbm_nm;
+  out0.epbm.extrnl_pbm_uuid::epbm_extrnl_pbm_uuid;
+  out0.epbm.src_env_sk::epbm_src_env_sk;
+  out0.epbm.sec_flg::epbm_sec_flg;
+  out0.*::in0.*;
+end;

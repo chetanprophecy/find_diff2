@@ -1,0 +1,197 @@
+!project_type|P|||public
+!template_version|P|||3
+!rel_loc_param|P|||DB_ORXCLAIM_REL_LOC
+DB_ORXCLAIM_DIR|ELn||Project Location|
+PROJECT_DIR|||Back compatible way to reference this project|$DB_ORXCLAIM_DIR
+Environment|C|||
+PREFIX|Rn|||DB_ORXCLAIM
+DB_ORXCLAIM_PHASE|REFK|{dev,qa,uat,prod}|The environment to connect to for this database.  Defaults to the same as $AI_PHASE, but can be overridden.  Set other parameters that vary between environments to be dependent on this as necessary, so that when you promote your applications|$AI_PHASE
+DB_ORXCLAIM_REL_LOC|d|||AB_PARAMETER_ENV
+DB_ORXCLAIM_REL_LOC:sandbox||||orca/db_orxclaim
+DB_ORXCLAIM_REL_LOC:eme||||$[re_replace(DB_ORXCLAIM_DIR,AI_RPATH+"/*","")]
+DB_ORXCLAIM_DML|REn|||$DB_ORXCLAIM_DIR/dml
+DB_ORXCLAIM_XFR|REn|||$DB_ORXCLAIM_DIR/xfr
+DB_ORXCLAIM_RUN|REn|||$DB_ORXCLAIM_DIR/run
+DB_ORXCLAIM_DB|REn|||$DB_ORXCLAIM_DIR/db
+DB_ORXCLAIM_MP|Rn|||$DB_ORXCLAIM_DIR/mp
+DB_ORXCLAIM_PLAN|Rn|||$DB_ORXCLAIM_DIR/plan
+DB_ORXCLAIM_SQL|Rn|||$DB_ORXCLAIM_DIR/sql
+DB_ORXCLAIM_BIN|REn|||$DB_ORXCLAIM_DIR/bin
+DB_ORXCLAIM_PSET|Rn|||$DB_ORXCLAIM_DIR/pset
+DB_ORXCLAIM_RESOURCE|Rn|||$DB_ORXCLAIM_DIR/resource
+DB_ORXCLAIM_COMPONENTS|Rn|||$DB_ORXCLAIM_DIR/components
+DB_ORXCLAIM_DBMS|EK|||odbc
+DB_RXSTREAMDLS_DBC|E|||$DB_ORXCLAIM_DB/$DB_ORXCLAIM_DBMS.db_rxstreamdls.dbc
+DB_ORXCLAIM_DBC|E|||$DB_ORXCLAIM_DB/$DB_ORXCLAIM_DBMS.db_orxclaim.v2.dbc
+DB_ORXCLAIM_UAT2_DBC|En|||$DB_ORXCLAIM_DB/$DB_ORXCLAIM_DBMS.db_orxclaim_uat2.dbc
+DB_ORXCLAIM_ODBC_NEXTGEN_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_NEXTGEN_DATA_SOURCE_NAME:dev|$|||rxelg
+DB_ORXCLAIM_ODBC_NEXTGEN_DATA_SOURCE_NAME:qa|$|||rxelg
+DB_ORXCLAIM_ODBC_NEXTGEN_DATA_SOURCE_NAME:uat|$|||rxelg
+DB_ORXCLAIM_ODBC_NEXTGEN_DATA_SOURCE_NAME:prod|$|||rxelg
+DB_RXSTREAMDLS_ODBC_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|DB_ORXCLAIM_PHASE
+DB_RXSTREAMDLS_ODBC_DATA_SOURCE_NAME:dev|$|||DeltaRxStream
+DB_RXSTREAMDLS_ODBC_DATA_SOURCE_NAME:qa|$|||DeltaRxStream
+DB_RXSTREAMDLS_ODBC_DATA_SOURCE_NAME:uat|$|||DeltaRxStream
+DB_RXSTREAMDLS_ODBC_DATA_SOURCE_NAME:prod|$|||DeltaRxStream
+DB_ORXCLAIM_ODBC_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_UAT2_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|AB_PARAMETER_ENV
+DB_ORXCLAIM_DB_NODES|En|||localhost
+ADHOC_UAT_SERVER|n|||""
+DB_ORXCLAIM_NEXTGEN_CONNECTION_NAME|FK|||rxelg
+DB_ORXCLAIM_CONNECTION_NAME|FK|||db_orxclaim_connection
+DB_ORXCLAIM_USER|EFK||User to access source DB|$($LOGINUTIL_PATH/loginutil userid ${DB_ORXCLAIM_CONNECTION_NAME}.${DB_ORXCLAIM_PHASE})
+DB_ORXCLAIM_ENCRYPTED_PASSWORD|EFK||Encrypted password|$($LOGINUTIL_PATH/loginutil password ${DB_ORXCLAIM_CONNECTION_NAME}.${DB_ORXCLAIM_PHASE} decrypt)
+DB_ORXCLAIM_ENCRYPTED_PASSWORD:dev|$|||S-T_KGZj_-NyqTu6ACOQyH
+DB_ORXCLAIM_ENCRYPTED_PASSWORD:qa|$|||S-T_KGZj_-NyqTu6ACOQyH
+DB_ORXCLAIM_ENCRYPTED_PASSWORD:uat||||$[if(ADHOC_UAT_SERVER=="apsi6061") "UKV6JS04-hK3kCEqLhHOXU" else "J-y9g8nwFKogmoYGCO69EM0hPY96V7X5m0cVQoisO0p"]
+DB_ORXCLAIM_ENCRYPTED_PASSWORD:prod|$|||2,,-tWGq1QYSRDTrhTUl5XbTpcqprRld4nbQ7mFbgl2sMN
+DB_ORXCLAIM_NEXTGEN_USER|EFK||User to access source DB|abirxc
+DB_ORXCLAIM_NEXTGEN_ENCRYPTED_PASSWORD|EFK||Encrypted password|2,,ln6XhO8x8tFecc5WYLGO9Ar2TyxgQDrSNYCfxwDK_mg
+DB_RXSTREAMDLS_CONNECTION_NAME|n|||db_rxstream_connection
+DB_RXSTREAMDLS_USER|EFK||User to access source DB|token
+DB_RXSTREAMDLS_ENCRYPTED_PASSWORD|EFK||Encrypted password|$($LOGINUTIL_PATH/loginutil password ${DB_RXSTREAMDLS_CONNECTION_NAME}.${DB_ORXCLAIM_PHASE} decrypt)
+DB_ORXCLAIM_UAT2_ENCRYPTED_PASSWORD|EFKd||Encrypted password|AB_PARAMETER_ENV
+RUN|REn|||$DB_ORXCLAIM_DIR/run
+DB_ORXCLAIM_DATA_MOUNT|RFKd|||AB_PARAMETER_ENV
+DB_ORXCLAIM_DATA_MOUNT:eme||||$AI_RPATH
+DB_ORXCLAIM_DATA_MOUNT:sandbox||||$AI_DATA_MOUNT
+DB_ORXCLAIM_MFS_DEPTH|RFK|||$AI_MFS_DEPTH
+DB_ORXCLAIM_MFS_NAME|R|||mfs_${DB_ORXCLAIM_MFS_DEPTH}way
+DB_ORXCLAIM_MFS_BASE|RFKd|||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_BASE:eme||||$DB_ORXCLAIM_DATA_MOUNT/$DB_ORXCLAIM_REL_LOC/data/mfs
+DB_ORXCLAIM_MFS_BASE:sandbox||||$DB_ORXCLAIM_DATA_MOUNT/mfs/$DB_ORXCLAIM_MFS_NAME
+DB_ORXCLAIM_MFS_HOME|RFKd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_HOME:eme||||$DB_ORXCLAIM_MFS_BASE
+DB_ORXCLAIM_MFS_HOME:sandbox||||$DB_ORXCLAIM_MFS_BASE/$DB_ORXCLAIM_REL_LOC
+DB_ORXCLAIM_SERIAL_BASE|RFKd|||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_BASE:eme||||$DB_ORXCLAIM_DATA_MOUNT/$DB_ORXCLAIM_REL_LOC/data
+DB_ORXCLAIM_SERIAL_BASE:sandbox||||$DB_ORXCLAIM_DATA_MOUNT/serial
+DB_ORXCLAIM_SERIAL_HOME|RFKd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_HOME:eme||||$DB_ORXCLAIM_SERIAL_BASE/serial
+DB_ORXCLAIM_SERIAL_HOME:sandbox||||$DB_ORXCLAIM_SERIAL_BASE/$DB_ORXCLAIM_REL_LOC
+DB_ORXCLAIM_TEST_FLAG|RFK|||$AI_TEST_FLAG
+DB_ORXCLAIM_MFS_LOOKUP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_LOOKUP:eme||||$DB_ORXCLAIM_MFS_HOME/lookup
+DB_ORXCLAIM_MFS_LOOKUP:sandbox||||$DB_ORXCLAIM_MFS_HOME/lookup/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_MFS|REnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS:eme||||$DB_ORXCLAIM_MFS_HOME/main
+DB_ORXCLAIM_MFS:sandbox||||$DB_ORXCLAIM_MFS_HOME/main/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_MFS_PENDING|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_PENDING:eme||||$DB_ORXCLAIM_MFS_HOME/pending
+DB_ORXCLAIM_MFS_PENDING:sandbox||||$DB_ORXCLAIM_MFS_HOME/pending/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_MFS_QUEUE|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_QUEUE:eme||||$DB_ORXCLAIM_MFS_HOME/queue
+DB_ORXCLAIM_MFS_QUEUE:sandbox||||$DB_ORXCLAIM_MFS_HOME/queue/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_MFS_REJECT|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_REJECT:eme||||$DB_ORXCLAIM_MFS_HOME/reject
+DB_ORXCLAIM_MFS_REJECT:sandbox||||$DB_ORXCLAIM_MFS_HOME/reject/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_MFS_TEMP|Rnd|multidirectory||AB_PARAMETER_ENV
+DB_ORXCLAIM_MFS_TEMP:eme||||$DB_ORXCLAIM_MFS_HOME/temp
+DB_ORXCLAIM_MFS_TEMP:sandbox||||$DB_ORXCLAIM_MFS_HOME/temp/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_ERROR|REnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_ERROR:eme||||$DB_ORXCLAIM_SERIAL_HOME/error
+DB_ORXCLAIM_SERIAL_ERROR:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/error/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_LOG|REnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_LOG:eme||||$DB_ORXCLAIM_SERIAL_HOME/log
+DB_ORXCLAIM_SERIAL_LOG:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/log/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_LOOKUP|Rnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_LOOKUP:eme||||$DB_ORXCLAIM_SERIAL_HOME/lookup
+DB_ORXCLAIM_SERIAL_LOOKUP:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/lookup/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL|REnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL:eme||||$DB_ORXCLAIM_SERIAL_HOME/main
+DB_ORXCLAIM_SERIAL:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/main/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_PENDING|Rnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_PENDING:eme||||$DB_ORXCLAIM_SERIAL_HOME/pending
+DB_ORXCLAIM_SERIAL_PENDING:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/pending/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_QUEUE|Rnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_QUEUE:eme||||$DB_ORXCLAIM_SERIAL_HOME/queue
+DB_ORXCLAIM_SERIAL_QUEUE:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/queue/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_REJECT|Rnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_REJECT:eme||||$DB_ORXCLAIM_SERIAL_HOME/reject
+DB_ORXCLAIM_SERIAL_REJECT:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/reject/$DB_ORXCLAIM_TEST_FLAG
+DB_ORXCLAIM_SERIAL_TEMP|Rnd|directory||AB_PARAMETER_ENV
+DB_ORXCLAIM_SERIAL_TEMP:eme||||$DB_ORXCLAIM_SERIAL_HOME/temp
+DB_ORXCLAIM_SERIAL_TEMP:sandbox||||$DB_ORXCLAIM_SERIAL_HOME/temp/$DB_ORXCLAIM_TEST_FLAG
+comment_1|n|||Book1 Schemas
+DB_ORXCLAIM_CLMPRDFIL_SCHEMA_EME|RFK|||clmprdfil_bk1
+DB_ORXCLAIM_CLMPRDFIL_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmprdfil
+DB_RXSTREAMDLS_SCHEMA_EME|RFK|||rxstreamdls
+DB_RXSTREAMDLS_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|rxclaim_snapshot
+DB_ORXCLAIM_COMPRDFIL_SCHEMA_EME|RFK|||comprdfil_bk1
+DB_ORXCLAIM_COMPRDFIL_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|comprdfil
+DB_ORXCLAIM_CUSTLIB_SCHEMA_EME|RFK|||custlib_bk1
+DB_ORXCLAIM_CUSTLIB_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|custlib
+DB_ORXCLAIM_DWXTRACT_SCHEMA_EME|RFK|||dwxtract_bk1
+DB_ORXCLAIM_DWXTRACT_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|dwxtract
+DB_ORXCLAIM_DWXTRACTH_SCHEMA_EME|RFK|||dwxtracth_bk1
+DB_ORXCLAIM_DWXTRACTH_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|dwxtracth
+DB_ORXCLAIM_ODSLIB_SCHEMA_EME|RFK|||odslib_bk1
+DB_ORXCLAIM_ODSLIB_SCHEMA|FK|||odslib
+DB_ORXCLAIM_CLMPRDOBJ_SCHEMA_EME|RFK|||clmprdobj_bk1
+DB_ORXCLAIM_CLMPRDOBJ_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmprdobj
+DB_ORXCLAIM_CLMPRDEXT2_SCHEMA_EME|RFK|||clmprdext2_bk1
+DB_ORXCLAIM_CLMPRDEXT2_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmprdext2
+DB_ORXCLAIM_CUSTLIB_COPY_SCHEMA_EME|FK|||custlib_bk1_copy
+DB_ORXCLAIM_CUSTLIB_COPY_SCHEMA|FK|||custlib
+DB_ORXCLAIM_DWXTRACT_COPY_SCHEMA_EME|FK|||dwxtract_bk1_copy
+DB_ORXCLAIM_DWXTRACT_COPY_SCHEMA|FK|||dwxtract
+DB_ORXCLAIM_RXAPRDFIL_SCHEMA_EME|FK|||rxaprdfil_bk1
+DB_ORXCLAIM_RXAPRDFIL_SCHEMA|FK|||rxaprdfil
+comment_2|n|||Book2 Schemas
+DB_ORXCLAIM_CLMP02FIL_SCHEMA_EME|RFK|||clmp02fil_bk2
+DB_ORXCLAIM_CLMP02FIL_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmp02fil
+DB_ORXCLAIM_COMP02FIL_SCHEMA_EME|RFK|||comp02fil_bk2
+DB_ORXCLAIM_COMP02FIL_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|comp02fil
+DB_ORXCLAIM_CLMP02EXTG_SCHEMA_EME|RFK|||clmp02extg_bk2
+DB_ORXCLAIM_CLMP02EXTG_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmp02extg
+DB_ORXCLAIM_DWXTRACT2_SCHEMA_EME|RFK|||dwxtract2_bk2
+DB_ORXCLAIM_DWXTRACT2_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|dwxtract2
+DB_ORXCLAIM_CLMP02OBJ_SCHEMA_EME|RFK|||clmp02obj_bk2
+DB_ORXCLAIM_CLMP02OBJ_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|clmp02obj
+pub_db|C|||
+DB_ORXCLAIM_USER:dev|$|||abirxc
+DB_ORXCLAIM_USER:qa|$|||abirxc
+DB_ORXCLAIM_USER:uat|$|||abirxc
+DB_ORXCLAIM_USER:prod|$|||abirxc
+DB_ORXCLAIM_DWXTRACTH2_SCHEMA_EME|RFK|||dwxtracth2_bk2
+DB_ORXCLAIM_DWXTRACTH2_SCHEMA|RFK||The main database/schema/user for the database.  Uses the EME name in an EME context, so that dependency analysis produces consistent dataset names.|dwxtracth2
+DB_ORXCLAIM_CUSTLIBFS_SCHEMA_EME|FK|||custlibfs_bk2
+DB_ORXCLAIM_CUSTLIBFS_SCHEMA|FK|||custlibfs
+DB_ORXCLAIM_DWXTRACT2_COPY_SCHEMA_EME|FK|||dwxtract2_bk2_copy
+DB_ORXCLAIM_DWXTRACT2_COPY_SCHEMA|FK|||dwxtract2
+DB_ORXCLAIM_ODBC_DATA_SOURCE_NAME:dev|$|||orxclaim$DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_DATA_SOURCE_NAME:qa|$|||orxclaim$DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_DATA_SOURCE_NAME:uat|$|||orxclaim$DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_DATA_SOURCE_NAME:prod|$|||orxclaim$DB_ORXCLAIM_PHASE
+DB_ORXCLAIM_ODBC_UAT2_DATA_SOURCE_NAME:eme||||uat
+DB_ORXCLAIM_ODBC_UAT2_DATA_SOURCE_NAME:sandbox|$|||orxclaiaimuat2
+DB_ORXCLAIM_UAT2_ENCRYPTED_PASSWORD:eme||||abc
+DB_ORXCLAIM_UAT2_ENCRYPTED_PASSWORD:sandbox|$|||UKV6JS04-hK3kCEqLhHOXU
+DB_ORXCLAIM_TSUPRDFIL_SCHEMA|REFK|||tsup01fil
+DB_ORXCLAIM_TSUP02FIL_SCHEMA|Rn|||tsup02fil
+DB_ORXCLAIM_NEXTGEN_DBC|FK||Optional: The DBC file to use when accessing the staging database/schema/user.  (Depending on the database, you may need to make this parameter schema specific.)|$DB_ORXCLAIM_DB/odbc.db_orxclaim_nextgen.dbc
+DB_ORXCLAIM_NEXTGEN_SCHEMA_EME|RFK|||orxclaim_nextgen
+DB_ORXCLAIM_NEXTGEN_SCHEMA|RFK|||elgprdfil
+DB_DELTADMAENHANCEDDLS_DBC|RFK|||$DB_ORXCLAIM_DB/odbc.db_deltadmaenhanceddls.dbc
+DB_DELTADMAENHANCEDDLS_ODBC_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|DB_ORXCLAIM_PHASE
+DB_DELTADMAENHANCEDDLS_USER|EFK||User to access source DB|token
+DB_DELTADMAENHANCEDDLS_CONNECTION_NAME|n|||db_deltadmaenhanceddls_connection
+DB_DELTADMAENHANCEDDLS_ENCRYPTED_PASSWORD|EFK||Encrypted password|$($LOGINUTIL_PATH/loginutil password ${DB_DELTADMAENHANCEDDLS_CONNECTION_NAME}.${DB_ORXCLAIM_PHASE} decrypt)
+DB_DELTADMAENHANCEDDLS_SCHEMA_EME|RFK|||deltadmaenhanceddls
+DB_DELTADMAENHANCEDDLS_SCHEMA|RFK|||orx_idw_dp_cag_prd
+DB_DELTADMAENHANCEDDLS_ODBC_DATA_SOURCE_NAME:dev|$|||DeltaDMAEnhanced
+DB_DELTADMAENHANCEDDLS_ODBC_DATA_SOURCE_NAME:qa|$|||DeltaDMAEnhanced
+DB_DELTADMAENHANCEDDLS_ODBC_DATA_SOURCE_NAME:uat|$|||DeltaDMAEnhanced
+DB_DELTADMAENHANCEDDLS_ODBC_DATA_SOURCE_NAME:prod|$|||DeltaDMAEnhanced
+DB_GMRP_ODBC_DATA_SOURCE_NAME|EFKd|| DSN name in .odbc.ini|DB_ORXCLAIM_PHASE
+DB_GMRP_ODBC_DATA_SOURCE_NAME:dev|$|||rp000071358-gmrpdb
+DB_GMRP_ODBC_DATA_SOURCE_NAME:qa|$|||rp000071358-gmrpdb
+DB_GMRP_ODBC_DATA_SOURCE_NAME:uat|$|||rp000071358-gmrpdb
+DB_GMRP_ODBC_DATA_SOURCE_NAME:prod|$|||rp000071358-gmrpdb
+DB_GMRP_USER|EFK||User to access source DB|gmrpprd_idw
+DB_GMRP_CONNECTION_NAME|n|||db_gmrpprd_connection
+DB_GMRP_ENCRYPTED_PASSWORD|EFK||Encrypted password|$($LOGINUTIL_PATH/loginutil password ${DB_GMRP_CONNECTION_NAME} decrypt)
+DB_GMRP_SCHEMA_EME|RFK|||gmrpdb
+DB_GMRP_SCHEMA|RFK|||gmrpdb
+DB_GMRP_DBC|RFK|||$DB_ORXCLAIM_DB/odbc.db_gmrp.dbc

@@ -1,0 +1,20 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_pharm_phr_pmt_cntr_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=12) c_pharm_phr_pmt_cntr_id = fail_if_error(in0.hpakcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) c_pharm_phr_pmt_cntr_desc = fail_if_error(in0.hpb2tx);
+let decimal("\x01",0) c_pharm_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.c_pharm.phr_pmt_cntr_sk::c_pharm_phr_pmt_cntr_sk;
+  out0.c_pharm.phr_pmt_cntr_id::c_pharm_phr_pmt_cntr_id;
+  out0.c_pharm.phr_pmt_cntr_desc::c_pharm_phr_pmt_cntr_desc;
+  out0.c_pharm.src_env_sk::c_pharm_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,363 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_6_6c54cc0a_58da1b86_4475_6
+    BizHidden:true
+@*/
+/*   lookup lookup.ids_rxclaim.l_reject_code   */
+out0::bzt_6_6c54cc0a_58da1b86_4475_6(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) rej_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) rej_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) rej_cd_desc = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lookup.ids_rxclaim.l_reject_code",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_5_6c54cc0a_58da1b86_4475_6
+    BizHidden:true
+@*/
+/*   lookup lookup.ids_rxclaim.l_reject_code   */
+out0::bzt_5_6c54cc0a_58da1b86_4475_6(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) rej_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) rej_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) rej_cd_desc = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lookup.ids_rxclaim.l_reject_code",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_58da1b86_4475_6
+    BizHidden:true
+@*/
+/*   lookup lookup.ids_rxclaim.l_reject_code   */
+out0::bzt_4_6c54cc0a_58da1b86_4475_6(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) rej_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) rej_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) rej_cd_desc = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lookup.ids_rxclaim.l_reject_code",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58da1b86_4475_6 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.f_cob_extrt.drg_qty,[passthrough],in0.drg_qty]
+  [out0.f_cob_extrt.app_due_amt,[passthrough],in0.app_due_amt]
+  [out0.f_cob_extrt.prod_id,[transform],in0.prod_sk,
+     'lookup("lookup.ids_common.d_product_extract").prod_id']
+  [out0.f_cob_extrt.phr_store_no,[transform],in0.phr_sk,
+     'lookup("lookup.ids_common.d_pharmacy_extract").phr_store_no']
+  [out0.f_cob_extrt.phr_nm,[transform],in0.phr_adjud_sk,
+     'lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat").phr_nm']
+  [out0.f_cob_extrt.app_ingred_cost_paid,[passthrough],in0.app_ingred_cost_paid]
+  [out0.f_cob_extrt.dxf_sk,[passthrough],in0.dxf_sk]
+  [out0.f_cob_extrt.rej_cd2_sk,[transform],in0.rej_cd2_sk,
+     in0.dxf_sk,
+     'lookup("lookup.ids_rxclaim.l_reject_code").rej_cd']
+  [out0.f_cob_extrt.src_env_sk,[passthrough],in0.src_env_sk]
+  [out0.f_cob_extrt.dxf_hk_part2,[passthrough],in0.dxf_hk_part2]
+  [out0.f_cob_extrt.phr_ncpdp_id,[transform],in0.phr_adjud_sk,
+     'lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat").phr_ncpdp_id']
+  [out0.f_cob_extrt.claim_seq_nbr,[passthrough],in0.claim_seq_nbr]
+  [out0.f_cob_extrt.orig_member_id,[passthrough],in0.orig_member_id]
+  [out0.f_cob_extrt.orig_carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.f_cob_extrt.awp_unit_cost,[passthrough],in0.awp_unit_cost]
+  [out0.f_cob_extrt.rej_cd1_sk,[transform],in0.rej_cd1_sk,
+     in0.dxf_sk,
+     'lookup("lookup.ids_rxclaim.l_reject_code").rej_cd']
+  [out0.f_cob_extrt.subm_oth_covrg_cd,[passthrough],in0.subm_oth_covrg_cd]
+  [out0.f_cob_extrt.mb_first_nm,[transform],in0.mbr_sk,
+     'lookup("lookup.ids_common.d_member_extract").mb_first_nm']
+  [out0.f_cob_extrt.rej_cd3_sk,[transform],in0.rej_cd3_sk,
+     in0.dxf_sk,
+     'lookup("lookup.ids_rxclaim.l_reject_code").rej_cd']
+  [out0.f_cob_extrt.funding_type,[transform],in0.orig_account_id]
+  [out0.f_cob_extrt.claim_origin_cd,[passthrough],in0.claim_origin_cd]
+  [out0.f_cob_extrt.orig_employer_group_id,[passthrough],in0.orig_employer_group_id]
+  [out0.f_cob_extrt.claim_stat_id,[transform],in0.claim_stat_id]
+  [out0.f_cob_extrt.app_dispensing_fee,[passthrough],in0.app_dispensing_fee]
+  [out0.f_cob_extrt.orig_account_id,[passthrough],in0.orig_account_id]
+  [out0.f_cob_extrt.app_patient_pay_amt,[passthrough],in0.app_patient_pay_amt]
+  [out0.f_cob_extrt.claim_nbr,[transform],in0.claim_nbr]
+  [out0.f_cob_extrt.rx_nbr,[passthrough],in0.rx_nbr]
+  [out0.f_cob_extrt.flag_fnl,[transform],in0.orig_account_id,
+     in0.subm_oth_covrg_cd,
+     in0.orig_member_id,
+     in0.orig_carrier_id,
+     in0.mbr_adjud_sk,
+     in0.orig_employer_group_id,
+     'lookup("lookup.ids_common.d_member_adjud").mbr_alt_ins_ind']
+  [out0.f_cob_extrt.mb_last_nm,[transform],in0.mbr_sk,
+     'lookup("lookup.ids_common.d_member_extract").mb_last_nm']
+  [out0.f_cob_extrt.dxf_hk_part1,[passthrough],in0.dxf_hk_part1]
+  [out0.f_cob_extrt.subm_oth_payr_amt,[passthrough],in0.subm_oth_payr_amt]
+  [out0.f_cob_extrt.sbm_dt,[passthrough],in0.sbm_dt]
+  [out0.f_cob_extrt.processing_month_start_dt,[passthrough],in0.ids_updt_dttm]
+  [out0.f_cob_extrt.mbr_prsn_cd,[transform],in0.mbr_sk,
+     'lookup("lookup.ids_common.d_member_extract").mbr_prsn_cd']
+  [out0.f_cob_extrt.mbr_alt_ins_ind,[transform],in0.mbr_adjud_sk,
+     'lookup("lookup.ids_common.d_member_adjud").mbr_alt_ins_ind']
+  [out0.f_cob_extrt.residence_cd_sk,[transform],in0.residence_cd_sk,
+     'lookup("lookup.ids_rxclaim.l_residence").residence_cd']
+  [out0.f_cob_extrt.filled_dt,[passthrough],in0.filled_dt]
+  [out0.f_cob_extrt.prod_nm,[transform],in0.prod_sk,
+     'lookup("lookup.ids_common.d_product_extract").prod_nm']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_cob_extrt.drg_qty,'f_cob_extrt.drg_qty',1,0]
+     [out0.f_cob_extrt.app_due_amt,'f_cob_extrt.app_due_amt',1,0]
+     [out0.f_cob_extrt.prod_id,'f_cob_extrt.prod_id',1,0]
+     [out0.f_cob_extrt.phr_store_no,'f_cob_extrt.phr_store_no',1,0]
+     [out0.f_cob_extrt.phr_nm,'f_cob_extrt.phr_nm',1,0]
+     [out0.f_cob_extrt.app_ingred_cost_paid,'f_cob_extrt.app_ingred_cost_paid',1,0]
+     [out0.f_cob_extrt.dxf_sk,'f_cob_extrt.dxf_sk',1,0]
+     [out0.f_cob_extrt.rej_cd2_sk,'f_cob_extrt.rej_cd2_sk',1,0]
+     [out0.f_cob_extrt.src_env_sk,'f_cob_extrt.src_env_sk',1,0]
+     [out0.f_cob_extrt.dxf_hk_part2,'f_cob_extrt.dxf_hk_part2',1,0]
+     [out0.f_cob_extrt.phr_ncpdp_id,'f_cob_extrt.phr_ncpdp_id',1,0]
+     [out0.f_cob_extrt.claim_seq_nbr,'f_cob_extrt.claim_seq_nbr',1,0]
+     [out0.f_cob_extrt.orig_member_id,'f_cob_extrt.orig_member_id',1,0]
+     [out0.f_cob_extrt.orig_carrier_id,'f_cob_extrt.orig_carrier_id',1,0]
+     [out0.f_cob_extrt.awp_unit_cost,'f_cob_extrt.awp_unit_cost',1,0]
+     [out0.f_cob_extrt.rej_cd1_sk,'f_cob_extrt.rej_cd1_sk',1,0]
+     [out0.f_cob_extrt.subm_oth_covrg_cd,'f_cob_extrt.subm_oth_covrg_cd',1,0]
+     [out0.f_cob_extrt.mb_first_nm,'f_cob_extrt.mb_first_nm',1,0]
+     [out0.f_cob_extrt.rej_cd3_sk,'f_cob_extrt.rej_cd3_sk',1,0]
+     [out0.f_cob_extrt.funding_type,'f_cob_extrt.funding_type',1,0]
+     [out0.f_cob_extrt.claim_origin_cd,'f_cob_extrt.claim_origin_cd',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_cob_extrt.orig_employer_group_id,'f_cob_extrt.orig_employer_group_id',1,0]
+     [out0.f_cob_extrt.claim_stat_id,'f_cob_extrt.claim_stat_id',1,0]
+     [out0.f_cob_extrt.app_dispensing_fee,'f_cob_extrt.app_dispensing_fee',1,0]
+     [out0.f_cob_extrt.orig_account_id,'f_cob_extrt.orig_account_id',1,0]
+     [out0.f_cob_extrt.app_patient_pay_amt,'f_cob_extrt.app_patient_pay_amt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_cob_extrt.claim_nbr,'f_cob_extrt.claim_nbr',1,0]
+     [out0.f_cob_extrt.rx_nbr,'f_cob_extrt.rx_nbr',1,0]
+     [out0.f_cob_extrt.flag_fnl,'f_cob_extrt.flag_fnl',1,0]
+     [out0.f_cob_extrt.mb_last_nm,'f_cob_extrt.mb_last_nm',1,0]
+     [out0.f_cob_extrt.dxf_hk_part1,'f_cob_extrt.dxf_hk_part1',1,0]
+     [out0.f_cob_extrt.subm_oth_payr_amt,'f_cob_extrt.subm_oth_payr_amt',1,0]
+     [out0.f_cob_extrt.sbm_dt,'f_cob_extrt.sbm_dt',1,0]
+     [out0.f_cob_extrt.processing_month_start_dt,'f_cob_extrt.processing_month_start_dt',1,0]
+     [out0.f_cob_extrt.mbr_prsn_cd,'f_cob_extrt.mbr_prsn_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_cob_extrt.mbr_alt_ins_ind,'f_cob_extrt.mbr_alt_ins_ind',1,0]
+     [out0.f_cob_extrt.residence_cd_sk,'f_cob_extrt.residence_cd_sk',1,0]
+     [out0.f_cob_extrt.filled_dt,'f_cob_extrt.filled_dt',1,0]
+     [out0.f_cob_extrt.prod_nm,'f_cob_extrt.prod_nm',1,0]
+  ]
+  impacts:
+  [
+     [in0.prod_sk,'prod_sk',2,2]
+     ['lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat").phr_ncpdp_id','phr_ncpdp_id',1,1]
+     [in0.claim_stat_id,'claim_stat_id',1,1]
+     [in0.awp_unit_cost,'awp_unit_cost',1,1]
+     [in0.orig_account_id,'orig_account_id',3,3]
+     [in0.app_dispensing_fee,'app_dispensing_fee',1,1]
+     ['lookup("lookup.ids_rxclaim.l_reject_code").rej_cd','rej_cd',3,3]
+     [in0.filled_dt,'filled_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.rej_cd2_sk,'rej_cd2_sk',1,1]
+     [in0.subm_oth_payr_amt,'subm_oth_payr_amt',1,1]
+     [in0.rej_cd1_sk,'rej_cd1_sk',1,1]
+     [in0.phr_adjud_sk,'phr_adjud_sk',2,2]
+     [in0.drg_qty,'drg_qty',1,1]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     ['lookup("lookup.ids_rxclaim.l_residence").residence_cd','residence_cd',1,1]
+     ['lookup("lookup.ids_common.d_member_extract").mb_last_nm','mb_last_nm',1,1]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     ['lookup("lookup.ids_common.d_pharmacy_extract").phr_store_no','phr_store_no',1,1]
+     ['lookup("lookup.ids_common.d_product_extract").prod_nm','prod_nm',1,1]
+     ['lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat").phr_nm','phr_nm',1,1]
+     [in0.app_patient_pay_amt,'app_patient_pay_amt',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.claim_nbr,'claim_nbr',1,1]
+     [in0.mbr_adjud_sk,'mbr_adjud_sk',2,2]
+     [in0.residence_cd_sk,'residence_cd_sk',1,1]
+     ['lookup("lookup.ids_common.d_member_adjud").mbr_alt_ins_ind','mbr_alt_ins_ind',2,2]
+     ['lookup("lookup.ids_common.d_member_extract").mb_first_nm','mb_first_nm',1,1]
+     [in0.mbr_sk,'mbr_sk',3,3]
+     [in0.ids_updt_dttm,'ids_updt_dttm',1,1]
+     [in0.claim_origin_cd,'claim_origin_cd',1,1]
+     ['lookup("lookup.ids_common.d_product_extract").prod_id','prod_id',1,1]
+     [in0.subm_oth_covrg_cd,'subm_oth_covrg_cd',2,2]
+     [in0.orig_member_id,'orig_member_id',2,2]
+     [in0.dxf_sk,'dxf_sk',2,4]
+     [in0.app_due_amt,'app_due_amt',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.app_ingred_cost_paid,'app_ingred_cost_paid',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.phr_sk,'phr_sk',1,1]
+     [in0.rej_cd3_sk,'rej_cd3_sk',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.rx_nbr,'rx_nbr',1,1]
+     [in0.orig_employer_group_id,'orig_employer_group_id',2,2]
+     ['lookup("lookup.ids_common.d_member_extract").mbr_prsn_cd','mbr_prsn_cd',1,1]
+     [in0.claim_seq_nbr,'claim_seq_nbr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let date("YYYYMMDD")("\x01") f_cob_extrt_processing_month_start_dt = fail_if_error(in0.ids_updt_dttm);
+let unsigned integer(8) f_cob_extrt_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) f_cob_extrt_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) f_cob_extrt_dxf_sk = fail_if_error(in0.dxf_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cob_extrt_orig_member_id = fail_if_error(in0.orig_member_id);
+let decimal("\x01",0) f_cob_extrt_claim_nbr = fail_if_error(string_lrtrim(in0.claim_nbr));
+let decimal("\x01",0) f_cob_extrt_claim_seq_nbr = fail_if_error(1000 - in0.claim_seq_nbr);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cob_extrt_claim_stat_id = fail_if_error(string_lrtrim(in0.claim_stat_id));
+let string("\x01",charset="iso-8859-15", maximum_length=25) f_cob_extrt_mb_first_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=35) f_cob_extrt_mb_last_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=3) f_cob_extrt_mbr_prsn_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cob_extrt_orig_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) f_cob_extrt_orig_account_id = fail_if_error(in0.orig_account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cob_extrt_orig_employer_group_id = fail_if_error(in0.orig_employer_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cob_extrt_funding_type = fail_if_error(string_substring(string_lrtrim(in0.orig_account_id),1,1));
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_cob_extrt_phr_ncpdp_id;
+let string("\x01",charset="iso-8859-15", maximum_length=55) f_cob_extrt_phr_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cob_extrt_phr_store_no;
+let date("YYYYMMDD")("\x01") f_cob_extrt_filled_dt = fail_if_error(in0.filled_dt);
+let date("YYYYMMDD")("\x01") f_cob_extrt_sbm_dt = fail_if_error(in0.sbm_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_cob_extrt_rx_nbr = fail_if_error(in0.rx_nbr);
+let decimal("\x01",0) f_cob_extrt_rej_cd1_sk;
+let decimal("\x01",0) f_cob_extrt_rej_cd2_sk;
+let decimal("\x01",0) f_cob_extrt_rej_cd3_sk;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cob_extrt_app_due_amt = fail_if_error(in0.app_due_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cob_extrt_subm_oth_covrg_cd = fail_if_error(in0.subm_oth_covrg_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=70) f_cob_extrt_prod_nm;
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cob_extrt_prod_id;
+let decimal("\x01".8, maximum_length=26, sign_reserved) f_cob_extrt_awp_unit_cost = fail_if_error(in0.awp_unit_cost);
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cob_extrt_drg_qty = fail_if_error(in0.drg_qty);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cob_extrt_subm_oth_payr_amt = fail_if_error(in0.subm_oth_payr_amt);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cob_extrt_app_ingred_cost_paid = fail_if_error(in0.app_ingred_cost_paid);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cob_extrt_app_dispensing_fee = fail_if_error(in0.app_dispensing_fee);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cob_extrt_app_patient_pay_amt = fail_if_error(in0.app_patient_pay_amt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cob_extrt_claim_origin_cd = fail_if_error(in0.claim_origin_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cob_extrt_mbr_alt_ins_ind;
+let decimal("\x01",0) f_cob_extrt_residence_cd_sk;
+let decimal("\x01",0) f_cob_extrt_flag_fnl;
+let decimal("\x01",0) f_cob_extrt_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+f_cob_extrt_prod_id=fail_if_error(lookup("lookup.ids_common.d_product_extract",in0.prod_sk).prod_id);
+
+/*   Default value   */
+f_cob_extrt_phr_store_no=fail_if_error(lookup("lookup.ids_common.d_pharmacy_extract",in0.phr_sk).phr_store_no);
+
+/*   Default value   */
+f_cob_extrt_phr_nm=fail_if_error(lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat",in0.phr_adjud_sk).phr_nm);
+
+/*   Default value   */
+f_cob_extrt_rej_cd2_sk=fail_if_error(bzt_4_6c54cc0a_58da1b86_4475_6(in0.rej_cd2_sk).rej_cd);
+
+/*   Default value   */
+f_cob_extrt_phr_ncpdp_id=fail_if_error(lookup("lookup.ids_common.d_pharmacy_adjud_extract.dat",in0.phr_adjud_sk).phr_ncpdp_id);
+
+/*   Default value   */
+f_cob_extrt_rej_cd1_sk=fail_if_error(bzt_5_6c54cc0a_58da1b86_4475_6(in0.rej_cd1_sk).rej_cd);
+
+/*   Default value   */
+f_cob_extrt_mb_first_nm=fail_if_error(lookup("lookup.ids_common.d_member_extract",in0.mbr_sk).mb_first_nm);
+
+/*   Default value   */
+f_cob_extrt_rej_cd3_sk=fail_if_error(bzt_6_6c54cc0a_58da1b86_4475_6(in0.rej_cd3_sk).rej_cd);
+
+/*   Default value   */
+f_cob_extrt_flag_fnl=fail_if_error((if (lookup_match("lookup.rxclaim.l_cob_carrier.dat","OTHCOVERAG",in0.subm_oth_covrg_cd))
+   '1'
+ else
+   (if (sql_and((lookup("lookup.ids_common.d_member_adjud",in0.mbr_adjud_sk).mbr_alt_ins_ind=='Y'),lookup_match("lookup.ids_rxclaim.l_eg_mon_rcmaip",in0.orig_member_id,in0.orig_carrier_id,in0.orig_account_id,in0.orig_employer_group_id)))
+      '2'
+    else
+      '0')));
+
+/*   Default value   */
+f_cob_extrt_mb_last_nm=fail_if_error(lookup("lookup.ids_common.d_member_extract",in0.mbr_sk).mb_last_nm);
+
+/*   Default value   */
+f_cob_extrt_mbr_prsn_cd=fail_if_error(lookup("lookup.ids_common.d_member_extract",in0.mbr_sk).mbr_prsn_cd);
+
+/*   Default value   */
+f_cob_extrt_mbr_alt_ins_ind=fail_if_error(lookup("lookup.ids_common.d_member_adjud",in0.mbr_adjud_sk).mbr_alt_ins_ind);
+
+/*   Default value   */
+f_cob_extrt_residence_cd_sk=fail_if_error(lookup("lookup.ids_rxclaim.l_residence",in0.residence_cd_sk).residence_cd);
+
+/*   Default value   */
+f_cob_extrt_prod_nm=fail_if_error(lookup("lookup.ids_common.d_product_extract",in0.prod_sk).prod_nm);
+
+  out0.f_cob_extrt.processing_month_start_dt::f_cob_extrt_processing_month_start_dt;
+  out0.f_cob_extrt.dxf_hk_part1::f_cob_extrt_dxf_hk_part1;
+  out0.f_cob_extrt.dxf_hk_part2::f_cob_extrt_dxf_hk_part2;
+  out0.f_cob_extrt.dxf_sk::f_cob_extrt_dxf_sk;
+  out0.f_cob_extrt.orig_member_id::f_cob_extrt_orig_member_id;
+  out0.f_cob_extrt.claim_nbr::f_cob_extrt_claim_nbr;
+  out0.f_cob_extrt.claim_seq_nbr::f_cob_extrt_claim_seq_nbr;
+  out0.f_cob_extrt.claim_stat_id::f_cob_extrt_claim_stat_id;
+  out0.f_cob_extrt.mb_first_nm::f_cob_extrt_mb_first_nm;
+  out0.f_cob_extrt.mb_last_nm::f_cob_extrt_mb_last_nm;
+  out0.f_cob_extrt.mbr_prsn_cd::f_cob_extrt_mbr_prsn_cd;
+  out0.f_cob_extrt.orig_carrier_id::f_cob_extrt_orig_carrier_id;
+  out0.f_cob_extrt.orig_account_id::f_cob_extrt_orig_account_id;
+  out0.f_cob_extrt.orig_employer_group_id::f_cob_extrt_orig_employer_group_id;
+  out0.f_cob_extrt.funding_type::f_cob_extrt_funding_type;
+  out0.f_cob_extrt.phr_ncpdp_id::f_cob_extrt_phr_ncpdp_id;
+  out0.f_cob_extrt.phr_nm::f_cob_extrt_phr_nm;
+  out0.f_cob_extrt.phr_store_no::f_cob_extrt_phr_store_no;
+  out0.f_cob_extrt.filled_dt::f_cob_extrt_filled_dt;
+  out0.f_cob_extrt.sbm_dt::f_cob_extrt_sbm_dt;
+  out0.f_cob_extrt.rx_nbr::f_cob_extrt_rx_nbr;
+  out0.f_cob_extrt.rej_cd1_sk::f_cob_extrt_rej_cd1_sk;
+  out0.f_cob_extrt.rej_cd2_sk::f_cob_extrt_rej_cd2_sk;
+  out0.f_cob_extrt.rej_cd3_sk::f_cob_extrt_rej_cd3_sk;
+  out0.f_cob_extrt.app_due_amt::f_cob_extrt_app_due_amt;
+  out0.f_cob_extrt.subm_oth_covrg_cd::f_cob_extrt_subm_oth_covrg_cd;
+  out0.f_cob_extrt.prod_nm::f_cob_extrt_prod_nm;
+  out0.f_cob_extrt.prod_id::f_cob_extrt_prod_id;
+  out0.f_cob_extrt.awp_unit_cost::f_cob_extrt_awp_unit_cost;
+  out0.f_cob_extrt.drg_qty::f_cob_extrt_drg_qty;
+  out0.f_cob_extrt.subm_oth_payr_amt::f_cob_extrt_subm_oth_payr_amt;
+  out0.f_cob_extrt.app_ingred_cost_paid::f_cob_extrt_app_ingred_cost_paid;
+  out0.f_cob_extrt.app_dispensing_fee::f_cob_extrt_app_dispensing_fee;
+  out0.f_cob_extrt.app_patient_pay_amt::f_cob_extrt_app_patient_pay_amt;
+  out0.f_cob_extrt.claim_origin_cd::f_cob_extrt_claim_origin_cd;
+  out0.f_cob_extrt.mbr_alt_ins_ind::f_cob_extrt_mbr_alt_ins_ind;
+  out0.f_cob_extrt.residence_cd_sk::f_cob_extrt_residence_cd_sk;
+  out0.f_cob_extrt.flag_fnl::f_cob_extrt_flag_fnl;
+  out0.f_cob_extrt.src_env_sk::f_cob_extrt_src_env_sk;
+  out0.*::in0.*;
+
+end;

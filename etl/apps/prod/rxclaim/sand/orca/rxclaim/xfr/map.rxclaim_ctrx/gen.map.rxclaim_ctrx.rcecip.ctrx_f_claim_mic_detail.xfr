@@ -1,0 +1,1495 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+type bzt_2_6c54cc0a_580f1705_6642_0 = record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  decimal("\x01",0) claim_nbr = NULL(""), claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) claim_stat_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL(""), mbr_sk = NULL(""), cag_sk = NULL(""), pbr_sk = NULL(""), phr_sk = NULL(""), claim_stat_sk = NULL(""), carrier_sk = NULL(""), carrier_acct_sk = NULL(""), final_pln_sk = NULL(""), compound_sk = NULL(""), orig_carrier_sk = NULL(""), orig_mbr_sk = NULL(""), orig_cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) orig_account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) orig_employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) orig_member_id = NULL("");
+  decimal("\x01",0) claim_seq_nbr_src = NULL(""), sbm_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") sbm_dt = NULL("");
+  decimal("\x01",0) filled_dt_sk = NULL("");
+  date("YYYYMMDD")("\x01") filled_dt = NULL(""), rx_written_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) rx_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) refill_nbr = NULL("");
+  decimal("\x01".3, maximum_length=13, sign_reserved) drg_qty = NULL("");
+  decimal("\x01".8, maximum_length=26, sign_reserved) awp_unit_cost = NULL("");
+  decimal("\x01",0) refill_max = NULL(""), days_sply = NULL(""), days_of_supply_sk = NULL(""), dmr_ind_sk = NULL(""), injectable_ind_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) injectable_ind = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) app_patient_pay_amt = NULL(""), app_due_amt = NULL(""), clt_ingred_cost_paid = NULL(""), clt_dispensing_fee = NULL(""), sbm_ingred_cost_paid = NULL(""), sbm_dispensing_fee = NULL(""), sbm_patient_pay_amt = NULL(""), sbm_due_amt = NULL("");
+end;
+
+
+/*@ BizHidden:true @*/
+/*   lookup F_claim_reduced_lkp   */
+out0::bzt_5_6c54cc0a_580f1705_6642_0(in0)=
+begin
+let bzt_2_6c54cc0a_580f1705_6642_0 __bzt_local_res__;
+if(!bzt_8_6c54cc0a_580f1705_6642_0)begin
+  bzt_8_6c54cc0a_580f1705_6642_0 = 1;
+  bzt_7_6c54cc0a_580f1705_6642_0 = 0;
+  __bzt_local_res__ = fail_if_error(lookup("F_claim_reduced_lkp",in0.agp2nb,if(in0.ags6nb<0) in0.ags6nb else (1000 - in0.ags6nb),in0.agzsst,in0.rxt_src_envrt_id));
+  if(is_defined(__bzt_local_res__))begin
+     bzt_6_6c54cc0a_580f1705_6642_0 = __bzt_local_res__;
+     bzt_7_6c54cc0a_580f1705_6642_0 = 1;
+  end
+end
+  out0:1:if(bzt_7_6c54cc0a_580f1705_6642_0)bzt_6_6c54cc0a_580f1705_6642_0;
+  out0::NULL;
+end;
+let bzt_2_6c54cc0a_580f1705_6642_0 bzt_6_6c54cc0a_580f1705_6642_0 = allocate_with_nulls();  /*   lookup F_claim_reduced_lkp   */
+let int bzt_7_6c54cc0a_580f1705_6642_0 = 0;
+let int bzt_8_6c54cc0a_580f1705_6642_0 = 0;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcecip_to_the_ctrx_f_claim_mic_detail_ILM_documentation(in)=
+begin
+
+out0.f_cl_mic_det.cmd_ing_dru_cov_sts::depends_on(
+         in.aghsai
+         );
+
+
+out0.f_cl_mic_det.sbm_due_amt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_due_amt  
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_nda_ovrd_flg::depends_on(
+         in.aghuai
+         );
+
+
+out0.f_cl_mic_det.prod_reim_ind::depends_on(
+         in.agpdc3
+         );
+
+
+out0.f_cl_mic_det.sbm_dispensing_fee::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_dispensing_fee  
+         );
+
+
+out0.f_cl_mic_det.orig_mbr_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_mbr_sk  
+         );
+
+
+out0.f_cl_mic_det.drg_strngth_qty::depends_on(
+         in.agagqt
+         );
+
+
+out0.f_cl_mic_det.phr_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).phr_sk  
+         );
+
+
+out0.f_cl_mic_det.sbm_ingred_cost_paid::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_ingred_cost_paid  
+         );
+
+
+out0.f_cl_mic_det.drg_qty::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).drg_qty  
+         );
+
+
+out0.ahfs_cd.ahfs_cd::depends_on(
+         in.agebc4
+         );
+
+
+out0.drug_maint.drug_maint_cd::depends_on(
+         in.agmdcd
+         );
+
+
+out0.f_cl_mic_det.claim_nbr_encrp::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_nbr  
+         );
+
+
+out0.f_cl_mic_det.drg_3rd_prty_excpn_ind::depends_on(
+         in.agd3px
+         );
+
+
+out0.f_cl_mic_det.cmd_app_prof_svc_fee::depends_on(
+         in.agj8hy
+         );
+
+
+out0.dea.dea_cd::depends_on(
+         in.agddea
+         );
+
+
+out0.f_cl_mic_det.drg_fda_thrpc_eqvlc_cd::depends_on(
+         in.agdkcd
+         );
+
+
+out0.f_cl_mic_det.sbm_cmp_basis_of_cost_cd::depends_on(
+         in.agi6cj
+         );
+
+
+out0.f_cl_mic_det.filled_dt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).filled_dt  
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_bla_flg::depends_on(
+         in.aghvai
+         );
+
+
+out0.f_cl_mic_det.claim_stat_id::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_stat_id  
+         );
+
+
+out0.f_cl_mic_det.carrier_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).carrier_sk  
+         );
+
+
+out0.f_cl_mic_det.app_due_amt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).app_due_amt  
+         );
+
+
+out0.f_cl_mic_det.sbm_cmp_ingred_cost_amt::depends_on(
+         in.aguip1
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_nda_flg::depends_on(
+         in.aghtai
+         );
+
+
+out0.f_cl_mic_det.gcn_seq_no::depends_on(
+         in.agxsn1
+         );
+
+
+out0.f_cl_mic_det.cmd_clt_ingred_cost_amt::depends_on(
+         in.aginhx
+         );
+
+
+out0.f_cl_mic_det.cmd_exp_ingred_flg::depends_on(
+         in.aghzai
+         );
+
+
+out0.f_cl_mic_det.prod_nm::depends_on(
+         in.agcot3
+         );
+
+
+out0.f_cl_mic_det.drg_gnrc_nm::depends_on(
+         in.agxktx
+         );
+
+
+out0.f_cl_mic_det.claim_nbr::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_nbr  
+         );
+
+
+out0.f_cl_mic_det.sbm_cmp_ingred_qty::depends_on(
+         in.agsan2
+         );
+
+
+out0.f_cl_mic_det.eci_px_ind::depends_on(
+         in.agqkia
+         );
+
+
+out0.f_cl_mic_det.prod_short_desc::depends_on(
+         in.agcnt3
+         );
+
+
+out0.f_cl_mic_det.cmd_clt_cost_type_unit_cost::depends_on(
+         in.agiphx
+         );
+
+
+out0.f_cl_mic_det.awp_unit_cost::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).awp_unit_cost  
+         );
+
+
+out0.f_cl_mic_det.pbr_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).pbr_sk  
+         );
+
+
+out0.f_cl_mic_det.dmr_ind_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).dmr_ind_sk  
+         );
+
+
+out0.f_cl_mic_det.cmd_cal_ingred_cost_amt::depends_on(
+         in.agilhx
+         );
+
+
+out0.f_cl_mic_det.claim_seq_nbr_src::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_seq_nbr_src  
+         );
+
+
+out0.f_cl_mic_det.claim_mic_seq_no::depends_on(
+         in.agr7n2
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_mod_cd3::depends_on(
+         in.agsvhk
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_bla_ovrd_flg::depends_on(
+         in.aghwai
+         );
+
+
+out0.f_cl_mic_det.final_pln_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).final_pln_sk  
+         );
+
+
+out0.f_cl_mic_det.cmp_prod_key::depends_on(
+         in.agr9n2
+         );
+
+
+out0.f_cl_mic_det.eci_ms_ind::depends_on(
+         in.agqlia
+         );
+
+
+out0.f_cl_mic_det.rbl_drg_cost_pct::depends_on(
+         in.age7hv
+         );
+
+
+out0.f_cl_mic_det.cmd_clt_cost_src_cd::depends_on(
+         in.agi9h7
+         );
+
+
+out0.f_cl_mic_det.sbm_yr::depends_on(
+         in.agzsst,
+         in.rxt_src_envrt_id,
+         in.agp2nb,
+         in.ags6nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_dt  
+         );
+
+
+out0.f_cl_mic_det.cmd_app_cost_type_cd::depends_on(
+         in.agqjhb
+         );
+
+
+out0.f_cl_mic_det.filled_dt_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).filled_dt_sk  
+         );
+
+
+out0.gnrc_in.gnrc_mdspn_ind::depends_on(
+         in.agzxst
+         );
+
+
+out0.dsg_frm.dsg_frm_id::depends_on(
+         in.agdhcd
+         );
+
+
+out0.f_cl_mic_det.rx_written_dt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).rx_written_dt  
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_mod_cd2::depends_on(
+         in.agsuhk
+         );
+
+
+out0.f_cl_mic_det.app_patient_pay_amt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).app_patient_pay_amt  
+         );
+
+
+out0.f_cl_mic_det.compound_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).compound_sk  
+         );
+
+
+out0.f_cl_mic_det.sbm_dt_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_dt_sk  
+         );
+
+
+out0.f_cl_mic_det.drg_desc_id::depends_on(
+         in.agh6t2
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_anda_flg::depends_on(
+         in.aghxai
+         );
+
+
+out0.f_cl_mic_det.brand_generic_cd::depends_on(
+         in.agpfc3
+         );
+
+
+out0.f_cl_mic_det.drg_mfr_nm::depends_on(
+         in.agdgcd
+         );
+
+
+out0.drug.drg_nm_extn_id::depends_on(
+         in.agqihb
+         );
+
+
+out0.f_cl_mic_det.cmd_app_cost_type_unit_cost::depends_on(
+         in.agiohx
+         );
+
+
+out0.f_cl_mic_det.rx_nbr::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).rx_nbr  
+         );
+
+
+out0.f_cl_mic_det.phr_drg_cost_pct::depends_on(
+         in.age6hv
+         );
+
+
+out0.f_cl_mic_det.orig_carrier_id::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_carrier_id  
+         );
+
+
+out0.f_cl_mic_det.sbm_cmp_prod_id_qlfr_cd::depends_on(
+         in.agi5cj
+         );
+
+
+out0.f_cl_mic_det.cmd_app_ingred_cost_amt::depends_on(
+         in.agimhx
+         );
+
+
+out0.f_cl_mic_det.refill_max::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).refill_max  
+         );
+
+
+out0.f_cl_mic_det.injectable_ind::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).injectable_ind  
+         );
+
+
+out0.f_cl_mic_det.extd_awp_cost::depends_on(
+         in.agsan2,
+         in.agikhx
+         );
+
+
+out0.f_cl_mic_det.cmd_awp_unit_cost::depends_on(
+         in.agikhx
+         );
+
+
+out0.f_cl_mic_det.sbm_dt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_dt  
+         );
+
+
+out0.f_cl_mic_det.eci_rm_ind::depends_on(
+         in.agqjia
+         );
+
+
+out0.f_cl_mic_det.orig_member_id::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_member_id  
+         );
+
+
+out0.prod.prod_id_qlfr_cd::depends_on(
+         in.agi5cj
+         );
+
+
+out0.f_cl_mic_det.drg_mfr_id::depends_on(
+         in.agdlcd
+         );
+
+
+out0.f_cl_mic_det.cmd_app_cost_src_cd::depends_on(
+         in.agi8h7
+         );
+
+
+out0.drug_rx_otc.drug_rx_otc_ind::depends_on(
+         in.agdrxo
+         );
+
+
+out0.f_cl_mic_det.cmd_clt_cost_type_cd::depends_on(
+         in.agqkhb
+         );
+
+
+out0.f_cl_mic_det.days_of_supply_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).days_of_supply_sk  
+         );
+
+
+out0.f_cl_mic_det.drg_strngth_uom_cd::depends_on(
+         in.agtat3
+         );
+
+
+out0.f_cl_mic_det.cag_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).cag_sk  
+         );
+
+
+out0.f_cl_mic_det.claim_seq_nbr::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_seq_nbr  
+         );
+
+
+out0.f_cl_mic_det.sbm_mnth::depends_on(
+         in.agzsst,
+         in.rxt_src_envrt_id,
+         in.agp2nb,
+         in.ags6nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_dt  
+         );
+
+
+out0.prod.prod_id::depends_on(
+         in.agr9c4
+         );
+
+
+out0.f_cl_mic_det.orig_account_id::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_account_id  
+         );
+
+
+out0.admin_rte.admin_rte_id::depends_on(
+         in.agdicd
+         );
+
+
+out0.f_cl_mic_det.sbm_patient_pay_amt::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).sbm_patient_pay_amt  
+         );
+
+
+out0.f_cl_mic_det.orig_cag_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_cag_sk  
+         );
+
+
+out0.f_cl_mic_det.claim_stat_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).claim_stat_sk  
+         );
+
+
+out0.f_cl_mic_det.mbr_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).mbr_sk  
+         );
+
+
+out0.f_cl_mic_det.rx_nbr_encrp::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).rx_nbr  
+         );
+
+
+out0.f_cl_mic_det.cmd_cal_prof_svc_fee::depends_on(
+         in.agj7hy
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_mod_cd1::depends_on(
+         in.agsthk
+         );
+
+
+out0.f_cl_mic_det.tc4_drg_cov_stat_cd::depends_on(
+         in.ago6h9
+         );
+
+
+out0.gnrc_mdspn.gnrc_mdspn_ind::depends_on(
+         in.agozs3
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_mod_cd_cnt::depends_on(
+         in.agdzpp
+         );
+
+
+out0.f_cl_mic_det.prod_kdc::depends_on(
+         in.agciv1
+         );
+
+
+out0.f_cl_mic_det.src_env_sk::depends_on(
+         in.rxt_src_envrt_id
+         );
+
+
+out0.f_cl_mic_det.orig_employer_group_id::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_employer_group_id  
+         );
+
+
+out0.f_cl_mic_det.clt_dispensing_fee::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).clt_dispensing_fee  
+         );
+
+
+out0.f_cl_mic_det.carrier_acct_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).carrier_acct_sk  
+         );
+
+
+out0.f_cl_mic_det.cmd_ingred_anda_ovrd_flg::depends_on(
+         in.aghyai
+         );
+
+
+out0.gpi.gpi_id::depends_on(
+         in.agqihb
+         );
+
+
+out0.f_cl_mic_det.gcn_no::depends_on(
+         in.agxrn1
+         );
+
+
+out0.f_cl_mic_det.orig_carrier_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).orig_carrier_sk  
+         );
+
+
+out0.f_cl_mic_det.drg_unit_dose_use_ind::depends_on(
+         in.agdudu
+         );
+
+
+out0.f_cl_mic_det.injectable_ind_sk::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).injectable_ind_sk  
+         );
+
+
+out0.f_cl_mic_det.ingred_stat_cd::depends_on(
+         in.agjah7
+         );
+
+
+out0.f_cl_mic_det.cmd_clt_prof_svc_fee::depends_on(
+         in.agj9hy
+         );
+
+
+out0.f_cl_mic_det.refill_nbr::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).refill_nbr  
+         );
+
+
+out0.dxf_src_rec_cnt::depends_on(
+         in.dxf_src_rec_cnt
+         );
+
+
+out0.f_cl_mic_det.days_of_supply::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).days_sply  
+         );
+
+
+out0.f_cl_mic_det.sbm_cmp_prod_id::depends_on(
+         in.agr9c4
+         );
+
+
+out0.f_cl_mic_det.clt_ingred_cost_paid::depends_on(
+         in.rxt_src_envrt_id,
+         in.agzsst,
+         in.ags6nb,
+         in.agp2nb,
+         lookup("F_claim_reduced_lkp",in.agp2nb,'keystr',in.agzsst,in.rxt_src_envrt_id).clt_ingred_cost_paid  
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcecip_to_the_ctrx_f_claim_mic_detail_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.f_cl_mic_det.cmd_ing_dru_cov_sts,'f_cl_mic_det.cmd_ing_dru_cov_sts',1,0]
+     [out0.f_cl_mic_det.admin_rte_sk,'f_cl_mic_det.admin_rte_sk',1,0]
+     [out0.f_cl_mic_det.sbm_due_amt,'f_cl_mic_det.sbm_due_amt',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_nda_ovrd_flg,'f_cl_mic_det.cmd_ingred_nda_ovrd_flg',1,0]
+     [out0.f_cl_mic_det.prod_reim_ind,'f_cl_mic_det.prod_reim_ind',1,0]
+     [out0.f_cl_mic_det.sbm_dispensing_fee,'f_cl_mic_det.sbm_dispensing_fee',1,0]
+     [out0.f_cl_mic_det.orig_mbr_sk,'f_cl_mic_det.orig_mbr_sk',1,0]
+     [out0.f_cl_mic_det.drg_strngth_qty,'f_cl_mic_det.drg_strngth_qty',1,0]
+     [out0.f_cl_mic_det.ahfs_cd_sk,'f_cl_mic_det.ahfs_cd_sk',1,0]
+     [out0.f_cl_mic_det.phr_sk,'f_cl_mic_det.phr_sk',1,0]
+     [out0.f_cl_mic_det.sbm_ingred_cost_paid,'f_cl_mic_det.sbm_ingred_cost_paid',1,0]
+     [out0.f_cl_mic_det.drg_qty,'f_cl_mic_det.drg_qty',1,0]
+     [out0.ahfs_cd.ahfs_cd,'ahfs_cd.ahfs_cd',1,0]
+     [out0.drug_maint.drug_maint_cd,'drug_maint.drug_maint_cd',1,0]
+     [out0.f_cl_mic_det.dsg_frm_sk,'f_cl_mic_det.dsg_frm_sk',1,0]
+     [out0.f_cl_mic_det.claim_nbr_encrp,'f_cl_mic_det.claim_nbr_encrp',1,0]
+     [out0.f_cl_mic_det.drg_3rd_prty_excpn_ind,'f_cl_mic_det.drg_3rd_prty_excpn_ind',1,0]
+     [out0.f_cl_mic_det.cmd_app_prof_svc_fee,'f_cl_mic_det.cmd_app_prof_svc_fee',1,0]
+     [out0.dea.dea_cd,'dea.dea_cd',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.f_cl_mic_det.drg_fda_thrpc_eqvlc_cd,'f_cl_mic_det.drg_fda_thrpc_eqvlc_cd',1,0]
+     [out0.f_cl_mic_det.sbm_cmp_basis_of_cost_cd,'f_cl_mic_det.sbm_cmp_basis_of_cost_cd',1,0]
+     [out0.f_cl_mic_det.filled_dt,'f_cl_mic_det.filled_dt',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_bla_flg,'f_cl_mic_det.cmd_ingred_bla_flg',1,0]
+     [out0.f_cl_mic_det.claim_stat_id,'f_cl_mic_det.claim_stat_id',1,0]
+     [out0.f_cl_mic_det.gpi_sk,'f_cl_mic_det.gpi_sk',1,0]
+     [out0.f_cl_mic_det.carrier_sk,'f_cl_mic_det.carrier_sk',1,0]
+     [out0.f_cl_mic_det.app_due_amt,'f_cl_mic_det.app_due_amt',1,0]
+     [out0.f_cl_mic_det.sbm_cmp_ingred_cost_amt,'f_cl_mic_det.sbm_cmp_ingred_cost_amt',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_nda_flg,'f_cl_mic_det.cmd_ingred_nda_flg',1,0]
+     [out0.f_cl_mic_det.gcn_seq_no,'f_cl_mic_det.gcn_seq_no',1,0]
+     [out0.f_cl_mic_det.cmd_clt_ingred_cost_amt,'f_cl_mic_det.cmd_clt_ingred_cost_amt',1,0]
+     [out0.f_cl_mic_det.cmd_exp_ingred_flg,'f_cl_mic_det.cmd_exp_ingred_flg',1,0]
+     [out0.f_cl_mic_det.prod_nm,'f_cl_mic_det.prod_nm',1,0]
+     [out0.f_cl_mic_det.drg_gnrc_nm,'f_cl_mic_det.drg_gnrc_nm',1,0]
+     [out0.f_cl_mic_det.claim_nbr,'f_cl_mic_det.claim_nbr',1,0]
+     [out0.f_cl_mic_det.sbm_cmp_ingred_qty,'f_cl_mic_det.sbm_cmp_ingred_qty',1,0]
+     [out0.f_cl_mic_det.gnrc_ind_sk,'f_cl_mic_det.gnrc_ind_sk',1,0]
+     [out0.f_cl_mic_det.eci_px_ind,'f_cl_mic_det.eci_px_ind',1,0]
+     [out0.f_cl_mic_det.prod_short_desc,'f_cl_mic_det.prod_short_desc',1,0]
+     [out0.f_cl_mic_det.cmd_clt_cost_type_unit_cost,'f_cl_mic_det.cmd_clt_cost_type_unit_cost',1,0]
+     [out0.f_cl_mic_det.awp_unit_cost,'f_cl_mic_det.awp_unit_cost',1,0]
+     [out0.f_cl_mic_det.pbr_sk,'f_cl_mic_det.pbr_sk',1,0]
+     [out0.f_cl_mic_det.dmr_ind_sk,'f_cl_mic_det.dmr_ind_sk',1,0]
+     [out0.f_cl_mic_det.cmd_cal_ingred_cost_amt,'f_cl_mic_det.cmd_cal_ingred_cost_amt',1,0]
+     [out0.f_cl_mic_det.claim_seq_nbr_src,'f_cl_mic_det.claim_seq_nbr_src',1,0]
+     [out0.f_cl_mic_det.claim_mic_seq_no,'f_cl_mic_det.claim_mic_seq_no',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_mod_cd3,'f_cl_mic_det.cmd_ingred_mod_cd3',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_bla_ovrd_flg,'f_cl_mic_det.cmd_ingred_bla_ovrd_flg',1,0]
+     [out0.f_cl_mic_det.final_pln_sk,'f_cl_mic_det.final_pln_sk',1,0]
+     [out0.f_cl_mic_det.cmp_prod_key,'f_cl_mic_det.cmp_prod_key',1,0]
+     [out0.f_cl_mic_det.eci_ms_ind,'f_cl_mic_det.eci_ms_ind',1,0]
+     [out0.f_cl_mic_det.rbl_drg_cost_pct,'f_cl_mic_det.rbl_drg_cost_pct',1,0]
+     [out0.f_cl_mic_det.cmd_clt_cost_src_cd,'f_cl_mic_det.cmd_clt_cost_src_cd',1,0]
+     [out0.f_cl_mic_det.sbm_yr,'f_cl_mic_det.sbm_yr',1,1]
+     [out0.f_cl_mic_det.cmd_app_cost_type_cd,'f_cl_mic_det.cmd_app_cost_type_cd',1,0]
+     [out0.f_cl_mic_det.filled_dt_sk,'f_cl_mic_det.filled_dt_sk',1,0]
+     [out0.gnrc_in.gnrc_mdspn_ind,'gnrc_in.gnrc_mdspn_ind',1,0]
+     [out0.dsg_frm.dsg_frm_id,'dsg_frm.dsg_frm_id',1,0]
+     [out0.f_cl_mic_det.rx_written_dt,'f_cl_mic_det.rx_written_dt',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_mod_cd2,'f_cl_mic_det.cmd_ingred_mod_cd2',1,0]
+     [out0.f_cl_mic_det.app_patient_pay_amt,'f_cl_mic_det.app_patient_pay_amt',1,0]
+     [out0.f_cl_mic_det.compound_sk,'f_cl_mic_det.compound_sk',1,0]
+     [out0.f_cl_mic_det.sbm_dt_sk,'f_cl_mic_det.sbm_dt_sk',1,0]
+     [out0.f_cl_mic_det.drg_desc_id,'f_cl_mic_det.drg_desc_id',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_anda_flg,'f_cl_mic_det.cmd_ingred_anda_flg',1,0]
+     [out0.f_cl_mic_det.brand_generic_cd,'f_cl_mic_det.brand_generic_cd',1,0]
+     [out0.f_cl_mic_det.drg_mfr_nm,'f_cl_mic_det.drg_mfr_nm',1,0]
+     [out0.drug.drg_nm_extn_id,'drug.drg_nm_extn_id',1,0]
+     [out0.f_cl_mic_det.dea_cd_sk,'f_cl_mic_det.dea_cd_sk',1,0]
+     [out0.f_cl_mic_det.cmd_app_cost_type_unit_cost,'f_cl_mic_det.cmd_app_cost_type_unit_cost',1,0]
+     [out0.f_cl_mic_det.rx_nbr,'f_cl_mic_det.rx_nbr',1,0]
+     [out0.f_cl_mic_det.phr_drg_cost_pct,'f_cl_mic_det.phr_drg_cost_pct',1,0]
+     [out0.f_cl_mic_det.sec_flg,'f_cl_mic_det.sec_flg',1,0]
+     [out0.f_cl_mic_det.drug_rx_otc_ind_sk,'f_cl_mic_det.drug_rx_otc_ind_sk',1,0]
+     [out0.f_cl_mic_det.orig_carrier_id,'f_cl_mic_det.orig_carrier_id',1,0]
+     [out0.f_cl_mic_det.sbm_cmp_prod_id_qlfr_cd,'f_cl_mic_det.sbm_cmp_prod_id_qlfr_cd',1,0]
+     [out0.f_cl_mic_det.cmd_app_ingred_cost_amt,'f_cl_mic_det.cmd_app_ingred_cost_amt',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.f_cl_mic_det.refill_max,'f_cl_mic_det.refill_max',1,0]
+     [out0.f_cl_mic_det.injectable_ind,'f_cl_mic_det.injectable_ind',1,0]
+     [out0.f_cl_mic_det.extd_awp_cost,'f_cl_mic_det.extd_awp_cost',1,0]
+     [out0.f_cl_mic_det.cmd_awp_unit_cost,'f_cl_mic_det.cmd_awp_unit_cost',1,0]
+     [out0.f_cl_mic_det.drug_maint_cd_sk,'f_cl_mic_det.drug_maint_cd_sk',1,0]
+     [out0.f_cl_mic_det.sbm_dt,'f_cl_mic_det.sbm_dt',3,0]
+     [out0.f_cl_mic_det.eci_rm_ind,'f_cl_mic_det.eci_rm_ind',1,0]
+     [out0.f_cl_mic_det.orig_member_id,'f_cl_mic_det.orig_member_id',1,0]
+     [out0.prod.prod_id_qlfr_cd,'prod.prod_id_qlfr_cd',1,0]
+     [out0.f_cl_mic_det.drg_mfr_id,'f_cl_mic_det.drg_mfr_id',1,0]
+     [out0.f_cl_mic_det.cmd_app_cost_src_cd,'f_cl_mic_det.cmd_app_cost_src_cd',1,0]
+     [out0.drug_rx_otc.drug_rx_otc_ind,'drug_rx_otc.drug_rx_otc_ind',1,0]
+     [out0.f_cl_mic_det.cmd_clt_cost_type_cd,'f_cl_mic_det.cmd_clt_cost_type_cd',1,0]
+     [out0.f_cl_mic_det.days_of_supply_sk,'f_cl_mic_det.days_of_supply_sk',1,0]
+     [out0.f_cl_mic_det.drg_strngth_uom_cd,'f_cl_mic_det.drg_strngth_uom_cd',1,0]
+     [out0.f_cl_mic_det.cag_sk,'f_cl_mic_det.cag_sk',1,0]
+     [out0.f_cl_mic_det.claim_seq_nbr,'f_cl_mic_det.claim_seq_nbr',1,0]
+     [out0.f_cl_mic_det.sbm_mnth,'f_cl_mic_det.sbm_mnth',1,1]
+     [out0.prod.prod_id,'prod.prod_id',1,0]
+     [out0.f_cl_mic_det.orig_account_id,'f_cl_mic_det.orig_account_id',1,0]
+     [out0.admin_rte.admin_rte_id,'admin_rte.admin_rte_id',1,0]
+     [out0.f_cl_mic_det.sbm_patient_pay_amt,'f_cl_mic_det.sbm_patient_pay_amt',1,0]
+     [out0.f_cl_mic_det.orig_cag_sk,'f_cl_mic_det.orig_cag_sk',1,0]
+     [out0.f_cl_mic_det.claim_stat_sk,'f_cl_mic_det.claim_stat_sk',1,0]
+     [out0.f_cl_mic_det.mbr_sk,'f_cl_mic_det.mbr_sk',1,0]
+     [out0.f_cl_mic_det.prod_sk,'f_cl_mic_det.prod_sk',1,0]
+     [out0.f_cl_mic_det.rx_nbr_encrp,'f_cl_mic_det.rx_nbr_encrp',1,0]
+     [out0.f_cl_mic_det.cmd_cal_prof_svc_fee,'f_cl_mic_det.cmd_cal_prof_svc_fee',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_mod_cd1,'f_cl_mic_det.cmd_ingred_mod_cd1',1,0]
+     [out0.f_cl_mic_det.tc4_drg_cov_stat_cd,'f_cl_mic_det.tc4_drg_cov_stat_cd',1,0]
+     [out0.gnrc_mdspn.gnrc_mdspn_ind,'gnrc_mdspn.gnrc_mdspn_ind',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_mod_cd_cnt,'f_cl_mic_det.cmd_ingred_mod_cd_cnt',1,0]
+     [out0.f_cl_mic_det.prod_kdc,'f_cl_mic_det.prod_kdc',1,0]
+     [out0.f_cl_mic_det.src_env_sk,'f_cl_mic_det.src_env_sk',1,0]
+     [out0.f_cl_mic_det.orig_employer_group_id,'f_cl_mic_det.orig_employer_group_id',1,0]
+     [out0.f_cl_mic_det.clt_dispensing_fee,'f_cl_mic_det.clt_dispensing_fee',1,0]
+     [out0.f_cl_mic_det.carrier_acct_sk,'f_cl_mic_det.carrier_acct_sk',1,0]
+     [out0.f_cl_mic_det.cmd_ingred_anda_ovrd_flg,'f_cl_mic_det.cmd_ingred_anda_ovrd_flg',1,0]
+     [out0.gpi.gpi_id,'gpi.gpi_id',1,0]
+     [out0.f_cl_mic_det.drug_sk,'f_cl_mic_det.drug_sk',1,0]
+     [out0.f_cl_mic_det.gcn_no,'f_cl_mic_det.gcn_no',1,0]
+     [out0.f_cl_mic_det.orig_carrier_sk,'f_cl_mic_det.orig_carrier_sk',1,0]
+     [out0.f_cl_mic_det.drg_unit_dose_use_ind,'f_cl_mic_det.drg_unit_dose_use_ind',1,0]
+     [out0.f_cl_mic_det.gnrc_mdspn_ind_sk,'f_cl_mic_det.gnrc_mdspn_ind_sk',1,0]
+     [out0.f_cl_mic_det.injectable_ind_sk,'f_cl_mic_det.injectable_ind_sk',1,0]
+     [out0.f_cl_mic_det.ingred_stat_cd,'f_cl_mic_det.ingred_stat_cd',1,0]
+     [out0.f_cl_mic_det.cmd_clt_prof_svc_fee,'f_cl_mic_det.cmd_clt_prof_svc_fee',1,0]
+     [out0.f_cl_mic_det.refill_nbr,'f_cl_mic_det.refill_nbr',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.f_cl_mic_det.days_of_supply,'f_cl_mic_det.days_of_supply',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.f_cl_mic_det.sbm_cmp_prod_id,'f_cl_mic_det.sbm_cmp_prod_id',1,0]
+     [out0.f_cl_mic_det.clt_ingred_cost_paid,'f_cl_mic_det.clt_ingred_cost_paid',1,0]
+  ]
+  impacts:
+  [
+     [in0.agmdcd,'agmdcd',1,1]
+     [in0.agsthk,'agsthk',1,1]
+     [in0.agi6cj,'agi6cj',1,1]
+     [in0.agi5cj,'agi5cj',2,2]
+     [in0.agj7hy,'agj7hy',1,1]
+     [in0.agdzpp,'agdzpp',1,1]
+     [in0.agqkia,'agqkia',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.agqjia,'agqjia',1,1]
+     [in0.agzsst,'agzsst',1,47]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.aguip1,'aguip1',1,1]
+     [in0.agagqt,'agagqt',1,1]
+     [in0.agdrxo,'agdrxo',1,1]
+     [in0.agilhx,'agilhx',1,1]
+     [in0.agiphx,'agiphx',1,1]
+     [in0.agddea,'agddea',1,1]
+     [in0.agdkcd,'agdkcd',1,1]
+     [in0.aghsai,'aghsai',1,1]
+     [in0.agr9c4,'agr9c4',2,2]
+     [in0.agqjhb,'agqjhb',1,1]
+     [in0.agqkhb,'agqkhb',1,1]
+     [in0.agjah7,'agjah7',1,1]
+     [in0.ago6h9,'ago6h9',1,1]
+     [in0.agdudu,'agdudu',1,1]
+     [in0.agh6t2,'agh6t2',1,1]
+     [in0.aghtai,'aghtai',1,1]
+     [in0.agi8h7,'agi8h7',1,1]
+     [in0.agciv1,'agciv1',1,1]
+     [in0.aghzai,'aghzai',1,1]
+     [in0.agj9hy,'agj9hy',1,1]
+     [in0.ags6nb,'ags6nb',3,47]
+     [in0.agd3px,'agd3px',1,1]
+     [in0.agi9h7,'agi9h7',1,1]
+     [in0.agp2nb,'agp2nb',1,47]
+     [in0.aghyai,'aghyai',1,1]
+     [in0.agr7n2,'agr7n2',1,1]
+     [in0.agzxst,'agzxst',1,1]
+     [in0.agcot3,'agcot3',1,1]
+     [in0.agsan2,'agsan2',2,2]
+     [in0.agj8hy,'agj8hy',1,1]
+     [in0.agcnt3,'agcnt3',1,1]
+     [in0.aghvai,'aghvai',1,1]
+     [in0.agdhcd,'agdhcd',1,1]
+     [in0.aghuai,'aghuai',1,1]
+     [in0.agxktx,'agxktx',1,1]
+     [in0.agikhx,'agikhx',2,2]
+     [in0.agdlcd,'agdlcd',1,1]
+     [in0.agpfc3,'agpfc3',1,1]
+     [in0.agsuhk,'agsuhk',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.agtat3,'agtat3',1,1]
+     [in0.agiohx,'agiohx',1,1]
+     [in0.agdicd,'agdicd',1,1]
+     [in0.agimhx,'agimhx',1,1]
+     [in0.aginhx,'aginhx',1,1]
+     [in0.agqihb,'agqihb',2,2]
+     [in0.agebc4,'agebc4',1,1]
+     [in0.age7hv,'age7hv',1,1]
+     [in0.agxrn1,'agxrn1',1,1]
+     [in0.agqlia,'agqlia',1,1]
+     [in0.agpdc3,'agpdc3',1,1]
+     [in0.aghxai,'aghxai',1,1]
+     [in0.agdgcd,'agdgcd',1,1]
+     [in0.agsvhk,'agsvhk',1,1]
+     [in0.agr9n2,'agr9n2',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',2,48]
+     [in0.agozs3,'agozs3',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.age6hv,'age6hv',1,1]
+     [in0.agxsn1,'agxsn1',1,1]
+     [in0.aghwai,'aghwai',1,1]
+     ['lookup("F_claim_reduced_lkp").filled_dt_sk','filled_dt_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").claim_stat_sk','claim_stat_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").dmr_ind_sk','dmr_ind_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").mbr_sk','mbr_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").sbm_dt','sbm_dt',1,3]
+     ['lookup("F_claim_reduced_lkp").sbm_due_amt','sbm_due_amt',1,1]
+     ['lookup("F_claim_reduced_lkp").drg_qty','drg_qty',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_member_id','orig_member_id',1,1]
+     ['lookup("F_claim_reduced_lkp").awp_unit_cost','awp_unit_cost',1,1]
+     ['lookup("F_claim_reduced_lkp").compound_sk','compound_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").sbm_patient_pay_amt','sbm_patient_pay_amt',1,1]
+     ['lookup("F_claim_reduced_lkp").rx_nbr','rx_nbr',2,2]
+     ['lookup("F_claim_reduced_lkp").clt_dispensing_fee','clt_dispensing_fee',1,1]
+     ['lookup("F_claim_reduced_lkp").refill_nbr','refill_nbr',1,1]
+     ['lookup("F_claim_reduced_lkp").cag_sk','cag_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_account_id','orig_account_id',1,1]
+     ['lookup("F_claim_reduced_lkp").refill_max','refill_max',1,1]
+     ['lookup("F_claim_reduced_lkp").sbm_ingred_cost_paid','sbm_ingred_cost_paid',1,1]
+     ['lookup("F_claim_reduced_lkp").days_sply','days_sply',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_mbr_sk','orig_mbr_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").filled_dt','filled_dt',1,1]
+     ['lookup("F_claim_reduced_lkp").final_pln_sk','final_pln_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").clt_ingred_cost_paid','clt_ingred_cost_paid',1,1]
+     ['lookup("F_claim_reduced_lkp").carrier_acct_sk','carrier_acct_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").carrier_sk','carrier_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").days_of_supply_sk','days_of_supply_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").sbm_dispensing_fee','sbm_dispensing_fee',1,1]
+     ['lookup("F_claim_reduced_lkp").injectable_ind','injectable_ind',1,1]
+     ['lookup("F_claim_reduced_lkp").injectable_ind_sk','injectable_ind_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").claim_stat_id','claim_stat_id',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_carrier_sk','orig_carrier_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").phr_sk','phr_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_employer_group_id','orig_employer_group_id',1,1]
+     ['lookup("F_claim_reduced_lkp").app_patient_pay_amt','app_patient_pay_amt',1,1]
+     ['lookup("F_claim_reduced_lkp").claim_seq_nbr_src','claim_seq_nbr_src',1,1]
+     ['lookup("F_claim_reduced_lkp").claim_nbr','claim_nbr',6,2]
+     ['lookup("F_claim_reduced_lkp").orig_cag_sk','orig_cag_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").pbr_sk','pbr_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").app_due_amt','app_due_amt',1,1]
+     ['lookup("F_claim_reduced_lkp").orig_carrier_id','orig_carrier_id',1,1]
+     ['lookup("F_claim_reduced_lkp").rx_written_dt','rx_written_dt',1,1]
+     ['lookup("F_claim_reduced_lkp").sbm_dt_sk','sbm_dt_sk',1,1]
+     ['lookup("F_claim_reduced_lkp").claim_seq_nbr','claim_seq_nbr',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) f_cl_mic_det_claim_nbr;
+let decimal("\x01",0) f_cl_mic_det_claim_seq_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_claim_stat_id;
+let decimal("\x01",0) f_cl_mic_det_claim_mic_seq_no = fail_if_error(in0.agr7n2);
+let decimal("\x01",0) f_cl_mic_det_claim_stat_sk;
+let decimal("\x01",0) f_cl_mic_det_carrier_sk;
+let decimal("\x01",0) f_cl_mic_det_carrier_acct_sk;
+let decimal("\x01",0) f_cl_mic_det_cag_sk;
+let decimal("\x01",0) f_cl_mic_det_mbr_sk;
+let decimal("\x01",0) f_cl_mic_det_final_pln_sk;
+let decimal("\x01",0) f_cl_mic_det_phr_sk;
+let decimal("\x01",0) f_cl_mic_det_pbr_sk;
+let decimal("\x01",0) f_cl_mic_det_compound_sk;
+let decimal("\x01",0) f_cl_mic_det_prod_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_gpi_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_drug_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_ahfs_cd_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_drug_rx_otc_ind_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_drug_maint_cd_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_admin_rte_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_gnrc_mdspn_ind_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_gnrc_ind_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_dea_cd_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_dsg_frm_sk = -1;
+let decimal("\x01",0) f_cl_mic_det_orig_carrier_sk;
+let decimal("\x01",0) f_cl_mic_det_orig_mbr_sk;
+let decimal("\x01",0) f_cl_mic_det_orig_cag_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cl_mic_det_orig_carrier_id;
+let string("\x01",charset="iso-8859-15", maximum_length=40) f_cl_mic_det_orig_account_id;
+let string("\x01",charset="iso-8859-15", maximum_length=30) f_cl_mic_det_orig_employer_group_id;
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cl_mic_det_orig_member_id;
+let decimal("\x01",0) f_cl_mic_det_claim_seq_nbr_src;
+let decimal("\x01",0) f_cl_mic_det_sbm_dt_sk;
+let date("YYYYMMDD")("\x01") f_cl_mic_det_sbm_dt;
+let decimal("\x01",0) f_cl_mic_det_sbm_yr;
+let decimal("\x01",0) f_cl_mic_det_sbm_mnth;
+let decimal("\x01",0) f_cl_mic_det_filled_dt_sk;
+let date("YYYYMMDD")("\x01") f_cl_mic_det_filled_dt;
+let date("YYYYMMDD")("\x01") f_cl_mic_det_rx_written_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_cl_mic_det_rx_nbr;
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_refill_nbr;
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cl_mic_det_drg_qty;
+let decimal("\x01".8, maximum_length=26, sign_reserved) f_cl_mic_det_awp_unit_cost;
+let decimal("\x01".5, maximum_length=15, sign_reserved) f_cl_mic_det_extd_awp_cost = fail_if_error(decimal_round(in0.agikhx*in0.agsan2,5));
+let decimal("\x01",0) f_cl_mic_det_refill_max;
+let decimal("\x01",0) f_cl_mic_det_days_of_supply;
+let decimal("\x01",0) f_cl_mic_det_days_of_supply_sk;
+let decimal("\x01",0) f_cl_mic_det_dmr_ind_sk;
+let decimal("\x01",0) f_cl_mic_det_injectable_ind_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_injectable_ind;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_app_patient_pay_amt;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_app_due_amt;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_clt_ingred_cost_paid;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_clt_dispensing_fee;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_sbm_ingred_cost_paid;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_sbm_dispensing_fee;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_sbm_patient_pay_amt;
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_sbm_due_amt;
+let string("\x01",charset="iso-8859-15", maximum_length=20) f_cl_mic_det_sbm_cmp_prod_id = fail_if_error(in0.agr9c4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_sbm_cmp_prod_id_qlfr_cd = fail_if_error(in0.agi5cj);
+let decimal("\x01",0) f_cl_mic_det_cmp_prod_key = fail_if_error(in0.agr9n2);
+let string("\x01",charset="iso-8859-15", maximum_length=50) f_cl_mic_det_prod_short_desc = fail_if_error(in0.agcnt3);
+let string("\x01",charset="iso-8859-15", maximum_length=100) f_cl_mic_det_prod_nm = fail_if_error(in0.agcot3);
+let string("\x01",charset="iso-8859-15", maximum_length=5) f_cl_mic_det_drg_mfr_id = fail_if_error(in0.agdlcd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cl_mic_det_drg_mfr_nm = fail_if_error(in0.agdgcd);
+let string("\x01",charset="iso-8859-15", maximum_length=100) f_cl_mic_det_drg_gnrc_nm = fail_if_error(in0.agxktx);
+let decimal("\x01",0) f_cl_mic_det_drg_desc_id = fail_if_error(in0.agh6t2);
+let decimal("\x01",0) f_cl_mic_det_gcn_no = fail_if_error(in0.agxrn1);
+let decimal("\x01",0) f_cl_mic_det_gcn_seq_no = fail_if_error(in0.agxsn1);
+let decimal("\x01",0) f_cl_mic_det_prod_kdc = fail_if_error(in0.agciv1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_prod_reim_ind = fail_if_error(in0.agpdc3);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_brand_generic_cd = fail_if_error(in0.agpfc3);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_drg_fda_thrpc_eqvlc_cd = fail_if_error(in0.agdkcd);
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cl_mic_det_drg_strngth_qty = fail_if_error(in0.agagqt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cl_mic_det_drg_strngth_uom_cd = fail_if_error(in0.agtat3);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_drg_3rd_prty_excpn_ind = fail_if_error(in0.agd3px);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_drg_unit_dose_use_ind = fail_if_error(in0.agdudu);
+let decimal("\x01".3, maximum_length=13, sign_reserved) f_cl_mic_det_sbm_cmp_ingred_qty = fail_if_error(in0.agsan2);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_sbm_cmp_ingred_cost_amt = fail_if_error(in0.aguip1);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_sbm_cmp_basis_of_cost_cd = fail_if_error(in0.agi6cj);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_ingred_stat_cd = fail_if_error(in0.agjah7);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_cal_ingred_cost_amt = fail_if_error(in0.agilhx);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_app_ingred_cost_amt = fail_if_error(in0.agimhx);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_clt_ingred_cost_amt = fail_if_error(in0.aginhx);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_app_cost_src_cd = fail_if_error(in0.agi8h7);
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cl_mic_det_cmd_app_cost_type_cd = fail_if_error(in0.agqjhb);
+let decimal("\x01".5, maximum_length=15, sign_reserved) f_cl_mic_det_cmd_app_cost_type_unit_cost = fail_if_error(in0.agiohx);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_clt_cost_src_cd = fail_if_error(in0.agi9h7);
+let string("\x01",charset="iso-8859-15", maximum_length=10) f_cl_mic_det_cmd_clt_cost_type_cd = fail_if_error(in0.agqkhb);
+let decimal("\x01".5, maximum_length=15, sign_reserved) f_cl_mic_det_cmd_clt_cost_type_unit_cost = fail_if_error(in0.agiphx);
+let decimal("\x01".5, maximum_length=15, sign_reserved) f_cl_mic_det_cmd_awp_unit_cost = fail_if_error(in0.agikhx);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_cal_prof_svc_fee = fail_if_error(in0.agj7hy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_app_prof_svc_fee = fail_if_error(in0.agj8hy);
+let decimal("\x01".2, maximum_length=11, sign_reserved) f_cl_mic_det_cmd_clt_prof_svc_fee = fail_if_error(in0.agj9hy);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_eci_rm_ind = fail_if_error(in0.agqjia);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_eci_px_ind = fail_if_error(in0.agqkia);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_eci_ms_ind = fail_if_error(in0.agqlia);
+let decimal("\x01".2, maximum_length=7, sign_reserved) f_cl_mic_det_phr_drg_cost_pct = fail_if_error(in0.age6hv);
+let decimal("\x01".2, maximum_length=7, sign_reserved) f_cl_mic_det_rbl_drg_cost_pct = fail_if_error(in0.age7hv);
+let decimal("\x01",0) f_cl_mic_det_cmd_ingred_mod_cd_cnt = fail_if_error(in0.agdzpp);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_cmd_ingred_mod_cd1 = fail_if_error(in0.agsthk);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_cmd_ingred_mod_cd2 = fail_if_error(in0.agsuhk);
+let string("\x01",charset="iso-8859-15", maximum_length=2) f_cl_mic_det_cmd_ingred_mod_cd3 = fail_if_error(in0.agsvhk);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ing_dru_cov_sts = fail_if_error(in0.aghsai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_tc4_drg_cov_stat_cd = fail_if_error(in0.ago6h9);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_nda_flg = fail_if_error(in0.aghtai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_nda_ovrd_flg = fail_if_error(in0.aghuai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_bla_flg = fail_if_error(in0.aghvai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_bla_ovrd_flg = fail_if_error(in0.aghwai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_anda_flg = fail_if_error(in0.aghxai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_ingred_anda_ovrd_flg = fail_if_error(in0.aghyai);
+let string("\x01",charset="iso-8859-15", maximum_length=1) f_cl_mic_det_cmd_exp_ingred_flg = fail_if_error(in0.aghzai);
+let decimal("\x01",0) f_cl_mic_det_src_env_sk = fail_if_error((decimal(''))(in0.rxt_src_envrt_id));
+let decimal("\x01",0) f_cl_mic_det_claim_nbr_encrp;
+let string("\x01",charset="iso-8859-15", maximum_length=12) f_cl_mic_det_rx_nbr_encrp;
+let decimal("\x01",0) f_cl_mic_det_sec_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=2) admin_rte_admin_rte_id = fail_if_error(in0.agdicd);
+let string("\x01",charset="iso-8859-15", maximum_length=8) ahfs_cd_ahfs_cd = fail_if_error(in0.agebc4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) dea_dea_cd = fail_if_error(in0.agddea);
+let string("\x01",charset="iso-8859-15", maximum_length=10) drug_drg_nm_extn_id = fail_if_error(string_prefix(in0.agqihb,10));
+let string("\x01",charset="iso-8859-15", maximum_length=1) drug_maint_drug_maint_cd = fail_if_error(in0.agmdcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) drug_rx_otc_drug_rx_otc_ind = fail_if_error(in0.agdrxo);
+let string("\x01",charset="iso-8859-15", maximum_length=4) dsg_frm_dsg_frm_id = fail_if_error(in0.agdhcd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_in_gnrc_mdspn_ind = fail_if_error(in0.agzxst);
+let string("\x01",charset="iso-8859-15", maximum_length=1) gnrc_mdspn_gnrc_mdspn_ind = fail_if_error(in0.agozs3);
+let string("\x01",charset="iso-8859-15", maximum_length=14) gpi_gpi_id = fail_if_error(in0.agqihb);
+let string("\x01",charset="iso-8859-15", maximum_length=20) prod_prod_id = fail_if_error(in0.agr9c4);
+let string("\x01",charset="iso-8859-15", maximum_length=2) prod_prod_id_qlfr_cd = fail_if_error(in0.agi5cj);
+
+bzt_8_6c54cc0a_580f1705_6642_0 = 0;
+
+
+/*   Default value   */
+f_cl_mic_det_sbm_due_amt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_due_amt);
+
+/*   Default value   */
+f_cl_mic_det_sbm_dispensing_fee=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_dispensing_fee);
+
+/*   Default value   */
+f_cl_mic_det_orig_mbr_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_mbr_sk);
+
+/*   Default value   */
+f_cl_mic_det_phr_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).phr_sk);
+
+/*   Default value   */
+f_cl_mic_det_sbm_ingred_cost_paid=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_ingred_cost_paid);
+
+/*   Default value   */
+f_cl_mic_det_drg_qty=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).drg_qty);
+
+/*   Default value   */
+f_cl_mic_det_claim_nbr_encrp=fail_if_error(if(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr>0) (decimal(''))(string_concat(string_substring((decimal(''))bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr,1,2),ff3_encrypt_idwdata((decimal(''))bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr))) else (decimal(''))(string_concat(string_substring((decimal(''))bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr,1,3),ff3_encrypt_idwdata(decimal_strip(math_abs((decimal(''))bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr))))));
+
+/*   Default value   */
+f_cl_mic_det_filled_dt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).filled_dt);
+
+/*   Default value   */
+f_cl_mic_det_claim_stat_id=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_stat_id);
+
+/*   Default value   */
+f_cl_mic_det_carrier_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).carrier_sk);
+
+/*   Default value   */
+f_cl_mic_det_app_due_amt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).app_due_amt);
+
+/*   Default value   */
+f_cl_mic_det_claim_nbr=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_nbr);
+
+/*   Default value   */
+f_cl_mic_det_awp_unit_cost=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).awp_unit_cost);
+
+/*   Default value   */
+f_cl_mic_det_pbr_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).pbr_sk);
+
+/*   Default value   */
+f_cl_mic_det_dmr_ind_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).dmr_ind_sk);
+
+/*   Default value   */
+f_cl_mic_det_claim_seq_nbr_src=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_seq_nbr_src);
+
+/*   Default value   */
+f_cl_mic_det_final_pln_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).final_pln_sk);
+
+/*   Default value   */
+f_cl_mic_det_filled_dt_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).filled_dt_sk);
+
+/*   Default value   */
+f_cl_mic_det_rx_written_dt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).rx_written_dt);
+
+/*   Default value   */
+f_cl_mic_det_app_patient_pay_amt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).app_patient_pay_amt);
+
+/*   Default value   */
+f_cl_mic_det_compound_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).compound_sk);
+
+/*   Default value   */
+f_cl_mic_det_sbm_dt_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_dt_sk);
+
+/*   Default value   */
+f_cl_mic_det_rx_nbr=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).rx_nbr);
+
+/*   Default value   */
+f_cl_mic_det_orig_carrier_id=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_carrier_id);
+
+/*   Default value   */
+f_cl_mic_det_refill_max=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).refill_max);
+
+/*   Default value   */
+f_cl_mic_det_injectable_ind=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).injectable_ind);
+
+/*   Default value   */
+f_cl_mic_det_sbm_dt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_dt);
+
+/*   Default value   */
+f_cl_mic_det_sbm_mnth=fail_if_error((decimal(''))((string(""))(date("MM")) f_cl_mic_det_sbm_dt));
+
+/*   Default value   */
+f_cl_mic_det_sbm_yr=fail_if_error((decimal(''))((string(""))(date("YYYY")) f_cl_mic_det_sbm_dt));
+
+/*   Default value   */
+f_cl_mic_det_orig_member_id=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_member_id);
+
+/*   Default value   */
+f_cl_mic_det_days_of_supply_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).days_of_supply_sk);
+
+/*   Default value   */
+f_cl_mic_det_cag_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).cag_sk);
+
+/*   Default value   */
+f_cl_mic_det_claim_seq_nbr=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_seq_nbr);
+
+/*   Default value   */
+f_cl_mic_det_orig_account_id=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_account_id);
+
+/*   Default value   */
+f_cl_mic_det_sbm_patient_pay_amt=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).sbm_patient_pay_amt);
+
+/*   Default value   */
+f_cl_mic_det_orig_cag_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_cag_sk);
+
+/*   Default value   */
+f_cl_mic_det_claim_stat_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).claim_stat_sk);
+
+/*   Default value   */
+f_cl_mic_det_mbr_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).mbr_sk);
+
+/*   Default value   */
+f_cl_mic_det_rx_nbr_encrp=fail_if_error(ff3_encrypt_idwdata(bzt_5_6c54cc0a_580f1705_6642_0(in0).rx_nbr));
+
+/*   Default value   */
+f_cl_mic_det_orig_employer_group_id=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_employer_group_id);
+
+/*   Default value   */
+f_cl_mic_det_clt_dispensing_fee=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).clt_dispensing_fee);
+
+/*   Default value   */
+f_cl_mic_det_carrier_acct_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).carrier_acct_sk);
+
+/*   Default value   */
+f_cl_mic_det_orig_carrier_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).orig_carrier_sk);
+
+/*   Default value   */
+f_cl_mic_det_injectable_ind_sk=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).injectable_ind_sk);
+
+/*   Default value   */
+f_cl_mic_det_refill_nbr=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).refill_nbr);
+
+/*   Default value   */
+f_cl_mic_det_days_of_supply=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).days_sply);
+
+/*   Default value   */
+f_cl_mic_det_clt_ingred_cost_paid=fail_if_error(bzt_5_6c54cc0a_580f1705_6642_0(in0).clt_ingred_cost_paid);
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.f_cl_mic_det.claim_nbr::f_cl_mic_det_claim_nbr;
+  out0.f_cl_mic_det.claim_seq_nbr::f_cl_mic_det_claim_seq_nbr;
+  out0.f_cl_mic_det.claim_stat_id::f_cl_mic_det_claim_stat_id;
+  out0.f_cl_mic_det.claim_mic_seq_no::f_cl_mic_det_claim_mic_seq_no;
+  out0.f_cl_mic_det.claim_stat_sk::f_cl_mic_det_claim_stat_sk;
+  out0.f_cl_mic_det.carrier_sk::f_cl_mic_det_carrier_sk;
+  out0.f_cl_mic_det.carrier_acct_sk::f_cl_mic_det_carrier_acct_sk;
+  out0.f_cl_mic_det.cag_sk::f_cl_mic_det_cag_sk;
+  out0.f_cl_mic_det.mbr_sk::f_cl_mic_det_mbr_sk;
+  out0.f_cl_mic_det.final_pln_sk::f_cl_mic_det_final_pln_sk;
+  out0.f_cl_mic_det.phr_sk::f_cl_mic_det_phr_sk;
+  out0.f_cl_mic_det.pbr_sk::f_cl_mic_det_pbr_sk;
+  out0.f_cl_mic_det.compound_sk::f_cl_mic_det_compound_sk;
+  out0.f_cl_mic_det.prod_sk::f_cl_mic_det_prod_sk;
+  out0.f_cl_mic_det.gpi_sk::f_cl_mic_det_gpi_sk;
+  out0.f_cl_mic_det.drug_sk::f_cl_mic_det_drug_sk;
+  out0.f_cl_mic_det.ahfs_cd_sk::f_cl_mic_det_ahfs_cd_sk;
+  out0.f_cl_mic_det.drug_rx_otc_ind_sk::f_cl_mic_det_drug_rx_otc_ind_sk;
+  out0.f_cl_mic_det.drug_maint_cd_sk::f_cl_mic_det_drug_maint_cd_sk;
+  out0.f_cl_mic_det.admin_rte_sk::f_cl_mic_det_admin_rte_sk;
+  out0.f_cl_mic_det.gnrc_mdspn_ind_sk::f_cl_mic_det_gnrc_mdspn_ind_sk;
+  out0.f_cl_mic_det.gnrc_ind_sk::f_cl_mic_det_gnrc_ind_sk;
+  out0.f_cl_mic_det.dea_cd_sk::f_cl_mic_det_dea_cd_sk;
+  out0.f_cl_mic_det.dsg_frm_sk::f_cl_mic_det_dsg_frm_sk;
+  out0.f_cl_mic_det.orig_carrier_sk::f_cl_mic_det_orig_carrier_sk;
+  out0.f_cl_mic_det.orig_mbr_sk::f_cl_mic_det_orig_mbr_sk;
+  out0.f_cl_mic_det.orig_cag_sk::f_cl_mic_det_orig_cag_sk;
+  out0.f_cl_mic_det.orig_carrier_id::f_cl_mic_det_orig_carrier_id;
+  out0.f_cl_mic_det.orig_account_id::f_cl_mic_det_orig_account_id;
+  out0.f_cl_mic_det.orig_employer_group_id::f_cl_mic_det_orig_employer_group_id;
+  out0.f_cl_mic_det.orig_member_id::f_cl_mic_det_orig_member_id;
+  out0.f_cl_mic_det.claim_seq_nbr_src::f_cl_mic_det_claim_seq_nbr_src;
+  out0.f_cl_mic_det.sbm_dt_sk::f_cl_mic_det_sbm_dt_sk;
+  out0.f_cl_mic_det.sbm_dt::f_cl_mic_det_sbm_dt;
+  out0.f_cl_mic_det.sbm_yr::f_cl_mic_det_sbm_yr;
+  out0.f_cl_mic_det.sbm_mnth::f_cl_mic_det_sbm_mnth;
+  out0.f_cl_mic_det.filled_dt_sk::f_cl_mic_det_filled_dt_sk;
+  out0.f_cl_mic_det.filled_dt::f_cl_mic_det_filled_dt;
+  out0.f_cl_mic_det.rx_written_dt::f_cl_mic_det_rx_written_dt;
+  out0.f_cl_mic_det.rx_nbr::f_cl_mic_det_rx_nbr;
+  out0.f_cl_mic_det.refill_nbr::f_cl_mic_det_refill_nbr;
+  out0.f_cl_mic_det.drg_qty::f_cl_mic_det_drg_qty;
+  out0.f_cl_mic_det.awp_unit_cost::f_cl_mic_det_awp_unit_cost;
+  out0.f_cl_mic_det.extd_awp_cost::f_cl_mic_det_extd_awp_cost;
+  out0.f_cl_mic_det.refill_max::f_cl_mic_det_refill_max;
+  out0.f_cl_mic_det.days_of_supply::f_cl_mic_det_days_of_supply;
+  out0.f_cl_mic_det.days_of_supply_sk::f_cl_mic_det_days_of_supply_sk;
+  out0.f_cl_mic_det.dmr_ind_sk::f_cl_mic_det_dmr_ind_sk;
+  out0.f_cl_mic_det.injectable_ind_sk::f_cl_mic_det_injectable_ind_sk;
+  out0.f_cl_mic_det.injectable_ind::f_cl_mic_det_injectable_ind;
+  out0.f_cl_mic_det.app_patient_pay_amt::f_cl_mic_det_app_patient_pay_amt;
+  out0.f_cl_mic_det.app_due_amt::f_cl_mic_det_app_due_amt;
+  out0.f_cl_mic_det.clt_ingred_cost_paid::f_cl_mic_det_clt_ingred_cost_paid;
+  out0.f_cl_mic_det.clt_dispensing_fee::f_cl_mic_det_clt_dispensing_fee;
+  out0.f_cl_mic_det.sbm_ingred_cost_paid::f_cl_mic_det_sbm_ingred_cost_paid;
+  out0.f_cl_mic_det.sbm_dispensing_fee::f_cl_mic_det_sbm_dispensing_fee;
+  out0.f_cl_mic_det.sbm_patient_pay_amt::f_cl_mic_det_sbm_patient_pay_amt;
+  out0.f_cl_mic_det.sbm_due_amt::f_cl_mic_det_sbm_due_amt;
+  out0.f_cl_mic_det.sbm_cmp_prod_id::f_cl_mic_det_sbm_cmp_prod_id;
+  out0.f_cl_mic_det.sbm_cmp_prod_id_qlfr_cd::f_cl_mic_det_sbm_cmp_prod_id_qlfr_cd;
+  out0.f_cl_mic_det.cmp_prod_key::f_cl_mic_det_cmp_prod_key;
+  out0.f_cl_mic_det.prod_short_desc::f_cl_mic_det_prod_short_desc;
+  out0.f_cl_mic_det.prod_nm::f_cl_mic_det_prod_nm;
+  out0.f_cl_mic_det.drg_mfr_id::f_cl_mic_det_drg_mfr_id;
+  out0.f_cl_mic_det.drg_mfr_nm::f_cl_mic_det_drg_mfr_nm;
+  out0.f_cl_mic_det.drg_gnrc_nm::f_cl_mic_det_drg_gnrc_nm;
+  out0.f_cl_mic_det.drg_desc_id::f_cl_mic_det_drg_desc_id;
+  out0.f_cl_mic_det.gcn_no::f_cl_mic_det_gcn_no;
+  out0.f_cl_mic_det.gcn_seq_no::f_cl_mic_det_gcn_seq_no;
+  out0.f_cl_mic_det.prod_kdc::f_cl_mic_det_prod_kdc;
+  out0.f_cl_mic_det.prod_reim_ind::f_cl_mic_det_prod_reim_ind;
+  out0.f_cl_mic_det.brand_generic_cd::f_cl_mic_det_brand_generic_cd;
+  out0.f_cl_mic_det.drg_fda_thrpc_eqvlc_cd::f_cl_mic_det_drg_fda_thrpc_eqvlc_cd;
+  out0.f_cl_mic_det.drg_strngth_qty::f_cl_mic_det_drg_strngth_qty;
+  out0.f_cl_mic_det.drg_strngth_uom_cd::f_cl_mic_det_drg_strngth_uom_cd;
+  out0.f_cl_mic_det.drg_3rd_prty_excpn_ind::f_cl_mic_det_drg_3rd_prty_excpn_ind;
+  out0.f_cl_mic_det.drg_unit_dose_use_ind::f_cl_mic_det_drg_unit_dose_use_ind;
+  out0.f_cl_mic_det.sbm_cmp_ingred_qty::f_cl_mic_det_sbm_cmp_ingred_qty;
+  out0.f_cl_mic_det.sbm_cmp_ingred_cost_amt::f_cl_mic_det_sbm_cmp_ingred_cost_amt;
+  out0.f_cl_mic_det.sbm_cmp_basis_of_cost_cd::f_cl_mic_det_sbm_cmp_basis_of_cost_cd;
+  out0.f_cl_mic_det.ingred_stat_cd::f_cl_mic_det_ingred_stat_cd;
+  out0.f_cl_mic_det.cmd_cal_ingred_cost_amt::f_cl_mic_det_cmd_cal_ingred_cost_amt;
+  out0.f_cl_mic_det.cmd_app_ingred_cost_amt::f_cl_mic_det_cmd_app_ingred_cost_amt;
+  out0.f_cl_mic_det.cmd_clt_ingred_cost_amt::f_cl_mic_det_cmd_clt_ingred_cost_amt;
+  out0.f_cl_mic_det.cmd_app_cost_src_cd::f_cl_mic_det_cmd_app_cost_src_cd;
+  out0.f_cl_mic_det.cmd_app_cost_type_cd::f_cl_mic_det_cmd_app_cost_type_cd;
+  out0.f_cl_mic_det.cmd_app_cost_type_unit_cost::f_cl_mic_det_cmd_app_cost_type_unit_cost;
+  out0.f_cl_mic_det.cmd_clt_cost_src_cd::f_cl_mic_det_cmd_clt_cost_src_cd;
+  out0.f_cl_mic_det.cmd_clt_cost_type_cd::f_cl_mic_det_cmd_clt_cost_type_cd;
+  out0.f_cl_mic_det.cmd_clt_cost_type_unit_cost::f_cl_mic_det_cmd_clt_cost_type_unit_cost;
+  out0.f_cl_mic_det.cmd_awp_unit_cost::f_cl_mic_det_cmd_awp_unit_cost;
+  out0.f_cl_mic_det.cmd_cal_prof_svc_fee::f_cl_mic_det_cmd_cal_prof_svc_fee;
+  out0.f_cl_mic_det.cmd_app_prof_svc_fee::f_cl_mic_det_cmd_app_prof_svc_fee;
+  out0.f_cl_mic_det.cmd_clt_prof_svc_fee::f_cl_mic_det_cmd_clt_prof_svc_fee;
+  out0.f_cl_mic_det.eci_rm_ind::f_cl_mic_det_eci_rm_ind;
+  out0.f_cl_mic_det.eci_px_ind::f_cl_mic_det_eci_px_ind;
+  out0.f_cl_mic_det.eci_ms_ind::f_cl_mic_det_eci_ms_ind;
+  out0.f_cl_mic_det.phr_drg_cost_pct::f_cl_mic_det_phr_drg_cost_pct;
+  out0.f_cl_mic_det.rbl_drg_cost_pct::f_cl_mic_det_rbl_drg_cost_pct;
+  out0.f_cl_mic_det.cmd_ingred_mod_cd_cnt::f_cl_mic_det_cmd_ingred_mod_cd_cnt;
+  out0.f_cl_mic_det.cmd_ingred_mod_cd1::f_cl_mic_det_cmd_ingred_mod_cd1;
+  out0.f_cl_mic_det.cmd_ingred_mod_cd2::f_cl_mic_det_cmd_ingred_mod_cd2;
+  out0.f_cl_mic_det.cmd_ingred_mod_cd3::f_cl_mic_det_cmd_ingred_mod_cd3;
+  out0.f_cl_mic_det.cmd_ing_dru_cov_sts::f_cl_mic_det_cmd_ing_dru_cov_sts;
+  out0.f_cl_mic_det.tc4_drg_cov_stat_cd::f_cl_mic_det_tc4_drg_cov_stat_cd;
+  out0.f_cl_mic_det.cmd_ingred_nda_flg::f_cl_mic_det_cmd_ingred_nda_flg;
+  out0.f_cl_mic_det.cmd_ingred_nda_ovrd_flg::f_cl_mic_det_cmd_ingred_nda_ovrd_flg;
+  out0.f_cl_mic_det.cmd_ingred_bla_flg::f_cl_mic_det_cmd_ingred_bla_flg;
+  out0.f_cl_mic_det.cmd_ingred_bla_ovrd_flg::f_cl_mic_det_cmd_ingred_bla_ovrd_flg;
+  out0.f_cl_mic_det.cmd_ingred_anda_flg::f_cl_mic_det_cmd_ingred_anda_flg;
+  out0.f_cl_mic_det.cmd_ingred_anda_ovrd_flg::f_cl_mic_det_cmd_ingred_anda_ovrd_flg;
+  out0.f_cl_mic_det.cmd_exp_ingred_flg::f_cl_mic_det_cmd_exp_ingred_flg;
+  out0.f_cl_mic_det.src_env_sk::f_cl_mic_det_src_env_sk;
+  out0.f_cl_mic_det.claim_nbr_encrp::f_cl_mic_det_claim_nbr_encrp;
+  out0.f_cl_mic_det.rx_nbr_encrp::f_cl_mic_det_rx_nbr_encrp;
+  out0.f_cl_mic_det.sec_flg::f_cl_mic_det_sec_flg;
+  out0.admin_rte.admin_rte_id::admin_rte_admin_rte_id;
+  out0.ahfs_cd.ahfs_cd::ahfs_cd_ahfs_cd;
+  out0.dea.dea_cd::dea_dea_cd;
+  out0.drug.drg_nm_extn_id::drug_drg_nm_extn_id;
+  out0.drug_maint.drug_maint_cd::drug_maint_drug_maint_cd;
+  out0.drug_rx_otc.drug_rx_otc_ind::drug_rx_otc_drug_rx_otc_ind;
+  out0.dsg_frm.dsg_frm_id::dsg_frm_dsg_frm_id;
+  out0.gnrc_in.gnrc_mdspn_ind::gnrc_in_gnrc_mdspn_ind;
+  out0.gnrc_mdspn.gnrc_mdspn_ind::gnrc_mdspn_gnrc_mdspn_ind;
+  out0.gpi.gpi_id::gpi_gpi_id;
+  out0.prod.prod_id::prod_prod_id;
+  out0.prod.prod_id_qlfr_cd::prod_prod_id_qlfr_cd;
+  out0.*::in0.*;
+end;

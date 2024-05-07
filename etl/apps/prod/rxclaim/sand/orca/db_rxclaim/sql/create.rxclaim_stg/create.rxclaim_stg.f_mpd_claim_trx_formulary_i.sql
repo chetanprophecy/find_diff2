@@ -1,0 +1,59 @@
+DROP TABLE ${STAGING_SCHEMA}.f_mpd_claim_trx_formulary_i;
+
+CREATE TABLE ${STAGING_SCHEMA}.f_mpd_claim_trx_formulary_i
+( claim_nbr                        BIGINT
+, claim_seq_nbr                    INTEGER
+, cag_sk                           BIGINT
+, mbr_sk                           BIGINT
+, fpd_tier                         INTEGER
+, fpd_step_therapy_typ             CHAR(1)
+, fpd_step_therapy_rqr             CHAR(1)
+, fpd_start_dt                     DATE
+, fpd_speciality_prod              CHAR(1)
+, fpd_rule_set_id                  BIGINT
+, fpd_rule_id                      BIGINT
+, fpd_qty_limits                   CHAR(1)
+, fpd_qty_limit_typ                VARCHAR(3)
+, fpd_ptd_appl_ql_days             INTEGER
+, fpd_prod_exclsn                  CHAR(1)
+, fpd_proc_cd                      INTEGER
+, fpd_prior_auth_typ               CHAR(1)
+, fpd_prior_auth_rqr               CHAR(1)
+, fpd_min_age_qual                 CHAR(1)
+, fpd_min_age                      INTEGER
+, fpd_med_necessity                CHAR(1)
+, fpd_max_tm_period_qual           VARCHAR(2)
+, fpd_max_tm_period                INTEGER
+, fpd_max_amt_qual                 VARCHAR(2)
+, fpd_max_amt                      DECIMAL(10,3)
+, fpd_max_age_qual                 CHAR(1)
+, fpd_max_age                      INTEGER
+, fpd_gender_cd                    CHAR(1)
+, fpd_formulary_stat               INTEGER
+, fpd_formulary_list_lvl_3         BIGINT
+, fpd_formulary_list_lvl_2         BIGINT
+, fpd_formulary_list_lvl_1         BIGINT
+, fpd_end_dt                       DATE
+, fpd_appl_ql_to_claims            CHAR(1)
+, fpd_appl_day_dose                DECIMAL(11,6)
+, fpb_protocol_lvl                 CHAR(1)
+, fpb_ct_sched                     VARCHAR(20)
+, fpb_appl_ct_to_claims            CHAR(1)
+, rxc_chg_user_name                VARCHAR(10)
+, rxc_chg_tm                       TIMESTAMP
+, rxc_chg_pgm_name                 VARCHAR(10)
+, rxc_chg_dt                       DATE
+, rxc_add_user_nm                  VARCHAR(10)
+, rxc_add_tm                       TIMESTAMP
+, rxc_add_pgm_nm                   VARCHAR(10)
+, rxc_add_dt                       DATE
+, cntngnt_stat                     CHAR(1)
+, src_env_sk                       BIGINT NOT NULL
+, insert_ts                        TIMESTAMP NOT NULL
+, update_ts                        TIMESTAMP
+, insert_uid                       VARCHAR(20)
+, update_uid                       VARCHAR(20)
+, run_id                           BIGINT
+, rec_stat_cd                      BYTEINT
+);
+

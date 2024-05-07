@@ -1,0 +1,61 @@
+/***********************************************************************************************************************************************************************************************************
+ * db_sxca6 -> $DB_SXCA6_DML/common_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ *  3/13/2017   Upal Chatterjee         Initial layout                         
+ * ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------*/
+
+type preferred_alternative_table_t =
+record
+utf8 string("\x01", maximum_length=32) record_id;
+utf8 string("\x01", maximum_length=30) carrier_id;
+utf8 string("\x01", maximum_length=40) account_id;
+utf8 string("\x01", maximum_length=30) group_id;
+utf8 string("\x01", maximum_length=30) lob;
+utf8 string("\x01", maximum_length=30) pps;
+utf8 string("\x01", maximum_length=30) pdl;
+utf8 string("\x01", maximum_length=2) tgt_prod_qual_id;
+utf8 string("\x01", maximum_length=11) tgt_prod_id;
+utf8 string("\x01", maximum_length=70) tgt_drg_lbl_nm;
+utf8 date("YYYYMMDD") ("\x01") tgt_eff_dt;
+utf8 date("YYYYMMDD") ("\x01") tgt_end_dt;
+integer(4) alt_seq;
+utf8 string("\x01", maximum_length=2) alt_prod_qual_id;
+utf8 string("\x01", maximum_length=11) alt_prod_id;
+utf8 string("\x01", maximum_length=70)  alt_lbl_nm;
+decimal(6,4) alt_qty_adj;
+integer(1) phase_flag;
+string(1) newline = "\n";
+end;
+
+type rcgpip_tbl_t =
+utf8 record
+  string("\x01", maximum_length=14)                  gpi_id_number /*CHAR(14) NOT NULL*/;
+  string("\x01", maximum_length=60)                  gpi_name      /*CHAR(60) NOT NULL*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) chg_date      /*DECIMAL(7) NOT NULL*/;
+  string(1) newline = "\n";
+end;
+
+type rcpidp_tbl_t =
+utf8 record
+  string("\x01", maximum_length=14) gpi_id_number      /*CHAR(14) NOT NULL*/;
+  string("\x01", maximum_length=20) product_id         /*CHAR(20) NOT NULL*/;
+  string("\x01", maximum_length=2)  product_type_code  /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=1)  product_status     /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=70) name_ext           /*CHAR(70) NOT NULL*/;
+  string("\x01", maximum_length=30) description_abbrev /*CHAR(30) NOT NULL*/;
+  string(1) newline = "\n";
+end;
+
+type rcprdp_tbl_t =
+utf8 record
+  string("\x01", maximum_length=14)                  gpi_id_number    /*CHAR(14) NOT NULL*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) effective_date   /*DECIMAL(7) NOT NULL*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) termination_date /*DECIMAL(7) NOT NULL*/;
+  string("\x01", maximum_length=1)                   multisource      /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1)                   maintenance_drug /*CHAR(1) NOT NULL*/;
+  string(1) newline = "\n";
+end;

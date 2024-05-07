@@ -1,0 +1,21 @@
+/* DML for event registration file. This contains a "mapping" of
+   IDS table name to target data mart table name. Any event
+   generated for the IDS table will be loaded to the target data
+   mart table by the distribution engine.
+*/
+
+type raw_event_registration_type =
+record
+  /* Distribution target information */
+  string("|", maximum_length=50) source_name; 
+  string("|", maximum_length=20) target_system;
+  string("|", maximum_length=50) target_entity;
+  string("|", maximum_length=10) target_type;
+  decimal("|", maximum_length=3) channel_id = 1;
+  string("|", maximum_length=20) combine_strategy;  
+  string("|", maximum_length=1) frequency = "D"; // e.g. M, D, W, O (O=on demand)
+  decimal("|", maximum_length=2) sequence = 1;
+  string(1) newline = "\n";
+end;
+
+metadata type = raw_event_registration_type;

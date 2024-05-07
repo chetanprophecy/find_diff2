@@ -1,0 +1,27 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.pha_pharmacy_id :: in.rlavcd;
+  out.sequence_number :: if ( is_valid(in.rlc1ht))
+                             in.rlc1ht  
+                         else  
+                             0 ;
+  out.affiliation_id :: in.rlajcd;
+  out.payment_center_id :: in.rlakcd;
+  out.status :: in.rlplia;
+  out.from_date ::  if ( is_valid(in.rlxrhg))
+                             in.rlxrhg  
+                         else  
+                             0 ;
+  out.thru_date ::  if ( is_valid(in.rlxshg))
+                             in.rlxshg  
+                         else  
+                             0  ;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

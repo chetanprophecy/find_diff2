@@ -1,0 +1,486 @@
+record
+  little endian integer(2)   dxf_src_sys_id =   0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  unsigned integer(8)     dxf_hk_part1 =     0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)     dxf_hk_part2 =     0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)     dxf_sk =     0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)      claim_nbr = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0)      claim_seq_nbr = NULL("") /*INTEGER NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      claim_stat_id = NULL("") /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0)      sbm_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      ntwk_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      hm_dlvry_ind_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      pbr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      gnrc_ind_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      hm_dlvry_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)      cms_pbp_id = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5)      cms_contract_id = NULL("") /*VARCHAR(5)*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)      clt_prof_svc_fee = NULL("") /*DECIMAL(9,2)*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved)      awp_unit_adjustment = NULL("") /*DECIMAL(13,5)*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved)      awp_unit_published = NULL("") /*DECIMAL(13,5)*/;
+  decimal("\x01",0)      specialty_drug_prg_ind = NULL("") /*BYTEINT*/;
+  decimal("\x01",0)      specialty_drug_prg_pharm_ind = NULL("") /*BYTEINT*/;
+  decimal("\x01",0)      adherence_incnt_reduction_ind = NULL("") /*BYTEINT*/;
+  decimal("\x01",0)      drug_reserved_elg_ind = NULL("") /*BYTEINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      low_day_supl_ind = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)      nat_drg_cd_mfr_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      super_ntwk_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      coverage_lvl_ind = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)      filled_dt_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      manl_claim_trk_dt_sk = NULL("") /*BIGINT*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      retl_90_rptg_ind = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)      subm_yr_mnth = NULL("") /*INTEGER*/;
+  decimal("\x01",0)      filled_yr_mnth = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      prior_pbm_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      orx_dispensed_ind = NULL("") /*VARCHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)      dlvry_chanl = NULL("") /*VARCHAR(25)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=15)      awp_flg = NULL("") /*VARCHAR(15)*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved)      awp_intgr_unit_cost = NULL("") /*DECIMAL(13,5)*/;
+  decimal("\x01".5, maximum_length=15, sign_reserved)      pdt_cost_type_unit_cost = NULL("") /*DECIMAL(13,5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=2)      subm_prior_auth_reason_cd = NULL("") /*VARCHAR(2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=11)      subm_prior_auth_nbr = NULL("") /*VARCHAR(11)*/;
+  decimal("\x01",0)      mbr_prior_auth_sk = NULL("") /*BIGINT*/;
+  decimal("\x01".2, maximum_length=13, sign_reserved)      drg_spend_amt = NULL("") /*DECIMAL(11,2)*/;
+  decimal("\x01".2, maximum_length=13, sign_reserved)      troop_amt = NULL("") /*DECIMAL(11,2)*/;
+  decimal("\x01".2, maximum_length=11, sign_reserved)      oop_applied_amt = NULL("") /*DECIMAL(9,2)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      day_90_prog_type = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      day_90_retail_prog_ind = NULL("") /*CHAR(1)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)      copay_category_cd = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)      care_fac_sk = NULL("") /*BIGINT*/;
+  decimal("\x01",0)      src_env_sk = NULL("") /*BIGINT*/;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+  end d_carrier;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+  end d_carr_acct;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+  end d_cag;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+  end d_mbr;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end d_sbm_dt;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=6)  pbr_spclty_cd = NULL("") /*VARCHAR(6)*/;
+  end pbr_spclty;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=15)  pcp_id = NULL("") /*VARCHAR(15) NOT NULL*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  pcp_specialty_id = NULL("") /*VARCHAR(6) NOT NULL*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end prim_pcp;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  custom_client_ind = NULL("") /*CHAR(1)*/;
+  end cst_clnt_ind;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=12)  phr_id = NULL("") /*VARCHAR(12) NOT NULL*/;
+  end pharmacy;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  gender_cd = NULL("") /*CHAR(1)*/;
+  end gender;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  drg_nm_extn_id = NULL("") /*VARCHAR(10)*/;
+  end drug;
+  record
+    decimal("\x01",0)  age = NULL("") /*SMALLINT*/;
+  end age_bnd;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  state_cd = NULL("") /*VARCHAR(2)*/;
+  end phr_state;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  relationship_cd = NULL("") /*CHAR(1)*/;
+  end l_relnshp;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  fmly_type_cd = NULL("") /*CHAR(1)*/;
+  end fmly_typ;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=12)  phr_pmt_cntr_id = NULL("") /*VARCHAR(12)*/;
+  end phr_pmt_cntr;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=20)  prod_id = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  prod_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+  end prod;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_afflt_cd = NULL("") /*VARCHAR(6)*/;
+  end prscrbr_affl;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=8)  ahfs_cd = NULL("") /*VARCHAR(8)*/;
+  end ahfs_cd;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  cost_basis_cd = NULL("") /*VARCHAR(2)*/;
+  end cost_basis;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  cost_type_cd = NULL("") /*VARCHAR(10)*/;
+  end cost_type;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drug_rx_otc_ind = NULL("") /*CHAR(1)*/;
+  end drug_rx_otc;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drug_maint_cd = NULL("") /*CHAR(1)*/;
+  end drug_maint;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_cd = NULL("") /*VARCHAR(10)*/;
+    date("YYYYMMDD")("\x01")  pln_eff_dt = NULL("") /*DATE*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  end final_pln;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  admin_rte_id = NULL("") /*VARCHAR(2)*/;
+  end admin_rte;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  cob_ind = NULL("") /*VARCHAR(2)*/;
+  end cob_in;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=14)  gpi_id = NULL("") /*VARCHAR(14)*/;
+  end gpi;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  gnrc_mdspn_ind = NULL("") /*CHAR(1)*/;
+  end gnrc_mdspn;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  gnrc_mdspn_ind = NULL("") /*CHAR(1)*/;
+  end gnrc_in;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  location_cd = NULL("") /*VARCHAR(2)*/;
+  end location;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  client_benefit_cd = NULL("") /*VARCHAR(10)*/;
+  end client_benefit;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  dea_cd = NULL("") /*VARCHAR(2)*/;
+  end dea;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  daw_cd = NULL("") /*CHAR(1)*/;
+  end daw;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  claim_stat_id = NULL("") /*CHAR(1)*/;
+  end clm_stat;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  compound_cd = NULL("") /*CHAR(1)*/;
+  end compound;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  pln_drg_stat_cd = NULL("") /*CHAR(1)*/;
+  end pln_drg_stat;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd1;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd2;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd3;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+  end org_carrier;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+  end org_mbr;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+  end org_cag;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  rx_origin_cd = NULL("") /*CHAR(1)*/;
+  end rx_org;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  price_src_cd = NULL("") /*CHAR(1)*/;
+  end phr_prc;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    decimal("\x01",0)  sequence_no = NULL("") /*INTEGER*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  plan_cd = NULL("") /*VARCHAR(10)*/;
+  end cntrct_pbp;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=2)  residence_cd = NULL("") /*VARCHAR(2)*/;
+  end res_cd;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  clawback_stat_cd = NULL("") /*CHAR(1)*/;
+  end clawback;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  dmr_ind = NULL("") /*CHAR(1)*/;
+  end dmr_ind;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  injectable_ind = NULL /*CHAR(1) NOT NULL*/;
+  end injct_ind;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  formulary_id = NULL("") /*CHAR(1)*/;
+  end frmlry;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  prior_auth_id = NULL("") /*CHAR(1)*/;
+  end prior_auth;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  risk_pool_id = NULL("") /*CHAR(1)*/;
+  end risk_pool;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  rxsol_formulary_id = NULL /*CHAR(1) NOT NULL*/;
+  end rxsol_frmlry;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  rx_origin_cd = NULL("") /*CHAR(1)*/;
+  end clm_orgn_cd;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  employer_group_id = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=50)  client_id = NULL("") /*VARCHAR(50)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  client_rgn_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  client_seg_cd = NULL("") /*VARCHAR(3)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_cag_adj;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+    decimal("\x01",0)  mast_prsn_id = NULL("") /*BIGINT*/;
+    string("\x01",charset="iso-8859-15", maximum_length=50)  clt_id = NULL("") /*VARCHAR(50)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_alt_ins_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  mbr_alt_ins_id = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_alt_ins_mbr_id = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  mbr_ssn_nbr = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_supp_id1 = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  mbr_supp_id1_typ = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_supp_id2 = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  mbr_supp_id2_typ = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_age_band = NULL("") /*CHAR(1)*/;
+    decimal("\x01",0)  mbr_calc_age = NULL("") /*SMALLINT*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_cdhldr = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  mbr_clsfctn1 = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  mbr_clsfctn2 = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_clsfctn3 = NULL("") /*CHAR(1)*/;
+    date("YYYYMMDD")("\x01")  mbr_dt_of_brth = NULL("") /*DATE*/;
+    string("\x01",charset="iso-8859-15", maximum_length=11)  mbr_hic_cd = NULL("") /*VARCHAR(11)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id_encrpd = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  mbr_first_nm = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=25)  mbr_last_nm = NULL("") /*VARCHAR(25)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_mid_init_nm = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  mbr_prsn_cd = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_relshp_cd = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  mbr_rdr = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_sex = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  mbr_zip = NULL("") /*VARCHAR(15)*/;
+    date("YYYYMMDD")("\x01")  mbr_mcre_covrg_from_dt = NULL("") /*DATE*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_mcre_covrg_typ = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_fam_id = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_fam_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  mbr_fam_typ_cd = NULL("") /*CHAR(1)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_mem_adj;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(18)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  clt_prod_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  clt_rdr_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_cd = NULL("") /*VARCHAR(10)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_mbr_elgt;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end mbr_dob;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=15)  submd_phr_id = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  submd_phr_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  rslvd_phr_id = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  rslvd_phr_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=12)  phr_ncpdp_id = NULL("") /*VARCHAR(12)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  phr_npi_no = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=55)  phr_nm = NULL("") /*VARCHAR(55)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=25)  phr_ntwrk_nm = NULL("") /*VARCHAR(25)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  phr_ntwrk_prity_cd = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  phr_ntwrk_qlfr_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  phr_ntwrk_typ_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=9)  phr_ntwrk_carr_nm = NULL("") /*VARCHAR(9)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  phr_ntwrk_prcs_qlfr_ind = NULL("") /*CHAR(1)*/;
+    decimal("\x01",0)  phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+    string("\x01",charset="iso-8859-15", maximum_length=9)  phr_super_carr_nm = NULL("") /*VARCHAR(9)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  phr_super_ntwrk_typ_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_super_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_affl_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=35)  phr_affl_nm = NULL("") /*VARCHAR(35)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=12)  phr_pmt_centr_nm = NULL("") /*VARCHAR(12)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  phr_rgn_nm = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_prnt_org_nm = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  phr_ntwrk_clsfctn_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  phr_zip_cd = NULL("") /*VARCHAR(15)*/;
+  end d_phrm_adj;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_cd = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_cd_fnl = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=8)  pln_typ_id = NULL("") /*VARCHAR(8)*/;
+    date("YYYYMMDD")("\x01")  pln_fnl_eff_dt = NULL("") /*DATE*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_gpi_list = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_grp_cd = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_ndc_list = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_pref_gpi_list_nm = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_pref_ndc_list_nm = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pln_qlfr = NULL("") /*VARCHAR(10)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_pln_adjd;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=15)  pbr_id = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=15)  pbr_dea_id = NULL("") /*VARCHAR(15)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  pbr_id_qlfr_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  pbr_id_st_cd = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  pbr_npi = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=25)  pbr_first_nm = NULL("") /*VARCHAR(25)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  pbr_mid_init_nm = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=35)  pbr_last_nm = NULL("") /*VARCHAR(35)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  pbr_spclty_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  pbr_spclty_cd_qlfr_cd = NULL("") /*VARCHAR(3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  pbr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=3)  pbr_st_cd = NULL("") /*VARCHAR(3)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_pres_adjud;
+  record
+    date("YYYYMMDD")("\x01")  cal_day_dt = NULL("") /*DATE*/;
+  end manl_claim_trk;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=20)  prod_id = NULL("") /*VARCHAR(20)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  prod_id_qlfr = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=70)  prod_nm = NULL("") /*VARCHAR(70)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=8)  ahfs_cd = NULL("") /*VARCHAR(8)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_3rd_prty_excpn_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=11)  drg_admin_rte_hitsb_desc = NULL("") /*VARCHAR(11)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=4)  drg_clsfctn_cd = NULL("") /*VARCHAR(4)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_dea_cd = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=80)  drg_drg_intrctn_desc = NULL("") /*VARCHAR(80)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  drg_fda_thrpc_eqvlc_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  drg_grp_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  drg_lbl_nm = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_maint_cd = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_maint_src = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  drg_mfrr_nm = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=5)  drg_ndc_lblr_cd = NULL("") /*VARCHAR(5)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  drg_ndc_pkg_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=4)  drg_ndc_prod_cd = NULL("") /*VARCHAR(4)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=11)  drg_ndc_id = NULL("") /*VARCHAR(11)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_rx_otc_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=13)  drg_stat_cd = NULL("") /*VARCHAR(13)*/;
+    decimal("\x01".3, maximum_length=13, sign_reserved)  drg_strngth_qty = NULL("") /*DECIMAL(11,3)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  drg_strngth_uom_cd = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  drg_sub_class_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  drg_unit_dose_use_ind = NULL("") /*CHAR(1)*/;
+    decimal("\x01",0)  gcn_no = NULL("") /*INTEGER*/;
+    decimal("\x01",0)  gcn_seq_no = NULL("") /*INTEGER*/;
+    string("\x01",charset="iso-8859-15", maximum_length=60)  gen_nm = NULL("") /*VARCHAR(60)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  gen_medspn_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  gen_ind_ovrd_ind = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  gpi_list_qlfr_nm = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=14)  gpi_no = NULL("") /*VARCHAR(14)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  drg_grp_gpi_02_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=4)  drg_class_gpi_04_cd = NULL("") /*VARCHAR(4)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=6)  drg_sub_class_gpi_06_cd = NULL("") /*VARCHAR(6)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=8)  drg_bsic_nm_gpi_08_cd = NULL("") /*VARCHAR(8)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  drg_extd_nm_gpi_10_cd = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=12)  drg_dosag_frm_gpi_12_cd = NULL("") /*VARCHAR(12)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=80)  dise_cat_nm = NULL("") /*VARCHAR(80)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=80)  thrpc_class_nm = NULL("") /*VARCHAR(80)*/;
+    decimal("\x01".5, maximum_length=15, sign_reserved)  wac_amt = NULL("") /*DECIMAL(13,5)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=13)  wkrs_comp_alt_prod_cd = NULL("") /*VARCHAR(13)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=1)  wkrs_comp_alt_prod_typ_cd = NULL("") /*CHAR(1)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  prod_pref_list_id = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=2)  admin_rte_cd = NULL("") /*VARCHAR(2)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=4)  dsg_frm_id = NULL("") /*VARCHAR(4)*/;
+  end d_prod_adj;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  care_fac_id = NULL("") /*VARCHAR(10)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=25)  care_fac_nm = NULL("") /*VARCHAR(25)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=50)  clt_id = NULL("") /*VARCHAR(50)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end d_cr_fc_adj;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  brand_generic_cd = NULL("") /*CHAR(1)*/;
+  end brnd_bsis;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=4)  dsg_frm_id = NULL("") /*VARCHAR(4)*/;
+  end dsg_frm;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd4;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd5;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd6;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd7;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd8;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd9;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=3)  rej_cd = NULL("") /*VARCHAR(3)*/;
+  end rej_cd10;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  brand_generic_cd = NULL("") /*CHAR(1)*/;
+  end ajc_cd_key;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_super_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+  end super_netwrk;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  benefit_phase_cd = NULL("") /*CHAR(1)*/;
+  end bgn_bnft_phase;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  benefit_phase_cd = NULL("") /*CHAR(1)*/;
+  end end_bnft_phase;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  price_src_cd = NULL("") /*CHAR(1)*/;
+  end clt_prc_src;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=10)  client_price_type = NULL("") /*VARCHAR(10)*/;
+  end l_clt_prc_typ;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+    decimal("\x01",0)  seq_nbr = NULL("") /*INTEGER*/;
+  end mbr_eligibilty;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=1)  hm_dlvry_ind = NULL("") /*CHAR(1) NOT NULL*/;
+  end mail_srvc;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(18)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=11)  prior_auth_nbr = NULL("") /*VARCHAR(11)*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT*/;
+  end mbr_prior_auth;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=6)  phr_ntwrk_id = NULL("") /*VARCHAR(6)*/;
+    decimal("\x01",0)  phr_ntwrk_seq_no = NULL("") /*INTEGER*/;
+  end netwrk;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+    string("\x01",charset="iso-8859-15", maximum_length=10)  care_fac_id = NULL("") /*VARCHAR(10) NOT NULL*/;
+    decimal("\x01",0)  src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  end d_cr_fc;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_create_run_id =  0;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_updt_run_id =  0;
+  string("\x01", maximum_length=2)  ids_rec_stat_cd = NULL("");
+  string(1)  newline =  '\n';
+end

@@ -1,0 +1,99 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_gpi_indic.igp_trtmnt_rank_cd,[passthrough],in0.igx8ie]
+  [out0.d_gpi_indic.igp_med_cond_rstrctn,[passthrough],in0.igu9hj]
+  [out0.d_gpi_indic.gpi_sk,[transform],]
+  [out0.d_gpi_indic.igp_thrpy_role_cd,[passthrough],in0.igx6ie]
+  [out0.d_gpi_indic.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_gpi_indic.gpi_id,[passthrough],in0.igu6hj]
+  [out0.d_gpi_indic.igp_proxy_cd,[passthrough],in0.igyaie]
+  [out0.d_gpi_indic.igp_accptnce_lvl_cd,[passthrough],in0.igx9ie]
+  [out0.d_gpi_indic.igp_micro_orgnsm_cd,[passthrough],in0.igvbhj]
+  [out0.d_gpi_indic.igp_indctd_med_cond_cd,[passthrough],in0.igvahj]
+  [out0.d_gpi_indic.igp_stat_cd,[passthrough],in0.igycie]
+  [out0.d_gpi_indic.igp_proxy_only_flg,[passthrough],in0.igybie]
+  [out0.d_gpi_indic.igp_outcome_cd,[passthrough],in0.igx7ie]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_gpi_indic.igp_trtmnt_rank_cd,'d_gpi_indic.igp_trtmnt_rank_cd',1,0]
+     [out0.d_gpi_indic.igp_med_cond_rstrctn,'d_gpi_indic.igp_med_cond_rstrctn',1,0]
+     [out0.d_gpi_indic.gpi_sk,'d_gpi_indic.gpi_sk',1,0]
+     [out0.d_gpi_indic.igp_thrpy_role_cd,'d_gpi_indic.igp_thrpy_role_cd',1,0]
+     [out0.d_gpi_indic.src_env_sk,'d_gpi_indic.src_env_sk',1,0]
+     [out0.d_gpi_indic.gpi_id,'d_gpi_indic.gpi_id',1,0]
+     [out0.d_gpi_indic.igp_proxy_cd,'d_gpi_indic.igp_proxy_cd',1,0]
+     [out0.d_gpi_indic.igp_accptnce_lvl_cd,'d_gpi_indic.igp_accptnce_lvl_cd',1,0]
+     [out0.d_gpi_indic.igp_micro_orgnsm_cd,'d_gpi_indic.igp_micro_orgnsm_cd',1,0]
+     [out0.d_gpi_indic.igp_indctd_med_cond_cd,'d_gpi_indic.igp_indctd_med_cond_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_gpi_indic.igp_stat_cd,'d_gpi_indic.igp_stat_cd',1,0]
+     [out0.d_gpi_indic.igp_proxy_only_flg,'d_gpi_indic.igp_proxy_only_flg',1,0]
+     [out0.d_gpi_indic.igp_outcome_cd,'d_gpi_indic.igp_outcome_cd',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.igx9ie,'igx9ie',1,1]
+     [in0.igx6ie,'igx6ie',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.igybie,'igybie',1,1]
+     [in0.igx8ie,'igx8ie',1,1]
+     [in0.igyaie,'igyaie',1,1]
+     [in0.igvahj,'igvahj',1,1]
+     [in0.igycie,'igycie',1,1]
+     [in0.igvbhj,'igvbhj',1,1]
+     [in0.igu6hj,'igu6hj',1,1]
+     [in0.igx7ie,'igx7ie',1,1]
+     [in0.igu9hj,'igu9hj',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_gpi_indic_gpi_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_gpi_indic_gpi_id = fail_if_error(in0.igu6hj);
+let string("\x01",charset="iso-8859-15", maximum_length=7) d_gpi_indic_igp_med_cond_rstrctn = fail_if_error(in0.igu9hj);
+let string("\x01",charset="iso-8859-15", maximum_length=7) d_gpi_indic_igp_indctd_med_cond_cd = fail_if_error(in0.igvahj);
+let string("\x01",charset="iso-8859-15", maximum_length=7) d_gpi_indic_igp_micro_orgnsm_cd = fail_if_error(in0.igvbhj);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_gpi_indic_igp_thrpy_role_cd = fail_if_error(in0.igx6ie);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_gpi_indic_igp_outcome_cd = fail_if_error(in0.igx7ie);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_gpi_indic_igp_trtmnt_rank_cd = fail_if_error(in0.igx8ie);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_gpi_indic_igp_accptnce_lvl_cd = fail_if_error(in0.igx9ie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_gpi_indic_igp_proxy_cd = fail_if_error(in0.igyaie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_gpi_indic_igp_proxy_only_flg = fail_if_error(in0.igybie);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_gpi_indic_igp_stat_cd = fail_if_error(in0.igycie);
+let decimal("\x01",0) d_gpi_indic_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.d_gpi_indic.gpi_sk::d_gpi_indic_gpi_sk;
+  out0.d_gpi_indic.gpi_id::d_gpi_indic_gpi_id;
+  out0.d_gpi_indic.igp_med_cond_rstrctn::d_gpi_indic_igp_med_cond_rstrctn;
+  out0.d_gpi_indic.igp_indctd_med_cond_cd::d_gpi_indic_igp_indctd_med_cond_cd;
+  out0.d_gpi_indic.igp_micro_orgnsm_cd::d_gpi_indic_igp_micro_orgnsm_cd;
+  out0.d_gpi_indic.igp_thrpy_role_cd::d_gpi_indic_igp_thrpy_role_cd;
+  out0.d_gpi_indic.igp_outcome_cd::d_gpi_indic_igp_outcome_cd;
+  out0.d_gpi_indic.igp_trtmnt_rank_cd::d_gpi_indic_igp_trtmnt_rank_cd;
+  out0.d_gpi_indic.igp_accptnce_lvl_cd::d_gpi_indic_igp_accptnce_lvl_cd;
+  out0.d_gpi_indic.igp_proxy_cd::d_gpi_indic_igp_proxy_cd;
+  out0.d_gpi_indic.igp_proxy_only_flg::d_gpi_indic_igp_proxy_only_flg;
+  out0.d_gpi_indic.igp_stat_cd::d_gpi_indic_igp_stat_cd;
+  out0.d_gpi_indic.src_env_sk::d_gpi_indic_src_env_sk;
+  out0.*::in0.*;
+
+end;

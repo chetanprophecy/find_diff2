@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcrpup
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcrpup                  h5aacd,h5accd,h5adcd,h5psc2,h5kock,h5kpck,h5jvck,h5jwck,h5jxck,h5jyck,h5jzck,h5j0ck,h5j1ck,h5j2ck,h5j3ck,h5j4ck,h5j5ck,h5j6ck,h5j7ck,h5j8ck,h5j9ck,h5kack,h5kbck,h5kcck,h5kdck,h5keck,h5kfck,h5j9au,h5ozau,h5akvn,h5c2dt,h5adtm,h5alvn,h5advn,h5bmdt,h5abtm,h5aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rcrpup.h5aacd IS NOT NULL AND rcrpup.h5aacd NOT IN ("+ $CARRIER_EXCL +") AND rcrpup.h5bmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \r\n    " AND rcrpup.h5bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n else \r\n    "WHERE rcrpup.h5aacd IS NOT NULL AND rcrpup.h5aacd NOT IN ("+ $CARRIER_EXCL +") AND rcrpup.h5bmdt >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \r\n    " AND rcrpup.h5bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]
+SOURCE_DB_INFO_VEC||||$[ \r\nbegin \r\nresult :: for (let i in get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS)) :\r\n        if (!string_like(i.logical_schema,'%nvm%')) i ;\r\nend\r\n]
+CLEAN_FILE_URL|n|||$[ if ( not DO_CLEAN ) "" else "mfile:" + AI_MFS_PENDING + "/clean." + SOURCE_SYSTEM + "/clean." + SOURCE_LOWER + "." + RUN_ID + ".dat.gz" ]

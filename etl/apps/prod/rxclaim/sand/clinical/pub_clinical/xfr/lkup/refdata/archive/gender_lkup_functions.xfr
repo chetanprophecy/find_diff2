@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/gender_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Sundari Kala            Initial version
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_LOOKUP parameter;
+
+cli_string_t out :: get_gender_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS_LOOKUP + '/cli_gender.dat';
+end;
+
+/***********************************/
+/* Gender Lookup (ids natural key) */
+/***********************************/
+
+type gender_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  gender_hash_lkup_t      RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {gender.gender_cd};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let gender_lkup_t GLKUP_GENDER = allocate_with_nulls();
+
+gender_lkup_t out :: load_gender_lkup() inline =
+begin
+  if (GLKUP_GENDER.id == lookup_not_loaded())
+    GLKUP_GENDER = lookup_load(this_partition_path(get_gender_lkup_path()));
+  
+  out :: GLKUP_GENDER;
+end;
+
+gender_t out :: get_gender(gender_cd) inline =
+begin
+  let gender_lkup_t lkup = load_gender_lkup();
+  out :: lookup(lkup, gender_cd).gender;
+end;

@@ -1,0 +1,12 @@
+!prototype|P|||$PUB_DXF/mp/get.db_multi_modified.mp
+analysis_level|Pl|||none
+SOURCE_NAME||||$[ "" ]
+SOURCE_TABLE_LIST||||$[ "" ]
+LOG_DB_LIST|n|||# One line with Logging SQL Info, if any\r\n# Logical Schema         Physical Schema      DML Directory  DBMS Type     Param Prefix  DBC File Name\r\n$DB_AM_MAIN_SCHEMA_EME  $DB_AM_MAIN_SCHEMA  $DB_AM_DML    $DB_AM_DBMS  DB_AM        $DB_AM_DBC
+LOG_DBMS|n|||$DB_AM_DBMS
+LOG_MAIN_DB|n|||$DB_AM_MAIN_SCHEMA
+DEFAULT_DEDUP_SORT_KEY|n|||{source_record_active_cd; source_update_dttm descending; source_sequence_number descending; source_create_dttm descending; dmf_src_dataset_id descending; dmf_src_rec_cnt descending; drop_record; $END_DATE_FIELD_NAME}
+SOURCE_DB_LIST||||$[ get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)  // This must be evaluated in the intermediate pset. ]
+START_CHANGES_TIME||||$[ (string(""))(datetime("YYYY-MM-DD HH24:MI:SS"))now() ]
+SOURCE_DB_INFO_VEC||||$[ get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS) ]
+DO_CLEAN||||0

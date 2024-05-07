@@ -1,0 +1,240 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_58454093_37e0_0
+    BizHidden:true
+@*/
+/*   lookup phr_nwk   */
+out0::bzt_2_6c54cc0a_58454093_37e0_0(in0)=
+begin
+let record
+  decimal("\x01",0) ntwk_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) phr_ntwrk_id = NULL("");
+  decimal("\x01",0) phr_ntwrk_seq_no = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("phr_nwk",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58454093_37e0_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.mcf.mcf_status,[passthrough],in0.habys2]
+  [out0.d_plan.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_member.carrier_id,[passthrough],in0.haaacd]
+  [out0.mcf.cag_sk,[transform],]
+  [out0.d_member.mbr_id,[passthrough],in0.haabcd]
+  [out0.mcf.carrier_id,[passthrough],in0.haaacd]
+  [out0.d_plan.pln_eff_dt,[transform],in0.haakdt]
+  [out0.d_plan.pln_cd,[passthrough],in0.haaecd]
+  [out0.mcf.mbr_sk,[transform],]
+  [out0.mcf.employer_group_id,[passthrough],in0.haadcd]
+  [out0.d_member.account_id,[passthrough],in0.haaccd]
+  [out0.mcf.ntwk_sk,[transform],in0.hapmc2,
+     'lookup("phr_nwk").ntwk_sk']
+  [out0.mcf.pbr_id_st_cd,[passthrough],in0.haxeh6]
+  [out0.d_care_facility.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_care_facility.care_fac_id,[passthrough],in0.haapcd]
+  [out0.d_cag.carrier_id,[passthrough],in0.haaacd]
+  [out0.mcf.pbr_sk,[transform],in0.dxf_src_sys_id,
+     in0.haxeh6,
+     in0.haxch6,
+     in0.halghb,
+     'lookup("pres_alias_lkp").pbr_sk']
+  [out0.d_care_facility.carrier_id,[passthrough],in0.haaacd]
+  [out0.mcf.mcf_eff_date,[transform],in0.hacrda]
+  [out0.d_cag.account_id,[passthrough],in0.haaccd]
+  [out0.mcf.pbr_id,[passthrough],in0.halghb]
+  [out0.mcf.pln_sk,[transform],]
+  [out0.mcf.pln_qlfr_cd,[passthrough],in0.hapnc2]
+  [out0.mcf.mcf_seq_nbr,[passthrough],in0.hac4n1]
+  [out0.d_member.employer_group_id,[passthrough],in0.haadcd]
+  [out0.mcf.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.mcf.account_id,[passthrough],in0.haaccd]
+  [out0.mcf.care_fac_id,[passthrough],in0.haapcd]
+  [out0.mcf.mbr_id,[passthrough],in0.haabcd]
+  [out0.mcf.care_fac_sk,[transform],]
+  [out0.mcf.pbr_id_qlfr_cd,[passthrough],in0.haxch6]
+  [out0.mcf.pln_cd,[passthrough],in0.haaecd]
+  [out0.mcf.mcf_thru_date,[transform],in0.hacsda]
+  [out0.mcf.pln_eff_dt,[transform],in0.haakdt]
+  [out0.d_cag.employer_group_id,[passthrough],in0.haadcd]
+  [out0.mcf.phr_ntwrk_id,[passthrough],in0.hapmc2]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.mcf.mcf_status,'mcf.mcf_status',1,0]
+     [out0.d_plan.src_env_sk,'d_plan.src_env_sk',1,0]
+     [out0.d_member.carrier_id,'d_member.carrier_id',1,0]
+     [out0.mcf.cag_sk,'mcf.cag_sk',1,0]
+     [out0.d_member.mbr_id,'d_member.mbr_id',1,0]
+     [out0.mcf.carrier_id,'mcf.carrier_id',1,0]
+     [out0.d_plan.pln_eff_dt,'d_plan.pln_eff_dt',1,0]
+     [out0.d_plan.pln_cd,'d_plan.pln_cd',1,0]
+     [out0.mcf.mbr_sk,'mcf.mbr_sk',1,0]
+     [out0.mcf.employer_group_id,'mcf.employer_group_id',1,0]
+     [out0.d_member.account_id,'d_member.account_id',1,0]
+     [out0.mcf.ntwk_sk,'mcf.ntwk_sk',1,0]
+     [out0.mcf.pbr_id_st_cd,'mcf.pbr_id_st_cd',1,0]
+     [out0.d_care_facility.src_env_sk,'d_care_facility.src_env_sk',1,0]
+     [out0.d_care_facility.care_fac_id,'d_care_facility.care_fac_id',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.mcf.pbr_sk,'mcf.pbr_sk',1,0]
+     [out0.d_care_facility.carrier_id,'d_care_facility.carrier_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.mcf.mcf_eff_date,'mcf.mcf_eff_date',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.mcf.pbr_id,'mcf.pbr_id',1,0]
+     [out0.mcf.pln_sk,'mcf.pln_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.mcf.pln_qlfr_cd,'mcf.pln_qlfr_cd',1,0]
+     [out0.mcf.mcf_seq_nbr,'mcf.mcf_seq_nbr',1,0]
+     [out0.d_member.employer_group_id,'d_member.employer_group_id',1,0]
+     [out0.mcf.src_env_sk,'mcf.src_env_sk',1,0]
+     [out0.mcf.account_id,'mcf.account_id',1,0]
+     [out0.mcf.care_fac_id,'mcf.care_fac_id',1,0]
+     [out0.mcf.mbr_id,'mcf.mbr_id',1,0]
+     [out0.mcf.care_fac_sk,'mcf.care_fac_sk',1,0]
+     [out0.mcf.pbr_id_qlfr_cd,'mcf.pbr_id_qlfr_cd',1,0]
+     [out0.mcf.pln_cd,'mcf.pln_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.mcf.mcf_thru_date,'mcf.mcf_thru_date',1,0]
+     [out0.mcf.pln_eff_dt,'mcf.pln_eff_dt',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.mcf.phr_ntwrk_id,'mcf.phr_ntwrk_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.haaacd,'haaacd',4,4]
+     [in0.hacsda,'hacsda',1,1]
+     [in0.haapcd,'haapcd',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.haakdt,'haakdt',2,2]
+     [in0.hapnc2,'hapnc2',1,1]
+     [in0.haabcd,'haabcd',2,2]
+     [in0.hacrda,'hacrda',1,1]
+     [in0.hapmc2,'hapmc2',3,3]
+     [in0.dxf_src_sys_id,'DXF Source System ID',6,6]
+     ['lookup("phr_nwk").ntwk_sk','ntwk_sk',1,1]
+     [in0.habys2,'habys2',1,1]
+     [in0.haxch6,'haxch6',2,2]
+     ['lookup("pres_alias_lkp").pbr_sk','pbr_sk',1,1]
+     [in0.haxeh6,'haxeh6',2,2]
+     [in0.halghb,'halghb',2,2]
+     [in0.hac4n1,'hac4n1',1,1]
+     [in0.haaecd,'haaecd',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.haadcd,'haadcd',3,3]
+     [in0.haaccd,'haaccd',3,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) mcf_mbr_sk = -1;
+let decimal("\x01",0) mcf_cag_sk = -1;
+let decimal("\x01",0) mcf_care_fac_sk = -1;
+let decimal("\x01",0) mcf_pbr_sk;
+let decimal("\x01",0) mcf_pln_sk = -1;
+let decimal("\x01",0) mcf_ntwk_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=20) mcf_mbr_id = fail_if_error(in0.haabcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) mcf_carrier_id = fail_if_error(in0.haaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) mcf_account_id = fail_if_error(in0.haaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) mcf_employer_group_id = fail_if_error(in0.haadcd);
+let decimal("\x01",0) mcf_mcf_seq_nbr = fail_if_error(in0.hac4n1);
+let date("YYYYMMDD")("\x01") mcf_mcf_eff_date;
+let date("YYYYMMDD")("\x01") mcf_mcf_thru_date;
+let string("\x01",charset="iso-8859-15", maximum_length=1) mcf_mcf_status = fail_if_error(in0.habys2);
+let string("\x01",charset="iso-8859-15", maximum_length=15) mcf_pbr_id = fail_if_error(in0.halghb);
+let string("\x01",charset="iso-8859-15", maximum_length=2) mcf_pbr_id_qlfr_cd = fail_if_error(in0.haxch6);
+let string("\x01",charset="iso-8859-15", maximum_length=3) mcf_pbr_id_st_cd = fail_if_error(in0.haxeh6);
+let string("\x01",charset="iso-8859-15", maximum_length=6) mcf_phr_ntwrk_id = fail_if_error(in0.hapmc2);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mcf_care_fac_id = fail_if_error(in0.haapcd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) mcf_pln_cd = fail_if_error(in0.haaecd);
+let date("YYYYMMDD")("\x01") mcf_pln_eff_dt;
+let string("\x01",charset="iso-8859-15", maximum_length=10) mcf_pln_qlfr_cd = fail_if_error(in0.hapnc2);
+let decimal("\x01",0) mcf_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.haaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.haaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.haadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_care_facility_carrier_id = fail_if_error(in0.haaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_care_facility_care_fac_id = fail_if_error(in0.haapcd);
+let decimal("\x01",0) d_care_facility_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_carrier_id = fail_if_error(in0.haaacd);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_member_account_id = fail_if_error(in0.haaccd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_member_employer_group_id = fail_if_error(in0.haadcd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_member_mbr_id = fail_if_error(in0.haabcd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_plan_pln_cd = fail_if_error(in0.haaecd);
+let date("YYYYMMDD")("\x01") d_plan_pln_eff_dt;
+let decimal("\x01",0) d_plan_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_plan_pln_eff_dt=fail_if_error(date_check(in0.haakdt));
+
+/*   Default value   */
+mcf_ntwk_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_58454093_37e0_0(in0.hapmc2).ntwk_sk,-1));
+
+/*   Default value   */
+mcf_pbr_sk=fail_if_error(first_defined(lookup("pres_alias_lkp",in0.halghb,in0.haxch6,in0.haxeh6,in0.dxf_src_sys_id).pbr_sk,-1));
+
+/*   Default value   */
+mcf_mcf_eff_date=fail_if_error(date_check(in0.hacrda));
+
+/*   Default value   */
+mcf_mcf_thru_date=fail_if_error(date_check(in0.hacsda));
+
+/*   Default value   */
+mcf_pln_eff_dt=fail_if_error(date_check(in0.haakdt));
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.mcf.mbr_sk::mcf_mbr_sk;
+  out0.mcf.cag_sk::mcf_cag_sk;
+  out0.mcf.care_fac_sk::mcf_care_fac_sk;
+  out0.mcf.pbr_sk::mcf_pbr_sk;
+  out0.mcf.pln_sk::mcf_pln_sk;
+  out0.mcf.ntwk_sk::mcf_ntwk_sk;
+  out0.mcf.mbr_id::mcf_mbr_id;
+  out0.mcf.carrier_id::mcf_carrier_id;
+  out0.mcf.account_id::mcf_account_id;
+  out0.mcf.employer_group_id::mcf_employer_group_id;
+  out0.mcf.mcf_seq_nbr::mcf_mcf_seq_nbr;
+  out0.mcf.mcf_eff_date::mcf_mcf_eff_date;
+  out0.mcf.mcf_thru_date::mcf_mcf_thru_date;
+  out0.mcf.mcf_status::mcf_mcf_status;
+  out0.mcf.pbr_id::mcf_pbr_id;
+  out0.mcf.pbr_id_qlfr_cd::mcf_pbr_id_qlfr_cd;
+  out0.mcf.pbr_id_st_cd::mcf_pbr_id_st_cd;
+  out0.mcf.phr_ntwrk_id::mcf_phr_ntwrk_id;
+  out0.mcf.care_fac_id::mcf_care_fac_id;
+  out0.mcf.pln_cd::mcf_pln_cd;
+  out0.mcf.pln_eff_dt::mcf_pln_eff_dt;
+  out0.mcf.pln_qlfr_cd::mcf_pln_qlfr_cd;
+  out0.mcf.src_env_sk::mcf_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_care_facility.carrier_id::d_care_facility_carrier_id;
+  out0.d_care_facility.care_fac_id::d_care_facility_care_fac_id;
+  out0.d_care_facility.src_env_sk::d_care_facility_src_env_sk;
+  out0.d_member.carrier_id::d_member_carrier_id;
+  out0.d_member.account_id::d_member_account_id;
+  out0.d_member.employer_group_id::d_member_employer_group_id;
+  out0.d_member.mbr_id::d_member_mbr_id;
+  out0.d_plan.pln_cd::d_plan_pln_cd;
+  out0.d_plan.pln_eff_dt::d_plan_pln_eff_dt;
+  out0.d_plan.src_env_sk::d_plan_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,68 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/mbr_dtl_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/10  Gaurav Mirje            Modified the mbr file name and key
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+//constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS     parameter;
+
+cli_string_t out :: get_mbr_dtl_lkup_path() inline =
+begin
+  out  :: this_partition_path(PUB_CLINICAL_MFS +'/mbr_match_icff_mbr_dtl.lkp.gz');
+end;
+
+cli_string_t out :: get_mbr_dtl_indx_path() inline =
+begin
+  out :: this_partition_path( PUB_CLINICAL_MFS +'/mbr_match_icff_mbr_dtl.idx');
+end;
+
+/*****************/
+/* Member Lookup */
+/*****************/
+
+type mbr_dtl_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  mbr_dtl_t         RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {hash_key};
+  int keep_on_disk()           = 1;
+  int block_compressed()       = 1;
+  int cache()                  = 1;
+  int load_once()              = 1;
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let mbr_dtl_lkup_t GLKUP_MBR = allocate_with_nulls();
+
+mbr_dtl_lkup_t out :: load_mbr_dtl_lkup() inline =
+begin
+  if (GLKUP_MBR.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_mbr_dtl_lkup_path();
+    let indx_path  = get_mbr_dtl_indx_path();
+    let indx_found = file_information(indx_path).found;
+    
+    GLKUP_MBR = if (indx_found) lookup_load(lkup_path, indx_path)
+                else            lookup_load(lkup_path);
+  end;
+  
+  out :: GLKUP_MBR;
+end;
+
+mbr_t out :: get_cli_mbr_from_mbr_dtl(hash_key_t cagm_hash) inline =
+begin
+  let lkup = load_mbr_dtl_lkup();
+  out :: lookup(lkup, cagm_hash).mbr;
+end;

@@ -1,0 +1,38 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_member_supp_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/09/25  Aravind Sanku           Initial version
+ ******************************************************************************************************************************************/
+
+type rcmsip_cli_in_t =
+record
+        string("\x01", maximum_length=20) mbr_id   /*VARCHAR(20)*/;
+        string("\x01", maximum_length=30) carrier_id   /*VARCHAR(30)*/;
+        string("\x01", maximum_length=40) account_id   /*VARCHAR(40)*/;
+        string("\x01", maximum_length=30) employer_group_id   /*VARCHAR(30)*/;
+        decimal("\x01",0)  msi_seq_nbr  /*INTEGER*/;
+        string("\x01", maximum_length=1) msi_stat_cd = NULL("") /*CHAR(1)*/;
+        date("YYYYMMDD")("\x01")  msi_frm_dt =NULL("") /*DATE*/;
+        date("YYYYMMDD")("\x01")  msi_thru_dt =NULL("") /*DATE*/;
+        string("\x01", maximum_length=2) msi_suppl_id_type = NULL("") /*VARCHAR(2)*/;
+        string("\x01", maximum_length=20) msi_suppl_id = NULL("") /*VARCHAR(20)*/;
+        string("\x01", maximum_length=20) msi_free_txt = NULL("") /*VARCHAR(20)*/;
+       // decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+        string("\x01",charset="iso-8859-15", maximum_length=4)    legacy_src_env_id              /*VARCHAR(4) NOT NULL*/; 
+        datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+        string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+        decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+        datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+        string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+        decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+        string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+        string(1)  newline =  "\n";
+end;
+type rcmsip_cli_in_vec_t = rcmsip_cli_in_t[int];
+
+metadata type = rcmsip_cli_in_t;
+

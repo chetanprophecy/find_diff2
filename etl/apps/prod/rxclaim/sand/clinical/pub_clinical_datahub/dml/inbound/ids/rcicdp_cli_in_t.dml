@@ -1,0 +1,38 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/rcicdp_cli_in_t.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/09/25  Aravind Sanku           Initial version
+ ******************************************************************************************************************************************/
+
+type rcicdp_cli_in_t =
+record
+  // decimal("\x01",maximum_length=5) dxf_src_sys_id = 0;
+  // unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  // unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  // unsigned integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) icd9_cd_int /*VARCHAR(20) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20) icd9_cd_ext /*VARCHAR(20) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) icd9_cd_prefix /*CHAR(1) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=4) icd9_cd_core /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) icd9_cd_suffix /*VARCHAR(3) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) icd9_cd_nm /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) icd9_stat_cd /*CHAR(1) NOT NULL*/;
+  // decimal("\x01",0) src_env_sk = NULL("") /*BIGINT*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end;
+
+type rcicdp_cli_in_vec_t = rcicdp_cli_in_t[int];
+
+metadata type = rcicdp_cli_in_t;
+

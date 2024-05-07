@@ -1,0 +1,12 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rctc2p
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rctc2p                  \nclmprdfil_bk1 rctcdp                  dqp2nb,dqoinb,dqc4dt,dqs6st
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctc2p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctcdp')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||WHERE  RCTCDP.DQOINB = RCTC2P.QNOINB  and RCTCDP.DQP2NB = RCTC2P.QNP2NB and rctcdp.dqc4dt >= 20211101 AND rctcdp.dqc4dt <= 20211119  
+DO_LOOKUP||||1
+DO_QUERY_IN_PARALLEL||||1
+ABLOCAL_EXPR||||$[if((decimal("")) AI_MFS_ADHOC_DEPTH==4 ) \r\nstring_concat(' if (this_partition() == 0) ' , ' "MOD ( rctc2p.qnp2nb ,4 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rctc2p.qnp2nb ,4 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rctc2p.qnp2nb , 4 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rctc2p.qnp2nb , 4 ) = 3"\r\n   else "1 = 2" ' )\r\nelse if ( (decimal("")) AI_MFS_ADHOC_DEPTH==8  ) \r\n    string_concat(' if (this_partition() == 0) ' , ' "MOD ( rctc2p.qnp2nb ,8 ) = 0"\r\n   else if (this_partition() == 1) "MOD( rctc2p.qnp2nb ,8 ) = 1"\r\n   else if (this_partition() == 2) "MOD(rctc2p.qnp2nb , 8 ) = 2"\r\n   else if (this_partition() == 3) "MOD( rctc2p.qnp2nb , 8 ) = 3"\r\n   else if (this_partition() == 4) "MOD( rctc2p.qnp2nb ,8 ) = 4"\r\n   else if (this_partition() == 5) "MOD(rctc2p.qnp2nb , 8 ) = 5"\r\n   else if (this_partition() == 6) "MOD( rctc2p.qnp2nb , 8 ) = 6"\r\n   else if (this_partition() == 7) "MOD( rctc2p.qnp2nb , 8 ) = 7"\r\n   else "1 = 2" ' )\r\n\r\nelse "" ]

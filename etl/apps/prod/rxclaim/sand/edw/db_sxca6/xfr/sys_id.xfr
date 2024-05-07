@@ -1,0 +1,17 @@
+/* This file is used in PDL via AB_DML_DEFS. */
+
+out :: name_to_sys_id(sys_name) =
+begin
+  out :: name_to_sys_id_local(sys_name, "");
+end;
+
+
+decimal("")
+out :: name_to_sys_id_local(sys_name, ai_rel_loc) =
+begin
+  out :: switch ( sys_name )
+    case "abinitio/dmf_proto": 0; // Use this for sources used by applications without Sys IDs.
+    case "meta":               name_to_sys_id_local(ai_rel_loc, sys_name);  // For local "systems", use the name of the target
+    default: force_error("Unknown System Name: " + sys_name + " (" + ai_rel_loc + ")");
+  end;
+end;

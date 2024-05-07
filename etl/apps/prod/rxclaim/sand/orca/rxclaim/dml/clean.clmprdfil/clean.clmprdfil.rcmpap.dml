@@ -1,0 +1,83 @@
+record
+  little endian integer(8) dmf_src_dataset_id = 0; /*@ BizName:'DMF Source Dataset ID' BizComment:'The surrogate key for the DMF Process Log entry for this source.' @*/
+  little endian integer(4) dmf_src_rec_cnt = 0; /*@ BizName:'DMF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dmf_src_sys_id = 0; /*@ BizName:'DMF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dmf_src_file_name = ""; /*@ BizName:'DMF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=18)  deabcd /*CHAR(18) NOT NULL */ /*@
+BizName:"RCMPAP: MBR Member ID"
+ BizComment:"Identification assigned to the member."
+@*/;
+  string(unsigned integer(1),maximum_length=9)  deaacd /*CHAR(9) NOT NULL */ /*@
+BizName:"RCMPAP: CAR Carrier ID"
+ BizComment:"Type the nine character identifier of the owner of the accounts, groups, and members."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  deaccd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMPAP: ACC Account ID"
+ BizComment:"Type the unique identifier that is associated with this account throughout the RxCLAIM system.  15 alpha-numeric characters. :P. When *ALL is used during dynamic eligibility, the account will be identified by referencing the group specified in the group field to find the first corresponding Account."
+@*/;
+  string(unsigned integer(1),maximum_length=15)  deadcd /*CHAR(15) NOT NULL */ /*@
+BizName:"RCMPAP: GRP Group ID"
+ BizComment:"Type the unique identifier that is associated with the group throughout the RxClaim system.  15 alpha-numeric characters."
+@*/;
+  string(unsigned integer(1),maximum_length=11)  demmcd /*CHAR(11) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Prior Auth Number"
+ BizComment:"Prior authorization request number."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  dejzh6 /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Status"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  dei4st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Prior Auth Type"
+ BizComment:"It will be used to describe whether a GPI number or an NDC number will be used to determine what is defined under the 'Prior Authorization Request'. :P. Valid values for this field include: :PC. N = NDC :PC. G = GPI :PC. 1 = NDC List :PC. 2 = GPI List :PC. 3 = Compound NDC List :PC. 4 = Compound GPI List"
+@*/;
+  string(unsigned integer(1),maximum_length=14)  demlcd /*CHAR(14) NOT NULL */ /*@
+BizName:"RCMPAP: MPA NDC/GPI Code"
+ BizComment:"It will be used to determine NDC/GPI numbers."
+@*/;
+  little endian integer(4)  decwdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Current Dte Effective"
+ BizComment:""
+@*/;
+  little endian integer(4)  decxdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Current Dte Termed"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=60)  dejhtx /*CHAR(60) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Description"
+ BizComment:"It can be NDC or GPI description or combination of both."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  dei5st /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Agent"
+ BizComment:"It will describe the party initiating the authorization. :P. Valid values are: :PC. H = Help Desk :PC. P = Plan Sponsor :PC. O = Other :PC. *ALL Values :PC. A = Administration :PC. B = Benefits :PC. C = Clinical :PC. D = DMR Claims :PC. 1 = Client/Administration :PC. 2 = Client/Benefits :PC. 3 = Client/Clinical :PC. 4 = Client/DMR Claims :PC. 5 = Client/Help Desk :PC. 6 = Client/Other :PC. 7 = Client/Sponsor :P. This fields cannot be blank, any of the above conditions must be filled in."
+@*/;
+  string(unsigned integer(1),maximum_length=2)  dei6st /*CHAR(2) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Reason Code"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=25)  deabc2 /*CHAR(25) NOT NULL */ /*@
+BizName:"RCMPAP: INM Incident ID"
+ BizComment:""
+@*/;
+  string(unsigned integer(1),maximum_length=1)  deupds /*CHAR(1) NOT NULL */ /*@
+BizName:"RCMPAP: MPA Ignore PA Status"
+ BizComment:"Y - Yes :PC. Ignore the PA's Drug Status and use final drug status from plan. :P. N - No :PC. Use drug status from Prior Auth. :P. P - Plan - Ignore Reject Status :PC. Use final drug status from plan.  If final drug status is a reject status, then use the plan default drug status.  If plan default drug status is a reject status, then set drug status to "F" - Formulary. :P. I - Ign=N if Drug Sts=P; Ign=Y :PC. If the drug status from adjudicating = P-prior auth required, then reference the PA to determine the claim's drug status. Otherwise, ignore the PA's drug status and use drug status from adjudicating."
+@*/;
+  string(unsigned integer(1),maximum_length=1)  deeyap /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=10)  deadvn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMPAP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  little endian integer(4)  debmdt /*DECIMAL(7) NOT NULL */ /*@
+BizName:"RCMPAP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  little endian integer(4)  deabtm /*DECIMAL(6) NOT NULL */ /*@
+BizName:"RCMPAP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string(unsigned integer(1),maximum_length=10)  deaevn /*CHAR(10) NOT NULL */ /*@
+BizName:"RCMPAP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+end

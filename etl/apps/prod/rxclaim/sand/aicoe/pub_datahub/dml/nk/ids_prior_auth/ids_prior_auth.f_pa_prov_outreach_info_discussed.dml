@@ -1,0 +1,25 @@
+record
+  little endian integer(2)   dxf_src_sys_id =   0/*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/;
+  unsigned integer(8)     dxf_hk_part1 =     0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)     dxf_hk_part2 =     0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)     dxf_sk =     0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0)      pa_case_sk = NULL("") /*BIGINT NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01")      prov_outreach_rec_eff_ts = NULL("") /*TIMESTAMP(6) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=32)      prov_outreach_id = NULL("") /*VARCHAR(32) NOT NULL*/;
+  decimal("\x01",0)      prov_outreach_info_discussed_subscrpt_id = NULL("") /*INTEGER NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=25)      pa_case_id = NULL("") /*VARCHAR(25) NOT NULL*/;
+  decimal("\x01",0)      case_recent_snapshot_flg = NULL("") /*BYTEINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=64)      outreach_info_dtl = NULL("") /*VARCHAR(64)*/;
+  decimal("\x01",0)      src_env_sk = NULL("") /*BIGINT NOT NULL*/;
+  record
+    string("\x01",charset="iso-8859-15", maximum_length=25)  pa_case_id = NULL("") /*VARCHAR(25) NOT NULL*/;
+  end case;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_create_run_id =  0;
+  datetime("YYYYMMDDHH24MISS")("\x01")  ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)  ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20)  ids_updt_run_id =  0;
+  string("\x01", maximum_length=2)  ids_rec_stat_cd = NULL("");
+  string(1)  newline =  '\n';
+end

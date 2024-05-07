@@ -1,0 +1,56 @@
+type logical_ids_rxclaim_w_saving_acct_pay_dtl_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0)[int] cag_sk = [vector];
+  decimal("\x01",0)[int] mbr_sk = [vector];
+  decimal("\x01",0) claim_nbr = NULL("");
+  decimal("\x01",0) claim_seq_nbr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) reprocess_chk_nbr = NULL("");
+  decimal("\x01",0) reprocess_claim_seq = NULL("");
+  date("YYYYMMDD")("\x01") reprocess_posted_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) reprocess_pay_nbr = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) oth_payer_pay_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pay_phr_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) sav_acct_subtype_id = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) mbr_pay_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) pay_amt = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) reprocess_pat_pay_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) reprocess_user = NULL("");
+  date("YYYYMMDD")("\x01") reprocess_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) extract_flg = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) financial_fld_applied_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) payment_sys_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) rxclaim_src = NULL("");
+  decimal("\x01".2, maximum_length=17, sign_reserved) pos_rebate_amt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=19) sav_acct_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pos_id = NULL("");
+  decimal("\x01",0) adjustment_seq = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) adjustment_typ = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) pos_financial_field_applied = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) pos_financial_field_applied_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) src_insert_uid = NULL("");
+  date("YYYYMMDD")("\x01") src_insert_dt = NULL("");
+  datetime("HH24:MI:SS.NNNNNN")("\x01") src_insert_tm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) src_insert_prog_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) src_update_uid = NULL("");
+  date("YYYYMMDD")("\x01") src_update_dt = NULL("");
+  datetime("HH24:MI:SS.NNNNNN")("\x01") src_update_tm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) src_update_prog_nm = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1)[int] claim_stat_id = [vector];
+  decimal("\x01".2, maximum_length=11, sign_reserved) adj_prim_liab = NULL("");
+  decimal("\x01".2, maximum_length=11, sign_reserved) adj_sec_diff = NULL("");
+  decimal("\x01",0) claim_nbr_encrp = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_w_saving_acct_pay_dtl_t w_saving_apd  /*@ BizName:'w saving apd' */;
+end;

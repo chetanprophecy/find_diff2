@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcfasp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcfasp                  bsp2nb,bsoinb,bsreip,bsrfip,bsrgip,bsuooc,bsrhip,newline\nclmprdfil     rctcdp                  newline\nclmprdext     rcex1p
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcfasp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctcdp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdext', 'clmprdext.rcex1p')]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SQL||||SELECT rcfasp.bsp2nb\n     , rcfasp.bsoinb\n     , rcfasp.bsreip\n     , rcfasp.bsrfip\n     , rcfasp.bsrgip\n     , rcfasp.bsuooc\n     , rcfasp.bsrhip\n     ,rcex1p.facilityid\n     ,rcex1p.carrierid\n     ,rcex1p.accountid\n     ,rcex1p.groupid\n\t ,rcex1p.cardholder\n\t ,rcex1p.memberid\n\t ,rcex1p.claimsts\nFROM  clmprdfil.rcfasp rcfasp  \nINNER JOIN clmprdfil.rctcdp rctcdp on rcfasp.bsoinb=rctcdp.dqoinb and rcfasp.bsp2nb=rctcdp.dqp2nb\nINNER JOIN clmprdext.rcex1p rcex1p on rcfasp.bsp2nb=rcex1p.rxclaimnbr and rcfasp.bsoinb=rcex1p.clmseqnbr $WHERE_CLAUSE
+WHERE_CLAUSE||||$["WHERE DQC4DT >= " +  \r\nstring_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) +  " AND DQC4DT <= " + \r\nstring_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) ]
+ENABLE_DEFAULT_RULES||||True

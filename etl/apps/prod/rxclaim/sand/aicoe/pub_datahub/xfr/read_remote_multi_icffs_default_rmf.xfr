@@ -1,0 +1,17 @@
+type input_type = ${DATA_SOURCE_DML_EXPANDED};
+
+/*extract filename from input record*/
+filename :: get_filename( in) =
+begin
+  
+  let dt_rec = decode_date_record( in.day);
+  
+  filename :: string_concat( this_partition_path( "${DATA_PATH}"), "/${FILE_SUBDIR}", "/${FILE_MASK}", (string(""))(date("YYYYMMDD")) in.day, ".dat.gz");
+end;
+
+out::reformat( read, filename, in) =
+begin
+
+  out.* :: read.*;
+  out.* :1: in.*;
+end;

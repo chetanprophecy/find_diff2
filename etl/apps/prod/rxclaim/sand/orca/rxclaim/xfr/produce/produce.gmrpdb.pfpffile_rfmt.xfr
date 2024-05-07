@@ -1,0 +1,147 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+out0::Untitled_Ruleset_documentation(in)=
+begin
+
+out0.pdpcarrier::depends_on();
+
+
+out0.pdpplan::depends_on();
+
+
+out0.contractid::depends_on(
+         in.contract
+         );
+
+
+out0.pdpdate::depends_on();
+
+
+out0.cmspstdte::depends_on(
+         in.cmspostdate
+         );
+
+
+out0.pffileid::depends_on();
+
+
+out0.gpinum::depends_on();
+
+
+out0.ndcid::depends_on(
+         in.ndc
+         );
+
+
+out0.pdpplaneff::depends_on();
+
+
+out0.pdpgroup::depends_on();
+
+
+out0.pfrecord::depends_on(
+         in.priceid,
+         in.ndc,
+         in.hasceilingcost,
+         in.daysupply,
+         in.ismail,
+         in.unitcost,
+         in.contract
+         );
+
+
+out0.planyear::depends_on(
+         in.planyear
+         );
+
+
+out0.pbpid::depends_on();
+
+
+out0.pdpaccount::depends_on();
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Untitled_Ruleset_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.pdpcarrier,'pdpcarrier',1,0]
+     [out0.pdpplan,'pdpplan',1,0]
+     [out0.contractid,'contractid',1,0]
+     [out0.pdpdate,'pdpdate',1,0]
+     [out0.cmspstdte,'cmspstdte',1,0]
+     [out0.pffileid,'pffileid',1,0]
+     [out0.gpinum,'gpinum',1,0]
+     [out0.ndcid,'ndcid',1,0]
+     [out0.pdpplaneff,'pdpplaneff',1,0]
+     [out0.pdpgroup,'pdpgroup',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.newline,'newline',1,0]
+     [out0.pfrecord,'pfrecord',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.planyear,'planyear',1,0]
+     [out0.pbpid,'pbpid',1,0]
+     [out0.pdpaccount,'pdpaccount',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.ndc,'ndc',2,2]
+     [in0.priceid,'priceid',1,1]
+     [in0.planyear,'planyear',1,1]
+     [in0.hasceilingcost,'hasceilingcost',1,1]
+     [in0.ismail,'ismail',1,1]
+     [in0.daysupply,'daysupply',1,1]
+     [in0.cmspostdate,'cmspostdate',1,1]
+     [in0.unitcost,'unitcost',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.contract,'contract',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.newline,'newline',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0, maximum_length=9, sign_reserved) cmspstdte = fail_if_error(((decimal("\x01"))(string(''))(date("YYYYMMDD"))(date("YYYY-MM-DD"))in0.cmspostdate));
+let string("\x01", maximum_length=4) planyear = fail_if_error(in0.planyear);
+let string("\x01", maximum_length=9) pdpcarrier = "";
+let string("\x01", maximum_length=15) pdpaccount = "";
+let string("\x01", maximum_length=15) pdpgroup = "";
+let string("\x01", maximum_length=10) pdpplan = "";
+let decimal("\x01",0, maximum_length=8, sign_reserved) pdpplaneff = fail_if_error(((decimal("\x01"))(string(''))"0.0"));
+let string("\x01", maximum_length=5) contractid = fail_if_error(in0.contract);
+let string("\x01", maximum_length=3) pbpid = "";
+let string("\x01", maximum_length=11) ndcid = fail_if_error(in0.ndc);
+let string("\x01", maximum_length=14) gpinum = "";
+let decimal("\x01",0, maximum_length=8, sign_reserved) pdpdate = fail_if_error(((decimal("\x01"))(string(''))"0.00"));
+let string("\x01", maximum_length=100) pfrecord = fail_if_error(string_concat(in0.contract,in0.priceid,in0.ndc,in0.daysupply,in0.ismail,string_lpad(((string(""))(decimal("\x01"))(in0.unitcost*10000)),12,"0"),in0.hasceilingcost));
+let string("\x01", maximum_length=10) pffileid = "";
+
+
+
+  out0.cmspstdte::cmspstdte;
+  out0.planyear::planyear;
+  out0.pdpcarrier::pdpcarrier;
+  out0.pdpaccount::pdpaccount;
+  out0.pdpgroup::pdpgroup;
+  out0.pdpplan::pdpplan;
+  out0.pdpplaneff::pdpplaneff;
+  out0.contractid::contractid;
+  out0.pbpid::pbpid;
+  out0.ndcid::ndcid;
+  out0.gpinum::gpinum;
+  out0.pdpdate::pdpdate;
+  out0.pfrecord::pfrecord;
+  out0.pffileid::pffileid;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,34 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  decimal("\x01",0)  contract_run_id /*BIGINT NOT NULL*/;
+  string("\x01", maximum_length=15)  contract_id /*CHAR(15) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")("\x01")  last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string("\x01", maximum_length=16)  last_upd_userid /*VARCHAR(16) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  rebate_period_begin_dt /*DATE NOT NULL*/;
+  string("\x01", maximum_length=15)  batch_id /*CHAR(15) NOT NULL*/;
+  date("YYYY-MM-DD")("\x01")  rebate_period_end_dt /*DATE NOT NULL*/;
+  decimal("\x01",0)  internal_batch_no /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=1)  batch_type_cd /*CHAR(1) NOT NULL*/;
+  decimal("\x01".2, maximum_length=14, sign_reserved)  batch_req_rebate_amt /*DECIMAL(12,2) NOT NULL*/;
+  string("\x01", maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  decimal("\x01",0)  perf_schedule_internal_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  bonus_schedule_internal_id = NULL("") /*INTEGER*/;
+  decimal("\x01",0)  rebate_elig_claim_count = NULL("") /*INTEGER*/;
+  decimal("\x01".3, maximum_length=16, sign_reserved)  rebate_elig_qty_dispensed = NULL("") /*DECIMAL(14,3)*/;
+  decimal("\x01".2, maximum_length=14, sign_reserved)  calculated_admin_fee_amt = NULL("") /*DECIMAL(12,2)*/;
+  decimal("\x01",0)  internal_contract_id /*INTEGER NOT NULL*/;
+  string("\x01", maximum_length=15)  pico_contract_id = NULL("") /*CHAR(15)*/;
+  string("\x01", maximum_length=1)  aggregation_level_cd /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=15)  pmo_contract_id = NULL("") /*CHAR(15)*/;
+  decimal("\x01".5, maximum_length=16, sign_reserved)  contract_national_avg_amt = NULL("") /*DECIMAL(14,5)*/;
+  decimal("\x01".5, maximum_length=16, sign_reserved)  perf_sched_national_avg_amt = NULL("") /*DECIMAL(14,5)*/;
+  decimal("\x01".5, maximum_length=16, sign_reserved)  bonus_sched_national_avg_amt = NULL("") /*DECIMAL(14,5)*/;
+  string("\x01", maximum_length=1)  member_subsidy_level_crit_ind = NULL("") /*CHAR(1)*/;
+  string("\x01", maximum_length=1)  ms_calc_basis_cd = NULL("") /*CHAR(1)*/;
+  string("\x01", maximum_length=1)  ms_source_cd = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0)  internal_master_contract_id = NULL("") /*INTEGER*/;
+  string(unsigned integer(1),maximum_length=1)  newline =  "\n";
+end

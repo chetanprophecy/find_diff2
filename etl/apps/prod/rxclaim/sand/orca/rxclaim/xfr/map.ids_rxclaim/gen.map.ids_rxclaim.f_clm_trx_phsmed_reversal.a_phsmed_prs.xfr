@@ -1,0 +1,213 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_6_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_prescriber_specialty_lkp   */
+out0::bzt_6_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=6) pbr_spclty_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) pbr_spclty_desc = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_prescriber_specialty_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_8_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_adjud_lkp   */
+out0::bzt_8_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=6) pbr_spclty_cd = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_adjud_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_7_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_prescriber_lkp   */
+out0::bzt_7_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=10) pbr_npi_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) pbr_dea_cd = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prescriber_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_9_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_date_lkp   */
+out0::bzt_9_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("");
+  decimal("\x01",0) cal_yr_mnth_id = NULL(""), cal_yr_qtr_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_date_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_5_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_submarket_id_lkp   */
+out0::bzt_5_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=9) carrier_id = NULL("");
+  decimal("\x01",0) submarket_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_submarket_id_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.a_phsmed_prs.submarket_id,[transform],in0.orig_carrier_id,
+     'lookup("l_submarket_id_lkp").submarket_id']
+  [out0.a_phsmed_prs.pbr_spclty_desc,[transform],in0.pbr_spclty_sk,
+     in0.dxf_sk,
+     'lookup("l_prescriber_specialty_lkp").pbr_spclty_desc']
+  [out0.a_phsmed_prs.pbr_npi_id,[transform],in0.pbr_sk,
+     in0.dxf_sk,
+     'lookup("d_prescriber_lkp").pbr_npi_id']
+  [out0.a_phsmed_prs.carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.a_phsmed_prs.pbr_dea_cd,[transform],in0.pbr_sk,
+     'lookup("d_prescriber_lkp").pbr_dea_cd']
+  [out0.a_phsmed_prs.pbr_spclty_cd,[transform],in0.pbr_adjud_sk,
+     in0.dxf_sk,
+     'lookup("d_prescriber_adjud_lkp").pbr_spclty_cd']
+  [out0.a_phsmed_prs.cal_yr_qtr_id,[transform],in0.sbm_dt,
+     'lookup("d_date_lkp").cal_yr_qtr_id']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.a_phsmed_prs.submarket_id,'a_phsmed_prs.submarket_id',1,0]
+     [out0.a_phsmed_prs.mbr_sk,'a_phsmed_prs.mbr_sk',1,0]
+     [out0.a_phsmed_prs.pbr_spclty_desc,'a_phsmed_prs.pbr_spclty_desc',1,0]
+     [out0.a_phsmed_prs.pbr_sk,'a_phsmed_prs.pbr_sk',1,0]
+     [out0.a_phsmed_prs.dxf_sk,'a_phsmed_prs.dxf_sk',1,0]
+     [out0.a_phsmed_prs.pbr_npi_id,'a_phsmed_prs.pbr_npi_id',1,0]
+     [out0.a_phsmed_prs.dxf_hk_part1,'a_phsmed_prs.dxf_hk_part1',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.a_phsmed_prs.care_fac_adjud_sk,'a_phsmed_prs.care_fac_adjud_sk',1,0]
+     [out0.a_phsmed_prs.dxf_hk_part2,'a_phsmed_prs.dxf_hk_part2',1,0]
+     [out0.a_phsmed_prs.carrier_id,'a_phsmed_prs.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.a_phsmed_prs.pbr_dea_cd,'a_phsmed_prs.pbr_dea_cd',1,0]
+     [out0.a_phsmed_prs.src_env_sk,'a_phsmed_prs.src_env_sk',1,0]
+     [out0.a_phsmed_prs.pbr_spclty_cd,'a_phsmed_prs.pbr_spclty_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.a_phsmed_prs.cal_yr_qtr_id,'a_phsmed_prs.cal_yr_qtr_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.pbr_adjud_sk,'pbr_adjud_sk',1,1]
+     ['lookup("d_prescriber_lkp").pbr_dea_cd','pbr_dea_cd',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.care_fac_adjud_sk,'care_fac_adjud_sk',2,2]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.mbr_sk,'mbr_sk',1,1]
+     ['lookup("d_prescriber_adjud_lkp").pbr_spclty_cd','pbr_spclty_cd',1,1]
+     ['lookup("d_prescriber_lkp").pbr_npi_id','pbr_npi_id',1,1]
+     [in0.dxf_sk,'dxf_sk',4,4]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     ['lookup("l_prescriber_specialty_lkp").pbr_spclty_desc','pbr_spclty_desc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("l_submarket_id_lkp").submarket_id','submarket_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("d_date_lkp").cal_yr_qtr_id','cal_yr_qtr_id',1,1]
+     [in0.pbr_sk,'pbr_sk',3,3]
+     [in0.pbr_spclty_sk,'pbr_spclty_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) a_phsmed_prs_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) a_phsmed_prs_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) a_phsmed_prs_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) a_phsmed_prs_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_phsmed_prs_submarket_id;
+let decimal("\x01",0) a_phsmed_prs_care_fac_adjud_sk = fail_if_error(in0.care_fac_adjud_sk);
+let decimal("\x01",0) a_phsmed_prs_cal_yr_qtr_id;
+let decimal("\x01",0) a_phsmed_prs_pbr_sk = fail_if_error(in0.pbr_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_phsmed_prs_pbr_npi_id;
+let string("\x01",charset="iso-8859-15", maximum_length=7) a_phsmed_prs_pbr_dea_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=6) a_phsmed_prs_pbr_spclty_cd;
+let string("\x01",charset="iso-8859-15", maximum_length=50) a_phsmed_prs_pbr_spclty_desc;
+let decimal("\x01",0) a_phsmed_prs_mbr_sk = fail_if_error(in0.mbr_sk);
+let decimal("\x01",0) a_phsmed_prs_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+a_phsmed_prs_submarket_id=fail_if_error(bzt_5_6c54cc0a_58d0f5d0_636b_2(in0.orig_carrier_id).submarket_id);
+
+/*   Default value   */
+a_phsmed_prs_pbr_spclty_desc=fail_if_error(bzt_6_6c54cc0a_58d0f5d0_636b_2(in0.pbr_spclty_sk).pbr_spclty_desc);
+
+/*   Default value   */
+a_phsmed_prs_pbr_npi_id=fail_if_error(bzt_7_6c54cc0a_58d0f5d0_636b_2(in0.pbr_sk).pbr_npi_id);
+
+/*   Default value   */
+a_phsmed_prs_pbr_dea_cd=fail_if_error(bzt_7_6c54cc0a_58d0f5d0_636b_2(in0.pbr_sk).pbr_dea_cd);
+
+/*   Default value   */
+a_phsmed_prs_pbr_spclty_cd=fail_if_error(bzt_8_6c54cc0a_58d0f5d0_636b_2(in0.pbr_adjud_sk).pbr_spclty_cd);
+
+/*   Default value   */
+a_phsmed_prs_cal_yr_qtr_id=fail_if_error(bzt_9_6c54cc0a_58d0f5d0_636b_2((decimal(""))(string(""))string_substring(str=in0.sbm_dt , start_index= 1, length=6 )
+).cal_yr_qtr_id);
+
+  out0.a_phsmed_prs.dxf_hk_part1::a_phsmed_prs_dxf_hk_part1;
+  out0.a_phsmed_prs.dxf_hk_part2::a_phsmed_prs_dxf_hk_part2;
+  out0.a_phsmed_prs.dxf_sk::a_phsmed_prs_dxf_sk;
+  out0.a_phsmed_prs.carrier_id::a_phsmed_prs_carrier_id;
+  out0.a_phsmed_prs.submarket_id::a_phsmed_prs_submarket_id;
+  out0.a_phsmed_prs.care_fac_adjud_sk::a_phsmed_prs_care_fac_adjud_sk;
+  out0.a_phsmed_prs.cal_yr_qtr_id::a_phsmed_prs_cal_yr_qtr_id;
+  out0.a_phsmed_prs.pbr_sk::a_phsmed_prs_pbr_sk;
+  out0.a_phsmed_prs.pbr_npi_id::a_phsmed_prs_pbr_npi_id;
+  out0.a_phsmed_prs.pbr_dea_cd::a_phsmed_prs_pbr_dea_cd;
+  out0.a_phsmed_prs.pbr_spclty_cd::a_phsmed_prs_pbr_spclty_cd;
+  out0.a_phsmed_prs.pbr_spclty_desc::a_phsmed_prs_pbr_spclty_desc;
+  out0.a_phsmed_prs.mbr_sk::a_phsmed_prs_mbr_sk;
+  out0.a_phsmed_prs.src_env_sk::a_phsmed_prs_src_env_sk;
+  out0.*::in0.*;
+
+end;

@@ -1,0 +1,493 @@
+<AppConfTempl name="Onboard Table" version="5" execution_model_version="2" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage><![CDATA[include "~$PUB_DB_XFR/db_list.xfr";
+
+out :: check_appconf(appconf_name) =
+begin
+  out :: if(length_of(string_split(appconf_name, ".")) not member [vector 3,4] or 
+            string_split(appconf_name, ".")[0] != "onboard" or
+            string_split(appconf_name, ".")[1] not member [vector 'source', 'target'])
+             "The application configuration must be named as 
+             onboard.<i>source/target</i>.<i>db_project</i> and 
+             onboard.<i>source/target</i>.<i>db_project</i>.<i>table name</i>"
+         else "";
+end;]]></TemplateExpressionPackage>
+  <Metadata>
+    <Project name="proj">
+      <Pset name="setup_db" prototype_path="${AI_PSET}/setup.db.interim.pset">
+        <PdlExpression name="AI_SOURCE_DB_LIST" expression="$AI_SOURCE_DB_LIST"/>
+        <PdlExpression name="AI_TARGET_DB_LIST" expression="$AI_TARGET_DB_LIST"/>
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+      <Pset name="create_ids_dmls" prototype_path="${AI_PSET}/create_ids_dmls.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+      </Pset>
+    </Project>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <ListVariable name="db_info_vec" type="compound">
+        <Variable name="logical_schema" type="string"/>
+        <Variable name="physical_schema" type="string"/>
+        <Variable name="dml_directory" type="string"/>
+        <Variable name="dbms_type" type="string"/>
+        <Variable name="parameter_prefix" type="string"/>
+        <Variable name="parameterized_dml_directory" type="string"/>
+        <Variable name="dbc_file" type="string"/>
+        <Variable name="pset_directory" type="string"/>
+        <Variable name="run_directory" type="string"/>
+        <Variable name="xfr_directory" type="string"/>
+        <Variable name="serial_layout" type="string"/>
+        <Variable name="mfs_layout" type="string"/>
+        <Variable name="mfs_local_layout" type="string"/>
+      </ListVariable>
+      <Variable name="dataset_type" type="string"/>
+      <ListVariable name="avail_dbms_type" type="string"/>
+      <Variable name="dbms_type" type="string"/>
+      <Variable name="logical_schema" type="string"/>
+      <ListVariable name="avail_logical_schema" type="string"/>
+      <Variable name="target_entity" type="string"/>
+      <Variable name="db_project" type="string"/>
+      <Variable name="do_create_ids_dml" type="boolean"/>
+      <Variable name="integration_private_project" type="string"/>
+      <Variable name="table_list" type="string"/>
+      <Variable name="common_table_list" type="string"/>
+      <Variable name="is_common" type="boolean"/>
+    </Variables>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[2]</SourceValue>
+      <TargetValue reference="vars.db_project"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[3]</SourceValue>
+      <TargetValue reference="vars.target_entity"/>
+      <Condition is_expression="true">length_of(string_split(built_in, ".")) == 4</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/setup/setup.db." + vars.db_project + "." + vars.target_entity + ".pset"</SourceValue>
+      <TargetValue reference="proj.setup_db" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and length_of(string_split(built_in, ".")) == 4</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/setup/setup.db." + vars.db_project + ".pset"</SourceValue>
+      <TargetValue reference="proj.setup_db" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and length_of(string_split(built_in, ".")) == 3</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.do_create_ids_dml)
+"pset/create_ids_dml/create_ids_dml." + vars.integration_private_project + "." + vars.target_entity + ".pset"</SourceValue>
+      <TargetValue reference="proj.create_ids_dmls" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and length_of(string_split(built_in, ".")) == 4</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.do_create_ids_dml)
+"pset/create_ids_dml/create_ids_dml." + vars.integration_private_project + ".pset"</SourceValue>
+      <TargetValue reference="proj.create_ids_dmls" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and length_of(string_split(built_in, ".")) == 3</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.dataset_type == "source")
+get_db_info_vec_db_project(proj.setup_db.AI_SOURCE_DB_LIST, string_upcase(vars.db_project), "", "")
+else
+get_db_info_vec_db_project(proj.setup_db.AI_TARGET_DB_LIST, string_upcase(vars.db_project), "", "")</SourceValue>
+      <TargetValue reference="vars.db_info_vec"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">string_split(built_in, ".")[1]</SourceValue>
+      <TargetValue reference="vars.dataset_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let info in vars.db_info_vec) : info.dbms_type)</SourceValue>
+      <TargetValue reference="vars.avail_dbms_type"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let info in vars.db_info_vec) : if(info.dbms_type == vars.dbms_type) info.logical_schema)</SourceValue>
+      <TargetValue reference="vars.avail_logical_schema"/>
+      <Condition is_expression="true">vars.dbms_type != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vars.avail_dbms_type[0]</SourceValue>
+      <TargetValue reference="vars.dbms_type"/>
+      <Condition is_expression="true">length_of(vars.avail_dbms_type) == 1</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vars.avail_logical_schema[0]</SourceValue>
+      <TargetValue reference="vars.logical_schema"/>
+      <Condition is_expression="true">length_of(vars.avail_logical_schema) == 1</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.dataset_type == "source")
+"$[
+re_split_no_empty(get_matching_db_list_db_project_dbms_logical(AI_SOURCE_DB_LIST, '" + vars.dbms_type + "', '" + string_upcase(vars.db_project) + "', '" + vars.logical_schema + "'), '[\\r\\n]+')[0]
+]"
+else
+"$[
+begin
+let string('')[int] lines = re_split_no_empty(get_matching_db_list_db_project_dbms(AI_TARGET_DB_LIST, '" + vars.dbms_type + "', '" + string_upcase(vars.db_project) + "'), '[\\r\\n]+');
+let string('')[int] line1 = re_split_no_empty(lines[0], '[ \\t]+');
+let string('')[int] line2 = re_split_no_empty(lines[1], '[ \\t]+');
+line2[0] = line1[0] + '_stg';
+line1[5] = line1[2] + '/../db/' + line1[5];
+line2[5] = line2[2] + '/../db/' + line2[5];
+lines[0] = string_join(line1, '\\t');
+lines[1] = string_join(line2, '\\t');
+result :: string_join([vector lines[0], lines[1]], '\\r\\n');
+end
+]"</SourceValue>
+      <TargetValue reference="proj.setup_db.SETUP_DB_LIST"/>
+      <Condition>vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(string_split(built_in, ".")) == 3) vars.table_list else vars.target_entity</SourceValue>
+      <TargetValue reference="proj.setup_db.SETUP_TABLE_LIST"/>
+      <Condition>vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.integration_private_project"/>
+      <TargetValue reference="proj.create_ids_dmls.PROJECT_NM"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and vars.integration_private_project != ''</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(string_split(built_in, ".")) == 3) vars.table_list else vars.target_entity</SourceValue>
+      <TargetValue reference="proj.create_ids_dmls.TABLE_LIST"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and vars.integration_private_project != ''</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"$[
+re_split_no_empty(get_matching_db_list_db_project_dbms(AI_TARGET_DB_LIST, '" + vars.dbms_type + "', '" + string_upcase(vars.db_project) + "'), '[\\r\\n]+')[0];
+]"</SourceValue>
+      <TargetValue reference="proj.create_ids_dmls.SETUP_DB_INFO"/>
+      <Condition>vars.errors == "" and vars.do_create_ids_dml == 1</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.common_table_list"/>
+      <TargetValue reference="proj.create_ids_dmls.COMMON_TABLE_LIST"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and vars.integration_private_project != '' and length_of(string_split(built_in, ".")) == 3</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.is_common) vars.target_entity else ""</SourceValue>
+      <TargetValue reference="proj.create_ids_dmls.COMMON_TABLE_LIST"/>
+      <Condition is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and vars.integration_private_project != '' and length_of(string_split(built_in, ".")) == 4</Condition>
+    </Assignment>
+  </AutomaticAssignments>
+  <InitialAssignments/>
+  <UserInterface>
+    <Canvas>
+      <Label>Main</Label>
+      <Column>
+        <Box>
+          <Label>Appconf Naming Errors</Label>
+          <UIElements>
+            <TextLabel>
+              <Label reference="vars.errors"/>
+            </TextLabel>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label is_expression="true">string_upcase(string_substring(vars.dataset_type, 1, 1)) + 
+string_lrtrim(string_substring(vars.dataset_type, 2, string_length(vars.dataset_type))) + 
+" Information"</Label>
+          <UIElements>
+            <Box>
+              <Label>DB Project</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="vars.db_project"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <UIElements/>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextArea>
+              <Label>Table List</Label>
+              <Description>This list should be newline delimited</Description>
+              <Visible is_expression="true">length_of(string_split(built_in, ".")) == 3</Visible>
+              <SourceTargetValue reference="vars.table_list"/>
+            </TextArea>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible is_expression="true">length_of(string_split(built_in, ".")) == 3</Visible>
+            </Spacer>
+            <ComboBox>
+              <Choices reference="vars.avail_dbms_type"/>
+              <Label>Pick DBMS Type</Label>
+              <SourceTargetValue reference="vars.dbms_type"/>
+              <Visible is_expression="true">length_of(vars.avail_dbms_type) &gt; 1</Visible>
+            </ComboBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible is_expression="true">length_of(vars.avail_dbms_type) &gt; 1</Visible>
+            </Spacer>
+            <ComboBox>
+              <Choices reference="vars.avail_logical_schema"/>
+              <Label>Pick Logical Schema</Label>
+              <SourceTargetValue reference="vars.logical_schema"/>
+              <Visible is_expression="true">length_of(vars.avail_logical_schema) &gt; 1 and vars.dataset_type == "source"</Visible>
+            </ComboBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+              <Visible is_expression="true">length_of(vars.avail_logical_schema) &gt; 1 and vars.dataset_type == "source"</Visible>
+            </Spacer>
+            <TextInput>
+              <Label>Overwrite parameter prefix for PSET directory?</Label>
+              <SourceTargetValue reference="proj.setup_db.PARAMETER_PREFIX"/>
+            </TextInput>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <CheckBox>
+              <Label>Check-In Required Files</Label>
+              <SourceTargetValue reference="proj.setup_db.DO_CHECK_IN"/>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+            </CheckBox>
+            <TextLabel>
+              <Label>&lt;b&gt;&lt;font color='#ff0000'&gt;Caution: Verify new objects in local sandbox before doing check-in.&lt;/font&gt;&lt;/b&gt;</Label>
+            </TextLabel>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Configure IDS dataset</Label>
+          <UIElements>
+            <CheckBox>
+              <Label>Create IDS DML</Label>
+              <SourceTargetValue reference="vars.do_create_ids_dml"/>
+            </CheckBox>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <Box>
+              <Label>IDS subject area (Example- rxclaim, bp, rebates etc.)</Label>
+              <UIElements>
+                <TextInput>
+                  <Label/>
+                  <SourceTargetValue reference="vars.integration_private_project"/>
+                </TextInput>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible reference="vars.do_create_ids_dml"/>
+            </Box>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <TextArea>
+              <Label>Common Table List</Label>
+              <Description>This list should be newline delimited</Description>
+              <Visible is_expression="true">length_of(string_split(built_in, ".")) == 3 and vars.do_create_ids_dml</Visible>
+              <SourceTargetValue reference="vars.common_table_list"/>
+            </TextArea>
+            <CheckBox>
+              <Label>Is Common</Label>
+              <Visible is_expression="true">length_of(string_split(built_in, ".")) == 4 and vars.do_create_ids_dml</Visible>
+              <SourceTargetValue reference="vars.is_common"/>
+            </CheckBox>
+          </UIElements>
+          <Style>targetEntity</Style>
+          <Visible is_expression="true">vars.errors == "" and vars.dataset_type == "target"</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Execution</Label>
+          <UIElements>
+            <ExecuteButton>
+              <Label is_expression="true">"Setup " +
+string_upcase(string_substring(vars.dataset_type, 1,1,)) + 
+string_lrtrim(string_substring(vars.dataset_type, 2, string_length(vars.dataset_type)))</Label>
+              <SourceValue reference="proj.setup_db"/>
+            </ExecuteButton>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <ExecuteButton>
+              <Label>Create IDS DML</Label>
+              <SourceValue reference="proj.create_ids_dmls"/>
+              <Visible is_expression="true">vars.dataset_type == "target" and vars.do_create_ids_dml == 1</Visible>
+            </ExecuteButton>
+          </UIElements>
+          <Style>executable</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Setup DB Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">proj.setup_db.PROJECT_DIR + "/" + proj.setup_db.relative_path</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="proj.setup_db" property="contents"/>
+        </TextLabel>
+      </UIElements>
+      <Visible is_expression="true">vars.errors == ""</Visible>
+    </Tab>
+    <Tab>
+      <Label>Create IDS DML Pset</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">proj.create_ids_dmls.PROJECT_DIR + "/" + proj.create_ids_dmls.relative_path</Label>
+        </TextLabel>
+        <TextLabel>
+          <Label reference="proj.create_ids_dmls" property="contents"/>
+        </TextLabel>
+      </UIElements>
+      <Visible is_expression="true">vars.errors == "" and vars.do_create_ids_dml and vars.dataset_type == "target" and vars.integration_private_project != ''</Visible>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">'&lt;font size="14 pt"&gt;&lt;b&gt;Source:&lt;/b&gt;\n' +
+'
+Before we begin creating the application configurations for any table, we need to define the source layout with which data will be read and target layout using which data will be loaded.
+
+Common DB projects are always associated with database and one source. Applications should use different common db projects for different sources like if you are unloading from MySQL and i-series; you need to have different db projects. Similarly, if you have different database to load in Netezza; you should use different db project. Please discuss with AICOE, if you have requirement to load into two different databases using the same application.
+
+Onboard the source and targets in your private sandbox. Distribution sandbox should only be used when the target common sandbox is not included in your private sandbox.
+
+The onboarding process will carry out 3 tasks for each table in one go:
+1.	Create Source or Target DML
+Without first defining source DML, you cant use the get templates, similarly without target layouts you will not be able to load data to database or publish file.
+
+2.	Create stage tables (Only for target tables)
+You need to create stage tables for database loading (_i &amp; _u tables) in all the environments. These tables can be created using the table psets created in this process instead or running m_db commands which are strictly prohibited in higher environments.
+
+3.	Create IDS DMLs (Only for target tables)
+Once you have target DML, you can create IDS DML, IDS DML is bit different wrt to target DML as it also contains some DXF audit and header fields necessary for framework processing and all the columns in IDS should be nullable irrespective to its database counterpart. 
+
+Below are the details for its usage:
+
+1.	Naming convention
+The template can be used in 2 ways by the below naming conventions:
+
+a.	Onboarding of a single table:
+onboard.target.parameter_prefix.table_name
+onboard.source.parameter_prefix.table_name
+
+E.g. onboard.target.db_pas.f_pa_case_compnd_drug_ingred
+
+
+b.	Onboarding of multiple tables:
+onboard.target.parameter_prefix
+onboard.source.parameter_prefix
+
+Eg. onboard.target.db_rxclaim
+
+                         Here parameter prefix is the prefix associated with the entry for a particular logical/physical schema in AI_SOURCE_DB_LIST/AI_TARGET_DB_LIST.
+                E.g.
+rxclaim     ORX_IDW_DM_DEV_CLM.admin         /etl/devel/appconf.distribution_idw_direct/idw_direct/users/mjindal2/orca/db_rxclaim/dml         netezza        DB_RXCLAIM      netezza.rxclaim.main.dbc
+admin                           ORX_IDW_DM_ETL_DEV_CLM.admin      /etl/devel/appconf.distribution_idw_direct/idw_direct/users/mjindal2/orca/db_rxclaim/dml         netezza        DB_RXCLAIM      netezza.rxclaim.stg.dbc
+admin                           ORX_IDW_DM_DEV_CLM.admin             /etl/devel/appconf.distribution_idw_direct/idw_direct/users/mjindal2/orca/db_rxclaim/dml         netezza        DB_RXCLAIM      netezza.rxclaim.main.dbc
+
+
+a.	Onboarding of a single table:
+
+1.	Overwrite parameter prefix
+This option can be used when the parameter prefix is simply a placeholder and the actual pset dir is pointed to by a different parameter.
+For example, in case of the parameter prefix, DB_PAS_MAKO, there is no actual parameter named DB_PAS_MAKO_PSET. Hence, in this case the parameter prefix can be overridden to go the appropriate pset dir.
+
+2.	Check-In Required Files
+The checkbox will always be ticked by default and will check in all objects. It can be unticked if this is not required.
+
+3.	Create IDS DML
+The checkbox can be ticked if IDS DML is required to be created. The checkbox will remain unticked by default.
+
+4.	IDS subject area
+This is the subject area for creating IDS DML.
+For example, if the DML needs to be created under ids_rxclaim, the IDS subject are will be rxclaim.
+
+5.	Is Common
+If the IDS DML needs to be created under the common subject area, this checkbox can be ticked. The checkbox will remain unticked by default.
+
+6.	Execution
+The appconf will create 2 psets:
+i.	Setup DB pset
+E.g. AI_PSET/setup/setup.db.db_pas.f_pa_case_benefit_eligibility.pset
+Which will point to $PUB_DB_PLAN/setup.db.plan.
+This object will create target DML and staging tables, where staging tables will be created only if the table is a target table.
+
+ii.	Create IDS DML pset
+AI_PSET/create_ids_dmls.interim_onboard.target.db_pas.f_pa_case_benefit_eligibility.pset
+This will be created only if the Create IDS DML checkbox is ticked. The setup target step (setup db pset) must be executed prior to the create IDS DML step.
+
+b.	Onboarding of multiple tables:
+
+1.	Table List
+A newline delimited list of tables can be specified for which onboarding needs to be carried out.
+
+2.	Overwrite parameter prefix
+This option can be used when the parameter prefix is simply a placeholder and the actual pset dir is pointed to by a different parameter.
+For example, in case of the parameter prefix, DB_PAS_MAKO, there is no actual parameter named DB_PAS_MAKO_PSET. Hence, in this case the parameter prefix can be overridden to go the appropriate pset dir.
+
+3.	Check-In Required Files
+The checkbox will always be ticked by default and will check in all objects. It can be unticked if this is not required.
+
+4.	Create IDS DML
+The checkbox can be ticked if IDS DML is required to be created. The checkbox will remain unticked by default.
+
+5.	IDS subject area
+This is the subject area for creating IDS DML.
+For example, if the DML needs to be created under ids_rxclaim, the IDS subject are will be rxclaim.
+
+6.	Common Table List
+A newline delimited list of tables which need to be on boarded under ids_common.
+
+7.	Execution
+The appconf will create 2 psets:
+i.	Setup DB pset
+E.g. AI_PSET/setup/setup.db.db_rxclaim.pset
+Which will point to $PUB_DB_PLAN/setup.db.plan. This object will create target DML and staging tables, where staging tables will be created only if the table is a target table.
+
+ii.	Create IDS DML pset
+AI_PSET/create_ids_dmls.interim_onboard.target.db_rxclaim.pset
+This will be created only if the Create IDS DML checkbox is ticked. The setup target step (setup db pset) must be executed prior to the create IDS DML step.
+
+3.	Onboarding location
+
+It is a good practice to onboard target tables in distribution &amp; source tables in private project. This is because, AI_SOURCE_DB_LIST is generally populated in private project only and AI_TARGET_DB_LIST is populated in distribution only.
+
+4.	One-time setup for first time users:
+
+Below interim/logical schema psets must be present for onboarding to work:
+1.	AI_PSET/create_ids_dmls.interim.pset                                  (refer rxclaim sandbox for example)
+2.	AI_PSET/setup.db.interim.pset                                              (refer rxclaim sandbox for example)
+3.	DB_RXCLAIM_PSET/setup.datasets.rxclaim.pset                      (must be created in the appropriate DB project with for the appropriate logical schema) (refer db_rxclaim sandbox for example)
+4.	DB_RXCLAIM_PSET/setup.schema.rxclaim.pset                       (must be created in the appropriate DB project with for the appropriate logical schema) (refer db_rxclaim sandbox for example)
+5.	DB_RXCLAIM_PSET/setup.table.rxclaim.pset                           (must be created in the appropriate DB project with for the appropriate logical schema) (refer db_rxclaim sandbox for example)
+
+
+When using onboarding for the first time, these psets can be created/copied by the user from existing sandboxes, for further onboarding no such effort will be required.
+
+
+' +
+            "&lt;/font&gt;"</Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="ISO-8859-1" standalone="yes" ?>
+<jobDefinition xmlns="http://www.abinitio.com/opconsole/1.0" applicationName="ENRICHMENTS" description="This job loads the pharamacy claims, medical claims and medical claim codes for clients with huge volume." durationDefaultSec1X80="0" isEnabled="true" isNoMatchAnError1X60="true" isStderrAppend="false" isStderrToLog="false" isStdoutAppend="false" isStdoutToLog="false" jobDefinitionGuid="46566B40-0891-0585-B163-042F2A59F685" jobPrefix1X80="${AB_OPS_JOB_GUID}-" killExpiredJobs1X60="false" name="Pharmacy Claim-Medical Claim-Medical Code Load" objectVersion="1.120" sandbox="${FILESYSTEM_ROOT}/enrichments" stderrFile="/~ab_data_dir/ops/error/${AB_OPS_FILE_NAME}.err" stdoutFile="/~ab_data_dir/ops/log/${AB_OPS_FILE_NAME}.log">
+
+  <runtimeKey runtimeName="ops-aiclincl" systemName="CLINICAL"/>
+
+  <mainAction executablePath="$AI_PSET/pharma_med_claim_bulk_loadready_cdc_load.pset" executableType="PLAN" workingDirectory="${RUN}">
+    <arguments/>
+  </mainAction>
+
+  <expirationStart durationSec="1296000" isEnabled="true" isNotification="false"/>
+
+  <properties>
+    <property isWildcard="false" name="CLT_ID" value=""/>
+    <property isWildcard="false" name="IDS_FILE_NAME" value=""/>
+    <property isWildcard="false" name="BIZ_DT_1" value=""/>
+    <property isWildcard="false" name="DM_START_DATE" value="$DM_START_DATE"/>
+  </properties>
+
+  <constraintSet>
+    <timeConstraint calendarName="BIZ DATES" mode="DAILY" startDate="2017-08-29Z">
+      <startTimes timeZoneId="EST5EDT">
+        <singleTimepoint startTime="22:00:00"/>
+      </startTimes>
+    </timeConstraint>
+    <predecessors>
+      <predecessor jobDefinitionGuid="B5AADA2C-DE35-7CB5-48A5-039ECECF38C3"/>
+      <predecessor jobDefinitionGuid="82FB21D5-D50A-CD69-F11E-034C5EFFE7E7"/>
+      <predecessor jobDefinitionGuid="BB62363F-657E-6B43-00BC-EACEE20E8426"/>
+      <predecessor jobDefinitionGuid="467B36AC-9830-4021-6518-AF3448766F43"/>
+      <predecessor jobDefinitionGuid="A01A5998-95F7-82B9-8B22-0344AF65AC34"/>
+      <predecessor jobDefinitionGuid="3403EC59-885F-FB0F-8BD9-EAC6A53D7B7B"/>
+      <predecessor jobDefinitionGuid="1C08B5C0-C962-AB91-5FE9-6B4D454B850F"/>
+      <predecessor jobDefinitionGuid="1CB99C88-532A-B93F-47E2-EACFBAAE2BFA"/>
+      <predecessor jobDefinitionGuid="B1B7744A-8E5E-BF29-73B0-EAD05C1E8D91"/>
+    </predecessors>
+  </constraintSet>
+
+</jobDefinition>

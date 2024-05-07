@@ -1,0 +1,13 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil_bk1.rcmddp_orx_ndc
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmddp
+SOURCE_DB_LIST||||$[ \r\nbegin\r\nlet string("\\n")[int] DB_GROUPS = re_split_no_empty(AI_SOURCE_DB_GROUPS, "[\\r\\n]+");\r\nlet string("\\n")[int] CUSTOM_DB_GROUPS = [vector];\r\nlet string("") new_line;\r\n\r\nfor( let line in DB_GROUPS) \r\n        if (SOURCE_SYSTEM == string_split_no_empty(line," ")[0])\r\n                begin\r\n                        new_line = string_replace(line,"clmp02fil","");\r\n                        //new_line = string_join(vector_difference(string_split_no_empty(line," "),string_split_no_empty("clmm21fil,clmazmfil,clmvahfil",","))," ");\r\n                        CUSTOM_DB_GROUPS =  vector_append(CUSTOM_DB_GROUPS,new_line);\r\n                end\r\n        else\r\n                CUSTOM_DB_GROUPS =  vector_append(CUSTOM_DB_GROUPS,line);\r\n\r\nresult :: get_matching_db_list(AI_SOURCE_DB_LIST, string_join(CUSTOM_DB_GROUPS,"\\n"), SOURCE_SYSTEM, SOURCE_LOWER) ;\r\nend]
+SQL||||$[ "select  asvwhc, asric4, asp2nb ,asvyhc, asc2dt from  clmprdfil.rcmddp where ASC4AI ='B' and asvgh9 != 'D' and ASO6H9='C' and asbbda between " + string_filter_out(string_substring(START_CHANGES_TIME,1,10),'-') +  " and  " + string_filter_out(string_substring(END_CHANGES_TIME,1,10),'-') + " OPTIMIZE FOR ALL ROWS" ]
+DO_CLEAN||||1
+DO_SOURCE||||0
+START_CHANGES_TIME||||2017-01-01 00:00:01
+END_CHANGES_TIME||||2017-04-01 00:00:01
+SOURCE_DB_INFO_VEC||||$[begin\r\n //This PDL block was added by msing114 on 07/2017 to make progress on book1 & book2 project . However this process will be refined later to use more generic way of getting layout.\\r\\n\r\nresult ::  if ((string_index("rxclaim_orx","rxclaim_orx") || string_index("rxclaim_orx","_bk1") || string_index("rxclaim_orx","bk2"))  && !is_blank(ABLOCAL_EXPR) and !is_null(ABLOCAL_EXPR)) \r\n               get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS_ADHOC)           else if (string_index("rxclaim_orx","rxclaim_orx") || string_index("rxclaim_orx","_bk1") || string_index("rxclaim_orx","bk2")) \r\n               get_db_info_vec(SOURCE_DB_LIST, AI_SERIAL, AI_MFS)                   else                get_db_info_vec(SOURCE_DB_LIST, DB_RXTRACK_COMBO_REMOTE_SERIAL, DB_RXTRACK_COMBO_REMOTE_MFS) ; \r\n               end ]
+RUN_ID||||20171205000000

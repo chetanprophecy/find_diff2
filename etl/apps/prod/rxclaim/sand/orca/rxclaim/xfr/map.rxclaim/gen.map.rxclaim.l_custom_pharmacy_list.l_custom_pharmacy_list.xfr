@@ -1,0 +1,58 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.cus_phr_lst.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cus_phr_lst.mail_ord_phr_ind,[transform],in0.pharmacy_type]
+  [out0.cus_phr_lst.phr_id,[passthrough],in0.pha_pharmacy_id]
+  [out0.cus_phr_lst.phr_typ_id,[passthrough],in0.pharmacy_type]
+  [out0.cus_phr_lst.phr_typ_nm,[passthrough],in0.type_description]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cus_phr_lst.src_env_sk,'cus_phr_lst.src_env_sk',1,0]
+     [out0.cus_phr_lst.mail_ord_phr_ind,'cus_phr_lst.mail_ord_phr_ind',1,0]
+     [out0.cus_phr_lst.phr_id,'cus_phr_lst.phr_id',1,0]
+     [out0.cus_phr_lst.phr_typ_id,'cus_phr_lst.phr_typ_id',1,0]
+     [out0.cus_phr_lst.phr_typ_nm,'cus_phr_lst.phr_typ_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.pha_pharmacy_id,'pha_pharmacy_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.pharmacy_type,'pharmacy_type',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.type_description,'type_description',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=50) cus_phr_lst_phr_id = fail_if_error(in0.pha_pharmacy_id);
+let decimal("\x01",0) cus_phr_lst_phr_typ_id = fail_if_error(in0.pharmacy_type);
+let string("\x01",charset="iso-8859-15", maximum_length=50) cus_phr_lst_phr_typ_nm = fail_if_error(in0.type_description);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cus_phr_lst_mail_ord_phr_ind = fail_if_error(if( in0.pharmacy_type member  [vector  'Mail', 'In-House'])  'Y' else 'N');
+let decimal("\x01",0) cus_phr_lst_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.cus_phr_lst.phr_id::cus_phr_lst_phr_id;
+  out0.cus_phr_lst.phr_typ_id::cus_phr_lst_phr_typ_id;
+  out0.cus_phr_lst.phr_typ_nm::cus_phr_lst_phr_typ_nm;
+  out0.cus_phr_lst.mail_ord_phr_ind::cus_phr_lst_mail_ord_phr_ind;
+  out0.cus_phr_lst.src_env_sk::cus_phr_lst_src_env_sk;
+  out0.*::in0.*;
+
+end;

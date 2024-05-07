@@ -1,0 +1,80 @@
+type logical_ids_rebates_d_rb_claim_attributes_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) claim_attribute_sk = NULL("");
+  decimal("\x01",0) submit_year_month_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) member_product_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) member_rider_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) plan_qualifier_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) final_plan_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) member_medicare_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) mail_order_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) policy_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) funding_arrangment_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) platform_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) client_type_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) medical_claim_ind = NULL("");
+  decimal("\x01",0) claim_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) esi_carrier = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) esi_contract = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) esi_group = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) rebcid = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=45) formulary_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) benefit_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) claim_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) egwp_wrap = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) plan_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) billing_client_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) client_specialty_ind = NULL("");
+end;
+
+type logical_ids_rebates_d_rb_gl_code_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) gl_cd_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) fin_arngmt_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) location_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) product_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) business_unit_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) customer_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) uhcp_carrier_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+type logical_ids_rebates_l_payment_reference_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  unsigned integer(8) dxf_sk = 0;
+  decimal("\x01",0) payment_reference_sk;
+  string("\x01",charset="iso-8859-15", maximum_length=25) payment_reference_desc;
+  decimal("\x01",0) src_env_sk;
+end;
+
+type logical_ids_rebates_l_rb_claim_attribute_4_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) claim_attribute_4_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) claim_attribute_4 = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rebates_d_rb_claim_attributes_t clm_attr  /*@ BizName:'clm attr' */;
+  logical_ids_rebates_l_payment_reference_t pay_ref  /*@ BizName:'pay ref' */;
+  logical_ids_rebates_d_rb_gl_code_t rb_gl_code  /*@ BizName:'rb gl code' */;
+  logical_ids_rebates_l_rb_claim_attribute_4_t rb_clm_attr4  /*@ BizName:'rb clm attr4' */;
+end;

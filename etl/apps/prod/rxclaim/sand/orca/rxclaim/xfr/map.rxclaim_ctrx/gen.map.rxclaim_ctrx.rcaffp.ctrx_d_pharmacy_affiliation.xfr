@@ -1,0 +1,24 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) pharm_affl_phr_afflt_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=6) pharm_affl_phr_afflt_cd = fail_if_error(in0.afajcd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) pharm_affl_phr_afflt_nm = fail_if_error(in0.afa9tx);
+let decimal("\x01",0) pharm_affl_phr_afflt_grp_id = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=100) pharm_affl_phr_afflt_grp_desc = "-";
+let decimal("\x01",0) pharm_affl_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+  out0.pharm_affl.phr_afflt_sk::pharm_affl_phr_afflt_sk;
+  out0.pharm_affl.phr_afflt_cd::pharm_affl_phr_afflt_cd;
+  out0.pharm_affl.phr_afflt_nm::pharm_affl_phr_afflt_nm;
+  out0.pharm_affl.phr_afflt_grp_id::pharm_affl_phr_afflt_grp_id;
+  out0.pharm_affl.phr_afflt_grp_desc::pharm_affl_phr_afflt_grp_desc;
+  out0.pharm_affl.src_env_sk::pharm_affl_src_env_sk;
+  out0.*::in0.*;
+
+end;

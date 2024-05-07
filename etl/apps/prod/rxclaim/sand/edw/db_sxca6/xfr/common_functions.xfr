@@ -1,0 +1,70 @@
+/******************************************************************************************************************************************
+ * db_sxca6 -> $DB_SXCA6_XFR/common_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/03/13  Upal Chatterjee         Initial Version
+ ******************************************************************************************************************************************/
+
+include "~$DB_SXCA6_DML/common_types.dml";
+
+//function to remove the spaces from the field value
+out :: removeBlankSpaces( field_name ) =
+begin
+ out :: string_lrtrim(field_name);
+end;
+
+//function to check the data is not null or blank
+out :: checkFieldData( field_name ) =
+begin
+
+ let decimal("\0") returnFlag = 1; //default is  set to "1"
+ let string(int) inDataValue = removeBlankSpaces(field_name); 
+ 
+ if (is_null(inDataValue) or is_blank(inDataValue) )
+  returnFlag = 0; //setting it to zero if the value is blank or null
+
+ out :: returnFlag;
+end;
+
+//function to check if the value of multi-source belongs to either M,N,O,Y or blank.
+out :: validate_msc( field_name ) = 
+begin
+ let decimal("\0") returnFlag = 0; //default is  set to "0"
+ let string(int) inDataValue = removeBlankSpaces(field_name); 
+ 
+ if(inDataValue member [vector "", "M", "N", "O", "Y"])
+        returnFlag = 1;
+        
+ out :: returnFlag;
+end;
+
+//function to check if the input data contains either alphabets,numbers or both.
+out :: checkAlphanumeric( field_name ) =
+begin
+  out :: string_length(removeBlankSpaces(string_filter_out(field_name,"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"))) == 0; //Removing all the alphabets and numbers
+end;
+
+//function to check whether the value given in the pattern [pattern is in vector format] is present in the input data or not.
+out :: getMatchData(field_name,decimal("")[int] pattern) =
+begin
+  let decimal("\0") returnFlag = 1; //default is  set to "1"
+  let string(int) occurence_of_pattern = '';
+  
+  begin block outer_block
+    for (let val in pattern)
+      begin
+        occurence_of_pattern = first_defined(re_get_match(removeBlankSpaces(field_name),(string(int)) val + '+'),''); //Capturing the number of consecutive values given in the pattern
+  
+        if (removeBlankSpaces(field_name) == occurence_of_pattern)
+          begin
+            returnFlag = 0;
+            exit outer_block;
+          end;
+      end;
+  end block outer_block;
+  
+  out :: returnFlag;
+end;

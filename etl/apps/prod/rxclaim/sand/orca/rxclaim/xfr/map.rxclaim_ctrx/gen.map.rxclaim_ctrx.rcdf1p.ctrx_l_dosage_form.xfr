@@ -1,0 +1,68 @@
+/*   Do not edit. Generated file - BRE 4.0.2.6;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_ctrx_rcdf1p_to_the_ctrx_l_dosage_form_ILM_documentation(in)=
+begin
+
+out0.ctrx_dsg_fm.dsg_frm_id::depends_on(
+         in.bgfvc4
+         );
+
+
+out0.ctrx_dsg_fm.dsg_frm_nm::depends_on(
+         in.bgc7t3
+         );
+
+
+out0.ctrx_dsg_fm.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_ctrx_rcdf1p_to_the_ctrx_l_dosage_form_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_dsg_fm.dsg_frm_id,'ctrx_dsg_fm.dsg_frm_id',1,0]
+     [out0.ctrx_dsg_fm.dsg_frm_sk,'ctrx_dsg_fm.dsg_frm_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_dsg_fm.dsg_frm_nm,'ctrx_dsg_fm.dsg_frm_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_dsg_fm.src_env_sk,'ctrx_dsg_fm.src_env_sk',1,0]
+  ]
+  impacts:
+  [
+     [in0.bgfvc4,'bgfvc4',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.bgc7t3,'bgc7t3',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) ctrx_dsg_fm_dsg_frm_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_dsg_fm_dsg_frm_id = fail_if_error(in0.bgfvc4);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_dsg_fm_dsg_frm_nm = fail_if_error(in0.bgc7t3);
+let decimal("\x01",0) ctrx_dsg_fm_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.ctrx_dsg_fm.dsg_frm_sk::ctrx_dsg_fm_dsg_frm_sk;
+  out0.ctrx_dsg_fm.dsg_frm_id::ctrx_dsg_fm_dsg_frm_id;
+  out0.ctrx_dsg_fm.dsg_frm_nm::ctrx_dsg_fm_dsg_frm_nm;
+  out0.ctrx_dsg_fm.src_env_sk::ctrx_dsg_fm_src_env_sk;
+  out0.*::in0.*;
+end;

@@ -1,0 +1,32 @@
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  string(unsigned integer(1),maximum_length=11)  ndc /*CHAR(11) NOT NULL*/;
+  little endian integer(4)  product_key /*INTEGER NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  active_ind /*CHAR(1) NOT NULL*/;
+  little endian integer(4)  rxcui /*INTEGER NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  partd_ind /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  override_level = NULL("") /*CHAR(1)*/;
+  little endian integer(4)  ext_override_id = NULL /*INTEGER*/;
+  date("YYYY-MM-DD")  eff_dt /*DATE NOT NULL*/;
+  date("YYYY-MM-DD")  term_dt /*DATE NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  rxcui_type_cd /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  subset_type_cd = NULL("") /*CHAR(1)*/;
+  string(unsigned integer(1),maximum_length=1)  frf_related_ndc_flag = NULL("") /*CHAR(1)*/;
+  string(unsigned integer(1),maximum_length=1)  frf_replace_ndc_flag = NULL("") /*CHAR(1)*/;
+  string(unsigned integer(1),maximum_length=2)  frf_proxy_ndc_ind = NULL("") /*CHAR(2)*/;
+  string(unsigned integer(1),maximum_length=14)  gpi /*CHAR(14) NOT NULL*/;
+  string(unsigned integer(1), maximum_length=70)  product_name /*VARCHAR(70) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  otc /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=1)  msc /*CHAR(1) NOT NULL*/;
+  string(unsigned integer(1), maximum_length=30)  product_label /*VARCHAR(30) NOT NULL*/;
+  string(unsigned integer(1), maximum_length=60)  gpi_name /*VARCHAR(60) NOT NULL*/;
+  string(unsigned integer(1),maximum_length=16)  rec_create_userid /*CHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")  rec_create_timestamp /*TIMESTAMP NOT NULL*/;
+  string(unsigned integer(1),maximum_length=16)  last_upd_userid /*CHAR(16) NOT NULL*/;
+  datetime("YYYY-MM-DD HH24:MI:SS.NNNNNN")  last_upd_timestamp /*TIMESTAMP NOT NULL*/;
+  string(unsigned integer(1),maximum_length=11)  source_ndc = NULL("") /*CHAR(11)*/;
+  little endian integer(4)  run_id /*INTEGER NOT NULL*/;
+end

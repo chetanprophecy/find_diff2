@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcdpsp
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcdpsp                  aop2nb,aooinb,aor5n2,aolast,aolbst,aolcst,aoi1cj,aoi2cj,aor7c4,newline\ndwxtract_bk1  rcex1p                  claimsts
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcdpsp") + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "dwxtract_bk1", "rcex1p")]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||WHERE rcdpsp.aop2nb = rcex1p.rxclaimnbr\n and  rcdpsp.aooinb = rcex1p.clmseqnbr
+DO_LOOKUP||||1
+LOOKUP_NAME_OVERRIDE||||rcdpsp_lkp

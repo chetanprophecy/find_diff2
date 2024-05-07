@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||dwxtract_bk1.rx32126p1
+SOURCE_TABLE_LIST||||# Schema Name    Unqualified Table Name  Fields\r\ndwxtract_bk1_copy rx32126p1
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "dwxtract_bk1_copy", "rx32126p1")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+SELECT_FIELDS||||rx32126p1.p1claimnbr\r\n     , rx32126p1.p1claimseq\r\n     , rx32126p1.p1status\r\n     , rx32126p1.p1sbmdate\r\n     , '*'||rx32126p1.p1clientd3||'*' p1clientd3\r\n     , rx32126p1.p1reimburs\r\n     , rx32126p1.p1clmorgn\r\n     , rx32126p1.p1memberid\r\n     , rx32126p1.p1carierid\r\n     , rx32126p1.p1acountid\r\n     , rx32126p1.p1groupid\r\n     , rx32126p1.p1ambiqu\r\n     , rx32126p1.p1ambjqu\r\n     , rx32126p1.p1amc4ai\r\n     , rx32126p1.p1amc5ai\r\n     , rx32126p1.p1amc6ai\r\n     , rx32126p1.p1ambkqu
+WHERE_CLAUSE||||$[ \r\n  if (START_CHANGES_TIME != '') \r\n    "WHERE rx32126p1.p1sbmdate >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)) + \r\n    " AND rx32126p1.p1sbmdate <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\nelse \r\n    "WHERE rx32126p1.p1sbmdate >= " + \r\n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " AND rx32126p1.p1sbmdate <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)) + \r\n    " OPTIMIZE FOR ALL ROWS"\r\n]

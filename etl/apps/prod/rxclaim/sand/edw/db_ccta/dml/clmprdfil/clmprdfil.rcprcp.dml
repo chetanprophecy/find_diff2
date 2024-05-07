@@ -1,0 +1,76 @@
+record
+  string("\x01", maximum_length=10) aegocd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Price Schedule Name"
+ BizComment:"A definition of the pricing tables that are used within a plan."
+@*/;
+  string("\x01", maximum_length=25) aeqft2 /*CHAR(25) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Price Schedule Desc"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aeehst /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Pay Sales Tax"
+ BizComment:"Valid Values are: B = Both Flat and Percent Tax     Use the Price Table tax calculcations, and do not reject a     V5.1 claim if both the Flat Sales Tax Amount Submitted and     Percentage Sales Tax Amount Submitted fields are populated     with non-zero amounts. N = No Y = Yes     Use the Price Table tax calculations, but reject a V5.1 claim     if both the Flat Sales Tax Amount Submitted and Percentage     Sales Tax Amount Submitted fields are populated with non-zero     amounts."
+@*/;
+  string("\x01", maximum_length=1) aep1s2 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Allow Zero Sbm Cost"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aep2s2 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC AWP Edit"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aefci1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Multi-Ing Source"
+ BizComment:"The Source field is responsible for directing the claim to the Criteria from which the Price Comparison Code, tax calculation rules, withhold calculation rules and the Patient Pay Schedule is retrieved from the Price Table Detail, as these are performed at a claim level. Valid values: F=First Sequence When value 'F' is specified the Price Comparison Code, tax calculation rules, withhold calculation rules and the Patient Pay Schedule are retrieved from the Price Table Detail attached to the first applicable sequence within the Price Schedule Criteria Detail. I=Ingredient Attributes Indicates that the Price Schedule that was determined to be the most specific is searched using the attributes of the ingredient which was used to select this Price Schedule.  If the attributes of the ingredient match a sequence in the Price Schedule, the pricing from this sequence is used for claim-level processing. S=Specific Sequence When value 'S' is specified the Price Comparison Code, tax calculation rules, withhold calculation rules and the Patient Pay Schedule is retrieved from the Price Table Detail attached to the user-identified sequence within the Price Schedule Criteria Detail."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) aejlhs /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Multi-Ing PSC Seq#"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) aefdi1 /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Multi-Ing DispFee Flg"
+ BizComment:"The Dispensing Fee Source field is used to direct the location from which the Dispensing Fee is retrieved. Valid values are: C = Claim Level     When value 'C' is specified, one dispensing fee is retrieved     and applied at the claim level.  The dispensing fee calculation     is retrieved from the Criteria determined from the Source field. H = Claim Level, Highest Fee     When value 'H' is specified, dispensing fee is calculated for     each individual ingredient.  The highest fee among all the fees     calculated for each ingredient is approved for the claim. I = Ingredient Level     When value 'I' is specified, each ingredient retrieves its     applicable dispensing fee based on the established Price     Schedule Criteria."
+@*/;
+  string("\x01", maximum_length=1) aecvia /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Multi-Ing Prf Srv Flg"
+ BizComment:"The Professional Service Fee Source field is used to direct the location from which the Professional Service Fee is retrieved. Valid values are: C = Claim Level     When value 'C' is specified, one professional service fee is     retrieved and applied at the claim level.  The professional     service fee calculation is retrieved from the Criteria     determined from the Source field. H = Claim Level, Highest Fee     When value 'H' is specified, professional service fee is     calculated for each individual ingredient.  The highest fee among     all the fees calculated for each ingredient is approved for the     claim. I = Ingredient Level     When value 'I' is specified, each ingredient retrieves its     applicable professional services fee based on the established     Price Schedule Criteria."
+@*/;
+  string("\x01", maximum_length=2) aeuvia /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCPRCP: PRC Basis Reimb Deter Ovr"
+ BizComment:"The basis of reimbursement determination indicates how the claim was priced. If the reimbursement basis override field is populated, the value will override the current basis of reimbursement field on the paid claim response information screen (RCPDT007) during on-line transaction processing. Valid values: *Blank = Blank 00 = Not specified 01 = Ingredient cost paid as submitted 02 = Ingredient cost reduced to AWP pricing 03 = Ingredient cost reduced to AWP less X% pricing 04 = Usual and customary paid as submitted 05 = Paid lower of ingredient cost plus fees versus      usual and customary 06 = MAC pricing ingredient cost paid 07 = MAC pricing ingredient cost reduced to MAC pricing 08 = Contract pricing 09 = Acquisition Pricing 10 = ASP(Average Sale Price) 11 = AMP(Average Mfg Price) 12 = 340B/Disp Share/PHS Price 13 = WAC(Wholesale Aquis Cst) 14 = Other Payer-Patient Resp 15 = Patient Pay Amount 16 = Coupon Payment 20 = National Average Drug Acquisition Cost      (NADAC) - The estimated average drug      acquisition cost as defined by CMS 21 = State Average Acquisition Cost (AAC) - The      estimated average drug acquisition cost      as defined by a state Medicaid 17 = Special Patient Reimbursement - Indicates      the reimbursement was based on the cost      calculated by the pharmacy for the drug      for this special patient. 18 = Direct Price (DP) - Represents the      manufacturer's published catalog      or list price for a drug product      to non-wholesalers. Direct Price      does not represent actual transaction      prices and does not include prompt pay      or other discounts, rebates or reductions. 19 = State Fee Schedule (SFS) Reimbursement -      State mandated level of reimbursement      for Workers' Compensation or Property      and Casualty prescription services."
+@*/;
+  string("\x01", maximum_length=10) aeakvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPRCP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) aec2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPRCP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aeadtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPRCP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) aealvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPRCP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) aeadvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPRCP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) aebmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCPRCP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) aeabtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCPRCP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) aeaevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCPRCP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

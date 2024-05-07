@@ -1,0 +1,204 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_589afd85_645c_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.c_mem_alergy.days_of_supply,[passthrough],in0.days_of_supply]
+  [out0.c_mem_alergy.cpp_member_allergy_sk,[transform],]
+  [out0.c_mem_alergy.cpp_created_by,[passthrough],in0.created_by]
+  [out0.c_mem_alergy.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.c_mem_alergy.cpp_member_sk,[transform],in0.member_id,
+     in0.emplyr_group_id,
+     in0.acct_id,
+     in0.carrier_id,
+     'lookup("c_member").dxf_sk']
+  [out0.c_mem_alergy.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.c_mem_alergy.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.c_mem_alergy.cpp_member_assessment_sk,[transform],in0.sequence_num,
+     in0.member_assessment_id,
+     'lookup("c_member_assessment").dxf_sk']
+  [out0.c_mem_alergy.src_env_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.c_mem_alergy.drug_quantity,'c_mem_alergy.drug_quantity',1,0]
+     [out0.c_mem_alergy.label_name,'c_mem_alergy.label_name',1,0]
+     [out0.c_mem_alergy.allergy_severity_id,'c_mem_alergy.allergy_severity_id',1,0]
+     [out0.c_mem_alergy.allergy_reported_dt,'c_mem_alergy.allergy_reported_dt',1,0]
+     [out0.c_mem_alergy.cli_src_env_id,'c_mem_alergy.cli_src_env_id',1,0]
+     [out0.c_mem_alergy.gpi_num,'c_mem_alergy.gpi_num',1,0]
+     [out0.c_mem_alergy.member_assessment_id,'c_mem_alergy.member_assessment_id',1,0]
+     [out0.c_mem_alergy.cli_emplyr_group_id,'c_mem_alergy.cli_emplyr_group_id',1,0]
+     [out0.c_mem_alergy.acct_id,'c_mem_alergy.acct_id',1,0]
+     [out0.c_mem_alergy.drug_dosage_form,'c_mem_alergy.drug_dosage_form',1,0]
+     [out0.c_mem_alergy.emplyr_group_id,'c_mem_alergy.emplyr_group_id',1,0]
+     [out0.c_mem_alergy.allergy_occurrence_id,'c_mem_alergy.allergy_occurrence_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.c_mem_alergy.days_of_supply,'c_mem_alergy.days_of_supply',1,0]
+     [out0.c_mem_alergy.cpp_member_allergy_sk,'c_mem_alergy.cpp_member_allergy_sk',1,0]
+     [out0.c_mem_alergy.allergy_src_id,'c_mem_alergy.allergy_src_id',1,0]
+     [out0.c_mem_alergy.allergy_category_id,'c_mem_alergy.allergy_category_id',1,0]
+     [out0.c_mem_alergy.allergy_termination_dt,'c_mem_alergy.allergy_termination_dt',1,0]
+     [out0.c_mem_alergy.member_allergy_id,'c_mem_alergy.member_allergy_id',1,0]
+     [out0.c_mem_alergy.gpi_name,'c_mem_alergy.gpi_name',1,0]
+     [out0.c_mem_alergy.cli_acct_id,'c_mem_alergy.cli_acct_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.c_mem_alergy.allergy_id,'c_mem_alergy.allergy_id',1,0]
+     [out0.c_mem_alergy.carrier_id,'c_mem_alergy.carrier_id',1,0]
+     [out0.c_mem_alergy.cpp_created_by,'c_mem_alergy.cpp_created_by',1,0]
+     [out0.c_mem_alergy.cli_carrier_id,'c_mem_alergy.cli_carrier_id',1,0]
+     [out0.c_mem_alergy.cpp_updated_by,'c_mem_alergy.cpp_updated_by',1,0]
+     [out0.c_mem_alergy.cli_member_id,'c_mem_alergy.cli_member_id',1,0]
+     [out0.c_mem_alergy.cpp_member_sk,'c_mem_alergy.cpp_member_sk',1,0]
+     [out0.c_mem_alergy.member_id,'c_mem_alergy.member_id',1,0]
+     [out0.c_mem_alergy.cpp_update_ts,'c_mem_alergy.cpp_update_ts',1,0]
+     [out0.c_mem_alergy.case_id,'c_mem_alergy.case_id',1,0]
+     [out0.c_mem_alergy.cpp_create_ts,'c_mem_alergy.cpp_create_ts',1,0]
+     [out0.c_mem_alergy.cpp_member_assessment_sk,'c_mem_alergy.cpp_member_assessment_sk',1,0]
+     [out0.c_mem_alergy.ndc_num,'c_mem_alergy.ndc_num',1,0]
+     [out0.c_mem_alergy.sequence_num,'c_mem_alergy.sequence_num',1,0]
+     [out0.c_mem_alergy.src_env_id,'c_mem_alergy.src_env_id',1,0]
+     [out0.c_mem_alergy.src_env_sk,'c_mem_alergy.src_env_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.c_mem_alergy.drug_strength_quantity,'c_mem_alergy.drug_strength_quantity',1,0]
+  ]
+  impacts:
+  [
+     [in0.gpi_name,'gpi_name',1,1]
+     [in0.allergy_severity_id,'allergy_severity_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.allergy_termination_dt,'allergy_termination_dt',1,1]
+     [in0.cli_carrier_id,'cli_carrier_id',1,1]
+     [in0.drug_dosage_form,'drug_dosage_form',1,1]
+     [in0.src_env_id,'src_env_id',1,1]
+     [in0.member_id,'member_id',2,2]
+     [in0.allergy_reported_dt,'allergy_reported_dt',1,1]
+     [in0.sequence_num,'sequence_num',2,2]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.member_allergy_id,'member_allergy_id',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.cli_member_id,'cli_member_id',1,1]
+     [in0.emplyr_group_id,'emplyr_group_id',2,2]
+     [in0.member_assessment_id,'member_assessment_id',2,2]
+     [in0.allergy_id,'allergy_id',1,1]
+     [in0.label_name,'label_name',1,1]
+     ['lookup("c_member_assessment").dxf_sk','dxf_sk',1,1]
+     [in0.created_by,'created_by',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.ndc_num,'ndc_num',1,1]
+     [in0.gpi_num,'gpi_num',1,1]
+     [in0.days_of_supply,'days_of_supply',1,1]
+     [in0.cli_emplyr_group_id,'cli_emplyr_group_id',1,1]
+     [in0.allergy_src_id,'allergy_src_id',1,1]
+     [in0.allergy_category_id,'allergy_category_id',1,1]
+     [in0.drug_quantity,'drug_quantity',1,1]
+     [in0.drug_strength_quantity,'drug_strength_quantity',1,1]
+     ['lookup("c_member").dxf_sk','dxf_sk',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.allergy_occurrence_id,'allergy_occurrence_id',1,1]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cli_src_env_id,'cli_src_env_id',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.cli_acct_id,'cli_acct_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.acct_id,'acct_id',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) c_mem_alergy_cpp_member_allergy_sk = -1;
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_member_allergy_id = fail_if_error(in0.member_allergy_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_sequence_num = fail_if_error(in0.sequence_num);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_cli_src_env_id = fail_if_error(in0.cli_src_env_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_cli_carrier_id = fail_if_error(in0.cli_carrier_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_cli_acct_id = fail_if_error(in0.cli_acct_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_cli_emplyr_group_id = fail_if_error(in0.cli_emplyr_group_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) c_mem_alergy_cli_member_id = fail_if_error(in0.cli_member_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) c_mem_alergy_src_env_id = fail_if_error(in0.src_env_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_alergy_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_mem_alergy_acct_id = fail_if_error(in0.acct_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_mem_alergy_emplyr_group_id = fail_if_error(in0.emplyr_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) c_mem_alergy_member_id = fail_if_error(in0.member_id);
+let decimal("\x01",0) c_mem_alergy_cpp_member_sk;
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_case_id = fail_if_error(in0.case_id);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_member_assessment_id = fail_if_error(in0.member_assessment_id);
+let decimal("\x01",0) c_mem_alergy_cpp_member_assessment_sk;
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_alergy_allergy_reported_dt = fail_if_error(in0.allergy_reported_dt);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_allergy_id = fail_if_error(in0.allergy_id);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_allergy_category_id = fail_if_error(in0.allergy_category_id);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_allergy_src_id = fail_if_error(in0.allergy_src_id);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_allergy_severity_id = fail_if_error(in0.allergy_severity_id);
+let utf8 string("\x01", maximum_length=60) c_mem_alergy_allergy_occurrence_id = fail_if_error(in0.allergy_occurrence_id);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_alergy_allergy_termination_dt = fail_if_error(in0.allergy_termination_dt);
+let utf8 string("\x01", maximum_length=800) c_mem_alergy_label_name = fail_if_error(in0.label_name);
+let utf8 string("\x01", maximum_length=400) c_mem_alergy_gpi_name = fail_if_error(in0.gpi_name);
+let utf8 string("\x01", maximum_length=44) c_mem_alergy_ndc_num = fail_if_error(in0.ndc_num);
+let utf8 string("\x01", maximum_length=56) c_mem_alergy_gpi_num = fail_if_error(in0.gpi_num);
+let utf8 string("\x01", maximum_length=16) c_mem_alergy_drug_dosage_form = fail_if_error(in0.drug_dosage_form);
+let decimal("\x01".3, maximum_length=13, sign_reserved) c_mem_alergy_drug_strength_quantity = fail_if_error(in0.drug_strength_quantity);
+let decimal("\x01".3, maximum_length=13, sign_reserved) c_mem_alergy_drug_quantity = fail_if_error(in0.drug_quantity);
+let decimal("\x01",0) c_mem_alergy_days_of_supply = fail_if_error(in0.days_of_supply);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_alergy_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) c_mem_alergy_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") c_mem_alergy_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) c_mem_alergy_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) c_mem_alergy_src_env_sk = 710;
+
+
+
+/*   Default value   */
+c_mem_alergy_cpp_member_sk=fail_if_error(first_defined(lookup("c_member",in0.carrier_id,in0.acct_id,in0.emplyr_group_id,in0.member_id).dxf_sk,-1));
+
+/*   Default value   */
+c_mem_alergy_cpp_member_assessment_sk=fail_if_error(first_defined(lookup("c_member_assessment",in0.member_assessment_id,in0.sequence_num).dxf_sk,-1));
+
+  out0.c_mem_alergy.cpp_member_allergy_sk::c_mem_alergy_cpp_member_allergy_sk;
+  out0.c_mem_alergy.member_allergy_id::c_mem_alergy_member_allergy_id;
+  out0.c_mem_alergy.sequence_num::c_mem_alergy_sequence_num;
+  out0.c_mem_alergy.cli_src_env_id::c_mem_alergy_cli_src_env_id;
+  out0.c_mem_alergy.cli_carrier_id::c_mem_alergy_cli_carrier_id;
+  out0.c_mem_alergy.cli_acct_id::c_mem_alergy_cli_acct_id;
+  out0.c_mem_alergy.cli_emplyr_group_id::c_mem_alergy_cli_emplyr_group_id;
+  out0.c_mem_alergy.cli_member_id::c_mem_alergy_cli_member_id;
+  out0.c_mem_alergy.src_env_id::c_mem_alergy_src_env_id;
+  out0.c_mem_alergy.carrier_id::c_mem_alergy_carrier_id;
+  out0.c_mem_alergy.acct_id::c_mem_alergy_acct_id;
+  out0.c_mem_alergy.emplyr_group_id::c_mem_alergy_emplyr_group_id;
+  out0.c_mem_alergy.member_id::c_mem_alergy_member_id;
+  out0.c_mem_alergy.cpp_member_sk::c_mem_alergy_cpp_member_sk;
+  out0.c_mem_alergy.case_id::c_mem_alergy_case_id;
+  out0.c_mem_alergy.member_assessment_id::c_mem_alergy_member_assessment_id;
+  out0.c_mem_alergy.cpp_member_assessment_sk::c_mem_alergy_cpp_member_assessment_sk;
+  out0.c_mem_alergy.allergy_reported_dt::c_mem_alergy_allergy_reported_dt;
+  out0.c_mem_alergy.allergy_id::c_mem_alergy_allergy_id;
+  out0.c_mem_alergy.allergy_category_id::c_mem_alergy_allergy_category_id;
+  out0.c_mem_alergy.allergy_src_id::c_mem_alergy_allergy_src_id;
+  out0.c_mem_alergy.allergy_severity_id::c_mem_alergy_allergy_severity_id;
+  out0.c_mem_alergy.allergy_occurrence_id::c_mem_alergy_allergy_occurrence_id;
+  out0.c_mem_alergy.allergy_termination_dt::c_mem_alergy_allergy_termination_dt;
+  out0.c_mem_alergy.label_name::c_mem_alergy_label_name;
+  out0.c_mem_alergy.gpi_name::c_mem_alergy_gpi_name;
+  out0.c_mem_alergy.ndc_num::c_mem_alergy_ndc_num;
+  out0.c_mem_alergy.gpi_num::c_mem_alergy_gpi_num;
+  out0.c_mem_alergy.drug_dosage_form::c_mem_alergy_drug_dosage_form;
+  out0.c_mem_alergy.drug_strength_quantity::c_mem_alergy_drug_strength_quantity;
+  out0.c_mem_alergy.drug_quantity::c_mem_alergy_drug_quantity;
+  out0.c_mem_alergy.days_of_supply::c_mem_alergy_days_of_supply;
+  out0.c_mem_alergy.cpp_update_ts::c_mem_alergy_cpp_update_ts;
+  out0.c_mem_alergy.cpp_updated_by::c_mem_alergy_cpp_updated_by;
+  out0.c_mem_alergy.cpp_create_ts::c_mem_alergy_cpp_create_ts;
+  out0.c_mem_alergy.cpp_created_by::c_mem_alergy_cpp_created_by;
+  out0.c_mem_alergy.src_env_sk::c_mem_alergy_src_env_sk;
+  out0.*::in0.*;
+
+end;

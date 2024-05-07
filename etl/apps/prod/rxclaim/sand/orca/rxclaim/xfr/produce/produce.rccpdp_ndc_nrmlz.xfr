@@ -1,0 +1,28 @@
+type rcpdpp_type=
+record
+  string("\x01", maximum_length=5) mpvwhc = NULL("");
+  string("\x01", maximum_length=3) mpvyhc = NULL("");
+  string("\x01", maximum_length=9) mpaacd = NULL("");
+  string("\x01", maximum_length=15) mpv0hc = NULL("");
+end;
+
+let rcpdpp_type rcpdpp=allocate_with_defaults();
+
+
+out::length(in)=
+begin
+out::lookup_count("rcpdpp_ndc",in.dxf_src_sys_id,string_lrtrim(in.awq7hb),string_lrtrim(in.awv3hc));
+end;
+
+
+/*Do computation*/
+out::normalize(in,index)=
+begin
+rcpdpp=lookup_next("rcpdpp_ndc");
+out.(*,form=="string"):1:string_lrtrim(in.*);
+out.contract_no::rcpdpp.mpvwhc;
+out.mpvyhc::rcpdpp.mpvyhc;
+out.carrier_id::rcpdpp.mpaacd;
+out.account_id::rcpdpp.mpv0hc;
+out.*:2:in.*;
+end;

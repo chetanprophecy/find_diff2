@@ -1,0 +1,119 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup d_date_lkp   */
+out0::bzt_3_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  date("YYYYMMDD")("\x01") cal_day_dt = NULL("");
+  decimal("\x01",0) cal_yr_mnth_id = NULL(""), cal_yr_qtr_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_date_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_2_6c54cc0a_58d0f5d0_636b_2
+    BizHidden:true
+@*/
+/*   lookup l_submarket_id_lkp   */
+out0::bzt_2_6c54cc0a_58d0f5d0_636b_2(in0)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=9) carrier_id = NULL("");
+  decimal("\x01",0) submarket_id = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("l_submarket_id_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.a_phsmed_mm.submarket_id,[transform],in0.orig_carrier_id,
+     'lookup("l_submarket_id_lkp").submarket_id']
+  [out0.a_phsmed_mm.carrier_id,[passthrough],in0.orig_carrier_id]
+  [out0.a_phsmed_mm.rxs_15th_member_cnt,[passthrough],in0.after_15th_elig_mbr_cnt_no]
+  [out0.a_phsmed_mm.cal_yr_qtr_id,[transform],in0.sbm_dt,
+     'lookup("d_date_lkp").cal_yr_qtr_id']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.a_phsmed_mm.submarket_id,'a_phsmed_mm.submarket_id',1,0]
+     [out0.a_phsmed_mm.carrier_id,'a_phsmed_mm.carrier_id',1,0]
+     [out0.a_phsmed_mm.dxf_hk_part1,'a_phsmed_mm.dxf_hk_part1',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.a_phsmed_mm.care_fac_adjud_sk,'a_phsmed_mm.care_fac_adjud_sk',1,0]
+     [out0.a_phsmed_mm.rxs_15th_member_cnt,'a_phsmed_mm.rxs_15th_member_cnt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.a_phsmed_mm.dxf_hk_part2,'a_phsmed_mm.dxf_hk_part2',1,0]
+     [out0.a_phsmed_mm.src_env_sk,'a_phsmed_mm.src_env_sk',1,0]
+     [out0.a_phsmed_mm.dxf_sk,'a_phsmed_mm.dxf_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.a_phsmed_mm.cal_yr_qtr_id,'a_phsmed_mm.cal_yr_qtr_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.care_fac_adjud_sk,'care_fac_adjud_sk',2,2]
+     [in0.orig_carrier_id,'orig_carrier_id',2,2]
+     [in0.sbm_dt,'sbm_dt',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.after_15th_elig_mbr_cnt_no,'after_15th_elig_mbr_cnt_no',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("l_submarket_id_lkp").submarket_id','submarket_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     ['lookup("d_date_lkp").cal_yr_qtr_id','cal_yr_qtr_id',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) a_phsmed_mm_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) a_phsmed_mm_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) a_phsmed_mm_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) a_phsmed_mm_carrier_id = fail_if_error(in0.orig_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=10) a_phsmed_mm_submarket_id;
+let decimal("\x01",0) a_phsmed_mm_care_fac_adjud_sk = fail_if_error(in0.care_fac_adjud_sk);
+let decimal("\x01",0) a_phsmed_mm_cal_yr_qtr_id;
+let decimal("\x01",0) a_phsmed_mm_rxs_15th_member_cnt = fail_if_error(in0.after_15th_elig_mbr_cnt_no);
+let decimal("\x01",0) a_phsmed_mm_src_env_sk = fail_if_error(in0.src_env_sk);
+
+
+
+/*   Default value   */
+a_phsmed_mm_submarket_id=fail_if_error(bzt_2_6c54cc0a_58d0f5d0_636b_2(in0.orig_carrier_id).submarket_id);
+
+/*   Default value   */
+a_phsmed_mm_cal_yr_qtr_id=fail_if_error(bzt_3_6c54cc0a_58d0f5d0_636b_2((decimal(""))(string(""))string_substring(str=in0.sbm_dt , start_index= 1, length=6 )
+).cal_yr_qtr_id);
+
+  out0.a_phsmed_mm.dxf_hk_part1::a_phsmed_mm_dxf_hk_part1;
+  out0.a_phsmed_mm.dxf_hk_part2::a_phsmed_mm_dxf_hk_part2;
+  out0.a_phsmed_mm.dxf_sk::a_phsmed_mm_dxf_sk;
+  out0.a_phsmed_mm.carrier_id::a_phsmed_mm_carrier_id;
+  out0.a_phsmed_mm.submarket_id::a_phsmed_mm_submarket_id;
+  out0.a_phsmed_mm.care_fac_adjud_sk::a_phsmed_mm_care_fac_adjud_sk;
+  out0.a_phsmed_mm.cal_yr_qtr_id::a_phsmed_mm_cal_yr_qtr_id;
+  out0.a_phsmed_mm.rxs_15th_member_cnt::a_phsmed_mm_rxs_15th_member_cnt;
+  out0.a_phsmed_mm.src_env_sk::a_phsmed_mm_src_env_sk;
+  out0.*::in0.*;
+
+end;

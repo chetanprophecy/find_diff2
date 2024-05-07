@@ -1,0 +1,14 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxclaim_orx/clean.rxclaim_orx.rccpdp_ndc*.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxclaim_orx/clean.rxclaim_orx.rccpdp_ndc_ctrx.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL_LOOKUP/lookup.rxclaim/lookup.rxclaim.rccpdp_ndc.dat
+OUTPUT_FILE_DML|$|||$AI_DML/lookup.rxclaim/lookup.rxclaim.rccpdp_ndc.dml
+LOOKUP_KEY||||$SORT_KEY
+SORT_KEY||||{dxf_src_sys_id;awq7hb;awv3hc;contract_no;mpvyhc}
+AB_CATALOG|$|||$AI_CAT/produce/produce.rccpdp_ndc.cat
+FILTER_EXPR|$|||lookup_match("rcpdpp_ndc",dxf_src_sys_id,string_lrtrim(awq7hb),string_lrtrim(awv3hc)) and !lookup_match("alternate_ndc",awx9vg)
+USE_NORM||||True
+NORM_XFR||||$AI_XFR/produce/produce.rccpdp_ndc_nrmlz.xfr
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+USE_DEDUP||||True
+RUN_ID||||20171113000000

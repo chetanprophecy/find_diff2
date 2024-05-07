@@ -1,0 +1,6 @@
+!prototype|P|||$AI_PSET/get.columnar.interim.pset
+GET_COLUMN_LIST||||dxf_hk_part1,dxf_hk_part2,dxf_sk,claim_nbr,mbr_adjud_sk,app_due_amt,app_patient_pay_amt,claim_seq_nbr,claim_stat_id,orig_carrier_id,drg_qty,mbr_sk,phr_sk,prod_sk,rx_nbr,awp_unit_cost,orig_account_id,orig_employer_group_id,orig_member_id,rej_cd1_sk,rej_cd2_sk,rej_cd3_sk,app_dispensing_fee,app_ingred_cost_paid,claim_origin_cd,residence_cd_sk,phr_adjud_sk,subm_oth_covrg_cd,subm_oth_payr_amt,sbm_dt,filled_dt,src_env_sk,ids_updt_run_id,ids_updt_dttm
+SOURCE_LOWER||||ids_rxclaim.f_clm_d_prd_d_mem_ad_l_eg
+LOOKUP_FIELDS_KEY||||{}
+MAIN_DATASET||||ids_rxclaim.f_claim_transaction
+FILTER_EXPR||||$[ string_concat( '(sbm_dt >= (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "', START_CHANGES_TIME , '" and sbm_dt < (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "' , END_CHANGES_TIME,'")' , "and (src_env_sk == 490) and first_defined(orig_carrier_id,'X') != '-' and first_defined(orig_employer_group_id,'X') != '-' and first_defined(orig_member_id,'X') != '-'")]

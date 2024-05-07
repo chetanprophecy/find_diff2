@@ -1,0 +1,74 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.clnt_bus_seg.acct_lvl_ind,[transform],in0.account_id]
+  [out0.clnt_bus_seg.client_bus_seg_sk,[transform],]
+  [out0.clnt_bus_seg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.clnt_bus_seg.acct_lvl_ind,'clnt_bus_seg.acct_lvl_ind',1,0]
+     [out0.clnt_bus_seg.carrier_nm,'clnt_bus_seg.carrier_nm',1,0]
+     [out0.clnt_bus_seg.carrier_id,'clnt_bus_seg.carrier_id',1,0]
+     [out0.clnt_bus_seg.vrtl_buss_seg_nm,'clnt_bus_seg.vrtl_buss_seg_nm',1,0]
+     [out0.clnt_bus_seg.client_bus_seg_sk,'clnt_bus_seg.client_bus_seg_sk',1,0]
+     [out0.clnt_bus_seg.src_env_sk,'clnt_bus_seg.src_env_sk',1,0]
+     [out0.clnt_bus_seg.lob_buss_seg_nm,'clnt_bus_seg.lob_buss_seg_nm',1,0]
+     [out0.clnt_bus_seg.co_buss_seg_nm,'clnt_bus_seg.co_buss_seg_nm',1,0]
+     [out0.clnt_bus_seg.account_id,'clnt_bus_seg.account_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.account_id,'account_id',3,2]
+     [in0.lob_buss_seg_nm,'lob_buss_seg_nm',1,1]
+     [in0.co_buss_seg_nm,'co_buss_seg_nm',1,1]
+     [in0.vrtl_buss_seg_nm,'vrtl_buss_seg_nm',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.carrier_id,'carrier_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.carrier_nm,'carrier_nm',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) clnt_bus_seg_client_bus_seg_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=9) clnt_bus_seg_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) clnt_bus_seg_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) clnt_bus_seg_acct_lvl_ind = fail_if_error((if (sql_and(!is_null(in0.account_id),!is_blank(string_lrtrim(in0.account_id))))
+   'Y'
+ else
+   'N'));
+let string("\x01",charset="iso-8859-15", maximum_length=50) clnt_bus_seg_carrier_nm = fail_if_error(in0.carrier_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) clnt_bus_seg_co_buss_seg_nm = fail_if_error(in0.co_buss_seg_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) clnt_bus_seg_vrtl_buss_seg_nm = fail_if_error(in0.vrtl_buss_seg_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) clnt_bus_seg_lob_buss_seg_nm = fail_if_error(in0.lob_buss_seg_nm);
+let decimal("\x01",0) clnt_bus_seg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.clnt_bus_seg.client_bus_seg_sk::clnt_bus_seg_client_bus_seg_sk;
+  out0.clnt_bus_seg.carrier_id::clnt_bus_seg_carrier_id;
+  out0.clnt_bus_seg.account_id::clnt_bus_seg_account_id;
+  out0.clnt_bus_seg.acct_lvl_ind::clnt_bus_seg_acct_lvl_ind;
+  out0.clnt_bus_seg.carrier_nm::clnt_bus_seg_carrier_nm;
+  out0.clnt_bus_seg.co_buss_seg_nm::clnt_bus_seg_co_buss_seg_nm;
+  out0.clnt_bus_seg.vrtl_buss_seg_nm::clnt_bus_seg_vrtl_buss_seg_nm;
+  out0.clnt_bus_seg.lob_buss_seg_nm::clnt_bus_seg_lob_buss_seg_nm;
+  out0.clnt_bus_seg.src_env_sk::clnt_bus_seg_src_env_sk;
+  out0.*::in0.*;
+
+end;

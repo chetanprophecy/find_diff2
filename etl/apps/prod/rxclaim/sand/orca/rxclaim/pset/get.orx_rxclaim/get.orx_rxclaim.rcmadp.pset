@@ -1,0 +1,9 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil_bk1.rcmadp
+SOURCE_SYSTEM_OVERRIDE||||orx_rxclaim
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmadp                  i5abcd,i5aacd,i5accd,i5adcd,i5h1dt,i5emn1,i5yns2,i5rjc2,i5rkc2,i5nbpr,i5d6s2,i5dgih,i5dhih,i5yshr,i5djih,i5b3h9,i5b4h9,i5dkih,i5dlih,i5dmih,i5dnih,i5doih,i5dpih,i5bltx,i5hibr,i5akvn,i5c2dt,i5adtm,i5alvn,i5advn,i5bmdt,i5abtm,i5aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+WHERE_CLAUSE||||$[if (START_CHANGES_TIME != '')  "WHERE rcmadp.i5bmdt >= " +  string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) +  " AND rcmadp.i5bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +  " OPTIMIZE FOR ALL ROWS" else  "WHERE rcmadp.i5bmdt >= " +  string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) +  " AND rcmadp.i5bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) +  " OPTIMIZE FOR ALL ROWS"]
+DO_SOURCE||||0
+DO_CLEAN||||1

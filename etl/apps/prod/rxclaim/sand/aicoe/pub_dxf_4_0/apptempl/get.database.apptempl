@@ -1,0 +1,1082 @@
+<AppConfTempl name="Get from Database (Integration)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="all" template_project="false"/>
+  <TemplateExpressionPackage>include "/~$PUB_DXF_XFR/ace_format.xfr";
+include "/~$PUB_DB_XFR/db_list.xfr";
+
+type source_info_t =
+record
+  string(long) schema_name;
+  string(long) table_name;
+  string(long) fields;
+end;
+
+type source_info_vec_t = source_info_t[long];
+
+
+//
+// Error Checking Functions:
+//
+
+/* Checks the given Application Configuration Name and returns an error message if there is a problem.
+If there is no problem, an empty string is returned instead. */
+out :: check_appconf(appconf_name, AI_SOURCE_DB_LIST) =
+begin
+  let db_info_vec_t info_vec = get_db_info_vec(AI_SOURCE_DB_LIST);
+  let schema_vec = for ( let info in info_vec ) :
+    if(info.dbms_type member [vector "netezza", "oracle", "mssql", "informix", "mysql"]) info.logical_schema;
+  out :1: if(is_null(schema_vec) or length_of(schema_vec) == 0)
+    "AI_SOURCE_DB_LIST paramater does not contain a single entry for netezza, oracle, mssql, mysql or informix.\n" +
+    "Please update and re-create the configuration.";
+  out :2: if(appconf_name != string_downcase(appconf_name))
+    "The application configuration name must be specified in lower case.\n" +
+    "Please close and rename it.";
+  out :3: if ( not starts_with(appconf_name, "get.") )
+    "This application configuration must be named: get.something.\n" +
+    "Please close and rename it.";
+  out :4: if ( string_filter(appconf_name, ".") != ".." )
+    "This application configuration must be named:\n" +
+    "get.database_schema.something.\n" +
+    "Please close and rename it.";
+  out :5: if ( string_split(appconf_name, ".")[1] not member schema_vec)
+    "This application configuration refers to a database schema that is not available.  " +
+    "Please close and rename it or select a different template.  " +
+    "The valid choices for the database schema are:\n" + string_join(schema_vec, ",\n");
+  out :: "";
+end;
+
+out :: get_query_type_id(query_interface) = 
+begin
+out ::  if(query_interface == "Single Schema") 1
+        else if(query_interface == "Multi Schema") 2
+        else if(query_interface == "Complex SQL") 3
+        else 0;
+end;</TemplateExpressionPackage>
+  <Metadata>
+    <Variables name="vars">
+      <ListVariable name="table_choices" type="string"/>
+      <ListVariable name="source_list" type="compound">
+        <Variable name="table_name" type="string"/>
+        <Variable name="dml" type="string"/>
+        <Variable name="fields" type="string"/>
+      </ListVariable>
+      <Variable name="errors" type="string"/>
+      <Variable name="query_type_id" type="integer"/>
+      <ListVariable name="unload_interface_choices" type="string"/>
+      <Variable name="query_interface" type="string"/>
+      <Variable name="dbms_type" type="string"/>
+      <Variable name="unload_interface" type="string"/>
+      <Variable name="source_dbms_type" type="string"/>
+      <ListVariable name="source_dbms_db_project" type="string"/>
+      <Variable name="source_selected_db_proj" type="string"/>
+      <Variable name="configuration_valid" type="string"/>
+      <ListVariable name="output_dml_void_fields_list" type="string"/>
+    </Variables>
+    <Project name="proj">
+      <Pset name="get" prototype_path="$AI_PSET/get.database.interim.pset">
+        <PdlExpression name="PROJECT_DIR" expression="$PROJECT_DIR"/>
+        <PdlExpression name="AI_SERIAL_PENDING" expression="$AI_SERIAL_PENDING"/>
+        <PdlExpression name="AI_SOURCE_DB_LIST" expression="$AI_SOURCE_DB_LIST"/>
+        <PdlExpression name="AI_SOURCE_DB_GROUPS" expression="$AI_SOURCE_DB_GROUPS"/>
+        <PdlExpression name="AI_DML" expression="$AI_DML"/>
+      </Pset>
+    </Project>
+    <SharedFile name="source_dml_file" display_name="Source DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="clean_dml_file" display_name="Clean DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="lookup_dml_file" display_name="Lookup DML File" path="" is_appconf_owned="true"/>
+    <SharedFile name="publish_clean_dml_file" path="" is_appconf_owned="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <!-- Check for errors.  Prevent changes if there are any. -->
+    <Assignment>
+      <SourceValue is_expression="true">check_appconf(built_in, proj.get.AI_SOURCE_DB_LIST)</SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">get_query_type_id(vars.query_interface)</SourceValue>
+      <TargetValue reference="vars.query_type_id"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.query_type_id"/>
+      <TargetValue reference="proj.get.QUERY_TYPE_ID"/>
+    </Assignment>
+    <!-- Establish the PSet naming convention: -->
+    <Assignment>
+      <SourceValue is_expression="true">re_replace(built_in, "^get[.]", "")</SourceValue>
+      <TargetValue reference="proj.get.SOURCE_NAME"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/get." + proj.get.SOURCE_SYSTEM + "/get." + proj.get.SOURCE_NAME + ".pset"</SourceValue>
+      <TargetValue reference="proj.get" property="relative_path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_NAME != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="vars.source_dbms_type"/>
+      <TargetValue reference="proj.get.SOURCE_DBMS_TYPE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">vector_sort_dedup_first(for(let line in re_split_no_empty(proj.get.SOURCE_DB_LIST, "[\r\n]+")) : 
+  if(re_split_no_empty(line, "[ \t]+")[3] == vars.source_dbms_type) re_split_no_empty(line, "[ \t]+")[4])</SourceValue>
+      <TargetValue reference="vars.source_dbms_db_project"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.source_dbms_type == "netezza") [vector "api", "external_table"]
+else [vector ""]</SourceValue>
+      <TargetValue reference="vars.unload_interface_choices"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(vars.unload_interface_choices) &gt; 1) vars.unload_interface else "api"</SourceValue>
+      <TargetValue reference="proj.get.SOURCE_UNLOAD_INTERFACE"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(length_of(vars.source_dbms_db_project) == 1)
+vars.source_dbms_db_project[0] else if(is_blank(vars.source_selected_db_proj)) proj.get.DEFAULT_SOURCE_DB_PROJECT else vars.source_selected_db_proj</SourceValue>
+      <TargetValue reference="proj.get.SOURCE_DB_PROJECT"/>
+    </Assignment>
+    <!-- Get the list of valid table names. -->
+    <Assignment>
+      <SourceValue is_expression="true">begin
+        let directory_listing_type source_dml_vec = [vector];
+		let db_info_vec = re_split_no_empty(proj.get.SOURCE_DB_LIST, "[\r\n]+");
+		if(vars.query_type_id == 1)
+        source_dml_vec = directory_listing(proj.get.SOURCE_DB_DML + "/" + proj.get.SOURCE_SYSTEM, proj.get.SOURCE_SYSTEM + ".*.dml");
+		else if(vars.query_type_id member [vector 2,3])
+		for(let db in db_info_vec)
+		source_dml_vec = vector_concat(source_dml_vec, directory_listing(proj.get.SOURCE_DB_DML + "/" + re_split_no_empty(db, "[ \t]+")[0] + "/", re_split_no_empty(db, "[ \t]+")[0] + ".*.dml"));
+        result :: for ( let dml in source_dml_vec ) :
+          re_replace(dml, "[.]dml$", "");
+end</SourceValue>
+      <TargetValue reference="vars.table_choices"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">begin
+  let directory_listing_type source_vec = [vector];
+  let directory_listing_type source_dml_vec = [vector];
+  let db_info_vec = re_split_no_empty(proj.get.SOURCE_DB_LIST, "[\r\n]+");
+
+  let string(long)[int] source_dml_vec1 = [vector];
+
+  let int[int] index_vec = [vector];
+  
+  if(vars.query_type_id == 1)
+    source_dml_vec = for(let file in directory_listing(proj.get.SOURCE_DB_DML + "/" + proj.get.SOURCE_SYSTEM, proj.get.SOURCE_SYSTEM + ".*.dml")) : proj.get.SOURCE_DB_DML + "/" + proj.get.SOURCE_SYSTEM + "/" + file;
+
+  else if(vars.query_type_id member [vector 2,3])
+       	for(let db in db_info_vec)
+      		source_dml_vec = vector_concat(source_dml_vec, for(let file in directory_listing(proj.get.SOURCE_DB_DML + "/" + re_split_no_empty(db, "[ \t]+")[0] + "/", re_split_no_empty(db, "[ \t]+")[0] + ".*.dml")) : proj.get.SOURCE_DB_DML + "/" + re_split_no_empty(db, "[ \t]+")[0] + "/" + file);
+
+  source_vec = for (let dml_nm in source_dml_vec)  : re_replace( string_split_no_empty(dml_nm, "/") [ length_of(string_split_no_empty(dml_nm, "/")) - 1 ], "[.]dml$", "");
+
+  index_vec = for (let index, index &lt; length_of(vars.source_list.table_name)) : vector_search(source_vec, vars.source_list.table_name[index]);
+
+  source_dml_vec1 = for (let cntr in index_vec) : source_dml_vec[cntr];
+
+  result :: for ( let dml_path in source_dml_vec1 ) : read_type(dml_path);
+end</SourceValue>
+      <TargetValue reference="vars.source_list.dml" resizes_list="false"/>
+    </Assignment>
+    <!-- Update the Output DML. -->
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML_FILE"/>
+      <TargetValue reference="source_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.SOURCE_DML"/>
+      <TargetValue reference="source_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML_FILE"/>
+      <TargetValue reference="clean_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML"/>
+      <TargetValue reference="clean_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.CLEAN_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML_FILE"/>
+      <TargetValue reference="lookup_dml_file" property="path"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.SOURCE_SYSTEM != "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.LOOKUP_DML"/>
+      <TargetValue reference="lookup_dml_file" property="contents"/>
+      <Condition is_expression="true">vars.errors == "" and proj.get.LOOKUP_DML_FILE != ""</Condition>
+    </Assignment>
+    <!-- Store the tables that the user picks. -->
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[ begin
+        let source_info_vec_t header_vec = [vector [record
+          schema_name  "# Schema Name"
+          table_name  "Unqualified Table Name"
+          fields      "Fields"]];
+          
+        let source_info_vec_t src_vec = for(let src in vars.source_list) : 
+          [record schema_name string_split(src.table_name, ".")[0] table_name string_split(src.table_name, ".")[1] fields src.fields];
+          
+        let source_info_vec = vector_concat(header_vec, src_vec);
+        
+        let decimal("") schema_width = vector_max(
+          for ( let s in source_info_vec ) :
+            string_length(s.schema_name));
+            
+        let decimal("") name_width = vector_max(
+          for ( let s in source_info_vec ) :
+            string_length(s.table_name));
+            
+        let fmt = string_concat("%-", schema_width, "s %-", name_width, "s  %s");
+        result :: string_join(
+          for ( let s in source_info_vec ) :
+            printf(fmt, s.schema_name, s.table_name, s.fields),
+          "\n");
+      end ]]></SourceValue>
+      <TargetValue reference="proj.get.SOURCE_TABLE_LIST"/>
+      <Condition is_expression="true">vars.errors == ""</Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(vars.errors == "" 
+and proj.get.READ_TBL_GENDML.error_string == "" 
+and ((proj.get.DO_SOURCE == "1" and proj.get.SOURCE_FILE_URL != "") 
+    or (proj.get.DO_CLEAN == "1" and proj.get.CLEAN_FILE_URL != "") 
+    or (proj.get.DO_LOOKUP == "1" and proj.get.LOOKUP_FILE_URL != "" and proj.get.LOOKUP_KEY != "")) 
+) "TRUE" else "FALSE"</SourceValue>
+      <TargetValue reference="vars.configuration_valid"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">if(string_filter(proj.get.AB_MAX_RECORD_BUFFER, "0123456789") != proj.get.AB_MAX_RECORD_BUFFER or (decimal(""))proj.get.AB_MAX_RECORD_BUFFER &lt; 5000000) "5000000" else proj.get.AB_MAX_RECORD_BUFFER</SourceValue>
+      <TargetValue reference="proj.get.AB_MAX_RECORD_BUFFER"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">for ( let field in record_info(proj.get.OUTPUT_DML) ): if (starts_with(field.dml_type, "void(")) field.name</SourceValue>
+      <TargetValue reference="vars.output_dml_void_fields_list"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.CLEAN_DML"/>
+      <TargetValue reference="publish_clean_dml_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue reference="proj.get.PUBLIC_CLEAN_DML_FILE"/>
+      <TargetValue reference="publish_clean_dml_file" property="path"/>
+    </Assignment>
+  </AutomaticAssignments>
+  <InitialAssignments/>
+  <UserInterface>
+    <Toolbar>
+      <ToolbarExecuteButton>
+        <ExecutionTarget reference="proj.get"/>
+        <UseOpConsoleIfAvailable>false</UseOpConsoleIfAvailable>
+        <Enabled is_expression="true">vars.configuration_valid=="TRUE"</Enabled>
+        <ErrorMessage>You must save this configuration before running it.</ErrorMessage>
+        <Description is_expression="true">if(vars.configuration_valid == "TRUE") 
+              "Get data from " + proj.get.SOURCE_NAME + " and create a clean/source/lookup file"
+            else "The run button is disabled until the configuration is valid i.e. it must be named correctly and one of the three checkboxes to create clean/source/lookup file should be checked. If lookup file is being created then lookup key must be selected."</Description>
+      </ToolbarExecuteButton>
+    </Toolbar>
+    <Canvas>
+      <Label>Settings</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors != ""</Visible>
+          <Width>400</Width>
+          <Style>mainSource</Style>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA["<font color='#FF0000'><b>" + vars.errors + "</b></font>"]]></Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Query Interface Selection</Label>
+          <UIElements>
+            <Popup>
+              <Label>Pick Query Interface...</Label>
+              <Title>Pick Query Interface</Title>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>Single Schema</ConstantValue>
+                    <ConstantValue>Multi Schema</ConstantValue>
+                    <ConstantValue>Complex SQL</ConstantValue>
+                  </Choices>
+                  <Label>Query Interface</Label>
+                  <SourceTargetValue reference="vars.query_interface"/>
+                </ComboBox>
+              </UIElements>
+              <Style>options</Style>
+            </Popup>
+            <Box>
+              <Label>Query Interface</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="vars.query_interface"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == ""</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Label>Source DBMS Selection</Label>
+          <UIElements>
+            <Popup>
+              <Label>Pick Source DBMS Type...</Label>
+              <Title>Pick Source DBMS Type</Title>
+              <UIElements>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>netezza</ConstantValue>
+                    <ConstantValue>oracle</ConstantValue>
+                    <ConstantValue>mssql</ConstantValue>
+                    <ConstantValue>informix</ConstantValue>
+                    <ConstantValue>mysql</ConstantValue>
+                  </Choices>
+                  <Label>Pick Source DBMS Type</Label>
+                  <SourceTargetValue reference="vars.source_dbms_type"/>
+                </ComboBox>
+                <ComboBox>
+                  <Label>Pick unload interface</Label>
+                  <Choices reference="vars.unload_interface_choices"/>
+                  <SourceTargetValue reference="vars.unload_interface"/>
+                  <Visible is_expression="true">length_of(vars.unload_interface_choices) &gt; 1</Visible>
+                </ComboBox>
+                <ComboBox>
+                  <Choices reference="vars.source_dbms_db_project"/>
+                  <Label>Pick Source DB project</Label>
+                  <SourceTargetValue reference="vars.source_selected_db_proj"/>
+                  <Visible is_expression="true">length_of(vars.source_dbms_db_project) &gt; 1 and vars.query_type_id member [vector 2, 3]</Visible>
+                </ComboBox>
+              </UIElements>
+              <Style>options</Style>
+            </Popup>
+            <Box>
+              <Label>DBMS Type</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.SOURCE_DBMS_TYPE"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>Unload Interface</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.SOURCE_UNLOAD_INTERFACE"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+            </Box>
+            <Box>
+              <Label>DB Project</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.SOURCE_DB_PROJECT"/>
+                </TextLabel>
+              </UIElements>
+              <Style>inner</Style>
+              <Visible is_expression="true">(vars.query_type_id != 1 and vars.source_dbms_type member [vector "netezza", "oracle", "mssql", "informix", "mysql"]) or vars.query_type_id == 1</Visible>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.query_type_id != 0</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" &amp;&amp; (vars.query_type_id member [vector 1, 2]) &amp;&amp; vars.source_dbms_type member [vector "netezza", "oracle", "mssql", "informix", "mysql"]</Visible>
+          <Style>mainSource</Style>
+          <Label>Source</Label>
+          <UIElements>
+            <TextLabel>
+              <Label><![CDATA[ <b>** Please Select a Table to Read **</b> ]]></Label>
+            </TextLabel>
+            <Popup>
+              <Label>Select Tables and Fields...</Label>
+              <Style>diffSource</Style>
+              <Title>Select Tables and Fields</Title>
+              <UIElements>
+                <OrderedList>
+                  <Label>Choose One or More Tables to Query</Label>
+                  <Choices reference="vars.table_choices"/>
+                  <SourceTargetValue reference="vars.source_list.table_name"/>
+                </OrderedList>
+                <ForEach item="source" list_reference="vars.source_list">
+                  <UIElements>
+                    <FieldPicker>
+                      <IsKey>false</IsKey>
+                      <Label is_expression="true">"Optional: Select Fields for " + source.table_name</Label>
+                      <ContextPset reference="proj.get"/>
+                      <RecordFormat reference="source.dml"/>
+                      <SourceTargetValue reference="source.fields"/>
+                    </FieldPicker>
+                  </UIElements>
+                </ForEach>
+              </UIElements>
+            </Popup>
+            <CheckBox>
+              <Label>Run Query in Parallel</Label>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+              <SourceTargetValue reference="proj.get.DO_QUERY_IN_PARALLEL" source_property="expression"/>
+              <Visible is_expression="true">vars.unload_interface != "external_table"</Visible>
+            </CheckBox>
+            <Popup>
+              <Label>Set Notes...</Label>
+              <Style>options</Style>
+              <Title>Set Notes</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Notes</Label>
+                  <SourceTargetValue reference="proj.get.NOTES" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>5</Height>
+            </Spacer>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Name</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.get.SOURCE_NAME</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Logical Name</Label>
+              <UIElements>
+                <TextInput>
+                  <Label>Edit Source Logical Name here...</Label>
+                  <SourceTargetValue reference="proj.get.SOURCE_LOGICAL_NAME"/>
+                  <Description>This is the logical name used to extract dxf_src_sys_id. (Defaulted to SOURCE_SYSTEM which is derived from configuration name; can be overridden here or in the interim pset)</Description>
+                </TextInput>
+              </UIElements>
+              <Description>This is the logical name used to extract dxf_src_sys_id. (Defaulted to SOURCE_SYSTEM which is derived from configuration name; can be overridden here or in the interim pset)</Description>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.NOTES != ""</Visible>
+              <Style>inner</Style>
+              <Label>Notes</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.NOTES"/>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Table List</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>450</Width>
+                  <Label is_expression="true">fixed_font(re_replace(proj.get.SOURCE_TABLE_LIST, ",", "\n                                      "))</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+        <Box>
+          <Label>Source SQL Query</Label>
+          <UIElements>
+            <TextLabel>
+              <Visible is_expression="true">vars.source_list == [vector]</Visible>
+              <Label><![CDATA[ <b>** Please Select a Tables and provide an SQL Query **</b> ]]></Label>
+            </TextLabel>
+            <Popup>
+              <Label>SQL Query Editor...</Label>
+              <Style>enrichmentSource</Style>
+              <Title>SQL Query Editor</Title>
+              <UIElements>
+                <OrderedList>
+                  <Label>Choose One or More Tables to Query</Label>
+                  <Choices reference="vars.table_choices"/>
+                  <SourceTargetValue reference="vars.source_list.table_name"/>
+                </OrderedList>
+                <TextArea>
+                  <Label>SQL Query Editor</Label>
+                  <SourceTargetValue reference="proj.get.SQL" source_property="expression"/>
+                  <Style>inner</Style>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <CheckBox>
+              <Label>Run Query in Parallel</Label>
+              <TrueValue>1</TrueValue>
+              <FalseValue>0</FalseValue>
+              <SourceTargetValue reference="proj.get.DO_QUERY_IN_PARALLEL" source_property="expression"/>
+              <Visible is_expression="true">vars.unload_interface != "external_table"</Visible>
+            </CheckBox>
+            <Popup>
+              <Label>Set Notes...</Label>
+              <Style>options</Style>
+              <Title>Set Notes</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Notes</Label>
+                  <SourceTargetValue reference="proj.get.NOTES" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>5</Height>
+            </Spacer>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Name</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label is_expression="true">proj.get.SOURCE_NAME</Label>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Logical Name</Label>
+              <UIElements>
+                <TextInput>
+                  <Label>Edit Source Logical Name here...</Label>
+                  <SourceTargetValue reference="proj.get.SOURCE_LOGICAL_NAME"/>
+                  <Description>This is the logical name used to extract dxf_src_sys_id. (Defaulted to SOURCE_SYSTEM which is derived from configuration name; can be overridden here or in the interim pset)</Description>
+                </TextInput>
+              </UIElements>
+              <Description>This is the logical name used to extract dxf_src_sys_id. (Defaulted to SOURCE_SYSTEM which is derived from configuration name; can be overridden here or in the interim pset)</Description>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.NOTES != ""</Visible>
+              <Style>inner</Style>
+              <Label>Notes</Label>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="proj.get.NOTES"/>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Style>inner</Style>
+              <Label>Source Table List</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>450</Width>
+                  <Label is_expression="true">fixed_font(re_replace(proj.get.SOURCE_TABLE_LIST, ",", "\n                                      "))</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+          <Visible is_expression="true">vars.errors == "" &amp;&amp; (vars.query_type_id == 3) &amp;&amp; vars.source_dbms_type member [vector "netezza", "oracle", "mssql", "informix", "mysql"]</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" &amp;&amp; (vars.query_type_id member [vector 1,2]) &amp;&amp; vars.source_dbms_type member [vector "netezza", "oracle", "mssql", "informix", "mysql"]</Visible>
+          <Style>mainSource</Style>
+          <Label>SQL</Label>
+          <UIElements>
+            <Popup>
+              <Style>processing</Style>
+              <Label>Optional: Set Select Hint...</Label>
+              <Title>Set Select Hint</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Select Hint</Label>
+                  <SourceTargetValue reference="proj.get.SELECT_HINT" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Style>processing</Style>
+              <Label>Optional: Set Client Filter...</Label>
+              <Title>Set Client Filter</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Client Filter SQL Fragment</Label>
+                  <SourceTargetValue reference="proj.get.CLIENT_FILTER_CLAUSE" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Style>processing</Style>
+              <Label>Optional: Set Where Clause...</Label>
+              <Title>Set Where Clause</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>SQL Where Clause
+
+Note that you need to include the "WHERE" keyword below.</Label>
+                  <SourceTargetValue reference="proj.get.WHERE_CLAUSE" source_property="expression"/>
+                  <Width>600</Width>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            <!--
+            <Popup>
+              <Label>Optional: Set SQL Override (Use with Caution!)...</Label>
+              <Title>Set SQL Override</Title>
+              <UIElements>
+                <TextArea>
+                  <Label>Full SQL Expression (Use with Caution!)</Label>
+                  <SourceTargetValue reference="proj.get.READ_TBL_SQL" source_property="expression"/>
+                </TextArea>
+              </UIElements>
+            </Popup>
+            -->
+            <Spacer>
+              <Height>12</Height>
+            </Spacer>
+            <Box>
+              <Visible is_expression="true">proj.get.SELECT_HINT != ""</Visible>
+              <Style>inner</Style>
+              <Label>Select Hint</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>450</Width>
+                  <Label reference="proj.get.SELECT_HINT"/>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.CLIENT_FILTER_CLAUSE != ""</Visible>
+              <Style>inner</Style>
+              <Label>Client Filter SQL Fragment</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>450</Width>
+                  <Label reference="proj.get.CLIENT_FILTER_CLAUSE"/>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.WHERE_CLAUSE != ""</Visible>
+              <Style>inner</Style>
+              <Label>SQL Where Clause</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>450</Width>
+                  <Label reference="proj.get.WHERE_CLAUSE"/>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and ((vars.query_type_id member [vector 1,2] and vars.source_list != [vector]) or (vars.query_type_id == 3 and vars.source_list != [vector] and proj.get.SQL != "")) and proj.get.READ_TBL_GENDML.error_string != ""</Visible>
+          <Style>mainSource</Style>
+          <Label>Error Generating DML</Label>
+          <Width>900</Width>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA["<font color='#FF0000'><b>" + proj.get.READ_TBL_GENDML.error_string + "</b></font>" 
+]]></Label>
+            </TextLabel>
+          </UIElements>
+          <Expanded>false</Expanded>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Style>sort</Style>
+          <Label>Optional: Partitioning Information</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Pick Partitioning Key</Label>
+              <Title>Pick Paritioning Key</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Partitioning Key</Label>
+                  <RecordFormat reference="proj.get.OUTPUT_DML"/>
+                  <SourceTargetValue reference="proj.get.PARTITION_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+            <Popup>
+              <Label>Optional: Pick Sort Key</Label>
+              <Description>It is recommended that Sort Key be the same as Partition Key. This is the default setting.</Description>
+              <Title>Pick Sort Key</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Sort Key</Label>
+                  <RecordFormat reference="proj.get.OUTPUT_DML"/>
+                  <SourceTargetValue reference="proj.get.SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+              <Style>key</Style>
+            </Popup>
+          </UIElements>
+          <Visible is_expression="true">!is_blank(vars.query_interface)</Visible>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true"><![CDATA[vars.errors == "" and proj.get.READ_TBL_GENDML.error_string == ""]]></Visible>
+          <Style>recval</Style>
+          <Label>Output</Label>
+          <UIElements>
+            <VerticalLayoutContainer>
+              <UIElements>
+                <CheckBox>
+                  <Label>Produce a Source File for Cleansing</Label>
+                  <SourceTargetValue reference="proj.get.DO_SOURCE"/>
+                  <TrueValue>1</TrueValue>
+                  <FalseValue>0</FalseValue>
+                </CheckBox>
+                <CheckBox>
+                  <Label>Skip Cleansing, and Produce a Clean File</Label>
+                  <SourceTargetValue reference="proj.get.DO_CLEAN"/>
+                  <TrueValue>1</TrueValue>
+                  <FalseValue>0</FalseValue>
+                </CheckBox>
+                <CheckBox>
+                  <Label>Skip Cleansing, and Produce a Lookup</Label>
+                  <SourceTargetValue reference="proj.get.DO_LOOKUP"/>
+                  <TrueValue>1</TrueValue>
+                  <FalseValue>0</FalseValue>
+                </CheckBox>
+                <TextLabel>
+                  <Visible is_expression="true">(decimal(""))proj.get.DO_SOURCE + (decimal(""))proj.get.DO_CLEAN + (decimal(""))proj.get.DO_LOOKUP != 1</Visible>
+                  <Label is_expression="true">bold("Note: Typically, only one of these should be selected.")</Label>
+                </TextLabel>
+              </UIElements>
+            </VerticalLayoutContainer>
+            <Spacer>
+              <Width>100%</Width>
+              <Height>25</Height>
+            </Spacer>
+            <VerticalLayoutContainer>
+              <UIElements>
+                <CheckBox>
+                  <Label>Publish Clean File</Label>
+                  <SourceTargetValue reference="proj.get.DO_PUBLISH_CLEAN_FILE"/>
+                  <FalseValue>0</FalseValue>
+                  <TrueValue>1</TrueValue>
+                </CheckBox>
+              </UIElements>
+              <Visible is_expression="true">proj.get.DO_CLEAN == "1"</Visible>
+            </VerticalLayoutContainer>
+          </UIElements>
+        </Box>
+        <Box>
+          <Visible is_expression="true"><![CDATA[vars.errors == "" and proj.get.READ_TBL_GENDML.error_string == "" and proj.get.DO_LOOKUP != "0"]]></Visible>
+          <Style>sort</Style>
+          <Label>Lookup</Label>
+          <UIElements>
+            <Popup>
+              <Label>Optional: Pick Lookup Fields...</Label>
+              <Title>Pick Lookup Fields</Title>
+              <UIElements>
+                <FieldPicker>
+                  <IsKey>false</IsKey>
+                  <Label>Lookup Field Picker</Label>
+                  <RecordFormat reference="proj.get.GET_DML_PLUS_HEADER"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_FIELDS"/>
+                </FieldPicker>
+              </UIElements>
+              <Style>recordFormat</Style>
+            </Popup>
+            <Popup>
+              <Label>Optional: Set Lookup Key...</Label>
+              <Style>key</Style>
+              <Description>Set the lookup key, which will force sorting and deduplication.  This is especially useful for dated (interval) lookups.  For simple (exact) lookups, this is not needed unless you want sorting.</Description>
+              <Title>Set Lookup Key</Title>
+              <UIElements>
+                <KeyPicker>
+                  <Label>Lookup Key</Label>
+                  <ShowOrderColumn>false</ShowOrderColumn>
+                  <ShowSpecialColumn>true</ShowSpecialColumn>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.LOOKUP_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Style>key</Style>
+              <Label>Optional: Set Extra Dedup Sort Key Fields...</Label>
+              <Title>Set Extra Dedup Sort Key Fields</Title>
+              <Description>Set the extra keys (in addition to the lookup key, minus any interval_top field) used to pick the "best" surviving record among duplicates.</Description>
+              <UIElements>
+                <TextLabel>
+                  <Label>These fields should be driven by your business requirements.  You should also consider favoring newer records over older ones and shorter intervals over longer.</Label>
+                </TextLabel>
+                <KeyPicker>
+                  <Label>Extra Dedup Sort Key</Label>
+                  <RecordFormat reference="lookup_dml_file"/>
+                  <SourceTargetValue reference="proj.get.EXTRA_DEDUP_SORT_KEY"/>
+                </KeyPicker>
+              </UIElements>
+            </Popup>
+            <Spacer>
+              <Height>12</Height>
+            </Spacer>
+            <Box>
+              <Visible is_expression="true">proj.get.LOOKUP_FIELDS != ""</Visible>
+              <Style>inner</Style>
+              <Label>Lookup Fields</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">proj.get.LOOKUP_FIELDS</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.LOOKUP_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Lookup Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.LOOKUP_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.EXTRA_DEDUP_SORT_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Extra Dedup Sort Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.EXTRA_DEDUP_SORT_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+            <Box>
+              <Visible is_expression="true">proj.get.DEDUP_SORT_KEY != ""</Visible>
+              <Style>inner</Style>
+              <Label>Dedup Sort Key</Label>
+              <UIElements>
+                <TextLabel>
+                  <Width>350</Width>
+                  <Label is_expression="true">show_key(proj.get.DEDUP_SORT_KEY, lookup_dml_file.contents)</Label>
+                  <Style>inner</Style>
+                </TextLabel>
+              </UIElements>
+            </Box>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible is_expression="true">vars.errors == "" and vars.configuration_valid == "TRUE"</Visible>
+          <Style>mapping</Style>
+          <Label>Testing</Label>
+          <UIElements>
+            <TextLabel>
+              <Width>320</Width>
+              <Label><![CDATA[<b>Tip:</b> The first time you try to run, you may get an error.  If you do, Save and Refresh.  Now your DML file should be up to date.  Run and then Publish.]]></Label>
+            </TextLabel>
+            <ExecuteButton>
+              <Label>Remember: Save before you run.</Label>
+              <ButtonLabel>Run Get</ButtonLabel>
+              <SourceValue reference="proj.get"/>
+            </ExecuteButton>
+            <Popup>
+              <Visible is_expression="true">proj.get.SOURCE_FILE_URL != ""</Visible>
+              <Label>View Source File...</Label>
+              <Style>validation</Style>
+              <Title>View Source File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="source_dml_file" property="contents"/>
+                  <SourceIsCompressed/>
+                  <SourceValue reference="proj.get.SOURCE_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.CLEAN_FILE_URL != ""</Visible>
+              <Label>View Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Clean File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="clean_dml_file" property="contents"/>
+                  <SourceIsCompressed/>
+                  <SourceValue reference="proj.get.CLEAN_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible is_expression="true">proj.get.LOOKUP_FILE_URL != ""</Visible>
+              <Label>View Lookup File...</Label>
+              <Style>validation</Style>
+              <Title>View Lookup File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="lookup_dml_file" property="contents"/>
+                  <SourceValue reference="proj.get.LOOKUP_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Visible reference="proj.get.DO_PUBLISH_CLEAN_FILE"/>
+              <Label>View Publish Clean File...</Label>
+              <Style>validation</Style>
+              <Title>View Publish Clean File</Title>
+              <UIElements>
+                <ViewData>
+                  <RecordFormat reference="publish_clean_dml_file" property="contents"/>
+                  <SourceValue reference="proj.get.PUBLIC_CLEAN_FILE_URL"/>
+                </ViewData>
+              </UIElements>
+            </Popup>
+          </UIElements>
+        </Box>
+        <Box>
+          <Label>AB_MAX_RECORD_BUFFER</Label>
+          <UIElements>
+            <Popup>
+              <Label is_expression="true">"Override Maximum Record Size [" + proj.get.AB_MAX_RECORD_BUFFER + "]"</Label>
+              <Title/>
+              <UIElements>
+                <TextInput>
+                  <Label>Enter the value of AB_MAX_RECORD_BUFFER</Label>
+                  <SourceTargetValue reference="proj.get.AB_MAX_RECORD_BUFFER"/>
+                </TextInput>
+              </UIElements>
+            </Popup>
+          </UIElements>
+          <Style>options</Style>
+          <Expanded>false</Expanded>
+          <Visible is_expression="true">length_of(vars.output_dml_void_fields_list) != 0 and !is_blank(vars.query_interface)</Visible>
+          <Arrowhead>off</Arrowhead>
+        </Box>
+      </Column>
+    </Canvas>
+    <Tab>
+      <Label>Generated SQL</Label>
+      <UIElements>
+        <TextArea>
+          <Label>Full SQL</Label>
+          <SourceValue reference="proj.get.READ_TBL_SQL"/>
+          <Height>600</Height>
+          <Width>1500</Width>
+        </TextArea>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_SOURCE != "0" and source_dml_file.path != ""</Visible>
+      <Label>Source DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(source_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(source_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_CLEAN != "0" and clean_dml_file.path != ""</Visible>
+      <Label>Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(clean_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(clean_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_PUBLISH_CLEAN_FILE</Visible>
+      <Label>Public Clean DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(publish_clean_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(publish_clean_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Visible is_expression="true">proj.get.DO_LOOKUP != "0" and lookup_dml_file.path != ""</Visible>
+      <Label>Lookup DML</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(lookup_dml_file.resolved_path)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">fixed_font(lookup_dml_file.contents)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Get PSet</Label>
+      <UIElements>
+        <TextLabel>
+          <Label is_expression="true">bold(proj.get.PROJECT_DIR + "/" + proj.get.relative_path)</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+        <TextLabel>
+          <Label is_expression="true">first_without_error(
+            fixed_font(read_file(proj.get.PROJECT_DIR + "/" + proj.get.relative_path)),
+            "No pset is available until the configuration is saved.")</Label>
+          <ReadOnly>true</ReadOnly>
+          <Width>1500</Width>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+    <Tab>
+      <Label>Help</Label>
+      <UIElements>
+        <TextLabel>
+          <Label><![CDATA[<font size="14 pt"><b>Notes:</b>
+
+Use this to save useful information, such as run times, record counts,
+and data sizes.  For example: 30.5 min, 122.5 M rec, 64.0 GB
+This information will be included in the Operational Console logs, so
+please plan accordingly.
+
+Possible configuration names:
+1. One Table-One Schema: get.schema.table
+2. Multi Table-One Schema: get.schema.table1_table2
+3. Multi Table-Multi Schema: get.schema1_schema2.table1_table2
+
+</font>
+          ]]></Label>
+        </TextLabel>
+      </UIElements>
+    </Tab>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,79 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a797a85_afa0_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_fty_sg.facility_zip,[passthrough],in0.bsrhip]
+  [out0.d_fty_sg.facility_street,[passthrough],in0.bsrfip]
+  [out0.d_fty_sg.facility_state,[passthrough],in0.bsuooc]
+  [out0.d_fty_sg.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_fty_sg.claim_nbr,[passthrough],in0.bsp2nb]
+  [out0.d_fty_sg.facility_nm,[passthrough],in0.bsreip]
+  [out0.d_fty_sg.fac_seg_sk,[transform],]
+  [out0.d_fty_sg.claim_seq_nbr,[passthrough],in0.bsoinb]
+  [out0.d_fty_sg.facility_city,[passthrough],in0.bsrgip]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_fty_sg.facility_zip,'d_fty_sg.facility_zip',1,0]
+     [out0.d_fty_sg.facility_street,'d_fty_sg.facility_street',1,0]
+     [out0.d_fty_sg.facility_state,'d_fty_sg.facility_state',1,0]
+     [out0.d_fty_sg.src_env_sk,'d_fty_sg.src_env_sk',1,0]
+     [out0.d_fty_sg.claim_nbr,'d_fty_sg.claim_nbr',1,0]
+     [out0.d_fty_sg.facility_nm,'d_fty_sg.facility_nm',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_fty_sg.fac_seg_sk,'d_fty_sg.fac_seg_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_fty_sg.claim_seq_nbr,'d_fty_sg.claim_seq_nbr',1,0]
+     [out0.d_fty_sg.facility_city,'d_fty_sg.facility_city',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.bsrhip,'bsrhip',1,1]
+     [in0.bsp2nb,'bsp2nb',1,1]
+     [in0.bsoinb,'bsoinb',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.bsrgip,'bsrgip',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.bsuooc,'bsuooc',1,1]
+     [in0.bsreip,'bsreip',1,1]
+     [in0.bsrfip,'bsrfip',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_fty_sg_fac_seg_sk = -1;
+let decimal("\x01",0) d_fty_sg_claim_nbr = fail_if_error(in0.bsp2nb);
+let decimal("\x01",0) d_fty_sg_claim_seq_nbr = fail_if_error(in0.bsoinb);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_fty_sg_facility_city = fail_if_error(in0.bsrgip);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_fty_sg_facility_state = fail_if_error(in0.bsuooc);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_fty_sg_facility_street = fail_if_error(in0.bsrfip);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_fty_sg_facility_nm = fail_if_error(in0.bsreip);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_fty_sg_facility_zip = fail_if_error(in0.bsrhip);
+let decimal("\x01",0) d_fty_sg_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.d_fty_sg.fac_seg_sk::d_fty_sg_fac_seg_sk;
+  out0.d_fty_sg.claim_nbr::d_fty_sg_claim_nbr;
+  out0.d_fty_sg.claim_seq_nbr::d_fty_sg_claim_seq_nbr;
+  out0.d_fty_sg.facility_city::d_fty_sg_facility_city;
+  out0.d_fty_sg.facility_state::d_fty_sg_facility_state;
+  out0.d_fty_sg.facility_street::d_fty_sg_facility_street;
+  out0.d_fty_sg.facility_nm::d_fty_sg_facility_nm;
+  out0.d_fty_sg.facility_zip::d_fty_sg_facility_zip;
+  out0.d_fty_sg.src_env_sk::d_fty_sg_src_env_sk;
+  out0.*::in0.*;
+
+end;

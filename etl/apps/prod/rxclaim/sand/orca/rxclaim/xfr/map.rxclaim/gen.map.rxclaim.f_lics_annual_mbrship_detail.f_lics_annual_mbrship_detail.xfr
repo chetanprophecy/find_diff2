@@ -1,0 +1,283 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_5b3f1c5a_e2cb_0
+    BizHidden:true
+@*/
+/*   lookup d_mbr   */
+out0::bzt_3_6c54cc0a_5b3f1c5a_e2cb_0(in0,in1,in2,in3)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) mbr_sk = NULL(""), cag_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) mbr_id = NULL("");
+  date("YYYYMMDD")("\x01") mbr_dt_of_brth = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=25) mb_first_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=35) mb_last_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_sex = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) mbr_city_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) mbr_st_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=15) mbr_zip = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_mbr",in0,in1,in2,in3));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_5b3f1c5a_e2cb_0
+    BizHidden:true
+@*/
+/*   lookup d_cag   */
+out0::bzt_4_6c54cc0a_5b3f1c5a_e2cb_0(in0,in1,in2)=
+begin
+let record
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  decimal("\x01",0) cag_sk = NULL(""), dar_lob_sk = NULL(""), acctg_lob_sk = NULL(""), client_sk = NULL(""), carrier_sk = NULL(""), carrier_acct_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_nm = NULL(""), carrier_nm = NULL(""), account_nm = NULL(""), employer_group_nm = NULL("");
+  decimal("\x01",0) pvcy_excl_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) pa_site_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) carrier_category_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_category_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) carrier_state_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) acct_client_type_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) acct_client_type_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) acct_product_type_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) acct_product_type_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) acct_product_line_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=100) acct_product_line_desc = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL(""), gps_plan_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) oracle_client_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) claim_suffix_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=12) custom_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) funding_arrangment_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) plan_variation_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) policy_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) reporting_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) product_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) segment_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) hmo_acct_dvsn_cd = NULL(""), claim_account_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) sold_market_site_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) situs_state_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) platform_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) client_carrier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) shared_arrangement_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=3) sales_office_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) accumulator_ind = NULL(""), erisa_id = NULL("");
+  date("YYYYMMDD")("\x01") renewal_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) iplan_ind = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) legal_entity_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) franchise_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) lead_partner_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) coc_cd = NULL("");
+  decimal("\x01",0) migration_ind = NULL("");
+  date("YYYYMMDD")("\x01") migration_effective_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=5) product_classifier_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) pharmacy_rider_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) cob_ind = NULL("");
+  date("YYYYMMDD")("\x01") cob_effective_dt = NULL("");
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") transaction_ts = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) obligor_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) speciality_ind = NULL("");
+  date("YYYYMMDD")("\x01") spclty_eff_dt = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) pick_lob_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=6) gl_product_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=7) gl_customer_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) product_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_only_ind = NULL(""), hm_dlvry_stat_ind = NULL(""), rebates_only_ind = NULL(""), rebates_stat_ind = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=50) bseg_srv_typ = NULL(""), bseg_bus_typ = NULL(""), bseg_clt_typ = NULL("");
+  decimal("\x01", maximum_length=5) dxf_src_sys_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_cag",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5b3f1c5a_e2cb_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.lics_amd.hicn,[passthrough],in0.CURRENT_CMS_HICN]
+  [out0.lics_amd.carrier_id,[passthrough],in0.Carrier]
+  [out0.lics_amd.curr_reinsurance_subsidy_adj_amt,[transform],in0.CURRENT_REINSURANCE_SUBSIDY_ADJUSTMENT_AMOUNT]
+  [out0.lics_amd.mbr_id,[passthrough],in0.Member_ID]
+  [out0.lics_amd.mbr_sk,[transform],in0.Member_ID,
+     in0.Group,
+     in0.Account,
+     in0.Carrier,
+     'lookup("d_mbr").mbr_sk']
+  [out0.lics_amd.tot_actual_lics_subsidy_amt,[transform],in0.TOTAL_ACTUAL_LOW_INCOME_COST_SHARING_SUBSIDY_AMOUNT]
+  [out0.lics_amd.perd_start_dt,[passthrough],in0.Period_Start_Date]
+  [out0.d_cag.account_id,[passthrough],in0.Account]
+  [out0.d_mbr.account_id,[passthrough],in0.Account]
+  [out0.lics_amd.mbi,[passthrough],in0.MBI]
+  [out0.lics_amd.perd_end_dt,[passthrough],in0.Period_End_Date]
+  [out0.d_mbr.mbr_id,[passthrough],in0.Member_ID]
+  [out0.d_cag.carrier_id,[passthrough],in0.Carrier]
+  [out0.d_mbr.carrier_id,[passthrough],in0.Carrier]
+  [out0.lics_amd.tot_pay,[transform],in0.Total_Payment]
+  [out0.lics_amd.group_id,[passthrough],in0.Group]
+  [out0.lics_amd.account_id,[passthrough],in0.Account]
+  [out0.lics_amd.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.lics_amd.cag_sk,[transform],in0.Group,
+     in0.Carrier,
+     in0.Account,
+     'lookup("d_cag").cag_sk']
+  [out0.lics_amd.seq_nbr,[passthrough],in0.SEQUENCE_NO]
+  [out0.lics_amd.client_nm,[passthrough],in0.Name]
+  [out0.d_mbr.employer_group_id,[passthrough],in0.Group]
+  [out0.lics_amd.rec_id,[passthrough],in0.RECORD_ID]
+  [out0.d_cag.employer_group_id,[passthrough],in0.Group]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.lics_amd.hicn,'lics_amd.hicn',1,0]
+     [out0.lics_amd.carrier_id,'lics_amd.carrier_id',1,0]
+     [out0.lics_amd.curr_reinsurance_subsidy_adj_amt,'lics_amd.curr_reinsurance_subsidy_adj_amt',1,0]
+     [out0.lics_amd.mbr_id,'lics_amd.mbr_id',1,0]
+     [out0.lics_amd.mbr_sk,'lics_amd.mbr_sk',1,0]
+     [out0.lics_amd.tot_actual_lics_subsidy_amt,'lics_amd.tot_actual_lics_subsidy_amt',1,0]
+     [out0.lics_amd.perd_start_dt,'lics_amd.perd_start_dt',1,0]
+     [out0.d_cag.account_id,'d_cag.account_id',1,0]
+     [out0.d_mbr.account_id,'d_mbr.account_id',1,0]
+     [out0.lics_amd.mbi,'lics_amd.mbi',1,0]
+     [out0.lics_amd.perd_end_dt,'lics_amd.perd_end_dt',1,0]
+     [out0.d_mbr.mbr_id,'d_mbr.mbr_id',1,0]
+     [out0.d_cag.carrier_id,'d_cag.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_mbr.carrier_id,'d_mbr.carrier_id',1,0]
+     [out0.lics_amd.tot_pay,'lics_amd.tot_pay',1,0]
+     [out0.lics_amd.group_id,'lics_amd.group_id',1,0]
+     [out0.lics_amd.account_id,'lics_amd.account_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.lics_amd.src_env_sk,'lics_amd.src_env_sk',1,0]
+     [out0.lics_amd.cag_sk,'lics_amd.cag_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.lics_amd.seq_nbr,'lics_amd.seq_nbr',1,0]
+     [out0.lics_amd.client_nm,'lics_amd.client_nm',1,0]
+     [out0.d_mbr.employer_group_id,'d_mbr.employer_group_id',1,0]
+     [out0.lics_amd.rec_id,'lics_amd.rec_id',1,0]
+     [out0.d_cag.employer_group_id,'d_cag.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.Carrier,'Carrier',5,5]
+     [in0.SEQUENCE_NO,'SEQUENCE_NO',1,1]
+     [in0.CURRENT_CMS_HICN,'CURRENT_CMS_HICN',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("d_mbr").mbr_sk','mbr_sk',1,1]
+     [in0.RECORD_ID,'RECORD_ID',1,1]
+     [in0.Account,'Account',5,5]
+     [in0.Member_ID,'Member_ID',3,3]
+     ['lookup("d_cag").cag_sk','cag_sk',1,1]
+     [in0.Period_Start_Date,'Period_Start_Date',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.TOTAL_ACTUAL_LOW_INCOME_COST_SHARING_SUBSIDY_AMOUNT,'TOTAL_ACTUAL_LOW_INCOME_COST_SHARING_SUBSIDY_AMOUNT',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.Period_End_Date,'Period_End_Date',1,1]
+     [in0.MBI,'MBI',1,1]
+     [in0.Name,'Name',1,1]
+     [in0.Total_Payment,'Total_Payment',1,1]
+     [in0.CURRENT_REINSURANCE_SUBSIDY_ADJUSTMENT_AMOUNT,'CURRENT_REINSURANCE_SUBSIDY_ADJUSTMENT_AMOUNT',1,1]
+     [in0.Group,'Group',5,5]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) lics_amd_cag_sk;
+let decimal("\x01",0) lics_amd_mbr_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=25) lics_amd_client_nm = fail_if_error(in0.Name);
+let string("\x01",charset="iso-8859-15", maximum_length=30) lics_amd_carrier_id = fail_if_error(in0.Carrier);
+let string("\x01",charset="iso-8859-15", maximum_length=40) lics_amd_account_id = fail_if_error(in0.Account);
+let string("\x01",charset="iso-8859-15", maximum_length=30) lics_amd_group_id = fail_if_error(in0.Group);
+let string("\x01",charset="iso-8859-15", maximum_length=20) lics_amd_mbr_id = fail_if_error(in0.Member_ID);
+let date("YYYYMMDD")("\x01") lics_amd_perd_start_dt = fail_if_error(in0.Period_Start_Date);
+let date("YYYYMMDD")("\x01") lics_amd_perd_end_dt = fail_if_error(in0.Period_End_Date);
+let string("\x01",charset="iso-8859-15", maximum_length=20) lics_amd_rec_id = fail_if_error(in0.RECORD_ID);
+let decimal("\x01",0) lics_amd_seq_nbr = fail_if_error(in0.SEQUENCE_NO);
+let string("\x01",charset="iso-8859-15", maximum_length=20) lics_amd_hicn = fail_if_error(in0.CURRENT_CMS_HICN);
+let string("\x01",charset="iso-8859-15", maximum_length=20) lics_amd_mbi = fail_if_error(in0.MBI);
+let decimal("\x01".2, maximum_length=17, sign_reserved) lics_amd_tot_actual_lics_subsidy_amt = fail_if_error((decimal("\x01".2, maximum_length=17, sign_reserved))((decimal("\x01"))in0.TOTAL_ACTUAL_LOW_INCOME_COST_SHARING_SUBSIDY_AMOUNT));
+let decimal("\x01".2, maximum_length=17, sign_reserved) lics_amd_curr_reinsurance_subsidy_adj_amt = fail_if_error((decimal("\x01".2, maximum_length=17, sign_reserved))((decimal("\x01"))in0.CURRENT_REINSURANCE_SUBSIDY_ADJUSTMENT_AMOUNT));
+let decimal("\x01".2, maximum_length=17, sign_reserved) lics_amd_tot_pay = fail_if_error((decimal("\x01".2, maximum_length=17, sign_reserved))((decimal("\x01"))in0.Total_Payment));
+let decimal("\x01",0) lics_amd_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_carrier_id = fail_if_error(in0.Carrier);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_cag_account_id = fail_if_error(in0.Account);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_cag_employer_group_id = fail_if_error(in0.Group);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_carrier_id = fail_if_error(in0.Carrier);
+let string("\x01",charset="iso-8859-15", maximum_length=40) d_mbr_account_id = fail_if_error(in0.Account);
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_mbr_employer_group_id = fail_if_error(in0.Group);
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_mbr_mbr_id = fail_if_error(in0.Member_ID);
+
+
+
+/*   Default value   */
+lics_amd_mbr_sk=fail_if_error(first_defined(bzt_3_6c54cc0a_5b3f1c5a_e2cb_0(in0.Carrier,in0.Account, in0.Group,in0.Member_ID).mbr_sk,-1));
+
+/*   Default value   */
+lics_amd_cag_sk=fail_if_error(first_defined(bzt_4_6c54cc0a_5b3f1c5a_e2cb_0(in0.Account, in0.Carrier, in0.Group).cag_sk,-1));
+
+  out0.lics_amd.cag_sk::lics_amd_cag_sk;
+  out0.lics_amd.mbr_sk::lics_amd_mbr_sk;
+  out0.lics_amd.client_nm::lics_amd_client_nm;
+  out0.lics_amd.carrier_id::lics_amd_carrier_id;
+  out0.lics_amd.account_id::lics_amd_account_id;
+  out0.lics_amd.group_id::lics_amd_group_id;
+  out0.lics_amd.mbr_id::lics_amd_mbr_id;
+  out0.lics_amd.perd_start_dt::lics_amd_perd_start_dt;
+  out0.lics_amd.perd_end_dt::lics_amd_perd_end_dt;
+  out0.lics_amd.rec_id::lics_amd_rec_id;
+  out0.lics_amd.seq_nbr::lics_amd_seq_nbr;
+  out0.lics_amd.hicn::lics_amd_hicn;
+  out0.lics_amd.mbi::lics_amd_mbi;
+  out0.lics_amd.tot_actual_lics_subsidy_amt::lics_amd_tot_actual_lics_subsidy_amt;
+  out0.lics_amd.curr_reinsurance_subsidy_adj_amt::lics_amd_curr_reinsurance_subsidy_adj_amt;
+  out0.lics_amd.tot_pay::lics_amd_tot_pay;
+  out0.lics_amd.src_env_sk::lics_amd_src_env_sk;
+  out0.d_cag.carrier_id::d_cag_carrier_id;
+  out0.d_cag.account_id::d_cag_account_id;
+  out0.d_cag.employer_group_id::d_cag_employer_group_id;
+  out0.d_mbr.carrier_id::d_mbr_carrier_id;
+  out0.d_mbr.account_id::d_mbr_account_id;
+  out0.d_mbr.employer_group_id::d_mbr_employer_group_id;
+  out0.d_mbr.mbr_id::d_mbr_mbr_id;
+  out0.*::in0.*;
+
+end;

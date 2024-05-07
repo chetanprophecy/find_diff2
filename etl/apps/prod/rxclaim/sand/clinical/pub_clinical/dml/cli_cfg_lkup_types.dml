@@ -1,0 +1,59 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_DML/cli_cfg_lkup_types.dml
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/18  Paul Thompson           Initial version
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_cfg_types.dml";
+
+/********************************/
+/* GPI List Config by ID Lookup */
+/********************************/
+
+type gpi_list_cfg_by_id_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  list_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {list_id};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+/**********************************/
+/* GPI List Config by Name Lookup */
+/**********************************/
+
+type gpi_list_cfg_by_nm_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  list_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {list_nm};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+/********************************/
+/* GPI List Config (ALL) Lookup */
+/********************************/
+
+type all_gpi_list_cfg_lkup_t =
+record
+  lookup_identifier_type id             = -1;
+  list_cfg_t             RecordFormat() = allocate_with_defaults();
+  string('')             key()          = {};
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;

@@ -1,0 +1,6 @@
+!prototype|P|||$AI_PSET/get.columnar.interim.pset
+GET_COLUMN_LIST||||adj_rxcount_stnd_days_sply,admin_rte_sk,app_dispensing_fee,app_due_amt,app_ingred_cost_paid,app_patient_pay_amt,awp_unit_cost,awp_unit_cost_ind,cag_sk,claim_nbr,claim_seq_nbr,claim_stat_id,claim_stat_sk,clt_due_amt,compound_sk,cost_type_cd_sk,days_sply,drg_qty,drug_rx_otc_ind_sk,drug_sk,dsg_frm_sk,dxf_hk_part1,dxf_hk_part2,dxf_sk,filled_dt,filled_yr_mnth,gender_sk,gnrc_mdspn_ind_sk,gpi_sk,ids_updt_dttm,ids_updt_run_id,mbr_age,mbr_eligty_adjud_sk,mbr_sk,ntwk_sk,orig_account_id,orig_carrier_id,orig_employer_group_id,orig_member_id,pbr_adjud_sk,pbr_sk,pbr_spclty_sk,phr_sk,phr_state_cd_sk,pln_adjud_sk,pln_drg_stat_sk,prior_auth_nbr,prod_adjud_sk,prod_sk,pst_copay_amt,pst_dispensing_fee,pst_dispensing_fee_cont,pst_due_amt,pst_ingred_cost_paid,refill_nbr,relationship_cd_sk,rx_nbr,rx_written_dt,sbm_dispensing_fee,sbm_dt,sbm_due_amt,sbm_ingred_cost_paid,sbm_sales_tax_paid,sbm_usual_customary_amt,src_env_sk
+SOURCE_LOWER||||ids_rxclaim.fctdt_dmbr_dpbr
+LOOKUP_FIELDS_KEY||||{}
+MAIN_DATASET||||ids_rxclaim.f_claim_transaction
+FILTER_EXPR||||$[string_concat( '((sbm_dt >= (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "', START_CHANGES_TIME , '" )','and (sbm_dt < (date("YYYYMMDD")) (datetime("YYYY-MM-DD HH24:MI:SS")) "' , END_CHANGES_TIME,'"))')]

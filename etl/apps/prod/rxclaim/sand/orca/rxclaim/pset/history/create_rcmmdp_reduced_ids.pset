@@ -1,0 +1,11 @@
+!prototype|P|||$AI_MP/history/create_ids_from_main_n_archive_ids.mp
+INPUT_FL||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.dat.gz
+INPUT_IDX_FL||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.idx
+ARCH_INPUT_FL||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.archive.dat.gz
+ARCH_INPUT_IDX_FL||||$PUB_DATAHUB_MFS_LOOKUP/ids/ids_common/one/d_mmd_member_eligibility.archive.idx
+IS_REDUCED||||True
+PRE_FILTER||||$[  \r\nbegin\r\n\r\nlet date("YYYYMMDD") curr_dt = now1();\r\nlet string(int) cag_filter       = "ids_rec_stat_cd!='3' "\r\n        ;\r\n\r\nresult ::   cag_filter ;\r\n\r\n\r\nend;]
+DML_FL||||${PUB_DATAHUB_DML}/ids_common/ids_common.d_mmd_member_eligibility.dml
+REDUCED_DATASET_DML||||${PUB_DATAHUB_DML}/ids_common/ids_common.d_mmd_member_eligibility.reduced.dml
+POST_FILTER|$|||first_defined(mmd_record_status,"")== 'A' and mmd_thru_dt > (date("YYYYMMDD")) '$CURR_DT'
+AB_CATALOG|$|||$AI_CAT/produce/produce.d_member_demographics.cat

@@ -1,0 +1,111 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5a82bfc3_d504_0
+    BizHidden:true
+@*/
+/*   lookup d_gpi_lkp   */
+out0::bzt_2_6c54cc0a_5a82bfc3_d504_0(in0)=
+begin
+let record
+  decimal("\x01",0) gpi_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_gpi_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5a82bfc3_d504_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.l_op_dt.gpi8,[passthrough],in0.gpi8]
+  [out0.l_op_dt.strength_calc,[transform],in0.strengthcalc]
+  [out0.l_op_dt.opioid_gpi_sk,[transform],in0.gpi14,
+     'lookup("d_gpi_lkp").gpi_sk']
+  [out0.l_op_dt.strengthuom,[passthrough],in0.strengthuom]
+  [out0.l_op_dt.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.l_op_dt.conv_strength,[transform],in0.convstrength]
+  [out0.l_op_dt.gpi_classification,[passthrough],in0.gpi_classification]
+  [out0.l_op_dt.strength,[transform],in0.strength]
+  [out0.l_op_dt.gpi14,[passthrough],in0.gpi14]
+  [out0.l_op_dt.med_cnv_ratio,[transform],in0.medconvratio]
+  [out0.l_op_dt.gpi_nm,[passthrough],in0.gpiname]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.l_op_dt.gpi8,'l_op_dt.gpi8',1,0]
+     [out0.l_op_dt.strength_calc,'l_op_dt.strength_calc',1,0]
+     [out0.l_op_dt.opioid_gpi_sk,'l_op_dt.opioid_gpi_sk',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.l_op_dt.strengthuom,'l_op_dt.strengthuom',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.l_op_dt.src_env_sk,'l_op_dt.src_env_sk',1,0]
+     [out0.l_op_dt.conv_strength,'l_op_dt.conv_strength',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.l_op_dt.gpi_classification,'l_op_dt.gpi_classification',1,0]
+     [out0.l_op_dt.strength,'l_op_dt.strength',1,0]
+     [out0.l_op_dt.gpi14,'l_op_dt.gpi14',1,0]
+     [out0.l_op_dt.med_cnv_ratio,'l_op_dt.med_cnv_ratio',1,0]
+     [out0.l_op_dt.gpi_nm,'l_op_dt.gpi_nm',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.medconvratio,'medconvratio',1,1]
+     [in0.strength,'strength',1,1]
+     [in0.convstrength,'convstrength',1,1]
+     [in0.strengthcalc,'strengthcalc',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.strengthuom,'strengthuom',1,1]
+     ['lookup("d_gpi_lkp").gpi_sk','gpi_sk',1,1]
+     [in0.gpiname,'gpiname',1,1]
+     [in0.gpi14,'gpi14',3,3]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.gpi8,'gpi8',1,1]
+     [in0.gpi_classification,'gpi_classification',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_op_dt_opioid_gpi_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=14) l_op_dt_gpi14 = fail_if_error(in0.gpi14);
+let string("\x01",charset="iso-8859-15", maximum_length=100) l_op_dt_gpi_nm = fail_if_error(in0.gpiname);
+let decimal("\x01".3, maximum_length=9, sign_reserved) l_op_dt_strength = fail_if_error((decimal(""))in0.strength);
+let string("\x01",charset="iso-8859-15", maximum_length=9) l_op_dt_strengthuom = fail_if_error(in0.strengthuom);
+let string("\x01",charset="iso-8859-15", maximum_length=8) l_op_dt_gpi8 = fail_if_error(in0.gpi8);
+let decimal("\x01".4, maximum_length=8, sign_reserved) l_op_dt_med_cnv_ratio = fail_if_error((decimal(""))in0.medconvratio);
+let decimal("\x01".3, maximum_length=9, sign_reserved) l_op_dt_conv_strength = fail_if_error((decimal(""))in0.convstrength);
+let decimal("\x01".5, maximum_length=11, sign_reserved) l_op_dt_strength_calc = fail_if_error((decimal(""))in0.strengthcalc);
+let string("\x01",charset="iso-8859-15", maximum_length=3) l_op_dt_gpi_classification = fail_if_error(in0.gpi_classification);
+let decimal("\x01",0) l_op_dt_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+l_op_dt_opioid_gpi_sk=fail_if_error(first_defined(bzt_2_6c54cc0a_5a82bfc3_d504_0(in0.gpi14).gpi_sk,-1));
+
+  out0.l_op_dt.opioid_gpi_sk::l_op_dt_opioid_gpi_sk;
+  out0.l_op_dt.gpi14::l_op_dt_gpi14;
+  out0.l_op_dt.gpi_nm::l_op_dt_gpi_nm;
+  out0.l_op_dt.strength::l_op_dt_strength;
+  out0.l_op_dt.strengthuom::l_op_dt_strengthuom;
+  out0.l_op_dt.gpi8::l_op_dt_gpi8;
+  out0.l_op_dt.med_cnv_ratio::l_op_dt_med_cnv_ratio;
+  out0.l_op_dt.conv_strength::l_op_dt_conv_strength;
+  out0.l_op_dt.strength_calc::l_op_dt_strength_calc;
+  out0.l_op_dt.gpi_classification::l_op_dt_gpi_classification;
+  out0.l_op_dt.src_env_sk::l_op_dt_src_env_sk;
+  out0.*::in0.*;
+
+end;

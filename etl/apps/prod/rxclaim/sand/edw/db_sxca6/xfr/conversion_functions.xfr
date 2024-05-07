@@ -1,0 +1,30 @@
+/******************************************************************************************************************************************
+ * db_sxca6 -> $DB_SXCA6_XFR/conversion_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/03/13  Upal Chatterjee         Initial Version
+ ******************************************************************************************************************************************/
+
+include "~$DB_SXCA6_DML/common_types.dml";
+include "~$DB_SXCA6_XFR/common_functions.xfr";
+
+rcgpip_tbl_t out :: convert_rcgpip_tbl_to_rcgpip(rcgpip_tbl_t in) inline =
+begin
+out.(*,form == 'string') :1: string_lrtrim(in.*);
+out.*                    ::  in.*;
+end;
+
+rcpidp_tbl_t out :: convert_rcpidp_tbl_to_rcpidp(rcpidp_tbl_t in) inline =
+begin
+out.(*,form == 'string') :1: string_lrtrim(in.*);
+out.*                    ::  in.*;
+end;
+
+rcprdp_tbl_t out :: convert_rcprdp_tbl_to_rcprdp(rcprdp_tbl_t in) inline =
+begin
+out.(*,form == 'string') :1: string_lrtrim(in.*);
+out.*                    ::  in.*;
+end;

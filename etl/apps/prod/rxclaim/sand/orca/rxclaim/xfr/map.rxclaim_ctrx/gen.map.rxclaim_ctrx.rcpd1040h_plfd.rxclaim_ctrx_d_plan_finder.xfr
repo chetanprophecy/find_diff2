@@ -1,0 +1,178 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_6c54cc0a_5b751c74_9898_2
+    BizHidden:true
+@*/
+/*   lookup d_prod_unit_cost_lkp   */
+out0::bzt_2_6c54cc0a_5b751c74_9898_2(in0)=
+begin
+let record
+  unsigned integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=10) cost_src_cd = NULL(""), cost_type_cd = NULL("");
+  decimal("\x01",0) cost_seq_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) cost_stat_cd = NULL("");
+  date("YYYYMMDD")("\x01") cost_eff_dt = NULL(""), cost_thru_dt = NULL("");
+  decimal("\x01".5, maximum_length=15, sign_reserved) unit_cost_amt = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prod_unit_cost_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_5b751c74_9898_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_pl_fd.cms_low_value,[transform],in0.ndcid,
+     'lookup("d_prod_unit_cost_lkp").unit_cost_amt']
+  [out0.d_pl_fd.wac_unit_cost,[transform],in0.ndcid,
+     'lookup("d_prod_unit_cost_lkp").unit_cost_amt']
+  [out0.d_pl_fd.description,[transform],in0.pfrecord,
+     in0.ndcid,
+     'lookup("d_prod_unit_cost_lkp").unit_cost_amt']
+  [out0.d_pl_fd.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.d_pl_fd.cmspstdte,[passthrough],in0.cmspstdte]
+  [out0.d_pl_fd.planyear,[passthrough],in0.planyear]
+  [out0.d_pl_fd.contract_nbr,[passthrough],in0.contractid]
+  [out0.d_pl_fd.fileid,[passthrough],in0.pffileid]
+  [out0.d_pl_fd.client_id,[passthrough],in0.pdpcarrier]
+  [out0.d_pl_fd.cms_high_value,[transform],in0.ndcid,
+     'lookup("d_prod_unit_cost_lkp").unit_cost_amt']
+  [out0.d_pl_fd.pbp_nbr,[passthrough],in0.pbpid]
+  [out0.d_pl_fd.prod_id,[passthrough],in0.ndcid]
+  [out0.d_pl_fd.client_unit_cost,[transform],in0.pfrecord]
+  [out0.d_pl_fd.days_supply,[transform],in0.pfrecord]
+  [out0.d_pl_fd.wac20,[transform],in0.ndcid,
+     'lookup("d_prod_unit_cost_lkp").unit_cost_amt']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_pl_fd.cms_low_value,'d_pl_fd.cms_low_value',1,3]
+     [out0.d_pl_fd.wac_unit_cost,'d_pl_fd.wac_unit_cost',1,1]
+     [out0.d_pl_fd.description,'d_pl_fd.description',1,5]
+     [out0.d_pl_fd.src_env_sk,'d_pl_fd.src_env_sk',1,0]
+     [out0.d_pl_fd.cmspstdte,'d_pl_fd.cmspstdte',1,0]
+     [out0.d_pl_fd.planyear,'d_pl_fd.planyear',1,0]
+     [out0.d_pl_fd.contract_nbr,'d_pl_fd.contract_nbr',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_pl_fd.fileid,'d_pl_fd.fileid',1,0]
+     [out0.d_pl_fd.client_id,'d_pl_fd.client_id',1,0]
+     [out0.d_pl_fd.cms_high_value,'d_pl_fd.cms_high_value',1,3]
+     [out0.d_pl_fd.pbp_nbr,'d_pl_fd.pbp_nbr',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_pl_fd.prod_id,'d_pl_fd.prod_id',1,0]
+     [out0.d_pl_fd.client_unit_cost,'d_pl_fd.client_unit_cost',1,1]
+     [out0.d_pl_fd.days_supply,'d_pl_fd.days_supply',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.d_pl_fd.wac20,'d_pl_fd.wac20',1,2]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.pffileid,'pffileid',2,2]
+     [in0.planyear,'planyear',2,2]
+     [in0.contractid,'contractid',2,2]
+     [in0.pdpcarrier,'pdpcarrier',2,2]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',3,3]
+     [in0.pfrecord,'pfrecord',3,6]
+     [in0.cmspstdte,'cmspstdte',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     ['lookup("d_prod_unit_cost_lkp").unit_cost_amt','unit_cost_amt',1,14]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.ndcid,'ndcid',3,16]
+     [in0.pbpid,'pbpid',2,2]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal('') d_pl_fd_cmspstdte = fail_if_error(in0.cmspstdte);
+let string(unsigned integer(1),maximum_length=10) d_pl_fd_fileid = fail_if_error(in0.pffileid);
+let string(unsigned integer(1),maximum_length=9) d_pl_fd_client_id = fail_if_error(in0.pdpcarrier);
+let string(unsigned integer(1),maximum_length=5) d_pl_fd_contract_nbr = fail_if_error(in0.contractid);
+let string(unsigned integer(1),maximum_length=3) d_pl_fd_pbp_nbr = fail_if_error(in0.pbpid);
+let string("\x01", maximum_length=4) d_pl_fd_planyear = fail_if_error(in0.planyear);
+let string(unsigned integer(1),maximum_length=11) d_pl_fd_prod_id = fail_if_error(in0.ndcid);
+let decimal("\x01",maximum_length=3) d_pl_fd_days_supply = fail_if_error(string_substring(in0.pfrecord,20,2));
+let decimal("\x01".5, maximum_length=18, sign_reserved) d_pl_fd_client_unit_cost;
+let decimal("\x01".5, maximum_length=18, sign_reserved) d_pl_fd_wac_unit_cost;
+let decimal("\x01".5, maximum_length=18, sign_reserved) d_pl_fd_wac20;
+let decimal("\x01".5, maximum_length=18, sign_reserved) d_pl_fd_cms_high_value;
+let decimal("\x01".5, maximum_length=18, sign_reserved) d_pl_fd_cms_low_value;
+let string(unsigned integer(1),maximum_length=25) d_pl_fd_description;
+let decimal("\x01",0) d_pl_fd_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let decimal('') v_wac_unit_cost;
+let decimal('') v_wac20;
+let decimal('') v_cms_high_value;
+let decimal('') v_cms_low_value;
+let decimal('') v_client_unit_cost = fail_if_error((decimal_strip(string_substring(in0.pfrecord,23,8))) + ((decimal_strip(string_substring(in0.pfrecord,31,4)))/10000));
+
+
+
+/*   Default value   */
+d_pl_fd_client_unit_cost=fail_if_error(v_client_unit_cost);
+
+/*   Default value   */
+v_wac_unit_cost=fail_if_error(bzt_2_6c54cc0a_5b751c74_9898_2(in0.ndcid).unit_cost_amt);
+
+/*   Default value   */
+v_wac20=fail_if_error(1.2 * v_wac_unit_cost);
+
+/*   Default value   */
+d_pl_fd_wac20=fail_if_error(v_wac20);
+
+/*   Default value   */
+v_cms_low_value=fail_if_error(v_wac20/10);
+
+/*   Default value   */
+d_pl_fd_cms_low_value=fail_if_error(v_cms_low_value);
+
+/*   Default value   */
+v_cms_high_value=fail_if_error(v_wac20 * 5);
+
+/*   Default value   */
+d_pl_fd_description=fail_if_error((if (sql_or(is_null(v_wac_unit_cost),is_blank(v_wac_unit_cost)))
+   "No WAC Found"
+ else
+   (if ((v_client_unit_cost>v_cms_high_value))
+      "High Unit Cost"
+    else
+      (if ((v_client_unit_cost<v_cms_low_value))
+         "Low Unit Cost"
+       else
+         "NIR"))));
+
+/*   Default value   */
+d_pl_fd_cms_high_value=fail_if_error(v_cms_high_value);
+
+/*   Default value   */
+d_pl_fd_wac_unit_cost=fail_if_error(v_wac_unit_cost);
+
+  out0.d_pl_fd.cmspstdte::d_pl_fd_cmspstdte;
+  out0.d_pl_fd.fileid::d_pl_fd_fileid;
+  out0.d_pl_fd.client_id::d_pl_fd_client_id;
+  out0.d_pl_fd.contract_nbr::d_pl_fd_contract_nbr;
+  out0.d_pl_fd.pbp_nbr::d_pl_fd_pbp_nbr;
+  out0.d_pl_fd.planyear::d_pl_fd_planyear;
+  out0.d_pl_fd.prod_id::d_pl_fd_prod_id;
+  out0.d_pl_fd.days_supply::d_pl_fd_days_supply;
+  out0.d_pl_fd.client_unit_cost::d_pl_fd_client_unit_cost;
+  out0.d_pl_fd.wac_unit_cost::d_pl_fd_wac_unit_cost;
+  out0.d_pl_fd.wac20::d_pl_fd_wac20;
+  out0.d_pl_fd.cms_high_value::d_pl_fd_cms_high_value;
+  out0.d_pl_fd.cms_low_value::d_pl_fd_cms_low_value;
+  out0.d_pl_fd.description::d_pl_fd_description;
+  out0.d_pl_fd.src_env_sk::d_pl_fd_src_env_sk;
+  out0.*::in0.*;
+
+end;

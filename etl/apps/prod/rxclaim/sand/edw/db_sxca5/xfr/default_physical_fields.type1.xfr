@@ -1,0 +1,38 @@
+include "/~$PUB_DMF_XFR/standardize.xfr";
+
+constant datetime("YYYY-MM-DD HH24:MI:SS") current_time = now1();
+constant string("") uid = "DMF-1-" + string_suffix($"RUN_ID", 14);  // Keep this <= 20 characters.
+
+
+
+// Used to work around bad mappings, discovered in QA or UAT, until they can be fixed in Dev.
+//out :: fix_num(in) =
+//begin
+//  out :1: if ( is_valid(in) ) in;
+//  out :2: -1;
+//end;
+
+
+/* Sets the bookkeeping and other "physical" fields. */
+out :: reformat(in) =
+begin
+  if ( in.drop_record )
+    force_error(string_concat("Drop Record is not yet implemented: ", (decimal(""))in.drop_record));
+
+  out.is_equal :: 0;
+  $[ if ( SURROGATE_KEY_FIELD_NAME == "" ) "" else "out." + SURROGATE_KEY_FIELD_NAME + " :: 0;" ]
+  out.(*, starts_with(form, "date") and
+          name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :1: current_time;
+  out.(*, form == "string" and
+          re_index(name, "(user|uid)") and
+          name member re_split_no_empty($"BOOKKEEPING_FIELDS", "[^a-zA-Z0-9_]+")) :2: uid;
+  out.(*, name == "proc_run_id") :3: (decimal(""))string_suffix($"RUN_ID", 12);  // Keep this <= 12 digits.
+  out.(*, name == "curr_rec_ind") :4: "Y";  // Active
+  //out.(*, name == "db_sxca5_record_placeholder_ind") :5: "N";  // Not a Placeholder
+  //out.(*, name == "db_sxca5_src_sys_id") :6: in.dmf_src_sys_id;
+  // Used to work around bad mappings, discovered in QA or UAT, until they can be fixed in Dev.
+  //out.(*, name=="something" and form=="decimal") :9: fix_num(in.*);
+  out.(*, form == "string") :99: trim_for_netezza(in.*);
+  out.* :: in.*;
+  out.newline :: "\n";
+end;

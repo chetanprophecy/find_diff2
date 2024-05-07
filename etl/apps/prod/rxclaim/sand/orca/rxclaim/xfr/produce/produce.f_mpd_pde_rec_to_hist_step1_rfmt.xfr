@@ -1,0 +1,11 @@
+include "~$PUB_DXF_DML/generic_data_types.dml";
+
+out :: reformat(in) = 
+begin
+
+  let hash_key_combine_type dxf_hk = reinterpret_as(hash_key_combine_type, hash_value(in, {f_pde_rec.pde_claim_nbr;f_pde_rec.src_env_sk}, "murmur"));  
+  out.dxf_hk_part1::dxf_hk.dxf_hk_part1;
+  out.dxf_hk_part2::dxf_hk.dxf_hk_part2;
+  out.dxf_sk::in.f_pde_rec.dxf_sk;
+  
+end;

@@ -1,0 +1,15 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_ctrx.rcex4p
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_member
+JOIN_TYPE|l|||Left Outer Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{ams5cd;ams6cd;ams7cd;ams8cd;src_env_sk}
+TARGET_NAME||||rxclaim_ctrx.rcex4p_d_mbr
+DRIVER_OUTPUT_FIELDS||||$[ string_join(record_info_item(remove_fields(read_type(DRIVER_FILE_INFO.full_dml_url + DRIVER_FILE_INFO.dml_name), "newline"), "name"), ",") ]
+DO_CLEAN||||1
+DRIVER_FILE_TYPE||||Clean
+JOIN_XFR||||out::join(in0, in1)=\r\nbegin\r\n  out.mbr_hic_cd :1: in1.mbr_hic_cd;\r\n  out.* :2: in0.*;\r\n  out.* :: in1.*;\r\nend;
+ADDITIONAL_FIELDS_DML||||record\r\n  string("\\x01", maximum_length=20)  ams5cd = NULL("");\r\n  string("\\x01", maximum_length=9)   ams6cd = NULL("");\r\n  string("\\x01", maximum_length=15)  ams7cd = NULL("");\r\n  string("\\x01", maximum_length=15)  ams8cd = NULL("");\r\n  string("\\x01", maximum_length=20)  mbr_hic_cd = NULL("");\r\nend
+NON_DRIVER_1_OUTPUT_FIELDS||||mbr_id,carrier_id,account_id,employer_group_id,mbr_hic_cd,src_env_sk
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.ams5cd :1: in.mbr_id;\r\nout.ams6cd :1: in.carrier_id;\r\nout.ams7cd :1: in.account_id;\r\nout.ams8cd :1: in.employer_group_id;\r\nout.mbr_hic_cd :1: in.mbr_hic_cd;\r\nout.* :: in.*;\r\nend
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.src_env_sk :: (decimal(""))in.rxt_src_envrt_id;\r\nout.* :: in.*;\r\nend

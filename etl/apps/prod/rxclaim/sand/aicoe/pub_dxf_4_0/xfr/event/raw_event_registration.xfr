@@ -1,0 +1,46 @@
+include "~$PUB_DXF_DML/event/raw_event_registration.dml";
+
+out :: get_registration_file_path_for_raw_file()=
+begin
+  out :: "$AI_META/raw_event_registration.dat";
+end;
+
+out :: read_files_for_mart_for_raw_file()=
+begin
+  let string("") content = "";
+  let path = get_registration_file_path_for_raw_file();
+  out :: read_file(path);
+end;
+
+raw_event_registration_type[] out :: get_all_registrations_for_raw_file()=
+begin
+  let string("\x01") contents = read_files_for_mart_for_raw_file();
+  let string("\x01")[] lines = string_split_no_empty(contents, "\n");
+  let raw_event_registration_type[] registrations = [vector];
+  for(let line in lines)
+  begin
+    if(not is_blank(line) and not starts_with(line, "#"))
+    begin
+      let string("") l = line + "\n";
+      let raw_event_registration_type r = reinterpret(l);
+      registrations = vector_append(registrations, r);
+    end
+  end
+  out :: registrations;
+end;
+
+raw_event_registration_type[] out :: get_registration_details_for_source_name(source_name)=
+begin
+  let raw_event_registration_type[] regs = [vector];
+  regs = for(let reg in get_all_registrations_for_raw_file()) : if(reg.source_name == source_name) reg;
+  
+  out :: regs;
+end;
+
+raw_event_registration_type out :: get_registration_details_for_target_name(target_name)=
+begin
+  let raw_event_registration_type t_reg = allocate_with_defaults();
+  t_reg = (for(let reg in get_all_registrations_for_raw_file()) : if(reg.target_system == string_split(target_name, ".")[0] && reg.target_entity == string_split(target_name, ".")[1]) reg)[0];
+  
+  out :: t_reg;
+end;

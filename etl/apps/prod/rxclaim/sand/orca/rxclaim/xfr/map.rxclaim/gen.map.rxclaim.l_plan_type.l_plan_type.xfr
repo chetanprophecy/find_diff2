@@ -1,0 +1,30 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) l_plan_tp_pln_type_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=1) l_plan_tp_pln_type_id;
+let string("\x01",charset="iso-8859-15", maximum_length=50) l_plan_tp_pln_type_desc;
+let decimal("\x01",0) l_plan_tp_src_env_sk = -1;
+let datetime("YYYYMMDDHH24MISS")("\x01") l_plan_tp_insert_ts = fail_if_error(now1());
+let datetime("YYYYMMDDHH24MISS")("\x01") l_plan_tp_update_ts = fail_if_error(now1());
+
+
+
+/*   Default value   */
+l_plan_tp_pln_type_id=fail_if_error(str_nk(in0.pln_type_id));
+
+/*   Default value   */
+l_plan_tp_pln_type_desc=fail_if_error(trim_no_null_default(in0.pln_type_desc));
+
+  out0.l_plan_tp.pln_type_sk::l_plan_tp_pln_type_sk;
+  out0.l_plan_tp.pln_type_id::l_plan_tp_pln_type_id;
+  out0.l_plan_tp.pln_type_desc::l_plan_tp_pln_type_desc;
+  out0.l_plan_tp.src_env_sk::l_plan_tp_src_env_sk;
+  out0.l_plan_tp.insert_ts::l_plan_tp_insert_ts;
+  out0.l_plan_tp.update_ts::l_plan_tp_update_ts;
+  out0.*::in0.*;
+
+end;

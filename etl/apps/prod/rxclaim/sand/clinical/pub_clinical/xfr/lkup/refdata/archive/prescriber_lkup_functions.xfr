@@ -1,0 +1,53 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/prescriber_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/08/29  Gaurav Mirje            Initial version, create lookup functions for prescriber process. 
+ *  2016/10/11  Paul Thompson           Switched to cli_hash_lkup_types.dml
+ *                                      Added get functions and global lookup variables
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS parameter;
+
+cli_string_t out :: get_prescriber_lkup_path() inline =
+begin
+  out :: PUB_CLINICAL_MFS + '/cli_prescriber.dat';
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type prescriber_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  prescriber_hash_lkup_t  RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {prescriber.phy_pbr_key; prescriber.src_env_id}; // ids_pbr_sk is natural key in ids prescriber file
+  
+  // Optional function field. This an example technical repository
+  // location referenced using dollar substitution in PDL.
+  // You can specify a different technical repository location.
+  //string('') eme_dataset_location() = "$DATA_LOOKUP/lookup.dat"; 
+end;
+
+let prescriber_lkup_t GLKUP_PRESCRIBER = allocate_with_nulls();
+
+prescriber_lkup_t out :: load_prescriber_lkup() inline =
+begin
+  if (GLKUP_PRESCRIBER.id == lookup_not_loaded())
+    GLKUP_PRESCRIBER = lookup_load(this_partition_path(get_prescriber_lkup_path()));
+  
+  out :: GLKUP_PRESCRIBER;
+end;
+
+prescriber_t out :: get_prescriber(phy_pbr_key, src_env_id) inline =
+begin
+  let prescriber_lkup_t lkup = load_prescriber_lkup();
+  out :: lookup(lkup, phy_pbr_key, src_env_id).prescriber;
+end;

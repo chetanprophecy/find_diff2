@@ -1,0 +1,40 @@
+
+
+record
+  unsigned integer(8)  dxf_hk_part1 =  0 /*Added by Integration Framework. First 8 bytes of the natural key hash.*/;
+  unsigned integer(8)  dxf_hk_part2 =  0 /*Added by Integration Framework. Second 8 bytes of the natural key hash.*/;
+  integer(8)  dxf_sk =  0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01", maximum_length=102, sign_reserved) eref_type_rn /*NUMBER NOT NULL*/;
+  string("\x01", maximum_length=50) name /*VARCHAR2(50) NOT NULL*/;
+  string("\x01", maximum_length=5) code /*VARCHAR2(5) NOT NULL*/;
+  string("\x01", maximum_length=100) contact_name = NULL("") /*VARCHAR2(100)*/;
+  string("\x01", maximum_length=100) contact_phone = NULL("") /*VARCHAR2(100)*/;
+  string("\x01", maximum_length=1) images_included /*CHAR(1) NOT NULL*/;
+  decimal("\x01", maximum_length=102, sign_reserved) image_queue_rn /*NUMBER NOT NULL*/;
+  decimal("\x01", maximum_length=102, sign_reserved) image_type_rn = NULL("") /*NUMBER*/;
+  string("\x01", maximum_length=2000) notes = NULL("") /*VARCHAR2(2000)*/;
+  string("\x01", maximum_length=50) smextract_rn = NULL("") /*VARCHAR2(50)*/;
+  string("\x01", maximum_length=1) isactive /*CHAR(1) NOT NULL*/;
+  datetime("YYYYMMDD HH24:MI:SS")("\x01") change_date = NULL("") /*DATE*/;
+  string("\x01", maximum_length=8) change_user = NULL("") /*VARCHAR2(8)*/;
+  decimal("\x01", maximum_length=102, sign_reserved) interface_implementation_rn = NULL("") /*NUMBER*/;
+  string("\x01", maximum_length=12) patient_id_reg_key = NULL("") /*VARCHAR2(12)*/;
+  string("\x01", maximum_length=12) order_id_reg_key = NULL("") /*VARCHAR2(12)*/;
+  string("\x01", maximum_length=12) physician_id_reg_key = NULL("") /*VARCHAR2(12)*/;
+  string("\x01", maximum_length=12) rx_origin_code = NULL("") /*VARCHAR2(12)*/;
+  string("\x01", maximum_length=1) is_sys_gen_rx_allowed /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=12) referral_id_reg_key = NULL("") /*VARCHAR2(12)*/;
+  decimal("\x01", maximum_length=102, sign_reserved) contact_time_config_rn = NULL("") /*NUMBER*/;
+  string("\x01", maximum_length=20) auto_select_drug_code /*VARCHAR2(20) NOT NULL*/;
+  decimal("\x01",0)   src_env_sk = NULL("") /*INTEGER*/;
+  decimal("\x01", maximum_length=5)   dxf_src_sys_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_create_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_create_run_id =   0;
+  datetime("YYYYMMDDHH24MISS")("\x01")   ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20)   ids_updt_uid = NULL("");
+  decimal("\x01",maximum_length=20)   ids_updt_run_id =   0;
+  string("\x01",maximum_length=2)   ids_rec_stat_cd = NULL("");
+  string(1)  newline =  "\n";
+end
+;

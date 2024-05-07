@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rccbrp_hist
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rccbrp                  akp2nb,akoinb,akven2,akvin2,akitcj\nclmprdfil     rctcdp                  dqs6st
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rccbrp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctcdp')]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||WHERE rccbrp.akp2nb=rctcdp.dqp2nb and rccbrp.akoinb=rctcdp.dqoinb
+SQL||||SELECT rccbrp.akp2nb\n     , rccbrp.akoinb\n     , rccbrp.akven2\n     , rccbrp.akvin2\n     , rccbrp.akitcj\n     , rctcdp.dqs6st as "claimsts"\n  FROM clmprdfil.rccbrp  rccbrp\n     , clmprdfil.rctcdp  rctcdp\nWHERE rccbrp.akp2nb=rctcdp.dqp2nb and rccbrp.akoinb=rctcdp.dqoinb
+DO_PUBLISH_CLEAN_FILE||||1

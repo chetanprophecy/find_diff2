@@ -1,0 +1,33 @@
+type logical_ids_rxclaim_w_swt_teamster_t =
+record
+  unsigned integer(8) dxf_hk_part1 = 0;
+  unsigned integer(8) dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=1) record_type = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) group_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) id_num = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) filler_1 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=16) emp_last_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) emp_initial = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) emp_date_of_birth = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) relationship_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=16) mbr_first_name = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=8) mbr_date_of_birth = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=1) mbr_sex = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=4) transaction_yr = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) accum_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) amount_pd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=61) filler_2 = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=20) member_id = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+end;
+
+
+metadata type =
+record
+  little endian integer(8) dxf_src_dataset_id = 0; /*@ BizName:'DXF Source Dataset ID' BizComment:'The surrogate key for the DXF Process Log entry for this source.' @*/
+  unsigned integer(8) dxf_src_rec_cnt = 0; /*@ BizName:'DXF Source Record Count' BizComment:'Starts at 1 each time the Source File Name changes.' @*/
+  little endian integer(2) dxf_src_sys_id = 0; /*@ BizName:'DXF Source System ID' BizComment:'The numeric identifier of this source.' @*/
+  string(unsigned integer(1)) dxf_src_file_name = ""; /*@ BizName:'DXF Source File Name' BizComment:'The name of the source file, relative to $AI_SERIAL_PENDING.' @*/
+  logical_ids_rxclaim_w_swt_teamster_t w_swt_tmster  /*@ BizName:'w swt tmster' */;
+end;

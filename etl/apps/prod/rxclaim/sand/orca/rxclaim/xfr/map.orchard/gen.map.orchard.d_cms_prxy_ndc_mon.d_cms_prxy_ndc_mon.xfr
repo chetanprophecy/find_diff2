@@ -1,0 +1,165 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_4_6c54cc0a_58c926cf_5ef9_1
+    BizHidden:true
+@*/
+/*   lookup d_national_drug_code_lkp   */
+out0::bzt_4_6c54cc0a_58c926cf_5ef9_1(in0,in1)=
+begin
+let record
+  little endian integer(8) ndc_code_key;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=20) ndc_id;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=1) current_flag;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_national_drug_code_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_3_6c54cc0a_58c926cf_5ef9_1
+    BizHidden:true
+@*/
+/*   lookup d_national_drug_code_lkp   */
+out0::bzt_3_6c54cc0a_58c926cf_5ef9_1(in0,in1)=
+begin
+let record
+  little endian integer(8) ndc_code_key;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=20) ndc_id;
+  string(unsigned integer(1),charset="iso-8859-15", maximum_length=1) current_flag;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_national_drug_code_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_6c54cc0a_58c926cf_5ef9_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cms_prxy.cms_prxy_ndc_sk,[transform],]
+  [out0.prxy_ndc.prod_id_qlfr_cd,[transform],]
+  [out0.cms_prxy.report_ndc_sk,[transform],]
+  [out0.cms_prxy.rxcui,[passthrough],in0.rxcui]
+  [out0.cms_prxy.ndc_id,[passthrough],in0.expanded_proxy_ndc]
+  [out0.cms_prxy.msc,[passthrough],in0.msc]
+  [out0.cms_prxy.pde_prxy_ndc_sk,[transform],in0.proxy_ndc,
+     'lookup("d_national_drug_code_lkp").ndc_code_key']
+  [out0.cms_prxy.crosstab_month,[transform],in0.dxf_src_file_name]
+  [out0.cms_prxy.proxy_ndc_id,[passthrough],in0.proxy_ndc]
+  [out0.cms_prxy.crosstab_year,[transform],in0.dxf_src_file_name]
+  [out0.ndc.prod_id_qlfr_cd,[transform],]
+  [out0.cms_prxy.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cms_prxy.gpi_id,[passthrough],in0.gpi]
+  [out0.cms_prxy.cms_ndc_sk,[transform],]
+  [out0.cms_prxy.report_prxy_ndc_sk,[transform],]
+  [out0.ndc.prod_id,[passthrough],in0.expanded_proxy_ndc]
+  [out0.cms_prxy.pde_ndc_sk,[transform],in0.expanded_proxy_ndc,
+     'lookup("d_national_drug_code_lkp").ndc_code_key']
+  [out0.prxy_ndc.prod_id,[passthrough],in0.proxy_ndc]
+  [out0.cms_prxy.prxy_ndc_label_nm,[passthrough],in0.label_name]
+  [out0.cms_prxy.cms_prxy_ndc_mon_sk,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cms_prxy.cms_prxy_ndc_sk,'cms_prxy.cms_prxy_ndc_sk',1,0]
+     [out0.prxy_ndc.prod_id_qlfr_cd,'prxy_ndc.prod_id_qlfr_cd',1,0]
+     [out0.cms_prxy.report_ndc_sk,'cms_prxy.report_ndc_sk',1,0]
+     [out0.cms_prxy.rxcui,'cms_prxy.rxcui',1,0]
+     [out0.cms_prxy.ndc_id,'cms_prxy.ndc_id',1,0]
+     [out0.cms_prxy.msc,'cms_prxy.msc',1,0]
+     [out0.cms_prxy.pde_prxy_ndc_sk,'cms_prxy.pde_prxy_ndc_sk',1,0]
+     [out0.cms_prxy.crosstab_month,'cms_prxy.crosstab_month',1,0]
+     [out0.cms_prxy.proxy_ndc_id,'cms_prxy.proxy_ndc_id',1,0]
+     [out0.cms_prxy.crosstab_year,'cms_prxy.crosstab_year',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ndc.prod_id_qlfr_cd,'ndc.prod_id_qlfr_cd',1,0]
+     [out0.cms_prxy.src_env_sk,'cms_prxy.src_env_sk',1,0]
+     [out0.cms_prxy.gpi_id,'cms_prxy.gpi_id',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.cms_prxy.cms_ndc_sk,'cms_prxy.cms_ndc_sk',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cms_prxy.report_prxy_ndc_sk,'cms_prxy.report_prxy_ndc_sk',1,0]
+     [out0.ndc.prod_id,'ndc.prod_id',1,0]
+     [out0.cms_prxy.pde_ndc_sk,'cms_prxy.pde_ndc_sk',1,0]
+     [out0.prxy_ndc.prod_id,'prxy_ndc.prod_id',1,0]
+     [out0.cms_prxy.prxy_ndc_label_nm,'cms_prxy.prxy_ndc_label_nm',1,0]
+     [out0.cms_prxy.cms_prxy_ndc_mon_sk,'cms_prxy.cms_prxy_ndc_mon_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.msc,'msc',1,1]
+     [in0.gpi,'gpi',1,1]
+     [in0.expanded_proxy_ndc,'expanded_proxy_ndc',3,3]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxcui,'rxcui',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',5,3]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.label_name,'label_name',1,1]
+     ['lookup("d_national_drug_code_lkp").ndc_code_key','ndc_code_key',2,2]
+     [in0.proxy_ndc,'proxy_ndc',3,3]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cms_prxy_cms_prxy_ndc_mon_sk = -1;
+let decimal("\x01",0) cms_prxy_cms_prxy_ndc_sk = -1;
+let decimal("\x01",0) cms_prxy_cms_ndc_sk = -1;
+let decimal("\x01",0) cms_prxy_pde_prxy_ndc_sk;
+let decimal("\x01",0) cms_prxy_pde_ndc_sk;
+let decimal("\x01",0) cms_prxy_report_prxy_ndc_sk = -1;
+let decimal("\x01",0) cms_prxy_report_ndc_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) cms_prxy_proxy_ndc_id = fail_if_error(in0.proxy_ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=20) cms_prxy_ndc_id = fail_if_error(in0.expanded_proxy_ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=10) cms_prxy_rxcui = fail_if_error(in0.rxcui);
+let string("\x01",charset="iso-8859-15", maximum_length=20) cms_prxy_gpi_id = fail_if_error(in0.gpi);
+let string("\x01",charset="iso-8859-15", maximum_length=1) cms_prxy_msc = fail_if_error(in0.msc);
+let string("\x01",charset="iso-8859-15", maximum_length=100) cms_prxy_prxy_ndc_label_nm = fail_if_error(in0.label_name);
+let string("\x01",charset="iso-8859-15", maximum_length=2) cms_prxy_crosstab_month = fail_if_error((date("MM"))(date("MMYYYY"))string_split(string_split(string_split(in0.dxf_src_file_name,"/")[length_of(string_split(in0.dxf_src_file_name,"/"))-1],"_")[3],".")[0]);
+let string("\x01",charset="iso-8859-15", maximum_length=4) cms_prxy_crosstab_year = fail_if_error((date("YYYY"))(date("MMYYYY"))string_split(string_split(string_split(in0.dxf_src_file_name,"/")[length_of(string_split(in0.dxf_src_file_name,"/"))-1],"_")[3],".")[0]);
+let decimal("\x01",0) cms_prxy_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ndc_prod_id = fail_if_error(in0.expanded_proxy_ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ndc_prod_id_qlfr_cd = '03';
+let string("\x01",charset="iso-8859-15", maximum_length=20) prxy_ndc_prod_id = fail_if_error(in0.proxy_ndc);
+let string("\x01",charset="iso-8859-15", maximum_length=2) prxy_ndc_prod_id_qlfr_cd = '03';
+
+
+
+/*   Default value   */
+cms_prxy_pde_prxy_ndc_sk=fail_if_error(bzt_3_6c54cc0a_58c926cf_5ef9_1(in0.proxy_ndc, 'Y').ndc_code_key);
+
+/*   Default value   */
+cms_prxy_pde_ndc_sk=fail_if_error(bzt_4_6c54cc0a_58c926cf_5ef9_1(in0.expanded_proxy_ndc, 'Y').ndc_code_key);
+
+  out0.cms_prxy.cms_prxy_ndc_mon_sk::cms_prxy_cms_prxy_ndc_mon_sk;
+  out0.cms_prxy.cms_prxy_ndc_sk::cms_prxy_cms_prxy_ndc_sk;
+  out0.cms_prxy.cms_ndc_sk::cms_prxy_cms_ndc_sk;
+  out0.cms_prxy.pde_prxy_ndc_sk::cms_prxy_pde_prxy_ndc_sk;
+  out0.cms_prxy.pde_ndc_sk::cms_prxy_pde_ndc_sk;
+  out0.cms_prxy.report_prxy_ndc_sk::cms_prxy_report_prxy_ndc_sk;
+  out0.cms_prxy.report_ndc_sk::cms_prxy_report_ndc_sk;
+  out0.cms_prxy.proxy_ndc_id::cms_prxy_proxy_ndc_id;
+  out0.cms_prxy.ndc_id::cms_prxy_ndc_id;
+  out0.cms_prxy.rxcui::cms_prxy_rxcui;
+  out0.cms_prxy.gpi_id::cms_prxy_gpi_id;
+  out0.cms_prxy.msc::cms_prxy_msc;
+  out0.cms_prxy.prxy_ndc_label_nm::cms_prxy_prxy_ndc_label_nm;
+  out0.cms_prxy.crosstab_month::cms_prxy_crosstab_month;
+  out0.cms_prxy.crosstab_year::cms_prxy_crosstab_year;
+  out0.cms_prxy.src_env_sk::cms_prxy_src_env_sk;
+  out0.ndc.prod_id::ndc_prod_id;
+  out0.ndc.prod_id_qlfr_cd::ndc_prod_id_qlfr_cd;
+  out0.prxy_ndc.prod_id::prxy_ndc_prod_id;
+  out0.prxy_ndc.prod_id_qlfr_cd::prxy_ndc_prod_id_qlfr_cd;
+  out0.*::in0.*;
+
+end;

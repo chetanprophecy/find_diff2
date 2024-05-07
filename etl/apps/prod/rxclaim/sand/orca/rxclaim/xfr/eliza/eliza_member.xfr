@@ -1,0 +1,66 @@
+out :: reformat(in) =
+begin
+let count=length_of(string_filter(in.MemberNumber,"_"));
+
+let string('') [int] v_dob_vec = string_split(in.BirthDate, "/");
+let string('') [int] v_dob_cast = for(let int i=0, i< length_of(v_dob_vec)) : if(i==2) (decimal('')) v_dob_vec[i] else (decimal(2, zerofill)) (decimal('')) v_dob_vec[i];
+let string('') v_dob = string_join(v_dob_cast, "/");
+
+//let decimal(2, zerofill) [int] v_dob_cast_t = for(let int i=0, i< 2) : (decimal('')) v_dob_vec[i];
+//let decimal('') [int] v_dob_cast_t1 = for(let int i=0, i< 3) : if(i==2) v_dob_vec[2];
+//let string('') [int] v_dob_cast_vec = vector_concat(v_dob_cast_t, v_dob_cast_t1);
+//let string('') v_dob = string_join(v_dob_cast_vec, "/");
+
+/*let string('') [int] v_call_date = string_split(string_split(in.CallTime, " ")[0],"/");
+let string('') [int] v_call_date_cast = for(let int i=0, i< length_of(v_call_date)) : if(i==2) (decimal('')) v_call_date[i] else (decimal(2, zerofill)) (decimal('')) v_call_date[i];
+let string('') v_date = string_join(v_call_date_cast, "/");
+
+let string('') [int] v_call_time = string_split(string_split(in.CallTime, " ")[1],":");
+let string('') [int] v_call_time_cast = for(let int i=0, i< length_of(v_call_time)) : if(i==2) (decimal('')) v_call_time[i] else (decimal(2, zerofill)) (decimal('')) v_call_time[i];
+let string('') v_time = string_join(v_call_time_cast, ":");
+let string('') v_call_date_time = string_concat(v_date," ",v_time,":00");*/
+
+  out.ELIZA_MEMBER_PK           :: in.ELIZA_MEMBER_PK;
+  out.BATCH_ID                  :: in.BATCHID;
+  out.CUSTOMER_NAME             :: in.CUSTOMERNAME;
+  out.LINE_OF_BUSINESS          :: in.LineOfBusiness;
+  out.MEMBER_NUMBER             :: in.MemberNumber;
+  out.FIRST_NAME                :: in.FirstName;
+  out.LAST_NAME                 :: in.LastName;
+  out.GENDER                    :: in.Gender;
+  out.DATE_OF_BIRH              :: if(is_valid((date("MM/DD/YYYY"))in.BirthDate)) (date("DDMMYYYY"))(date("MM/DD/YYYY"))in.BirthDate else (date("DDMMYYYY")) (date("MM/DD/YYYY")) v_dob;
+  out.ADDRESS1                  :: in.StreetAddress;
+  out.ADDRESS2                  :: in.StreetAddress2;
+  out.CITY                      :: in.City;
+  out.STATE                     :: in.State;
+  out.ZIP                       :: in.ZipCode;
+  out.PRODUCT_ID                :: in.PRODUCTID;
+  out.PORTAL_FILTER1            :: in.PORTALFILTER1;
+  out.PORTAL_FILTER2            :: in.PORTALFILTER2;
+  out.CALL_RESULT_CODE          :: in.CallResult;
+  out.CALL_TIME                 :: (datetime("MM/DD/YYYY HH24:MI:SS"))in.CallTime;// else NULL; //datetime("DD-MM-YYYY HH24:MI:SS")(",") v_call_date_time; //CALL_TIME;
+  out.PHONE                     :: in.PhoneNumber;							
+  out.PHARMACY_NAME             :: in.F06;					
+  out.PHARMACY_TRANSFER_NUM     :: in.F07;			
+  out.MULTI_PHARM_FLAG          :: in.F08;
+  out.PHARMACY_ID               :: in.F09;
+  out.CARRIER_ID                :: switch (count) 
+                                    case 3: string_split(in.MemberNumber,"_")[0];
+                                    case 2: string_split(in.MemberNumber,"_")[0];
+                                    case 4: string_split(in.MemberNumber,"_")[0];
+                                   end;
+  out.ACCOUNT_ID                :: switch (count) 
+                                    case 3: string_split(in.MemberNumber,"_")[1];
+                                    case 2: string_split(in.MemberNumber,"_")[1]+"-"+string_split(in.MemberNumber,"_")[2];
+                                    case 4: string_split(in.MemberNumber,"_")[2]+"-"+string_split(in.MemberNumber,"_")[3];
+                                  end;                      
+  out.GROUP_ID                  :: switch (count) 
+                                    case 3: string_split(in.MemberNumber,"_")[2];
+                                    case 4: string_split(in.MemberNumber,"_")[3];
+                                  end;
+  out.MEMBER_ID                 :: switch (count) 
+                                    case 3: string_split(in.MemberNumber,"_")[3];
+                                    case 4: string_split(in.MemberNumber,"_")[4];
+                                  end;
+  out.*                        :: in.*;
+end

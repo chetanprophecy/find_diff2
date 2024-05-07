@@ -1,0 +1,49 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/drug_product_lkup_functions.xfr
+ * 
+ * Change Log:
+ * 
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2016/10/11  Gaurav Mirje            Initial version, create lookup functions for drug_product process. 
+ *  2016/11/30  Mohd Shadab             Added check to load appropriate layout file and removed cli from file name
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t PUB_CLINICAL_MFS_REFDATA parameter;
+constant cli_string_t PUB_CLINICAL_SERIAL_REFDATA parameter;
+
+cli_string_t out :: get_product_lkup_path() inline =
+begin
+  out ::  if(this_partition()!=-1) PUB_CLINICAL_MFS_REFDATA + '/product.dat' ;
+  out :1: PUB_CLINICAL_SERIAL_REFDATA + '/product.dat';
+end;
+
+/*******************************************/
+/* Drug Product Lookup (on natural key) */
+/*******************************************/
+
+type product_lkup_t =
+record
+  lookup_identifier_type  id             = -1; 
+  product_hash_lkup_t     RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {product.product_id};     
+end;
+
+let product_lkup_t GLKUP_PRODUCT = allocate_with_nulls();
+
+product_lkup_t out :: load_product_lkup() inline =
+begin
+  if (GLKUP_PRODUCT.id == lookup_not_loaded())
+    GLKUP_PRODUCT = lookup_load(this_partition_path(get_product_lkup_path()));
+  
+  out :: GLKUP_PRODUCT;
+end;
+
+cli_integer_id_t out :: get_drug_product(product_id) inline =
+begin
+  let product_lkup_t lkup = load_product_lkup();
+  out :: lookup(lkup,product_id).product.drug_product_id;
+end;

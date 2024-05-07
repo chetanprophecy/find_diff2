@@ -1,0 +1,493 @@
+############################################
+## ODBC Database Configuration Information
+##
+## You need to edit this file once, after you create
+## it. This file contains the information needed
+## to connect to your ODBC database.
+##
+## This file must always be named with the extension .dbc.
+##
+## Each line of this file must have the following form:
+## <tag>:  <value>
+##
+## Each tag must be at the start of a line and be
+## immediately followed by a colon (:). All white space
+## characters, such as blanks and tabs, are ignored.
+##
+## This file also contains information about assigning
+## and editing the values of tags.
+##
+## Pound signs at the beginning of a line denote
+## comments. The IDB database components ignore these
+## lines.
+############################################
+
+dbms: odbc
+## REQUIRED. Do not change the value of this tag from 'odbc'.
+
+db_version: 2.2.11
+## REQUIRED. Enter the ODBC version number. Versions 2.0
+## and later are supported.
+
+odbc_data_source_name: ${DB_ORXCLAIM_ODBC_UAT2_DATA_SOURCE_NAME}
+## The data source name when using ODBC connection.  This
+## should be the name of a data source that you have configured.
+
+## db_name:
+## If needed, enter the name of the default database
+## to which you want to connect, for example 'master'.
+## Formerly, when using ODBC connections, this tag
+## specified the ODBC DSN.  You should now use the
+## odbc_data_source_name tag to specify the ODBC DSN, and
+## either leave the db_name tag commented or use it
+## to specify the name of the database to connect to
+## (just as with oledb connections).
+## The older usage of db_name to specify the ODBC DSN is
+## now deprecated, though it will still work if the
+## odbc_data_source_name tag is not used.
+
+# *-
+# *- The driver and driver manager configuration (directories, files, data source).
+# *-
+
+## The following two parameters are the DBC equivalents of the environment
+## variables used by the ODBC driver managers on Unix: in place of these parameters
+## you could use the corresponding environment settings:
+##
+##    environment: ODBCSYSINI=<the value of 'odbc_sysini_dir' parameter>
+##    environment: ODBCINI=<the value of 'odbc_init_file' parameter>
+##
+## Using the 'odbc_sysini_dir' and 'odbc_init_file' parameters provides a simpler
+## means of configuration, clearer documentation and easier maintenance.
+db_character_set: iso-8859-1
+#odbc_sysini_dir: /etl/etc/odbc
+## OPTIONAL.  When running on a Unix system, this tag should be used to specify the
+## directory where the driver manager's 'odbcinst.ini' configuration file is
+## residing.  Setting this parameter is equivalent to setting the value of the
+## 'ODBCSYSINI' in the execution environment of the process.
+##
+## Note that you don't have to use the driver manager's 'odbcinst.ini' file in all
+## cases: the drivers themselves can usually get all their configuration parameters
+## from the 'ODBCINI' ('odbc_init_file') file plus from the DBC settings.  Not
+## using an 'odbcinst.ini' file usually results in a simpler site configuration.
+## But sometimes you have to use it (e.g. when using a load utility coming with
+## some drivers) -- then use this parameter to point to the containing directory.
+
+## odbc_init_file:
+## OPTIONAL.  When running on a Unix system, this tag should be used to specify the
+## path to the ODBCINI file containing the ODBC data source definition.  A driver
+## manager usually has a default location for such a file but you should not rely
+## on that: it usually leads to a waste of time troubleshooting connection issues.
+##
+## Please set this to a valid file path. Important: make that file writable by the
+## Unix user who is going to run database components if you are going to be using
+## the 'unixODBC' driver manager -- it needs that.
+
+## odbc_libdir:
+## OPTIONAL. You should not need to set this tag, but just in case:
+## on a Unix system, the path to the ODBC Driver Manager library directory.
+
+odbc_libname: /usr/lib64/libodbc.so
+## OPTIONAL. You should not need to set this tag, but just in case:
+## on a Unix system, the library name specification of a Driver Manager library.
+## Typical examples, on various operating systems:
+##   AIX:               libodbc.a(odbc.so)
+##   AIX/Linux/Solaris: libodbc.so
+##   HP-UX:             libodbc.sl
+
+## odbc_bundled_unixodbc_so_version:
+## (Optional; used on Unix/Linux only.)  Specifies the version of the bundled unixODBC
+## driver manager to be used.  The possible values are currently 1 and 2 with default
+## of 1.  The number indicates the version of the shared library objects in the driver
+## manager.  You can determine if this tag is needed by running the ldd command on
+## your odbc driver library.  If you see  libodbcinst.so.N in the output set this tag
+## to N.
+## This tag is only relevant if odbc_libdir is left unset.
+
+extra_libdir_path: /etl/opt/iseriesAccess/lib64/
+## OPTIONAL.  For Unix systems only.
+## Use this tag when your third-party ODBC driver or driver
+## manager requires path elements other than what is
+## specified by the odbc_libdir tag.  This tag might also be used
+## in cases where it is not desirable to specify odbc_libdir.
+
+## odbc_driver_wide_character_set:
+## OPTIONAL:  When a database reports that the type of a column is WCHAR, WVARCHAR,
+## or WLONGVARCHR, this tag is used to specify what type of data the ODBC driver expects
+## to load and unload.  For Microsoft drivers it is always UTF-16 and that is the default
+## setting of this tag. Other drivers on other platforms may use different types.
+## For example, DataDirect on Unix/Linux uses UTF-8 while Easysoft uses UTF-16.
+## This tag allows you to override the default choice with the value that is correct
+## for the driver you are using.  Do not set this tag unless you know that the correct setting
+## is something other than UTF-16.
+
+##This is added Manually by msing114 on 09/06/2017
+sign_reserved: false
+
+## odbc_type_treat_sql_decimal_as_sql_numeric:
+## OPTIONAL: When the ODBC driver does not support the SQL_DECIMAL ODBC data type,
+## set this to 'true' to use SQL_NUMERIC instead.
+
+db_nodes: ${DB_ORXCLAIM_DB_NODES}
+## REQUIRED. Enter the name of the computer on which
+## your database components should run.  The ODBC data source you
+## are connecting to must be available there.
+
+## minimal_charset:
+## OPTIONAL: The default is true.
+## Uncomment this and set the value to false to generate dml
+## that marks all string-like data fields with the explicit character
+## set.  By default, fields of non-string types such as decimal, date
+## and datetime will not be marked with the explicit character set.
+## For dml records that have a relatively large number of decimal,
+## date and/or datetime fields setting this tag to true (or leaving it
+## unset) can have a substantial beneficial effect on performance.
+
+#user: abirxmax
+#encrypted_password: bWNjdT4pX4s0COyjfWoO6s
+user: ${DB_ORXCLAIM_USER}
+encrypted_password: ${DB_ORXCLAIM_UAT2_ENCRYPTED_PASSWORD}
+## If your database connection requires a username and
+## password, then uncomment the preceding tags and enter
+## the appropriate values.  If a password is to be specified,
+## it should be encrypted with the "m_password" utility and
+## the resulting string should be given as the value to the
+## "encrypted_password" tag.  Alternatively, the password
+## can be specified in plain text with the "password" tag.
+## If both "encrypted_password" and "password" tags are
+## specified, "encrypted_password" is ignored.  You can use
+## environment variables instead of values. Use ${} to surround
+## each environment variable. For example:
+## user:      ${MY_USERNAME}
+## encrypted_password:  ${MY_ENCRYPTED_PASSWORD}
+
+case: lower
+## The default value lower causes the database package to
+## generate DML in lower case. If you want the database
+## package to generate DML in upper case, change the value to
+## upper. For example:
+## case: upper
+## If you want the database package to preserve the case
+## as it is returned from the database system, change the
+## value to mixed.  For example:
+## case: mixed
+
+## default_catalog_case:
+## By default, unquoted names are forced to upper case when searching database catalogs.
+## If your database catalog is case sensitive and is not in upper case, uncomment this tag and set its value
+## to 'mixed' or 'lower' to reflect the state of the catalog.  Regardless of the setting of this tag, names
+## in quotes will not be changed when searching.
+##
+
+## quote_column_names:
+## When configured with only a table name in API mode, Output and Input Table
+## will generate INSERT and SELECT statements automatically.  By default, if
+## case is set to 'mixed', then column names within these statements will be
+## quoted.  Otherwise, column names are not quoted.  To force column name
+## quoting on or off, uncomment this tag and set the value to 'true' (to
+## enable quoting) or 'false' (to disable quoting).
+
+## column_delimiter:
+## The default value is "\001".  If you want to change
+## the value, then uncomment the preceding tag and
+## set column_delimiter to the default value you want.
+
+## default_date_format:
+## Use this default date format when generating DML for database types
+## which are equivalent to the DML DATE type. For example:
+## default_date_format: YYYYMMDD
+
+## default_datetime_format:
+## Use this default datetime format when generating DML for database types
+## which are equivalent to the DML DATETIME type. For example:
+## default_datetime_format: YYYYMMDD HH24:MI:SS
+
+generate_dml_with_nulls: true
+## If the value is true, the database automatically
+## generates DML NULL() for database columns which allow NULL.
+
+## default_null_value:
+## When delimited DML is generated, fields which can be NULL
+## are given a default value of the empty string ("").
+## Databases which distinguish between NULL and the empty
+## string may require a specific NULL default value other than the
+## empty string when using utility loaders or unloaders.
+
+field_type_preference: delimited
+## Identifies the rules used when generating dml for the
+## database components.  For most of the supported databases
+## only 'delimited' is supported for the utility loaders.
+## The supported values for this tag are delimited, variable and fixed.
+
+## fixed_size_dml: false
+## If the value is false, the database generates delimited
+## types whenever possible. We recommend that this value
+## remain false and that you use delimited DML for database
+## interaction, in order to represent NULLs as zero-length
+## data.
+## This tag is deprecated - please use the field_type_preference tag instead.
+
+oldstyle_emptystring_as_null: false
+## Set to true for the behavior used in older releases.
+## If the value is true when writing delimited data to a table and
+## the dml definition of the field does not include a NULL value,
+## then zero-length strings will be written to the table as NULL as
+## if the dml field definition had included '= NULL("")'.
+## This tag is ignored if AB_COMPATIBILITY is set to a value earlier
+## than 2.12.
+## It is recommended that oldstyle_emptystring_as_null be set
+## to false when the generate_dml_with_nulls tag is set to true.
+
+fully_qualify_dml: false
+## If the value is true record formats will be generated with fully
+## qualified dml.  I.e. all fields will have an explicit character set
+## and all integer fields will have an explicit endianness.
+
+dml_with_maximum_length: true
+## If the value is true, variable-length fields in record formats will be
+## generated with explicit maximum_length qualifiers based on size
+## information obtained from the database for the corresponding
+## columns.
+
+## dml_with_default_values: none
+## Can be set to one of the following three values:
+##   null_preferred --- DML generated for NOT NULL columns that have default values in the target
+##     table's definition will include default assignments to those values, wherever possible.
+##   default_preferred --- same as null_preferred for NOT NULL columns, and in addition default
+##     assignments willl be generated for nullable columns wherever possible. Note that if a column
+##     is both nullable and has a default value, a NULL specifier will not be generated in the DML
+##     for that field, even if the default value cannot be generated into the DML.
+##   none --- no default assignments will be included in the generated DML.
+##
+## The behavior of this tag is unaffected by the setting of the generate_dml_with_nulls tag.
+## For additional information see the online help.
+
+## dml_with_structured_comments: false
+## If set to true, specifies that structured comments rather than plain language DML comments be
+## produced for fields in generated DML. For details of the names and values used in the structured
+## comments see the online Help.
+
+#preserve_sql_whitespace: true
+## This tag affects the operation of 'm_db run -sqlfile <file>'
+## If the tag is false, leading and trailing whitespace are
+## trimmed from each line in the file, and multiline sql
+## statements are concatenated with a single space character.
+## If the tag is true, no whitespace is trimmed, and multiline
+## sql statements are concatenated with a newline character.
+##
+## A multiline quoted text string inserted into a character
+## column will NOT contain newlines if this tag is false; and
+## when extracted from the column will not retain line breaks.
+
+interface: default
+##   WARNING: The 'interface' tag is only used with database
+##            components generated by GUI releases earlier
+##            than 1.8.25.  Beginning with GUI 1.8.25,
+##            use the interface parameter on each database
+##            component to choose an interface.
+## Each database usually provides multiple interfaces to perform
+## any one task.  For example, databases usually allow two ways
+## to load data: via a load utility, or transactional APIs.
+## The setting of this tag affects which interface will be used for all
+## IDB database components.  The default setting will typically
+## use the best performing interface for this database on a
+## component-by-component basis.
+## If you wish to have all components use the API interface
+## then set this value to api.  For example:
+## interface: api
+
+## client_version:
+## If the version of the local client software used to
+## connect to the database is different from the
+## version of the database server version to which
+## you are connecting, then uncomment this tag and
+## enter the version of the local client software.
+
+## generate_floating_decimals:
+## Set this tag to true to cause delimited dml generated for
+## decimal columns to be in a floating decimal point
+## format, i.e. without an implicit or explicit specification
+## of scale.  This form was standard in Co>Operating
+## System releases prior to 2.15.  The default value is false.
+
+## environment:
+## Uncomment this tag to set or propagate environment variables
+## to all database components. Use the following form:
+## environment:  <env-var>=<value>
+
+## max_data_size:
+## Uncomment this tag to specify the maximum expected size of the data per field.
+## This can be used for varying length fields (like VARCHAR) which
+## need an internal maximum size to allocate (defaults to 100000).
+
+## rowset_size:
+## The array size for receiving query result sets; defaults to 1000
+## for most operations.  Given a certain query result set, increasing
+## this size will decrease the number of fetches in which the results
+## will be brought to the client, cutting down on the number of
+## communication acts between the client and server.  This may lead
+## in noticeable performance improvements in the environments with
+## high network latency.
+
+## rows_per_commit:
+## Uncomment this tag to specify a default for the commit size
+## of appropriate components.
+## We recommend leaving this commented out for most cases and
+## supplying the commit size via the component parameter.
+
+## commit_table:
+## Uncomment this tag to set the name of the commit table to be used. This is
+## required if rows_per_commit is non-zero.
+
+use_32_bit_database_client: false
+## Uncomment this tag and to set to true if the Co>Operating System is a combined
+## 32- and 64-bits and the desired database vendor's client libraries are only
+## available in 32-bits.
+
+## memory_buffer_lower_bound_bytes:
+## If set, this tag controls the initial size (in bytes)
+## of the memory buffer for the input flow of a database
+## component such as Update Table, Join with DB or
+## Multi Update Table that can batch its input records.
+## If not set the default value is 10000.  This tag will
+## be ignored if the configuration variable AB_IDB_MEMORY_BUFFER_LOWER_BOUND
+## is set.
+
+## memory_buffer_upper_bound_bytes:
+## If set, this tag controls the maximum size (in bytes) of
+## the memory buffer for the input flow of a database component
+## such as Update Table, Join with DB or Multi Update Table
+## that can batch its input records.  The default value of
+## 100000000 byes is set very large so that usually all
+## records will be held in memory.  When an input record does
+## not fit into the buffer it will be stored in a temporary file.
+## This tag will be ignored if the configuration variable
+## AB_IDB_MEMORY_BUFFER_UPPER_BOUND is set.
+
+## micrograph_transaction_style:
+## This tag is applicable only to micrographs.  Uncomment this tag to set the
+## name of the style of transaction that database components should employ
+## in micrographs.  If not set, the default value two-phase-commit will be
+## used but note that that value is only supported by dbms types that
+## support XA transactions.  Acceptable values for this tag are:
+##       two-phase-commit                 (the default)
+##       one+two-phase-commit             (requires the micrograph_commit_table
+##                                        tag to also be set)
+##       one-phase-commit-recoverable     (requires the micrograph_commit_table
+##                                        tag to also be set)
+##       one-phase-commit-nonrecoverable  (the micrograph_commit_table tag must
+##                                        not be set)
+
+## micrograph_commit_table:
+## This tag is applicable only to micrographs.  Uncomment this tag to set
+## the name of the commit table to be used in micrographs that are performing
+## one-phase-commit-recoverable transactions.
+
+## allow_two_phase_commit:
+## This tag is applicable only to database components operating in a transaction
+## group or in a micrograph.  It defaults to true.  When set to false a database
+## connection made with this dbc file will make a conventional rather than XA
+## connection with its database even if the database otherwise supports XA.
+##
+## Note that the setting of this tag will add constraints on how the transaction
+## manager manages the various resources within a transaction group. Specifying
+## false might prevent the graph from running, depending on the configuration
+## of the graph and other transactional resources in it.  Also note that this
+## tag will have no effect if the target database does not support the XA protocol.
+
+## array_interface_buffer_size:
+## Uncomment this tag to set the array size while binding input parameters
+## in prepared statements; defaults to 4096.  This is only used by Output Table
+## and (when possible) Update Table for databases that support api-level
+## batch loads and updates.
+
+## catalog_query_unconvertible_replacement_string:
+## If set, the value of this tag is used in an internal call to the
+## string_convert_explicit dml function when it is invoked on the results
+## of calls that database components make to the database catalog.
+## Its default value is "#" (without the quotes).
+
+## catalog_sql_corrupt_replacement_string:
+## If set, the value of this tag is used in an internal call to the
+## string_cleanse dml function when it is invoked on the results of
+## calls that database components make to the database catalog.  Its
+## default value is "!" (without the quotes).
+
+## skip_modify_select_for_describe:
+## If not set to 'true', the code may modify the supplied SELECT statements when finding
+## the result set metadata, in order to avoid the real selecting fetching data,
+## which some database client libraries do in preparing a SQL statement
+
+## add_false_predicate_to_select_for_describe:
+## If set to 'true', SELECT statements used internally for finding information about table
+## columns will be modified by appending 'WHERE 1=0', in order to avoid the real selecting
+## and fetching data, which some database client libraries do in preparing a SQL statement,
+## or to pacify database monitoring software that doesn't like unqualified SELECTs from
+## large tables.
+
+## generate_select_from_dml:
+## If not set or set to true, when api-mode Input Table has a table name
+## specified, the generated select statement will be derived from the component's
+## read port dml rather than a simple "select * from <table name>".
+##
+## Parallel unload from a partitioned db2 database (dbms type db2eee) is
+## a special case.   If this tag is not explicitly set to true then the default
+## behavior for a parallel db2eee unload is false:  this is because generating
+## the select in that case will require an additional (short-lived) connection
+## to the database.
+
+
+## ** Dependency Analysis **
+## db_name_repo:
+## Optional. Alternative name for the database to use for dependency analysis.
+## If set, overrides db_name in the repository context (only).
+## For example, useful when db_name varies between dev, test, and prod environments.
+
+## default_schema_repo:
+## Optional. Default schema/owner to use for dependency analysis.
+
+## require_user_managed_datasets_repo:
+## Optional. Set to 'true' if table datasets for this database will be preloaded (recommended).
+## Use this setting to prevent dependency analysis from creating table datasets automatically.
+## This will help prevent lineage breaks due to incorrectly named tables.
+
+
+## session_startup_sql:
+## When uncommented and set, the specified sql statement will be executed
+## at the time that connection is made to the database.
+## The expected use for this tag is to execute statements
+## which set the session environment.
+## Use multiple instances of this tag to execute multiple sql statements.
+##
+## This is generally only useful for api mode operations.
+
+## basic_odbc:
+## Set to true to skip calling certain "advanced" ODBC functions. This is
+## useful for data sources that only provide basic ODBC support. Setting
+## basic_odbc to true will also set use_sqlfetch (below) to true, though you
+## can explicitly set use_sqlfetch to override this behavior. The default is
+## false.
+
+## use_sqlfetch:
+## Set to true to use SQLFetch instead of SQLExtendedFetch/SQLFetchScroll. The
+## default is false.
+
+## tinyint_is_signed:
+## DBMS types vary as to whether the TINYINT datatype is signed or unsigned.
+## Set this tag, if necessary, to indicate your database's rules.  The default
+## value is false when the target database is Microsoft SQL Server because SQL
+## Server's TINYINT datatype is unsigned.  For all other database types it
+## defaults to true, meaning that TINYINT is signed.
+
+## odbc_login_timeout:
+## Set this value to change the number of seconds to wait for a login request
+## to be completed.  A value of 0 sets an indefinite wait period.  The exact effect of
+## setting this tag is under the control of the ODBC driver and the target database
+## server: for more details refer to their documentation on handling SQL_ATTR_LOGIN_TIMEOUT
+
+## rb_config:
+## When the data source is a Red Brick database, this tag must be set to
+## the value appropriate for $RB_CONFIG.
+
+sfw_build: LEGACY_64_BIT_MODE
+## (Optional, for 64-bit Unix drivers using 32-bit SQLLEN)

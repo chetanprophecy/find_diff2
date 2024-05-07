@@ -1,0 +1,37 @@
+include "/~$AI_XFR/sys_id.xfr";
+
+out::reformat(in)=
+begin
+  out.mbr_member_id :: in.acabcd;
+  out.car_carrier_id :: in.acaacd;
+  out.acc_account_id :: in.acaccd;
+  out.grp_group_id :: in.acadcd;
+  out.md_network_id :: in.acexcd;
+  out.seq_nbr :: in.ach7hs;
+  out.status :: in.acc4i1;
+  out.from_date :: in.acqshg;
+  out.thru_date :: in.acqthg;
+  out.csc_copay_schedule_name :: in.acgrcd;
+  out.csc_step_nbr :: in.acelnb;
+  out.ovr_client_prc_sch3 :: in.acdjhc;
+  out.ovr_pharm_prc_sch_3 :: in.acdlhc;
+  out.ovr_client_pat_pay3 :: in.acdihc;
+  out.ovr_pharm_pat_pay_3 :: in.acdkhc;
+  out.message_cde :: in.accuhc;
+  out.message_type :: in.acwjh8;
+  out.md_ntwk_override_qual :: in.acwkh8;
+  out.add_user_name :: in.acakvn;
+  out.add_date :: in.acc2dt;
+  out.add_time :: in.acadtm;
+  out.add_program_name :: in.acalvn;
+  out.chg_user_name :: in.acadvn;
+  out.chg_date :: in.acbmdt;
+  out.chg_time :: in.acabtm;
+  out.chg_program_name :: in.acaevn;
+  out.rxt_src_envrt_id :: (decimal(""))in.dmf_src_sys_id;
+  out.rxt_src_envrt_nm :: system_number_to_name(in.dmf_src_sys_id);
+  out.rxt_create_dttm :: "${RUN_TIMESTAMP}";
+  out.rxt_create_uid :: 'app_orca_rxclaim';
+  out.rxt_create_run_id :: (decimal(""))"${RUN_TIMESTAMP}";
+  out.rxt_rec_stat_cd :: '';
+end;

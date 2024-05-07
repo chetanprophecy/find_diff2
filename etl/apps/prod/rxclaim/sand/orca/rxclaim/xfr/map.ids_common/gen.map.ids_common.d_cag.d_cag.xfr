@@ -1,0 +1,437 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_3_6c54cc0a_58a595ed_16bb_0
+    BizHidden:true
+@*/
+/*   lookup lob_3key_lkp   */
+out0::bzt_3_6c54cc0a_58a595ed_16bb_0(in0,in1,in2)=
+begin
+let record
+  string("\x01") carrier_id, account_id, employer_group_id, lob_srv_typ, lob_bus_typ, lob_clt_typ;
+  string("\n") src_env_sk;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lob_3key_lkp",in0,in1,in2));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_4_6c54cc0a_58a595ed_16bb_0
+    BizHidden:true
+@*/
+/*   lookup lob_2key_lkp   */
+out0::bzt_4_6c54cc0a_58a595ed_16bb_0(in0,in1)=
+begin
+let record
+  string("\x01") carrier_id, account_id, employer_group_id, lob_srv_typ, lob_bus_typ, lob_clt_typ;
+  string("\n") src_env_sk;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lob_2key_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+
+/*@
+    Name:bzt_5_6c54cc0a_58a595ed_16bb_0
+    BizHidden:true
+@*/
+/*   lookup lob_1key_lkp   */
+out0::bzt_5_6c54cc0a_58a595ed_16bb_0(in0)=
+begin
+let record
+  string("\x01") carrier_id, account_id, employer_group_id, lob_srv_typ, lob_bus_typ, lob_clt_typ;
+  string("\n") src_env_sk;
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("lob_1key_lkp",in0));
+  out0::__bzt_local_res__;
+end;
+
+/*@
+dependency_analysis:
+[
+  [out0.ctrx_d_cag.bseg_bus_typ,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     'lookup("lob_3key_lkp").lob_bus_typ',
+     'lookup("lob_1key_lkp").lob_bus_typ',
+     'lookup("lob_2key_lkp").lob_bus_typ']
+  [out0.ctrx_d_cag.bseg_clt_typ,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     'lookup("lob_1key_lkp").lob_clt_typ',
+     'lookup("lob_3key_lkp").lob_clt_typ',
+     'lookup("lob_2key_lkp").lob_clt_typ']
+  [out0.ctrx_d_cag.bseg_srv_typ,[transform],in0.account_id,
+     in0.employer_group_id,
+     in0.carrier_id,
+     'lookup("lob_3key_lkp").lob_srv_typ',
+     'lookup("lob_1key_lkp").lob_srv_typ',
+     'lookup("lob_2key_lkp").lob_srv_typ']
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.ctrx_d_cag.pharmacy_rider_cd,'ctrx_d_cag.pharmacy_rider_cd',1,0]
+     [out0.c_d_carr_acc.carrier_id,'c_d_carr_acc.carrier_id',1,0]
+     [out0.ctrx_d_cag.bseg_bus_typ,'ctrx_d_cag.bseg_bus_typ',1,0]
+     [out0.ctrx_d_cag.renewal_dt,'ctrx_d_cag.renewal_dt',1,0]
+     [out0.ctrx_d_cag.account_nm,'ctrx_d_cag.account_nm',1,0]
+     [out0.ctrx_d_cag.migration_effective_dt,'ctrx_d_cag.migration_effective_dt',1,0]
+     [out0.ctrx_d_cag.funding_arrangment_cd,'ctrx_d_cag.funding_arrangment_cd',1,0]
+     [out0.ctrx_d_cag.acct_product_type_desc,'ctrx_d_cag.acct_product_type_desc',1,0]
+     [out0.ctrx_d_cag.account_id,'ctrx_d_cag.account_id',1,0]
+     [out0.ctrx_d_cag.hm_dlvry_only_ind,'ctrx_d_cag.hm_dlvry_only_ind',1,0]
+     [out0.ctrx_d_cag.pick_lob_cd,'ctrx_d_cag.pick_lob_cd',1,0]
+     [out0.ctrx_d_cag.carrier_category_desc,'ctrx_d_cag.carrier_category_desc',1,0]
+     [out0.ctrx_d_cag.hmo_acct_dvsn_cd,'ctrx_d_cag.hmo_acct_dvsn_cd',1,0]
+     [out0.ctrx_d_cag.pa_site_nm,'ctrx_d_cag.pa_site_nm',1,0]
+     [out0.ctrx_d_cag.accumulator_ind,'ctrx_d_cag.accumulator_ind',1,0]
+     [out0.ctrx_d_cag.custom_no,'ctrx_d_cag.custom_no',1,0]
+     [out0.ctrx_d_cag.carrier_category_id,'ctrx_d_cag.carrier_category_id',1,0]
+     [out0.ctrx_d_cag.speciality_ind,'ctrx_d_cag.speciality_ind',1,0]
+     [out0.ctrx_d_cag.franchise_no,'ctrx_d_cag.franchise_no',1,0]
+     [out0.ctrx_d_cag.sold_market_site_cd,'ctrx_d_cag.sold_market_site_cd',1,0]
+     [out0.ctrx_d_cag.product_cd,'ctrx_d_cag.product_cd',1,0]
+     [out0.ctrx_d_cag.employer_group_nm,'ctrx_d_cag.employer_group_nm',1,0]
+     [out0.ctrx_d_cag.carrier_acct_sk,'ctrx_d_cag.carrier_acct_sk',1,0]
+     [out0.ctrx_d_cag.bseg_clt_typ,'ctrx_d_cag.bseg_clt_typ',1,0]
+     [out0.ctrx_d_cag.oracle_client_cd,'ctrx_d_cag.oracle_client_cd',1,0]
+     [out0.ctrx_d_cag.migration_ind,'ctrx_d_cag.migration_ind',1,0]
+     [out0.ctrx_d_cag.contract_num,'ctrx_d_cag.contract_num',1,0]
+     [out0.ctrx_d_cag.rebates_only_ind,'ctrx_d_cag.rebates_only_ind',1,0]
+     [out0.ctrx_d_cag.acct_product_line_desc,'ctrx_d_cag.acct_product_line_desc',1,0]
+     [out0.ctrx_d_cag.carrier_state_cd,'ctrx_d_cag.carrier_state_cd',1,0]
+     [out0.ctrx_d_cag.claim_suffix_cd,'ctrx_d_cag.claim_suffix_cd',1,0]
+     [out0.ctrx_d_cag.cob_ind,'ctrx_d_cag.cob_ind',1,0]
+     [out0.ctrx_d_cag.platform_ind,'ctrx_d_cag.platform_ind',1,0]
+     [out0.ctrx_d_cag.bseg_srv_typ,'ctrx_d_cag.bseg_srv_typ',1,0]
+     [out0.ctrx_d_cag.segment_ind,'ctrx_d_cag.segment_ind',1,0]
+     [out0.ctrx_d_cag.plan_variation_cd,'ctrx_d_cag.plan_variation_cd',1,0]
+     [out0.ctrx_d_cag.pvcy_excl_ind,'ctrx_d_cag.pvcy_excl_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.ctrx_d_cag.coc_cd,'ctrx_d_cag.coc_cd',1,0]
+     [out0.ctrx_d_cag.product_id,'ctrx_d_cag.product_id',1,0]
+     [out0.ctrx_d_cag.pbp_id,'ctrx_d_cag.pbp_id',1,0]
+     [out0.ctrx_d_cag.iplan_ind,'ctrx_d_cag.iplan_ind',1,0]
+     [out0.ctrx_d_cag.client_nm,'ctrx_d_cag.client_nm',1,0]
+     [out0.ctrx_d_cag.employer_group_id,'ctrx_d_cag.employer_group_id',1,0]
+     [out0.ctrx_d_cag.erisa_id,'ctrx_d_cag.erisa_id',1,0]
+     [out0.ctrx_d_cag.spclty_eff_dt,'ctrx_d_cag.spclty_eff_dt',1,0]
+     [out0.ctrx_d_cag.client_id,'ctrx_d_cag.client_id',1,0]
+     [out0.ctrx_d_cag.acct_product_type_id,'ctrx_d_cag.acct_product_type_id',1,0]
+     [out0.ctrx_d_cag.carrier_sk,'ctrx_d_cag.carrier_sk',1,0]
+     [out0.ctrx_d_cag.acctg_lob_sk,'ctrx_d_cag.acctg_lob_sk',1,0]
+     [out0.c_d_carr_acc.account_id,'c_d_carr_acc.account_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.ctrx_d_cag.gl_product_cd,'ctrx_d_cag.gl_product_cd',1,0]
+     [out0.ctrx_d_cag.reporting_cd,'ctrx_d_cag.reporting_cd',1,0]
+     [out0.ctrx_d_cag.cob_effective_dt,'ctrx_d_cag.cob_effective_dt',1,0]
+     [out0.ctrx_d_cag.policy_no,'ctrx_d_cag.policy_no',1,0]
+     [out0.ctrx_d_cag.dxf_sk,'ctrx_d_cag.dxf_sk',1,0]
+     [out0.ctrx_d_cag.product_classifier_id,'ctrx_d_cag.product_classifier_id',1,0]
+     [out0.ctrx_d_cag.obligor_cd,'ctrx_d_cag.obligor_cd',1,0]
+     [out0.ctrx_d_cag.cag_sk,'ctrx_d_cag.cag_sk',1,0]
+     [out0.ctrx_d_cag.dar_lob_sk,'ctrx_d_cag.dar_lob_sk',1,0]
+     [out0.ctrx_d_cag.rebates_stat_ind,'ctrx_d_cag.rebates_stat_ind',1,0]
+     [out0.ctrx_d_cag.client_carrier_id,'ctrx_d_cag.client_carrier_id',1,0]
+     [out0.ctrx_d_cag.gl_customer_cd,'ctrx_d_cag.gl_customer_cd',1,0]
+     [out0.ctrx_d_cag.dxf_hk_part2,'ctrx_d_cag.dxf_hk_part2',1,0]
+     [out0.ctrx_d_cag.claim_account_cd,'ctrx_d_cag.claim_account_cd',1,0]
+     [out0.ctrx_d_cag.acct_product_line_id,'ctrx_d_cag.acct_product_line_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.ctrx_d_cag.hm_dlvry_stat_ind,'ctrx_d_cag.hm_dlvry_stat_ind',1,0]
+     [out0.ctrx_d_cag.carrier_nm,'ctrx_d_cag.carrier_nm',1,0]
+     [out0.ctrx_d_cag.client_sk,'ctrx_d_cag.client_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.ctrx_d_cag.transaction_ts,'ctrx_d_cag.transaction_ts',1,0]
+     [out0.ctrx_d_cag.lead_partner_cd,'ctrx_d_cag.lead_partner_cd',1,0]
+     [out0.ctrx_d_cag.acct_client_type_id,'ctrx_d_cag.acct_client_type_id',1,0]
+     [out0.ctrx_d_cag.carrier_id,'ctrx_d_cag.carrier_id',1,0]
+     [out0.ctrx_d_cag.sales_office_cd,'ctrx_d_cag.sales_office_cd',1,0]
+     [out0.ctrx_d_cag.shared_arrangement_ind,'ctrx_d_cag.shared_arrangement_ind',1,0]
+     [out0.ctrx_d_cag.gps_plan_cd,'ctrx_d_cag.gps_plan_cd',1,0]
+     [out0.ctrx_d_cag.dxf_hk_part1,'ctrx_d_cag.dxf_hk_part1',1,0]
+     [out0.ctrx_d_cag.legal_entity_cd,'ctrx_d_cag.legal_entity_cd',1,0]
+     [out0.ctrx_d_cag.acct_client_type_desc,'ctrx_d_cag.acct_client_type_desc',1,0]
+     [out0.ctrx_d_carr.carrier_id,'ctrx_d_carr.carrier_id',1,0]
+     [out0.ctrx_d_cag.src_env_sk,'ctrx_d_cag.src_env_sk',1,0]
+     [out0.ctrx_d_cag.situs_state_cd,'ctrx_d_cag.situs_state_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.gl_product_cd,'gl_product_cd',1,1]
+     [in0.hm_dlvry_stat_ind,'hm_dlvry_stat_ind',1,1]
+     [in0.iplan_ind,'iplan_ind',1,1]
+     [in0.transaction_ts,'transaction_ts',1,1]
+     [in0.segment_ind,'segment_ind',1,1]
+     [in0.lead_partner_cd,'lead_partner_cd',1,1]
+     [in0.pvcy_excl_ind,'pvcy_excl_ind',1,1]
+     [in0.shared_arrangement_ind,'shared_arrangement_ind',1,1]
+     [in0.employer_group_nm,'employer_group_nm',1,1]
+     [in0.cob_effective_dt,'cob_effective_dt',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.speciality_ind,'speciality_ind',1,1]
+     [in0.pharmacy_rider_cd,'pharmacy_rider_cd',1,1]
+     [in0.legal_entity_cd,'legal_entity_cd',1,1]
+     [in0.pbp_id,'pbp_id',1,1]
+     [in0.custom_no,'custom_no',1,1]
+     [in0.product_cd,'product_cd',1,1]
+     [in0.gl_customer_cd,'gl_customer_cd',1,1]
+     [in0.dar_lob_sk,'dar_lob_sk',1,1]
+     [in0.account_id,'account_id',10,5]
+     [in0.funding_arrangment_cd,'funding_arrangment_cd',1,1]
+     [in0.renewal_dt,'renewal_dt',1,1]
+     [in0.plan_variation_cd,'plan_variation_cd',1,1]
+     [in0.carrier_acct_sk,'carrier_acct_sk',1,1]
+     [in0.employer_group_id,'employer_group_id',5,4]
+     [in0.accumulator_ind,'accumulator_ind',1,1]
+     [in0.carrier_id,'carrier_id',15,6]
+     [in0.cag_sk,'cag_sk',1,1]
+     [in0.oracle_client_cd,'oracle_client_cd',1,1]
+     [in0.erisa_id,'erisa_id',1,1]
+     [in0.migration_ind,'migration_ind',1,1]
+     [in0.hm_dlvry_only_ind,'hm_dlvry_only_ind',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.dxf_hk_part2,'dxf_hk_part2',1,1]
+     [in0.franchise_no,'franchise_no',1,1]
+     [in0.product_classifier_id,'product_classifier_id',1,1]
+     [in0.migration_effective_dt,'migration_effective_dt',1,1]
+     ['lookup("lob_1key_lkp").lob_clt_typ','lob_clt_typ',1,1]
+     ['lookup("lob_3key_lkp").lob_srv_typ','lob_srv_typ',1,1]
+     [in0.contract_num,'contract_num',1,1]
+     [in0.client_nm,'client_nm',1,1]
+     [in0.carrier_category_id,'carrier_category_id',1,1]
+     [in0.situs_state_cd,'situs_state_cd',1,1]
+     [in0.carrier_category_desc,'carrier_category_desc',1,1]
+     ['lookup("lob_3key_lkp").lob_clt_typ','lob_clt_typ',1,1]
+     ['lookup("lob_1key_lkp").lob_srv_typ','lob_srv_typ',1,1]
+     [in0.carrier_state_cd,'carrier_state_cd',1,1]
+     [in0.acctg_lob_sk,'acctg_lob_sk',1,1]
+     [in0.carrier_sk,'carrier_sk',1,1]
+     [in0.pa_site_nm,'pa_site_nm',1,1]
+     [in0.acct_client_type_desc,'acct_client_type_desc',1,1]
+     ['lookup("lob_2key_lkp").lob_bus_typ','lob_bus_typ',1,1]
+     [in0.claim_account_cd,'claim_account_cd',1,1]
+     [in0.product_id,'product_id',1,1]
+     [in0.obligor_cd,'obligor_cd',1,1]
+     [in0.acct_client_type_id,'acct_client_type_id',1,1]
+     [in0.policy_no,'policy_no',1,1]
+     [in0.sales_office_cd,'sales_office_cd',1,1]
+     ['lookup("lob_3key_lkp").lob_bus_typ','lob_bus_typ',1,1]
+     [in0.dxf_sk,'dxf_sk',1,1]
+     [in0.acct_product_line_id,'acct_product_line_id',1,1]
+     [in0.acct_product_line_desc,'acct_product_line_desc',1,1]
+     [in0.src_env_sk,'src_env_sk',1,1]
+     [in0.pick_lob_cd,'pick_lob_cd',1,1]
+     [in0.dxf_hk_part1,'dxf_hk_part1',1,1]
+     [in0.gps_plan_cd,'gps_plan_cd',1,1]
+     [in0.reporting_cd,'reporting_cd',1,1]
+     ['lookup("lob_1key_lkp").lob_bus_typ','lob_bus_typ',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.sold_market_site_cd,'sold_market_site_cd',1,1]
+     [in0.client_id,'client_id',1,1]
+     [in0.spclty_eff_dt,'spclty_eff_dt',1,1]
+     ['lookup("lob_2key_lkp").lob_srv_typ','lob_srv_typ',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.carrier_nm,'carrier_nm',1,1]
+     [in0.acct_product_type_id,'acct_product_type_id',1,1]
+     [in0.acct_product_type_desc,'acct_product_type_desc',1,1]
+     [in0.client_carrier_id,'client_carrier_id',1,1]
+     ['lookup("lob_2key_lkp").lob_clt_typ','lob_clt_typ',1,1]
+     [in0.client_sk,'client_sk',1,1]
+     [in0.claim_suffix_cd,'claim_suffix_cd',1,1]
+     [in0.coc_cd,'coc_cd',1,1]
+     [in0.rebates_only_ind,'rebates_only_ind',1,1]
+     [in0.cob_ind,'cob_ind',1,1]
+     [in0.rebates_stat_ind,'rebates_stat_ind',1,1]
+     [in0.hmo_acct_dvsn_cd,'hmo_acct_dvsn_cd',1,1]
+     [in0.account_nm,'account_nm',1,1]
+     [in0.platform_ind,'platform_ind',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) ctrx_d_cag_dxf_hk_part1 = fail_if_error(in0.dxf_hk_part1);
+let unsigned integer(8) ctrx_d_cag_dxf_hk_part2 = fail_if_error(in0.dxf_hk_part2);
+let integer(8) ctrx_d_cag_dxf_sk = fail_if_error(in0.dxf_sk);
+let decimal("\x01",0) ctrx_d_cag_cag_sk = fail_if_error(in0.cag_sk);
+let decimal("\x01",0) ctrx_d_cag_dar_lob_sk = fail_if_error(in0.dar_lob_sk);
+let decimal("\x01",0) ctrx_d_cag_acctg_lob_sk = fail_if_error(in0.acctg_lob_sk);
+let decimal("\x01",0) ctrx_d_cag_client_sk = fail_if_error(in0.client_sk);
+let decimal("\x01",0) ctrx_d_cag_carrier_sk = fail_if_error(in0.carrier_sk);
+let decimal("\x01",0) ctrx_d_cag_carrier_acct_sk = fail_if_error(in0.carrier_acct_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_client_id = fail_if_error(in0.client_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) ctrx_d_cag_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_employer_group_id = fail_if_error(in0.employer_group_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_client_nm = fail_if_error(in0.client_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_carrier_nm = fail_if_error(in0.carrier_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_account_nm = fail_if_error(in0.account_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_employer_group_nm = fail_if_error(in0.employer_group_nm);
+let decimal("\x01",0) ctrx_d_cag_pvcy_excl_ind = fail_if_error(in0.pvcy_excl_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_pa_site_nm = fail_if_error(in0.pa_site_nm);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_carrier_category_id = fail_if_error(in0.carrier_category_id);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_carrier_category_desc = fail_if_error(in0.carrier_category_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_carrier_state_cd = fail_if_error(in0.carrier_state_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_client_type_id = fail_if_error(in0.acct_client_type_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_client_type_desc = fail_if_error(in0.acct_client_type_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_product_type_id = fail_if_error(in0.acct_product_type_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_product_type_desc = fail_if_error(in0.acct_product_type_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_cag_acct_product_line_id = fail_if_error(in0.acct_product_line_id);
+let string("\x01",charset="iso-8859-15", maximum_length=100) ctrx_d_cag_acct_product_line_desc = fail_if_error(in0.acct_product_line_desc);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_contract_num = fail_if_error(in0.contract_num);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_pbp_id = fail_if_error(in0.pbp_id);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_gps_plan_cd = fail_if_error(in0.gps_plan_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_oracle_client_cd = fail_if_error(in0.oracle_client_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_claim_suffix_cd = fail_if_error(in0.claim_suffix_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=12) ctrx_d_cag_custom_no = fail_if_error(in0.custom_no);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_funding_arrangment_cd = fail_if_error(in0.funding_arrangment_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_plan_variation_cd = fail_if_error(in0.plan_variation_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_policy_no = fail_if_error(in0.policy_no);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_reporting_cd = fail_if_error(in0.reporting_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_product_cd = fail_if_error(in0.product_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_segment_ind = fail_if_error(in0.segment_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_hmo_acct_dvsn_cd = fail_if_error(in0.hmo_acct_dvsn_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_claim_account_cd = fail_if_error(in0.claim_account_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_sold_market_site_cd = fail_if_error(in0.sold_market_site_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_situs_state_cd = fail_if_error(in0.situs_state_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_platform_ind = fail_if_error(in0.platform_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_client_carrier_id = fail_if_error(in0.client_carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_shared_arrangement_ind = fail_if_error(in0.shared_arrangement_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=3) ctrx_d_cag_sales_office_cd = fail_if_error(in0.sales_office_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_accumulator_ind = fail_if_error(in0.accumulator_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_erisa_id = fail_if_error(in0.erisa_id);
+let date("YYYYMMDD")("\x01") ctrx_d_cag_renewal_dt = fail_if_error(in0.renewal_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_iplan_ind = fail_if_error(in0.iplan_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_legal_entity_cd = fail_if_error(in0.legal_entity_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_franchise_no = fail_if_error(in0.franchise_no);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_lead_partner_cd = fail_if_error(in0.lead_partner_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_coc_cd = fail_if_error(in0.coc_cd);
+let decimal("\x01",0) ctrx_d_cag_migration_ind = fail_if_error(in0.migration_ind);
+let date("YYYYMMDD")("\x01") ctrx_d_cag_migration_effective_dt = fail_if_error(in0.migration_effective_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=5) ctrx_d_cag_product_classifier_id = fail_if_error(in0.product_classifier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=4) ctrx_d_cag_pharmacy_rider_cd = fail_if_error(in0.pharmacy_rider_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=20) ctrx_d_cag_cob_ind = fail_if_error(in0.cob_ind);
+let date("YYYYMMDD")("\x01") ctrx_d_cag_cob_effective_dt = fail_if_error(in0.cob_effective_dt);
+let datetime("YYYYMMDDHH24MISS")("\x01") ctrx_d_cag_transaction_ts = fail_if_error(in0.transaction_ts);
+let string("\x01",charset="iso-8859-15", maximum_length=2) ctrx_d_cag_obligor_cd = fail_if_error(in0.obligor_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_speciality_ind = fail_if_error(in0.speciality_ind);
+let date("YYYYMMDD")("\x01") ctrx_d_cag_spclty_eff_dt = fail_if_error(in0.spclty_eff_dt);
+let string("\x01",charset="iso-8859-15", maximum_length=10) ctrx_d_cag_pick_lob_cd = fail_if_error(in0.pick_lob_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=6) ctrx_d_cag_gl_product_cd = fail_if_error(in0.gl_product_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=7) ctrx_d_cag_gl_customer_cd = fail_if_error(in0.gl_customer_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=8) ctrx_d_cag_product_id = fail_if_error(in0.product_id);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_hm_dlvry_only_ind = fail_if_error(in0.hm_dlvry_only_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_hm_dlvry_stat_ind = fail_if_error(in0.hm_dlvry_stat_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_rebates_only_ind = fail_if_error(in0.rebates_only_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=1) ctrx_d_cag_rebates_stat_ind = fail_if_error(in0.rebates_stat_ind);
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_srv_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_bus_typ;
+let string("\x01",charset="iso-8859-15", maximum_length=50) ctrx_d_cag_bseg_clt_typ;
+let decimal("\x01",0) ctrx_d_cag_src_env_sk = fail_if_error(in0.src_env_sk);
+let string("\x01",charset="iso-8859-15", maximum_length=30) c_d_carr_acc_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) c_d_carr_acc_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) ctrx_d_carr_carrier_id = fail_if_error(in0.carrier_id);
+
+
+
+/*   Default value   */
+ctrx_d_cag_bseg_bus_typ=fail_if_error(first_defined(bzt_3_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id), string_lrtrim(in0.employer_group_id)).lob_bus_typ, bzt_4_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id)).lob_bus_typ, bzt_5_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id)).lob_bus_typ, "Not Identified"));
+
+/*   Default value   */
+ctrx_d_cag_bseg_clt_typ=fail_if_error(first_defined(bzt_3_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id), string_lrtrim(in0.employer_group_id)).lob_clt_typ, bzt_4_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id)).lob_clt_typ, bzt_5_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id)).lob_clt_typ, "Not Identified"));
+
+/*   Default value   */
+ctrx_d_cag_bseg_srv_typ=fail_if_error(first_defined(bzt_3_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id), string_lrtrim(in0.employer_group_id)).lob_srv_typ, bzt_4_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id), string_lrtrim(in0.account_id)).lob_srv_typ, bzt_5_6c54cc0a_58a595ed_16bb_0(string_lrtrim(in0.carrier_id)).lob_srv_typ, "Not Identified"));
+
+  out0.ctrx_d_cag.dxf_hk_part1::ctrx_d_cag_dxf_hk_part1;
+  out0.ctrx_d_cag.dxf_hk_part2::ctrx_d_cag_dxf_hk_part2;
+  out0.ctrx_d_cag.dxf_sk::ctrx_d_cag_dxf_sk;
+  out0.ctrx_d_cag.cag_sk::ctrx_d_cag_cag_sk;
+  out0.ctrx_d_cag.dar_lob_sk::ctrx_d_cag_dar_lob_sk;
+  out0.ctrx_d_cag.acctg_lob_sk::ctrx_d_cag_acctg_lob_sk;
+  out0.ctrx_d_cag.client_sk::ctrx_d_cag_client_sk;
+  out0.ctrx_d_cag.carrier_sk::ctrx_d_cag_carrier_sk;
+  out0.ctrx_d_cag.carrier_acct_sk::ctrx_d_cag_carrier_acct_sk;
+  out0.ctrx_d_cag.client_id::ctrx_d_cag_client_id;
+  out0.ctrx_d_cag.carrier_id::ctrx_d_cag_carrier_id;
+  out0.ctrx_d_cag.account_id::ctrx_d_cag_account_id;
+  out0.ctrx_d_cag.employer_group_id::ctrx_d_cag_employer_group_id;
+  out0.ctrx_d_cag.client_nm::ctrx_d_cag_client_nm;
+  out0.ctrx_d_cag.carrier_nm::ctrx_d_cag_carrier_nm;
+  out0.ctrx_d_cag.account_nm::ctrx_d_cag_account_nm;
+  out0.ctrx_d_cag.employer_group_nm::ctrx_d_cag_employer_group_nm;
+  out0.ctrx_d_cag.pvcy_excl_ind::ctrx_d_cag_pvcy_excl_ind;
+  out0.ctrx_d_cag.pa_site_nm::ctrx_d_cag_pa_site_nm;
+  out0.ctrx_d_cag.carrier_category_id::ctrx_d_cag_carrier_category_id;
+  out0.ctrx_d_cag.carrier_category_desc::ctrx_d_cag_carrier_category_desc;
+  out0.ctrx_d_cag.carrier_state_cd::ctrx_d_cag_carrier_state_cd;
+  out0.ctrx_d_cag.acct_client_type_id::ctrx_d_cag_acct_client_type_id;
+  out0.ctrx_d_cag.acct_client_type_desc::ctrx_d_cag_acct_client_type_desc;
+  out0.ctrx_d_cag.acct_product_type_id::ctrx_d_cag_acct_product_type_id;
+  out0.ctrx_d_cag.acct_product_type_desc::ctrx_d_cag_acct_product_type_desc;
+  out0.ctrx_d_cag.acct_product_line_id::ctrx_d_cag_acct_product_line_id;
+  out0.ctrx_d_cag.acct_product_line_desc::ctrx_d_cag_acct_product_line_desc;
+  out0.ctrx_d_cag.contract_num::ctrx_d_cag_contract_num;
+  out0.ctrx_d_cag.pbp_id::ctrx_d_cag_pbp_id;
+  out0.ctrx_d_cag.gps_plan_cd::ctrx_d_cag_gps_plan_cd;
+  out0.ctrx_d_cag.oracle_client_cd::ctrx_d_cag_oracle_client_cd;
+  out0.ctrx_d_cag.claim_suffix_cd::ctrx_d_cag_claim_suffix_cd;
+  out0.ctrx_d_cag.custom_no::ctrx_d_cag_custom_no;
+  out0.ctrx_d_cag.funding_arrangment_cd::ctrx_d_cag_funding_arrangment_cd;
+  out0.ctrx_d_cag.plan_variation_cd::ctrx_d_cag_plan_variation_cd;
+  out0.ctrx_d_cag.policy_no::ctrx_d_cag_policy_no;
+  out0.ctrx_d_cag.reporting_cd::ctrx_d_cag_reporting_cd;
+  out0.ctrx_d_cag.product_cd::ctrx_d_cag_product_cd;
+  out0.ctrx_d_cag.segment_ind::ctrx_d_cag_segment_ind;
+  out0.ctrx_d_cag.hmo_acct_dvsn_cd::ctrx_d_cag_hmo_acct_dvsn_cd;
+  out0.ctrx_d_cag.claim_account_cd::ctrx_d_cag_claim_account_cd;
+  out0.ctrx_d_cag.sold_market_site_cd::ctrx_d_cag_sold_market_site_cd;
+  out0.ctrx_d_cag.situs_state_cd::ctrx_d_cag_situs_state_cd;
+  out0.ctrx_d_cag.platform_ind::ctrx_d_cag_platform_ind;
+  out0.ctrx_d_cag.client_carrier_id::ctrx_d_cag_client_carrier_id;
+  out0.ctrx_d_cag.shared_arrangement_ind::ctrx_d_cag_shared_arrangement_ind;
+  out0.ctrx_d_cag.sales_office_cd::ctrx_d_cag_sales_office_cd;
+  out0.ctrx_d_cag.accumulator_ind::ctrx_d_cag_accumulator_ind;
+  out0.ctrx_d_cag.erisa_id::ctrx_d_cag_erisa_id;
+  out0.ctrx_d_cag.renewal_dt::ctrx_d_cag_renewal_dt;
+  out0.ctrx_d_cag.iplan_ind::ctrx_d_cag_iplan_ind;
+  out0.ctrx_d_cag.legal_entity_cd::ctrx_d_cag_legal_entity_cd;
+  out0.ctrx_d_cag.franchise_no::ctrx_d_cag_franchise_no;
+  out0.ctrx_d_cag.lead_partner_cd::ctrx_d_cag_lead_partner_cd;
+  out0.ctrx_d_cag.coc_cd::ctrx_d_cag_coc_cd;
+  out0.ctrx_d_cag.migration_ind::ctrx_d_cag_migration_ind;
+  out0.ctrx_d_cag.migration_effective_dt::ctrx_d_cag_migration_effective_dt;
+  out0.ctrx_d_cag.product_classifier_id::ctrx_d_cag_product_classifier_id;
+  out0.ctrx_d_cag.pharmacy_rider_cd::ctrx_d_cag_pharmacy_rider_cd;
+  out0.ctrx_d_cag.cob_ind::ctrx_d_cag_cob_ind;
+  out0.ctrx_d_cag.cob_effective_dt::ctrx_d_cag_cob_effective_dt;
+  out0.ctrx_d_cag.transaction_ts::ctrx_d_cag_transaction_ts;
+  out0.ctrx_d_cag.obligor_cd::ctrx_d_cag_obligor_cd;
+  out0.ctrx_d_cag.speciality_ind::ctrx_d_cag_speciality_ind;
+  out0.ctrx_d_cag.spclty_eff_dt::ctrx_d_cag_spclty_eff_dt;
+  out0.ctrx_d_cag.pick_lob_cd::ctrx_d_cag_pick_lob_cd;
+  out0.ctrx_d_cag.gl_product_cd::ctrx_d_cag_gl_product_cd;
+  out0.ctrx_d_cag.gl_customer_cd::ctrx_d_cag_gl_customer_cd;
+  out0.ctrx_d_cag.product_id::ctrx_d_cag_product_id;
+  out0.ctrx_d_cag.hm_dlvry_only_ind::ctrx_d_cag_hm_dlvry_only_ind;
+  out0.ctrx_d_cag.hm_dlvry_stat_ind::ctrx_d_cag_hm_dlvry_stat_ind;
+  out0.ctrx_d_cag.rebates_only_ind::ctrx_d_cag_rebates_only_ind;
+  out0.ctrx_d_cag.rebates_stat_ind::ctrx_d_cag_rebates_stat_ind;
+  out0.ctrx_d_cag.bseg_srv_typ::ctrx_d_cag_bseg_srv_typ;
+  out0.ctrx_d_cag.bseg_bus_typ::ctrx_d_cag_bseg_bus_typ;
+  out0.ctrx_d_cag.bseg_clt_typ::ctrx_d_cag_bseg_clt_typ;
+  out0.ctrx_d_cag.src_env_sk::ctrx_d_cag_src_env_sk;
+  out0.c_d_carr_acc.carrier_id::c_d_carr_acc_carrier_id;
+  out0.c_d_carr_acc.account_id::c_d_carr_acc_account_id;
+  out0.ctrx_d_carr.carrier_id::ctrx_d_carr_carrier_id;
+  out0.*::in0.*;
+
+end;

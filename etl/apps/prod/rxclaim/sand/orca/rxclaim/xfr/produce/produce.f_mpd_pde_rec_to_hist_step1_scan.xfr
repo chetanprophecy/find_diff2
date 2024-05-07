@@ -1,0 +1,59 @@
+ 
+type f_mpd_pde_recent_type = $[expand_type(read_file(LOOKUP_FILE_DML))];
+ 
+let f_mpd_pde_recent_type lookup_rec = allocate_with_defaults(); 
+let f_mpd_pde_recent_type output_record = allocate_with_defaults(); 
+
+let lookup_identifier_type lookup_id = lookup_not_loaded();
+let decimal("") match_flag = 0;
+
+/*Do computation*/
+out::scan(in)=
+begin
+let int match_count=0;
+match_flag = 0;
+lookup_rec = allocate_with_defaults(); 
+output_record = allocate_with_defaults(); 
+
+if(lookup_id == lookup_not_loaded())
+    lookup_id =  lookup_load(this_partition_path($'LOOKUP_FILE_PATH'), this_partition_path(string_replace($'LOOKUP_FILE_PATH', ".dat.gz", ".idx")), "IDS ICFF LKP");
+    
+match_count = lookup_count(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1);   
+
+if(match_count != 0) 
+begin
+  
+    lookup_rec = lookup_last(lookup_id, "IDS ICFF LKP", in.dxf_hk_part1);
+    
+    if(lookup_rec.dxf_hk_part2 != in.dxf_hk_part2)
+    begin block exact_match  
+      for(let int i = 1, i < match_count) 
+      begin
+        lookup_rec = lookup_previous(lookup_id, "IDS ICFF LKP");
+                if(lookup_rec.dxf_hk_part2 == in.dxf_hk_part2) 
+                begin
+                match_flag = 1;
+                exit exact_match;
+                end
+                else match_flag = 0;
+      end
+      match_flag = 0;
+    end block exact_match
+    else match_flag = 1;
+    
+    if(match_flag == 1)
+    begin
+    output_record= lookup_rec;
+    end ;
+
+ 
+end;
+
+out.*::output_record.*;
+end;
+/* This function is optional. */
+/*Select output record*/
+out::output_select(out)=
+begin
+out::match_flag==1;
+end;

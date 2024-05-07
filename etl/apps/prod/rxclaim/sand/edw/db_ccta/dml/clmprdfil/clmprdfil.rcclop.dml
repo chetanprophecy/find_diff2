@@ -1,0 +1,184 @@
+record
+  string("\x01", maximum_length=10) a5aecd /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: Plan Code"
+ BizComment:"Code used to identify a specific plan.  This code combined with a plan effective date uniquely identifies the plan in the RxCLAIM system."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) a5akdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCLOP: Plan Eff Date"
+ BizComment:"The date plan/benefit became effective.  Claims submitted prior to this date will not be accepted."
+@*/;
+  string("\x01", maximum_length=2) a5mdid /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Clarification Code"
+ BizComment:"Valid Values: :PC. 00 - Not Specified :PC. 01 - No Override :PC. 02 - Other Override :PC. 03 - Vacation Supply :PC. 04 - Lost Prescription :PC. 05 - Therapy Change :PC. 06 - Starter Dose :PC. 07 - Medically Necessary :PC. 08 - ProcessCompound/AprvdIngr :PC. 09 - Encounter :PC. 10 - Meets Plan Limitations :PC. 11 - Certification on File :PC. 12 - DME Replacement Indicator :PC. 13 - Payer-Recognized Emergency Request :PC. 14 - LTC Leave of Absence :PC. 15 - LTC Replacement Medication :PC. 16 - LTC Emergency Kit :PC. 17 - LTC Emergency Supply Remainder :PC. 18 - LTC Patient Admit Ind :PC. 19 - Split Billing :PC. 21=LTC dispense 14 days/less :PC. 22=LTC dispense: 7 days :PC. 23=LTC dispense: 4 days :PC. 24=LTC dispense: 3 days :PC. 25=LTC dispense: 2 days :PC. 26=LTC dispense: 1 day :PC. 27=LTC dispense: 4-3 days :PC. 28=LTC dispense: 2-2-3 days :PC. 29=LTC disp daily+3day wknd :PC. 30=LTC dispense: Per shift :PC. 31=LTC dispnse: Per med pass :PC. 32=LTC dispnse: PRN ondemand :PC. 33=LTC dispense 7days/less :PC. 34=LTC dispense: 14 days :PC. 35=LTC dispense 8-14 day NL :PC. 36=LTC dispnse: out shrt cyc :PC. 42=Presc ID validated :PC. 43=Presc ID DEA renewed :PC. 44=Presc ID DEA recent lic :PC. 45=Presc ID DEA hosp suffix :PC. 46=Presc ID DEA auth right :PC. 99 - Other :PC. *  - Asterisk"
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) a5hdhu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Seq #"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) a5q7hb /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: ND1 NDC List Name"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5meid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO NDC List Status"
+ BizComment:"Valid Values: :P. A - All :PC. Applies the overrides specified to all products. :P. E - Exclude :PC. Applies the specified overrides to all products except those in the List. :P. I - Include :PC. Applies the specified overrides only to those products in the List."
+@*/;
+  string("\x01", maximum_length=10) a5zaha /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: GPI List ID"
+ BizComment:"The GPI List is a list of GPI's for all products that should be considered maintenance products."
+@*/;
+  string("\x01", maximum_length=1) a5mfid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO GPI List Status"
+ BizComment:"Valid Values: :P. A - All :PC. Applies the overrides specified to all products. :P. E - Exclude :PC. Applies the specified overrides to all products except those in the List. :P. I - Include :PC. Applies the specified overrides only to those products in the List."
+@*/;
+  string("\x01", maximum_length=1) a5mhid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO First Fill Period"
+ BizComment:"Indicates how far back in history from the fill date of the claim to look for an additional fill. :LINES. :ELINES."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) a5gnhu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO First Fill Days"
+ BizComment:"Indicates how many days back from the fill date to look in history for an additional fill."
+@*/;
+  string("\x01", maximum_length=1) a5miid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO First Fill Level"
+ BizComment:"Defines First Fill allowing wildcards for a match in history.  Specify whether a match on NDC, GPI or a client defined value on the historical claim is considered a match for a first fill."
+@*/;
+  string("\x01", maximum_length=2) a5mjid /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Wildcard"
+ BizComment:"It indicates the number of wildcards (asterisks) to put on the end of the submitted product to determine which product ID should be subject to the First Fill rules in sequence record."
+@*/;
+  string("\x01", maximum_length=2) a5mpid /*CHAR(2) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Submitted PA Type"
+ BizComment:"This field is used to indicate what submitted value on the claim is used in conjunction with a matching GPI to find a first fill in history."
+@*/;
+  string("\x01", maximum_length=1) a5mlid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Plan NDC List Ovrd"
+ BizComment:"N - No :PC. Does not override plan edit if submitted values on sequence are matched. :P. Y - Yes :PC. Overrides plan edit if submitted values on sequence are matched."
+@*/;
+  string("\x01", maximum_length=1) a5naid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Plan GPI List Ovrd"
+ BizComment:"N - No :PC. Does not override plan edit if submitted values on sequence are matched. :P. Y - Yes :PC. Overrides plan edit if submitted values on sequence are matched."
+@*/;
+  string("\x01", maximum_length=1) a5mqid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Refill Limits"
+ BizComment:"N - No :PC. Does not override plan edit if submitted values on sequence are matched. :P. Y - Yes :PC. Overrides plan edit if submitted values on sequence are matched. :P. e - Exempt :PC. Overrides plan edit if submitted values on sequence are matched.  'e' also marks the claim exempt and skips all historical claims marked 'e' when determining the totals for fill limits."
+@*/;
+  string("\x01", maximum_length=1) a5nbid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Packaging Excp Ovrd"
+ BizComment:"N - No :PC. Does not override plan edit if submitted values on sequence are matched. :P. Y - Yes :PC. Overrides plan edit if submitted values on sequence are matched."
+@*/;
+  string("\x01", maximum_length=1) a5mmid /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO DUR DUPTHER Override"
+ BizComment:"E - Extract :PC. Extracts the DUR messages.  They are not returned to the pharmacy or cause the claim to reject. :P. H - Hard Reject :PC. Returns the DUR messages to the pharmacy and rejects the claim.  This reject may not be overridden. :P. M - Message :PC. Returns the DUR messages to the pharmacy but does not reject the claim. :P. N - No :PC. Does not override the plan DUR.  Any DUR rejects encountered within the plan DUR are applied to the claim. :P. S - Soft Reject :PC. Returns the DUR messages to the pharmacy and rejects the claim.  The pharmacy may override the DUR with mutually agreed upon submitted values."
+@*/;
+  string("\x01", maximum_length=1) a5m9id /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO DUR DUPRX Override"
+ BizComment:"E - Extract :PC. Extracts the DUR messages.  They are not returned to the pharmacy or cause the claim to reject. :P. H - Hard Reject :PC. Returns the DUR messages to the pharmacy and rejects the claim.  This reject may not be overridden. :P. M - Message :PC. Returns the DUR messages to the pharmacy but does not reject the claim. :P. N - No :PC. Does not override the plan DUR.  Any DUR rejects encountered within the plan DUR are applied to the claim. :P. S - Soft Reject :PC. Returns the DUR messages to the pharmacy and rejects the claim.  The pharmacy may override the DUR with  mutually agreed upon submitted values."
+@*/;
+  string("\x01", maximum_length=3) a5q6oc /*CHAR(3) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Pharmacy Type"
+ BizComment:"Indicates the pharmacy type to which the edit will be applied. :LINES. :ELINES."
+@*/;
+  string("\x01", maximum_length=1) a5q8oc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Maintenance Override"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5q9oc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO DEA Class Override"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5raoc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO OTC Override"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5rboc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Route of Admin Ovrd"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5rcoc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Medicaid Products Ovr"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5rdoc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO DESI Override"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5reoc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO FDA Thera Equiv Ovrd"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5rfoc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Brand/Generic Ovrd"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=1) a5q7oc /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Outcome"
+ BizComment:"Indicates whether the edit should be processed or the claim should reject."
+@*/;
+  string("\x01", maximum_length=1) a5vqie /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Qualifier"
+ BizComment:"Controls the type of period to date is being applied. F - First Fill Allows overrides on the first fill     only. M - Max Sbm Clarification Sets a maximum number of     times an override is allowed per period."
+@*/;
+  decimal("\x01",0, maximum_length=4, sign_reserved) a5xthu /*DECIMAL(3) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Maximum"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) a5mzhj /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Plan Override"
+ BizComment:""
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) a5i2hh /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Plan Eff Date"
+ BizComment:""
+@*/;
+  string("\x01", maximum_length=10) a5tnhk /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Pharmacy Network List"
+ BizComment:"Indicates a list of Pharmacy Networks to which the edit will be applied."
+@*/;
+  string("\x01", maximum_length=1) a5shak /*CHAR(1) NOT NULL*/ /*@
+BizName:"RCCLOP: CLO Dispensing Fee Ovrd"
+ BizComment:"[blank]: No override exists :P. Yes; override: If the claim matches the criteria on this clarification override record, then the dispensing fee will be set to 0. :P. No, do not override: The dispensing fee is not overridden due to the submitted clarification code matching the clarification code on this record."
+@*/;
+  string("\x01", maximum_length=1) a5tyan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) a5tzan /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) a5jrap /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) a5jqap /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) a5vnas /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=1) a5r1at /*CHAR(1) NOT NULL*/;
+  string("\x01", maximum_length=2) a5doax /*CHAR(2) NOT NULL*/;
+  string("\x01", maximum_length=10) a5c9vi /*CHAR(10) NOT NULL*/;
+  string("\x01", maximum_length=10) a5akvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: ADD User Name"
+ BizComment:"The person who added the transaction."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) a5c2dt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCLOP: ADD Date"
+ BizComment:"The date the transaction was added."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) a5adtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCCLOP: ADD Time"
+ BizComment:"The time the transaction was added."
+@*/;
+  string("\x01", maximum_length=10) a5alvn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: ADD Program Name"
+ BizComment:"The name of the program that added the transaction."
+@*/;
+  string("\x01", maximum_length=10) a5advn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: CHG User Name"
+ BizComment:"The person who added or changed the record."
+@*/;
+  decimal("\x01",0, maximum_length=8, sign_reserved) a5bmdt /*DECIMAL(7) NOT NULL*/ /*@
+BizName:"RCCLOP: CHG Date"
+ BizComment:"The date the record was added or changed."
+@*/;
+  decimal("\x01",0, maximum_length=7, sign_reserved) a5abtm /*DECIMAL(6) NOT NULL*/ /*@
+BizName:"RCCLOP: CHG Time"
+ BizComment:"The time the record was added or changed."
+@*/;
+  string("\x01", maximum_length=10) a5aevn /*CHAR(10) NOT NULL*/ /*@
+BizName:"RCCLOP: CHG Program Name"
+ BizComment:"The name of the program that added or changed the record."
+@*/;
+  string(1) newline = "\n";
+end
+

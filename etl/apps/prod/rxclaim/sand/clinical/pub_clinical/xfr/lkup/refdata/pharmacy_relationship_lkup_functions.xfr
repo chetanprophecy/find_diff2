@@ -1,0 +1,95 @@
+/******************************************************************************************************************************************
+ * pub_clinical -> $PUB_CLINICAL_LKUP_XFR/refdata/pharmacy_relationship_lkup_functions.xfr
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/09/05  Suresh Potu            Initial version, create lookup functions for pharmacy relationship process.
+ ******************************************************************************************************************************************/
+
+include "~$PUB_CLINICAL_DML/cli_msg_types.dml";
+include "~$PUB_CLINICAL_DML/cli_hash_lkup_types.dml";
+
+constant cli_string_t  PUB_CLINICAL_SERIAL_REFDATA  parameter;
+constant cli_string_t  PUB_CLINICAL_MFS_REFDATA     parameter;
+
+cli_string_t out :: get_pharmacy_lkup_path() inline =
+begin
+  out :1: if (this_partition() == -1) PUB_CLINICAL_SERIAL_REFDATA + '/pharmacy_relationship.dat';
+  out  ::        this_partition_path( PUB_CLINICAL_MFS_REFDATA    + '/pharmacy_relationship.dat' );
+end;
+
+cli_string_t out :: get_pharmacy_indx_path(cli_string_t lkup_path, cli_string_t index_nm) inline =
+begin
+  out :1: re_replace(lkup_path, '\\.dat$', '.' + index_nm + '.idx');
+end;
+
+/*******************************************/
+/* Source Environment Lookup (natural key) */
+/*******************************************/
+
+type pharmacy_relationship_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  pharmacy_hash_lkup_t    RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {pharmacy_relationship.phrmcy_id; pharmacy_relationship.phrmcy_reltnshp_sequence_num};
+end;
+
+let pharmacy_relationship_lkup_t GLKUP_PHARMACY = allocate_with_nulls();
+
+pharmacy_relationship_lkup_t out :: load_pharmacy_lkup() inline =
+begin
+  if (GLKUP_PHARMACY.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_pharmacy_lkup_path();
+    let indx_path  = get_pharmacy_indx_path(lkup_path, 'pharmacy_relationship');
+    let indx_found = file_information(indx_path).found;
+
+    GLKUP_PHARMACY = if (indx_found) lookup_load(lkup_path, indx_path)
+                     else            lookup_load(lkup_path);
+  end;
+
+  out :: GLKUP_PHARMACY;
+end;
+
+pharmacy_relationship_t out :: get_pharmacy(cli_phr_id,cli_phr_relshp_seq_no) inline =
+begin
+  let pharmacy_relationship_lkup_t lkup = load_pharmacy_lkup();
+  out :: lookup(lkup, cli_phr_id,cli_phr_relshp_seq_no).pharmacy_relationship;
+end;
+
+/*******************************************/
+/* Source Environment Lookup (Surrogate key) */
+/*******************************************/
+
+type pharmacy_relationship_sk_lkup_t =
+record
+  lookup_identifier_type  id             = -1;
+  pharmacy_hash_lkup_t    RecordFormat() = allocate_with_defaults();
+  string('')              key()          = {pharmacy_relationship.phrmcy_reltnshp_id};
+end;
+
+let pharmacy_relationship_sk_lkup_t GLKUP_SK_PHARMACY = allocate_with_nulls();
+
+pharmacy_relationship_sk_lkup_t out :: load_pharmacy_sk_lkup() inline =
+begin
+  if (GLKUP_SK_PHARMACY.id == lookup_not_loaded())
+  begin
+    let lkup_path  = get_pharmacy_lkup_path();
+    let indx_path  = get_pharmacy_indx_path(lkup_path, 'pharmacy_relationship');
+    let indx_found = file_information(indx_path).found;
+
+    GLKUP_SK_PHARMACY = if (indx_found) lookup_load(lkup_path, indx_path)
+                     else            lookup_load(lkup_path);
+  end;
+
+  out :: GLKUP_SK_PHARMACY;
+end;
+
+pharmacy_relationship_t out :: get_sk_pharmacy(cli_phrmcy_reltnshp_id) inline =
+begin
+  let pharmacy_relationship_sk_lkup_t lkup = load_pharmacy_sk_lkup();
+  out :: lookup(lkup, cli_phrmcy_reltnshp_id).pharmacy_relationship;
+end;
+

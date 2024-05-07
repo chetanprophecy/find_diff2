@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||1
+SOURCE_NAME||||clmprdfil.rcmnop
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rcmnop                  c2abcd,c2aacd,c2accd,c2adcd,c2mmcd,c2fkdt,c2fldt,c2cjst,c2fmdt,c2fndt,c2a9s1,c2afvn,c2aqqt,c2arqt,c2conb,c2cpnb,c2bas1,c2bds1,c2dbn1,c2vynb,c2bes1,c2dcn1,c2v1nb,c2bgs1,c2bzs2,c2c8n1,c2v4nb,c2jnn1,c2v5nb,c2bls1,c2den1,c2bopr,c2els3,c2cqnb,c2crnb,c2c4qt,c2cyqt,c2cvqt,c2cuqt,c2beh7,c2bqs1,c2brs1,c2bss1,c2b8s2,c2fes2,c2u7s2,c2bjs1,c2ohcd,c2lwcd,c2excd,c2eycd,c2fsnb,c2dkst,c2m2hr,c2m3hr,c2i4cd,c2i5cd,c2i6cd,c2c4c1,c2c5c1,c2c7c1,c2c3c1,c2bks1,c2u6s3,c2u7s3,c2a2s3,c2lghb,c2xch6,c2xeh6,c2v9s3,c2v7s3,c2avcd,c2v8s3,c2pgdt,c2fgcj,c2fhcj,c2vocj,c2crn3,c2ezc6,c2csn3,c2ctn3,c2whh9,c2cbi1,c2cci1,c2x5i1,c2enib,c2obhf,c2skid,c2q0od,c2dxai,c2bxal,c2b3qu,c2oohb,c2n4hr,c2h0ai,c2duqu,c2y5aj,c2s8ho,c2akvn,c2c2dt,c2adtm,c2alvn,c2advn,c2bmdt,c2abtm,c2aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, SOURCE_SYSTEM, SOURCE_LOWER)]
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+WHERE_CLAUSE||||$[ \n  if (START_CHANGES_TIME != '') \n    "WHERE rcmnop.c2bmdt >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n    " AND rcmnop.c2bmdt  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n else \n    "WHERE rcmnop.c2bmdt  >= " + \n     string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n    " AND rcmnop.c2bmdt  <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n    " OPTIMIZE FOR ALL ROWS"\n]\n
+DO_CLEAN||||1
+DO_SOURCE||||0
+ENABLE_DEFAULT_RULES||||True

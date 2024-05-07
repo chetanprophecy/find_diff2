@@ -1,0 +1,18 @@
+!prototype|P|||$AI_PSET/produce.interim.pset
+INPUT_FILE_PATH|$|||$AI_MFS/clean.rxbsysqa3/clean.rxbsysqa3.rxcui_assignment_ndc.${RUN_ID}.dat.gz
+INPUT_FILE_DML|$|||$AI_DML/clean.rxbsysqa3/clean.rxbsysqa3.rxcui_assignment_ndc.dml
+OUTPUT_FILE_LOCATION||||$AI_SERIAL/raw.rxcui_assignment_ndc_extract.${RUN_ID}.dat.gz
+OUTPUT_FILE_DML|$|||$AI_DML/clean.rxbsysqa3/raw.rxcui_assignment_ndc_extract.dml
+AB_CATALOG|$|||$AI_CAT/produce/produce.rxcui_assignment_ndc.cat
+USE_SORT||||True
+FILTER_EXPR|$|||lookup_match("rcnd2p_ndc",ndc)
+SORT_KEY||||{proxy_ndc; altr_ndc; rxcui; msc; active_ind; partd_ind; unit_cost_amt; afq7hb; afq8hb; aftwig; aetvig; awx9vg; rxt_src_envrt_nm; claim_count}
+ROLLUP_XFR||||$AI_XFR/produce/produce.rxcui_assignment_ndc_rollup.xfr
+SCAN_XFR||||$AI_XFR/produce/produce.rxcui_assignment_ndc_scan.xfr
+USE_DEDUP||||True
+USE_SCAN||||False
+USE_ROLLUP||||False
+USE_NORM||||True
+NORM_OUTPUT_DML||||$[read_file(OUTPUT_FILE_DML)]
+NORM_XFR||||$AI_XFR/produce/produce.rxcui_assignment_norm_ndc.xfr
+RUN_ID||||0

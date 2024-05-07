@@ -1,0 +1,111 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5becfdea_9912_5 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.thres.covrg_gap_flg,[transform],in0.coverage_gap_flag]
+  [out0.thres.covrg_gap_amt,[passthrough],in0.coverage_gap]
+  [out0.thres.src_env_sk,[transform],]
+  [out0.thres.plan_year,[transform],]
+  [out0.thres.catastrophic_covrg_amt,[passthrough],in0.catastrophic_coverage]
+  [out0.fsk_sub_rec.account_id,[passthrough],in0.account_id]
+  [out0.thres.mmd_copay_category_cd,[passthrough],in0.mmd_copay_category]
+  [out0.thres.plan_deductible_amt,[passthrough],in0.plan_deductible]
+  [out0.fsk_sub_rec.carrier_id,[passthrough],in0.carrier_id]
+  [out0.thres.initial_covrg_amt,[passthrough],in0.initial_coverage]
+  [out0.thres.initial_covrg_typ,[passthrough],in0.initial_coverage_type]
+  [out0.thres.cag_sk,[transform],]
+  [out0.fsk_sub_rec.employer_group_id,[passthrough],in0.group_id]
+  [out0.thres.exception_flg,[transform],]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.thres.covrg_gap_flg,'thres.covrg_gap_flg',1,0]
+     [out0.thres.covrg_gap_amt,'thres.covrg_gap_amt',1,0]
+     [out0.thres.group_id,'thres.group_id',1,0]
+     [out0.thres.src_env_sk,'thres.src_env_sk',1,0]
+     [out0.thres.plan_year,'thres.plan_year',1,0]
+     [out0.thres.account_id,'thres.account_id',1,0]
+     [out0.thres.catastrophic_covrg_amt,'thres.catastrophic_covrg_amt',1,0]
+     [out0.thres.carrier_id,'thres.carrier_id',1,0]
+     [out0.fsk_sub_rec.account_id,'fsk_sub_rec.account_id',1,0]
+     [out0.thres.mmd_copay_category_cd,'thres.mmd_copay_category_cd',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.thres.plan_deductible_amt,'thres.plan_deductible_amt',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.fsk_sub_rec.carrier_id,'fsk_sub_rec.carrier_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.thres.initial_covrg_amt,'thres.initial_covrg_amt',1,0]
+     [out0.thres.initial_covrg_typ,'thres.initial_covrg_typ',1,0]
+     [out0.thres.cag_sk,'thres.cag_sk',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.fsk_sub_rec.employer_group_id,'fsk_sub_rec.employer_group_id',1,0]
+     [out0.thres.exception_flg,'thres.exception_flg',1,0]
+  ]
+  impacts:
+  [
+     [in0.account_id,'account_id',2,2]
+     [in0.initial_coverage,'initial_coverage',1,1]
+     [in0.carrier_id,'carrier_id',2,2]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.initial_coverage_type,'initial_coverage_type',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.plan_deductible,'plan_deductible',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.catastrophic_coverage,'catastrophic_coverage',1,1]
+     [in0.group_id,'group_id',2,2]
+     [in0.mmd_copay_category,'mmd_copay_category',1,1]
+     [in0.coverage_gap_flag,'coverage_gap_flag',1,1]
+     [in0.coverage_gap,'coverage_gap',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let string("\x01",charset="iso-8859-15", maximum_length=2) thres_mmd_copay_category_cd = fail_if_error(in0.mmd_copay_category);
+let decimal("\x01",0) thres_exception_flg = 0;
+let string("\x01",charset="iso-8859-15", maximum_length=30) thres_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) thres_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) thres_group_id = fail_if_error(in0.group_id);
+let decimal("\x01",0) thres_cag_sk = -1;
+let decimal("\x01".2, maximum_length=11, sign_reserved) thres_plan_deductible_amt = fail_if_error(in0.plan_deductible);
+let decimal("\x01".2, maximum_length=11, sign_reserved) thres_initial_covrg_amt = fail_if_error(in0.initial_coverage);
+let string("\x01",charset="iso-8859-15", maximum_length=1) thres_initial_covrg_typ = fail_if_error(in0.initial_coverage_type);
+let decimal("\x01".2, maximum_length=11, sign_reserved) thres_covrg_gap_amt = fail_if_error(in0.coverage_gap);
+let decimal("\x01",0) thres_covrg_gap_flg = fail_if_error((in0.coverage_gap_flag=='Y')? 1 : 0);
+let decimal("\x01".2, maximum_length=11, sign_reserved) thres_catastrophic_covrg_amt = fail_if_error(in0.catastrophic_coverage);
+let decimal("\x01",0) thres_plan_year = fail_if_error((string(""))(datetime("YYYY0101")) now1());
+let decimal("\x01",0) thres_src_env_sk = 480;
+let string("\x01",charset="iso-8859-15", maximum_length=30) fsk_sub_rec_carrier_id = fail_if_error(in0.carrier_id);
+let string("\x01",charset="iso-8859-15", maximum_length=40) fsk_sub_rec_account_id = fail_if_error(in0.account_id);
+let string("\x01",charset="iso-8859-15", maximum_length=30) fsk_sub_rec_employer_group_id = fail_if_error(in0.group_id);
+
+
+
+  out0.thres.mmd_copay_category_cd::thres_mmd_copay_category_cd;
+  out0.thres.exception_flg::thres_exception_flg;
+  out0.thres.carrier_id::thres_carrier_id;
+  out0.thres.account_id::thres_account_id;
+  out0.thres.group_id::thres_group_id;
+  out0.thres.cag_sk::thres_cag_sk;
+  out0.thres.plan_deductible_amt::thres_plan_deductible_amt;
+  out0.thres.initial_covrg_amt::thres_initial_covrg_amt;
+  out0.thres.initial_covrg_typ::thres_initial_covrg_typ;
+  out0.thres.covrg_gap_amt::thres_covrg_gap_amt;
+  out0.thres.covrg_gap_flg::thres_covrg_gap_flg;
+  out0.thres.catastrophic_covrg_amt::thres_catastrophic_covrg_amt;
+  out0.thres.plan_year::thres_plan_year;
+  out0.thres.src_env_sk::thres_src_env_sk;
+  out0.fsk_sub_rec.carrier_id::fsk_sub_rec_carrier_id;
+  out0.fsk_sub_rec.account_id::fsk_sub_rec_account_id;
+  out0.fsk_sub_rec.employer_group_id::fsk_sub_rec_employer_group_id;
+  out0.*::in0.*;
+
+end;

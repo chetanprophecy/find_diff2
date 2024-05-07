@@ -1,0 +1,57 @@
+let string("") [int] vec_val =[vector];
+let string("") [int] vec_temp =[vector];
+
+out :: length(in) =
+begin
+vec_temp=[vector];
+vec_temp=if (((is_null(in.record_code) or in.record_code!=05)
+                or (is_null(in.claim_no) or in.claim_no!=01)
+                or (is_null(in.trlr_code) or in.trlr_code!=0)
+                or (is_null(in.detail_code) or in.detail_code!=1) 
+                or (is_null(in.header_code) or in.header_code!=0) 
+                or (!is_null(in.zip_code) and (length_of(in.zip_code)>9 or length_of(in.zip_code)<5 ) )
+                or (in.zip_code=="000000000" and is_null(in.address_line4))
+                or (in.bank_transaction_code== "22" and  in.payee_id!=in.trace_number )
+                or (is_null(in.line_no) or in.line_no!=0)
+                or (is_null(in.det_amt_ind) or in.det_amt_ind!=1 )
+                or ( in.payment_amt<0 or in.payment_amt>99999999.99)
+                or (is_null(in.reportable_code) or  in.reportable_code!="0")
+                or (is_null(in.bank_transaction_code) or (( in.bank_transaction_code!="22")and (string_concat("99999",in.payee_id) == in.address_line1)))
+                or (is_null(in.bank_transit_routing_code) and   in.bank_transit_routing_code!="22")
+                or (is_null(in.bank_account_number) and in.bank_account_number!="22")
+                or ( is_null(in.address_line1)or  ( in.bank_transaction_code =="22")and (string_concat("22222",in.payee_id)!=in.address_line1))
+                or (is_null(in.address_line4) and in.zip_code=="0" ))
+and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615'])) vector_append(vec_temp,"Critical issue SCO Detail Positive Payment") else vec_temp ;
+ vec_temp=if (((is_null(in.record_code) or in.record_code!=05)
+                or (is_null(in.claim_no) or in.claim_no!=01)
+                or (is_null(in.trlr_code) or in.trlr_code!=0)
+                or (is_null(in.detail_code) or in.detail_code!=1) 
+                or (is_null(in.header_code) or in.header_code!=0) 
+                or (!is_null(in.zip_code) and (length_of(in.zip_code)>9 or length_of(in.zip_code)<5 ) )
+                or (in.zip_code=="000000000"and is_null(in.address_line4) )
+                or (is_null(in.payee_id) or in.bank_transaction_code== "22" and  in.payee_id!=in.trace_number )
+				or (is_null(in.seq_no))
+                or  (is_null(in.line_no) or in.line_no!=0) 
+                or  ( is_null(in.det_amt_ind) or (in.det_amt_ind==0 and !string_like(in.address_line1,"%OPTUMRX%")))
+                or  ( is_null(in.payment_amt) or in.payment_amt>0 ) 
+				or (is_null(in.payee_name))
+                or  (is_null(in.reportable_code) or in.reportable_code!="0")
+                or (is_null(in.bank_transaction_code) or (( in.bank_transaction_code!="22")and (string_concat("99999",in.payee_id) == in.address_line1)))
+				or (is_null(in.bank_transit_routing_code) and   in.bank_transit_routing_code!="22")
+                or (is_null(in.bank_account_number) and in.bank_account_number!="22")
+                or  ((in.det_amt_ind!=1) and (is_null(in.address_line1) or  (in.bank_transaction_code =="22" and (string_concat("22222",in.payee_id)!=in.address_line1))))
+                or  ( is_null(in.address_line4) and in.zip_code=="0"))
+                and (in.file_id member [vector 'CAL7992AEN20190615','CAL7992APN20190615', 'CAL7992AHN20190615']))
+                   vector_append(vec_temp,"Critical issue SCO Detail Negative Payment")  else vec_temp ;
+vec_temp=if (in.zip_code=="000000000" and (in.file_id member [vector 'CAL7992AEP20190615','CAL7992APP20190615', 'CAL7992AHP20190615'])) 
+vector_append(vec_temp,"Informational issue Foreign Zip Code") else vec_temp ;
+  out ::length_of(vec_temp);
+end;
+
+out :: normalize(in, index) =
+begin
+vec_val=vec_temp;
+
+out.*::in.*;
+  out.validation::vec_val[index];    
+end;

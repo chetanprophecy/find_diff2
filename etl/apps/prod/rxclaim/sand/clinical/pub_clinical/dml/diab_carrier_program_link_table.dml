@@ -1,0 +1,17 @@
+/* DML Generated for SQL: select distinct  BB.client_id, BB.carrier_filter,BB.acct_filter,BB.group_filter,AA.program_id from (select distinct S.client_id,O.program_id from pega_data.c_product P,
+pega_data.c_client_product_subscrp S, pega_data.c_client C,pega_data.c_product_program_offering O,
+pega_data.c_program R ,pega_data.c_cag_filter F
+where S.eff_dt<=to_date('19-SEP-18','DD-MON-YY') and S.end_dt>=to_date('19-SEP-18','DD-MON-YY')and P.stts='A' and O.automation_type='DIAB' and P.product_type_cd='MANUAL'
+and S.product_id= P.product_id and S.client_id=C.client_id and S.product_id= O.product_id 
+and O.program_id=R.program_id and F.client_id= S.client_id) AA
+inner join pega_data.c_cag_filter BB on AA.client_id=BB.client_id
+ * On: Mon Oct  8 04:50:36 2018
+ */
+record
+  utf8 string("\x01", maximum_length=15) client_id /*VARCHAR2(15) NOT NULL*/;
+  utf8 string("\x01", maximum_length=30) carrier_filter = NULL("") /*VARCHAR2(30)*/;
+  utf8 string("\x01", maximum_length=40) acct_filter = NULL("") /*VARCHAR2(40)*/;
+  utf8 string("\x01", maximum_length=30) group_filter = NULL("") /*VARCHAR2(30)*/;
+  utf8 string("\x01", maximum_length=25) program_id /*VARCHAR2(25) NOT NULL*/;
+  string(1) newline = "\n";
+end

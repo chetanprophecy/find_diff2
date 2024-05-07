@@ -1,0 +1,37 @@
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_lkup_types.dml";
+
+
+
+cli_string_t out :: get_l3_lkup_path(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_dir + '/' + cli_string(biz_dt) + '/l3_auto_type_file.dat';
+end;
+
+/*************************************************/
+/* Job Execution Lookup - Constant and Functions */
+/*************************************************/
+
+l3_lkup_t out :: load_l3_lkup(cli_string_t lookup_dir, cli_date_t biz_dt) inline =
+begin
+  out :: lookup_load(get_l3_lkup_path(lookup_dir, biz_dt));
+end;
+
+l3_config_t out :: get_l3_automation_type(cli_string_t lookup_dir, cli_date_t biz_dt, cli_string_t client_id) inline =
+begin
+  let lkup = load_l3_lkup(lookup_dir, biz_dt);
+  out :: lookup(lkup, client_id);
+end;
+
+cli_string_t out :: get_auto_type_id(cli_string_t lookup_dir, cli_date_t biz_dt, cli_string_t client_id) inline =
+begin
+     
+        let string(int) l3_automation_type = allocate_with_defaults();
+         
+        if (file_information(string_concat(lookup_dir,"/" ,biz_dt, "/l3_auto_type_file.dat")).found)
+                l3_automation_type = first_defined( get_l3_automation_type(lookup_dir, biz_dt, client_id).automation_type,l3_automation_type );
+                
+out :: l3_automation_type; 
+  
+end;

@@ -1,0 +1,69 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_59bf9aef_4b56_2 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.cag_lob_xref.pdl,[transform],in0.pdl]
+  [out0.cag_lob_xref.cag_sk,[transform],]
+  [out0.cag_lob_xref.src_env_sk,[passthrough],in0.dxf_src_sys_id]
+  [out0.cag_lob_xref.lob,[passthrough],in0.line_of_business]
+  [out0.cag_lob_xref.carrier_id,[passthrough],in0.carrier]
+  [out0.cag_lob_xref.employer_group_id,[passthrough],in0.group]
+  [out0.cag_lob_xref.account_id,[passthrough],in0.account]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.cag_lob_xref.pdl,'cag_lob_xref.pdl',1,0]
+     [out0.cag_lob_xref.cag_sk,'cag_lob_xref.cag_sk',1,0]
+     [out0.cag_lob_xref.src_env_sk,'cag_lob_xref.src_env_sk',1,0]
+     [out0.cag_lob_xref.lob,'cag_lob_xref.lob',1,0]
+     [out0.cag_lob_xref.carrier_id,'cag_lob_xref.carrier_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.cag_lob_xref.employer_group_id,'cag_lob_xref.employer_group_id',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.cag_lob_xref.account_id,'cag_lob_xref.account_id',1,0]
+  ]
+  impacts:
+  [
+     [in0.group,'group',1,1]
+     [in0.carrier,'carrier',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.account,'account',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.pdl,'pdl',1,1]
+     [in0.line_of_business,'line_of_business',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) cag_lob_xref_cag_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_lob_xref_carrier_id = fail_if_error(in0.carrier);
+let string("\x01",charset="iso-8859-15", maximum_length=40) cag_lob_xref_account_id = fail_if_error(in0.account);
+let string("\x01",charset="iso-8859-15", maximum_length=30) cag_lob_xref_employer_group_id = fail_if_error(in0.group);
+let string("\x01",charset="iso-8859-15", maximum_length=100) cag_lob_xref_lob = fail_if_error(in0.line_of_business);
+let string("\x01",charset="iso-8859-15", maximum_length=50) cag_lob_xref_pdl = fail_if_error(re_replace(in0.pdl,"\\r",""));
+let decimal("\x01",0) cag_lob_xref_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+  out0.cag_lob_xref.cag_sk::cag_lob_xref_cag_sk;
+  out0.cag_lob_xref.carrier_id::cag_lob_xref_carrier_id;
+  out0.cag_lob_xref.account_id::cag_lob_xref_account_id;
+  out0.cag_lob_xref.employer_group_id::cag_lob_xref_employer_group_id;
+  out0.cag_lob_xref.lob::cag_lob_xref_lob;
+  out0.cag_lob_xref.pdl::cag_lob_xref_pdl;
+  out0.cag_lob_xref.src_env_sk::cag_lob_xref_src_env_sk;
+  out0.*::in0.*;
+
+end;

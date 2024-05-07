@@ -1,0 +1,125 @@
+include "~$AI_DML/lookup.ids_common/lookup.ids_common.d_member_move_xref.dml";
+
+type d_cag_lkp_t = 
+record
+  integer(8) dxf_sk = 0 /*Added by Integration Framework. Surrogate key.*/;
+  decimal("\x01",0) carrier_sk = NULL("") /*BIGINT NOT NULL*/;
+  decimal("\x01",0) carrier_acct_sk = NULL("") /*BIGINT NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) client_id = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) carrier_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40) account_id = NULL("") /*VARCHAR(40) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30) employer_group_id = NULL("") /*VARCHAR(30) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) carrier_nm = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) account_nm = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=50) employer_group_nm = NULL("") /*VARCHAR(50) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5) contract_num = NULL("") /*VARCHAR(5) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) pbp_id = NULL("") /*VARCHAR(3) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3) gps_plan_cd = NULL("") /*VARCHAR(3) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_only_ind = NULL("") /*CHAR(1) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) hm_dlvry_stat_ind = NULL("") /*CHAR(1) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) rebates_only_ind = NULL("") /*CHAR(1) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1) rebates_stat_ind = NULL("") /*CHAR(1)*/;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end;
+
+
+out :: reformat(in) =
+begin
+let decimal("") v_mbr_sk_1 = in.curr_mbr_sk;
+let decimal("") v_mbr_sk_2 = allocate_with_defaults();
+
+let decimal("") v_cag_sk_1 = in.curr_cag_sk;
+let decimal("") v_cag_sk_2 = allocate_with_defaults();
+
+let string("\x01")  v_mbr_id_1 = in.curr_mbr_id;
+let string("\x01")  v_mbr_id_2 = allocate_with_defaults();
+
+let decimal("") lkp_count = lookup_count("mbr_mv_xref_lkp", in.curr_mbr_sk);
+let lookup_d_member_move_xref_t lkp;
+let d_cag_lkp_t d_cag_lkp =allocate_with_nulls();
+lkp_count = lookup_count("mbr_mv_xref_lkp", in.curr_mbr_sk);
+
+if(lkp_count)
+begin
+        for ( let int i=0 , i< lkp_count)  
+        begin   
+               lkp        = lookup_next("mbr_mv_xref_lkp");
+               if( lkp.mbr_move_eff_dt <= in.mbr_move_eff_dt && lkp.ids_create_dttm <= in.ids_create_dttm )  
+                begin
+                        v_mbr_sk_1 =lkp.curr_mbr_sk;
+                        v_cag_sk_1 =lkp.curr_cag_sk;
+                        v_mbr_id_1 = lkp.curr_mbr_id;
+                end
+        end
+end        
+ 
+v_mbr_sk_2 = v_mbr_sk_1;
+v_cag_sk_2 = v_cag_sk_1;
+v_mbr_id_2 = v_mbr_id_1;
+lkp_count = lookup_count("mbr_mv_xref_lkp", v_mbr_sk_1);
+if(lkp_count)
+begin
+      
+       for ( let int i=0 , i< lookup_count("mbr_mv_xref_lkp",v_mbr_sk_1 ) ) 
+       begin   
+               lkp      = lookup_next( "mbr_mv_xref_lkp");
+               if( lkp.mbr_move_eff_dt >= in.mbr_move_eff_dt && lkp.ids_create_dttm >= in.ids_create_dttm ) 
+               begin   
+                        v_mbr_sk_2 =lkp.curr_mbr_sk ;
+                        v_cag_sk_2 =lkp.curr_cag_sk;
+                        v_mbr_id_2 =lkp.curr_mbr_id;
+               end
+       end
+end       
+
+d_cag_lkp = lookup("d_cag_lkp",v_cag_sk_2);
+
+/*
+Create two lookups.
+LKP1:
+select LKP1.CURR_MBR_SK from D_MEMBER _MOVE_XREF LKP1
+where 
+LKP1.MBR_SK = D_MEMBER_MOVE_XREF.CURR_MBR_SK and
+LKP1.MBR_MOVE_EFF_DT <= D_MEMBER_MOVE_XREF.MBR_MOVE_EFF_DT
+LKP1.INSERT_TS <= D_MEMBER_MOVE_XREF.INSERT_TS;
+
+IF MATCH FOUND in LKP1 THEN
+v_mbr_sk = LKP1.CURR_MBR_SK
+ELSE
+v_mbr_sk = D_MEMBER_MOVE_XREF.CURR_MBR_SK
+END IF;
+
+LKP2:
+select LKP2.CURR_MBR_SK from D_MEMBER _MOVE_XREF LKP2
+where 
+LKP2.MBR_SK = v_mbr_sk and
+LKP2.MBR_MOVE_EFF_DT >= D_MEMBER_MOVE_XREF.MBR_MOVE_EFF_DT
+LKP2.INSERT_TS >= D_MEMBER_MOVE_XREF.INSERT_TS;
+
+IF MATCH FOUND in LKP2 THEN
+D_MEMBER_MOVE_XREF.CURR_MBR_SK = LKP2.CURR_MBR_SK
+ELSE
+D_MEMBER_MOVE_XREF.CURR_MBR_SK = v_mbr_sk
+END IF;*/
+
+
+out.mbr_mv_xref.curr_mbr_sk:1:v_mbr_sk_2;
+out.mbr_mv_xref.curr_cag_sk :: v_cag_sk_2;
+out.mbr_mv_xref.curr_mbr_id :: v_mbr_id_2;
+
+out.mbr_mv_xref.curr_carrier_id       :: if( is_defined( d_cag_lkp)) d_cag_lkp.carrier_id;
+out.mbr_mv_xref.curr_account_id       :: if( is_defined (d_cag_lkp)) d_cag_lkp.account_id;
+out.mbr_mv_xref.curr_employer_group_id::if( is_defined( d_cag_lkp)) d_cag_lkp.employer_group_id;
+
+out.mbr_mv_xref.curr_carrier_sk      :: if( is_defined( d_cag_lkp)) d_cag_lkp.carrier_sk;
+out.mbr_mv_xref.curr_carrier_acct_sk :: if( is_defined( d_cag_lkp)) d_cag_lkp.carrier_acct_sk;
+
+
+
+     out.mbr_mv_xref.*          ::   in.*  ;
+     out.mbr_sk_rec.*           ::   in.*  ;
+     out.cag_sk_rec.*           ::   in.*  ;
+     out.new_mbr_sk_rec.*       ::   in.*  ;
+     out.new_cag_sk_rec.*       ::   in.*  ;
+     
+end;

@@ -1,0 +1,12 @@
+out :: rollup(in) =
+begin
+  let v_active_days_elig_mbr_cnt_no = sum(in.a_cag_mm.active_days_elig_mbr_cnt_no);
+  let v_active_days_subscriber_cnt_no = sum(in.a_cag_mm.active_days_subscriber_cnt_no);
+  
+  out.a_cag_mm.month_end_elig_mbr_cnt_no :: sum(in.a_cag_mm.month_end_elig_mbr_cnt_no);
+  out.a_cag_mm.active_days_elig_mbr_cnt_no :: if(v_active_days_elig_mbr_cnt_no > 0 and v_active_days_elig_mbr_cnt_no < 1) ceiling(v_active_days_elig_mbr_cnt_no) else (decimal("\x01",0))v_active_days_elig_mbr_cnt_no;
+  out.a_cag_mm.after_15th_elig_mbr_cnt_no :: sum(in.a_cag_mm.after_15th_elig_mbr_cnt_no);
+  out.a_cag_mm.active_days_subscriber_cnt_no :: if(v_active_days_subscriber_cnt_no > 0 and v_active_days_subscriber_cnt_no < 1) ceiling(v_active_days_subscriber_cnt_no) else (decimal("\x01",0))v_active_days_subscriber_cnt_no;
+  out.a_cag_mm.* :: in.a_cag_mm.*;
+  out.* :: in.*;
+end;

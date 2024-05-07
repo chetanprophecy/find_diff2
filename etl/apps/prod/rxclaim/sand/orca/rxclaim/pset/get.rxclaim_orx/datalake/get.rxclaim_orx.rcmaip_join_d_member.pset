@@ -1,0 +1,18 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||rxclaim_orx.rcmaip
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_member
+DRIVER_OUTPUT_FIELDS||||dxf_src_dataset_id,dxf_src_rec_cnt,dxf_src_sys_id,dxf_src_file_name,ahabcd,ahaacd,ahaccd,ahadcd,ahz9n1,ahl9dt,ahmadt,ahdqs3,ahdps3,ahrjc3,ahrkc3,ahdyib,ahc5am,ahakvn,ahc2dt,ahadtm,ahalvn,ahadvn,ahbmdt,ahabtm,ahaevn
+NON_DRIVER_1_OUTPUT_FIELDS||||mbr_id,carrier_id,account_id,employer_group_id,mbr_alt_ins_id,mbr_alt_ins_mbr_id
+JOIN_TYPE|l|||Left Outer Join
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{ahabcd;ahaacd;ahaccd;ahadcd}
+DO_CLEAN||||1
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nend;
+DRIVER_EXTRA_PBKS_KEY||||{ahabcd;ahaacd;ahaccd;ahadcd}
+NON_DRIVER_1_EXTRA_PBKS_KEY||||{mbr_id;carrier_id;account_id;employer_group_id}
+TARGET_NAME||||rxclaim_orx.rcmaip_join_d_member
+NON_DRIVER_1_DEDUP_ON_JOIN_KEY||||True
+DRIVER_FILE_TYPE||||Clean
+OVERRIDE_JOIN_KEY||||{mbr_id;carrier_id;account_id;employer_group_id}
+ADDITIONAL_FIELDS_DML||||

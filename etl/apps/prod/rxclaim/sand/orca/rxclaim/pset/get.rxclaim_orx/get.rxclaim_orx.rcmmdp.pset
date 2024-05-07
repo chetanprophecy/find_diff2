@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcmmdp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcmmdp                  a0abcd,a0aacd,a0accd,a0adcd,a0ebhs,a0rjh9,a0ochg,a0odhg,a0x9hc,a0yahc,a0ybhc,a0ychc,a0rmh9,a0c7hk,a0rkh9,a0g4bs,a0akvn,a0c2dt,a0adtm,a0alvn,a0advn,a0bmdt,a0abtm,a0aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcmmdp")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+DO_LOOKUP||||0
+WHERE_CLAUSE||||$[ \n   if (START_CHANGES_TIME != '') \n     "WHERE rcmmdp.a0bmdt >= " + \n      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n     " AND rcmmdp.a0bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n     " OPTIMIZE FOR ALL ROWS"\n  else \n     "WHERE rcmmdp.a0bmdt >= " + \n      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n     " AND rcmmdp.a0bmdt <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n     " OPTIMIZE FOR ALL ROWS"\n ]
+ENABLE_DEFAULT_RULES||||True

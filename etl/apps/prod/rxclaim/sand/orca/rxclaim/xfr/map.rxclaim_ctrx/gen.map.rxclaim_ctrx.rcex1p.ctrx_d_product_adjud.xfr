@@ -1,0 +1,328 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@
+    Name:bzt_2_97d014ac_5767c83c_28f4_1
+    BizHidden:true
+@*/
+/*   lookup d_prod_disease_category_xwalk   */
+out0::bzt_2_97d014ac_5767c83c_28f4_1(in0)=
+begin
+let record
+  little endian integer(2) dxf_src_sys_id = 0;
+  unsigned integer(8) dxf_hk_part1 = 0, dxf_hk_part2 = 0;
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=80) brnd_nm = NULL(""), prod_grp = NULL(""), dise_cat_nm = NULL("");
+  decimal("\x01",0) src_env_sk = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_create_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_create_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_create_run_id = 0;
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+  string("\x01", maximum_length=20) ids_updt_uid = NULL("");
+  decimal("\x01", maximum_length=20) ids_updt_run_id = 0;
+  string("\x01", maximum_length=2) ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_prod_disease_category_xwalk",in0));
+  out0::__bzt_local_res__;
+end;
+let string(int) bzt_0_97d014ac_5767c83c_28f4_1 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.d_prod_adj.drg_drg_intrctn_desc,[passthrough],in0.ddid]
+  [out0.d_prod_adj.drg_maint_src,[passthrough],in0.mntsource]
+  [out0.d_prod_adj.gen_medspn_ind,[passthrough],in0.multsrccde]
+  [out0.thrptc_cgry_adj.prod_id,[passthrough],in0.productid]
+  [out0.d_prod_adj.dise_cat_nm,[transform],in0.productid,
+     'lookup("d_prod_disease_category_xwalk").dise_cat_nm']
+  [out0.prd_st_rl_tbl.prod_status_rule_tbl_id,[passthrough],in0.drugststbl]
+  [out0.d_prod_adj.gcn_no,[passthrough],in0.gcn]
+  [out0.d_prod_adj.drg_extd_nm_gpi_10_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.drg_clsfctn_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.prod_nm,[transform],in0.prodname]
+  [out0.d_prod_adj.drg_bsic_nm_gpi_08_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.drg_ndc_pkg_cd,[transform],in0.productid]
+  [out0.d_prod_adj.prod_status_rule_tbl_id_sk,[transform],]
+  [out0.d_prod_adj.drg_ndc_id,[transform],in0.productid]
+  [out0.d_prod_adj.drg_stat_cd,[passthrough],in0.drugststbl]
+  [out0.d_prod_adj.drg_dea_cd,[passthrough],in0.drugdeacod]
+  [out0.d_prod_adj.gen_nm,[passthrough],in0.genericnme]
+  [out0.d_prod_adj.drg_strngth_qty,[passthrough],in0.metricstrg]
+  [out0.d_prod_adj.drg_class_gpi_04_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.drg_fda_thrpc_eqvlc_cd,[passthrough],in0.fdatheraeq]
+  [out0.d_prod_adj.drg_ndc_prod_cd,[transform],in0.productid]
+  [out0.d_prod_adj.drg_unit_dose_use_ind,[passthrough],in0.drgunitdos]
+  [out0.d_prod_adj.prod_id_qlfr,[passthrough],in0.prodtypcde]
+  [out0.d_prod_adj.drg_sub_class_gpi_06_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.prod_pref_list_id,[passthrough],in0.prdpflstid]
+  [out0.d_prod_adj.drg_maint_cd,[passthrough],in0.mntdrugcde]
+  [out0.d_prod_adj.drg_dosag_frm_gpi_12_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.drg_mfrr_nm,[passthrough],in0.drugmfgr]
+  [out0.d_prod_adj.drg_grp_gpi_02_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.wkrs_comp_alt_prod_typ_cd,[passthrough],in0.altprodtyp]
+  [out0.d_prod_adj.thrpc_class_nm,[transform],in0.productid,
+     'lookup("d_prod_disease_category_xwalk").prod_grp']
+  [out0.d_prod_adj.drg_rx_otc_ind,[passthrough],in0.rxotcind]
+  [out0.d_prod_adj.drg_3rd_prty_excpn_ind,[passthrough],in0.thrdpartyx]
+  [out0.d_prod_adj.drg_admin_rte_hitsb_desc,[passthrough],in0.adminrtesn]
+  [out0.d_prod_adj.drg_grp_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.wac_amt,[passthrough],in0.wacunitcst]
+  [out0.d_prod_adj.drg_sub_class_cd,[transform],in0.gpinumber]
+  [out0.d_prod_adj.gpi_no,[passthrough],in0.gpinumber]
+  [out0.d_prod_adj.dise_cat_sk,[transform],]
+  [out0.d_prod_adj.drg_ndc_lblr_cd,[transform],in0.productid]
+  [out0.d_prod_adj.prod_id,[passthrough],in0.productid]
+  [out0.d_prod_adj.admin_rte_cd,[passthrough],in0.adminroute]
+  [out0.d_prod_adj.gen_ind_ovrd_ind,[transform],in0.multsrccde,
+     in0.genindover]
+  [out0.d_prod_adj.gpi_list_qlfr_nm,[passthrough],in0.lstqualgpi]
+  [out0.d_prod_adj.drg_lbl_nm,[passthrough],in0.labelname]
+  [out0.d_prod_adj.prod_adjud_sk,[transform],]
+  [out0.d_prod_adj.drg_strngth_uom_cd,[passthrough],in0.drgstrguom]
+  [out0.d_prod_adj.gcn_seq_no,[passthrough],in0.gcnseq]
+  [out0.d_prod_adj.dsg_frm_id,[passthrough],in0.dosageform]
+  [out0.d_prod_adj.wkrs_comp_alt_prod_cd,[passthrough],in0.altprodcde]
+  [out0.d_prod_adj.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_prod_adj.ahfs_cd,[passthrough],in0.ahfs]
+  [out0.d_prod_adj.thrpc_class_sk,[transform],]
+  [out0.des_ctgry_adj.prod_id,[passthrough],in0.productid]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_prod_adj.drg_drg_intrctn_desc,'d_prod_adj.drg_drg_intrctn_desc',1,0]
+     [out0.d_prod_adj.drg_maint_src,'d_prod_adj.drg_maint_src',1,0]
+     [out0.d_prod_adj.gen_medspn_ind,'d_prod_adj.gen_medspn_ind',1,0]
+     [out0.thrptc_cgry_adj.prod_id,'thrptc_cgry_adj.prod_id',1,0]
+     [out0.d_prod_adj.dise_cat_nm,'d_prod_adj.dise_cat_nm',1,0]
+     [out0.prd_st_rl_tbl.prod_status_rule_tbl_id,'prd_st_rl_tbl.prod_status_rule_tbl_id',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_prod_adj.gcn_no,'d_prod_adj.gcn_no',1,0]
+     [out0.d_prod_adj.drg_extd_nm_gpi_10_cd,'d_prod_adj.drg_extd_nm_gpi_10_cd',1,0]
+     [out0.d_prod_adj.drg_clsfctn_cd,'d_prod_adj.drg_clsfctn_cd',1,0]
+     [out0.d_prod_adj.prod_nm,'d_prod_adj.prod_nm',1,0]
+     [out0.d_prod_adj.drg_bsic_nm_gpi_08_cd,'d_prod_adj.drg_bsic_nm_gpi_08_cd',1,0]
+     [out0.d_prod_adj.drg_ndc_pkg_cd,'d_prod_adj.drg_ndc_pkg_cd',1,0]
+     [out0.d_prod_adj.prod_status_rule_tbl_id_sk,'d_prod_adj.prod_status_rule_tbl_id_sk',1,0]
+     [out0.d_prod_adj.drg_ndc_id,'d_prod_adj.drg_ndc_id',1,0]
+     [out0.d_prod_adj.drg_stat_cd,'d_prod_adj.drg_stat_cd',1,0]
+     [out0.d_prod_adj.drg_dea_cd,'d_prod_adj.drg_dea_cd',1,0]
+     [out0.d_prod_adj.gen_nm,'d_prod_adj.gen_nm',1,0]
+     [out0.d_prod_adj.drg_strngth_qty,'d_prod_adj.drg_strngth_qty',1,0]
+     [out0.d_prod_adj.drg_class_gpi_04_cd,'d_prod_adj.drg_class_gpi_04_cd',1,0]
+     [out0.d_prod_adj.drg_fda_thrpc_eqvlc_cd,'d_prod_adj.drg_fda_thrpc_eqvlc_cd',1,0]
+     [out0.d_prod_adj.drg_ndc_prod_cd,'d_prod_adj.drg_ndc_prod_cd',1,0]
+     [out0.d_prod_adj.drg_unit_dose_use_ind,'d_prod_adj.drg_unit_dose_use_ind',1,0]
+     [out0.d_prod_adj.prod_id_qlfr,'d_prod_adj.prod_id_qlfr',1,0]
+     [out0.d_prod_adj.drg_sub_class_gpi_06_cd,'d_prod_adj.drg_sub_class_gpi_06_cd',1,0]
+     [out0.d_prod_adj.prod_pref_list_id,'d_prod_adj.prod_pref_list_id',1,0]
+     [out0.d_prod_adj.drg_maint_cd,'d_prod_adj.drg_maint_cd',1,0]
+     [out0.d_prod_adj.drg_dosag_frm_gpi_12_cd,'d_prod_adj.drg_dosag_frm_gpi_12_cd',1,0]
+     [out0.d_prod_adj.drg_mfrr_nm,'d_prod_adj.drg_mfrr_nm',1,0]
+     [out0.d_prod_adj.drg_grp_gpi_02_cd,'d_prod_adj.drg_grp_gpi_02_cd',1,0]
+     [out0.d_prod_adj.wkrs_comp_alt_prod_typ_cd,'d_prod_adj.wkrs_comp_alt_prod_typ_cd',1,0]
+     [out0.d_prod_adj.thrpc_class_nm,'d_prod_adj.thrpc_class_nm',1,0]
+     [out0.d_prod_adj.drg_rx_otc_ind,'d_prod_adj.drg_rx_otc_ind',1,0]
+     [out0.d_prod_adj.drg_3rd_prty_excpn_ind,'d_prod_adj.drg_3rd_prty_excpn_ind',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_prod_adj.drg_admin_rte_hitsb_desc,'d_prod_adj.drg_admin_rte_hitsb_desc',1,0]
+     [out0.d_prod_adj.drg_grp_cd,'d_prod_adj.drg_grp_cd',1,0]
+     [out0.d_prod_adj.wac_amt,'d_prod_adj.wac_amt',1,0]
+     [out0.d_prod_adj.drg_sub_class_cd,'d_prod_adj.drg_sub_class_cd',1,0]
+     [out0.d_prod_adj.gpi_no,'d_prod_adj.gpi_no',1,0]
+     [out0.d_prod_adj.dise_cat_sk,'d_prod_adj.dise_cat_sk',1,0]
+     [out0.d_prod_adj.drg_ndc_lblr_cd,'d_prod_adj.drg_ndc_lblr_cd',1,0]
+     [out0.d_prod_adj.prod_id,'d_prod_adj.prod_id',1,0]
+     [out0.d_prod_adj.admin_rte_cd,'d_prod_adj.admin_rte_cd',1,0]
+     [out0.d_prod_adj.gen_ind_ovrd_ind,'d_prod_adj.gen_ind_ovrd_ind',1,0]
+     [out0.d_prod_adj.gpi_list_qlfr_nm,'d_prod_adj.gpi_list_qlfr_nm',1,0]
+     [out0.d_prod_adj.drg_lbl_nm,'d_prod_adj.drg_lbl_nm',1,0]
+     [out0.d_prod_adj.prod_adjud_sk,'d_prod_adj.prod_adjud_sk',1,0]
+     [out0.d_prod_adj.drg_strngth_uom_cd,'d_prod_adj.drg_strngth_uom_cd',1,0]
+     [out0.d_prod_adj.gcn_seq_no,'d_prod_adj.gcn_seq_no',1,0]
+     [out0.d_prod_adj.dsg_frm_id,'d_prod_adj.dsg_frm_id',1,0]
+     [out0.d_prod_adj.wkrs_comp_alt_prod_cd,'d_prod_adj.wkrs_comp_alt_prod_cd',1,0]
+     [out0.d_prod_adj.src_env_sk,'d_prod_adj.src_env_sk',1,0]
+     [out0.d_prod_adj.ahfs_cd,'d_prod_adj.ahfs_cd',1,0]
+     [out0.d_prod_adj.thrpc_class_sk,'d_prod_adj.thrpc_class_sk',1,0]
+     [out0.des_ctgry_adj.prod_id,'des_ctgry_adj.prod_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+  ]
+  impacts:
+  [
+     [in0.wacunitcst,'wacunitcst',1,1]
+     [in0.thrdpartyx,'thrdpartyx',1,1]
+     [in0.gcn,'gcn',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.mntsource,'mntsource',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.genericnme,'genericnme',1,1]
+     ['lookup("d_prod_disease_category_xwalk").dise_cat_nm','dise_cat_nm',1,1]
+     [in0.adminrtesn,'adminrtesn',1,1]
+     [in0.gcnseq,'gcnseq',1,1]
+     ['lookup("d_prod_disease_category_xwalk").prod_grp','prod_grp',1,1]
+     [in0.drgunitdos,'drgunitdos',1,1]
+     [in0.mntdrugcde,'mntdrugcde',1,1]
+     [in0.gpinumber,'gpinumber',10,10]
+     [in0.dosageform,'dosageform',1,1]
+     [in0.rxotcind,'rxotcind',1,1]
+     [in0.labelname,'labelname',1,1]
+     [in0.drugdeacod,'drugdeacod',1,1]
+     [in0.altprodtyp,'altprodtyp',1,1]
+     [in0.ddid,'ddid',1,1]
+     [in0.metricstrg,'metricstrg',1,1]
+     [in0.drugststbl,'drugststbl',2,2]
+     [in0.genindover,'genindover',3,1]
+     [in0.prodname,'prodname',1,1]
+     [in0.productid,'productid',11,9]
+     [in0.drugmfgr,'drugmfgr',1,1]
+     [in0.adminroute,'adminroute',1,1]
+     [in0.lstqualgpi,'lstqualgpi',1,1]
+     [in0.drgstrguom,'drgstrguom',1,1]
+     [in0.prdpflstid,'prdpflstid',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.multsrccde,'multsrccde',2,2]
+     [in0.fdatheraeq,'fdatheraeq',1,1]
+     [in0.prodtypcde,'prodtypcde',1,1]
+     [in0.ahfs,'ahfs',1,1]
+     [in0.altprodcde,'altprodcde',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let unsigned integer(8) DXF_Source_Record_Count = fail_if_error(in0.dxf_src_rec_cnt);
+let decimal("\x01",0) d_prod_adj_prod_adjud_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prod_adj_prod_id = fail_if_error(in0.productid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_prod_id_qlfr = fail_if_error(in0.prodtypcde);
+let string("\x01",charset="iso-8859-15", maximum_length=70) d_prod_adj_prod_nm = fail_if_error(string_substring(str=in0.prodname , start_index=1 , length=25 ));
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_prod_adj_ahfs_cd = fail_if_error(in0.ahfs);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_3rd_prty_excpn_ind = fail_if_error(in0.thrdpartyx);
+let string("\x01",charset="iso-8859-15", maximum_length=11) d_prod_adj_drg_admin_rte_hitsb_desc = fail_if_error(in0.adminrtesn);
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_prod_adj_drg_clsfctn_cd = fail_if_error(string_substring(in0.gpinumber,1,4));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_dea_cd = fail_if_error(in0.drugdeacod);
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prod_adj_drg_drg_intrctn_desc = fail_if_error(in0.ddid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_drg_fda_thrpc_eqvlc_cd = fail_if_error(in0.fdatheraeq);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_drg_grp_cd = fail_if_error(string_substring(in0.gpinumber,1,2));
+let string("\x01",charset="iso-8859-15", maximum_length=30) d_prod_adj_drg_lbl_nm = fail_if_error(in0.labelname);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_maint_cd = fail_if_error(in0.mntdrugcde);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_maint_src = fail_if_error(in0.mntsource);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prod_adj_drg_mfrr_nm = fail_if_error(in0.drugmfgr);
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_prod_adj_drg_ndc_lblr_cd = fail_if_error(string_substring(in0.productid,1,5));
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_drg_ndc_pkg_cd = fail_if_error(string_substring(in0.productid,10,2));
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_prod_adj_drg_ndc_prod_cd = fail_if_error(string_substring(in0.productid,6,4));
+let string("\x01",charset="iso-8859-15", maximum_length=11) d_prod_adj_drg_ndc_id = fail_if_error(string_concat(string_substring(in0.productid , 1 , 5 ) , string_substring(in0.productid , 6 , 4 ) , string_substring(in0.productid ,10 , 2 ) ));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_rx_otc_ind = fail_if_error(in0.rxotcind);
+let string("\x01",charset="iso-8859-15", maximum_length=13) d_prod_adj_drg_stat_cd = fail_if_error(in0.drugststbl);
+let decimal("\x01".3, maximum_length=13, sign_reserved) d_prod_adj_drg_strngth_qty = fail_if_error(in0.metricstrg);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prod_adj_drg_strngth_uom_cd = fail_if_error(in0.drgstrguom);
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_prod_adj_drg_sub_class_cd = fail_if_error(string_substring(in0.gpinumber ,1,6));
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_drg_unit_dose_use_ind = fail_if_error(in0.drgunitdos);
+let decimal("\x01",0) d_prod_adj_gcn_no = fail_if_error(in0.gcn);
+let decimal("\x01",0) d_prod_adj_gcn_seq_no = fail_if_error(in0.gcnseq);
+let string("\x01",charset="iso-8859-15", maximum_length=60) d_prod_adj_gen_nm = fail_if_error(in0.genericnme);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_gen_medspn_ind = fail_if_error(in0.multsrccde);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_gen_ind_ovrd_ind = fail_if_error((if (sql_or(is_null(in0.genindover),is_blank(string_lrtrim(in0.genindover))))
+   in0.multsrccde
+ else
+   in0.genindover));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prod_adj_gpi_list_qlfr_nm = fail_if_error(in0.lstqualgpi);
+let string("\x01",charset="iso-8859-15", maximum_length=14) d_prod_adj_gpi_no = fail_if_error(in0.gpinumber);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_drg_grp_gpi_02_cd = fail_if_error(string_substring(in0.gpinumber,1,2));
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_prod_adj_drg_class_gpi_04_cd = fail_if_error(string_substring(in0.gpinumber,1,4));
+let string("\x01",charset="iso-8859-15", maximum_length=6) d_prod_adj_drg_sub_class_gpi_06_cd = fail_if_error(string_substring(in0.gpinumber,1,6));
+let string("\x01",charset="iso-8859-15", maximum_length=8) d_prod_adj_drg_bsic_nm_gpi_08_cd = fail_if_error(string_substring(in0.gpinumber,1,8));
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prod_adj_drg_extd_nm_gpi_10_cd = fail_if_error(string_substring(in0.gpinumber,1,10));
+let string("\x01",charset="iso-8859-15", maximum_length=12) d_prod_adj_drg_dosag_frm_gpi_12_cd = fail_if_error(string_substring(in0.gpinumber,1,12));
+let string("\x01",charset="iso-8859-15", maximum_length=4) d_prod_adj_dsg_frm_id = fail_if_error(in0.dosageform);
+let decimal("\x01",0) d_prod_adj_dise_cat_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prod_adj_dise_cat_nm;
+let decimal("\x01",0) d_prod_adj_thrpc_class_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=80) d_prod_adj_thrpc_class_nm;
+let decimal("\x01".5, maximum_length=15, sign_reserved) d_prod_adj_wac_amt = fail_if_error(in0.wacunitcst);
+let string("\x01",charset="iso-8859-15", maximum_length=13) d_prod_adj_wkrs_comp_alt_prod_cd = fail_if_error(in0.altprodcde);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_prod_adj_wkrs_comp_alt_prod_typ_cd = fail_if_error(in0.altprodtyp);
+let string("\x01",charset="iso-8859-15", maximum_length=10) d_prod_adj_prod_pref_list_id = fail_if_error(in0.prdpflstid);
+let string("\x01",charset="iso-8859-15", maximum_length=2) d_prod_adj_admin_rte_cd = fail_if_error(in0.adminroute);
+let decimal("\x01",0) d_prod_adj_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+let decimal("\x01",0) d_prod_adj_prod_status_rule_tbl_id_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=20) des_ctgry_adj_prod_id = fail_if_error(in0.productid);
+let string("\x01",charset="iso-8859-15", maximum_length=13) prd_st_rl_tbl_prod_status_rule_tbl_id = fail_if_error(in0.drugststbl);
+let string("\x01",charset="iso-8859-15", maximum_length=20) thrptc_cgry_adj_prod_id = fail_if_error(in0.productid);
+
+
+
+/*   Default value   */
+d_prod_adj_dise_cat_nm=fail_if_error(bzt_2_97d014ac_5767c83c_28f4_1(in0.productid).dise_cat_nm);
+
+/*   Default value   */
+d_prod_adj_thrpc_class_nm=fail_if_error(bzt_2_97d014ac_5767c83c_28f4_1(in0.productid).prod_grp);
+
+  out0.dxf_src_rec_cnt::DXF_Source_Record_Count;
+  out0.d_prod_adj.prod_adjud_sk::d_prod_adj_prod_adjud_sk;
+  out0.d_prod_adj.prod_id::d_prod_adj_prod_id;
+  out0.d_prod_adj.prod_id_qlfr::d_prod_adj_prod_id_qlfr;
+  out0.d_prod_adj.prod_nm::d_prod_adj_prod_nm;
+  out0.d_prod_adj.ahfs_cd::d_prod_adj_ahfs_cd;
+  out0.d_prod_adj.drg_3rd_prty_excpn_ind::d_prod_adj_drg_3rd_prty_excpn_ind;
+  out0.d_prod_adj.drg_admin_rte_hitsb_desc::d_prod_adj_drg_admin_rte_hitsb_desc;
+  out0.d_prod_adj.drg_clsfctn_cd::d_prod_adj_drg_clsfctn_cd;
+  out0.d_prod_adj.drg_dea_cd::d_prod_adj_drg_dea_cd;
+  out0.d_prod_adj.drg_drg_intrctn_desc::d_prod_adj_drg_drg_intrctn_desc;
+  out0.d_prod_adj.drg_fda_thrpc_eqvlc_cd::d_prod_adj_drg_fda_thrpc_eqvlc_cd;
+  out0.d_prod_adj.drg_grp_cd::d_prod_adj_drg_grp_cd;
+  out0.d_prod_adj.drg_lbl_nm::d_prod_adj_drg_lbl_nm;
+  out0.d_prod_adj.drg_maint_cd::d_prod_adj_drg_maint_cd;
+  out0.d_prod_adj.drg_maint_src::d_prod_adj_drg_maint_src;
+  out0.d_prod_adj.drg_mfrr_nm::d_prod_adj_drg_mfrr_nm;
+  out0.d_prod_adj.drg_ndc_lblr_cd::d_prod_adj_drg_ndc_lblr_cd;
+  out0.d_prod_adj.drg_ndc_pkg_cd::d_prod_adj_drg_ndc_pkg_cd;
+  out0.d_prod_adj.drg_ndc_prod_cd::d_prod_adj_drg_ndc_prod_cd;
+  out0.d_prod_adj.drg_ndc_id::d_prod_adj_drg_ndc_id;
+  out0.d_prod_adj.drg_rx_otc_ind::d_prod_adj_drg_rx_otc_ind;
+  out0.d_prod_adj.drg_stat_cd::d_prod_adj_drg_stat_cd;
+  out0.d_prod_adj.drg_strngth_qty::d_prod_adj_drg_strngth_qty;
+  out0.d_prod_adj.drg_strngth_uom_cd::d_prod_adj_drg_strngth_uom_cd;
+  out0.d_prod_adj.drg_sub_class_cd::d_prod_adj_drg_sub_class_cd;
+  out0.d_prod_adj.drg_unit_dose_use_ind::d_prod_adj_drg_unit_dose_use_ind;
+  out0.d_prod_adj.gcn_no::d_prod_adj_gcn_no;
+  out0.d_prod_adj.gcn_seq_no::d_prod_adj_gcn_seq_no;
+  out0.d_prod_adj.gen_nm::d_prod_adj_gen_nm;
+  out0.d_prod_adj.gen_medspn_ind::d_prod_adj_gen_medspn_ind;
+  out0.d_prod_adj.gen_ind_ovrd_ind::d_prod_adj_gen_ind_ovrd_ind;
+  out0.d_prod_adj.gpi_list_qlfr_nm::d_prod_adj_gpi_list_qlfr_nm;
+  out0.d_prod_adj.gpi_no::d_prod_adj_gpi_no;
+  out0.d_prod_adj.drg_grp_gpi_02_cd::d_prod_adj_drg_grp_gpi_02_cd;
+  out0.d_prod_adj.drg_class_gpi_04_cd::d_prod_adj_drg_class_gpi_04_cd;
+  out0.d_prod_adj.drg_sub_class_gpi_06_cd::d_prod_adj_drg_sub_class_gpi_06_cd;
+  out0.d_prod_adj.drg_bsic_nm_gpi_08_cd::d_prod_adj_drg_bsic_nm_gpi_08_cd;
+  out0.d_prod_adj.drg_extd_nm_gpi_10_cd::d_prod_adj_drg_extd_nm_gpi_10_cd;
+  out0.d_prod_adj.drg_dosag_frm_gpi_12_cd::d_prod_adj_drg_dosag_frm_gpi_12_cd;
+  out0.d_prod_adj.dsg_frm_id::d_prod_adj_dsg_frm_id;
+  out0.d_prod_adj.dise_cat_sk::d_prod_adj_dise_cat_sk;
+  out0.d_prod_adj.dise_cat_nm::d_prod_adj_dise_cat_nm;
+  out0.d_prod_adj.thrpc_class_sk::d_prod_adj_thrpc_class_sk;
+  out0.d_prod_adj.thrpc_class_nm::d_prod_adj_thrpc_class_nm;
+  out0.d_prod_adj.wac_amt::d_prod_adj_wac_amt;
+  out0.d_prod_adj.wkrs_comp_alt_prod_cd::d_prod_adj_wkrs_comp_alt_prod_cd;
+  out0.d_prod_adj.wkrs_comp_alt_prod_typ_cd::d_prod_adj_wkrs_comp_alt_prod_typ_cd;
+  out0.d_prod_adj.prod_pref_list_id::d_prod_adj_prod_pref_list_id;
+  out0.d_prod_adj.admin_rte_cd::d_prod_adj_admin_rte_cd;
+  out0.d_prod_adj.src_env_sk::d_prod_adj_src_env_sk;
+  out0.d_prod_adj.prod_status_rule_tbl_id_sk::d_prod_adj_prod_status_rule_tbl_id_sk;
+  out0.des_ctgry_adj.prod_id::des_ctgry_adj_prod_id;
+  out0.prd_st_rl_tbl.prod_status_rule_tbl_id::prd_st_rl_tbl_prod_status_rule_tbl_id;
+  out0.thrptc_cgry_adj.prod_id::thrptc_cgry_adj_prod_id;
+  out0.*::in0.*;
+
+end;

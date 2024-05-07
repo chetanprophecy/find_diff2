@@ -1,0 +1,28 @@
+
+out :: reformat(in) =
+begin
+let d_cag_lkp_rec = if(in.mbr_mv_xref.new_cag_sk not member  [vector 0,-1] )  lookup("d_cag_lkp",in.mbr_mv_xref.new_cag_sk) else NULL;
+
+
+
+
+    out.mbr_mv_xref.mbr_move_flg :1:if( in.mbr_mv_xref.mbr_sk == in.mbr_mv_xref.new_mbr_sk ) 'X'; 
+    out.mbr_mv_xref.mbr_move_flg :: if( in.mbr_mv_xref.mbr_sk    member  [vector 0,-1] or  in.mbr_mv_xref.new_mbr_sk member  [vector 0,-1]         
+                                        or in.mbr_mv_xref.cag_sk member  [vector 0,-1] or  in.mbr_mv_xref.new_cag_sk member  [vector 0,-1] ) "N" else "Y"   ;   
+   
+   
+
+    
+    out.mbr_mv_xref.cag_sk       :: if( in.mbr_mv_xref.cag_sk     == 0 ) -1 else in.mbr_mv_xref.cag_sk     ;
+    out.mbr_mv_xref.new_cag_sk   :: if( in.mbr_mv_xref.new_cag_sk == 0 ) -1 else in.mbr_mv_xref.new_cag_sk ;
+    out.mbr_mv_xref.mbr_sk       :: if( in.mbr_mv_xref.mbr_sk     == 0 ) -1 else in.mbr_mv_xref.mbr_sk     ;
+    out.mbr_mv_xref.new_mbr_sk   :: if( in.mbr_mv_xref.new_mbr_sk == 0 ) -1 else in.mbr_mv_xref.new_mbr_sk ; 
+    out.mbr_mv_xref.curr_cag_sk  :: if( in.mbr_mv_xref.new_cag_sk == 0 ) -1 else in.mbr_mv_xref.new_cag_sk ;
+    // Both new_mbr_sk and curr_mbr_sk is same as per mapping document and coming from d_member_lookup
+    out.mbr_mv_xref.curr_mbr_sk  :: if( in.mbr_mv_xref.new_mbr_sk == 0 ) -1 else in.mbr_mv_xref.new_mbr_sk ; 
+    
+    out.mbr_mv_xref.curr_carrier_sk ::      if( not is_null (d_cag_lkp_rec)) d_cag_lkp_rec.carrier_sk ;
+    out.mbr_mv_xref.curr_carrier_acct_sk :: if( not is_null (d_cag_lkp_rec)) d_cag_lkp_rec.carrier_acct_sk;
+    out.mbr_mv_xref.* 	         ::  in.mbr_mv_xref.* ;
+    out.* 				         ::  in.*;
+end;

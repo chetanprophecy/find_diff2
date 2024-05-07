@@ -1,0 +1,15 @@
+let int ilm_parm_len=length_of(string_split('/etl/devel/appconf.distribution/main/users/rmishr20/orca/distribution/dml',"/")); 
+let string("") v_app_nm=string_split('/etl/devel/appconf.distribution/main/users/rmishr20/orca/distribution/dml',"/")[ilm_parm_len - 2 ];
+let string("") v_program_nm=string_upcase(string_split('/etl/devel/appconf.distribution/main/users/rmishr20/orca/distribution/dml',"/")[ilm_parm_len - 3 ]);
+
+out :: reformat(in) =
+begin
+
+out.*:: in.*;
+  out.program_nm :: v_program_nm;
+  out.application_nm :: v_app_nm;
+  out.run_id::(string(""))(datetime("YYYYMMDDHH24MI24SS"))in.run_dttm;
+  
+  out.input_file_name::re_replace(in.process_name,"combine.*specialty_","");
+
+end;

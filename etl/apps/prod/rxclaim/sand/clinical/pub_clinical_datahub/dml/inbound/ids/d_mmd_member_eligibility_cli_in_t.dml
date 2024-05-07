@@ -1,0 +1,37 @@
+/******************************************************************************************************************************************
+ * pub_clinical_datahub -> $PUB_CLINICAL_DATAHUB_DML/inbound/ids/d_mmd_member_eligibility_cli_in_t.dml
+ *
+ * Change Log:
+ *
+ *  Date        Author                  Description
+ * ---------------------------------------------------------------------------------------------------------------------------------------
+ *  2017/10/3  Sherene Bryn           Initial version
+ ******************************************************************************************************************************************/
+
+type d_mmd_member_elig_cli_in_t =
+record
+  string("\x01",charset="iso-8859-15", maximum_length=4)    legacy_src_env_id               /*VARCHAR(4) NOT NULL*/;
+  string("\x01",charset="iso-8859-15", maximum_length=20)  mbr_id = NULL("") /*VARCHAR(20)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  carrier_id = NULL("") /*VARCHAR(30)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=40)  account_id = NULL("") /*VARCHAR(40)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=30)  employer_group_id = NULL("") /*VARCHAR(30)*/;
+  decimal("\x01",0)  mmd_seq_nbr = NULL("") /*INTEGER*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  mmd_record_status = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01")  mmd_from_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01")  mmd_thru_dt = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=5)  mmd_contract_id = NULL("") /*VARCHAR(5)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)  mmd_pbp_id = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)  mmd_segment_id = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=3)  mmd_subsidy_lvl = NULL("") /*VARCHAR(3)*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  mmd_copay_category = NULL("") /*CHAR(1)*/;
+  date("YYYYMMDD")("\x01")  mmd_copay_catg_eff_td = NULL("") /*DATE*/;
+  string("\x01",charset="iso-8859-15", maximum_length=1)  mmd_enrlmnt_src = NULL("") /*CHAR(1)*/;
+  datetime("YYYYMMDDHH24MISS")("\x01")    ids_create_dttm = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01")    ids_updt_dttm = NULL("");
+  string("\x01",maximum_length=2)    ids_rec_stat_cd = NULL("");
+  string(1) newline = "\n";
+end;
+type d_mmd_member_elig_cli_in_vec_t = d_mmd_member_elig_cli_in_t[int];
+
+metadata type = d_mmd_member_elig_cli_in_t;
+

@@ -1,0 +1,139 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+let string(int) bzt_0_6c54cc0a_5a66e411_2a98_0 = $RUN_ID;
+
+/*@
+dependency_analysis:
+[
+  [out0.prov_alt_con.cpp_create_ts,[passthrough],in0.create_timestamp]
+  [out0.prov_alt_con.cpp_update_ts,[transform],in0.create_timestamp,
+     in0.update_timestamp]
+  [out0.prov_alt_con.cpp_provider_sk,[transform],in0.provider_id,
+     'lookup("c_provider").dxf_sk']
+  [out0.prov_alt_con.src_env_sk,[transform],]
+  [out0.prov_alt_con.cpp_provider_altrnte_contact_info_sk,[transform],]
+  [out0.prov_alt_con.provider_altrnte_contact_info_id,[passthrough],in0.altrnte_contact_info_id]
+  [out0.prov_alt_con.cpp_updated_by,[passthrough],in0.updated_by]
+  [out0.prov_alt_con.cpp_created_by,[passthrough],in0.created_by]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.prov_alt_con.cpp_create_ts,'prov_alt_con.cpp_create_ts',1,0]
+     [out0.prov_alt_con.zip_cd,'prov_alt_con.zip_cd',1,0]
+     [out0.prov_alt_con.provider_id,'prov_alt_con.provider_id',1,0]
+     [out0.prov_alt_con.cpp_update_ts,'prov_alt_con.cpp_update_ts',1,0]
+     [out0.prov_alt_con.case_id,'prov_alt_con.case_id',1,0]
+     [out0.prov_alt_con.cntry,'prov_alt_con.cntry',1,0]
+     [out0.prov_alt_con.st,'prov_alt_con.st',1,0]
+     [out0.prov_alt_con.cpp_provider_sk,'prov_alt_con.cpp_provider_sk',1,0]
+     [out0.prov_alt_con.ok_to_mail,'prov_alt_con.ok_to_mail',1,0]
+     [out0.prov_alt_con.src_env_sk,'prov_alt_con.src_env_sk',1,0]
+     [out0.prov_alt_con.ok_to_fax,'prov_alt_con.ok_to_fax',1,0]
+     [out0.prov_alt_con.sec_fax_num,'prov_alt_con.sec_fax_num',1,0]
+     [out0.prov_alt_con.parent_case_id,'prov_alt_con.parent_case_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.prov_alt_con.cpp_provider_altrnte_contact_info_sk,'prov_alt_con.cpp_provider_altrnte_contact_info_sk',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.prov_alt_con.prmry_phone_num,'prov_alt_con.prmry_phone_num',1,0]
+     [out0.prov_alt_con.city,'prov_alt_con.city',1,0]
+     [out0.prov_alt_con.addr_line_1,'prov_alt_con.addr_line_1',1,0]
+     [out0.prov_alt_con.provider_altrnte_contact_info_id,'prov_alt_con.provider_altrnte_contact_info_id',1,0]
+     [out0.prov_alt_con.cpp_updated_by,'prov_alt_con.cpp_updated_by',1,0]
+     [out0.prov_alt_con.prmry_fax_num,'prov_alt_con.prmry_fax_num',1,0]
+     [out0.prov_alt_con.addr_line_2,'prov_alt_con.addr_line_2',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.prov_alt_con.cpp_created_by,'prov_alt_con.cpp_created_by',1,0]
+     [out0.prov_alt_con.sec_phone_num,'prov_alt_con.sec_phone_num',1,0]
+  ]
+  impacts:
+  [
+     [in0.created_by,'created_by',1,1]
+     [in0.update_timestamp,'update_timestamp',1,1]
+     [in0.ok_to_mail,'ok_to_mail',1,1]
+     [in0.create_timestamp,'create_timestamp',2,2]
+     [in0.updated_by,'updated_by',1,1]
+     [in0.cntry,'cntry',1,1]
+     [in0.sec_phone_num,'sec_phone_num',1,1]
+     [in0.zip_cd,'zip_cd',1,1]
+     ['lookup("c_provider").dxf_sk','dxf_sk',1,1]
+     [in0.ok_to_fax,'ok_to_fax',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.city,'city',1,1]
+     [in0.addr_line_2,'addr_line_2',1,1]
+     [in0.parent_case_id,'parent_case_id',1,1]
+     [in0.provider_id,'provider_id',2,2]
+     [in0.sec_fax_num,'sec_fax_num',1,1]
+     [in0.case_id,'case_id',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.prmry_phone_num,'prmry_phone_num',1,1]
+     [in0.st,'st',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.prmry_fax_num,'prmry_fax_num',1,1]
+     [in0.altrnte_contact_info_id,'altrnte_contact_info_id',1,1]
+     [in0.addr_line_1,'addr_line_1',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) prov_alt_con_cpp_provider_altrnte_contact_info_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=15) prov_alt_con_provider_altrnte_contact_info_id = fail_if_error(in0.altrnte_contact_info_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) prov_alt_con_case_id = fail_if_error(in0.case_id);
+let string("\x01",charset="iso-8859-15", maximum_length=15) prov_alt_con_parent_case_id = fail_if_error(in0.parent_case_id);
+let decimal("\x01",0, maximum_length=39, sign_reserved) prov_alt_con_provider_id = fail_if_error(in0.provider_id);
+let decimal("\x01",0) prov_alt_con_cpp_provider_sk;
+let utf8 string("\x01", maximum_length=400) prov_alt_con_addr_line_1 = fail_if_error(in0.addr_line_1);
+let utf8 string("\x01", maximum_length=400) prov_alt_con_addr_line_2 = fail_if_error(in0.addr_line_2);
+let utf8 string("\x01", maximum_length=120) prov_alt_con_city = fail_if_error(in0.city);
+let string("\x01",charset="iso-8859-15", maximum_length=2) prov_alt_con_st = fail_if_error(in0.st);
+let string("\x01",charset="iso-8859-15", maximum_length=4) prov_alt_con_cntry = fail_if_error(in0.cntry);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prov_alt_con_zip_cd = fail_if_error(in0.zip_cd);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prov_alt_con_prmry_phone_num = fail_if_error(in0.prmry_phone_num);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prov_alt_con_sec_phone_num = fail_if_error(in0.sec_phone_num);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prov_alt_con_prmry_fax_num = fail_if_error(in0.prmry_fax_num);
+let string("\x01",charset="iso-8859-15", maximum_length=10) prov_alt_con_sec_fax_num = fail_if_error(in0.sec_fax_num);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") prov_alt_con_cpp_update_ts = fail_if_error(first_defined(in0.update_timestamp,in0.create_timestamp));
+let utf8 string("\x01", maximum_length=80) prov_alt_con_cpp_updated_by = fail_if_error(in0.updated_by);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") prov_alt_con_cpp_create_ts = fail_if_error(in0.create_timestamp);
+let utf8 string("\x01", maximum_length=80) prov_alt_con_cpp_created_by = fail_if_error(in0.created_by);
+let decimal("\x01",0) prov_alt_con_src_env_sk = 710;
+let string("\x01",charset="iso-8859-15", maximum_length=1) prov_alt_con_ok_to_fax = fail_if_error(in0.ok_to_fax);
+let string("\x01",charset="iso-8859-15", maximum_length=1) prov_alt_con_ok_to_mail = fail_if_error(in0.ok_to_mail);
+
+
+
+/*   Default value   */
+prov_alt_con_cpp_provider_sk=fail_if_error(lookup("c_provider",in0.provider_id).dxf_sk);
+
+  out0.prov_alt_con.cpp_provider_altrnte_contact_info_sk::prov_alt_con_cpp_provider_altrnte_contact_info_sk;
+  out0.prov_alt_con.provider_altrnte_contact_info_id::prov_alt_con_provider_altrnte_contact_info_id;
+  out0.prov_alt_con.case_id::prov_alt_con_case_id;
+  out0.prov_alt_con.parent_case_id::prov_alt_con_parent_case_id;
+  out0.prov_alt_con.provider_id::prov_alt_con_provider_id;
+  out0.prov_alt_con.cpp_provider_sk::prov_alt_con_cpp_provider_sk;
+  out0.prov_alt_con.addr_line_1::prov_alt_con_addr_line_1;
+  out0.prov_alt_con.addr_line_2::prov_alt_con_addr_line_2;
+  out0.prov_alt_con.city::prov_alt_con_city;
+  out0.prov_alt_con.st::prov_alt_con_st;
+  out0.prov_alt_con.cntry::prov_alt_con_cntry;
+  out0.prov_alt_con.zip_cd::prov_alt_con_zip_cd;
+  out0.prov_alt_con.prmry_phone_num::prov_alt_con_prmry_phone_num;
+  out0.prov_alt_con.sec_phone_num::prov_alt_con_sec_phone_num;
+  out0.prov_alt_con.prmry_fax_num::prov_alt_con_prmry_fax_num;
+  out0.prov_alt_con.sec_fax_num::prov_alt_con_sec_fax_num;
+  out0.prov_alt_con.cpp_update_ts::prov_alt_con_cpp_update_ts;
+  out0.prov_alt_con.cpp_updated_by::prov_alt_con_cpp_updated_by;
+  out0.prov_alt_con.cpp_create_ts::prov_alt_con_cpp_create_ts;
+  out0.prov_alt_con.cpp_created_by::prov_alt_con_cpp_created_by;
+  out0.prov_alt_con.src_env_sk::prov_alt_con_src_env_sk;
+  out0.prov_alt_con.ok_to_fax::prov_alt_con_ok_to_fax;
+  out0.prov_alt_con.ok_to_mail::prov_alt_con_ok_to_mail;
+  out0.*::in0.*;
+
+end;

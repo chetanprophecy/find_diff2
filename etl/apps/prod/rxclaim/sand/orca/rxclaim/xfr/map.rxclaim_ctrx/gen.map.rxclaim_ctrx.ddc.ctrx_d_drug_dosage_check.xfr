@@ -1,0 +1,125 @@
+/*   Do not edit. Generated file - BRE 3.2.6.4;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+/*@
+dependency_analysis:
+[
+  [out0.d_drg_dsg_ch.ddc_chg_dt,[transform],in0.ddcchgdate]
+  [out0.d_drg_dsg_ch.user_defd_fld2,[passthrough],in0.ddcundef2]
+  [out0.d_drg_dsg_ch.freq_admin_cd,[passthrough],in0.ddcsigcode]
+  [out0.d_drg_dsg_ch.ddc_ref_cd,[passthrough],in0.ddcrefcd]
+  [out0.d_drg_dsg_ch.user_defd_fld1,[passthrough],in0.ddcundef1]
+  [out0.d_drg_dsg_ch.ddc_key,[passthrough],in0.ddcreckey]
+  [out0.d_drg_dsg_ch.max_thrpy_days,[passthrough],in0.ddcmaxdays]
+  [out0.d_drg_dsg_ch.min_thrpy_days,[passthrough],in0.ddcmindays]
+  [out0.d_drg_dsg_ch.ddc_sk,[transform],]
+  [out0.d_drg_dsg_ch.src_env_sk,[passthrough],in0.rxt_src_envrt_id]
+  [out0.d_drg_dsg_ch.max_dly_dose,[passthrough],in0.ddcmaxdu]
+  [out0.d_drg_dsg_ch.min_dly_dose,[passthrough],in0.ddcmindu]
+  [out0.d_drg_dsg_ch.user_defd_fld3,[passthrough],in0.ddcundef3]
+  [out0.d_drg_dsg_ch.usual_thrpy_days,[passthrough],in0.ddcusudays]
+  [out0.d_drg_dsg_ch.usual_dly_dose,[passthrough],in0.ddcusualdu]
+  [out0.*,in0.*]
+]
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_drg_dsg_ch.ddc_chg_dt,'d_drg_dsg_ch.ddc_chg_dt',3,2]
+     [out0.d_drg_dsg_ch.user_defd_fld2,'d_drg_dsg_ch.user_defd_fld2',1,0]
+     [out0.d_drg_dsg_ch.freq_admin_cd,'d_drg_dsg_ch.freq_admin_cd',1,0]
+     [out0.d_drg_dsg_ch.ddc_ref_cd,'d_drg_dsg_ch.ddc_ref_cd',1,0]
+     [out0.d_drg_dsg_ch.user_defd_fld1,'d_drg_dsg_ch.user_defd_fld1',1,0]
+     [out0.d_drg_dsg_ch.ddc_key,'d_drg_dsg_ch.ddc_key',1,0]
+     [out0.d_drg_dsg_ch.max_thrpy_days,'d_drg_dsg_ch.max_thrpy_days',1,0]
+     [out0.d_drg_dsg_ch.min_thrpy_days,'d_drg_dsg_ch.min_thrpy_days',1,0]
+     [out0.d_drg_dsg_ch.ddc_sk,'d_drg_dsg_ch.ddc_sk',1,0]
+     [out0.d_drg_dsg_ch.src_env_sk,'d_drg_dsg_ch.src_env_sk',1,0]
+     [out0.d_drg_dsg_ch.max_dly_dose,'d_drg_dsg_ch.max_dly_dose',1,0]
+     [out0.d_drg_dsg_ch.min_dly_dose,'d_drg_dsg_ch.min_dly_dose',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_drg_dsg_ch.user_defd_fld3,'d_drg_dsg_ch.user_defd_fld3',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_drg_dsg_ch.usual_thrpy_days,'d_drg_dsg_ch.usual_thrpy_days',1,0]
+     [out0.d_drg_dsg_ch.usual_dly_dose,'d_drg_dsg_ch.usual_dly_dose',1,0]
+  ]
+  impacts:
+  [
+     [in0.ddcmaxdays,'ddcmaxdays',1,1]
+     [in0.ddcundef3,'ddcundef3',1,1]
+     [in0.ddcrefcd,'ddcrefcd',1,1]
+     [in0.ddcmindu,'ddcmindu',1,1]
+     [in0.ddcsigcode,'ddcsigcode',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.rxt_src_envrt_id,'rxt_src_envrt_id',1,1]
+     [in0.ddcundef1,'ddcundef1',1,1]
+     [in0.ddcreckey,'ddcreckey',1,1]
+     [in0.ddcusualdu,'ddcusualdu',1,1]
+     [in0.ddcmindays,'ddcmindays',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.ddcusudays,'ddcusudays',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',1,1]
+     [in0.ddcchgdate,'ddcchgdate',5,3]
+     [in0.ddcmaxdu,'ddcmaxdu',1,1]
+     [in0.ddcundef2,'ddcundef2',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let int bzt_0 = 0;
+let decimal("\x01",0) d_drg_dsg_ch_ddc_sk = -1;
+let string("\x01",charset="iso-8859-15", maximum_length=19) d_drg_dsg_ch_ddc_key = fail_if_error(in0.ddcreckey);
+let decimal("\x01".2, maximum_length=8, sign_reserved) d_drg_dsg_ch_min_dly_dose = fail_if_error(in0.ddcmindu);
+let decimal("\x01".2, maximum_length=8, sign_reserved) d_drg_dsg_ch_usual_dly_dose = fail_if_error(in0.ddcusualdu);
+let decimal("\x01".2, maximum_length=8, sign_reserved) d_drg_dsg_ch_max_dly_dose = fail_if_error(in0.ddcmaxdu);
+let decimal("\x01",0) d_drg_dsg_ch_min_thrpy_days = fail_if_error(in0.ddcmindays);
+let decimal("\x01",0) d_drg_dsg_ch_usual_thrpy_days = fail_if_error(in0.ddcusudays);
+let decimal("\x01",0) d_drg_dsg_ch_max_thrpy_days = fail_if_error(in0.ddcmaxdays);
+let string("\x01",charset="iso-8859-15", maximum_length=5) d_drg_dsg_ch_user_defd_fld1 = fail_if_error(in0.ddcundef1);
+let string("\x01",charset="iso-8859-15", maximum_length=1) d_drg_dsg_ch_user_defd_fld2 = fail_if_error(in0.ddcundef2);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_drg_dsg_ch_freq_admin_cd = fail_if_error(in0.ddcsigcode);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_drg_dsg_ch_ddc_ref_cd = fail_if_error(in0.ddcrefcd);
+let string("\x01",charset="iso-8859-15", maximum_length=18) d_drg_dsg_ch_user_defd_fld3 = fail_if_error(in0.ddcundef3);
+let date("YYYYMMDD")("\x01") d_drg_dsg_ch_ddc_chg_dt;
+let decimal("\x01",0) d_drg_dsg_ch_src_env_sk = fail_if_error(in0.rxt_src_envrt_id);
+
+
+
+/*   Rule:Compute d_drg_dsg_ch.ddc_chg_dt  (#1)   */
+if(first_defined(fail_if_error(((string_length((decimal(""))in0.ddcchgdate)) ==8) && ((is_valid(YYYYMMDD(in0.ddcchgdate))) ==1)),0))begin
+  bzt_0=1;
+  d_drg_dsg_ch_ddc_chg_dt=YYYYMMDD(in0.ddcchgdate);
+end
+else if(first_defined(fail_if_error(((string_length(((decimal(""))in0.ddcchgdate)) member [vector 6,7])) && ((is_valid(YYYYMMDD((19000000+ (decimal(""))in0.ddcchgdate)))) ==1)),0))begin
+  bzt_0=1;
+  d_drg_dsg_ch_ddc_chg_dt=YYYYMMDD(19000000+ (decimal("")) in0.ddcchgdate);
+end
+
+/*   Default value   */
+if(!bzt_0)begin
+  d_drg_dsg_ch_ddc_chg_dt=fail_if_error(low_date());
+end
+
+  out0.d_drg_dsg_ch.ddc_sk::d_drg_dsg_ch_ddc_sk;
+  out0.d_drg_dsg_ch.ddc_key::d_drg_dsg_ch_ddc_key;
+  out0.d_drg_dsg_ch.min_dly_dose::d_drg_dsg_ch_min_dly_dose;
+  out0.d_drg_dsg_ch.usual_dly_dose::d_drg_dsg_ch_usual_dly_dose;
+  out0.d_drg_dsg_ch.max_dly_dose::d_drg_dsg_ch_max_dly_dose;
+  out0.d_drg_dsg_ch.min_thrpy_days::d_drg_dsg_ch_min_thrpy_days;
+  out0.d_drg_dsg_ch.usual_thrpy_days::d_drg_dsg_ch_usual_thrpy_days;
+  out0.d_drg_dsg_ch.max_thrpy_days::d_drg_dsg_ch_max_thrpy_days;
+  out0.d_drg_dsg_ch.user_defd_fld1::d_drg_dsg_ch_user_defd_fld1;
+  out0.d_drg_dsg_ch.user_defd_fld2::d_drg_dsg_ch_user_defd_fld2;
+  out0.d_drg_dsg_ch.freq_admin_cd::d_drg_dsg_ch_freq_admin_cd;
+  out0.d_drg_dsg_ch.ddc_ref_cd::d_drg_dsg_ch_ddc_ref_cd;
+  out0.d_drg_dsg_ch.user_defd_fld3::d_drg_dsg_ch_user_defd_fld3;
+  out0.d_drg_dsg_ch.ddc_chg_dt::d_drg_dsg_ch_ddc_chg_dt;
+  out0.d_drg_dsg_ch.src_env_sk::d_drg_dsg_ch_src_env_sk;
+  out0.*::in0.*;
+
+end;

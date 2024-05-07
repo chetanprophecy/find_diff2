@@ -1,0 +1,11 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rctc2p
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx_p90
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rctc2p                  qnp2nb,qnoinb,qnz5hm\ndwxtract_bk1  rcex1p                  rxclaimnbr,clmseqnbr
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil_bk1', 'clmprdfil_bk1.rctc2p') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'dwxtract_bk1', 'dwxtract_bk1.rcex1p')]
+WHERE_CLAUSE||||WHERE rcex1p.rxclaimnbr = rctc2p.qnp2nb AND   rcex1p.clmseqnbr  = rctc2p.qnoinb OPTIMIZE FOR ALL ROWS
+DO_CLEAN||||0
+DO_SOURCE||||0
+DO_LOOKUP||||1
+LOOKUP_KEY||||{qnp2nb; qnoinb; dxf_src_sys_id}

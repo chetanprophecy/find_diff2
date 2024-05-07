@@ -1,0 +1,198 @@
+<AppConfTempl name="Get from FTP - Data Management Framework (DMF)" version="5" xsi:noNamespaceSchemaLocation="appconf_template.xsd" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <ProjectRPath client_projects="private_only" template_project="false">/Projects/aicoe/pub_ftp</ProjectRPath>
+  <Metadata>
+    <Variables name="vars">
+      <Variable name="errors" type="string"/>
+      <Variable name="ftp_filenames_trimmed_file" type="string"/>
+      <ListVariable name="ftp_available_filetypes_trimmed" type="string"/>
+      <ListVariable name="final_file_list" type="string"/>
+      <Variable name="execution_successful" type="boolean"/>
+      <Variable name="execution_2_successful" type="boolean"/>
+      <Variable name="final_file_list_file" type="string"/>
+      <Variable name="hide_ftp" type="string"/>
+      <Variable name="all_fields" type="string"/>
+      <Variable name="selected_fields" type="string"/>
+      <ListVariable name="sample_file" type="string"/>
+      <Variable name="input_dml_found" type="boolean"/>
+    </Variables>
+    <Project name="pub_ftp">
+      <Pset name="query_ftp_server" prototype_path="${PUB_FTP_PSET}/query_ftp_server.pset"/>
+      <Pset name="get_ftp_sample_filelist" prototype_path="${PUB_FTP_PSET}/ftp.sample.filelist.pset"/>
+    </Project>
+    <SharedFile name="output_dml_file" auto_lock="true"/>
+    <SharedFile name="input_dml_file" auto_lock="true"/>
+  </Metadata>
+  <AutomaticAssignments>
+    <Assignment>
+      <SourceValue is_expression="true">pub_ftp.query_ftp_server.run_state == "2"</SourceValue>
+      <TargetValue reference="vars.execution_successful"/>
+      <WatchValueOverride reference="pub_ftp.query_ftp_server" property="run_state"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">pub_ftp.get_ftp_sample_filelist.run_state == "2"</SourceValue>
+      <TargetValue reference="vars.execution_2_successful"/>
+      <WatchValueOverride reference="pub_ftp.get_ftp_sample_filelist" property="run_state"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true"><![CDATA[
+        if ( not starts_with(built_in.configuration_name, "get.") )
+          "This application configuration must be named: get.<i>project</i>.  Please close and rename it."
+        else if ( string_filter(built_in.configuration_name, ".") != ".." )
+          "This application configuration must be named: get.<i>project</i>.<i>file_identifier</i>.  Please close and rename it."
+        else
+          ""]]></SourceValue>
+      <TargetValue reference="vars.errors"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">$PUB_FTP_SERIAL + "/" + "ftp_listing_output_filenames_trimmed.dat"</SourceValue>
+      <TargetValue reference="vars.ftp_filenames_trimmed_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">$PUB_FTP_SERIAL + "/" + "ftp_listing_final_filenames.dat"</SourceValue>
+      <TargetValue reference="vars.final_file_list_file"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true" list_conversion_format="comma">if
+        (file_information(vars.ftp_filenames_trimmed_file).found) read_file
+        (vars.ftp_filenames_trimmed_file) else "No File Found";</SourceValue>
+      <TargetValue reference="vars.ftp_available_filetypes_trimmed"/>
+      <WatchValueOverride reference="vars.execution_successful"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true" list_conversion_format="comma">if
+        (file_information(vars.final_file_list_file).found) read_file
+        (vars.final_file_list_file) else "No File Found";</SourceValue>
+      <TargetValue reference="vars.final_file_list"/>
+      <WatchValueOverride reference="vars.execution_2_successful"/>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/ftp." + pub_ftp.query_ftp_server.FTP_HOST + "/ftp." + pub_ftp.query_ftp_server.FTP_USER + "." + "query" +".pset"</SourceValue>
+      <TargetValue reference="pub_ftp.query_ftp_server" property="relative_path"/>
+      <Condition is_expression="true"><![CDATA[ vars.errors == "" and pub_ftp.query_ftp_server.PROTOCOL != "" ]]></Condition>
+    </Assignment>
+    <Assignment>
+      <SourceValue is_expression="true">"pset/ftp." + pub_ftp.query_ftp_server.FTP_HOST + "/ftp." + pub_ftp.query_ftp_server.FTP_USER + "." + "filelist" +".pset"</SourceValue>
+      <TargetValue reference="pub_ftp.get_ftp_sample_filelist" property="relative_path"/>
+      <Condition is_expression="true"><![CDATA[ vars.errors == "" and pub_ftp.get_ftp_sample_filelist.SELECTED_FILE_TYPES != "" ]]></Condition>
+    </Assignment>
+  </AutomaticAssignments>
+  <InitialAssignments>
+    <Assignment>
+      <ConstantValue>2013/01/01 01:01</ConstantValue>
+      <TargetValue reference="pub_ftp.get_ftp_sample_filelist.START_DATE"/>
+    </Assignment>
+    <Assignment>
+      <ConstantValue>2013/01/01 01:01</ConstantValue>
+      <TargetValue reference="pub_ftp.get_ftp_sample_filelist.END_DATE"/>
+    </Assignment>
+    <Assignment>
+      <ConstantValue>0</ConstantValue>
+      <TargetValue reference="vars.hide_ftp"/>
+    </Assignment>
+  </InitialAssignments>
+  <UserInterface>
+    <Canvas>
+      <Label>File Transfer</Label>
+      <Column>
+        <Box>
+          <Visible is_expression="true"><![CDATA[ vars.errors != "" ]]></Visible>
+          <Style>mainSource</Style>
+          <Label>Appconf Naming Error</Label>
+          <UIElements>
+            <TextLabel>
+              <Label is_expression="true"><![CDATA[ "<b>" + vars.errors + "</b>" ]]></Label>
+            </TextLabel>
+          </UIElements>
+        </Box>
+      </Column>
+      <Column>
+        <Box>
+          <Visible reference="vars.hide_ftp"/>
+          <Label/>
+          <UIElements>
+            <Popup>
+              <Label>Connect to FTP Server</Label>
+              <Title/>
+              <UIElements>
+                <TextInput>
+                  <Label>FTP Server Name</Label>
+                  <SourceTargetValue reference="pub_ftp.query_ftp_server.FTP_HOST"/>
+                </TextInput>
+                <TextInput>
+                  <Label>FTP Username</Label>
+                  <SourceTargetValue reference="pub_ftp.query_ftp_server.FTP_USER"/>
+                </TextInput>
+                <PasswordInput>
+                  <Label>Password Input</Label>
+                  <SourceTargetValue reference="pub_ftp.query_ftp_server.FTP_EPW"/>
+                </PasswordInput>
+                <ComboBox>
+                  <Choices>
+                    <ConstantValue>dev</ConstantValue>
+                    <ConstantValue>qa</ConstantValue>
+                    <ConstantValue>prod</ConstantValue>
+                  </Choices>
+                  <Label>Select Data Phase</Label>
+                  <SourceTargetValue reference="pub_ftp.query_ftp_server.GET_PHASE"/>
+                </ComboBox>
+                <TextInput>
+                  <Label>Starting Directory</Label>
+                  <SourceTargetValue reference="pub_ftp.query_ftp_server.FTP_FILE_LOCATIONS"/>
+                </TextInput>
+                <ExecuteButton>
+                  <Label/>
+                  <ButtonLabel>Connect to FTP Server</ButtonLabel>
+                  <SourceValue reference="pub_ftp.query_ftp_server"/>
+                </ExecuteButton>
+              </UIElements>
+            </Popup>
+            <Popup>
+              <Label>Configure FTP download settings</Label>
+              <Title/>
+              <UIElements>
+                <DateChooser>
+                  <Label>Select a Start Date for files</Label>
+                  <SourceTargetValue reference="pub_ftp.get_ftp_sample_filelist.START_DATE"/>
+                  <Format>YYYY/MM/DD hh:mm</Format>
+                </DateChooser>
+                <DateChooser>
+                  <Label>Select an End Date for Files</Label>
+                  <SourceTargetValue reference="pub_ftp.get_ftp_sample_filelist.END_DATE"/>
+                  <Format>YYYY/MM/DD hh:mm</Format>
+                </DateChooser>
+                <MultiChoiceList>
+                  <Choices is_expression="true">vector_sort_dedup_first(vars.ftp_available_filetypes_trimmed)</Choices>
+                  <Label/>
+                  <SourceTargetValue reference="pub_ftp.get_ftp_sample_filelist.SELECTED_FILE_TYPES"/>
+                  <Height>300</Height>
+                  <Width>700</Width>
+                </MultiChoiceList>
+                <ExecuteButton>
+                  <Label/>
+                  <ButtonLabel>Query FTP Server</ButtonLabel>
+                  <SourceValue reference="pub_ftp.get_ftp_sample_filelist"/>
+                </ExecuteButton>
+              </UIElements>
+              <Visible reference="vars.execution_successful"/>
+            </Popup>
+            <Box>
+              <Label>Sample Selected Files List</Label>
+              <UIElements/>
+              <Style>inner</Style>
+              <UIElements>
+                <TextLabel>
+                  <Label reference="vars.final_file_list"/>
+                </TextLabel>
+              </UIElements>
+              <Width>600</Width>
+              <Visible reference="vars.execution_2_successful"/>
+            </Box>
+          </UIElements>
+          <Style>mainSource</Style>
+        </Box>
+      </Column>
+      <Column/>
+      <Column/>
+    </Canvas>
+  </UserInterface>
+</AppConfTempl>

@@ -1,0 +1,16 @@
+!prototype|P|||$AI_PSET/get.join.files.interim.pset
+DRIVER_SOURCE_NAME||||ids_rxclaim.d_client_corp_speclty_list_gpi
+NON_DRIVER_1_SOURCE_NAME||||ids_common.d_cag_minus
+DRIVER_OUTPUT_FIELDS||||gpi_id,dxf_sk,ids_updt_dttm
+NON_DRIVER_1_OUTPUT_FIELDS||||carrier_id,dxf_sk,ids_updt_dttm
+JOIN_TYPE|l|||Cartesian Product
+DRIVER_SOURCE_LOGICAL_NAME||||orca_rxclaim
+JOIN_KEY||||{}
+DO_CLEAN||||1
+ADDITIONAL_FIELDS_DML||||record\r\n  string("\\x01",charset="iso-8859-15", maximum_length=1) speclty_ind = NULL("") /*CHAR(1)*/;\r\n  string("\\x01",charset="iso-8859-15", maximum_length=50) speclty_ind_nm = NULL("") /*VARCHAR(50)*/;\r\nend
+DRIVER_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nout.speclty_ind :: "Y";\r\nout.speclty_ind_nm :: "Specialty";\r\nend
+NON_DRIVER_1_XFR||||out :: reformat(in) =\r\nbegin\r\nout.* :: in.*;\r\nout.speclty_ind :: "Y";\r\nout.speclty_ind_nm :: "Specialty";\r\nend
+DRIVER_FILTER_EXPR||||speclty_list_type_id=='CORPORATE'
+DRIVER_EXTRA_PBKS_KEY||||{gpi_id}
+TARGET_NAME||||ids_rxclaim.corp_client_corp_speclty_list_gpi_cag
+NON_DRIVER_1_FILE_TYPE||||Source

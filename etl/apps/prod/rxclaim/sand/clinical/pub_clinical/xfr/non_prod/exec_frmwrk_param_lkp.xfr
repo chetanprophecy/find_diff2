@@ -1,0 +1,38 @@
+
+
+include "~$PUB_CLINICAL_DML/cli_types.dml";
+include "~$PUB_CLINICAL_DML/cli_exec_types.dml";
+
+
+type pset_progrm_type_cd_t=
+record
+string("|")                     pset                           = NULL;
+cli_program_type_cd_t            program_type_cd;
+end;
+
+type clt_progrm_lkp_t=
+record
+cli_clt_id_t                     clt_id;
+cli_program_type_cd_t            program_type_cd;
+cli_string_t                     app_templ_nm;
+cli_string_t                     pset                           = NULL;
+cli_string_t[int]                pset_vec                       = [vector];
+pset_progrm_type_cd_t[int]       pset_progrm_type_cd_vec=[vector];
+date("YYYYMMDD")                 look_back_start_dt=NULL;
+date("YYYYMMDD")                 look_back_end_dt=NULL;
+
+end;
+
+out::get_record(key1) =
+begin
+ 
+  let record // Begin lookup template type
+    lookup_identifier_type id = -1;
+    string("|") key() = {clt_id};
+    clt_progrm_lkp_t RecordFormat() = allocate();
+   
+   
+    string('') datapath() =  "$PUB_CLINICAL_SERIAL_LOOKUP/20161007/rlz_psets_lst.dat";
+  end lfile = lookup_load(); // Create lookup handle lfile from type
+  out::lookup(lfile, key1);
+end

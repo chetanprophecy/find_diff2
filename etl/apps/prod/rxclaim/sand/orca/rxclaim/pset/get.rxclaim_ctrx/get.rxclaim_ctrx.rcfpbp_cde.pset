@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||3
+SOURCE_NAME||||clmprdfil.rcfpbp_cde
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_ctrx
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil     rctcdp                  \nclmprdfil     rcfpbp
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rctcdp') + "\\r\\n" + get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, 'clmprdfil', 'clmprdfil.rcfpbp')]
+SQL||||$["select bp.*, dp.dqs5cd, \ndp.dqs6cd, \ndp.dqs7cd,\ndp.dqs8cd\nfrom \nclmprdfil.rcfpbp bp\nleft outer join clmprdfil.rctcdp dp \non dp.dqp2nb=bp.aip2nb and dp.dqoinb = bp.aioinb\n\nWHERE ((bp.aibmdt*1000000)+bp.aiabtm between " +string_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) START_CHANGES_TIME -19000000000000))+ " and " +string_lrtrim((string(""))( (decimal(""))(string(""))(datetime("YYYYMMDDHH24MISS")) (datetime("YYYY-MM-DD HH24:MI:SS")) \nEND_CHANGES_TIME -19000000000000))+ ")"]
+DO_CLEAN||||1
+DO_SOURCE||||0
+WHERE_CLAUSE||||

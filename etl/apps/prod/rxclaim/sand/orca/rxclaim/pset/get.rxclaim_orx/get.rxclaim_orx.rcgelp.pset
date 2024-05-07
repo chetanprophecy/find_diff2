@@ -1,0 +1,10 @@
+!prototype|P|||$AI_PSET/get.iseries.interim.pset
+QUERY_TYPE_ID||||2
+SOURCE_NAME||||clmprdfil_bk1.rcgelp
+SOURCE_TABLE_LIST||||# Schema Name Unqualified Table Name  Fields\nclmprdfil_bk1 rcgelp                  g3aacd,g3accd,g3adcd,g3c0n1,g3bws2,g3cmda,g3cnda,g3l3pr,g3l4pr,g3l5pr,g3l6pr,g3gqp4,g3grp4,g3gsp4,g3gtp4,g3pgc2,g3aecd,g3akdt,g3c2dt,g3advn,g3bmdt,g3abtm,g3aevn,newline
+SOURCE_DB_LIST||||$[get_matching_db_list(AI_SOURCE_DB_LIST, AI_SOURCE_DB_GROUPS, "clmprdfil_bk1", "rcgelp")]
+DO_SOURCE||||0
+DO_CLEAN||||1
+SOURCE_SYSTEM_OVERRIDE||||rxclaim_orx
+WHERE_CLAUSE||||$[ \n   if (START_CHANGES_TIME != '') \n     "WHERE RCGELP.G3BMDT >= " + \n      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))START_CHANGES_TIME)-19000000) + \n     " AND RCGELP.G3BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n     " OPTIMIZE FOR ALL ROWS"\n  else \n     "WHERE RCGELP.G3BMDT >= " + \n      string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000-1) + \n     " AND RCGELP.G3BMDT <= " + string_lrtrim(((decimal(''))(string(''))(date('YYYYMMDD'))(datetime('YYYY-MM-DD HH24:MI:SS'))END_CHANGES_TIME)-19000000) + \n     " OPTIMIZE FOR ALL ROWS"\n ]
+ENABLE_DEFAULT_RULES||||True

@@ -1,0 +1,167 @@
+/*   Do not edit. Generated file - BRE 4.0.2.18;;Default deployment;   */
+include '~$AI_XFR/bre_helper.map.xfr';
+
+
+/*@ BizHidden:true @*/
+/*   lookup d_product_lkp   */
+out0::bzt_1_6c54cc0a_5b4ed743_ea47_0(in0,in1)=
+begin
+let record
+  integer(8) dxf_sk = 0;
+  string("\x01",charset="iso-8859-15", maximum_length=20) prod_id = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=2) prod_id_qlfr_cd = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=30) drg_lbl_nm = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=11) drg_ndc_desc = NULL("");
+  decimal("\x01",0) gpi_sk = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=14) gpi_no = NULL("");
+  string("\x01",charset="iso-8859-15", maximum_length=9) drg_ndc_short_id = NULL("");
+  datetime("YYYYMMDDHH24MISS")("\x01") ids_updt_dttm = NULL("");
+end __bzt_local_res__;
+__bzt_local_res__ = fail_if_error(lookup("d_product_lkp",in0,in1));
+  out0::__bzt_local_res__;
+end;
+
+/*@ BizHidden:true @*/
+constant string(int) RUN_ID parameter  = allocate_with_defaults();
+
+out0::Map_rxclaim_fbo_dim_drugpricing_to_the_d_prod_awp_pricing_ILM_documentation(in)=
+begin
+
+out0.d_prd_awp_pr.src_env_sk::depends_on(
+         in.dxf_src_sys_id
+         );
+
+
+out0.d_prd_awp_pr.pkg_price::depends_on(
+         in.packageprice
+         );
+
+
+out0.d_prd_awp_pr.is_fst_dt::depends_on(
+         in.is_fst_dt
+         );
+
+
+out0.d_prd_awp_pr.prod_sk::depends_on(
+         in.productid,
+         lookup("d_product_lkp",'keystr','keystr').dxf_sk  
+         );
+
+
+out0.d_prd_awp_pr.eff_dt_thru::depends_on(
+         in.eff_dt_thru
+         );
+
+
+out0.d_prd_awp_pr.eff_dt::depends_on(
+         in.eff_dt
+         );
+
+
+out0.d_prd_awp_pr.prod_id::depends_on(
+         in.productid
+         );
+
+
+out0.d_prd_awp_pr.is_lst_dt::depends_on(
+         in.is_lst_dt
+         );
+
+
+out0.d_prd_awp_pr.unit_price::depends_on(
+         in.unitprice
+         );
+
+
+out0.d_prd_awp_pr.cost_type_cd_sub::depends_on(
+         in.costtypecodesub
+         );
+
+
+out0.d_prd_awp_pr.cost_type_cd::depends_on(
+         in.costtypecode
+         );
+
+out0.*::in.*;
+end;
+
+/*@
+dependency_analysis_function:Map_rxclaim_fbo_dim_drugpricing_to_the_d_prod_awp_pricing_ILM_documentation
+metrics:
+{
+  dependencies:
+  [
+     [out0.d_prd_awp_pr.src_env_sk,'d_prd_awp_pr.src_env_sk',1,0]
+     [out0.d_prd_awp_pr.prod_id_qlfr_cd,'d_prd_awp_pr.prod_id_qlfr_cd',1,0]
+     [out0.d_prd_awp_pr.pkg_price,'d_prd_awp_pr.pkg_price',1,0]
+     [out0.d_prd_awp_pr.is_fst_dt,'d_prd_awp_pr.is_fst_dt',1,0]
+     [out0.d_prd_awp_pr.prod_sk,'d_prd_awp_pr.prod_sk',1,0]
+     [out0.d_prd_awp_pr.prod_awp_prcng_sk,'d_prd_awp_pr.prod_awp_prcng_sk',1,0]
+     [out0.d_prd_awp_pr.eff_dt_thru,'d_prd_awp_pr.eff_dt_thru',1,0]
+     [out0.d_prd_awp_pr.eff_dt,'d_prd_awp_pr.eff_dt',1,0]
+     [out0.d_prd_awp_pr.prod_id,'d_prd_awp_pr.prod_id',1,0]
+     [out0.dxf_src_rec_cnt,'DXF Source Record Count',1,0]
+     [out0.dxf_src_sys_id,'DXF Source System ID',1,0]
+     [out0.d_prd_awp_pr.is_lst_dt,'d_prd_awp_pr.is_lst_dt',1,0]
+     [out0.dxf_src_file_name,'DXF Source File Name',1,0]
+     [out0.d_prd_awp_pr.unit_price,'d_prd_awp_pr.unit_price',1,0]
+     [out0.d_prd_awp_pr.cost_type_cd_sub,'d_prd_awp_pr.cost_type_cd_sub',1,0]
+     [out0.dxf_src_dataset_id,'DXF Source Dataset ID',1,0]
+     [out0.d_prd_awp_pr.cost_type_cd,'d_prd_awp_pr.cost_type_cd',1,0]
+  ]
+  impacts:
+  [
+     [in0.is_lst_dt,'is_lst_dt',1,1]
+     [in0.is_fst_dt,'is_fst_dt',1,1]
+     [in0.costtypecodesub,'costtypecodesub',1,1]
+     [in0.packageprice,'packageprice',1,1]
+     [in0.costtypecode,'costtypecode',1,1]
+     [in0.eff_dt_thru,'eff_dt_thru',1,1]
+     [in0.dxf_src_dataset_id,'DXF Source Dataset ID',1,1]
+     [in0.unitprice,'unitprice',1,1]
+     [in0.dxf_src_file_name,'DXF Source File Name',1,1]
+     [in0.eff_dt,'eff_dt',1,1]
+     [in0.dxf_src_rec_cnt,'DXF Source Record Count',1,1]
+     [in0.dxf_src_sys_id,'DXF Source System ID',2,2]
+     [in0.productid,'productid',2,2]
+     ['lookup("d_product_lkp").dxf_sk','dxf_sk',1,1]
+  ]
+}
+@*/
+
+out0::reformat(in0)=
+begin
+let decimal("\x01",0) d_prd_awp_pr_prod_awp_prcng_sk = -1;
+let decimal("\x01",0) d_prd_awp_pr_prod_sk;
+let string("\x01",charset="iso-8859-15", maximum_length=20) d_prd_awp_pr_prod_id = fail_if_error(in0.productid);
+let string("\x01",charset="iso-8859-15", maximum_length=3) d_prd_awp_pr_prod_id_qlfr_cd = '03';
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_prd_awp_pr_cost_type_cd = fail_if_error(in0.costtypecode);
+let string("\x01",charset="iso-8859-15", maximum_length=15) d_prd_awp_pr_cost_type_cd_sub = fail_if_error(in0.costtypecodesub);
+let decimal("\x01".4, maximum_length=21, sign_reserved) d_prd_awp_pr_pkg_price = fail_if_error(in0.packageprice);
+let decimal("\x01".5, maximum_length=15, sign_reserved) d_prd_awp_pr_unit_price = fail_if_error(in0.unitprice);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_prd_awp_pr_eff_dt = fail_if_error(in0.eff_dt);
+let datetime("YYYYMMDD HH24:MI:SS")("\x01") d_prd_awp_pr_eff_dt_thru = fail_if_error(in0.eff_dt_thru);
+let decimal("\x01",0) d_prd_awp_pr_is_fst_dt = fail_if_error(in0.is_fst_dt);
+let decimal("\x01",0) d_prd_awp_pr_is_lst_dt = fail_if_error(in0.is_lst_dt);
+let decimal("\x01",0) d_prd_awp_pr_src_env_sk = fail_if_error(in0.dxf_src_sys_id);
+
+
+
+/*   Default value   */
+d_prd_awp_pr_prod_sk=fail_if_error(first_defined(bzt_1_6c54cc0a_5b4ed743_ea47_0(in0.productid, '03').dxf_sk,2133374));
+
+  out0.d_prd_awp_pr.prod_awp_prcng_sk::d_prd_awp_pr_prod_awp_prcng_sk;
+  out0.d_prd_awp_pr.prod_sk::d_prd_awp_pr_prod_sk;
+  out0.d_prd_awp_pr.prod_id::d_prd_awp_pr_prod_id;
+  out0.d_prd_awp_pr.prod_id_qlfr_cd::d_prd_awp_pr_prod_id_qlfr_cd;
+  out0.d_prd_awp_pr.cost_type_cd::d_prd_awp_pr_cost_type_cd;
+  out0.d_prd_awp_pr.cost_type_cd_sub::d_prd_awp_pr_cost_type_cd_sub;
+  out0.d_prd_awp_pr.pkg_price::d_prd_awp_pr_pkg_price;
+  out0.d_prd_awp_pr.unit_price::d_prd_awp_pr_unit_price;
+  out0.d_prd_awp_pr.eff_dt::d_prd_awp_pr_eff_dt;
+  out0.d_prd_awp_pr.eff_dt_thru::d_prd_awp_pr_eff_dt_thru;
+  out0.d_prd_awp_pr.is_fst_dt::d_prd_awp_pr_is_fst_dt;
+  out0.d_prd_awp_pr.is_lst_dt::d_prd_awp_pr_is_lst_dt;
+  out0.d_prd_awp_pr.src_env_sk::d_prd_awp_pr_src_env_sk;
+  out0.*::in0.*;
+end;

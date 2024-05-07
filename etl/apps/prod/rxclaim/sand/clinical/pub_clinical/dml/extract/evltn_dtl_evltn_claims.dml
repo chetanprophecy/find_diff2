@@ -1,0 +1,90 @@
+type c_evltn_dtl_t =
+record
+  decimal("\x01",0, maximum_length=39) intvn_evltn_dtl_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) intvn_evltn_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) evltn_type_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) intvn_idntfn_id /*NUMBER(38) NOT NULL*/;
+  utf8 string("\x01", maximum_length=10) idntfn_cd = NULL("") /*VARCHAR2(10)*/;
+  utf8 string("\x01", maximum_length=10) intvn_cd = NULL("") /*VARCHAR2(10)*/;
+  decimal("\x01",0, maximum_length=39) patient_id /*NUMBER(38) NOT NULL*/;
+  date("YYYYMMDD")("\x01") evltn_prd_start_dt /*DATE NOT NULL*/;
+  date("YYYYMMDD")("\x01") evltn_prd_end_dt /*DATE NOT NULL*/;
+  date("YYYYMMDD")("\x01") evltn_dt /*DATE NOT NULL*/;
+  utf8 string("\x01", maximum_length=100) evltn_status = NULL("") /*VARCHAR2(100)*/;
+  decimal("\x01",0, maximum_length=39) evltn_methd_id = NULL("") /*NUMBER(38)*/;
+  date("YYYYMMDD")("\x01") evltn_lkbck_prd_start_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") evltn_lkbck_prd_end_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") update_timestamp = NULL("") /*DATE*/;
+  utf8 string("\x01", maximum_length=20) updated_by = NULL("") /*VARCHAR2(20)*/;
+  date("YYYYMMDD")("\x01") create_timestamp /*DATE NOT NULL*/;
+  utf8 string("\x01", maximum_length=20) created_by /*VARCHAR2(20) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) evltn_caryovr_prd_start_dt = NULL("") /*NUMBER(38)*/;
+  decimal("\x01",0, maximum_length=39) evltn_caryovr_prd_end_dt = NULL("") /*NUMBER(38)*/;
+  string(1) newline = "\n";
+end;
+
+type c_evltn_phrmcy_claim_t = 
+record  
+  decimal("\x01",0, maximum_length=39) intvn_idntfn_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) intvn_evltn_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=39) intvn_evltn_dtl_id /*NUMBER(38) NOT NULL*/;
+  utf8 string("\x01", maximum_length=10) intvn_cd = NULL("") /*VARCHAR2(10)*/;
+  utf8 string("\x01", maximum_length=10) idntfn_cd = NULL("") /*VARCHAR2(10)*/;
+  decimal("\x01",0, maximum_length=39) phrmcy_claim_id /*NUMBER(38) NOT NULL*/;
+  decimal("\x01",0, maximum_length=20) rxclaim_num = NULL("") /*NUMBER(19)*/;
+  decimal("\x01",0, maximum_length=39) rxclaim_sequence_num = NULL("") /*NUMBER(38)*/;
+  utf8 string("\x01", maximum_length=30) carrier_id /*VARCHAR2(30) NOT NULL*/;
+  utf8 string("\x01", maximum_length=40) acct_id /*VARCHAR2(40) NOT NULL*/;
+  utf8 string("\x01", maximum_length=30) emplyr_group_id /*VARCHAR2(30) NOT NULL*/;
+  utf8 string("\x01", maximum_length=20) member_id /*VARCHAR2(20) NOT NULL*/;
+  date("YYYYMMDD")("\x01") dt_submitted /*DATE NOT NULL*/;
+  date("YYYYMMDD")("\x01") dt_of_fill /*DATE NOT NULL*/;
+  utf8 string("\x01", maximum_length=1) mail_srvc_ind = NULL("") /*VARCHAR2(1)*/;
+  utf8 string("\x01", maximum_length=12) rx_num = NULL("") /*VARCHAR2(12)*/;
+  utf8 string("\x01", maximum_length=1) claim_stts_id = NULL("") /*VARCHAR2(1)*/;
+  utf8 string("\x01", maximum_length=12) phrmcy_id = NULL("") /*VARCHAR2(12)*/;
+  decimal("\x01",0, maximum_length=39) drug_product_id = NULL("") /*NUMBER(38)*/;
+  decimal("\x01".3, maximum_length=11) pkg_size = NULL("") /*NUMBER(9,3)*/;
+  utf8 string("\x01", maximum_length=2) admin_route_cd = NULL("") /*VARCHAR2(2)*/;
+  utf8 string("\x01", maximum_length=1) mntnce_drug_flg = NULL("") /*VARCHAR2(1)*/;
+  utf8 string("\x01", maximum_length=1) drug_type_flg = NULL("") /*VARCHAR2(1)*/;
+  utf8 string("\x01", maximum_length=11) ndc_num /*VARCHAR2(11) NOT NULL*/;
+  utf8 string("\x01", maximum_length=14) gpi_num = NULL("") /*VARCHAR2(14)*/;
+  decimal("\x01",0, maximum_length=39) gpi_list_type = NULL("") /*NUMBER(38)*/;
+  utf8 string("\x01", maximum_length=1) gpi_privacy_flg = NULL("") /*VARCHAR2(1)*/;
+  decimal("\x01".3, maximum_length=13) drug_quantity = NULL("") /*NUMBER(11,3)*/;
+  decimal("\x01",0, maximum_length=39) days_of_supply = NULL("") /*NUMBER(38)*/;
+  utf8 string("\x01", maximum_length=15) prescriber_id = NULL("") /*VARCHAR2(15)*/;
+  utf8 string("\x01", maximum_length=30) drug_lbl_nm = NULL("") /*VARCHAR2(30)*/;
+  utf8 string("\x01", maximum_length=100) drug_gpi_nm = NULL("") /*VARCHAR2(100)*/;
+  utf8 string("\x01", maximum_length=70) drug_prod_nm = NULL("") /*VARCHAR2(70)*/;
+  utf8 string("\x01", maximum_length=100) thrptc_class = NULL("") /*VARCHAR2(100)*/;
+  utf8 string("\x01", maximum_length=1) drug_partd_ind = NULL("") /*CHAR(1)*/;
+  decimal("\x01",0, maximum_length=39) provider_id = NULL("") /*NUMBER(38)*/;
+  utf8 string("\x01", maximum_length=25) vendor_id = NULL("") /*VARCHAR2(25)*/;
+  decimal("\x01".2, maximum_length=11) app_due_amt = NULL("") /*NUMBER(9,2)*/;
+  decimal("\x01".2, maximum_length=11) app_copay_amt = NULL("") /*NUMBER(9,2)*/;
+  date("YYYYMMDD")("\x01") days_of_sppl_runout_dt = NULL("") /*DATE*/;
+  decimal("\x01".2, maximum_length=20) tot_claim_amt = NULL("") /*NUMBER(18,2)*/;
+  decimal("\x01",0, maximum_length=39) refill_remaining = NULL("") /*NUMBER(38)*/;
+  date("YYYYMMDD")("\x01") rx_written_dt = NULL("") /*DATE*/;
+  date("YYYYMMDD")("\x01") update_timestamp = NULL("") /*DATE*/;
+  utf8 string("\x01", maximum_length=20) updated_by = NULL("") /*VARCHAR2(20)*/;
+  date("YYYYMMDD")("\x01") create_timestamp /*DATE NOT NULL*/;
+  utf8 string("\x01", maximum_length=20) created_by /*VARCHAR2(20) NOT NULL*/;
+  utf8 string("\x01", maximum_length=14) drug_type_dosage_form = NULL("") /*VARCHAR2(14)*/;
+  decimal("\x01".5, maximum_length=17) drug_strength = NULL("") /*NUMBER(15,5)*/;
+  decimal("\x01".5, maximum_length=17) drug_cnvrsn_factor = NULL("") /*NUMBER(15,5)*/;
+  decimal("\x01".5, maximum_length=17) drug_dose_thrshld = NULL("") /*NUMBER(15,5)*/;
+  utf8 string("\x01", maximum_length=1) evltn_trigger_clm_flg = NULL("") /*CHAR(1)*/;
+  utf8 string("\x01", maximum_length=100) thrptc_sub_class = NULL("") /*VARCHAR2(100)*/;
+  string(1) newline = "\n";
+end;
+
+metadata type =
+record
+c_evltn_dtl_t evltn_dtl;
+c_evltn_phrmcy_claim_t evltn_phrmcy_claim;
+end;
+
+
